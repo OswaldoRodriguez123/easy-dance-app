@@ -1169,7 +1169,7 @@
                     <div class="block-header">
                        
 
-                       @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                       @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                        		<a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-grupales" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase grupal</a>
 
@@ -1264,7 +1264,7 @@
                                                 <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$clasegrupal->id}}"><i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i> Ver Progreso</a>
                                             </li>
                                         
-                                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                                               <li class="hidden-xs">
                                                 <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$clasegrupal->id}}"><i class="zmdi zmdi-calendar-note f-16 boton blue"></i>Multihorario</a>
@@ -1314,7 +1314,7 @@
      
                             	
 
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalNombre-ClaseGrupal">
 
@@ -1331,7 +1331,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-clase_grupal_id"><span>{{$clasegrupal->clase_grupal_nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalImagen-ClaseGrupal">
 
@@ -1347,7 +1347,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalFecha-ClaseGrupal">
 
@@ -1363,7 +1363,7 @@
                              </td>
                              <td class="f-14 m-l-15" id="clasegrupal-fecha" ><span id="clasegrupal-fecha_inicio">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inicio)->format('d/m/Y')}}</span> - <span id="clasegrupal-fecha_final">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_final)->format('d/m/Y')}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalFechaCobro-ClaseGrupal">
 
@@ -1380,7 +1380,7 @@
                              <td class="f-14 m-l-15" id="clasegrupal-fecha_inicio_preferencial"> {{ empty($clasegrupal->fecha_inicio_preferencial) ? '' :  \Carbon\Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inicio_preferencial)->format('d/m/Y') }}<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
 
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalEtiqueta-ClaseGrupal">
 
@@ -1399,7 +1399,7 @@
                                
                                 </td>
                               </tr>
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalEspecialidades-ClaseGrupal">
 
@@ -1415,7 +1415,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-especialidad_id"><span>{{$clasegrupal->especialidad_nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalInstructor-ClaseGrupal">
 
@@ -1432,7 +1432,7 @@
                              <td  class="f-14 m-l-15" id="clasegrupal-instructor_id" ><span id="clasegrupal-instructor_id">{{$clasegrupal->instructor_nombre}} {{$clasegrupal->instructor_apellido}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                              
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalNivelBaile-ClaseGrupal">
 
@@ -1448,7 +1448,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-nivel_baile_id"><span>{{$clasegrupal->nivel_nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalHorario-ClaseGrupal">
 
@@ -1464,7 +1464,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-hora_inicio">{{$clasegrupal->hora_inicio}}</span> - <span id="clasegrupal-hora_final">{{$clasegrupal->hora_final}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalEstudio-ClaseGrupal">
 
@@ -1480,7 +1480,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-estudio_id"><span>{{$clasegrupal->estudio_nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalCupo-ClaseGrupal">
 
@@ -1496,7 +1496,7 @@
                              </td>
                              <td  class="f-14 m-l-15"> <span id="clasegrupal-cupo_minimo">{{$clasegrupal->cupo_minimo}}</span> - <span id="clasegrupal-cupo_maximo">{{$clasegrupal->cupo_maximo}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalCantidad-ClaseGrupal">
 
@@ -1512,7 +1512,7 @@
                              </td>
                              <td  class="f-14 m-l-15"> <span id="clasegrupal-cantidad_hombres">{{$clasegrupal->cantidad_hombres}}</span> - <span id="clasegrupal-cantidad_mujeres">{{$clasegrupal->cantidad_mujeres}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalCupoOnline-ClaseGrupal">
 
@@ -1528,7 +1528,7 @@
                              </td>
                              <td  class="f-14 m-l-15"> <span id="clasegrupal-cupo_reservacion">{{$clasegrupal->cupo_reservacion}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalLink-ClaseGrupal">
 
@@ -1544,7 +1544,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="clasegrupal-link_video"><span>{{$clasegrupal->link_video}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalMostrar-ClaseGrupal">
 
@@ -1566,7 +1566,7 @@
                                @endif
                              <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             	<tr class="detalle" data-toggle="modal" href="#modalMultihorario-ClaseGrupal">
 

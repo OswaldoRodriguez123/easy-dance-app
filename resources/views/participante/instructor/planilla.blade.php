@@ -1541,7 +1541,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="instructor-cantidad">{{$credencial->cantidad}}</span> Credenciales - <span id="instructor-dias_vencimiento">{{$credencial->dias_vencimiento}}</span> Dias de Vencimiento<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" id="modalPe" href="#modalPago">
                                <td>
                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-pago" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>

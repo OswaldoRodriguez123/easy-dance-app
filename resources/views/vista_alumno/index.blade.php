@@ -472,13 +472,7 @@
                       </span>
 
                     </div>
-
-                    <div class="clearfix p-b-15"></div>
-
-                    <a href="{{url('/')}}/lideres-en-accion"> <img class="opaco-0-8 img-responsive" src="{{url('/')}}/assets/img/banner_referido.jpg" alt=""></a>
-
                   
-
                   </div>
 
                     <div class="clearfix p-b-15"></div>
@@ -544,7 +538,7 @@
           $(".campana").click(function(){
             procesando();
 
-            if(campanas.length > 1)
+            if(campanas.length > 1 || campanas.length == 0)
             {
               window.location = "{{url('/')}}/especiales/campañas";
             }else{

@@ -16,14 +16,14 @@
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 @stop
 @section('content')
-@if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+@if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
 <a href="{{url('/')}}/especiales/campañas/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
 @endif
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                        @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
                         <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menú Principal</a>
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
@@ -46,7 +46,7 @@
                     
                     <div class="card">
                         <div class="card-header text-right">
-                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                        @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
                             <span class="f-16 p-t-0 text-success">Agregar una Campaña <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
                         @endif
 
@@ -65,7 +65,7 @@
                                     <th class="text-center" data-column-id="status" data-type="numeric">Status</th>
                                     <th class="text-center" data-column-id="meta" data-order="desc">Meta</th>
                                     <th class="text-center" data-column-id="actual" data-order="desc">Actual</th>
-                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                                    @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                     @endif
                                 </tr>
@@ -85,7 +85,7 @@
                                     </td>
                                     <td class="text-center previa">{{ number_format($campana['cantidad'], 2, '.' , '.') }} </td>
                                     <td class="text-center previa">{{ number_format($campana['total'], 2, '.' , '.') }}</td>
-                                    @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                                    @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
                                         <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                     @endif
                                   </tr>
@@ -203,7 +203,7 @@
 
     function previa(t){
         var row = $(t).closest('tr').attr('id');
-        if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5 || "{{Auth::user()->usuario_tipo}}" == 6)
+        if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6)
         {
             var route =route_detalle+"/"+row;
         }else{

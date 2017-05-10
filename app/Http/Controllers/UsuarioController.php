@@ -19,14 +19,17 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Image;
 use DB;
+use Session;
 
 class UsuarioController extends BaseController {
 
 
     public function perfil()
-    {
-        if(Auth::user()->usuario_tipo == 2 OR Auth::user()->usuario_tipo == 4){
-            $alumno = Alumno::find(Auth::user()->usuario_id);
+    {   
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+        $usuario_id = Session::get('easydance_usuario_id');
+        if($usuario_tipo == 2 OR $usuario_tipo == 4){
+            $alumno = Alumno::find($usuario_id);
             return view('usuario.planilla')->with('alumno',$alumno);
         }else{
             return view('usuario.planilla');
@@ -34,12 +37,13 @@ class UsuarioController extends BaseController {
     }
 
     public function perfil_evaluativo()
-    {
-        $perfil = PerfilEvaluativo::where('usuario_id', Auth::user()->usuario_id)->first();
+    {   
+        $usuario_id = Session::get('easydance_usuario_id');
+        $perfil = PerfilEvaluativo::where('usuario_id', $usuario_id)->first();
 
         if(!$perfil){
             $perfil = new PerfilEvaluativo;
-            $perfil->usuario_id = Auth::user()->usuario_id;
+            $perfil->usuario_id = $usuario_id;
             $perfil->save();
         }
 
@@ -129,9 +133,12 @@ class UsuarioController extends BaseController {
 
         if($usuario->save()){
 
-            if(Auth::user()->usuario_tipo == 2){
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
+            $usuario_id = Session::get('easydance_usuario_id');
 
-                $alumno = Alumno::find(Auth::user()->usuario_id);
+            if($usuario_tipo == 2){
+
+                $alumno = Alumno::find($usuario_id);
 
                 if($alumno){
 
@@ -162,9 +169,12 @@ class UsuarioController extends BaseController {
         // return redirect("alumno/edit/{$request->id}");
         if($usuario->save()){
 
-            if(Auth::user()->usuario_tipo == 2){
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
+            $usuario_id = Session::get('easydance_usuario_id');
 
-                $alumno = Alumno::find(Auth::user()->usuario_id);
+            if($usuario_tipo == 2){
+
+                $alumno = Alumno::find($usuario_id);
 
                 if($alumno){
 
@@ -222,9 +232,12 @@ class UsuarioController extends BaseController {
 
         if($usuario->save()){
 
-            if(Auth::user()->usuario_tipo == 2){
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
+            $usuario_id = Session::get('easydance_usuario_id');
 
-                $alumno = Alumno::find(Auth::user()->usuario_id);
+            if($usuario_tipo == 2){
+
+                $alumno = Alumno::find($usuario_id);
 
                 if($alumno){
 
@@ -255,9 +268,12 @@ class UsuarioController extends BaseController {
 
         if($usuario->save()){
 
-            if(Auth::user()->usuario_tipo == 2){
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
+            $usuario_id = Session::get('easydance_usuario_id');
 
-                $alumno = Alumno::find(Auth::user()->usuario_id);
+            if($usuario_tipo == 2){
+
+                $alumno = Alumno::find($usuario_id);
 
                 if($alumno){
 
@@ -289,9 +305,12 @@ class UsuarioController extends BaseController {
         
         if($usuario->save()){
 
-            if(Auth::user()->usuario_tipo == 2){
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
+            $usuario_id = Session::get('easydance_usuario_id');
+            
+            if($usuario_tipo == 2){
 
-                $alumno = Alumno::find(Auth::user()->usuario_id);
+                $alumno = Alumno::find($usuario_id);
 
                 if($alumno){
 
@@ -400,55 +419,58 @@ class UsuarioController extends BaseController {
             $img = Image::make($image)->resize(300, 300);
             $img->save('assets/uploads/usuario/'.$nombre_img);
 
+        }else{
+            $nombre_img = "";
+        }
+
+        $usuario = User::find(Auth::user()->id);
+
+        $usuario->imagen = $nombre_img;
+        $usuario->save();
+
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+
+        if($usuario_tipo == 3){
+
+            if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
+
+                $nombre_img = "instructorp-". Auth::user()->id . $extension;
+                $image = base64_decode($base64_string);
+
+                // \Storage::disk('usuario')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(300, 300);
+                $img->save('assets/uploads/instructor/'.$nombre_img);
+
             }else{
                 $nombre_img = "";
             }
 
-            $usuario = User::find(Auth::user()->id);
+            $instructor = Instructor::find($usuario_id);
 
-            $usuario->imagen = $nombre_img;
-            $usuario->save();
+            $instructor->imagen = $nombre_img;
+            $instructor->save();
 
-            if($usuario->usuario_tipo == 3){
+        }
 
-                if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
-
-                    $nombre_img = "instructorp-". Auth::user()->id . $extension;
-                    $image = base64_decode($base64_string);
-
-                    // \Storage::disk('usuario')->put($nombre_img,  $image);
-                    $img = Image::make($image)->resize(300, 300);
-                    $img->save('assets/uploads/instructor/'.$nombre_img);
-
-                }else{
-                    $nombre_img = "";
-                }
-
-                $instructor = Instructor::find(Auth::user()->usuario_id);
-
-                $instructor->imagen = $nombre_img;
-                $instructor->save();
-
-            }
-
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'imagen' => $nombre_img, 200]);
+        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'imagen' => $nombre_img, 200]);
     }
 
     public function documentos(){
 
         $academia = Academia::find(Auth::user()->academia_id);
+        $usuario_id = Session::get('easydance_usuario_id');
 
         $clase_grupal_join = DB::table('clases_grupales')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
             ->select('config_clases_grupales.nombre','config_clases_grupales.condiciones', 'config_clases_grupales.id')
-            ->where('inscripcion_clase_grupal.alumno_id','=', Auth::user()->usuario_id)
+            ->where('inscripcion_clase_grupal.alumno_id','=', $usuario_id)
         ->get();
 
         $taller_join = DB::table('talleres')
             ->join('inscripcion_taller', 'inscripcion_taller.taller_id', '=', 'talleres.id')
             ->select('talleres.nombre','talleres.condiciones', 'talleres.id')
-            ->where('inscripcion_taller.alumno_id','=', Auth::user()->usuario_id)
+            ->where('inscripcion_taller.alumno_id','=', $usuario_id)
         ->get();
 
         $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', Auth::user()->academia_id)->first();

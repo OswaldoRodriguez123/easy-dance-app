@@ -78,8 +78,10 @@ class ClaseGrupalController extends BaseController {
         $array = array();
 
         $academia = Academia::find(Auth::user()->academia_id);
-        
-        if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 3 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+        $usuario_id = Session::get('easydance_usuario_id');
+
+        if($usuario_tipo == 1 OR $usuario_tipo == 3 OR $usuario_tipo == 5 || $usuario_tipo == 6){
 
             foreach($clase_grupal_join as $clase_grupal){
                 $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
@@ -434,6 +436,7 @@ class ClaseGrupalController extends BaseController {
     {
 
         $array = array();
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
 
         $mujeres = 0;
         $hombres = 0;
@@ -641,8 +644,8 @@ class ClaseGrupalController extends BaseController {
                 $examen = '';
             }
 
-            if(Auth::user()->usuario_tipo == 3){
-                $credenciales = CredencialInstructor::where('instructor_id',Auth::user()->usuario_id)->first();
+            if($usuario_tipo == 3){
+                $credenciales = CredencialInstructor::where('instructor_id',$usuario_id)->first();
 
                 $total_credenciales = $credenciales->cantidad;
             }else{
@@ -710,7 +713,7 @@ class ClaseGrupalController extends BaseController {
 
             $promociones = Promocion::where('academia_id', Auth::user()->academia_id)->where('fecha_inicio', '<=', $hoy)->where('fecha_final', '>=', $hoy)->get();
 
-            return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'examen' => $examen, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'promociones' => $promociones]);
+            return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'examen' => $examen, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'promociones' => $promociones, 'usuario_tipo' => $usuario_tipo]);
 
         }else{
             return redirect("agendar/clases-grupales"); 
@@ -922,7 +925,7 @@ class ClaseGrupalController extends BaseController {
 
         if(Auth::check()){
 
-            $usuario_tipo = Auth::user()->usuario_tipo;
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
 
         }else{
             $usuario_tipo = 0;
@@ -1491,8 +1494,9 @@ class ClaseGrupalController extends BaseController {
 
     public function storeInscripcionVistaAlumno(Request $request)
     {
+        $usuario_id = Session::get('easydance_usuario_id');
 
-        $alumnosclasegrupal = InscripcionClaseGrupal::where('alumno_id', Auth::user()->usuario_id)->where('clase_grupal_id', $request->clase_grupal_id)->first();
+        $alumnosclasegrupal = InscripcionClaseGrupal::where('alumno_id', $usuario_id)->where('clase_grupal_id', $request->clase_grupal_id)->first();
 
         if(!$alumnosclasegrupal){ 
 
@@ -1505,7 +1509,7 @@ class ClaseGrupalController extends BaseController {
                 $inscripcion = new InscripcionClaseGrupal;
 
                 $inscripcion->clase_grupal_id = $request->clase_grupal_id;
-                $inscripcion->alumno_id = Auth::user()->usuario_id;
+                $inscripcion->alumno_id = $usuario_id;
                 $inscripcion->fecha_pago = $clasegrupal->fecha_inicio_preferencial;
                 $inscripcion->fecha_inscripcion = Carbon::now()->toDateString();
                 $inscripcion->costo_mensualidad = $clasegrupal->costo_mensualidad;
@@ -1639,15 +1643,15 @@ class ClaseGrupalController extends BaseController {
     }
 
     else{
-
-            $credencial_instructor = CredencialInstructor::where('instructor_id', Auth::user()->usuario_id)->first();
+            $usuario_id = Session::get('easydance_usuario_id');
+            $credencial_instructor = CredencialInstructor::where('instructor_id', $usuario_id)->first();
 
             if($credencial_instructor){
 
                 $total = $credencial_instructor->cantidad - $request->cantidad;
 
                 if($total > 0){
-                    $credencial_alumno = CredencialAlumno::where('alumno_id', $request->alumno_id_credencial)->where('instructor_id', Auth::user()->usuario_id)->first();
+                    $credencial_alumno = CredencialAlumno::where('alumno_id', $request->alumno_id_credencial)->where('instructor_id', $usuario_id)->first();
 
                     if($credencial_alumno){
                         
@@ -1662,7 +1666,7 @@ class ClaseGrupalController extends BaseController {
                         $credencial_alumno = new CredencialAlumno;
 
                         $credencial_alumno->alumno_id = $request->alumno_id_credencial;
-                        $credencial_alumno->instructor_id = Auth::user()->usuario_id;
+                        $credencial_alumno->instructor_id = $usuario_id;
                         $credencial_alumno->cantidad = $request->cantidad;
                         $credencial_alumno->dias_vencimiento = $request->dias_vencimiento;
                         $credencial_alumno->fecha_vencimiento = Carbon::now()->AddDays($request->dias_vencimiento);
@@ -2288,7 +2292,9 @@ class ClaseGrupalController extends BaseController {
             	);
         	}
 
-        	return view('agendar.clase_grupal.operacion')->with(['id' => $id, 'clasegrupal' => $clasegrupal, 'grupales' => $array, 'fecha_inicio' => $fecha_inicio]);
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
+
+        	return view('agendar.clase_grupal.operacion')->with(['id' => $id, 'clasegrupal' => $clasegrupal, 'grupales' => $array, 'fecha_inicio' => $fecha_inicio, 'usuario_tipo' => $usuario_tipo]);
        	}else{
        		return redirect("agendar/clases-grupales"); 
        	}
@@ -2417,78 +2423,80 @@ class ClaseGrupalController extends BaseController {
                  )
             ->get();
 
-        $arrayHorario= array();
+            $arrayHorario= array();
 
-        foreach ($horario_clase_grupal as $horario) {
-            $instructor=$horario->instructor_nombre.' '.$horario->instructor_apellido;
-            $especialidad=$horario->especialidad_nombre;
-            $estudio = $horario->estudio_nombre;
-            $fecha=$horario->fecha;
-            $hora_inicio=$horario->hora_inicio;
-            $hora_final=$horario->hora_final;
-            $id_horario=$horario->id;
+            foreach ($horario_clase_grupal as $horario) {
+                $instructor=$horario->instructor_nombre.' '.$horario->instructor_apellido;
+                $especialidad=$horario->especialidad_nombre;
+                $estudio = $horario->estudio_nombre;
+                $fecha=$horario->fecha;
+                $hora_inicio=$horario->hora_inicio;
+                $hora_final=$horario->hora_final;
+                $id_horario=$horario->id;
 
-            $fc=explode('-',$fecha);
-            $fecha_curso=Carbon::create($fc[0], $fc[1], $fc[2], 00, 00, 00);
-            $dia_curso = $fecha_curso->format('l');
+                $fc=explode('-',$fecha);
+                $fecha_curso=Carbon::create($fc[0], $fc[1], $fc[2], 00, 00, 00);
+                $dia_curso = $fecha_curso->format('l');
 
-            $dia_de_semana="";
+                $dia_de_semana="";
 
-            $dia_curso=strtoupper($dia_curso);
+                $dia_curso=strtoupper($dia_curso);
 
-            if($dia_curso=="SUNDAY")
-            {
-                $dia="6";
-                $dia_de_semana="Domingo";
+                if($dia_curso=="SUNDAY")
+                {
+                    $dia="6";
+                    $dia_de_semana="Domingo";
+                }
+                elseif($dia_curso=="MONDAY")
+                {
+                    $dia="0";
+                    $dia_de_semana="Lunes";
+                }
+                elseif($dia_curso=="TUESDAY")
+                {
+                    $dia="1";
+                    $dia_de_semana="Martes";
+
+                }
+                elseif($dia_curso=="WEDNESDAY")
+                {
+                    $dia="2";
+                    $dia_de_semana="Míercoles";                
+                }
+                elseif($dia_curso=="THURSDAY")
+                {
+                    $dia="3";
+                    $dia_de_semana="Jueves";                
+                }
+                elseif($dia_curso=="FRIDAY")
+                {
+                    $dia="4";
+                    $dia_de_semana="Viernes";
+                }
+                elseif($dia_curso=="SATURDAY")
+                {
+                    $dia="5";
+                    $dia_de_semana="Sábado";
+                }
+
+                $arrayHorario[$id_horario] = array(
+                        'instructor' => $instructor,
+                        'dia_de_semana' => $dia_de_semana,
+                        'new_dia_de_semama'=>$dia_curso,
+                        'especialidad' => $especialidad,
+                        'estudio' => $estudio,
+                        'hora_inicio' => $hora_inicio,
+                        'new_hora_inicio' => $hora_inicio,
+                        'hora_final' => $hora_final,
+                        'new_hora_final' => $hora_final,
+                        'fecha'=> $fecha,
+                        'id'=>$id_horario
+                );
             }
-            elseif($dia_curso=="MONDAY")
-            {
-                $dia="0";
-                $dia_de_semana="Lunes";
-            }
-            elseif($dia_curso=="TUESDAY")
-            {
-                $dia="1";
-                $dia_de_semana="Martes";
 
-            }
-            elseif($dia_curso=="WEDNESDAY")
-            {
-                $dia="2";
-                $dia_de_semana="Míercoles";                
-            }
-            elseif($dia_curso=="THURSDAY")
-            {
-                $dia="3";
-                $dia_de_semana="Jueves";                
-            }
-            elseif($dia_curso=="FRIDAY")
-            {
-                $dia="4";
-                $dia_de_semana="Viernes";
-            }
-            elseif($dia_curso=="SATURDAY")
-            {
-                $dia="5";
-                $dia_de_semana="Sábado";
-            }
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-            $arrayHorario[$id_horario] = array(
-                    'instructor' => $instructor,
-                    'dia_de_semana' => $dia_de_semana,
-                    'new_dia_de_semama'=>$dia_curso,
-                    'especialidad' => $especialidad,
-                    'estudio' => $estudio,
-                    'hora_inicio' => $hora_inicio,
-                    'new_hora_inicio' => $hora_inicio,
-                    'hora_final' => $hora_final,
-                    'new_hora_final' => $hora_final,
-                    'fecha'=> $fecha,
-                    'id'=>$id_horario
-            );
-        }
-
-            return view('agendar.clase_grupal.planilla')->with(['config_clases_grupales' => ConfigClasesGrupales::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'clasegrupal' => $clase_grupal_join,  'id' => $id, 'dias_de_semana' => DiasDeSemana::all(), 'grupales' => $array, 'arrayHorario' => $arrayHorario]);
+            return view('agendar.clase_grupal.planilla')->with(['config_clases_grupales' => ConfigClasesGrupales::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'clasegrupal' => $clase_grupal_join,  'id' => $id, 'dias_de_semana' => DiasDeSemana::all(), 'grupales' => $array, 'arrayHorario' => $arrayHorario, 'usuario_tipo' => $usuario_tipo]);
 
         }else{
            return redirect("agendar/clases-grupales"); 
@@ -2766,7 +2774,9 @@ class ClaseGrupalController extends BaseController {
 
         }
 
-        return view('agendar.clase_grupal.progreso')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'id' => $id]);
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+
+        return view('agendar.clase_grupal.progreso')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'id' => $id, 'usuario_tipo' => $usuario_tipo]);
     }
 
     public function storeNivelaciones(Request $request)
@@ -2987,7 +2997,8 @@ class ClaseGrupalController extends BaseController {
 
     public function principalnivelaciones(Request $request){
 
-        $instructor = Instructor::find(Auth::user()->usuario_id);
+        $usuario_id = Session::get('easydance_usuario_id');
+        $instructor = Instructor::find($usuario_id);
 
         if(!$instructor->boolean_administrador){
 
@@ -2997,7 +3008,7 @@ class ClaseGrupalController extends BaseController {
                 ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga')
-                ->where('clases_grupales.instructor_id','=', Auth::user()->usuario_id)
+                ->where('clases_grupales.instructor_id','=', $usuario_id)
                 ->where('clases_grupales.deleted_at', '=', null)
                 ->OrderBy('clases_grupales.hora_inicio')
             ->get();
@@ -3009,7 +3020,7 @@ class ClaseGrupalController extends BaseController {
                 ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'clases_grupales.id', 'horario_clase_grupales.fecha as fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga', 'horario_clase_grupales.id as horario_id')
-                ->where('clases_grupales.instructor_id','=', Auth::user()->usuario_id)
+                ->where('clases_grupales.instructor_id','=', $usuario_id)
                 ->where('horario_clase_grupales.deleted_at', '=', null)
                 ->OrderBy('horario_clase_grupales.hora_inicio')
             ->get();
@@ -3092,7 +3103,8 @@ class ClaseGrupalController extends BaseController {
 
     public function clases_grupales_vista_instructor(Request $request){
 
-        $instructor = Instructor::find(Auth::user()->usuario_id);
+        $usuario_id = Session::get('easydance_usuario_id');
+        $instructor = Instructor::find($usuario_id);
 
         if(!$instructor->boolean_administrador){
 
@@ -3102,7 +3114,7 @@ class ClaseGrupalController extends BaseController {
                 ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga')
-                ->where('clases_grupales.instructor_id','=', Auth::user()->usuario_id)
+                ->where('clases_grupales.instructor_id','=', $usuario_id)
                 ->where('clases_grupales.deleted_at', '=', null)
                 ->OrderBy('clases_grupales.hora_inicio')
             ->get();
@@ -3114,7 +3126,7 @@ class ClaseGrupalController extends BaseController {
                 ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'clases_grupales.id', 'horario_clase_grupales.fecha as fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga', 'horario_clase_grupales.id as horario_id')
-                ->where('clases_grupales.instructor_id','=', Auth::user()->usuario_id)
+                ->where('clases_grupales.instructor_id','=', $usuario_id)
                 ->where('horario_clase_grupales.deleted_at', '=', null)
                 ->OrderBy('horario_clase_grupales.hora_inicio')
             ->get();

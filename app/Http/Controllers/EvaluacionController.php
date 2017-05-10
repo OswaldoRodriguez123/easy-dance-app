@@ -55,7 +55,9 @@ class EvaluacionController extends BaseController
         $grouped = $collection->groupBy('id');     
         $activacion = $grouped->toArray();
 
-        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join,'id_evaluacion'=>$id_evaluacion, 'activacion' => $activacion]);
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+
+        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join,'id_evaluacion'=>$id_evaluacion, 'activacion' => $activacion, 'usuario_tipo' => $usuario_tipo]);
     }
 
     public function evaluaciones($id)
@@ -84,17 +86,21 @@ class EvaluacionController extends BaseController
         $grouped = $collection->groupBy('id');     
         $activacion = $grouped->toArray();
 
-        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join,'id_evaluacion'=>$id, 'activacion' => $activacion]);
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+
+        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join,'id_evaluacion'=>$id, 'activacion' => $activacion, 'usuario_tipo' => $usuario_tipo]);
     }
 
     public function evaluaciones_vista_alumno()
     {
+        $usuario_id = Session::get('easydance_usuario_id');
+
         $evaluacion_join = DB::table('evaluaciones')
             ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
             ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'evaluaciones.created_at as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion', 'alumnos.id as alumno_id')
-            ->where('evaluaciones.alumno_id', '=' , Auth::user()->usuario_id)
+            ->where('evaluaciones.alumno_id', '=' , $usuario_id)
         ->get();
 
         $array = array(2, 4);
@@ -112,7 +118,9 @@ class EvaluacionController extends BaseController
         $grouped = $collection->groupBy('id');     
         $activacion = $grouped->toArray();
 
-        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join, 'activacion' => $activacion]);
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+
+        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join, 'activacion' => $activacion, 'usuario_tipo' => $usuario_tipo]);
     }
 
     public function evaluaciones_alumno($id)
@@ -140,7 +148,9 @@ class EvaluacionController extends BaseController
         $grouped = $collection->groupBy('id');     
         $activacion = $grouped->toArray();
 
-        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join, 'id' => $id, 'activacion' => $activacion]);
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+
+        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join, 'id' => $id, 'activacion' => $activacion, 'usuario_tipo' => $usuario_tipo]);
     }
 
     /**
@@ -382,6 +392,7 @@ class EvaluacionController extends BaseController
         ->get();
 
         $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
         
         return view('especiales.evaluaciones.detalle')->with([
             'alumno'                    => $alumno, 
@@ -399,7 +410,8 @@ class EvaluacionController extends BaseController
             'fecha_ingreso'             => $fecha_ingreso,
             'fecha_siguiente'           => $examen->proxima_fecha,
             'examen'                    => $examen,
-            'formulas'                  => $formulas
+            'formulas'                  => $formulas,
+            'usuario_tipo'              => $usuario_tipo
         ]);
     }
 

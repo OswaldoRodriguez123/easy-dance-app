@@ -63,7 +63,7 @@
 
                                   @if(Auth::check())
 
-                                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                                               <button type="button" class="btn btn-blanco m-r-10 f-20 guardar"> Inscribir</button>
 
@@ -114,7 +114,7 @@
 
   <div class="block-header">
 
-    @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+    @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
     
 
       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/talleres" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección talleres</a>
@@ -261,27 +261,27 @@
 
                         </div>
 
-                            <span class="text-center">
-                                 @if(Auth::check())
+                          <span class="text-center">
+                             @if(Auth::check())
 
-                              @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                                @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
-                                <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i>Inscribir</button>
+                                  <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i>Inscribir</button>
+
+                                @else
+
+                                  <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i>Inscribirse</button>
+
+                                @endif
 
                               @else
 
-                                <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i>Inscribirse</button>
+                                  <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i>Reservar</button>
 
                               @endif
+                          </span>
 
-                            @else
-
-                                <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i>Reservar</button>
-
-                            @endif
-                            </span>
-
-                          </div>
+                        </div>
 
 
                               
@@ -299,7 +299,7 @@
                 <li class="waves-effect"><a href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab">Reglamentos</a></li>
                 @if(Auth::check())
 
-                  @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                  @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                     <li class="waves-effect reservar"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Inscribir</a></li>
 
@@ -376,7 +376,7 @@
 
                                           @if(Auth::check())
 
-                                          @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                                          @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                                             <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Inscribir</button>
 
@@ -426,7 +426,7 @@
 
                                           @if(Auth::check())
 
-                                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                                               <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Inscribir</button>
 

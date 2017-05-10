@@ -31,7 +31,8 @@ class PromocionController extends BaseController {
     public function principal()
     {
         $promociones = Promocion::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-
+        $array = array();
+        
         foreach($promociones as $promocion){
             $fecha = Carbon::createFromFormat('Y-m-d',$promocion->fecha_final);
             if($fecha >= Carbon::now()){

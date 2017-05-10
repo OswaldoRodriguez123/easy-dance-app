@@ -64,8 +64,10 @@ class AsistenciaController extends BaseController
     public function principal()
     {
         // $alumnos = Asistencia::where('academia_id','=', Auth::user()->academia_id)->get();
+      $usuario_tipo = Session::get('easydance_usuario_tipo');
+      $usuario_id = Session::get('easydance_usuario_id');
 
-      if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+      if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
       {
         $alumnos = DB::table('alumnos')
             ->join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')
@@ -438,14 +440,14 @@ class AsistenciaController extends BaseController
 
         }  
 
-        if(Auth::user()->usuario_tipo == 2 OR Auth::user()->usuario_tipo == 4)
+        if($usuario_tipo == 2 OR $usuario_tipo == 4)
         {       
 
           $clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'inscripcion_clase_grupal.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
-            ->where('inscripcion_clase_grupal.alumno_id','=',Auth::user()->usuario_id)
+            ->where('inscripcion_clase_grupal.alumno_id','=',$usuario_id)
           ->get();
 
           $horarios_clase_grupales = HorarioClaseGrupal::join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
@@ -453,10 +455,10 @@ class AsistenciaController extends BaseController
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
             ->select('horario_clase_grupales.*', 'config_clases_grupales.nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
-            ->where('inscripcion_clase_grupal.alumno_id','=',Auth::user()->usuario_id)
+            ->where('inscripcion_clase_grupal.alumno_id','=',$usuario_id)
           ->get();
 
-          $alumno_id = Auth::user()->usuario_id;
+          $alumno_id = $usuario_id;
       
 
           $array = array();
@@ -582,21 +584,21 @@ class AsistenciaController extends BaseController
 
         }  
 
-        if(Auth::user()->usuario_tipo == 3)
+        if($usuario_tipo == 3)
         {       
 
           $clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->select('clases_grupales.*', 'config_clases_grupales.nombre')
-            ->where('clases_grupales.instructor_id','=',Auth::user()->usuario_id)
+            ->where('clases_grupales.instructor_id','=',$usuario_id)
           ->get();
 
           $horarios_clase_grupales = HorarioClaseGrupal::join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->select('horario_clase_grupales.*', 'config_clases_grupales.nombre')
-            ->where('horario_clase_grupales.instructor_id','=',Auth::user()->usuario_id)
+            ->where('horario_clase_grupales.instructor_id','=',$usuario_id)
           ->get();
 
-          $instructor_id = Auth::user()->usuario_id;
+          $instructor_id = $usuario_id;
       
 
           $array = array();

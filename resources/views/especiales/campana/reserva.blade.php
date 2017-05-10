@@ -26,30 +26,6 @@
 
 <div class="imagen_principal_campana" style="background: url('{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}')"></div>
 
-<!-- <div class="container"> -->
-
-<!-- @if(Auth::check())
-
-  <div class="block-header">
-
-    @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
-    
-
-      <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/campañas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Campaña</a>
-                      
-
-    @else
-
-      <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
-
-    @endif
-
-  </div> 
-  
-@endif -->
-
-
-
     <div class="clearfix"></div>
 
     <div class="card" id="profile-main" style="margin-bottom: 0px">

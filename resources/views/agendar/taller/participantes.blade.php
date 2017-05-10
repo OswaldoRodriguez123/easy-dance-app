@@ -194,7 +194,7 @@
 
                         <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/talleres/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
 
-                        @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                        @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                           <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 

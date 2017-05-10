@@ -13,6 +13,7 @@ use App\ConfigPagosStaff;
 use App\ConfigServicios;
 use App\ConfigProductos;
 use App\PagoStaff;
+use App\User;
 use App\DiasDeSemana;
 use Mail;
 use DB;
@@ -126,13 +127,24 @@ class StaffController extends BaseController
 	            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
 	        }
 
-	        $staff = new Staff;
-
 	        $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
 
 	        $nombre = title_case($request->nombre);
 	        $apellido = title_case($request->apellido);
 	        $correo = strtolower($request->correo);
+
+            $usuario = User::where('email',$correo)->first();
+
+            if($usuario){
+                $tipos_usuario = explode(',',$usuario->usuario_tipo);
+                foreach($tipos_usuario as $tipo){
+
+                    if($tipo == 8){
+
+                        return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
+                    }
+                }
+            }
 
 	        if($request->telefono)
 	        {
@@ -150,6 +162,8 @@ class StaffController extends BaseController
 	            $direccion = '';
 	        }
 
+            $staff = new Staff;
+
 	        $staff->academia_id = Auth::user()->academia_id;
 	        $staff->identificacion = $request->identificacion;
 	        $staff->nombre = $nombre;
@@ -163,6 +177,30 @@ class StaffController extends BaseController
 	        $staff->cargo = $request->cargo;
 
 	        if($staff->save()){
+
+                $usuario = User::where('email',$correo)->first();
+
+                if(!$usuario){
+
+                    $usuario = new User;
+
+                    $usuario->academia_id = Auth::user()->academia_id;
+                    $usuario->nombre = $nombre;
+                    $usuario->apellido = $apellido;
+                    $usuario->telefono = $request->telefono;
+                    $usuario->celular = $request->celular;
+                    $usuario->sexo = $request->sexo;
+                    $usuario->email = $correo;
+                    $usuario->como_nos_conociste_id = 1;
+                    $usuario->direccion = $direccion;
+                    $usuario->password = bcrypt(str_random(8));
+                    $usuario->usuario_id = $staff->id;
+                    $usuario->usuario_tipo = 8;
+                    
+                }else{
+                    $usuario->usuario_tipo = $usuario->usuario_tipo.',8';
+                    $usuario->usuario_id = $usuario->usuario_id.','.$staff->id;
+                }
 
                 $horarios = Session::get('horarios_staff');
 
@@ -999,7 +1037,9 @@ class StaffController extends BaseController
                 ->where('boolean_pago', 0)
             ->sum('monto');
 
-            return view('configuracion.staff.pagos')->with(['pagadas'=> $pagadas, 'por_pagar' => $por_pagar, 'total' => $total, 'staff' => $staff, 'id' => $id ]);
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
+
+            return view('configuracion.staff.pagos')->with(['pagadas'=> $pagadas, 'por_pagar' => $por_pagar, 'total' => $total, 'staff' => $staff, 'id' => $id, 'usuario_tipo' => $usuario_tipo]);
         }else{ 
 
             return redirect("configuracion/staff"); 

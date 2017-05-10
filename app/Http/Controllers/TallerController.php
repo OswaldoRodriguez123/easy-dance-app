@@ -40,10 +40,11 @@ class TallerController extends BaseController {
         $array = array();
 
         $academia = Academia::find(Auth::user()->academia_id);
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-        if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+        if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6){
 
-            return view('agendar.taller.principal')->with(['taller' => $talleres, 'academia' => $academia]);
+            return view('agendar.taller.principal')->with(['taller' => $talleres, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo]);
 
         }else{
 
@@ -933,6 +934,8 @@ class TallerController extends BaseController {
 
         if($taller){
 
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
+
             $alumnos_inscritos = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
                 ->select('alumnos.*', 'inscripcion_taller.alumno_id')
                 ->where('inscripcion_taller.taller_id', '=', $id)
@@ -954,7 +957,7 @@ class TallerController extends BaseController {
 
             $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
-            return view('agendar.taller.participantes')->with(['alumnos_inscritos' => $alumnos_inscritos, 'id' => $id, 'taller' => $taller, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres]);
+            return view('agendar.taller.participantes')->with(['alumnos_inscritos' => $alumnos_inscritos, 'id' => $id, 'taller' => $taller, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'usuario_tipo' => $usuario_tipo]);
         }else{
             return redirect("agendar/talleres"); 
         }
@@ -1053,7 +1056,9 @@ class TallerController extends BaseController {
     public function storeInscripcionVistaAlumno(Request $request)
     {
 
-        $alumnostaller = InscripcionTaller::where('alumno_id', Auth::user()->usuario_id)->where('taller_id', $request->taller_id)->first();
+        $usuario_id = Session::get('easydance_usuario_id');
+
+        $alumnostaller = InscripcionTaller::where('alumno_id', $usuario_id)->where('taller_id', $request->taller_id)->first();
 
         if(!$alumnostaller){ 
 
@@ -1062,13 +1067,13 @@ class TallerController extends BaseController {
                 $inscripcion = new InscripcionTaller;
 
                 $inscripcion->taller_id = $request->taller_id;
-                $inscripcion->alumno_id = Auth::user()->usuario_id;
+                $inscripcion->alumno_id = $usuario_id;
 
                 $inscripcion->save();
 
                 $item_factura = new ItemsFacturaProforma;
                     
-                $item_factura->alumno_id = Auth::user()->usuario_id;
+                $item_factura->alumno_id = $usuario_id;
                 $item_factura->academia_id = Auth::user()->academia_id;
                 $item_factura->fecha = Carbon::now()->toDateString();
                 $item_factura->item_id = $request->taller_id;
@@ -1160,7 +1165,7 @@ class TallerController extends BaseController {
 
          if(Auth::check()){
 
-            $usuario_tipo = Auth::user()->usuario_tipo;
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
 
         }else{
             $usuario_tipo = 0;

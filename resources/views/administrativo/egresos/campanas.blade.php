@@ -21,7 +21,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        @if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                        @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
                         <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/administrativo/egresos" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
@@ -184,7 +184,7 @@
 
     function previa(t){
         var row = $(t).closest('tr').attr('id');
-        if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5 || "{{Auth::user()->usuario_tipo}}" == 6)
+        if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6)
         {
             var route =route_detalle+"/"+row;
         }else{

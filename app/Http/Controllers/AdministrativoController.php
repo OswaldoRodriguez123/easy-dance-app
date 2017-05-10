@@ -49,14 +49,17 @@ class AdministrativoController extends BaseController {
     
 	public function index()
 	{
-        if(Auth::user()->usuario_tipo == 2 OR Auth::user()->usuario_tipo == 4)
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+        $usuario_id = Session::get('easydance_usuario_id');
+
+        if($usuario_tipo == 2 OR $usuario_tipo == 4)
         {
 
 
 		  $factura_join = DB::table('facturas')
             ->join('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
             ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
-            ->where('facturas.alumno_id' , '=' , Auth::user()->usuario_id)
+            ->where('facturas.alumno_id' , '=' , $usuario_id)
             ->OrderBy('facturas.created_at')
         ->get();
 
@@ -77,12 +80,12 @@ class AdministrativoController extends BaseController {
             $proforma_join = DB::table('items_factura_proforma')
                 ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
                 ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'items_factura_proforma.fecha_vencimiento as fecha_vencimiento', 'items_factura_proforma.id', 'items_factura_proforma.importe_neto as total', 'items_factura_proforma.nombre as concepto', 'items_factura_proforma.cantidad')
-                ->where('items_factura_proforma.alumno_id' , '=' , Auth::user()->usuario_id)
+                ->where('items_factura_proforma.alumno_id' , '=' , $usuario_id)
             ->get();
 
             $total = DB::table('items_factura_proforma')
             ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
-            ->where('items_factura_proforma.alumno_id', Auth::user()->usuario_id)
+            ->where('items_factura_proforma.alumno_id', $usuario_id)
             ->where('alumnos.deleted_at' , '=' , null)
             ->sum('.items_factura_proforma.importe_neto');
 

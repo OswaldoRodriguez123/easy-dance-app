@@ -15,6 +15,7 @@ use Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Image;
+use Session;
 
 class RegaloController extends BaseController {
 
@@ -28,10 +29,11 @@ class RegaloController extends BaseController {
     {
 
         $academia = Academia::find(Auth::user()->academia_id);
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-        if(Auth::user()->usuario_tipo != 2){
+        if($usuario_tipo != 2){
 
-            return view('especiales.regalo.principal')->with(['regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'academia' => $academia]);
+            return view('especiales.regalo.principal')->with(['regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'academia' => $academia, 'usuario_tipo' => $usuario_tipo]);
 
         }else{
 
@@ -466,6 +468,7 @@ class RegaloController extends BaseController {
     public function CrearRegaloUsuario($id)
     {
         $regalo = Regalo::find($id);
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
 
         if($regalo){
 
@@ -473,7 +476,7 @@ class RegaloController extends BaseController {
             {
 
 
-                if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+                if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
 
                     $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
                     return view('especiales.regalo.vender')->with(['regalo' => $regalo, 'alumnos' => $alumnos]);
@@ -522,7 +525,7 @@ class RegaloController extends BaseController {
         if($request->alumno_id){
             $alumno_id = $request->alumno_id;
         }else{
-            $alumno_id = Auth::user()->usuario_id;
+            $alumno_id = Session::get('easydance_usuario_id');
         }
 
         $regalo = Regalo::find($request->id);
@@ -606,7 +609,9 @@ class RegaloController extends BaseController {
 
         if($academia){
 
-            return view('especiales.regalo.promocionar')->with(['academia' => $academia, 'id' => $id]);
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
+
+            return view('especiales.regalo.promocionar')->with(['academia' => $academia, 'id' => $id, 'usuario_tipo' => $usuario_tipo]);
 
         }else{
             return redirect("especiales/regalos");

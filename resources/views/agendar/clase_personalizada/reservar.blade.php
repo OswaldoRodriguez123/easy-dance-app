@@ -129,7 +129,7 @@
                         <?php $url = "/agendar" ?>
                         <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
 
-                        @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                        @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -158,7 +158,7 @@
                             <hr>
                             <div class="clearfix p-b-15"></div>
 
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             <div class="col-sm-12">
                                  
@@ -226,7 +226,7 @@
                                  
                                     <label for="nombre" id="id-clase_personalizada_id">Nombre</label> <span class="c-morado f-700 f-16">*</span> 
 
-                                    @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                                    @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
 
                                       <i name = "pop-clase" id = "pop-clase" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de la clase a la que deseas asistir, en caso de no haberla asignado o deseas crear un nuevo registro, dirígete a la sección de clase personalizada e ingresa la información en el área de configuración general. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/configuracion/clases-personalizadas' class='redirect pointer'> Llévame <i class='icon_a-clase-personalizada f-22'></i></a>" title="" data-original-title="Ayuda"></i>
@@ -261,7 +261,7 @@
 
                                <div class="clearfix p-b-35"></div>
 
-                              @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                              @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                                <div class="col-sm-12 paquete" style="display:none">
                                  
@@ -342,7 +342,7 @@
                                     <label for="instructor" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> 
 
 
-                                    @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                                    @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
 
                                       <i name = "pop-instructor" id = "pop-instructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de instructores y procede a registrarlo. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/participante/instructor/agregar' class='redirect pointer'> Llévame <i class='icon_a-instructor f-22'></i></a>" title="" data-original-title="Ayuda"></i>
@@ -377,7 +377,7 @@
 
                                <div class="clearfix p-b-35"></div>
 
-                               @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                               @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                                 <div class="col-sm-12">
                                  
                                      <label for="nivel_baile" id="id-estudio_id">Sala / Estudio</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-salon" id = "pop-salon" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la sala o estudio de tu academia, en caso de no haberla asignado o deseas crear un nuevo registro, dirígete a la sección de sala o estudio e ingresa la información en el área de configuración general. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/configuracion/academia' class='redirect pointer'> Llévame <i class='icon_a-estudio-salon f-22'></i></a>" title="" data-original-title="Ayuda"></i>
@@ -677,9 +677,7 @@
 
         $(".reservar").click(function(){
 
-          console.log("{{Auth::user()->usuario_tipo}}");
-
-          if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5 || "{{Auth::user()->usuario_tipo}}" == 6 ){
+          if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6 ){
 
                 $(".guardar").click();
 
@@ -693,7 +691,7 @@
   $("#guardar").click(function(){
 
                 var id = $("#alumno_id").val();
-                if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5 || "{{Auth::user()->usuario_tipo}}" == 6 ){
+                if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6 ){
                   var route = route_inscribir;
                 }else{
                   var route = route_agregar;

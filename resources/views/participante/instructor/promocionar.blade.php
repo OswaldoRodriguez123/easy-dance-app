@@ -118,13 +118,13 @@
 
   <div class="block-header">
 
-    @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+    @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
     
 
       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/instructor" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección instructores</a>
                       
 
-    @elseif(Auth::user()->usuario_tipo == 2 OR Auth::user()->usuario_tipo == 4)
+    @elseif($usuario_tipo == 2 OR $usuario_tipo == 4)
 
       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/instructores" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección instructores</a>
 
@@ -279,7 +279,7 @@
 
                     @if(Auth::check())
 
-                      @if(Auth::user()->usuario_tipo != 3)
+                      @if($usuario_tipo != 3)
 
                         <div class="col-md-12" data-src="/assets/img/ayuda-configuracion.jpg">
                           <ul class="ca-menu pointer">
@@ -513,7 +513,7 @@
 
                         @if(Auth::check())
 
-                          @if(Auth::user()->usuario_tipo != 3)
+                          @if($usuario_tipo != 3)
 
                             <div class="clearfix p-b-20"></div>
                             <div class="clearfix p-b-20"></div>

@@ -525,7 +525,7 @@ $(document).ready(function() {
                           	var nTitle="Ups! ";
                           	var nMensaje=respuesta.mensaje;
                           	
-                          if("{{Auth::user()->usuario_tipo}}" != 3){
+                          if("{{$usuario_tipo}}" != 3){
                           	window.location = route_principal;
                           }else{
                           	window.location = "{{$_SERVER['HTTP_REFERER']}}"

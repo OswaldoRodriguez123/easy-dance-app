@@ -26,7 +26,7 @@ class BlogController extends BaseController {
 	public function index(){
 
 		if(Auth::check()){
-			$usuario_tipo = Auth::user()->usuario_tipo;
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
 			$id = Auth::user()->academia_id;
 		}else{
 			$usuario_tipo = 0;
@@ -172,13 +172,13 @@ class BlogController extends BaseController {
 
 		}
 
-    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array, 'cantidad' => $cantidad_total, 'populares' => $populares, 'recientes' => $recientes]);
+    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array, 'cantidad' => $cantidad_total, 'populares' => $populares, 'recientes' => $recientes, 'usuario_tipo' => $usuario_tipo]);
  	}
 
  	public function categoria($id){
 
 		if(Auth::check()){
-			$usuario_tipo = Auth::user()->usuario_tipo;
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
 			$academia_id = Auth::user()->academia_id;
 		}else{
 			$usuario_tipo = 0;
@@ -326,14 +326,14 @@ class BlogController extends BaseController {
             ->limit(4)
         ->get();
 
-    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array, 'cantidad' => $cantidad_total, 'recientes' => $recientes, 'populares' => $populares]);
+    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array, 'cantidad' => $cantidad_total, 'recientes' => $recientes, 'populares' => $populares, 'usuario_tipo' => $usuario_tipo]);
 	    
  	}
 
  	public function entradas_por_autor($id){
 
 		if(Auth::check()){
-			$usuario_tipo = Auth::user()->usuario_tipo;
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
 			$academia_id = Auth::user()->academia_id;
 		}else{
 			$usuario_tipo = 0;
@@ -479,7 +479,7 @@ class BlogController extends BaseController {
             ->limit(4)
         ->get();
 
-    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array, 'cantidad' => $cantidad_total, 'recientes' => $recientes, 'populares' => $populares]);
+    	return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array, 'cantidad' => $cantidad_total, 'recientes' => $recientes, 'populares' => $populares, 'usuario_tipo' => $usuario_tipo]);
 	    
  	}
 
@@ -487,7 +487,7 @@ class BlogController extends BaseController {
 
 
  		if(Auth::check()){
-			$usuario_tipo = Auth::user()->usuario_tipo;
+			$usuario_tipo = Session::get('easydance_usuario_tipo');
 			$academia_id = Auth::user()->academia_id;
 		}else{
 			$usuario_tipo = 0;
@@ -615,7 +615,7 @@ class BlogController extends BaseController {
                 ->limit(4)
             ->get();
 
-            return view('blog.entrada')->with(['academia' => $academia, 'entrada' => $entrada_array, 'categorias' => $categoria_array, 'entradas' => $entradas, 'cantidad' => $cantidad_total, 'usuario_imagen' => $usuario_imagen, 'blogger' => $usuario, 'recientes' => $recientes, 'populares' => $populares]);
+            return view('blog.entrada')->with(['academia' => $academia, 'entrada' => $entrada_array, 'categorias' => $categoria_array, 'entradas' => $entradas, 'cantidad' => $cantidad_total, 'usuario_imagen' => $usuario_imagen, 'blogger' => $usuario, 'recientes' => $recientes, 'populares' => $populares, 'usuario_tipo' => $usuario_tipo]);
 
 		}else{
 			return redirect("blog"); 
@@ -1099,7 +1099,7 @@ class BlogController extends BaseController {
     {
 
 	    if(Auth::check()){
-			$usuario_tipo = Auth::user()->usuario_tipo;
+			$usuario_tipo = Session::get('easydance_usuario_tipo');
 			$id = Auth::user()->academia_id;
 		}else{
 			$usuario_tipo = 0;

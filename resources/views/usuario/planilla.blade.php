@@ -645,7 +645,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                      @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                      @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
@@ -665,7 +665,7 @@
                     <div class="card">
                       <div class="card-header">
 
-                      @if(Auth::user()->usuario_tipo == 2 OR Auth::user()->usuario_tipo == 4)
+                      @if($usuario_tipo == 2 OR $usuario_tipo == 4)
 
                         <div class="card-header text-center">
 
@@ -1239,9 +1239,9 @@
             },
             error:function (msj, ajaxOptions, thrownError){
               setTimeout(function(){ 
-                if (typeof msj.responseJSON === "undefined") {
-                  window.location = "{{url('/')}}/error";
-                }
+                // if (typeof msj.responseJSON === "undefined") {
+                //   window.location = "{{url('/')}}/error";
+                // }
                 var nType = 'danger';
                 if(msj.responseJSON.status=="ERROR"){
                   console.log(msj.responseJSON.errores);

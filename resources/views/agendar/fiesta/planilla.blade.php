@@ -737,7 +737,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                      @if(Auth::user()->usuario_tipo == 1)
+                      @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/fiestas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Fiestas o Eventos</a>
                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -784,7 +784,7 @@
                                     </li>
                                   </ul>
 
-                                  @if(Auth::user()->usuario_tipo == 1)
+                                  @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                                   <div class="col-sm-12 text-center"> 
 
@@ -827,7 +827,7 @@
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
 
-                           @if(Auth::user()->usuario_tipo == 1)
+                           @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalNombre-Fiesta">
 
                             @else
@@ -842,7 +842,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="fiesta-nombre" class="capitalize">{{$fiesta->nombre}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalDescripcion-Fiesta">
 
                             @else
@@ -857,7 +857,7 @@
                              </td>
                              <td id="fiesta-descripcion" class="f-14 m-l-15 capitalize" data-valor="{{$fiesta->descripcion}}" >{{ str_limit($fiesta->descripcion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalFecha-Fiesta">
 
                             @else
@@ -872,7 +872,7 @@
                              </td>
                              <td class="f-14 m-l-15"><span id="fiesta-fecha_inicio">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$fiesta->fecha_inicio)->format('d/m/Y')}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalHorario-Fiesta">
 
                             @else
@@ -887,7 +887,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="fiesta-hora_inicio">{{$fiesta->hora_inicio}}</span> - <span id="fiesta-hora_final">{{$fiesta->hora_final}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalLugar-Fiesta">
 
                             @else
@@ -910,7 +910,7 @@
                              </td>
                              <td class="f-14 m-l-15" id="fiesta-boletos" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr> -->
-                            @if(Auth::user()->usuario_tipo == 1)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-Fiesta">
 
                             @else
@@ -928,7 +928,7 @@
                                
                                 </td>
                               </tr>
-                            @if(Auth::user()->usuario_tipo == 1)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalImagen-Fiesta">
 
                             @else
@@ -943,7 +943,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="fiesta-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalLink-Fiesta">
 
                             @else
@@ -976,7 +976,7 @@
                              <td class="f-14 m-l-15" ><span id="fiesta-imagen_presentacion"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
 
-                            @if(Auth::user()->usuario_tipo == 1)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalCondiciones-Fiesta">
 
                             @else

@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Session;
 
 
 class BaseController extends Controller {
@@ -25,8 +26,9 @@ class BaseController extends Controller {
     if (Auth::check()) { 
 
         $usuario = User::find(Auth::user()->id);
-
         $academia = Academia::find($usuario->academia_id);
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+        $usuario_id = Session::get('easydance_usuario_id');
 
         if($academia->pais_id == 11){
 
@@ -126,15 +128,14 @@ class BaseController extends Controller {
                     }
 
                 }
-
-           
             
-            $array[$notificacion->id] = $notificacion_imagen_array;
-        }
-            if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+                $array[$notificacion->id] = $notificacion_imagen_array;
+            }
+
+            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
                 $puntos_referidos = 0;
             }else{
-                $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id', Auth::user()->usuario_id)->first();
+                $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id', $usuario_id)->first();
                 if($alumno_remuneracion){
                     $puntos_referidos = $alumno_remuneracion->remuneracion;
                 }else{
@@ -145,6 +146,7 @@ class BaseController extends Controller {
             }
             
             View::share ( 'notificaciones', $array);
+            View::share ( 'usuario_tipo', $usuario_tipo);
             View::share ( 'sin_ver', $numero_de_notificaciones );
    		}
 

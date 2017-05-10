@@ -32,7 +32,7 @@
                         <?php $url = "/agendar/clases-grupales" ?>
                         <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
 
-                        @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                        @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                           <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
@@ -2021,7 +2021,7 @@
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
 
-                          if("{{Auth::user()->usuario_tipo}}" != 3){
+                          if("{{$usuario_tipo}}" != 3){
                           	window.location = route_principal;
                           }else{
                           	window.location = "{{$_SERVER['HTTP_REFERER']}}"

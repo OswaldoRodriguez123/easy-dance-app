@@ -21,8 +21,9 @@ class BloggerController extends BaseController {
 	public function index(){
 
 		$bloggers = Blogger::where('academia_id', Auth::user()->academia_id)->get();
+		$usuario_tipo = Session::get('easydance_usuario_tipo');
 
-		return view('configuracion.blogger.principal')->with(['bloggers' => $bloggers]);
+		return view('configuracion.blogger.principal')->with(['bloggers' => $bloggers, 'usuario_tipo' => $usuario_tipo]);
 
 	}
 

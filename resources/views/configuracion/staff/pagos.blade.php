@@ -49,7 +49,7 @@
                         </div>
 
 
-                        @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                        @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
 	                        <div class="col-md-offset-10">
 	                          <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "pagar" id="pagar" > Pagar <i class="icon_a-pagar"></i></button>
@@ -230,7 +230,7 @@
 
             $('#monto').css('opacity', '1');
 
-            if("{{Auth::user()->usuario_tipo}}" != 3)
+            if("{{$usuario_tipo}}" != 3)
             {
             	$('#select_all').show();
             	checkbox = '<input name="select_check" id="select_check" type="checkbox" />'

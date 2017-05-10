@@ -727,9 +727,10 @@ class FiestaController extends BaseController {
         $fiesta = Fiesta::find($id);
 
         if($fiesta){
-           return view('agendar.fiesta.planilla')->with('fiesta' , $fiesta);
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
+            return view('agendar.fiesta.planilla')->with(['fiesta' => $fiesta, 'usuario_tipo' => $usuario_tipo]);
         }else{
-           return redirect("agendar/fiestas"); 
+            return redirect("agendar/fiestas"); 
         }
     }
 
@@ -815,7 +816,7 @@ class FiestaController extends BaseController {
 
         if(Auth::check()){
 
-            $usuario_tipo = Auth::user()->usuario_tipo;
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
 
         }else{
             $usuario_tipo = 0;

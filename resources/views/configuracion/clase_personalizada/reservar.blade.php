@@ -140,7 +140,7 @@
                             <hr>
                             <div class="clearfix p-b-15"></div>
 
-                            @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
 
                             <div class="col-sm-12">
@@ -505,7 +505,7 @@
 
         $(".reservar").click(function(){
 
-          if("{{Auth::user()->usuario_tipo}}" != 1 || "{{Auth::user()->usuario_tipo}}" != 5 || "{{Auth::user()->usuario_tipo}}" != 6 ){
+          if("{{$usuario_tipo}}" != 1 || "{{$usuario_tipo}}" != 5 || "{{$usuario_tipo}}" != 6 ){
 
                 $('#modalConfiguracion').modal('show');
 

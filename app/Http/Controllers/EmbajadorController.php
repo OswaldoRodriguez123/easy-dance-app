@@ -16,8 +16,9 @@ class EmbajadorController extends BaseController {
     public function index(){
 
         Session::forget('embajador');
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-        if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+        if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
 
             return view('empresa.invitar');
 
@@ -39,7 +40,9 @@ class EmbajadorController extends BaseController {
 
     public function enhorabuena(){
 
-        if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+
+        if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
 
             return view('empresa.enhorabuena');
         }
@@ -106,24 +109,26 @@ class EmbajadorController extends BaseController {
     public function invitar(Request $request){
         
             $embajadores = Session::get('embajador');
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
+            $usuario_id = Session::get('easydance_usuario_id');
 
             if($embajadores)
             {
 
                 $academia = Academia::find(Auth::user()->academia_id);
 
-                if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+                if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
 
                     $subj =  Auth::user()->nombre . " de la academia " . $academia->nombre . " te recomienda usar Easy Dance por 30 días grátis";
                 }else{
                     $subj =  Auth::user()->nombre . " te recomienda bailar en " . $academia->nombre;
-                    $alumno = Alumno::find(Auth::user()->usuario_id);
+                    $alumno = Alumno::find($usuario_id);
                     $codigo = $alumno->codigo_referido;
                 }
 
                 foreach($embajadores as $embajador){
 
-                    if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+                    if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
                     
                         $array = [
                            'correo' => $embajador[0]['email'],

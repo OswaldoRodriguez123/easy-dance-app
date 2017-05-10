@@ -106,9 +106,10 @@ class ExamenController extends BaseController {
         }
 
         $config_examenes = ConfigTipoExamen::all();
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
 
 
-		return view('especiales.examen.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'generos_musicales'=> $generos_musicales, 'clases_grupales' => $array, 'config_examenes' => $config_examenes]);
+		return view('especiales.examen.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'generos_musicales'=> $generos_musicales, 'clases_grupales' => $array, 'config_examenes' => $config_examenes, 'usuario_tipo' => $usuario_tipo]);
 	}
 
     public function createconclasegrupal($id)
@@ -818,8 +819,10 @@ class ExamenController extends BaseController {
 
             $academia = Academia::find(Auth::user()->academia_id);
 
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
+
             return view('especiales.examen.evaluar')
-                   ->with(['alumnos' => $array_alumno, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $examen_join->tipo_de_evaluacion, 'numero_de_items'=>$i, 'alumno_id' => $alumno_id, 'formulas' => $formulas, 'academia' => $academia]);
+                   ->with(['alumnos' => $array_alumno, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $examen_join->tipo_de_evaluacion, 'numero_de_items'=>$i, 'alumno_id' => $alumno_id, 'formulas' => $formulas, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo]);
         }else{
            return redirect("especiales/examenes"); 
         }

@@ -155,7 +155,7 @@
 
     function previa(t){
         var row = $(t).closest('tr').attr('id');
-        if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5 || "{{Auth::user()->usuario_tipo}}" == 6)
+        if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6)
         {
             var route =route_detalle+"/"+row;
         }else{

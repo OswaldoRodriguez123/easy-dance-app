@@ -31,7 +31,7 @@
                     </div>  -->
 
 
-                    @if(Auth::user()->usuario_tipo != 2 AND Auth::user()->usuario_tipo != 4)
+                    @if($usuario_tipo != 2 AND $usuario_tipo != 4)
 
                       <div class="block-header">
                         <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/alumno/detalle/{{$perfil->alumno_id}}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
@@ -42,7 +42,7 @@
                     <div class="card">
                         <div class="card-header text-center">
 
-                        @if(Auth::user()->usuario_tipo == 2 OR Auth::user()->usuario_tipo == 4)
+                        @if($usuario_tipo == 2 OR $usuario_tipo == 4)
 
                         <div class="col-xs-12 text-left">
                           <ul class="tab-nav tn-justified" role="tablist">

@@ -106,8 +106,8 @@ class AdministradorController extends BaseController
             if($request->usuario_tipo == 5)
             {
                 $sucursal = Academia::select('academias.sucursal_id')
-                            ->where('academias.id','=',Auth::user()->academia_id)
-                            ->first();
+                    ->where('academias.id','=',Auth::user()->academia_id)
+                ->first();
 
                 $academia = new Academia;
                 $academia->sucursal_id = $sucursal->sucursal_id;
@@ -120,7 +120,6 @@ class AdministradorController extends BaseController
             }
 
             $correo = strtolower($request->email);
-
             $nombre = title_case($request->responsable);
 
             $usuario = new User;
@@ -136,7 +135,7 @@ class AdministradorController extends BaseController
             if($usuario->save())
             {
 
-                $link = route('confirmacion', ['token' => $usuario->confirmation_token]);
+                $link = "confirmacion/?token=".$usuario->confirmation_token;
 
                 $array = [
                    'nombre' => $usuario->nombre,
@@ -146,9 +145,9 @@ class AdministradorController extends BaseController
                 ];
 
                 Mail::send('correo.sucursal', $array, function($msj) use ($array){
-                        $msj->subject('ESTAMOS MUY FELICES DE TENERTE A BORDO');
-                        $msj->to($array['email']);
-                    });
+                    $msj->subject('ESTAMOS MUY FELICES DE TENERTE A BORDO');
+                    $msj->to($array['email']);
+                });
 
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);   
             }else{

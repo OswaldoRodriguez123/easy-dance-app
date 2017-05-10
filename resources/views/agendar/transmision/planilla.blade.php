@@ -414,7 +414,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                      @if(Auth::user()->usuario_tipo == 1)
+                      @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                        <!-- <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/transmisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Transmisión</a> -->
                         <?php $url = "/agendar/transmisiones" ?>
                         <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
@@ -464,7 +464,7 @@
                                     </li>
                                   </ul>
 
-                                  @if(Auth::user()->usuario_tipo == 1)
+                                  @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                                   <div class="col-sm-12 text-center"> 
 
@@ -502,7 +502,7 @@
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
 
-                           @if(Auth::user()->usuario_tipo == 1)
+                           @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalTema-Transmision">
 
                             @else
@@ -517,7 +517,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="transmision-tema" class="capitalize" data-valor="{{$transmision->tema}}" >{{ str_limit($transmision->tema, $limit = 30, $end = '...') }}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalDesarrollo-Transmision">
 
                             @else
@@ -532,7 +532,7 @@
                              </td>
                              <td id="transmision-desarrollo" class="f-14 m-l-15 capitalize" data-valor="{{$transmision->desarrollo}}" >{{ str_limit($transmision->desarrollo, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalFecha-Transmision">
 
                             @else
@@ -547,7 +547,7 @@
                              </td>
                              <td class="f-14 m-l-15"><span id="transmision-fecha">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$transmision->fecha)->format('d/m/Y')}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalHora-Transmision">
 
                             @else
@@ -562,7 +562,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="transmision-hora">{{$transmision->hora}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalPresentador-Transmision">
 
                             @else
@@ -577,7 +577,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="transmision-presentador" data-valor="{{$transmision->presentador}}" >{{ str_limit($transmision->presentador, $limit = 30, $end = '...') }}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalInvitado-Transmision">
 
                             @else
@@ -592,7 +592,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="transmision-invitado" data-valor="{{$transmision->invitado}}" >{{ str_limit($transmision->invitado, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if(Auth::user()->usuario_tipo == 1)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-Transmision">
 
                             @else

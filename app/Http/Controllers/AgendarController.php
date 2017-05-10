@@ -94,7 +94,10 @@ class AgendarController extends BaseController
                 ->where('clases_grupales.deleted_at', '=', null)
         ->get();
 
-    	foreach ($clasegrupal as $clase) {
+    	$usuario_tipo = Session::get('easydance_usuario_tipo');
+        $usuario_id = Session::get('easydance_usuario_id');
+
+        foreach ($clasegrupal as $clase) {
 
     		$fecha_start=explode('-',$clase->fecha_inicio);
     		$fecha_end=explode('-',$clase->fecha_final);
@@ -133,8 +136,9 @@ class AgendarController extends BaseController
             }else{
                 $etiqueta=$clase->clase_etiqueta;
             }
+ 
 
-            if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
                 $url = "/agendar/clases-grupales/operaciones/".$clase->id;
             }else{
                 $url = "/agendar/clases-grupales/progreso/".$clase->id;
@@ -203,7 +207,7 @@ class AgendarController extends BaseController
             $fecha_inicio = $dt->toDateString();
             $fecha_final = $df->toDateString();
 
-            if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
                 $url = "/agendar/clases-grupales/operaciones/".$clase->id;
             }else{
                 $url = "/agendar/clases-grupales/progreso/".$clase->id;
@@ -248,8 +252,8 @@ class AgendarController extends BaseController
                 ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
                 ->where('inscripcion_clase_personalizada.fecha_inicio', '>=', Carbon::now()->toDateString());
 
-        if(Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4){
-            $query->where('inscripcion_clase_personalizada.alumno_id', '=', Auth::user()->usuario_id);
+        if($usuario_tipo == 2 || $usuario_tipo == 4){
+            $query->where('inscripcion_clase_personalizada.alumno_id', '=', $usuario_id);
         }
 
         $clasespersonalizadas = $query->get();
@@ -263,8 +267,8 @@ class AgendarController extends BaseController
                 ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
                 ->where('horarios_clases_personalizadas.fecha', '>=', Carbon::now()->toDateString());
 
-        if(Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4){
-            $query->where('inscripcion_clase_personalizada.alumno_id', '=', Auth::user()->usuario_id);
+        if($usuario_tipo == 2 || $usuario_tipo == 4){
+            $query->where('inscripcion_clase_personalizada.alumno_id', '=', $usuario_id);
         }
 
         $horarios_clasespersonalizadas = $query->get();
@@ -296,7 +300,7 @@ class AgendarController extends BaseController
                 $imagen = '';
             }
 
-            if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
                 $url = "/agendar/clases-personalizadas/operaciones/".$clasepersonalizada->id;
             }else{
                 $url  = "/agendar/clases-personalizadas/progreso/".Auth::user()->academia_id;
@@ -347,7 +351,7 @@ class AgendarController extends BaseController
 
             $id=$instructor."!".$especialidad."!".$clase_personalizada_nombre."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
 
-            if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
                 $url = "/agendar/clases-personalizadas/operaciones/".$clasepersonalizada->id;
             }else{
                 $url  = "/agendar/clases-personalizadas/progreso/".Auth::user()->academia_id;
@@ -384,7 +388,7 @@ class AgendarController extends BaseController
     		$hora_final=$fiesta->hora_final;
     		$etiqueta=$fiesta->color_etiqueta;
 
-            if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
                 $url = "/agendar/fiestas/operaciones/".$fiesta->id;
             }else{
                 $url = "/agendar/fiestas/progreso/".$fiesta->id;
@@ -412,8 +416,8 @@ class AgendarController extends BaseController
             
             ->where('citas.fecha', '>=', Carbon::now()->format('Y-m-d'));
 
-        if(Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4){
-            $query->where('citas.alumno_id', '=', Auth::user()->usuario_id);
+        if($usuario_tipo == 2 || $usuario_tipo == 4){
+            $query->where('citas.alumno_id', '=', $usuario_id);
         }else{
             $query->where('citas.boolean_mostrar','=','2');
         }
@@ -446,7 +450,7 @@ class AgendarController extends BaseController
 
             $id=$instructor."!".$descripcion."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
 
-            if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
                 $url = "/agendar/citas/operaciones/".$cita->id;
             }else{
                 $url = "";
@@ -469,7 +473,7 @@ class AgendarController extends BaseController
 
             $id=$tema."!".$fecha."!".$hora."!".$presentador;
 
-            if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
                 $url = "/agendar/transmisiones/detalle/".$transmision->id;
             }else{
                 $url = "";
@@ -478,8 +482,6 @@ class AgendarController extends BaseController
             $arrayTransmisiones[]=array("id"=>$id,"nombre"=>'Transmisión', "fecha"=> $fecha, "hora"=>$hora, "etiqueta"=>$etiqueta,"url"=>$url);
 
         }
-
-        $usuario_tipo = Auth::user()->usuario_tipo;
 
         return view('agendar.index')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas, 'transmisiones' => $arrayTransmisiones, 'usuario_tipo' => $usuario_tipo]);
 

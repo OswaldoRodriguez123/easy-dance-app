@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Academia;
 use App\InscripcionClaseGrupal;
+use App\ClaseGrupal;
 use App\Progreso;
 use App\Examen;
 use App\Instructor;
@@ -29,10 +30,12 @@ class ProgresoController extends BaseController {
     public function index()
     {
 
+        $usuario_id = Session::get('easydance_usuario_id');
+
         $clase_grupal_join = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
-            ->where('inscripcion_clase_grupal.alumno_id','=', Auth::user()->usuario_id)
+            ->where('inscripcion_clase_grupal.alumno_id','=', $usuario_id)
             ->where('clases_grupales.deleted_at', '=', null)
             ->OrderBy('clases_grupales.hora_inicio')
         ->get();
@@ -45,37 +48,33 @@ class ProgresoController extends BaseController {
 
     public function principalprogramacion()
     {
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+        $usuario_id = Session::get('easydance_usuario_id');
 
-        if(Auth::user()->usuario_tipo == 2 OR Auth::user()->usuario_tipo == 4)
+        if($usuario_tipo == 2 OR $usuario_tipo == 4)
         {
-            $clase_grupal_join = DB::table('clases_grupales')
-                ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+            $clase_grupal_join = ClaseGrupal::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
-                ->where('inscripcion_clase_grupal.alumno_id','=', Auth::user()->usuario_id)
-                ->where('clases_grupales.deleted_at', '=', null)
+                ->where('inscripcion_clase_grupal.alumno_id','=', $usuario_id)
                 ->OrderBy('clases_grupales.hora_inicio')
             ->get();
 
         }else{
 
-            $instructor = Instructor::find(Auth::user()->usuario_id);
+            $instructor = Instructor::find($usuario_id);
 
             if(!$instructor->boolean_administrador){
-                $clase_grupal_join = DB::table('clases_grupales')
-                    ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                     ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
-                    ->where('clases_grupales.instructor_id','=', Auth::user()->usuario_id)
-                    ->where('clases_grupales.deleted_at', '=', null)
+                    ->where('clases_grupales.instructor_id','=', $usuario_id)
                     ->OrderBy('clases_grupales.hora_inicio')
                 ->get();
             }else{
 
-                $clase_grupal_join = DB::table('clases_grupales')
-                    ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                     ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
                     ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
-                    ->where('clases_grupales.deleted_at', '=', null)
                     ->OrderBy('clases_grupales.hora_inicio')
                 ->get();
             }
@@ -88,7 +87,8 @@ class ProgresoController extends BaseController {
 
     public function progreso($id)
     {
-    	$find = InscripcionClaseGrupal::where('clase_grupal_id', $id)->where('alumno_id',Auth::user()->usuario_id)->first();
+        $usuario_id = Session::get('easydance_usuario_id');
+    	$find = InscripcionClaseGrupal::where('clase_grupal_id', $id)->where('alumno_id',$usuario_id)->first();
 
     	if($find){
 
@@ -199,17 +199,19 @@ class ProgresoController extends BaseController {
     		}
 
             $examen = Examen::where('clase_grupal_id',$id)->first();
-            $evaluaciones = Evaluacion::where('alumno_id',Auth::user()->usuario_id)->where('examen_id',$examen->id)->get();
-            $i = 1;
-
             $evaluacion_array = array();
 
-            foreach($evaluaciones as $evaluacion){
+            if($examen){
 
-                
-                $evaluacion_array[$i] = intval($evaluacion->porcentaje);
-                $i++;
-                
+                $evaluaciones = Evaluacion::where('alumno_id',$usuario_id)->where('examen_id',$examen->id)->get();
+                $i = 1;
+
+                foreach($evaluaciones as $evaluacion){
+
+                    $evaluacion_array[$i] = intval($evaluacion->porcentaje);
+                    $i++;
+                    
+                }
             }
 
 	        return view('progreso.progreso')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'id' => $id, 'academia' => $academia, 'evaluaciones' => $evaluacion_array]);
@@ -224,6 +226,8 @@ class ProgresoController extends BaseController {
     public function programacion($id)
     {
         $progreso = Progreso::where('clase_grupal_id',$id)->first();
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+        $usuario_id = Session::get('easydance_usuario_id');
 
         if($progreso){
             $clase_1 = Progreso::where('clase_grupal_id',$id)->where('tipo',1)->first();
@@ -308,16 +312,16 @@ class ProgresoController extends BaseController {
 
         }
 
-        if(Auth::user()->usuario_tipo == 2 OR Auth::user()->usuario_tipo == 4)
+        if($usuario_tipo == 2 OR $usuario_tipo == 4)
         {
 
-            $find = InscripcionClaseGrupal::where('clase_grupal_id', $id)->where('alumno_id',Auth::user()->usuario_id)->first();
+            $find = InscripcionClaseGrupal::where('clase_grupal_id', $id)->where('alumno_id',$usuario_id)->first();
 
             $examen = Examen::where('boolean_grupal',1)->where('clase_grupal_id', $id)->first();
 
             if($examen){
 
-                $evaluacion = Evaluacion::where('examen_id',$examen->id)->where('alumno_id', Auth::user()->usuario_id)->first();
+                $evaluacion = Evaluacion::where('examen_id',$examen->id)->where('alumno_id', $usuario_id)->first();
 
                 if($evaluacion){
                     $detalles_notas = DetalleEvaluacion::select('nombre', 'nota')
@@ -346,11 +350,12 @@ class ProgresoController extends BaseController {
     {
 
         $academia = Academia::find(Auth::user()->academia_id);
+        $usuario_id = Session::get('easydance_usuario_id');
 
         $id = $_GET['id'];
         $tipo = $_GET['tipo'];
 
-        $find = InscripcionClaseGrupal::where('clase_grupal_id', $id)->where('alumno_id',Auth::user()->usuario_id)->first();
+        $find = InscripcionClaseGrupal::where('clase_grupal_id', $id)->where('alumno_id',$usuario_id)->first();
 
         if($find){
 

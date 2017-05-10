@@ -1,6 +1,6 @@
 <header id="header" class="clearfix" data-current-skin="purple">
         <ul class="header-inner">
-            @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6))
+            @if(Auth::check() && $usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6))
                 <li id="menu-trigger" data-trigger="#sidebar">
                     <div class="line-wrap" data-original-title="" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-content="Menú">
                         <div class="line top"></div>
@@ -27,7 +27,7 @@
 
                         @if(Auth::check())
 
-                            @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6))
+                            @if(Auth::check() && ($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6))
 
                                 <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 26px; right: 60%">
                                     <a href="{{ empty(Auth::check()) ? 'http://easydancelatino.com/' : '/inicio'}}">
@@ -92,7 +92,7 @@
 
                             @endif
 
-                            @if(Auth::check() && (Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4))
+                            @if(Auth::check() && ($usuario_tipo == 2 || $usuario_tipo == 4))
 
                                 <li class="dropdown" type="button" data-trigger="hover" data-animation="fadeInLeft,fadeOutLeft,600" style="margin-top: 26px; right: 60%">
                                     <a href="{{ empty(Auth::check()) ? 'http://easydancelatino.com/' : '/inicio'}}">
@@ -210,7 +210,7 @@
                                     <a href="{{url('/')}}/perfil"><i class="zmdi zmdi-account"></i> Mi Perfil</a>
                                 </li>
 
-                                @if(Auth::check() && (Auth::user()->usuario_tipo == 3))
+                                @if(Auth::check() && ($usuario_tipo == 3))
 
 
                                     <li class="hidden-xs">
@@ -219,7 +219,7 @@
 
                                 @endif
 
-                                @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6))
+                                @if(Auth::check() && ($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6))
 
                                     <!-- <li class="hidden-xs">
                                         <a href="{{url('/')}}/invitar"><i class="zmdi icon_d-invitar"></i> Invitar</a>
@@ -261,7 +261,7 @@
                                     </li> -->
                                 @endif 
 
-                                @if(Auth::check() && (Auth::user()->usuario_tipo == 2 || Auth::user()->usuario_tipo == 4))
+                                @if(Auth::check() && ($usuario_tipo == 2 || $usuario_tipo == 4))
 
                                     <!-- <li class="hidden-xs">
                                         <a href="{{url('/')}}/progreso"><i class="zmdi zmdi-account"></i> Mi progreso</a>
@@ -291,7 +291,7 @@
 
                         @endif
 
-                        @if(Auth::check() && (Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6))
+                        @if(Auth::check() && ($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6))
 
                             <li data-content="Asistencia" data-toggle="popover" data-trigger="hover" type="button" data-toggle="tooltip" data-placement="bottom" title="" class="pointer" >
                                     <a class="tm-config" href="{{url('/')}}/asistencia/generar" target="_blank"><i class="tm-icon zmdi zmdi-shield-check f-18 f-18"></i></a>

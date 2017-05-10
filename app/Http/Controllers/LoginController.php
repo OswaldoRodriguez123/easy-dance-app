@@ -4,7 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
-use App\Usuario;
+use App\User;
 use App\Alumno;
 use Validator;
 use Carbon\Carbon;
@@ -12,6 +12,7 @@ use Storage;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
+use Session;
 
 class LoginController extends Controller {
 
@@ -216,6 +217,7 @@ class LoginController extends Controller {
     public function logout()
     {
         Auth::guard($this->getGuard())->logout();
+        Session::forget('easydance_usuario_tipo');
 
         return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/login');
     }

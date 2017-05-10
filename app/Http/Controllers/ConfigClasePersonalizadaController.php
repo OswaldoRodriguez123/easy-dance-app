@@ -142,8 +142,9 @@ class ConfigClasePersonalizadaController extends BaseController {
         $instructor_id = Session::get('instructor_id');
 
         $academia_id = Auth::user()->academia_id;
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-        return view('agendar.clase_personalizada.reservar')->with(['especialidad' => ConfigEspecialidades::all(), 'instructor' => Instructor::where('academia_id', '=' ,  $academia_id)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  $academia_id)->get(), 'id' => $academia_id, 'clase_personalizada_id' => $id, 'instructor_id' => $instructor_id]);
+        return view('agendar.clase_personalizada.reservar')->with(['especialidad' => ConfigEspecialidades::all(), 'instructor' => Instructor::where('academia_id', '=' ,  $academia_id)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  $academia_id)->get(), 'id' => $academia_id, 'clase_personalizada_id' => $id, 'instructor_id' => $instructor_id, 'usuario_tipo' => $usuario_tipo]);
         
     }
 
@@ -287,169 +288,6 @@ class ConfigClasePersonalizadaController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
-    }
-
-    public function reservar(Request $request)
-    {
-
-    if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
-
-    {
-
-        $rules = [
-
-            'alumno_id' => 'required',
-
-        ];
-
-        $messages = [
-
-            'alumno_id.required' => 'Ups! El Alumno es requerido',
-
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()){
-
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        }
-
-        $usuario_id = $request->alumno_id;
-
-    }else{
-        $usuario_id = Auth::user()->usuario_id;
-    }
-
-    
-
-    $rules = [
-
-        'clase_personalizada_id' => 'required',
-        'fecha_inicio' => 'required',
-        'especialidad_id' => 'required',
-        'instructor_id' => 'required',
-        'hora_inicio' => 'required',
-        'hora_final' => 'required',
-    ];
-
-    $messages = [
-
-        'clase_personalizada_id.required' => 'Ups! El nombre es requerido',
-        'fecha_inicio.required' => 'Ups! La fecha es requerida',
-        'instructor_id.required' => 'Ups! El instructor es requerido',
-        'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
-        'hora_final.required' => 'Ups! La hora final es requerida',
-        'especialidad_id.required' => 'Ups! La especialidad es requerida ',
-    ];
-
-    $validator = Validator::make($request->all(), $rules, $messages);
-
-    if ($validator->fails()){
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-    }
-
-    else{
-
-        $hora_inicio = strtotime($request->hora_inicio);
-        $hora_final = strtotime($request->hora_final);
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio)->toDateString();
-
-        if($hora_inicio > $hora_final)
-        {
-
-            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
-        }
-
-        if($fecha_inicio < Carbon::now()){
-
-            return response()->json(['errores' => ['fecha_inicio' => [0, 'Ups! ha ocurrido un error. La fecha de la clase no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
-        }
-
-        $clasepersonalizada = new CitaClasePersonalizada;
-        
-
-        
-        $clasepersonalizada->academia_id = Auth::user()->academia_id;
-        $clasepersonalizada->usuario_id = $usuario_id;
-        $clasepersonalizada->clase_personalizada_id = $request->clase_personalizada_id;
-        $clasepersonalizada->fecha_inicio = $fecha_inicio;
-        $clasepersonalizada->instructor_id = $request->instructor_id;
-        $clasepersonalizada->hora_inicio = $request->hora_inicio;
-        $clasepersonalizada->hora_final = $request->hora_final;
-        $clasepersonalizada->especialidad_id = $request->especialidad_id;
-
-        // return redirect("/home");
-        if($clasepersonalizada->save()){
-
-            $academia = Academia::find(Auth::user()->academia_id);
-            $alumno = Alumno::find($usuario_id);
-            $instructor = Instructor::find($request->instructor_id);
-
-            $subj = 'Han reservado una Clase Personalizada';
-
-            $array = [
-               'nombre_instructor' => $instructor->nombre,
-               'apellido_instructor' => $instructor->apellido,
-               'correo' => $academia->correo,
-               'academia' => $academia->nombre,
-               'nombre_alumno' => $alumno->nombre,
-               'apellido_alumno' => $alumno->apellido,
-               'cedula' => $alumno->identificacion,
-               'hora_inicio' => $request->hora_inicio,
-               'hora_final' => $request->hora_final,
-               'fecha' => $fecha_inicio,
-               'subj' => $subj
-            ];
-
-            Mail::send('correo.cita_clase_personalizada_academia', $array, function($msj) use ($array){
-                    $msj->subject($array['subj']);
-                    $msj->to($array['correo']);
-            });
-
-            $subj2 = 'Has reservado una Clase Personalizada';
-
-
-            $array2 = [
-               'nombre_instructor' => $instructor->nombre,
-               'apellido_instructor' => $instructor->apellido,
-               'correo' => $alumno->correo,
-               'academia' => $academia->nombre,
-               'nombre_alumno' => $alumno->nombre,
-               'hora_inicio' => $request->hora_inicio,
-               'hora_final' => $request->hora_final,
-               'fecha' => $fecha_inicio,
-               'subj' => $subj2
-            ];
-
-            Mail::send('correo.cita_clase_personalizada_alumno', $array2, function($msj) use ($array2){
-                    $msj->subject($array2['subj']);
-                    $msj->to($array2['correo']);
-            });
-
-            Session::forget('instructor_id');
-
-            if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
-
-            {
-
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $usuario_id, 200]);
-            }else{
-
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-            }
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-    }
-    }
-
-    public function completado()
-    {
-        return view('agendar.clase_personalizada.reservar_completado');
     }
 
      public function updateNombre(Request $request){
@@ -1147,7 +985,7 @@ class ConfigClasePersonalizadaController extends BaseController {
     {
 
         $academia = Academia::find($id);
-        // $instructores = Instructor::where('academia_id', $id)->where('boolean_promocionar', 1)->get();
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
 
         $instructores = DB::table('instructores')
             ->Leftjoin('perfil_instructor', 'perfil_instructor.instructor_id', '=', 'instructores.id')
@@ -1184,12 +1022,11 @@ class ConfigClasePersonalizadaController extends BaseController {
             $partes = explode( '=', $parts['query'] );
             $link_video = $partes[1];
 
-            }
-            else{
-                $link_video = '';
-            }
+        }else{
+            $link_video = '';
+        }
 
-        return view('configuracion.clase_personalizada.promocionar')->with(['link_video' => $link_video, 'academia' => $academia, 'instructores_academia' => $instructores, 'id' => $id, 'config_clase_personalizada' => $config_clase_personalizada]);
+        return view('configuracion.clase_personalizada.promocionar')->with(['link_video' => $link_video, 'academia' => $academia, 'instructores_academia' => $instructores, 'id' => $id, 'config_clase_personalizada' => $config_clase_personalizada, 'usuario_tipo' => $usuario_tipo]);
     }
 
     public function destroy($id)

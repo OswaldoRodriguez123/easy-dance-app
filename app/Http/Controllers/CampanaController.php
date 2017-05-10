@@ -42,8 +42,9 @@ class CampanaController extends BaseController {
         $total = 0;
 
         $academia = Academia::find(Auth::user()->academia_id);
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-        if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
+        if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6){
 
             foreach($campanas as $campana){
 
@@ -87,7 +88,7 @@ class CampanaController extends BaseController {
         
             }
 
-            return view('especiales.campana.principal')->with(['campanas' => $array, 'academia' => $academia]);
+            return view('especiales.campana.principal')->with(['campanas' => $array, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo]);
 
         }else{
 
@@ -1586,7 +1587,7 @@ class CampanaController extends BaseController {
     public function contribuirCampana($id)
     {   
         if(Auth::check()){
-            $usuario_tipo = Auth::user()->usuario_tipo;
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
             $usuario_id = Auth::user()->id;
             $usuario_nombre = Auth::user()->nombre . ' ' . Auth::user()->apellido;
         }else{
@@ -1606,7 +1607,7 @@ class CampanaController extends BaseController {
     {   
 
         if(Auth::check()){
-            $usuario_tipo = Auth::user()->usuario_tipo;
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
             $user_id = Auth::user()->id;
             $usuario_nombre = Auth::user()->nombre . ' ' . Auth::user()->apellido;
             $usuario_id = Auth::user()->usuario_id;

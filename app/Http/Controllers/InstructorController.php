@@ -32,8 +32,9 @@ class InstructorController extends BaseController {
     
     public function index()
     {
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-        if(Auth::user()->usuario_tipo != 2 AND Auth::user()->usuario_tipo != 4){
+        if($usuario_tipo != 2 AND $usuario_tipo != 4){
 
             $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
@@ -106,7 +107,7 @@ class InstructorController extends BaseController {
         'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento' => 'required',
         'sexo' => 'required',
-        'correo' => 'required|email|max:255|unique:users,email, '.$request->id.'',
+        'correo' => 'required|email|max:255',
     ];
 
     $messages = [
@@ -129,7 +130,7 @@ class InstructorController extends BaseController {
         'correo.required' => 'Ups! El correo es requerido',
         'correo.email' => 'Ups! El correo tiene una dirección inválida',
         'correo.max' => 'El máximo de caracteres permitidos son 255',
-        'correo.unique' => 'Ups! Ya este correo ha sido registrado',
+        // 'correo.unique' => 'Ups! Ya este correo ha sido registrado',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -195,8 +196,20 @@ class InstructorController extends BaseController {
         $nombre = title_case($request->nombre);
         $apellido = title_case($request->apellido);
         $direccion = $request->direccion;
-
         $correo = strtolower($request->correo);
+
+        $usuario = User::where('email',$correo)->first();
+
+        if($usuario){
+            $tipos_usuario = explode(',',$usuario->usuario_tipo);
+            foreach($tipos_usuario as $tipo){
+
+                if($tipo == 3){
+
+                    return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
+                }
+            }
+        }
 
         $instructor = new Instructor;
 
@@ -284,21 +297,30 @@ class InstructorController extends BaseController {
 
             }
 
-            $usuario = new User;
+            $usuario = User::where('email',$correo)->first();
 
-            $usuario->academia_id = Auth::user()->academia_id;
-            $usuario->nombre = $nombre;
-            $usuario->apellido = $apellido;
-            $usuario->telefono = $request->telefono;
-            $usuario->celular = $request->celular;
-            $usuario->sexo = $request->sexo;
-            $usuario->email = $correo;
-            $usuario->como_nos_conociste_id = 1;
-            $usuario->direccion = $direccion;
-            // $usuario->confirmation_token = str_random(40);
-            $usuario->password = bcrypt(str_random(8));
-            $usuario->usuario_id = $instructor->id;
-            $usuario->usuario_tipo = 3;
+            if(!$usuario){
+
+                $usuario = new User;
+
+                $usuario->academia_id = Auth::user()->academia_id;
+                $usuario->nombre = $nombre;
+                $usuario->apellido = $apellido;
+                $usuario->telefono = $request->telefono;
+                $usuario->celular = $request->celular;
+                $usuario->sexo = $request->sexo;
+                $usuario->email = $correo;
+                $usuario->como_nos_conociste_id = 1;
+                $usuario->direccion = $direccion;
+                // $usuario->confirmation_token = str_random(40);
+                $usuario->password = bcrypt(str_random(8));
+                $usuario->usuario_id = $instructor->id;
+                $usuario->usuario_tipo = 3;
+                
+            }else{
+                $usuario->usuario_tipo = $usuario->usuario_tipo.',3';
+                $usuario->usuario_id = $usuario->usuario_id.','.$instructor->id;
+            }
 
             if($usuario->save()){
 
@@ -412,7 +434,23 @@ class InstructorController extends BaseController {
         $instructor->apellido = $apellido;
 
         if($instructor->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+            $usuario = User::where('usuario_id', $request->id)->where('usuario_tipo',3)->first();
+     
+            if($usuario){
+
+                $usuario->nombre = $nombre;
+                $usuario->apellido = $apellido;
+
+                if($usuario->save()){
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+             
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -438,7 +476,22 @@ class InstructorController extends BaseController {
         $instructor->sexo = $request->sexo;
 
         if($instructor->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+            $usuario = User::where('usuario_id', $request->id)->where('usuario_tipo',3)->first();
+     
+            if($usuario){
+
+                $usuario->sexo = $request->sexo;
+
+                if($usuario->save()){
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+             
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -446,36 +499,51 @@ class InstructorController extends BaseController {
 
     public function updateCorreo(Request $request){
 
-    $rules = [
-        'correo' => 'email|max:255|unique:instructores,correo, '.$request->id.'',
-    ];
+        $rules = [
+            'correo' => 'email|max:255|unique:instructores,correo, '.$request->id.'',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'correo.email' => 'Ups! El correo tiene una dirección inválida',
-        'correo.max' => 'El máximo de caracteres permitidos son 255',
-        'correo.unique' => 'Ups! Ya este correo ha sido registrado',
-    ];
+            'correo.email' => 'Ups! El correo tiene una dirección inválida',
+            'correo.max' => 'El máximo de caracteres permitidos son 255',
+            'correo.unique' => 'Ups! Ya este correo ha sido registrado',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
-
-    else{
-        $instructor = Instructor::find($request->id);
-        $correo = strtolower($request->correo);
-        $instructor->correo = $correo;
-
-        if($instructor->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-    }
+
+        else{
+
+            $instructor = Instructor::find($request->id);
+            $correo = strtolower($request->correo);
+            $instructor->correo = $correo;
+
+            if($instructor->save()){
+                $usuario = User::where('usuario_id', $request->id)->where('usuario_tipo',3)->first();
+         
+                if($usuario){
+
+                    $instructor->correo = $correo;
+
+                    if($usuario->save()){
+                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+                 
+                }else{
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
     }
 
     public function updateTelefono(Request $request){
@@ -486,7 +554,24 @@ class InstructorController extends BaseController {
         $instructor->celular = $request->celular;
 
         if($instructor->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+            $usuario = User::where('usuario_id', $request->id)->where('usuario_tipo',3)->first();
+         
+            if($usuario){
+
+                $usuario->telefono = $request->telefono;
+                $usuario->celular = $request->celular;
+
+                if($usuario->save()){
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+             
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }
+ 
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -494,13 +579,26 @@ class InstructorController extends BaseController {
 
 
     public function updateDireccion(Request $request){
+
         $instructor = Instructor::find($request->id);
-
-        $direccion = $request->direccion;
-
-        $instructor->direccion = $direccion;
+        $instructor->direccion = $request->direccion;
 
         if($instructor->save()){
+            $usuario = User::where('usuario_id', $request->id)->where('usuario_tipo',3)->first();
+         
+            if($usuario){
+
+                $usuario->direccion = $request->direccion;
+
+                if($usuario->save()){
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+             
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -719,18 +817,7 @@ class InstructorController extends BaseController {
     {   
         $instructor = Instructor::find($id);
         if($instructor){
-            // $config['center'] = '10.6913156,-71.6800493';
-            // $config['zoom'] = 14;
-            // \Gmaps::initialize($config);
 
-            // $marker = array();
-            // $marker['position'] = '10.6913156,-71.6800493';
-            // $marker['draggable'] = true;
-            // $marker['ondragend'] = 'addFieldText(event.latLng.lat(), event.latLng.lng());';
-            // \Gmaps::add_marker($marker);
-
-            // $map = \Gmaps::create_map();
-            // 
             $credencial = CredencialInstructor::where('instructor_id',$id)->first();
 
             if(!$credencial){
@@ -848,16 +935,18 @@ class InstructorController extends BaseController {
     public function perfil_instructor()
     {
 
+        $usuario_id = Session::get('easydance_usuario_id');
+
         $instructores = DB::table('instructores')
             ->Leftjoin('perfil_instructor', 'perfil_instructor.instructor_id', '=', 'instructores.id')
             ->select('instructores.*' , 'perfil_instructor.*', 'instructores.id as id')
-            ->where('instructores.id', Auth::user()->usuario_id)
+            ->where('instructores.id', $usuario_id)
         ->first();
 
         $academia = Academia::find($instructores->academia_id);
 
   
-        return view('participante.instructor.promocionar')->with(['academia' => $academia, 'instructores_academia' => $instructores, 'id' => Auth::user()->usuario_id]);
+        return view('participante.instructor.promocionar')->with(['academia' => $academia, 'instructores_academia' => $instructores, 'id' => $usuario_id]);
     }
 
     public function storeExperiencia(Request $request)
@@ -996,7 +1085,8 @@ class InstructorController extends BaseController {
     public function pagos_vista_instructor()
     {
 
-        $instructor = Instructor::find(Auth::user()->usuario_id);
+        $usuario_id = Session::get('easydance_usuario_id');
+        $instructor = Instructor::find($usuario_id);
 
         if($instructor)
         {
@@ -1006,7 +1096,7 @@ class InstructorController extends BaseController {
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('pagos_instructor.created_at as fecha', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'pagos_instructor.monto', 'pagos_instructor.tipo')
-                ->where('instructores.id', Auth::user()->usuario_id)
+                ->where('instructores.id', $usuario_id)
                 ->where('pagos_instructor.boolean_clase_pagada', 1)
             ->get();
 
@@ -1016,14 +1106,14 @@ class InstructorController extends BaseController {
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('pagos_instructor.created_at as fecha', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor',  'pagos_instructor.monto', 'pagos_instructor.id', 'pagos_instructor.tipo')
-                ->where('instructores.id', Auth::user()->usuario_id)
+                ->where('instructores.id', $usuario_id)
                 ->where('pagos_instructor.boolean_clase_pagada', 0)
                 ->where('pagos_instructor.monto', '>', 0)
             ->get();
 
             $total = DB::table('pagos_instructor')
                 ->select('pagos_instructor.*')
-                ->where('pagos_instructor.instructor_id', Auth::user()->usuario_id)
+                ->where('pagos_instructor.instructor_id', $usuario_id)
                 ->where('pagos_instructor.boolean_clase_pagada', 0)
             ->sum('pagos_instructor.monto');
 
@@ -1032,16 +1122,16 @@ class InstructorController extends BaseController {
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('configuracion_pagos_instructor.id', 'configuracion_pagos_instructor.monto', 'config_clases_grupales.nombre as nombre', 'configuracion_pagos_instructor.clase_grupal_id as clase_grupal_id', 'configuracion_pagos_instructor.tipo as tipo')
-                ->where('instructores.id', Auth::user()->usuario_id)
+                ->where('instructores.id', $usuario_id)
             ->get();
 
             $clase_grupal_join = DB::table('clases_grupales')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->select('clases_grupales.id', 'config_clases_grupales.nombre')
-                ->where('clases_grupales.instructor_id', Auth::user()->usuario_id)
+                ->where('clases_grupales.instructor_id', $usuario_id)
             ->get();
 
-            return view('participante.instructor.pagos')->with(['pagadas'=> $pagadas, 'por_pagar' => $por_pagar, 'total' => $total, 'instructor' => $instructor, 'pagos_instructor' => $pagos_instructor, 'clases_grupales' => $clase_grupal_join, 'id' => Auth::user()->usuario_id ]);
+            return view('participante.instructor.pagos')->with(['pagadas'=> $pagadas, 'por_pagar' => $por_pagar, 'total' => $total, 'instructor' => $instructor, 'pagos_instructor' => $pagos_instructor, 'clases_grupales' => $clase_grupal_join, 'id' => $usuario_id ]);
         }else{ 
 
             return redirect("participante/instructor"); 

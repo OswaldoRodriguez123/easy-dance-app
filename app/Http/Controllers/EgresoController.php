@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Validator;
 use Carbon\Carbon;
+use Session;
 
 class EgresoController extends BaseController {
 
@@ -45,17 +46,19 @@ class EgresoController extends BaseController {
     public function fiestas()
     {
     	$academia = Academia::find(Auth::user()->academia_id);
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-        return view('administrativo.egresos.fiestas')->with('fiestas', Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+        return view('administrativo.egresos.fiestas')->with(['fiestas', Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'usuario_tipo' => $usuario_tipo]);
     }
 
      public function talleres(){
 
      	$academia = Academia::find(Auth::user()->academia_id);
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
 
         $talleres = Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->OrderBy('talleres.hora_inicio')->get();
 
-        return view('administrativo.egresos.talleres')->with(['talleres' => $talleres, 'academia' => $academia]);
+        return view('administrativo.egresos.talleres')->with(['talleres' => $talleres, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo]);
     }
 
     public function campanas(){
@@ -63,6 +66,7 @@ class EgresoController extends BaseController {
         $campanas = Campana::where('campanas.academia_id' , '=' , Auth::user()->academia_id)
             ->OrderBy('campanas.created_at')
         ->get();
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
 
         $array=array();
         $i = 0;
@@ -99,7 +103,7 @@ class EgresoController extends BaseController {
     
         }
 
-        return view('administrativo.egresos.campanas')->with(['campanas' => $array, 'academia' => $academia]);
+        return view('administrativo.egresos.campanas')->with(['campanas' => $array, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo]);
 
     }
 

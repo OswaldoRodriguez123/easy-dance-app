@@ -22,25 +22,10 @@
 @section('content')
 
 @if(Auth::check())
-  @if(Auth::user()->usuario_tipo == 1)
+  @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
     <a href="{{url('/')}}/blog/publicar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus" style="margin-top: 25%"></i></a>
   @endif
 @endif
-
-<?php 
-
-  if(Auth::check()){
-
-    if(isset(Auth::user()->usuario_tipo)){
-      $usuario_tipo = Auth::user()->usuario_tipo;
-    }else{
-      $usuario_tipo = 0;
-    }
-  }else{
-    $usuario_tipo = 0;
-  }
-
-?>
 
 <section id="content">
   <div class="container">
@@ -82,7 +67,7 @@
                   <a href="{{$entrada['url']}}" class="f-25 f-700">{{$entrada['titulo']}} 
 
                   @if(Auth::check())
-                    @if(Auth::user()->usuario_tipo == 1)
+                    @if($usuario_tipo == 1)
                       @if($entrada['boolean_mostrar'])
                         <i class="zmdi zmdi-check f-15 c-verde"></i>
                       @else
@@ -134,7 +119,7 @@
                       <a href="{{$entrada['url']}}">Ver más</a>
 
                       @if(Auth::check())
-                        @if(Auth::user()->usuario_tipo == 1)
+                        @if($usuario_tipo == 1)
 
                           <a class="btn-blanco bottom-align-text" href="{{url('/')}}/blog/entrada/editar/{{$entrada['id']}}">Editar</a>
                    
@@ -364,7 +349,7 @@
               }
             }
 
-            if("{{$usuario_tipo}}" == 1){
+            if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6){
               if(entrada.boolean_mostrar){
                 icono = '<i class="zmdi zmdi-check f-15 c-verde"></i>'
               }
@@ -375,7 +360,7 @@
               icono = ''
             }
 
-            if("{{$usuario_tipo}}" == 1){
+            if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6){
               editar = '<a class="btn-blanco bottom-align-text" href="{{url('/')}}/blog/entrada/editar/'+entrada.id+'">Editar</a>'
             }else{
               editar = ''

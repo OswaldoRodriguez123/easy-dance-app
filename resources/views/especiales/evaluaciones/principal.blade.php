@@ -22,7 +22,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                     @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                     @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                         @if(isset($id_evaluacion))
                             <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes/evaluar/{{$id_evaluacion}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                         @else
@@ -59,7 +59,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="organizador"></th>
-                                    @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                                    @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                                         <th class="text-center" data-column-id="confirmacion" data-type="numeric"></th>
                                     @endif
                                     <th class="text-center" data-column-id="identificacion">Identificación</th>
@@ -79,7 +79,7 @@
                                 <tr id="row_{{$id}}" class="seleccion">
                                     <td class="text-center previa"><span style="display: none">{{$evaluaciones->id}}</span></td>
 
-                                    @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                                    @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                                         <td class="text-center previa"> @if(isset($activacion[$alumno_id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     @endif
                                     <td class="text-center previa">
@@ -191,7 +191,7 @@
 
             var row = $(t).closest('tr').attr('id');
             var id_alumno = row.split('_');
-            if("{{Auth::user()->usuario_tipo}}" == 1 || "{{Auth::user()->usuario_tipo}}" == 5 || "{{Auth::user()->usuario_tipo}}" == 6)
+            if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6)
             {
                 var route =route_detalle+"/"+id_alumno[1];
             }else{

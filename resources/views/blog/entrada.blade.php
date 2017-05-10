@@ -18,7 +18,7 @@
 
 
               @if(Auth::check())
-                @if(Auth::user()->usuario_tipo == 1)
+                @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                   @if($entrada['boolean_mostrar'])
                     <i class="zmdi zmdi-check f-15 c-verde"></i>
                   @else

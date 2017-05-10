@@ -91,9 +91,10 @@ class TransmisionController extends BaseController {
         $transmision = Transmision::find($id);
 
         if($transmision){
-           return view('agendar.transmision.planilla')->with('transmision' , $transmision);
+        	$usuario_tipo = Session::get('easydance_usuario_tipo');
+           	return view('agendar.transmision.planilla')->with(['transmision' => $transmision, 'usuario_tipo' => $usuario_tipo]);
         }else{
-           return redirect("agendar/transmisiones"); 
+           	return redirect("agendar/transmisiones"); 
         }
     }
 

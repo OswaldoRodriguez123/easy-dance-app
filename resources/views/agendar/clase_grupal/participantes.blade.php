@@ -945,7 +945,7 @@
 
                         <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-grupales/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                         
-                        @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                        @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                           <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
@@ -967,7 +967,7 @@
                     <div class="card">
                       <div class="card-header">
 
-                        @if(Auth::user()->usuario_tipo == 1 OR Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6)
+                        @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                           <div class="col-sm-6 text-left">
                             <ul class="top-menu">
@@ -1004,7 +1004,7 @@
                           </div>
                         </div>
 
-                        @if(Auth::user()->usuario_tipo == 3)
+                        @if($usuario_tipo == 3)
                           <div class="col-sm-6 text-right">
 
                             <span class="f-15">Total Credenciales:<span class="f-15" id="total_credenciales">{{$total_credenciales}}</span></span>
