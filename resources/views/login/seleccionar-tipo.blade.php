@@ -24,7 +24,7 @@
         <div class="card-header">
               <div class="clearfix"></div><br>
 
-            <div align="center"><i class="zmdi zmdi-thumb-up zmdi-hc-5x c-morado"></i></div>
+            <div align="center"><img src="{{url('/')}}/assets/img/PEGGY.png" style="max-height: 130px; max-width: 130px;" class="img-responsive opaco-0-8" alt=""></div>
             <div class="c-morado f-50 text-center"> Saludos! </div>
             <div class="text-center f-25">Hemos detectado que posees multi cuenta</div>
             
@@ -46,31 +46,31 @@
                   <hr>
                   <div class="clearfix"></div><br>
                   <p class="m-t-5 m-b-5 f-22"><a class="usuario_tipo" id="1" href="#" >Entrar como Administrador <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i>  
-                    <i class="icon_a-pagar f-50 padding"></i> </a>
+                    <i class="zmdi zmdi-thumb-up f-50 padding"></i> </a>
                   </p>
                 @elseif($tipo == 2)
                   <hr>
                   <div class="clearfix"></div><br>
                   <p class="m-t-5 m-b-5 f-22"><a class="usuario_tipo" id="2" href="#" >Entrar como Alumno <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i>  
-                    <i class="icon_a-pagar f-50 padding"></i> </a>
+                    <i class="zmdi zmdi-thumb-up f-50 padding"></i> </a>
                   </p>
                 @elseif($tipo == 3)
                   <hr>
                   <div class="clearfix"></div><br>
                   <p class="m-t-5 m-b-5 f-22"><a class="usuario_tipo" id="3" href="#" >Entrar como Instructor <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i>  
-                    <i class="icon_a-pagar f-50 padding"></i> </a>
+                    <i class="zmdi zmdi-thumb-up f-50 padding"></i> </a>
                   </p>
                 @elseif($tipo == 4)
                   <hr>
                   <div class="clearfix"></div><br>
                   <p class="m-t-5 m-b-5 f-22"><a class="usuario_tipo" id="4" href="#" >Entrar como Representante <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i>  
-                    <i class="icon_a-pagar f-50 padding"></i> </a>
+                    <i class="zmdi zmdi-thumb-up f-50 padding"></i> </a>
                   </p>
                 @elseif($tipo == 6)
                   <hr>
                   <div class="clearfix"></div><br>
                   <p class="m-t-5 m-b-5 f-22"><a class="usuario_tipo" id="6" href="#" >Entrar como Recepcionista <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i>  
-                    <i class="icon_a-pagar f-50 padding"></i> </a>
+                    <i class="zmdi zmdi-thumb-up f-50 padding"></i> </a>
                   </p>
                 @endif
               @endforeach 
