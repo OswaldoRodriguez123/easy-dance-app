@@ -217,7 +217,7 @@ class LoginController extends Controller {
     public function logout()
     {
         Auth::guard($this->getGuard())->logout();
-        Session::forget('easydance_usuario_tipo');
+        Session::flush();
 
         return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/login');
     }
