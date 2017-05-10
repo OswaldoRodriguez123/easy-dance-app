@@ -440,8 +440,6 @@ class ClaseGrupalController extends BaseController {
 
         $mujeres = 0;
         $hombres = 0;
-        Carbon::setLocale('es');
-
 
         $clasegrupal = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
@@ -476,6 +474,8 @@ class ClaseGrupalController extends BaseController {
                 ->where('tipo_reservacion', '=', '1')
             ->get();
 
+            $now = Carbon::now();
+
             foreach($reservaciones as $reservacion){
 
                 if($reservacion->tipo_usuario == 1){
@@ -493,7 +493,94 @@ class ClaseGrupalController extends BaseController {
                 }
 
                 $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
-                $tiempo_vencimiento = $fecha_vencimiento->diffForHumans(Carbon::now()); 
+                $diferencia_tiempo = $now->diffInDays($fecha_vencimiento);
+
+                if($diferencia_tiempo<1){
+
+                    $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                    $diferencia_tiempo = $now->diffInDays($fecha_vencimiento);
+
+                    if($diferencia_tiempo<1){
+
+                        $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                        $diferencia_tiempo = $now->diffInDays($fecha_vencimiento);
+
+                        if($diferencia_tiempo<1){
+
+                            $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                            $diferencia_tiempo = $now->diffInDays($fecha_vencimiento);
+
+                            if($diferencia_tiempo==1){
+                                $fecha_de_realizacion = "en ".$diferencia_tiempo." segundo";
+                            }else{
+                                $fecha_de_realizacion = "en ".$diferencia_tiempo." Segundos";
+                            }
+                        }else{
+
+                            if($diferencia_tiempo==1){
+                                $fecha_de_realizacion = "en ".$diferencia_tiempo." minuto";
+                            }else{
+                                $fecha_de_realizacion = "en ".$diferencia_tiempo." minutos";
+                            }
+                        }
+                    }else{
+
+                        if($diferencia_tiempo==1){
+                            $fecha_de_realizacion = "en ".$diferencia_tiempo." hora";
+                        }else{
+                            $fecha_de_realizacion = "en ".$diferencia_tiempo." horas";
+                        }
+                    }
+                }else{
+
+                    if($diferencia_tiempo==1){
+                        $hora_segundos = $fecha_vencimiento->format('H:i');
+                        $fecha_de_realizacion = "Mañana a las ".$hora_segundos;
+                    }else{
+                        $hora_segundos = $fecha_vencimiento->format('H:i');
+                        $dia = $fecha_de_registro->format('d');
+
+                        switch ($fecha_vencimiento->month) {
+                            case 1:
+                                $mes = "Enero";
+                                break;
+                            case 2:
+                                $mes = "Febrero";
+                                break;
+                            case 3:
+                                $mes = "Marzo";
+                                break;
+                            case 4:
+                                $mes = "Abril";
+                                break;
+                            case 5:
+                                $mes = "Mayo";
+                                break;
+                            case 6:
+                                $mes = "Junio";
+                                break;
+                            case 7:
+                                $mes = "Julio";
+                                break;
+                            case 8:
+                                $mes = "Agosto";
+                                break;
+                            case 9:
+                                $mes = "Septiembre";
+                                break;
+                            case 10:
+                                $mes = "Octubre";
+                                break;
+                            case 11:
+                                $mes = "Noviembre";
+                                break;
+                            case 12:
+                                $mes = "Diciembre";
+                                break;
+                        }
+                        $fecha_de_realizacion = $dia . " de " . $mes . " a las ".$hora_segundos;
+                    }
+                }
 
                 $collection=collect($alumno);     
                 $alumno_array = $collection->toArray();
@@ -503,7 +590,7 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['tipo'] = 2;
                 $alumno_array['alumno_id'] = $alumno->id;
                 $alumno_array['inscripcion_id'] = $reservacion->id;
-                $alumno_array['tiempo_vencimiento'] = $tiempo_vencimiento;
+                $alumno_array['tiempo_vencimiento'] = $fecha_de_realizacion;
                 $alumno_array['fecha_vencimiento'] = $reservacion->fecha_vencimiento;
                 $array['2-'.$alumno->id] = $alumno_array;
             
