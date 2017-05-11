@@ -34,7 +34,6 @@ use App\Pago;
 use App\ItemsFactura;
 use App\ConfigPagosInstructor;
 use App\PagoInstructor;
-use App\CredencialAlumno;
 use App\Codigo;
 use App\Patrocinador;
 use App\Egreso;

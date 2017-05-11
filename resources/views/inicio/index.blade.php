@@ -161,7 +161,7 @@
   <div class="modal-dialog modal-lg">
       <div class="modal-content">
           <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-              <h4 class="modal-title c-negro">Vencimiento</h4>
+              <h4 class="modal-title c-negro">Vencimiento <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
           </div>
           <div class="modal-body">                           
             <div class="row p-t-20 p-b-0">
@@ -172,7 +172,7 @@
 
                 <div class="clearfix m-20 m-b-25"></div>
 
-                <div class="c-morado f-40 text-center"> ¡Dios mioooooo! </div>
+                <div class="c-morado f-40 text-center"> Hola {{Auth::user()->nombre}} </div>
                 <div class="clearfix m-20 m-b-25"></div>
                 <div class="text-center f-20">Hemos detectado que la clase grupal <b><span id="clase_grupal_nombre"></span></b> Especialidad <b><span id="especialidad"></span></b> Instructor <b><span id="instructor"></span></b> Hora <b><span id="hora"></span></b> finalizará pronto</div>
                 
@@ -319,14 +319,6 @@
           }, 3000);
       }else if(vencimiento){
         setTimeout(function(){ 
-
-          $("#modalVencimiento").modal({
-
-              backdrop: 'static',
-
-              keyboard: false
-
-          });
 
           $('#clase_grupal_nombre').text(vencimiento.clase_grupal_nombre)
           $('#especialidad').text(vencimiento.especialidad_nombre)
