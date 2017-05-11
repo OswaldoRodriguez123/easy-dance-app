@@ -45,6 +45,7 @@ use App\Patrocinador;
 use App\Egreso;
 use App\Puntaje;
 use App\ConfigFormulaExito;
+use App\VencimientoClaseGrupal;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -107,191 +108,60 @@ class AcademiaController extends BaseController {
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
+    public function confirmarVencimiento($id)
+    {
+        $vencimiento = VencimientoClaseGrupal::find($id);
+
+        if($vencimiento->delete()){
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+        }
+    }
+
 	public function index()
 	{
         $academia = Academia::find(Auth::user()->academia_id);
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         $usuario_id = Session::get('easydance_usuario_id');
 
-        // $inscripciones = InscripcionClaseGrupal::all();
-
-        // foreach($inscripciones as $inscripcion){
-        //     $clase_grupal = ClaseGrupal::withTrashed()->find($inscripcion->clase_grupal_id);
-            
-        //     $inscripcion->clase_grupal_id = $clase_grupal->clase_grupal_id;
-        //     $inscripcion->save();
-            
-        // }
-
-        // foreach($clases_personalizadas as $clase_personalizada){
-
-        //     $servicio = new ConfigServicios;
-            
-        //     $servicio->academia_id = $clase_personalizada->academia_id;
-        //     $servicio->nombre = $clase_personalizada->nombre;
-        //     $servicio->costo = $clase_personalizada->costo;
-        //     $servicio->imagen = '';
-        //     $servicio->descripcion = $clase_personalizada->descripcion;
-        //     $servicio->incluye_iva = 0;
-        //     $servicio->tipo = 9;
-
-        //     $servicio->save();
-        // }
-
-        // $servicios = ConfigServicios::all();
-
-        // foreach($servicios as $servicio){
-
-        //     if(!$servicio->tipo_id){
-        //         $servicio->tipo_id = $servicio->id;
-        //         $servicio->save();
-        //     }
-        // }
-
-        // $productos = ConfigProductos::all();
-
-        // foreach($productos as $producto){
-        //     if(!$producto->tipo_id){
-        //         $producto->tipo_id = $producto->id;
-        //         $producto->save();
-        //     }
-        // }
-
-
-        // $patrocinadores = Patrocinador::all();
-
-        // foreach($patrocinadores as $patrocinador){
-
-        // 	$cantidad = intval($patrocinador->monto) / 10000;
-        // 	$patrocinador->cantidad = $cantidad;
-        // 	$patrocinador->save();
-        // }
-
-        // $facturas = ItemsFactura::all();
-
-        // foreach($facturas as $factura){
-
-        //     if($factura->tipo == 4){
-
-        //         $explode = explode(' ', $factura->nombre);
-
-        //         if($explode[0] != 'Remanente' && $explode[0] != 'Abono'){
-
-        //             $factura->nombre = 'Cuota ' . $factura->nombre;
-        //             $factura->save();
-
-        //         }
-                
-        //     }
-        // }
-
-        // $facturas = ItemsFacturaProforma::all();
-
-        // foreach($facturas as $factura){
-
-        //     if($factura->tipo == 3){
-
-        //         $explode = explode(' ', $factura->nombre);
-
-        //         if($explode[0] == 'Inscripción'){
-
-        //             if($explode[1] == 'Remanente' OR $explode[1] == 'Abono'){
-
-        //                 $nombre = '';
-
-        //                 foreach($explode as $tmp){
-
-        //                     if($tmp != 'Inscripción'){
-        //                         $nombre = $nombre . ' ' . $tmp;
-        //                     }
-        //                 }
-
-        //                 $factura->nombre = $nombre;
-        //                 $factura->save();
-        //             }
-        //         }
-        
-        //     }
-        // }
-
-        // $facturas = ItemsFacturaProforma::all();
-
-        // foreach($facturas as $factura){
-
-        //     if($factura->tipo == 3){
-
-        //         $explode = explode(' ', $factura->nombre);
-
-        //         if($explode[0] == 'Inscripción'){
-
-        //             if($explode[1] == 'Remanente' OR $explode[1] == 'Abono'){
-
-        //                 $nombre = '';
-
-        //                 foreach($explode as $tmp){
-
-        //                     if($tmp != 'Inscripción'){
-        //                         $nombre = $nombre . ' ' . $tmp;
-        //                     }
-        //                 }
-
-        //                 $factura->nombre = $nombre;
-        //                 $factura->save();
-        //             }
-        //         }
-        
-        //     }
-        // }
-
-        // $facturas = ConfigProductos::all();
-
-        // foreach($facturas as $factura){
-        //     $nombre = explode(" ", $factura->nombre);
-
-        //     if($nombre[0] == "Boleta" OR $factura->nombre == "Inscripción Del Evento"){
-        //         $factura->tipo = 14;
-        //         $factura->save();
-        //     }
-        // }
-
-        // $egresos = Egreso::all();
-
-        // foreach($egresos as $egreso){
-        //     $egreso->fecha = $egreso->created_at;
-        //     $egreso->save();
-        // }
-        
-        // $facturas = ItemsFacturaProforma::where('tipo',6)->get();
-
-        // foreach($facturas as $factura){
-            
-        //     $item_acuerdo = new ItemsAcuerdo;
-                        
-        //     $item_acuerdo->acuerdo_id = $factura->item_id;
-        //     $item_acuerdo->fecha = $factura->fecha;
-        //     $item_acuerdo->item_id = $factura->id;
-        //     $item_acuerdo->nombre = $factura->nombre;
-        //     $item_acuerdo->tipo = $factura->tipo;
-        //     $item_acuerdo->cantidad = $factura->cantidad;
-        //     $item_acuerdo->precio_neto = $factura->precio_neto;
-        //     $item_acuerdo->impuesto = $factura->impuesto;
-        //     $item_acuerdo->importe_neto = $factura->importe_neto;
-        //     $item_acuerdo->fecha_vencimiento = $factura->fecha_vencimiento;
-
-        //     $item_acuerdo->save();
-
-        // }
-
         if($usuario_tipo){
 
             //ADMINISTRADOR
-            // if(Auth::user()->usuario_tipo == 1 || Auth::user()->usuario_tipo == 5 || Auth::user()->usuario_tipo == 6){
             if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
 
                 $fecha_comprobacion = Carbon::createFromFormat('Y-m-d', $academia->fecha_comprobacion);
                 $hoy = Carbon::now();
 
                 if($fecha_comprobacion < $hoy){
+
+                    $clases_grupales = ClaseGrupal::where('boolean_vencimiento',0)->where('academia_id',Auth::user()->academia_id)->get();
+
+                    foreach($clases_grupales as $clase_grupal){
+                        $fecha_final = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_final);
+
+                        if(Carbon::now()->addMonth() >= $fecha_final){
+                            $usuarios = User::where('academia_id',Auth::user()->academia_id)->get();
+                            foreach($usuarios as $usuario){
+                                $explode = explode(',',$usuario->usuario_tipo);
+
+                                foreach($explode as $tipo){
+                                    if($tipo == 1 OR $tipo == 3 OR $tipo == 5 OR $tipo == 6){
+                                        $vencimiento = new VencimientoClaseGrupal;
+
+                                        $vencimiento->clase_grupal_id = $clase_grupal->id;
+                                        $vencimiento->usuario_id = $usuario->id;
+                                        $vencimiento->save();
+
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        $clase_grupal->boolean_vencimiento = 1;
+                        $clase_grupal->save();
+                    }
 
                     $reservaciones = Reservacion::all();
 
@@ -324,7 +194,16 @@ class AcademiaController extends BaseController {
                     return $this->pagorecurrente();
                 }
 
-                return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia]); 
+
+                $vencimiento = VencimientoClaseGrupal::join('clases_grupales', 'vencimiento_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+                    ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                    ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+                    ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                    ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio','clases_grupales.hora_final','clases_grupales.fecha_inicio', 'clases_grupales.fecha_final','vencimiento_clases_grupales.id')
+                    ->where('vencimiento_clases_grupales.usuario_id','=', Auth::user()->id)
+                ->first();
+
+                return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia, 'vencimiento' => $vencimiento]); 
                 
             }else if($usuario_tipo == 2 || $usuario_tipo == 4){
 

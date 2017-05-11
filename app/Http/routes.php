@@ -139,6 +139,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('/logout', 'LoginController@getLogout');
 		Route::get('/seleccionar-tipo', 'AcademiaController@seleccionar_tipo');
 		Route::post('/seleccionar-tipo/{id}', 'AcademiaController@postSeleccionar');
+		Route::post('/confirmar-vencimiento/{id}', 'AcademiaController@confirmarVencimiento');
 
 		// DESDE AQUI NECESITAN ESTAR AUTENTICADO
 
