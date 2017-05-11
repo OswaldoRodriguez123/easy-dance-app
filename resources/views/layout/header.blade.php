@@ -46,6 +46,11 @@
                                     <a href="{{url('configuracion/servicios')}}"><i class="zmdi icon_f-servicios f-16"></i> Servicios</a>
                                 </li>
 
+
+                                <li class="hidden-xs">
+                                    <a href="{{url('configuracion/paquetes')}}"><i class="zmdi icon_a-paquete f-16"></i> Paquetes</a>
+                                </li>
+
                                 <li class="hidden-xs">
                                     <a href="{{url('configuracion/staff')}}"><i class="zmdi icon_f-staff f-16"></i> Staff</a>
                                 </li>

@@ -639,16 +639,13 @@ class ClaseGrupalController extends BaseController {
 
                 $credencial = CredencialAlumno::where('alumno_id',$alumno->id)->where('instructor_id',$clasegrupal->instructor_id)->first();
 
-                if(!$credencial){
-                    $credencial = new CredencialAlumno;
-
-                    $credencial->alumno_id = $alumno->id;
-                    $credencial->instructor_id = $clasegrupal->instructor_id;
-                    $credencial->cantidad = 0;
-                    $credencial->dias_vencimiento = 0;
-                    $credencial->fecha_vencimiento = Carbon::now();
-
-                    $credencial->save();
+                if($credencial){
+                    $cantidad = $credencial->cantidad;
+                    $dias_vencimiento = $credencial->dias_vencimiento;
+       
+                }else{
+                    $cantidad = 0;
+                    $dias_vencimiento = 0;
                 }
 
                 $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
@@ -688,8 +685,8 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['activacion']=$activacion;
                 $alumno_array['deuda']=$deuda;
                 $alumno_array['tipo'] = 1;
-                $alumno_array['cantidad'] = $credencial->cantidad;
-                $alumno_array['dias_vencimiento'] = $credencial->dias_vencimiento;
+                $alumno_array['cantidad'] = $cantidad;
+                $alumno_array['dias_vencimiento'] = $dias_vencimiento;
 
                 $array[$alumno->id] = $alumno_array;
 
@@ -713,7 +710,6 @@ class ClaseGrupalController extends BaseController {
             if($usuario_tipo == 3){
                 $usuario_id = Session::get('easydance_usuario_id');
                 $credenciales = CredencialInstructor::where('instructor_id',$usuario_id)->first();
-
                 $total_credenciales = $credenciales->cantidad;
             }else{
                 $total_credenciales = 0;

@@ -348,6 +348,20 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('configuracion/eventos-laborales/update/horario', 'EventoLaboralController@updateHorario');
 			Route::put('configuracion/eventos-laborales/update/etiqueta', 'EventoLaboralController@updateEtiqueta');
 
+			//PAQUETES 
+
+			Route::get('configuracion/paquetes','PaqueteController@principal');
+			Route::get('configuracion/paquetes/agregar','PaqueteController@create');
+			Route::post('configuracion/paquetes/agregar','PaqueteController@store');
+			Route::get('configuracion/paquetes/detalle/{id}','PaqueteController@edit');
+			Route::delete('configuracion/paquetes/eliminar/{id}', 'PaqueteController@destroy');
+
+			Route::put('configuracion/paquetes/update/nombre', 'PaqueteController@updateNombre');
+			Route::put('configuracion/paquetes/update/costo', 'PaqueteController@updateCosto');
+			Route::put('configuracion/paquetes/update/cantidad', 'PaqueteController@updateCantidad');
+			Route::put('configuracion/paquetes/update/descripcion', 'PaqueteController@updateDescripcion');
+			Route::put('configuracion/paquetes/update/imagen', 'PaqueteController@updateImagen');
+
 
 			//PAGOS
 

@@ -174,7 +174,7 @@
 
                 <div class="c-morado f-40 text-center"> ¡Dios mioooooo! </div>
                 <div class="clearfix m-20 m-b-25"></div>
-                <div class="text-center f-20">Hemos detectado que la clase grupal <b><span id="clase_grupal_nombre"></span></b> Especialidad <b><span id="especialidad"></span></b> Instructor <b><span id="instructor"></span></b> Hora <b><span id="hora"></span></b> finalizará en 30 dias</div>
+                <div class="text-center f-20">Hemos detectado que la clase grupal <b><span id="clase_grupal_nombre"></span></b> Especialidad <b><span id="especialidad"></span></b> Instructor <b><span id="instructor"></span></b> Hora <b><span id="hora"></span></b> finalizará pronto</div>
                 
                 <div class="clearfix m-20 m-b-25"></div>
 

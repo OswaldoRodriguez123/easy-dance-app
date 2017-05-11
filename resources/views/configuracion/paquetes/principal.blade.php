@@ -17,7 +17,7 @@
 @stop
 @section('content')
 
-<a href="{{url('/')}}/configuracion/productos/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
+<a href="{{url('/')}}/configuracion/paquetes/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
 
             <section id="content">
                 <div class="container">
@@ -35,99 +35,39 @@
                                            
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                         </ul>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
                     <div class="card">
                         <div class="card-header text-center">
 
                         <div class="text-right">
-                            <span class="f-16 p-t-0 text-success">Agregar un Producto <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span> 
+                            <span class="f-16 p-t-0 text-success">Agregar un Paquete <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span> 
                         </div>
 
-                        <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-productos zmdi-hc-fw p-r-5 f-25"></i> Área de Productos</p>
+                        <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-paquete f-25"></i> Área de Paquetes</p>
                         <hr class="linea-morada">
                         <br>
-
-                        <div class="col-sm-4 text-left">
-                                 
-                            <label class="c-morado f-15">Filtro</label>
-
-                            <div class="fg-line">
-                              <div class="select">
-                                <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
-                                    <option value = "0">Todos</option>
-                                    <option value = "A">Academia Recepción</option>
-                                    <option value = "T">Taller</option>
-                                    <option value = "C">Campaña</option>
-                                    <option value = "F">Fiesta y Eventos</option>
-                                
-                                </select>
-                              </div>
-                            </div>
-                            
-                           
-                          
-                        </div>
-                        <div class="clearfix"></div>                              
+                                                              
                         </div>
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="descripcion">Nombre</th>
-                                    <th class="text-center" data-column-id="descripcion">Tipo</th>
-                                    <th class="text-center" data-column-id="costo" data-type="numeric">Costo</th>
-                                    <th class="text-center" data-column-id="costo" data-type="numeric">Cantidad</th>
+                                    <th class="text-center" data-column-id="nombre">Nombre</th>
+                                    <th class="text-center" data-column-id="costo_inscripcion" data-type="numeric">Costo</th>
+                                    <th class="text-center" data-column-id="costo_mensualidad" data-type="numeric">Cantidad de Clases</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-
-                            @foreach ($productos as $producto)
-                                <?php $id = $producto['id']; ?>
+                            @foreach ($paquetes as $paquete)
+                                <?php $id = $paquete['id']; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">
-                                        {{$producto['nombre']}}
-
-                                        @if($producto['tipo'] == 'Servicio')
-                                            <?php $tipo = 'S' ?>
-                                            <i class="icon_f-servicios f-20 p-r-10"></i>
-                                        @elseif($producto['tipo'] == 'Producto')
-                                            <?php $tipo = 'P' ?>
-                                            <i class="icon_f-productos f-20 p-r-10"></i>
-                                        @elseif($producto['tipo'] == 'Inscripción y Mensualidad')
-                                            <?php $tipo = 'I' ?>
-                                            <i class="icon_a-clases-grupales f-20 p-r-10"></i>
-                                        @elseif($producto['tipo'] == 'Taller')
-                                            <?php $tipo = 'T' ?>
-                                            <i class="icon_a-talleres f-20 p-r-10"></i>
-                                        @elseif($producto['tipo'] == 'Clase Personalizada')
-                                            <?php $tipo = 'R' ?>
-                                            <i class="icon_a-clase-personalizada f-20 p-r-10"></i>
-                                        @elseif($producto['tipo'] == 'Campaña')
-                                            <?php $tipo = 'C' ?>
-                                            <i class="icon_a-campana f-20 p-r-10"></i>
-                                        @elseif($producto['tipo'] == 'Fiesta y Eventos')
-                                            <?php $tipo = 'F' ?>
-                                            <i class="icon_a-fiesta f-20 p-r-10"></i>
-                                        @endif
-
-                                    </td>
-                                    <td class="text-center previa">{{$producto['tipo']}}</td>
-                                    <td class="text-center previa">{{ number_format($producto['costo'], 2, '.' , '.') }}</td>
-                                    <td class="text-center previa">{{$producto['cantidad']}}</td>
-                                    <td class="text-center disabled"> 
-                                        <span style="display: none">
-                                            @if($tipo == 'P' OR $tipo == 'I' OR $tipo == 'R')
-                                                A
-                                            @else
-                                                {{$tipo}}
-                                            @endif
-                                        </span> 
-                                        <i name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i>
-                                    </td>
+                                    <td class="text-center previa">{{$paquete['nombre']}}</td>
+                                    <td class="text-center previa">{{ number_format($paquete['costo'], 2, '.' , '.') }}</td>
+                                    <td class="text-center previa">{{$paquete['cantidad_clases_grupales']}} </td>
+                                    <td class="text-center disabled"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 
                                                            
@@ -154,32 +94,21 @@
 @section('js') 
             
         <script type="text/javascript">
-            
-            route_detalle="{{url('/')}}/configuracion/productos/detalle";
-            route_eliminar="{{url('/')}}/configuracion/productos/eliminar/";
+        
+        route_detalle="{{url('/')}}/configuracion/paquetes/detalle";
+        route_eliminar="{{url('/')}}/configuracion/paquetes/eliminar/";
+       
 
         $(document).ready(function(){
 
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
-        pageLength: 25,  
+        pageLength: 25,    
         order: [[0, 'asc']],
-        fnDrawCallback: function() {
-        if ("{{count($productos)}}" < 25) {
-              $('.dataTables_paginate').hide();
-              $('#tablelistar_length').hide();
-          }else{
-             $('.dataTables_paginate').show();
-          }
-        },
-        pageLength: 25,
-        language: {
-              searchPlaceholder: "Buscar"
-        },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -225,32 +154,69 @@
 
             });
 
+        function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
+                $.growl({
+                    icon: icon,
+                    title: titulo,
+                    message: mensaje,
+                    url: ''
+                },{
+                        element: 'body',
+                        type: type,
+                        allow_dismiss: true,
+                        placement: {
+                                from: from,
+                                align: align
+                        },
+                        offset: {
+                            x: 20,
+                            y: 85
+                        },
+                        spacing: 10,
+                        z_index: 1070,
+                        delay: 2500,
+                        timer: 2000,
+                        url_target: '_blank',
+                        mouse_over: false,
+                        animate: {
+                                enter: animIn,
+                                exit: animOut
+                        },
+                        icon_type: 'class',
+                        template: '<div data-growl="container" class="alert" role="alert">' +
+                                        '<button type="button" class="close" data-growl="dismiss">' +
+                                            '<span aria-hidden="true">&times;</span>' +
+                                            '<span class="sr-only">Close</span>' +
+                                        '</button>' +
+                                        '<span data-growl="icon"></span>' +
+                                        '<span data-growl="title"></span>' +
+                                        '<span data-growl="message"></span>' +
+                                        '<a href="#" data-growl="url"></a>' +
+                                    '</div>'
+                });
+            };
+
         function previa(t){
 
             var row = $(t).closest('tr').attr('id');
-            var id_producto = row.split('_');
-            var route =route_detalle+"/"+id_producto[1];
+            var id_clasegrupal = row.split('_');
+            var route =route_detalle+"/"+id_clasegrupal[1];
             window.location=route;
         }
 
-         $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-         });
-
-         $("i[name=eliminar]").click(function(){
-                id = this.id;
-                element = this;
-                swal({   
-                    title: "Desea eliminar el producto?",   
-                    text: "Confirmar eliminación!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Eliminar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true 
-                }, function(isConfirm){   
+          $("i[name=eliminar]").click(function(){
+            id = this.id;
+            element = this;
+            swal({   
+                title: "Desea eliminar el paquete?",   
+                text: "Confirmar eliminación!",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
           if (isConfirm) {
             console.log(this);
             var nFrom = $(this).attr('data-from');
@@ -261,16 +227,15 @@
             var nAnimOut = $(this).attr('data-animation-out')
             var nTitle="Ups! ";
             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-            swal("Hecho!","Eliminado con éxito!","success");
             
             eliminar(id, element);
-                }
-            });
+            }
         });
+    });
       function eliminar(id, element){
          var route = route_eliminar + id;
          var token = "{{ csrf_token() }}";
+         procesando();
                 
                 $.ajax({
                     url: route,
@@ -280,12 +245,16 @@
                     data:id,
                     success:function(respuesta){
 
-                    t.row( $(element).parents('tr') )
-                      .remove()
-                      .draw();
+                        swal("Hecho!","Eliminado con éxito!","success");
+
+                        t.row( $(element).parents('tr') )
+                          .remove()
+                          .draw();
+                        finprocesado();
 
                     },
                     error:function(msj){
+                                finprocesado();
                                 $("#msj-danger").fadeIn(); 
                                 var text="";
                                 console.log(msj);
@@ -299,30 +268,7 @@
                 });
       }
 
-      $('#tipo').on('change', function(){
 
-        tipo = $(this).val()
-
-        if(tipo == '0'){
-
-            t
-            .columns(4)
-            .search('')
-            .draw(); 
-
-        }else{
-
-            t
-            .columns(4)
-            .search(tipo)
-            .draw();
-
-        }
-
-    });
-
-
-
-    </script>
+        </script>
 
 @stop

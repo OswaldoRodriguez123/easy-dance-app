@@ -5,9 +5,12 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Paquete;
-use App\CaracteristicasPaquete;
+use App\Academia;
+use App\ConfigServicios;
 use Validator;
 use DB;
+use Image;
+use Illuminate\Support\Facades\Auth;
 
 class PaqueteController extends BaseController {
 
@@ -16,16 +19,9 @@ class PaqueteController extends BaseController {
      *
      * @return Response
      */
-    public function index()
+    public function principal()
     {
-        // $paquete_join = DB::table('paquetes')
-        //     ->join('caracteristicas_paquete', 'paquetes.id', '=', 'caracteristicas_paquete.paquete_id')
-        //     ->select('caracteristicas_paquete.*', 'paquetes.*')
-        //     ->get();
-
-        // return view('paquete.index')->with(['paquete_join' => $paquete_join]);
-        
-        return view('paquete.index')->with('paquete', Paquete::all());
+        return view('configuracion.paquetes.principal')->with('paquetes', Paquete::where('academia_id',Auth::user()->academia_id)->get());
     }
 
     /**
@@ -35,7 +31,10 @@ class PaqueteController extends BaseController {
      */
     public function create()
     {
-        //
+
+        $academia = Academia::find(Auth::user()->academia_id);
+        
+        return view('configuracion.paquetes.create')->with('incluye_iva', $academia->incluye_iva);
     }
 
     /**
@@ -43,65 +42,100 @@ class PaqueteController extends BaseController {
      *
      * @return Response
      */
+    
     public function store(Request $request)
     {
-        //dd($request->all());
 
+        $rules = [
+            'nombre' => 'required|min:3|max:50',
+            'costo' => 'required|numeric',
+            'cantidad_clases_grupales' => 'required|numeric',
+            'descripcion' => 'required|min:3|max:500',
+        ];
 
-    $rules = [
-        'nombre' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'descripcion' => 'required|min:3|max:500',
-        'costo' => 'required|numeric',
-        'etiqueta' => 'required',
-    ];
+        $messages = [
 
-    $messages = [
+            'nombre.required' => 'Ups! El Nombre es requerido ',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+            'nombre.max' => 'El máximo de caracteres permitidos son 50',
+            'costo.required' => 'Ups! El Costo es requerido',
+            'costo.numeric' => 'Ups! El Costo es inválido , debe contener sólo números',
+            'cantidad_clases_grupales.required' => 'Ups! La cantidad es requerida',
+            'cantidad_clases_grupales.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
+            'descripcion.required' => 'Ups! La Descripcion es requerida',
+            'descripcion.min' => 'El mínimo de caracteres permitidos son 3',
+            'descripcion.max' => 'El máximo de caracteres permitidos son 500',
+        ];
 
-        'nombre.required' => 'Ups! El Nombre es requerido ',
-        'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre.max' => 'El máximo de caracteres permitidos son 50',
-        'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
-        'descripcion.required' => 'Ups! La Descripcion es requerida',
-        'descripcion.min' => 'El mínimo de caracteres permitidos son 3',
-        'descripcion.max' => 'El máximo de caracteres permitidos son 500',
-        'costo.required' => 'Ups! El Costo es requerido',
-        'costo.numeric' => 'Ups! El Costo es inválido , debe contener sólo números',
-        'etiqueta.required' => 'Ups! El color de la etiqueta es requerido',
-    ];
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()){
 
-    if ($validator->fails()){
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-    }
-
-    else{
-
-        $paquete = new Paquete;
-
-        $paquete->nombre = $request->nombre;
-        $paquete->descripcion = $request->descripcion;
-        $paquete->costo = $request->costo;
-        $paquete->etiqueta = $request->etiqueta;
-        $paquete->cantidad_clases_grupales = $request->cantidad_clases_grupales;
-        $paquete->cantidad_clases_personalizadas = $request->cantidad_clases_personalizadas;
-        $paquete->cantidad_fiestas = $request->cantidad_fiestas;
-        $paquete->cantidad_talleres = $request->cantidad_talleres;
-
-        if($paquete->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-    }
+
+        else{
+
+            $nombre = title_case($request->nombre);
+
+            $paquete = new Paquete;
+
+            $paquete->academia_id = Auth::user()->academia_id;
+            $paquete->nombre = $nombre;
+            $paquete->descripcion = $request->descripcion;
+            $paquete->costo = $request->costo;
+            $paquete->cantidad_clases_grupales = $request->cantidad_clases_grupales;
+
+            if($paquete->save()){
+
+                if($request->imageBase64){
+
+                    $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imageBase64 );
+                    $type =  explode( '/',  $split[0]);
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "paquete-". $paquete->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(300, 300);
+                    $img->save('assets/uploads/paquete/'.$nombre_img);
+
+                    $paquete->imagen = $nombre_img;
+                    $paquete->save();
+                }
+
+                $servicio = new ConfigServicios;
+                
+                $servicio->academia_id = Auth::user()->academia_id;
+                $servicio->nombre = $nombre;
+                $servicio->costo = $request->costo;
+                $servicio->descripcion = $request->descripcion;
+                $servicio->incluye_iva = $request->incluye_iva;
+                $servicio->tipo = 15;
+                $servicio->tipo_id = $paquete->id;
+
+                $servicio->save();
+
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
     }
 
     public function updateNombre(Request $request){
-
-        $paquete = Paquete::find($request->id);
-        $paquete->nombre = $request->nombre;
 
         $rules = [
             'nombre' => 'required|min:3|max:50',
@@ -124,19 +158,18 @@ class PaqueteController extends BaseController {
 
         else{
 
+            $paquete = Paquete::find($request->id);
+            $paquete->nombre = $request->nombre;
+
             if($paquete->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-            // return redirect("alumno/edit/{$request->id}");
         }
     }
 
     public function updateDescripcion(Request $request){
-
-        $paquete = Paquete::find($request->id);
-        $paquete->descripcion = $request->descripcion;
 
         $rules = [
             'descripcion' => 'required|min:3|max:500',
@@ -159,66 +192,122 @@ class PaqueteController extends BaseController {
 
         else{
 
+            $paquete = Paquete::find($request->id);
+            $paquete->descripcion = $request->descripcion;
+
             if($paquete->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-            // return redirect("alumno/edit/{$request->id}");
         }
     }
 
     public function updateCosto(Request $request){
 
-        $paquete = Paquete::find($request->id);
-        $paquete->costo = $request->costo;
+        $rules = [
 
-        if($paquete->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            'costo' => 'numeric',
+
+        ];
+
+        $messages = [
+
+            'costo.required' => 'Ups! El costo es requerido',
+            'costo.numeric' => 'Ups! El costo es inválido , debe contener sólo números',
+
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
         }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-        // return redirect("alumno/edit/{$request->id}");
-    }
 
+            $paquete = Paquete::find($request->id);
+            $paquete->costo = $request->costo;
 
-    public function updateEtiqueta(Request $request){
-        $paquete = Paquete::find($request->id);
-        $paquete->etiqueta = $request->etiqueta;
-
-        if($paquete->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            if($paquete->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
     }
 
     public function updateCantidad(Request $request){
 
-        $paquete = Paquete::find($request->id);
 
-        $paquete->cantidad_clases_grupales = $request->cantidad_clases_grupales;
-        $paquete->cantidad_clases_personalizadas = $request->cantidad_clases_personalizadas;
-        $paquete->cantidad_fiestas = $request->cantidad_fiestas;
-        $paquete->cantidad_talleres = $request->cantidad_talleres;
+        $rules = [
 
-        if($paquete->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            'cantidad_clases_grupales' => 'numeric',
+
+        ];
+
+        $messages = [
+
+            'cantidad_clases_grupales.required' => 'Ups! La cantidad es requerida',
+            'cantidad_clases_grupales.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
+
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
         }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+
+            $paquete = Paquete::find($request->id);
+
+            $paquete->cantidad_clases_grupales = $request->cantidad_clases_grupales;
+
+            if($paquete->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
+    public function updateImagen(Request $request)
     {
-        //
+        $paquete = Paquete::find($request->id);
+        
+        if($request->imageBase64){
+            $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+            $path = storage_path();
+            $split = explode( ';', $request->imageBase64 );
+            $type =  explode( '/',  $split[0]);
+
+            $ext = $type[1];
+            
+            if($ext == 'jpeg' || 'jpg'){
+                $extension = '.jpg';
+            }
+
+            if($ext == 'png'){
+                $extension = '.png';
+            }
+
+            $nombre_img = "paquete-". $paquete->id . $extension;
+            $image = base64_decode($base64_string);
+
+            // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+            $img = Image::make($image)->resize(300, 300);
+            $img->save('assets/uploads/paquete/'.$nombre_img);
+        }
+        else{
+            $nombre_img = "";
+        }
+
+        $paquete->imagen = $nombre_img;
+        $paquete->save();
+
+        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
     /**
@@ -228,21 +317,16 @@ class PaqueteController extends BaseController {
      * @return Response
      */
     public function edit($id)
-    {
-        $instructor = Instructor::find($id);
-        return view('instructor.editar')->with('instructor', $instructor);
+    {   
+        $paquete = Paquete::find($id);
+
+        if($paquete){
+            return view('configuracion.paquetes.planilla')->with(['paquete' => $paquete , 'id' => $id]);
+        }else{
+           return redirect("configuracion/paquetes"); 
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function update($id)
-    {
-
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -252,9 +336,15 @@ class PaqueteController extends BaseController {
      */
     public function destroy($id)
     {
+
         $paquete = Paquete::find($id);
-        $paquete->delete();
-        return view('paquete.index');
+        
+        if($paquete->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        // return redirect("alumno");
     }
 
 }

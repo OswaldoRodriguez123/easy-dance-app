@@ -69,5 +69,9 @@ class ConfigFacturasTableSeeder extends Seeder
         ConfigFactura::create(array(
           'nombre' => 'Fiestas y Eventos',
         ));
+
+        ConfigFactura::create(array(
+          'nombre' => 'Paquetes',
+        ));
     }
 }

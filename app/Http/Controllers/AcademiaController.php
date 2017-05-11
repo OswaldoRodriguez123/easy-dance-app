@@ -135,12 +135,15 @@ class AcademiaController extends BaseController {
 
                 if($fecha_comprobacion < $hoy){
 
+                    $credenciales_vencidas = CredencialAlumno::where('cantidad', '<=', 0)->delete();
+
                     $clases_grupales = ClaseGrupal::where('boolean_vencimiento',0)->where('academia_id',Auth::user()->academia_id)->get();
 
                     foreach($clases_grupales as $clase_grupal){
                         $fecha_final = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_final);
 
-                        if(Carbon::now()->addMonth() >= $fecha_final){
+
+                        if(Carbon::now()->addMonth() > $fecha_final && $fecha_final > Carbon::now()){
                             $usuarios = User::where('academia_id',Auth::user()->academia_id)->get();
                             foreach($usuarios as $usuario){
                                 $explode = explode(',',$usuario->usuario_tipo);

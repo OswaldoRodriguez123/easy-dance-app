@@ -1500,7 +1500,6 @@ class AsistenciaController extends BaseController
     public function store(Request $request)
     {
 
-
         $rules = [
 
           'asistencia_clase_grupal_id' => 'required',
@@ -1530,35 +1529,23 @@ class AsistenciaController extends BaseController
 
             $estatu="no_asociado";
 
-
             foreach ($ClasesAsociadas as $clasegrupal) {
               if($clasegrupal->clase_grupal_id==$clase_id[0]){
                   $estatu="inscrito";
               }
             }
-
               
             if($estatu=="inscrito" OR $request->pertenece){
 
               $clase_grupal = ClaseGrupal::find($clase);
 
-              $credencial_alumno = CredencialAlumno::where('alumno_id',$id_alumno)->where('instructor_id',$clase_grupal->instructor_id)->first();
+              $credencial_alumno = CredencialAlumno::where('alumno_id',$id_alumno)->where('instructor_id',$clase_grupal->instructor_id)->where('cantidad' ,'>', '0')->first();
 
               if(!$credencial_alumno){
-
-                $credencial_alumno = new CredencialAlumno;
-
-                $credencial_alumno->alumno_id = $id_alumno;
-                $credencial_alumno->instructor_id = $clase_grupal->instructor_id;
-                $credencial_alumno->cantidad = 0;
-                $credencial_alumno->dias_vencimiento = 0;
-                $credencial_alumno->fecha_vencimiento = Carbon::now();
-
-                $credencial_alumno->save();
-
+                $credencial_alumno = CredencialAlumno::where('alumno_id',$id_alumno)->where('instructor_id','0')->where('cantidad' ,'>', '0')->first();
               }
 
-              if($estatu=="inscrito" OR $credencial_alumno->cantidad > 0 OR $request->credencial)
+              if($estatu=="inscrito" OR $credencial_alumno OR $request->credencial)
               {
 
                 if(Session::has('pertenece')){
@@ -1601,8 +1588,11 @@ class AsistenciaController extends BaseController
                     $inscripcion_clase_grupal->save();
                   }
 
-                  $credencial_alumno->cantidad = $credencial_alumno->cantidad - 1;
-                  $credencial_alumno->save();
+                  if($credencial_alumno && $estatu!="inscrito")
+                  {
+                    $credencial_alumno->cantidad = $credencial_alumno->cantidad - 1;
+                    $credencial_alumno->save();
+                  }
 
                   Session::forget('pertenece');
 

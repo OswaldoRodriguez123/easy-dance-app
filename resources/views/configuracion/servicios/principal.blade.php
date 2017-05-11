@@ -42,6 +42,10 @@
                     <div class="card">
                         <div class="card-header text-center">
 
+                        <div class="text-right">
+                            <span class="f-16 p-t-0 text-success">Agregar un Servicio <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span> 
+                        </div>
+
                         <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-servicios"></i> Área de Servicios</p>
                         <hr class="linea-morada">
                         <br>
@@ -103,13 +107,16 @@
                                         @elseif($servicio['tipo'] == 'Fiesta y Eventos')
                                             <?php $tipo = 'F' ?>
                                             <i class="icon_a-fiesta f-20 p-r-10"></i>
+                                        @elseif($servicio['tipo'] == 'Paquetes')
+                                            <?php $tipo = 'P' ?>
+                                            <i class="icon_a-paquete f-20 p-r-10"></i>
                                         @endif
                                     </td>
                                     <td class="text-center previa">{{$servicio['tipo']}}</td>
                                     <td class="text-center previa">{{ number_format($servicio['costo'], 2, '.' , '.') }} </td>
                                     <td class="text-center disabled"> 
                                         <span style="display: none">
-                                            @if($tipo == 'S' OR $tipo == 'I' OR $tipo == 'R')
+                                            @if($tipo == 'S' OR $tipo == 'I' OR $tipo == 'R' OR $tipo == 'P')
                                                 A
                                             @else
                                                 {{$tipo}}
@@ -234,7 +241,7 @@
             var nTitle="Ups! ";
             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
             // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-            swal("Hecho!","Eliminado con éxito!","success");
+           
             
             eliminar(id, element);
                 }
@@ -243,6 +250,7 @@
       function eliminar(id, element){
          var route = route_eliminar + id;
          var token = "{{ csrf_token() }}";
+         procesando();
                 
                 $.ajax({
                     url: route,
@@ -252,12 +260,17 @@
                     data:id,
                     success:function(respuesta){
 
-                    t.row( $(element).parents('tr') )
-                      .remove()
-                      .draw();
+                         swal("Hecho!","Eliminado con éxito!","success");
+
+                        t.row( $(element).parents('tr') )
+                          .remove()
+                          .draw();
+
+                        finprocesado();
 
                     },
                     error:function(msj){
+                                finprocesado();
                                 $("#msj-danger").fadeIn(); 
                                 var text="";
                                 console.log(msj);
