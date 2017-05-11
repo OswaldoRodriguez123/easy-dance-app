@@ -711,6 +711,7 @@ class ClaseGrupalController extends BaseController {
             }
 
             if($usuario_tipo == 3){
+                $usuario_id = Session::get('easydance_usuario_id');
                 $credenciales = CredencialInstructor::where('instructor_id',$usuario_id)->first();
 
                 $total_credenciales = $credenciales->cantidad;
