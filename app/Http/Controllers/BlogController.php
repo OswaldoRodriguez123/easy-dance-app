@@ -786,7 +786,7 @@ class BlogController extends BaseController {
 
                     if($alumno->correo){
 
-                        $correo = CorreoBlog::where('entrada_id',$id)->where('usuario_tipo',1)->where('usuario_id',$alumno->id);
+                        $correo = CorreoBlog::where('entrada_id',$id)->where('usuario_tipo',1)->where('usuario_id',$alumno->id)->first();
 
                         if($correo){
                             $url = $correo->url;
@@ -830,7 +830,7 @@ class BlogController extends BaseController {
 
                     if($visitante->correo){
 
-                        $correo = CorreoBlog::where('entrada_id',$id)->where('usuario_tipo',2)->where('usuario_id',$visitante->id);
+                        $correo = CorreoBlog::where('entrada_id',$id)->where('usuario_tipo',2)->where('usuario_id',$visitante->id)->first();
 
                         if($correo){
                             $url = $correo->url;
