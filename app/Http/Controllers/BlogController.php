@@ -786,9 +786,28 @@ class BlogController extends BaseController {
 
                     if($alumno->correo){
 
+                        $correo = CorreoBlog::where('entrada_id',$id)->where('usuario_tipo',1)->where('usuario_id',$alumno->id);
+
+                        if($correo){
+                            $url = $correo->url;
+                        }else{
+                            do{
+                                $url = str_random(8);
+                                $find = CorreoBlog::where('url', $url)->first();
+                            }while ($find);
+
+                            $correo = new CorreoBlog;
+
+                            $correo->entrada_id = $id;
+                            $correo->usuario_tipo = 1;
+                            $correo->usuario_id = $alumno->id;
+                            $correo->url = $url;
+                            $correo->save();
+                        }
+
                         $array = [
                             'imagen' => $imagen,
-                            'url' => 'http://app.easydancelatino.com/blog/entrada/'.$entrada->id,
+                            'url' => 'http://app.easydancelatino.com/blog/entrada/'.$url,
                             'msj_html' => $this->cut_html($contenido, 350),
                             'email' => $alumno->correo,
                             'subj' => $entrada->titulo
@@ -798,19 +817,6 @@ class BlogController extends BaseController {
                             $msj->subject($array['subj']);
                             $msj->to($array['email']);
                         });
-
-                        do{
-                            $url = str_random(8);
-                            $find = CorreoBlog::where('url', $url)->first();
-                        }while ($find);
-
-                        $correo = new CorreoBlog;
-
-                        $correo->entrada_id = $id;
-                        $correo->usuario_tipo = 1;
-                        $correo->usuario_id = $alumno->id;
-                        $correo->url = $url;
-                        $correo->save();
 
                     }
                 }
@@ -824,9 +830,28 @@ class BlogController extends BaseController {
 
                     if($visitante->correo){
 
+                        $correo = CorreoBlog::where('entrada_id',$id)->where('usuario_tipo',2)->where('usuario_id',$visitante->id);
+
+                        if($correo){
+                            $url = $correo->url;
+                        }else{
+                            do{
+                                $url = str_random(8);
+                                $find = CorreoBlog::where('url', $url)->first();
+                            }while ($find);
+
+                            $correo = new CorreoBlog;
+
+                            $correo->entrada_id = $id;
+                            $correo->usuario_tipo = 2;
+                            $correo->usuario_id = $visitante->id;
+                            $correo->url = $url;
+                            $correo->save();
+                        }
+
                         $array = [
                             'imagen' => $imagen,
-                            'url' => 'http://app.easydancelatino.com/blog/entrada/'.$entrada->id,
+                            'url' => 'http://app.easydancelatino.com/blog/entrada/'.$url,
                             'msj_html' => $this->cut_html($contenido, 350),
                             'email' => $visitante->correo,
                             'subj' => $entrada->titulo
@@ -837,18 +862,6 @@ class BlogController extends BaseController {
                             $msj->to($array['email']);
                         });
 
-                        do{
-                            $url = str_random(8);
-                            $find = CorreoBlog::where('url', $url)->first();
-                        }while ($find);
-
-                        $correo = new CorreoBlog;
-
-                        $correo->entrada_id = $id;
-                        $correo->usuario_tipo = 2;
-                        $correo->usuario_id = $visitante->id;
-                        $correo->url = $url;
-                        $correo->save();
                     }
                 }
 
