@@ -1112,6 +1112,13 @@
                                     </tr>
                                   </table>
 
+                                  <table class="table table-striped table-bordered">
+                                    <tr class="detalle credenciales">
+                                      <td></td>
+                                      <td class="f-14 m-l-15" data-original-title="" data-content="Ver credenciales" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-12 f-700">Credenciales: </span><span class = "f-12 f-700" id="credenciales" name="credenciales"></span> <i id="estatus-credenciales" class="zmdi zmdi-money {{ empty($credenciales) ? 'c-youtube ' : 'c-verde' }} f-20 m-r-5"></i></td>
+                                    </tr>
+                                  </table>
+
 
                                    <!-- <li class="dropdown" data-original-title="" data-content="Calendario" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
                                   <a href="{{url('/')}}/participante/alumno/historial/{{$id}}">
@@ -1320,15 +1327,16 @@
     route_principal="{{url('/')}}/participante/alumno";
     route_sesion="{{url('/')}}/participante/alumno/sesion";
     route_historial = "{{url('/')}}/participante/alumno/historial/";
-    route_remunacion = "{{url('/')}}/participante/alumno/puntos-acumulados/";
+    route_remuneracion = "{{url('/')}}/participante/alumno/puntos-acumulados/";
+    route_credenciales = "{{url('/')}}/participante/alumno/credenciales/";
     route_email="{{url('/')}}/correo/sesion/";
     route_agregar_cantidad="{{url('/')}}/participante/alumno/agregar_cantidad";
     route_eliminar_cantidad="{{url('/')}}/participante/alumno/eliminar_cantidad/";
     route_cancelar_cantidad="{{url('/')}}/participante/alumno/cancelar_cantidad";
 
-
     total = "{{$total}}";
     puntos_referidos = "{{$puntos_referidos}}";
+    credenciales = "{{$credenciales}}";
     cantidad_actual = 0;
 
     $(document).ready(function(){
@@ -1375,6 +1383,13 @@
       }
       else{
         $("#puntos_referidos").text(0);
+      }
+
+      if(credenciales){
+        $("#credenciales").text(formatmoney(parseFloat(credenciales)));
+      }
+      else{
+        $("#credenciales").text(0);
       }
       
       if("{{$alumno->alergia}}" == 1){
@@ -1764,25 +1779,25 @@
     })
 
     $(".email").click(function(){
-         var route = route_email + 1;
-         var token = '{{ csrf_token() }}';
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    success:function(respuesta){
+       var route = route_email + 1;
+       var token = '{{ csrf_token() }}';
+              
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+            dataType: 'json',
+            success:function(respuesta){
 
-                        procesando();
-                        window.location="{{url('/')}}/correo/{{$id}}"  
+                procesando();
+                window.location="{{url('/')}}/correo/{{$id}}"  
 
-                    },
-                    error:function(msj){
-                      swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                    }
-                });
-      });
+            },
+            error:function(msj){
+              swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+            }
+        });
+    });
 
     $("i[name=eliminar]").click(function(){
                 id = this.id;
@@ -1862,23 +1877,23 @@
          var route = route_eliminar + id;
          var token = '{{ csrf_token() }}';
                 
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'DELETE',
-                    dataType: 'json',
-                    data:id,
-                    success:function(respuesta){
+          $.ajax({
+              url: route,
+                  headers: {'X-CSRF-TOKEN': token},
+                  type: 'DELETE',
+              dataType: 'json',
+              data:id,
+              success:function(respuesta){
 
-                        procesando();
-                        window.location=route_principal; 
+                  procesando();
+                  window.location=route_principal; 
 
-                    },
-                    error:function(msj){
+              },
+              error:function(msj){
 
-                      swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                    }
-                });
+                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+              }
+          });
       }
 
       $(".historial").click(function(){
@@ -1891,7 +1906,14 @@
       $(".remuneracion").click(function(){
 
           var alumno = "{{$alumno->id}}";
-          window.location = route_remunacion + alumno;
+          window.location = route_remuneracion + alumno;
+          
+      }); 
+
+      $(".credenciales").click(function(){
+
+          var alumno = "{{$alumno->id}}";
+          window.location = route_credenciales + alumno;
           
       }); 
 

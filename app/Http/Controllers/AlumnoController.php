@@ -501,8 +501,6 @@ class AlumnoController extends BaseController
 
         if($alumno){
 
-            // $clases_grupales = InscripcionClaseGrupal::where('alumno_id', $id)->get();
-
             $clases_grupales = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                 ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
@@ -522,26 +520,18 @@ class AlumnoController extends BaseController
 
             $descripcion = implode(", ", $array_descripcion);
 
-            $subtotal = 0;
-            $impuesto = 0;
+            $total =ItemsFacturaProforma::where('alumno_id', '=', $id)
+                ->where('fecha_vencimiento','<=',Carbon::today())
+            ->sum('importe_neto');
 
-            $item_factura =ItemsFacturaProforma::where('items_factura_proforma.alumno_id', '=', $id)
-                ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-            ->get();
-
-            foreach($item_factura as $items_factura){
-
-                    $subtotal = $subtotal + $items_factura->importe_neto;
-                    
-            }
+            $puntos_referidos = AlumnoRemuneracion::where('alumno_id',$id)->sum('remuneracion');
+            $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+            $credenciales = CredencialAlumno::where('alumno_id',$id)->sum('cantidad');
 
             $perfil = PerfilEvaluativo::join('alumnos', 'perfil_evaluativo.usuario_id', '=', 'alumnos.id')
                 ->select('perfil_evaluativo.*', 'alumnos.id as alumno_id')
                 ->where('alumnos.id', $id)
             ->first();
-
-            $in = array(2,4);
-            $usuario = User::where('usuario_id',$id)->whereIn('usuario_tipo',$in)->first();
 
             if($perfil){
                 $tiene_perfil = 1;
@@ -549,20 +539,14 @@ class AlumnoController extends BaseController
                 $tiene_perfil = 0;
             }
 
+            $in = array(2,4);
+            $usuario = User::where('usuario_id',$id)->whereIn('usuario_tipo',$in)->first();
+
             if($usuario){
                 $imagen = $usuario->imagen;
             }else{
                 $imagen = '';
             }
-
-            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id',$id)->get();
-            $puntos_referidos = 0;
-
-            foreach($alumno_remuneracion as $remuneracion){
-            	$puntos_referidos = $puntos_referidos + $remuneracion->remuneracion;
-            }
-
-            $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
 
             $inscripcion_clase_grupal = InscripcionClaseGrupal::where('alumno_id',$id)->first();
 
@@ -577,7 +561,7 @@ class AlumnoController extends BaseController
                 $tipo_pago = 'Contado';
             }
 
-            return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $subtotal, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'edad' => $edad, 'tipo_pago' => $tipo_pago]);
+            return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $total, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'edad' => $edad, 'tipo_pago' => $tipo_pago, 'credenciales' => $credenciales]);
         }else{
            return redirect("participante/alumno"); 
         }
@@ -599,10 +583,106 @@ class AlumnoController extends BaseController
                 $puntos_referidos = $puntos_referidos + $remuneracion->remuneracion;
             }
 
-
-           return view('participante.alumno.puntos_acumulados')->with(['alumno' => $alumno , 'id' => $id, 'puntos_referidos' => $puntos_referidos, 'alumno_remuneracion' => $alumno_remuneracion]);
+            return view('participante.alumno.puntos_acumulados')->with(['alumno' => $alumno , 'id' => $id, 'puntos_referidos' => $puntos_referidos, 'alumno_remuneracion' => $alumno_remuneracion]);
         }else{
            return redirect("participante/alumno"); 
+        }
+    }
+
+     public function credenciales($id)
+    {   
+
+        $alumno = Alumno::find($id);
+
+        if($alumno){
+
+            $total = 0;
+
+            $credenciales = CredencialAlumno::leftJoin('instructores', 'credenciales_alumno.instructor_id', '=', 'instructores.id')
+                ->select('credenciales_alumno.*', 'instructores.nombre', 'instructores.apellido')
+                ->where('credenciales_alumno.alumno_id',$id)
+                ->where('credenciales_alumno.cantidad' ,">", 0)
+            ->get();
+
+            $asistencias = Asistencia::join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
+                ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->select('asistencias.fecha', 'asistencias.hora', 'config_clases_grupales.nombre as clase', 'alumnos.nombre', 'alumnos.apellido', 'asistencias.tipo', 'asistencias.tipo_id', 'asistencias.clase_grupal_id as clase_grupal_id', 'asistencias.id', 'alumnos.id as alumno_id')
+                ->where('alumnos.academia_id','=',Auth::user()->academia_id)
+                ->where('asistencias.alumno_id',$id)
+                ->orderBy('asistencias.created_at','desc')
+            ->get();
+
+            $array = array();
+
+            foreach($asistencias as $asistencia){
+
+              if($asistencia->tipo == 1)
+              {
+                $clasegrupal = ClaseGrupal::find($asistencia->clase_grupal_id);
+                if($clasegrupal){
+                  $instructor = Instructor::find($clasegrupal->instructor_id);
+                }
+                
+              }else{
+                $clasegrupal = HorarioClaseGrupal::find($asistencia->tipo_id);
+                if($clasegrupal){
+                  $instructor = Instructor::find($clasegrupal->instructor_id);
+                }
+              }
+
+              $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+              $i = $fecha->dayOfWeek;
+
+              if($i == 1){
+
+                $dia = 'Lunes';
+
+              }else if($i == 2){
+
+                $dia = 'Martes';
+
+              }else if($i == 3){
+
+                $dia = 'Miercoles';
+
+              }else if($i == 4){
+
+                $dia = 'Jueves';
+
+              }else if($i == 5){
+
+                $dia = 'Viernes';
+
+              }else if($i == 6){
+
+                $dia = 'Sabado';
+
+              }else if($i == 0){
+
+                $dia = 'Domingo';
+
+              }
+
+              if($clasegrupal)
+              {
+                $collection=collect($asistencia);     
+                $asistencia_array = $collection->toArray();
+                
+                $asistencia_array['dia']=$dia;
+                $asistencia_array['instructor']=$instructor->nombre . ' ' . $instructor->apellido;
+                $asistencia_array['hora']=$asistencia->hora;
+                $array[] = $asistencia_array;
+              }
+            }
+
+            foreach($credenciales as $credencial){
+                $total = $total + $credencial->cantidad;
+            }
+
+            return view('participante.alumno.credenciales')->with(['alumno' => $alumno , 'id' => $id, 'credenciales' => $credenciales, 'total' => $total, 'asistencias' => $array]);
+        }else{
+            return redirect("participante/alumno"); 
         }
     }
 
@@ -1177,6 +1257,23 @@ class AlumnoController extends BaseController
         $cantidad = $remuneracion->remuneracion;
         
         if($remuneracion->delete()){
+
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 'cantidad' => $cantidad, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
+    }
+
+
+    public function eliminar_credencial($id)
+    {
+        
+        $credencial = CredencialAlumno::find($id);
+
+        $cantidad = $credencial->remuneracion;
+        
+        if($credencial->delete()){
 
             return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 'cantidad' => $cantidad, 200]);
         }else{

@@ -1543,6 +1543,13 @@ class AsistenciaController extends BaseController
 
               if(!$credencial_alumno){
                 $credencial_alumno = CredencialAlumno::where('alumno_id',$id_alumno)->where('instructor_id','0')->where('cantidad' ,'>', '0')->first();
+                if(!$credencial_alumno){
+                  $boolean_credencial = 0;
+                }else{
+                  $boolean_credencial = 1;
+                }
+              }else{
+                $boolean_credencial = 1;
               }
 
               if($estatu=="inscrito" OR $credencial_alumno OR $request->credencial)
@@ -1577,6 +1584,7 @@ class AsistenciaController extends BaseController
                   $asistencia->tipo = $clase_id[2];
                   $asistencia->tipo_id = $clase_id[3];
                   $asistencia->pertenece = $pertenece;
+                  $asistencia->boolean_credencial = $boolean_credencial;
                 }
 
                 if($asistencia->save()){

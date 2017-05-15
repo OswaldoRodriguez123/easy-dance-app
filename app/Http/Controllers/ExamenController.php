@@ -31,9 +31,8 @@ class ExamenController extends BaseController {
 
     public function principal()
     {
-        $examen_join = DB::table('examenes')
-            ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
-            ->select('examenes.id as id' , 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','examenes.academia_id')
+        $examen_join = Examen::join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
+            ->select('examenes.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id')
             ->where('examenes.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
@@ -47,7 +46,6 @@ class ExamenController extends BaseController {
 	 */
 	public function create()
 	{
-        $generos_musicales = DB::table('config_especialidades')->get();
 
         if (Session::has('nuevo_item')) {
             Session::forget('nuevo_item'); 
@@ -107,6 +105,7 @@ class ExamenController extends BaseController {
 
         $config_examenes = ConfigTipoExamen::all();
         $usuario_tipo = Session::get('easydance_usuario_tipo');
+        $generos_musicales = ConfigEspecialidades::all();
 
 
 		return view('especiales.examen.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'generos_musicales'=> $generos_musicales, 'clases_grupales' => $array, 'config_examenes' => $config_examenes, 'usuario_tipo' => $usuario_tipo]);
@@ -126,8 +125,6 @@ class ExamenController extends BaseController {
         }else{
             return redirect("agendar/clases-grupales");
         }
-        
-        $generos_musicales = DB::table('config_especialidades')->get();
         
         if (Session::has('nuevo_item')) {
             Session::forget('nuevo_item'); 
@@ -186,6 +183,7 @@ class ExamenController extends BaseController {
         }
 
         $config_examenes = ConfigTipoExamen::all();
+        $generos_musicales = ConfigEspecialidades::all();
 
 
         return view('especiales.examen.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'generos_musicales'=> $generos_musicales, 'clases_grupales' => $array, 'clase_grupal_id' => $id, 'config_examenes' => $config_examenes]);
