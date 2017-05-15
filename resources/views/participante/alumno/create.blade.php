@@ -181,7 +181,7 @@
 
                                <div class="col-sm-12">
 
-                               <label for="apellido" id="id-correo">Correo Electrónico</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico del participante" title="" data-original-title="Ayuda"></i>
+                               <label for="apellido" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico del participante" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
