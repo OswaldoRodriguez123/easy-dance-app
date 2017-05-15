@@ -161,6 +161,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 			Route::put('blog/entrada/update/contenido', 'BlogController@updateContenido');
 			Route::delete('blog/entrada/eliminar/{id}', 'BlogController@destroy');
 			Route::post('blog/entrada/enviar/{id}', 'BlogController@enviar');
+			Route::get('blog/entrada/visitas/{id}', 'BlogController@visitas');
 
 			//BLOGGERS
 

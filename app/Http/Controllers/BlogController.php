@@ -17,6 +17,7 @@ use App\User;
 use App\Blogger;
 use App\Alumno;
 use App\Visitante;
+use App\CorreoBlog;
 use File;
 use Mail;
 
@@ -494,7 +495,14 @@ class BlogController extends BaseController {
 			$academia_id = 7;
 		}
 
-		$entrada = EntradaBlog::find($id);
+        $count = strlen($id);
+
+        if($count <= 7){
+            $entrada = EntradaBlog::find($id);
+        }else{
+            $correo = CorreoBlog::where('url',$id)->first();
+            $entrada = EntradaBlog::find($correo->entrada_id);
+        }
 
 		if($entrada)
 		{
@@ -614,6 +622,12 @@ class BlogController extends BaseController {
                 ->where('entradas_blog.boolean_mostrar', 1)
                 ->limit(4)
             ->get();
+
+            if($count > 7){
+     
+                $correo->boolean_visto = 1;
+                $correo->save();           
+            }
 
             return view('blog.entrada')->with(['academia' => $academia, 'entrada' => $entrada_array, 'categorias' => $categoria_array, 'entradas' => $entradas, 'cantidad' => $cantidad_total, 'usuario_imagen' => $usuario_imagen, 'blogger' => $usuario, 'recientes' => $recientes, 'populares' => $populares, 'usuario_tipo' => $usuario_tipo]);
 
@@ -765,7 +779,8 @@ class BlogController extends BaseController {
 
             if($entrada->dirigido == 1 OR $entrada->dirigido == 2){
 
-                $alumnos = Alumno::where('academia_id',$entrada->academia_id)->where('correo', '!=', '')->get();
+                // $alumnos = Alumno::where('academia_id',$entrada->academia_id)->whereNotNull('correo')->get();
+                $alumnos = Alumno::where('correo','bfsraptor@hotmail.com')->get();
 
                 foreach($alumnos as $alumno){
 
@@ -783,13 +798,27 @@ class BlogController extends BaseController {
                             $msj->subject($array['subj']);
                             $msj->to($array['email']);
                         });
+
+                        do{
+                            $url = str_random(8);
+                            $find = CorreoBlog::where('url', $url)->first();
+                        }while ($find);
+
+                        $correo = new CorreoBlog;
+
+                        $correo->entrada_id = $id;
+                        $correo->usuario_tipo = 1;
+                        $correo->usuario_id = $alumno->id;
+                        $correo->url = $url;
+                        $correo->save();
+
                     }
                 }
             }
 
-            else{
+            else if($entrada->dirigido == 1 OR $entrada->dirigido == 3){
 
-                $visitantes = Visitante::where('academia_id',$entrada->academia_id)->where('correo', '!=', '')->get();
+                $visitantes = Visitante::where('academia_id',$entrada->academia_id)->whereNotNull('correo')->get();
 
                 foreach($visitantes as $visitante){
 
@@ -807,6 +836,19 @@ class BlogController extends BaseController {
                             $msj->subject($array['subj']);
                             $msj->to($array['email']);
                         });
+
+                        do{
+                            $url = str_random(8);
+                            $find = CorreoBlog::where('url', $url)->first();
+                        }while ($find);
+
+                        $correo = new CorreoBlog;
+
+                        $correo->entrada_id = $id;
+                        $correo->usuario_tipo = 2;
+                        $correo->usuario_id = $visitante->id;
+                        $correo->url = $url;
+                        $correo->save();
                     }
                 }
 
@@ -818,6 +860,40 @@ class BlogController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
         
+    }
+
+
+    public function visitas($id){
+
+        $visitas = CorreoBlog::where('entrada_id', $id)
+            ->where('boolean_visto', 1)
+        ->get();
+
+        foreach($visitas as $visita){
+            if($visita->usuario_tipo == 1){
+                $alumno = Alumno::find($visita->usuario_id);
+
+                if($alumno){
+
+                    $collection=collect($alumno);     
+                    $alumno_array = $collection->toArray();
+
+                    $array['1-'.$alumno->id] = $alumno_array;
+                }
+            }else{
+                $visitante = Visitante::find($visita->usuario_id);
+
+                if($visitante){
+
+                    $collection=collect($visitante);     
+                    $visitante_array = $collection->toArray();
+
+                    $array['2-'.$visitante->id] = $visitante_array;
+                }
+            }
+        }
+
+        return view('blog.visitas')->with(['visitas' => $array, 'id' => $id]);
     }
 
     public function edit($id){
