@@ -776,50 +776,65 @@ class BlogController extends BaseController {
             }
 
             $contenido = File::get('assets/uploads/entradas/entrada-'.$entrada->id.'.txt');
+            $correos = array();
 
             if($entrada->dirigido == 1 OR $entrada->dirigido == 2){
 
-                // $alumnos = Alumno::where('academia_id',$entrada->academia_id)->whereNotNull('correo')->get();
-                $alumnos = Alumno::where('correo','bfsraptor@hotmail.com')->get();
+                $alumnos = Alumno::where('academia_id',$entrada->academia_id)->whereNotNull('correo')->get();
 
                 foreach($alumnos as $alumno){
 
                     if($alumno->correo){
 
-                        $correo = CorreoBlog::where('entrada_id',$id)->where('usuario_tipo',1)->where('usuario_id',$alumno->id)->first();
+                        $correos[] = $alumno->correo;
 
-                        if($correo){
-                            $url = $correo->url;
-                        }else{
-                            do{
-                                $url = str_random(8);
-                                $find = CorreoBlog::where('url', $url)->first();
-                            }while ($find);
+                        // $correo = CorreoBlog::where('entrada_id',$id)->where('usuario_tipo',1)->where('usuario_id',$alumno->id)->first();
 
-                            $correo = new CorreoBlog;
+                        // if($correo){
+                        //     $url = $correo->url;
+                        // }else{
+                        //     do{
+                        //         $url = str_random(8);
+                        //         $find = CorreoBlog::where('url', $url)->first();
+                        //     }while ($find);
 
-                            $correo->entrada_id = $id;
-                            $correo->usuario_tipo = 1;
-                            $correo->usuario_id = $alumno->id;
-                            $correo->url = $url;
-                            $correo->save();
-                        }
+                        //     $correo = new CorreoBlog;
 
-                        $array = [
-                            'imagen' => $imagen,
-                            'url' => 'http://app.easydancelatino.com/blog/entrada/'.$url,
-                            'msj_html' => $this->cut_html($contenido, 350),
-                            'email' => $alumno->correo,
-                            'subj' => $entrada->titulo
-                        ];
+                        //     $correo->entrada_id = $id;
+                        //     $correo->usuario_tipo = 1;
+                        //     $correo->usuario_id = $alumno->id;
+                        //     $correo->url = $url;
+                        //     $correo->save();
+                        // }
 
-                        Mail::send('correo.personalizado', $array, function($msj) use ($array){
-                            $msj->subject($array['subj']);
-                            $msj->to($array['email']);
-                        });
+                        // $array = [
+                        //     'imagen' => $imagen,
+                        //     'url' => 'http://app.easydancelatino.com/blog/entrada/'.$url,
+                        //     'msj_html' => $this->cut_html($contenido, 350),
+                        //     'email' => $alumno->correo,
+                        //     'subj' => $entrada->titulo
+                        // ];
+
+                        // Mail::send('correo.personalizado', $array, function($msj) use ($array){
+                        //     $msj->subject($array['subj']);
+                        //     $msj->to($array['email']);
+                        // });
 
                     }
                 }
+
+                $array = [
+                    'imagen' => $imagen,
+                    'url' => 'http://app.easydancelatino.com/blog/entrada/'.$id,
+                    'msj_html' => $this->cut_html($contenido, 350),
+                    'correos' => $correos,
+                    'subj' => $entrada->titulo
+                ];
+
+                Mail::send('correo.personalizado', $array, function($msj) use ($array){
+                    $msj->subject($array['subj']);
+                    $msj->to($array['correos']);
+                });
             }
 
             else if($entrada->dirigido == 1 OR $entrada->dirigido == 3){
@@ -830,40 +845,55 @@ class BlogController extends BaseController {
 
                     if($visitante->correo){
 
-                        $correo = CorreoBlog::where('entrada_id',$id)->where('usuario_tipo',2)->where('usuario_id',$visitante->id)->first();
+                        $correos[] = $visitante->correo;
 
-                        if($correo){
-                            $url = $correo->url;
-                        }else{
-                            do{
-                                $url = str_random(8);
-                                $find = CorreoBlog::where('url', $url)->first();
-                            }while ($find);
+                        // $correo = CorreoBlog::where('entrada_id',$id)->where('usuario_tipo',2)->where('usuario_id',$visitante->id)->first();
 
-                            $correo = new CorreoBlog;
+                        // if($correo){
+                        //     $url = $correo->url;
+                        // }else{
+                        //     do{
+                        //         $url = str_random(8);
+                        //         $find = CorreoBlog::where('url', $url)->first();
+                        //     }while ($find);
 
-                            $correo->entrada_id = $id;
-                            $correo->usuario_tipo = 2;
-                            $correo->usuario_id = $visitante->id;
-                            $correo->url = $url;
-                            $correo->save();
-                        }
+                        //     $correo = new CorreoBlog;
 
-                        $array = [
-                            'imagen' => $imagen,
-                            'url' => 'http://app.easydancelatino.com/blog/entrada/'.$url,
-                            'msj_html' => $this->cut_html($contenido, 350),
-                            'email' => $visitante->correo,
-                            'subj' => $entrada->titulo
-                        ];
+                        //     $correo->entrada_id = $id;
+                        //     $correo->usuario_tipo = 2;
+                        //     $correo->usuario_id = $visitante->id;
+                        //     $correo->url = $url;
+                        //     $correo->save();
+                        // }
 
-                        Mail::send('correo.personalizado', $array, function($msj) use ($array){
-                            $msj->subject($array['subj']);
-                            $msj->to($array['email']);
-                        });
+                        // $array = [
+                        //     'imagen' => $imagen,
+                        //     'url' => 'http://app.easydancelatino.com/blog/entrada/'.$url,
+                        //     'msj_html' => $this->cut_html($contenido, 350),
+                        //     'email' => $visitante->correo,
+                        //     'subj' => $entrada->titulo
+                        // ];
+
+                        // Mail::send('correo.personalizado', $array, function($msj) use ($array){
+                        //     $msj->subject($array['subj']);
+                        //     $msj->to($array['email']);
+                        // });
 
                     }
                 }
+
+                 $array = [
+                    'imagen' => $imagen,
+                    'url' => 'http://app.easydancelatino.com/blog/entrada/'.$id,
+                    'msj_html' => $this->cut_html($contenido, 350),
+                    'correos' => $correos,
+                    'subj' => $entrada->titulo
+                ];
+
+                Mail::send('correo.personalizado', $array, function($msj) use ($array){
+                    $msj->subject($array['subj']);
+                    $msj->to($array['correos']);
+                });
 
             }
 
