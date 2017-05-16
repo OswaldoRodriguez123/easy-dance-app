@@ -61,14 +61,12 @@
 
                             @foreach ($examen as $examenes)
                                 <?php $id = $examenes->id; ?>
-                                @can('view-examenes', $examenes)
                                 <tr id="row_{{$id}}" class="seleccion"> 
                                     <td class="text-center previa">{{$examenes->nombre}}</td>
                                     <td class="text-center previa">{{$examenes->fecha}}</td>
                                     <td class="text-center previa">{{$examenes->instructor_nombre}} {{$examenes->instructor_apellido}}</td>
                                     <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
-                                @endcan
                             @endforeach
                                                            
                             </tbody>
@@ -95,84 +93,57 @@
 
 <script type="text/javascript">
 
-        route_detalle="{{url('/')}}/especiales/examenes/detalle";
-        route_operacion="{{url('/')}}/especiales/examenes/operaciones";
+    route_detalle="{{url('/')}}/especiales/examenes/detalle";
+    route_operacion="{{url('/')}}/especiales/examenes/operaciones";
 
-        $(document).ready(function(){
+    $(document).ready(function(){
 
         t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25,    
-        order: [[0, 'asc']],
-        fnDrawCallback: function() {
-        if ("{{count($examen)}}" < 25) {
-              $('.dataTables_paginate').hide();
-              $('#tablelistar_length').hide();
-          }else{
-             $('.dataTables_paginate').show();
-          }
-        },
-        pageLength: 25,
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
+            processing: true,
+            serverSide: false,
+            pageLength: 25,    
+            order: [[0, 'asc']],
+            fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+              $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
+            },
+            language: {
+                processing:     "Procesando ...",
+                search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                searchPlaceholder: "BUSCAR",
+                lengthMenu:     "Mostrar _MENU_ Registros",
+                info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                infoPostFix:    "",
+                loadingRecords: "...",
+                zeroRecords:    "No se encontraron registros coincidentes",
+                emptyTable:     "No hay datos disponibles en la tabla",
+                paginate: {
+                    first:      "Primero",
+                    previous:   "Anterior",
+                    next:       "Siguiente",
+                    last:       "Ultimo"
+                },
+                aria: {
+                    sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                    sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                }
+            }
         });
-    
-
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-            });
+    });
 
     function previa(t){
         var row = $(t).closest('tr').attr('id');
         var id_examen = row.split('_');
         var route =route_detalle+"/"+id_examen[1];
         window.location=route;
-      }
+    }
 
-      $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-         });
+    $("i[name=operacion").click(function(){
+        var route =route_operacion+"/"+this.id;
+        window.location=route;
+    });
 
     </script>
 @stop

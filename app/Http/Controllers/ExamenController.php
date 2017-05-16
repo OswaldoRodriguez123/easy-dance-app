@@ -544,37 +544,10 @@ class ExamenController extends BaseController {
     public function edit($id)
     {
 
-        $examen_join = DB::table('examenes')
-            ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
+        $examen_join = Examen::join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
             ->join('config_tipo_examenes', 'examenes.tipo', '=', 'config_tipo_examenes.id')
-            ->select('instructores.nombre as instructor_nombre',
-                'instructores.apellido as instructor_apellido',
-                'examenes.id as id',
-                'examenes.nombre as nombre',
-                'examenes.fecha as fecha',
-                'examenes.descripcion as descripcion',
-                'examenes.color_etiqueta as etiqueta',
-                'examenes.tiempos_musicales as tiempos_musicales',
-                'examenes.compromiso as compromiso',
-                'examenes.condicion as condicion',
-                'examenes.habilidades as habilidades',
-                'examenes.disciplina as disciplina',
-                'examenes.expresion_corporal as expresion_corporal',
-                'examenes.expresion_facial as expresion_facial',
-                'examenes.destreza as destreza',
-                'examenes.dedicacion as dedicacion',
-                'examenes.oido_musical as oido_musical',
-                'examenes.postura as postura',
-                'examenes.respeto as respeto',
-                'examenes.elasticidad as elasticidad',
-                'examenes.complejidad_de_movimientos as complejidad_de_movimientos',
-                'examenes.asistencia as asistencia',
-                'examenes.estilo as estilo',
-                'examenes.genero as generos',
-                'config_tipo_examenes.nombre as tipo', 
-                'examenes.proxima_fecha',
-                'examenes.boolean_grupal',
-                'examenes.clase_grupal_id')
+            ->select('examenes.*','instructores.nombre as instructor_nombre',
+                'instructores.apellido as instructor_apellido')
             ->where('examenes.id', '=', $id)
         ->first();
 
@@ -648,7 +621,12 @@ class ExamenController extends BaseController {
     public function operar($id)
     {   
         $examen = Examen::find($id);
-        return view('especiales.examen.operacion')->with(['id' => $id, 'examen' => $examen]);        
+
+        if($examen){
+            return view('especiales.examen.operacion')->with(['id' => $id, 'examen' => $examen]); 
+        }else{
+            return redirect("especiales/examenes"); 
+        }       
     }
 
     public function evaluar($id)
