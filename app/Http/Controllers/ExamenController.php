@@ -712,6 +712,8 @@ class ExamenController extends BaseController {
                         $imagen = '';
                       }
 
+                    }else{
+                        $imagen = '';
                     }
 
                     $collection=collect($alumno);     
