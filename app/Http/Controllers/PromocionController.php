@@ -22,12 +22,6 @@ class PromocionController extends BaseController {
      * @return Response
      */
 
-    public function index()
-    {
-
-        return view('especiales.promocion.index')->with(['promocion' => Promocion::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_servicios' => ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
-    }
-
     public function principal()
     {
         $promociones = Promocion::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
@@ -55,18 +49,7 @@ class PromocionController extends BaseController {
 
         return view('especiales.promocion.principal')->with(['promociones' => $array]);
     }
-
-    public function codigo()
-    {
-
-        return view('especiales.promocion.promocion')->with(['promocion' => Promocion::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'alumno' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get()]);
-    }
     
-    public function validar()
-    {
-        return view('especiales.promocion.validar');
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -84,7 +67,6 @@ class PromocionController extends BaseController {
      */
     public function store(Request $request)
     {
-        // dd($request->all());
 
 
     $rules = [
@@ -150,7 +132,6 @@ class PromocionController extends BaseController {
 
         $promocion->academia_id = Auth::user()->academia_id;
         $promocion->nombre = $nombre;
-        // $promocion->config_servicios_id = $request->config_servicios_id;
         $promocion->descripcion = $request->descripcion;
         $promocion->porcentaje_descuento = $request->porcentaje_descuento;
         $promocion->fecha_inicio = $fecha_inicio;
@@ -402,59 +383,6 @@ class PromocionController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
-    }
-
-
-    public function ValidarCodigo(Request $request)
-    {
-        //dd($request->all());
-
-
-    $rules = [
-        'codigo' => 'required',
-
-    ];
-
-    $messages = [
-
-        'codigo.required' => 'Ups! El Codigo es requerido ',
-    ];
-
-    $validator = Validator::make($request->all(), $rules, $messages);
-
-    if ($validator->fails()){
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-    }
-
-    else{
-        
-        $codigo = CodigoPromocion::where('codigo', $request->codigo)
-        ->first();
-
-        // $codigo = DB::table('codigos_promocion')
-        //         ->select('codigos_promocion.*')
-        //         ->where('codigos_promocion.codigo', '=', $request->codigo)
-        //         ->first();
-
-        if($codigo){
-            if($codigo->status = 1){
-                return response()->json(['errores'=>'Codigo ya Utilizado', 'status' => 'ERROR-SERVIDOR'],422);
-            }else{
-                $codigo->status = 1;
-            }
-        }
-        else{
-            return response()->json(['errores'=>'Codigo no Encontrado', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-        }
-
-        if($codigo->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
     }
 
     /**
