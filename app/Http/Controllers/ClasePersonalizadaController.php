@@ -520,29 +520,32 @@ class ClasePersonalizadaController extends BaseController {
                 ];
 
                 Mail::send('correo.cita_clase_personalizada_academia', $array, function($msj) use ($array){
-                        $msj->subject($array['subj']);
-                        $msj->to($array['correo']);
+                    $msj->subject($array['subj']);
+                    $msj->to($array['correo']);
                 });
 
-                $subj2 = 'Has reservado una Clase Personalizada';
+                if($alumno->correo){
+
+                    $subj2 = 'Has reservado una Clase Personalizada';
 
 
-                $array2 = [
-                   'nombre_instructor' => $instructor->nombre,
-                   'apellido_instructor' => $instructor->apellido,
-                   'correo' => $alumno->correo,
-                   'academia' => $academia->nombre,
-                   'nombre_alumno' => $alumno->nombre,
-                   'hora_inicio' => $request->hora_inicio,
-                   'hora_final' => $request->hora_final,
-                   'fecha' => $fecha_inicio,
-                   'subj' => $subj2
-                ];
+                    $array2 = [
+                       'nombre_instructor' => $instructor->nombre,
+                       'apellido_instructor' => $instructor->apellido,
+                       'correo' => $alumno->correo,
+                       'academia' => $academia->nombre,
+                       'nombre_alumno' => $alumno->nombre,
+                       'hora_inicio' => $request->hora_inicio,
+                       'hora_final' => $request->hora_final,
+                       'fecha' => $fecha_inicio,
+                       'subj' => $subj2
+                    ];
 
-                Mail::send('correo.cita_clase_personalizada_alumno', $array2, function($msj) use ($array2){
+                    Mail::send('correo.cita_clase_personalizada_alumno', $array2, function($msj) use ($array2){
                         $msj->subject($array2['subj']);
                         $msj->to($array2['correo']);
-                });
+                    });
+                }
 
                 Session::forget('instructor_id');
                 Session::forget('id_alumno');

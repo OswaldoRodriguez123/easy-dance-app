@@ -312,10 +312,14 @@ class CorreoController extends BaseController {
 			if($tipo == 1)
 			{
 				$usuario = Alumno::withTrashed()->find($id);
-				$tiene_cuenta = User::where('usuario_id', $id)->where('usuario_tipo', 2)->where('confirmation_token', null)->count();
 
-				if(!$tiene_cuenta){
-					$tiene_cuenta = User::where('usuario_id', $id)->where('usuario_tipo', 4)->where('confirmation_token', null)->count();
+				if($usuario->correo){
+
+					$in = array(2,4);
+					$tiene_cuenta = User::where('usuario_id', $id)->whereIn('usuario_tipo', $in)->where('confirmation_token', null)->count();
+					
+				}else{
+					$tiene_cuenta = 0;
 				}
 			}
 
@@ -364,6 +368,8 @@ class CorreoController extends BaseController {
 			{
 				$alumno = Alumno::withTrashed()->find($request->id);
 
+				if($alumno->correo){
+
 				    $subj = 'Feliz cumpleaños';
 
 		        	$msj_html = $request->msj_html;
@@ -372,20 +378,25 @@ class CorreoController extends BaseController {
 			            'msj_html' => $request->msj_html,
 			            'email' => $alumno->correo,
 			            'subj' => $subj
-			             ];
+			        ];
 
 			            Mail::send('correo.cumpleanos', $array, function($msj) use ($array){
 			                  $msj->subject($array['subj']);
 			                  $msj->to($array['email']);
 			            });
 
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+						return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+				}else{
+		        	return response()->json(['error_mensaje' => 'Ups! Este alumno no posee correo electrónico', 'status' => 'ERROR-CORREO'],422);
+		        }
 			}
 
 			if($tipo == 2)
 			{
 				$alumno = Instructor::find($request->id);
 
+				if($alumno->correo){
+
 				    $subj = 'Feliz cumpleaños';
 
 		        	$msj_html = $request->msj_html;
@@ -394,14 +405,18 @@ class CorreoController extends BaseController {
 			            'msj_html' => $request->msj_html,
 			            'email' => $alumno->correo,
 			            'subj' => $subj
-			             ];
+			        ];
 
-			            Mail::send('correo.cumpleanos', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			            });
-			            
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+		            Mail::send('correo.cumpleanos', $array, function($msj) use ($array){
+		                  $msj->subject($array['subj']);
+		                  $msj->to($array['email']);
+		            });
+				            
+					return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+
+				}else{
+		        	return response()->json(['error_mensaje' => 'Ups! Este instructor no posee correo electrónico', 'status' => 'ERROR-CORREO'],422);
+		        }
 			}
 
 			if($tipo == 3)
@@ -415,21 +430,20 @@ class CorreoController extends BaseController {
 		        	$msj_html = $request->msj_html;
 
 			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
+		            'msj_html' => $request->msj_html,
+		            'email' => $alumno->correo,
+		            'subj' => $subj
+		             ];
 
-			            Mail::send('correo.cumpleanos', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			            });
+		            Mail::send('correo.cumpleanos', $array, function($msj) use ($array){
+		                  $msj->subject($array['subj']);
+		                  $msj->to($array['email']);
+		            });
 
-			          }
-			          else{
+		        }else{
 
-			          	return response()->json(['errores' => ['combo_cumpleaños' => [0, 'Este visitante no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
-			          }
+		          	return response()->json(['errores' => ['combo_cumpleaños' => [0, 'Este visitante no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
+		        }
 			            
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
 			}
@@ -468,7 +482,6 @@ class CorreoController extends BaseController {
 
 	 	$combo = explode('-',$request->arreglo);
 
-	 	// if($request->tipo_cumpleaños == 'alumno_cumpleaños'){
 
 	 		foreach($combo as $id){
 
@@ -482,63 +495,21 @@ class CorreoController extends BaseController {
 		        	$msj_html = $request->msj_html;
 
 			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
+		            'msj_html' => $request->msj_html,
+		            'email' => $alumno->correo,
+		            'subj' => $subj
+		             ];
 
-			            Mail::send('correo.cumpleanos', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
+		            Mail::send('correo.cumpleanos', $array, function($msj) use ($array){
+	                  $msj->subject($array['subj']);
+	                  $msj->to($array['email']);
+	                 });
 
-					//Envio de SMS
-				    if($request->birthday_SMS == 1){
-						$data = collect([
-							'nombre' => $alumno->nombre,
-							'apellido' => $alumno->apellido,
-							'celular' => $alumno->celular
-						]);
-			            $academia = Academia::find($alumno->academia_id);
-			            $msg = 'Hola '.$alumno->nombre.', '.$academia->nombre.' te desea un feliz cumpleaños, en este día tan especial';
-					    $sms = $this->sendAlumno($data, $msg);
-					}
+	
 
 	 			}
 			}
-	 	// }else{
 
-	 	// 	foreach($combo as $id){
-
-	 	// 		if($id != '')
-	 	// 		{
-	 	// 			$clasegrupal = DB::table('inscripcion_clase_grupal')
-		 //                ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-		 //                ->select('alumnos.correo')
-		 //                ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
-	  //           	->get();
-
-	  //           	foreach($clasegrupal as $clase){
-
-			// 		    $subj = 'Feliz cumpleaños';
-
-			//         	$msj_html = $request->msj_html;
-
-			// 	        $array = [
-			// 	            'msj_html' => $request->msj_html,
-			// 	            'email' => $clase->correo,
-			// 	            'subj' => $subj
-			// 	             ];
-
-			// 	            Mail::send('correo.cumpleanos', $array, function($msj) use ($array){
-			// 	                  $msj->subject($array['subj']);
-			// 	                  $msj->to($array['email']);
-			// 	                 });
-			//         	}
-	 	// 			}
-
-	 	// 		}
-	 	// 	}
  		}
 
  		public function correoAusencia(Request $request){
@@ -1290,7 +1261,6 @@ class CorreoController extends BaseController {
 						$usuario->save();
 
 			            $subj = 'Activa tu cuenta en Easy Dance';
-			            // $link = route('confirmacion', ['token' => $usuario->confirmation_token]);
 			            $link = "confirmacion/?token=".$usuario->confirmation_token;
 
 			        	$array = [

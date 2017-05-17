@@ -131,15 +131,13 @@ class ReporteController extends BaseController
         $mujeres = 0;
         $hombres = 0;
         $array_sexo = array();
+        $in = array(2,4);
 
         foreach($inscritos as $inscrito){
 
-            $alumnoc = DB::table('users')
-                ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
-                ->select('alumnos.id as id')
+            $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
                 ->where('alumnos.id','=', $inscrito->id)
-                ->where('alumnos.deleted_at', '=', null)
-                ->where('users.usuario_tipo', '=', 2)
+                ->whereIn('users.usuario_tipo', $array)
                 ->where('users.confirmation_token', '!=', null)
             ->first();
 

@@ -245,4 +245,13 @@ class BaseController extends Controller {
         return preg_replace('/<(\w+)\b(?:\s+[\w\-.:]+(?:\s*=\s*(?:"[^"]*"|"[^"]*"|[\w\-.:]+))?)*\s*\/?>\s*<\/\1\s*>/', '', $value);
     }
 
+    function getSQL($builder) {
+      $sql = $builder->toSql();
+      foreach ( $builder->getBindings() as $binding ) {
+        $value = is_numeric($binding) ? $binding : "'".$binding."'";
+        $sql = preg_replace('/\?/', $value, $sql, 1);
+      }
+      return $sql;
+    }
+
 }
