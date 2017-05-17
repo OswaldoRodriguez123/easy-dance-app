@@ -454,6 +454,7 @@ class ReservaController extends BaseController
                 $reservacion->tipo_usuario = 3;
                 $reservacion->tipo_usuario_id = $participante->id;
                 $reservacion->fecha_vencimiento = $fecha_vencimiento;
+                $reservacion->fecha_reservacion = Carbon::now()->toDateString();
 
                 if($reservacion->save()){
 
@@ -616,6 +617,7 @@ class ReservaController extends BaseController
                         $reservacion->tipo_usuario = 3;
                         $reservacion->tipo_usuario_id = $participante->id;
                         $reservacion->fecha_vencimiento = $fecha_vencimiento;
+                        $reservacion->fecha_reservacion = Carbon::now()->toDateString();
 
                         if($reservacion->save()){
 
@@ -740,6 +742,7 @@ class ReservaController extends BaseController
             $reservacion->tipo_reservacion = $id_explode[0];
             $reservacion->tipo_reservacion_id = $id_explode[1];
             $reservacion->fecha_vencimiento = $fecha_vencimiento;
+            $reservacion->fecha_reservacion = Carbon::now()->toDateString();
 
             if($reservacion->save()){
 
