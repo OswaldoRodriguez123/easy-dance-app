@@ -167,39 +167,6 @@
                             </form>
                         </div>
 
-                       
-                        <!-- <div class="col-md-6">
-                            <h2>Informe de Valoración</h2>
-                            <hr>
-                            <div id="pie-chart-procesos" class="flot-chart-pie"></div>
-                            <div class="flc-pie hidden-xs"></div>
-
-                        </div>
-
-
-                        <div class="col-md-6">
-                            <h2>Información</h2>
-                            <hr>
-                            
-                            <div class="col-md-3">    
-                                <i class="m-l-25 zmdi zmdi-male-alt zmdi-hc-5x c-azul"></i>
-                            </div>
-                            <div class="col-md-6"></div>
-                            <div class="col-md-3">    
-                                <i class="m-r-25 zmdi zmdi-female zmdi-hc-5x c-rosado pull-right"></i>
-                            </div>
-                            <div class="clearfix"></div>    
-
-                            <div class="mini-charts-item bgm-blue">
-                                <div class="clearfix">
-                                    <div class="count">
-                                        <small>Total Valoraciones:</small>
-                                        <h2 id="hombres" class="pull-left m-l-30">{{$hombres}}</h2>
-                                        <h2 id="mujeres" class="pull-right m-r-30">{{$mujeres}}</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
 
                         <div class ="clearfix"></div>
                         <div class="table-responsive row">
@@ -512,73 +479,12 @@
 
     }
 
-    //PLOTS
-        // var pieData1 = [
-        //         @foreach ($sexos as $sexo)
-        //             {data: {{$sexo->CantSex}}, label: '{{$sexo->sexo}}'},
-        //         @endforeach
-        //     ];
-        
-        // var values = [
-        //     @foreach ($sexos as $sexo)        
-        //            {{$sexo->CantSex}} ,
-        //     @endforeach                    
-        //     ];
-
-
-        // $.plot('#pie-chart-procesos', pieData1, {
-        //     series: {
-        //         pie: {
-        //             show: true,
-        //             stroke: { 
-        //                 width: 2,
-        //             },
-        //         },
-        //     },
-        //     legend: {
-        //         container: '.flc-pie',
-        //         backgroundOpacity: 0.5,
-        //         noColumns: 0,
-        //         backgroundColor: "white",
-        //         lineWidth: 0
-        //     },
-        //     grid: {
-        //         hoverable: true,
-        //         clickable: true
-        //     },
-        //     tooltip: true,
-        //     tooltipOpts: {
-        //         content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-        //         shifts: {
-        //             x: 20,
-        //             y: 0
-        //         },
-        //         defaultTheme: false,
-        //         cssClass: 'flot-tooltip'
-        //     }
-            
-        // });
-
      function previa(t){
         var id = $(t).closest('tr').attr('id');
         var route =route_detalle+"/"+id;
         window.location=route;
       }
 
-    // sparklinePie('inscritos-stats-pie', values, 45, 45, ['#fff', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.2)']);
-
-    //     function sparklinePie(id, values, width, height, sliceColors) {
-    //         $('.'+id).sparkline(values, {
-    //             type: 'pie',
-    //             width: width,
-    //             height: height,
-    //             sliceColors: sliceColors,
-    //             offset: 0,
-    //             borderWidth: 0
-    //         });
-    //     }   
-    //     
-    
     function collapse_minus(collaps){
         $('#'+collaps).collapse('hide');
     }   

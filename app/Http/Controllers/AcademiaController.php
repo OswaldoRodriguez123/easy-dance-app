@@ -125,6 +125,13 @@ class AcademiaController extends BaseController {
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         $usuario_id = Session::get('easydance_usuario_id');
 
+        $reservaciones = Reservacion::all();
+
+        foreach($reservaciones as $reservacion){
+            $reservacion->fecha_reservacion = $reservacion->created_at;
+            $reservacion->save();
+        }
+
         if($usuario_tipo){
 
             //ADMINISTRADOR

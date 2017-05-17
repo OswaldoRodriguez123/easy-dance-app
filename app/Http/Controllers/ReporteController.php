@@ -30,6 +30,8 @@ use App\Egreso;
 use App\TipoEgreso;
 use App\Pago;
 use App\FormasPago;
+use App\Reservacion;
+use App\Participante;
 use Mail;
 use DB;
 use Validator;
@@ -50,63 +52,6 @@ class ReporteController extends BaseController
    
    public function Diagnosticos(){
 
-        $inscritos = DB::table('alumnos')
-            ->join('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
-            ->join('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
-            ->join('clases_grupales', 'examenes.clase_grupal_id', '=', 'clases_grupales.id')
-            ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento', 'alumnos.celular', 'evaluaciones.id as evaluacion_id', 'alumnos.id', 'examenes.nombre as valoracion')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->where('examenes.boolean_grupal','=',1)
-        ->get();
-
-        $sexo = Alumno::Leftjoin('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
-            ->join('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
-            ->selectRaw('sexo, count(sexo) as CantSex')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->groupBy('alumnos.sexo')
-        ->get();
-
-        // $total = DB::table('alumnos')
-        //     ->Leftjoin('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
-        //     ->Leftjoin('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
-        //     ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-        //     ->where('evaluaciones.id', '!=', null)
-        // ->count();
-
-        $mujeres = 0;
-        $hombres = 0;
-        $array = array();
-
-        foreach($inscritos as $inscrito){
-
-            $alumnoc = DB::table('users')
-                ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
-                ->select('alumnos.id as id')
-                ->where('alumnos.id','=', $inscrito->id)
-                ->where('alumnos.deleted_at', '=', null)
-                ->where('users.usuario_tipo', '=', 2)
-                ->where('users.confirmation_token', '!=', null)
-            ->first();
-
-            if($alumnoc){
-                $activacion = 0;
-            }else{
-                $activacion = 1;
-            }
-
-            $collection=collect($inscrito); 
-            $inscrito_array = $collection->toArray();
-            
-            $inscrito_array['activacion']=$activacion;
-            $array[$inscrito->evaluacion_id] = $inscrito_array;
-
-            if($inscrito->sexo == 'F'){
-                $mujeres++;
-            }else{
-                $hombres++;
-            }
-        }
-
         $clases_grupales= DB::table('clases_grupales')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
@@ -116,26 +61,10 @@ class ReporteController extends BaseController
             ->orderBy('clases_grupales.hora_inicio', 'asc')
       ->get();
 
-    $config_examenes = ConfigTipoExamen::all();
-    $examenes = Examen::where('boolean_grupal',1)->where('academia_id', Auth::user()->academia_id)->get();
+        $config_examenes = ConfigTipoExamen::all();
+        $examenes = Examen::where('boolean_grupal',1)->where('academia_id', Auth::user()->academia_id)->get();
 
-    $forAge = DB::select("SELECT CASE
-                        WHEN age BETWEEN 3 and 10 THEN '3 - 10'
-                        WHEN age BETWEEN 11 and 20 THEN '11 - 20'
-                        WHEN age BETWEEN 21 and 35 THEN '21 - 35'
-                        WHEN age BETWEEN 36 and 50 THEN '36 - 50'
-                        WHEN age >= 51 THEN '+51'
-                        WHEN age IS NULL THEN 'Sin fecha (NULL)'
-                    END as age_range, COUNT(*) AS count
-                    FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
-                    FROM alumnos
-                    JOIN  evaluaciones ON evaluaciones.alumno_id=alumnos.id
-                    JOIN  examenes ON evaluaciones.examen_id=examenes.id
-                    WHERE alumnos.academia_id = '".Auth::user()->academia_id."')  as alumnos
-                    GROUP BY age_range
-                    ORDER BY age_range"); 
-
-        return view('reportes.diagnostico')->with(['inscritos' => $array, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'clases_grupales' => $clases_grupales, 'config_examenes' => $config_examenes, 'examenes' => $examenes]);
+        return view('reportes.diagnostico')->with(['clases_grupales' => $clases_grupales, 'config_examenes' => $config_examenes, 'examenes' => $examenes]);
     }
 
     public function DiagnosticosFiltros(Request $request)
@@ -252,339 +181,13 @@ class ReporteController extends BaseController
             ]);
 
     }
-
-    // public function Diagnosticos(){
-
-    //     $inscritos = DB::table('alumnos')
-    //         ->Leftjoin('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
-    //         ->Leftjoin('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
-    //         ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento', 'alumnos.celular', 'evaluaciones.id as evaluacion_id', 'alumnos.id')
-    //         ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-    //     ->get();
-
-    //     $sexo = Alumno::Leftjoin('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
-    //         ->Leftjoin('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
-    //         ->selectRaw('sexo, count(sexo) as CantSex')
-    //         ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-    //         ->groupBy('alumnos.sexo')
-    //         ->get();
-
-    //     $total = DB::table('alumnos')
-    //         ->Leftjoin('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
-    //         ->Leftjoin('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
-    //         ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-    //         ->where('evaluaciones.id', '!=', null)
-    //     ->count();
-
-    //     $mujeres = 0;
-    //     $hombres = 0;
-
-    //     foreach($inscritos as $inscrito){
-
-    //         $alumnoc = DB::table('users')
-    //             ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
-    //             ->select('alumnos.id as id')
-    //             ->where('alumnos.id','=', $inscrito->id)
-    //             ->where('alumnos.deleted_at', '=', null)
-    //             ->where('users.usuario_tipo', '=', 2)
-    //             ->where('users.confirmation_token', '!=', null)
-    //         ->first();
-
-    //         if($alumnoc){
-    //             $activacion = 0;
-    //         }else{
-    //             $activacion = 1;
-    //         }
-
-    //         $collection=collect($inscrito); 
-    //         $inscrito_array = $collection->toArray();
-            
-    //         $inscrito_array['activacion']=$activacion;
-    //         $array[$inscrito->id] = $inscrito_array;
-
-    //         if($inscrito->sexo == 'F'){
-    //             $mujeres++;
-    //         }else{
-    //             $hombres++;
-    //         }
-    //     }
-
-    //     $clases_grupales= DB::table('clases_grupales')
-    //         ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-    //         ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-    //         ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id')
-    //         ->where('clases_grupales.deleted_at', '=', null)
-    //         ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
-    //   ->get();
-
-
-    //     $forAge = DB::select('SELECT CASE
-    //                         WHEN age BETWEEN 3 and 10 THEN "3 - 10"
-    //                         WHEN age BETWEEN 11 and 20 THEN "11 - 20"
-    //                         WHEN age BETWEEN 21 and 35 THEN "21 - 35"
-    //                         WHEN age BETWEEN 36 and 50 THEN "36 - 50"
-    //                         WHEN age >= 51 THEN "+51"
-    //                         WHEN age IS NULL THEN "Sin fecha (NULL)"
-    //                     END as age_range, COUNT(*) AS count
-    //                     FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
-    //                     FROM alumnos)  as alumnos
-    //                     GROUP BY age_range
-    //                     ORDER BY age_range');     
-
-    //     return view('reportes.diagnostico')->with(['inscritos' => $array, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'total' => $total, 'clases_grupales' => $clases_grupales]);
-    // }
-
-    // public function DiagnosticosFiltros(Request $request)
-    // {
-    //     $actual = Carbon::now();
-    //     $geoip = new GeoIP();
-    //     $geoip->setIp($request->ip());
-    //     $actual->tz = $geoip->getTimezone();
-
-    //     # code...
-    //     //dd($request->all());
-    //     if($request->mesActual){
-    //         $start = $actual->startOfMonth()->toDateString();
-    //         $end = $actual->endOfMonth()->toDateString();  
-    //     }
-    //     if($request->mesPasado){
-    //         $start = $actual->startOfMonth()->subMonth()->toDateString();
-    //         $end = $actual->subMonth()->endOfMonth()->toDateString();  
-
-    //     }
-    //     if($request->today){
-    //         $end = $actual->toDateString();
-    //         $start = $actual->subDay()->toDateString();
-    //     }
-    //     if($request->rango){
-    //         //$fechas = explode(' - ', $request->dateRange);
-    //         $start = Carbon::createFromFormat('d/m/Y',$request->fechaInicio)->toDateString();
-    //         $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
-    //     }
-
-    //     if($request->Fecha){
-    //         $fechas = explode('-', $request->Fecha);
-    //         $start = Carbon::createFromFormat('d/m/Y',$fechas[0])->toDateString();
-    //         $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
-    //     }
-
-    //     if($request->clase_grupal_id){
-
-    //         $inscritos = DB::table('alumnos')
-    //             ->join('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
-    //             ->join('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
-    //             ->join('clases_grupales', 'examenes.clase_grupal_id', '=', 'clases_grupales.id')
-    //             ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento', 'alumnos.celular', 'evaluaciones.id as evaluacion_id', 'alumnos.id')
-    //             ->where('examenes.clase_grupal_id','=', $request->clase_grupal_id)
-    //             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-    //             ->where('examenes.boolean_grupal','=',1)
-    //             ->whereBetween('evaluaciones.created_at', [$start,$end])
-    //         ->get();
-
-
-    //         $total = DB::table('alumnos')
-    //             ->join('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
-    //             ->join('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
-    //             ->join('clases_grupales', 'examenes.clase_grupal_id', '=', 'clases_grupales.id')
-    //             ->where('examenes.clase_grupal_id','=', $request->clase_grupal_id)
-    //             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-    //             ->where('evaluaciones.id', '!=', null)
-    //             ->where('examenes.boolean_grupal','=',1)
-    //             ->whereBetween('evaluaciones.created_at', [$start,$end])
-    //         ->count();
-
-
-    //         $forAge = DB::select("SELECT CASE
-    //                         WHEN age BETWEEN 3 and 10 THEN '3 - 10'
-    //                         WHEN age BETWEEN 11 and 20 THEN '11 - 20'
-    //                         WHEN age BETWEEN 21 and 35 THEN '21 - 35'
-    //                         WHEN age BETWEEN 36 and 50 THEN '36 - 50'
-    //                         WHEN age >= 51 THEN '+51'
-    //                         WHEN age IS NULL THEN 'Sin fecha (NULL)'
-    //                     END as age_range, COUNT(*) AS count
-    //                     FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
-    //                     FROM alumnos 
-    //                     WHERE alumnos.created_at >= '".$start."' AND alumnos.created_at <= '".$end."' AND alumnos.academia_id = '".Auth::user()->academia_id."')  as alumnos
-    //                     GROUP BY age_range
-    //                     ORDER BY age_range");      
-    //     }else{
-    //         $inscritos = DB::table('alumnos')
-    //             ->Leftjoin('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
-    //             ->Leftjoin('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
-    //             ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento', 'alumnos.celular', 'evaluaciones.id as evaluacion_id', 'alumnos.id')
-    //             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-    //             ->whereBetween('alumnos.created_at', [$start,$end])
-    //         ->get(); 
-
-    //         $total = DB::table('alumnos')
-    //             ->Leftjoin('evaluaciones', 'evaluaciones.alumno_id', '=', 'alumnos.id')
-    //             ->Leftjoin('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
-    //             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-    //             ->where('evaluaciones.id', '!=', null)
-    //             ->whereBetween('alumnos.created_at', [$start,$end])
-    //         ->count();
-
-
-    //         $forAge = DB::select("SELECT CASE
-    //                         WHEN age BETWEEN 3 and 10 THEN '3 - 10'
-    //                         WHEN age BETWEEN 11 and 20 THEN '11 - 20'
-    //                         WHEN age BETWEEN 21 and 35 THEN '21 - 35'
-    //                         WHEN age BETWEEN 36 and 50 THEN '36 - 50'
-    //                         WHEN age >= 51 THEN '+51'
-    //                         WHEN age IS NULL THEN 'Sin fecha (NULL)'
-    //                     END as age_range, COUNT(*) AS count
-    //                     FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
-    //                     FROM alumnos 
-    //                     WHERE alumnos.created_at >= '".$start."' AND alumnos.created_at <= '".$end."' AND alumnos.academia_id = '".Auth::user()->academia_id."')  as alumnos
-    //                     GROUP BY age_range
-    //                     ORDER BY age_range");      
-    //     }
-
-        
-
-    //     // $sexo = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-    //     //     ->selectRaw('sexo, count(sexo) as CantSex')
-    //     //     ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-    //     //     ->whereBetween('inscripcion_clase_grupal.fecha_inscripcion', [$start,$end])
-    //     //     ->groupBy('alumnos.sexo')
-    //     //     ->get();
-    //     //     
-    //     //     
-        
-    //     $array = array();
-    //     $mujeres = 0;
-    //     $hombres = 0;
-
-    //     foreach($inscritos as $inscrito){
-
-    //         $alumnoc = DB::table('users')
-    //             ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
-    //             ->select('alumnos.id as id')
-    //             ->where('alumnos.id','=', $inscrito->id)
-    //             ->where('alumnos.deleted_at', '=', null)
-    //             ->where('users.usuario_tipo', '=', 2)
-    //             ->where('users.confirmation_token', '!=', null)
-    //         ->first();
-
-    //         if($alumnoc){
-    //             $activacion = 0;
-    //         }else{
-    //             $activacion = 1;
-    //         }
-
-    //         $collection=collect($inscrito); 
-    //         $inscrito_array = $collection->toArray();
-            
-    //         $inscrito_array['activacion']=$activacion;
-    //         $array[$inscrito->id] = $inscrito_array;
-
-    //         if($inscrito->sexo == 'F'){
-    //             $mujeres++;
-    //         }else{
-    //             $hombres++;
-    //         }
-    //     }      
-        
-    //     return response()->json(
-    //         [
-    //             'inscritos'         => $array,
-    //             'mujeres'           => $mujeres,
-    //             'hombres'           => $hombres,
-    //             'edades'            => $forAge,
-    //             'total'             => $total
-    //         ]);
-
-    // }
-
 	public function Inscritos(){
 
         return view('reportes.inscritos')->with([]);
 	}
 
-    // public function InscritosFiltros(Request $request)
-    // {
-
-    //     if($request->mesActual){
-    //         $start = Carbon::now()->startOfMonth()->toDateString();
-    //         $end = Carbon::now()->endOfMonth()->toDateString();  
-    //     }
-    //     if($request->mesPasado){
-    //         $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-    //         $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
-
-    //     }
-    //     if($request->today){
-    //         $start = Carbon::now()->toDateString();
-    //         $end = Carbon::now()->toDateString();  
-    //     }
-    //     if($request->rango){
-    //         //$fechas = explode(' - ', $request->dateRange);
-    //         $start = Carbon::createFromFormat('d/m/Y',$request->fechaInicio)->toDateString();
-    //         $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
-    //     }
-
-    //     if($request->Fecha){
-    //         $fechas = explode('-', $request->Fecha);
-    //         $start = Carbon::createFromFormat('d/m/Y',$fechas[0])->toDateString();
-    //         $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
-    //     }
-
-    //     $inscritos = DB::table('inscripcion_clase_grupal')
-    //         ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-    //         ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
-    //         ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-    //         ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
-    //         ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento','inscripcion_clase_grupal.fecha_inscripcion as fecha', 'config_especialidades.nombre as especialidad', 'config_clases_grupales.nombre as curso', 'inscripcion_clase_grupal.id', 'alumnos.celular')
-    //         ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-    //         ->whereBetween('inscripcion_clase_grupal.fecha_inscripcion', [$start,$end])
-    //     ->get();
-
-    //     // $sexo = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-    //     //     ->selectRaw('sexo, count(sexo) as CantSex')
-    //     //     ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-    //     //     ->whereBetween('inscripcion_clase_grupal.fecha_inscripcion', [$start,$end])
-    //     //     ->groupBy('alumnos.sexo')
-    //     //     ->get();
-
-    //     $mujeres = 0;
-    //     $hombres = 0;
-
-    //     foreach($inscritos as $inscrito){
-    //         if($inscrito->sexo == 'F'){
-    //             $mujeres++;
-    //         }else{
-    //             $hombres++;
-    //         }
-    //     }
-
-    //     $forAge = DB::select("SELECT CASE
-    //                         WHEN age BETWEEN 3 and 10 THEN '3 - 10'
-    //                         WHEN age BETWEEN 11 and 20 THEN '11 - 20'
-    //                         WHEN age BETWEEN 21 and 35 THEN '21 - 35'
-    //                         WHEN age BETWEEN 36 and 50 THEN '36 - 50'
-    //                         WHEN age >= 51 THEN '+51'
-    //                         WHEN age IS NULL THEN 'Sin fecha (NULL)'
-    //                     END as age_range, COUNT(*) AS count
-    //                     FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
-    //                     FROM inscripcion_clase_grupal
-    //                     INNER JOIN  alumnos ON alumno_id=alumnos.id
-    //                     WHERE inscripcion_clase_grupal.fecha_inscripcion >= '".$start."' AND inscripcion_clase_grupal.fecha_inscripcion <= '".$end."' AND alumnos.academia_id = '".Auth::user()->academia_id."')  as alumnos
-    //                     GROUP BY age_range
-    //                     ORDER BY age_range");            
-        
-    //     return response()->json(
-    //         [
-    //             'inscritos'         => $inscritos,
-    //             'mujeres'           => $mujeres,
-    //             'hombres'           => $hombres,
-    //             'edades'            => $forAge
-    //         ]);
-
-    // }
-
     public function InscritosFiltros(Request $request)
     {
-
 
         $query = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
             ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
@@ -760,40 +363,8 @@ class ReporteController extends BaseController
         return view('reportes.presenciales')->with([ 'promotores' => $promotores, 'como_nos_conociste' => $como_nos_conociste]);
 	}
 
-public function PresencialesFiltros(Request $request)
+    public function PresencialesFiltros(Request $request)
     {
-
-        // if($request->mesActual){
-        //     $start = Carbon::now()->startOfMonth()->toDateString();
-        //     $end = Carbon::now()->endOfMonth()->toDateString();  
-        // }
-        // if($request->mesPasado){
-        //     $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-        //     $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
-
-        // }
-        // if($request->today){
-        //     $start = Carbon::now()->toDateString();
-        //     $end = Carbon::now()->toDateString();  
-
-        // }
-        // if($request->rango){
-        //     $start = Carbon::createFromFormat('d/m/Y',$request->fechaInicio)->toDateString();
-        //     $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
-        // }
-
-        // if($request->Fecha){
-        //     $fechas = explode('-', $request->Fecha);
-        //     $start = Carbon::createFromFormat('d/m/Y',$fechas[0])->toDateString();
-        //     $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
-        // }
-
-        // $presenciales = DB::table('visitantes_presenciales')
-        //     ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-        //     ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente')
-        //     ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-        //     ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
-        // ->get();
 
         $query = DB::table('visitantes_presenciales')
             ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
@@ -882,17 +453,6 @@ public function PresencialesFiltros(Request $request)
         }
 
         foreach($presenciales as $presencial){
-
-            // if($presencial->instructor_id){
-
-            //     if(isset($array_promotor[$presencial->instructor_id]))
-            //     {
-            //         $array_promotor[$presencial->instructor_id]['cantidad']++;
-            //     }
-                
-            //     $total_clientes = $total_clientes + 1;
-            // }
-
 
             $collection=collect($presencial);     
             $presencial_array = $collection->toArray();
@@ -1043,159 +603,6 @@ public function PresencialesFiltros(Request $request)
 
     }
 
-
-    public function Promotores(){
-
-        $visitantes = DB::table('visitantes_presenciales')
-            ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.cliente')
-            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-        ->get();
-
-        $total = DB::table('visitantes_presenciales')
-            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-            ->where('visitantes_presenciales.cliente','=', 1)
-        ->count();
-
-
-        $sexo = Visitante::Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-            ->selectRaw('sexo, count(sexo) as CantSex')
-            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-            ->groupBy('visitantes_presenciales.sexo')
-            ->get();
-        //dd($sexo);
-        $mujeres = Visitante::where('sexo', 'F')->where('academia_id',Auth::user()->academia_id)->count();
-        $hombres = Visitante::where('sexo', 'M')->where('academia_id',Auth::user()->academia_id)->count();
-
-        $forAge = DB::select('SELECT CASE
-                            WHEN age BETWEEN 3 and 10 THEN "3 - 10"
-                            WHEN age BETWEEN 11 and 20 THEN "11 - 20"
-                            WHEN age BETWEEN 21 and 35 THEN "21 - 35"
-                            WHEN age BETWEEN 36 and 50 THEN "36 - 50"
-                            WHEN age >= 51 THEN "+51"
-                            WHEN age IS NULL THEN "Sin fecha (NULL)"
-                        END as age_range, COUNT(*) AS count
-                        FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
-                        FROM visitantes_presenciales
-                        LEFT JOIN  config_especialidades ON visitantes_presenciales.especialidad_id=config_especialidades.id)  as visitantes
-                        GROUP BY age_range
-                        ORDER BY age_range');
-
-        return view('reportes.promotores')->with(['visitantes' => $visitantes, 'sexos' => $sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 'edades' => $forAge, 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'total' => $total]);
-    }
-
-    public function PromotoresFiltros(Request $request)
-    {
-        # code...
-        if($request->mesActual){
-            $start = Carbon::now()->startOfMonth()->toDateString();
-            $end = Carbon::now()->endOfMonth()->toDateString();  
-        }
-        if($request->mesPasado){
-            $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-            $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
-
-        }
-        if($request->today){
-            $start = Carbon::now()->toDateString();
-            $end = Carbon::now()->toDateString();  
-
-        }
-        if($request->rango){
-            $start = Carbon::createFromFormat('d/m/Y',$request->fechaInicio)->toDateString();
-            $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
-        }
-
-        if($request->Fecha){
-            $fechas = explode('-', $request->Fecha);
-            $start = Carbon::createFromFormat('d/m/Y',$fechas[0])->toDateString();
-            $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
-        }
-
-        if($request->instructor_id){
-           $presenciales = DB::table('visitantes_presenciales')
-                ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-                ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente')
-                ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-                ->where('visitantes_presenciales.instructor_id','=', $request->instructor_id)
-                ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
-            ->get(); 
-        }else{
-            $presenciales = DB::table('visitantes_presenciales')
-                ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-                ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente')
-                ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-                ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
-            ->get();
-        }
-
-        
-
-         $array = array();
-
-        foreach($presenciales as $presencial){
-            $collection=collect($presencial);     
-            $presencial_array = $collection->toArray();
-            if($presencial->especialidad == '' OR $presencial->especialidad == null){
-                $presencial_array['especialidad']='Sin Especificar';
-            }   
-            $array[$presencial->id] = $presencial_array;
-        }
-
-        $total = DB::table('visitantes_presenciales')
-            ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-            ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
-            ->where('visitantes_presenciales.instructor_id','=', $request->instructor_id)
-            ->where('visitantes_presenciales.cliente','=', 1)
-        ->count();
-
-        // $sexo = Visitante::Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-        //     ->selectRaw('sexo, count(sexo) as CantSex')
-        //     ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id)
-        //     ->whereBetween('visitantes_presenciales.fecha_registro', [$start,$end])
-        //     ->groupBy('visitantes_presenciales.sexo')
-        //     ->get();
-
-
-        $mujeres = 0;
-        $hombres = 0;
-
-        foreach($presenciales as $presencial){
-            if($presencial->sexo == 'F'){
-                $mujeres++;
-            }else{
-                $hombres++;
-            }
-        }
-
-        $forAge = DB::select("SELECT CASE
-                            WHEN age BETWEEN 3 and 10 THEN '3 - 10'
-                            WHEN age BETWEEN 11 and 20 THEN '11 - 20'
-                            WHEN age BETWEEN 21 and 35 THEN '21 - 35'
-                            WHEN age BETWEEN 36 and 50 THEN '36 - 50'
-                            WHEN age >= 51 THEN '+51'
-                            WHEN age IS NULL THEN 'Sin fecha (NULL)'
-                        END as age_range, COUNT(*) AS count
-                        FROM (SELECT TIMESTAMPDIFF(YEAR, fecha_nacimiento, CURDATE()) AS age
-                        FROM visitantes_presenciales
-                        LEFT JOIN  config_especialidades ON visitantes_presenciales.especialidad_id=config_especialidades.id
-                        WHERE visitantes_presenciales.fecha_registro >= '".$start."' AND visitantes_presenciales.fecha_registro <= '".$end."'
-                         AND visitantes_presenciales.instructor_id = '".$request->instructor_id."')  as visitantes
-                        GROUP BY age_range
-                        ORDER BY age_range");
-
-        return response()->json(
-            [
-                'presenciales'      => $array,
-                'mujeres'           => $mujeres,
-                'hombres'           => $hombres,
-                'edades'            => $forAge,
-                'total'             => $total
-            ]);
-
-    }
-
-
     /**
         *   Reportes Visitas Presenciales
         *   Reportes Visitas Presenciales con Filtros
@@ -1211,7 +618,7 @@ public function PresencialesFiltros(Request $request)
         return view('reportes.contactos')->with('alumnoscontacto', $alumnos);
 	}
 
-    public function asistencias()
+    public function Asistencias()
     {
         $clase_grupal_join = DB::table('clases_grupales')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
@@ -1533,37 +940,8 @@ public function PresencialesFiltros(Request $request)
 
     public function Estatus_Alumnos()
     {
-        // $inscripciones = DB::table('clases_grupales')
-        //     ->join('inscripcion_clase_grupal', 'clases_grupales.id', '=', 'inscripcion_clase_grupal.clase_grupal_id')
-        //     ->join('config_clases_grupales','clases_grupales.clase_grupal_id','=','config_clases_grupales.id')
-        //     ->join('alumnos','inscripcion_clase_grupal.alumno_id','=','alumnos.id')
-        //     ->select('inscripcion_clase_grupal.id as inscripcion_id',
-        //              'inscripcion_clase_grupal.alumno_id as alumno_id',
-        //              'config_clases_grupales.nombre as clase_nombre',
-        //              'config_clases_grupales.id as id_clase',
-        //              'clases_grupales.fecha_inicio_preferencial',
-        //              'clases_grupales.fecha_inicio',
-        //              'clases_grupales.fecha_final',
-        //              'config_clases_grupales.asistencia_rojo',
-        //              'config_clases_grupales.asistencia_amarilla',
-        //              'alumnos.id',
-        //              'alumnos.nombre',
-        //              'alumnos.apellido',
-        //              'alumnos.identificacion',
-        //              'alumnos.sexo',
-        //              'alumnos.celular',
-        //              'alumnos.fecha_nacimiento')
-        //     ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
-        // ->get();
 
-        $alumnos = Alumno::select('alumnos.id',
-                         'alumnos.nombre',
-                         'alumnos.apellido',
-                         'alumnos.identificacion',
-                         'alumnos.sexo',
-                         'alumnos.celular',
-                         'alumnos.fecha_nacimiento')
-                ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
+        $alumnos = Alumno::where('alumnos.academia_id', '=', Auth::user()->academia_id)
                 ->orderBy('nombre', 'asc')
         ->get();
 
@@ -1623,59 +1001,6 @@ public function PresencialesFiltros(Request $request)
             $clase_array['dia']=$dia;
             $clases[$clase->id] = $clase_array;
         }
-
-
-        // $asistio = array();
-        // $array = array();
-        // $hoy = Carbon::now();
-
-        // foreach ($inscripciones as $inscritos) {
-        //     $fecha_de_inicio = $inscritos->fecha_inicio;
-        //     $fecha_de_inicio = Carbon::parse($fecha_de_inicio);
-        //     $fecha_de_finalizacion = $inscritos->fecha_final;
-        //     $fecha_de_finalizacion = Carbon::parse($fecha_de_finalizacion);
-        //     $clases_completadas = 0;
-        //     $numero_de_asistencias = 0;
-        //     $asistencia_roja = $inscritos->asistencia_rojo;
-        //     $asistencia_amarilla = $inscritos->asistencia_amarilla;
-
-        //     $ultima_asistencia = Asistencia::where('tipo',1)->where('tipo_id',$inscritos->id_clase)->where('alumno_id',$inscritos->id)->orderBy('created_at', 'desc')->first();
-
-        //     if($ultima_asistencia){
-
-        //         $fecha = Carbon::parse($ultima_asistencia->fecha);
-
-        //     }else{
-        //         $fecha = $fecha_de_inicio;
-        //     }
-
-        //     if($hoy<$fecha_de_finalizacion)
-        //     {
-        //         while($fecha<$hoy)
-        //         {
-        //             $clases_completadas++;
-        //             $fecha->addWeek();
-        //         }
-        //     }else{
-        //         while($fecha<$fecha_de_finalizacion){
-        //             $clases_completadas++;
-        //             $fecha->addWeek();
-        //         }
-        //     }
-
-        //     if($clases_completadas>=$asistencia_roja){
-        //         $estatus="c-youtube";
-        //     }else if($clases_completadas>=$asistencia_amarilla){
-        //         $estatus="c-amarillo";
-        //     }else{
-        //         $estatus="c-verde";
-        //     }
-
-        //     $collection=collect($inscritos);     
-        //     $alumno_array = $collection->toArray();
-        //     $alumno_array['estatus'] = $estatus;
-        //     $array[$inscritos->inscripcion_id] = $alumno_array;
-        // }
 
         return view('reportes.estatus_alumnos')->with(['alumnos' => $alumnos, 'clases_grupales' => $clases]);
     }
@@ -2226,91 +1551,6 @@ public function PresencialesFiltros(Request $request)
 
     }
 
-    // public function Administrativo()
-    // {
-    //     $array = array();
-
-    //     $factura_join = DB::table('facturas')
-    //         ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
-    //         ->Leftjoin('usuario_externos','facturas.externo_id', '=', 'usuario_externos.id')
-    //         // ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
-    //         ->selectRaw('IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
-    //         ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
-    //         ->where('alumnos.deleted_at' , '=' , null)
-    //         ->OrderBy('facturas.created_at')
-    //     ->get();
-
-    //     $total_de_informe=0;
-
-    //     foreach($factura_join as $factura){
-
-    //         $total = ItemsFactura::where('factura_id', '=' ,  $factura->id)->sum('importe_neto');
-    //         $collection=collect($factura);     
-    //         $factura_array = $collection->toArray();
-            
-    //         $factura_array['total']=$total;
-    //         $total_de_informe+=$total;
-    //         $array[$factura->id] = $factura_array;
-
-    //     }
-
-    //     return view('reportes.administrativo')->with(['facturas'=> $array, 'total'=>$total_de_informe]);
-    // }
-
-    // public function AdministrativoFiltros(Request $request)
-    // {
-    //     if($request->mesActual){
-    //         $start = Carbon::now()->startOfMonth()->toDateString();
-    //         $end = Carbon::now()->endOfMonth()->toDateString();  
-    //     }
-    //     if($request->mesPasado){
-    //         $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-    //         $end = Carbon::now()->subMonth()->endOfMonth()->toDateString();  
-
-    //     }
-    //     if($request->today){
-    //         $start = Carbon::now()->toDateString();
-    //         $end = Carbon::now()->toDateString();  
-    //     }
-    //     if($request->rango){
-    //         //$fechas = explode(' - ', $request->dateRange);
-    //         $start = Carbon::createFromFormat('d/m/Y',$request->fechaInicio)->toDateString();
-    //         $end = Carbon::createFromFormat('d/m/Y',$request->fechaFin)->toDateString();
-    //     }
-
-    //     if($request->Fecha){
-    //         $fechas = explode('-', $request->Fecha);
-    //         $start = Carbon::createFromFormat('d/m/Y',$fechas[0])->toDateString();
-    //         $end = Carbon::createFromFormat('d/m/Y',$fechas[1])->toDateString();
-    //     }
-
-    //     $array = array();
-
-    //     $factura_join = DB::table('facturas')
-    //         ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
-    //         ->Leftjoin('usuario_externos','facturas.externo_id', '=', 'usuario_externos.id')
-    //         // ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
-    //         ->selectRaw('IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
-    //         ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
-    //         ->where('alumnos.deleted_at' , '=' , null)
-    //         ->whereBetween('facturas.fecha', [$start,$end])
-    //         ->OrderBy('facturas.created_at')
-    //     ->get();
-
-    //     foreach($factura_join as $factura){
-
-    //         $total = ItemsFactura::where('factura_id', '=' ,  $factura->id)->sum('importe_neto');
-    //         $collection=collect($factura);     
-    //         $factura_array = $collection->toArray();
-            
-    //         $factura_array['total']=$total;
-    //         $array[$factura->id] = $factura_array;
-    //     }
-
-    //     return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 200]);
-
-    // }
-
     public function Camiseta_Programacion(){
 
         $inscritos = DB::table('inscripcion_clase_grupal')
@@ -2540,8 +1780,6 @@ public function PresencialesFiltros(Request $request)
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
             ->orderBy('clases_grupales.hora_inicio', 'asc')
         ->get();
-
-                        
 
         return view('reportes.credenciales')->with(['alumnos' => $alumnos, 'clases_grupales' => $clases_grupales]);
     }
@@ -3253,5 +2491,192 @@ public function PresencialesFiltros(Request $request)
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'estatus' => $array_estatus, 200]);
 
     }
+
+    public function Reservaciones(){
+
+        $clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->select('clases_grupales.id',
+                         'clases_grupales.hora_inicio',
+                         'clases_grupales.hora_final',
+                         'clases_grupales.fecha_inicio',
+                         'config_clases_grupales.nombre',
+                         'instructores.nombre as instructor_nombre',
+                         'instructores.apellido as instructor_apellido')
+                ->where('clases_grupales.academia_id','=',Auth::user()->academia_id)
+                ->orderBy('clases_grupales.hora_inicio', 'asc')
+        ->get();
+
+        $array = array();
+
+        foreach($clases_grupales as $clase){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
+          
+            $i = $fecha->dayOfWeek;
+
+            if($i == 1){
+
+              $dia = 'Lunes';
+
+            }else if($i == 2){
+
+              $dia = 'Martes';
+
+            }else if($i == 3){
+
+              $dia = 'Miercoles';
+
+            }else if($i == 4){
+
+              $dia = 'Jueves';
+
+            }else if($i == 5){
+
+              $dia = 'Viernes';
+
+            }else if($i == 6){
+
+              $dia = 'Sabado';
+
+            }else if($i == 0){
+
+              $dia = 'Domingo';
+
+            }
+
+            $collection=collect($clase);     
+            $clase_array = $collection->toArray();
+                
+            $clase_array['dia']=$dia;
+            $array[$clase->id] = $clase_array;
+        }
+
+        return view('reportes.reservaciones')->with(['clases_grupales' => $array]);
+    }
+
+    public function ReservacionesFiltros(Request $request)
+    {
+
+        $query = Reservacion::withTrashed()->where('academia_id', '=', Auth::user()->academia_id);
+
+        if($request->tipo)
+        {
+            if($request->tipo == 1){
+                $query->where('fecha_vencimiento','>=', Carbon::now()->toDateString())->whereNull('deleted_at');
+            }else{
+                $query->where('fecha_vencimiento','<', Carbon::now()->toDateString());
+            }
+            
+        }
+
+        if($request->clase_grupal_id)
+        {
+            $query->where('tipo_reservacion',1)->where('tipo_reservacion_id',$request->clase_grupal_id);
+        }
+
+        if($request->boolean_fecha){
+            $fecha = explode(' - ', $request->fecha2);
+            $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+            $query->whereBetween('fecha_reservacion', [$start,$end]);
+        }else{
+
+            if($request->fecha){
+                if($request->fecha == 1){
+                    $start = Carbon::now()->toDateString();
+                    $end = Carbon::now()->toDateString();  
+                }else if($request->fecha == 2){
+                    $start = Carbon::now()->startOfMonth()->toDateString();
+                    $end = Carbon::now()->endOfMonth()->toDateString();  
+                }else if($request->fecha == 3){
+                    $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                    $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
+                }
+
+                $query->whereBetween('fecha_reservacion', [$start,$end]);
+            }
+        }
+
+            
+        $reservaciones = $query->get();
+
+        $array = array();
+
+        $total_confirmaciones = 0;
+        $total = 0;
+        $mujeres = 0;
+        $hombres = 0;
+        $interna = 0;
+        $externa = 0;
+
+        foreach($reservaciones as $reservacion){
+
+            if($reservacion->boolean_confirmacion){
+                $boolean_confirmacion = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
+                $total_confirmaciones++; 
+            }else{
+                $boolean_confirmacion = '<i class="zmdi c-amarillo zmdi-dot-circle zmdi-hc-fw"></i>';
+            }
+
+            $total++;
+            
+            if($reservacion->tipo_usuario == 1){
+                $alumno = Alumno::withTrashed()->find($reservacion->tipo_usuario_id);
+                $interna++;
+            }else if($reservacion->tipo_usuario == 2){
+                $alumno = Visitante::withTrashed()->find($reservacion->tipo_usuario_id);
+                $interna++;
+            }else{
+                $alumno = Participante::find($reservacion->tipo_usuario_id);
+                $externa++;
+            }
+
+            if($alumno->sexo == 'F'){
+                $mujeres++;
+            }else{
+                $hombres++;
+            }
+
+            $clase_grupal = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->select('config_clases_grupales.nombre')
+                ->where('clases_grupales.id','=',$reservacion->tipo_reservacion_id)
+            ->first();
+
+            $collection=collect($reservacion);     
+            $reservacion_array = $collection->toArray();   
+            $reservacion_array['nombre'] = $alumno->nombre;
+            $reservacion_array['apellido'] = $alumno->apellido;
+            $reservacion_array['sexo'] = $alumno->sexo;
+            $reservacion_array['celular'] = $alumno->celular;
+            $reservacion_array['clase'] = $clase_grupal->nombre;
+            $reservacion_array['boolean_confirmacion'] = $boolean_confirmacion;
+            $array[$reservacion->id] = $reservacion_array;
+        }
+
+        $array_reservacion = array();
+
+        $array_interna = array('Interna', $interna);
+        $array_externa = array('Externa', $externa);
+
+        array_push($array_reservacion, $array_interna);
+        array_push($array_reservacion, $array_externa);   
+
+        return response()->json(
+            [
+                'reservaciones'                 => $array,
+                'mujeres'                       => $mujeres,
+                'hombres'                       => $hombres,
+                'total'                         => $total,
+                'tipos'                         => $array_reservacion,
+                'total_confirmaciones'          => $total_confirmaciones,
+                'mensaje'                       => '¡Excelente! El reporte se ha generado satisfactoriamente',
+                'status'                        => 'OK'
+
+            ]);
+
+    }
+
+
 
 }

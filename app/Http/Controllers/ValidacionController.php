@@ -274,7 +274,8 @@ class ValidacionController extends BaseController {
                         }
                         
                         $codigo->delete();
-                        $reservacion->delete();
+                        $reservacion->boolean_confirmacion = 1;
+                        $reservacion->save();
 
                         return redirect('participante/alumno/deuda/'.$alumno->id);
                     }else{
