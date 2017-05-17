@@ -1341,68 +1341,72 @@ class AcademiaController extends BaseController {
                 $horario = HorarioClaseGrupal::where('clase_grupal_id',$clase_grupal->clase_grupal_id)->first();
                 $fecha_clase = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
 
-                if($horario){
+                if($fecha_clase <= Carbon::now()){
 
-                    $fecha_horario = Carbon::createFromFormat('Y-m-d', $horario->fecha);
-                    $dia_clase = $fecha_clase->dayOfWeek;
-                    $dia_horario = $fecha_horario->dayOfWeek;
+                    if($horario){
 
-                    $dias = abs($dia_clase - $dia_horario);
+                        $fecha_horario = Carbon::createFromFormat('Y-m-d', $horario->fecha);
+                        $dia_clase = $fecha_clase->dayOfWeek;
+                        $dia_horario = $fecha_horario->dayOfWeek;
 
-                }else{
-                    $dias = 7;
-                }
+                        $dias = abs($dia_clase - $dia_horario);
 
-                $ultima_asistencia_clase = Asistencia::where('tipo',1)->where('alumno_id',$id)->orderBy('created_at', 'desc')->first();
+                    }else{
+                        $dias = 7;
+                    }
 
-                $ultima_asistencia_horario = Asistencia::where('tipo',2)->where('alumno_id',$id)->orderBy('created_at', 'desc')->first();
+                    $ultima_asistencia_clase = Asistencia::where('tipo',1)->where('alumno_id',$id)->orderBy('created_at', 'desc')->first();
 
-                if($ultima_asistencia_horario OR $ultima_asistencia_clase){
+                    $ultima_asistencia_horario = Asistencia::where('tipo',2)->where('alumno_id',$id)->orderBy('created_at', 'desc')->first();
 
-                    if($ultima_asistencia_horario){
-                        if($ultima_asistencia_clase){
-                            $fecha_horario = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_horario->fecha);
-                            $fecha_clase = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_clase->fecha);
+                    if($ultima_asistencia_horario OR $ultima_asistencia_clase){
 
-                            if($fecha_clase > $fecha_horario){
-                                $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_clase->fecha);
+                        if($ultima_asistencia_horario){
+                            if($ultima_asistencia_clase){
+                                $fecha_horario = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_horario->fecha);
+                                $fecha_clase = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_clase->fecha);
+
+                                if($fecha_clase > $fecha_horario){
+                                    $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_clase->fecha);
+                                }else{
+                                    $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_horario->fecha);
+                                }
+
                             }else{
                                 $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_horario->fecha);
                             }
 
                         }else{
-                            $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_horario->fecha);
+                            $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_clase->fecha);
                         }
-
                     }else{
-                        $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_clase->fecha);
+                        $fecha = $fecha_clase;
                     }
-                }else{
-                    $fecha = $fecha_clase;
-                }
 
-                while($fecha <= Carbon::now())
-                {
-                    $fecha_a_comparar = $fecha->toDateString();
+                    while($fecha <= Carbon::now())
+                    {
+                        $fecha_a_comparar = $fecha->toDateString();
 
-                    $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha_a_comparar)
-                        ->where('fecha_final', '>=', $fecha_a_comparar)
-                        ->where('tipo_id', $clase_grupal->id)
-                        ->whereIn('tipo', $in)
-                    ->first();
+                        $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha_a_comparar)
+                            ->where('fecha_final', '>=', $fecha_a_comparar)
+                            ->where('tipo_id', $clase_grupal->id)
+                            ->whereIn('tipo', $in)
+                        ->first();
 
-                    if(!$horario_bloqueado){
-                        $fecha->addDays($dias);
-                        $inasistencias++;
+                        if(!$horario_bloqueado){
+                            $fecha->addDays($dias);
+                            $inasistencias++;
+                        }
+                        
                     }
                     
-                }
-                
-                if($inasistencias <= $asistencia_roja){
-                    $status = true;
-                    break;
-                }else{
-                    $status = false;
+                    if($inasistencias <= $asistencia_roja){
+                        $status = true;
+                        break;
+                    }else{
+                        $status = false;
+                    }
+
                 }
                 
             }
