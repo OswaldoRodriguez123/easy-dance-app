@@ -1202,6 +1202,10 @@
                                                         </li>
 
                                                         <li class="hidden-xs">
+                                                            <a href="{{url('/')}}/participante/alumno/llamadas/{{$alumno_id}}"><i class="zmdi zmdi-phone f-20"></i> Llamadas</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
                                                             <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
                                                         </li>
 

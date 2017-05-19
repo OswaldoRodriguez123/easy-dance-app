@@ -580,7 +580,7 @@ class VisitanteController extends BaseController {
 
       $interesado = Visitante::find($id);
 
-      $llamadas = Llamada::where('visitante_id', $id)->get();
+      $llamadas = Llamada::where('usuario_id', $id)->where('usuario_tipo',1)->get();
 
       return view('participante.visitante.llamada.principal')->with(['id' => $id, 'llamadas' => $llamadas, 'interesado' => $interesado]);
     }
@@ -651,7 +651,8 @@ class VisitanteController extends BaseController {
 
         $llamada = new Llamada;
         
-        $llamada->visitante_id = $request->id;
+        $llamada->usuario_id = $request->id;
+        $llamada->usuario_tipo = 1;
         $llamada->observacion = $request->observacion;
         $llamada->status = $request->status;
         $llamada->fecha_llamada = $fecha_llamada;
@@ -670,10 +671,10 @@ class VisitanteController extends BaseController {
     }
 
     public function eliminarLlamada($id){
-      $llamada=Llamada::find($id);
-      
-      $llamada->delete();
 
+      $llamada=Llamada::find($id);
+      $llamada->delete();
+      
       return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
     }
 

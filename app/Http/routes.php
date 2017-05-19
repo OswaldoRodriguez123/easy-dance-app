@@ -519,6 +519,11 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('participante/alumno/puntos-acumulados/eliminar/{id}', 'AlumnoController@eliminar_remuneracion');
 		Route::post('participante/alumno/credenciales/eliminar/{id}', 'AlumnoController@eliminar_credencial');
 
+		Route::get('participante/alumno/llamadas/{id}', 'AlumnoController@indexLlamada');
+		Route::get('participante/alumno/llamadas/agregar/{id}', 'AlumnoController@createLlamada');
+		Route::post('participante/alumno/llamadas/agregar', 'AlumnoController@storeLlamada');
+		Route::delete('participante/alumno/llamadas/eliminar/{id}', 'AlumnoController@eliminarLlamada');
+
 		//INSTRUCTOR
 
 		Route::get('participante/instructor', 'InstructorController@index');
@@ -577,6 +582,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('participante/visitante/llamadas/{id}', 'VisitanteController@indexLlamada');
 		Route::get('participante/visitante/llamadas/agregar/{id}', 'VisitanteController@createLlamada');
 		Route::post('participante/visitante/llamadas/agregar', 'VisitanteController@storeLlamada');
+		Route::delete('participante/visitante/llamadas/eliminar/{id}', 'VisitanteController@eliminarLlamada');
 
 		//FAMILIA
 

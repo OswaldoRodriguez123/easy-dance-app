@@ -808,7 +808,7 @@ class AdministrativoController extends BaseController {
                     
                     $pago->save();
 
-                    $total_pago = $total_pago + $arreglo[$i][0]['monto'];
+                    $total_pago = $total_pago + $monto;
 
                 }
 

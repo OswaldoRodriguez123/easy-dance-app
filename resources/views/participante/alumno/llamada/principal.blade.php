@@ -22,12 +22,12 @@
 @section('content')
 
 
-<a href="{{url('/')}}/participante/visitante/llamadas/agregar/{{$id}}" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
+<a href="{{url('/')}}/participante/alumno/llamadas/agregar/{{$id}}" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                        <?php $url = "/participante/visitante/detalle/$id" ?>
+                        <?php $url = "/participante/alumno/detalle/$id" ?>
                         <a class="btn-blanco m-r-10 f-16" href="{{$url}}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
@@ -148,9 +148,10 @@
             
     <script type="text/javascript">
 
-        route_eliminar="{{url('/')}}/participante/visitante/llamadas/eliminar/";
+        route_detalle="{{url('/')}}/participante/alumno/detalle";
+        route_eliminar="{{url('/')}}/participante/alumno/llamadas/eliminar/";
             
-    $(document).ready(function() {
+        $(document).ready(function() {
 
       t = $('#tablelistar').DataTable({
         processing: true,
@@ -207,8 +208,9 @@
             var nType = 'success';
             var nAnimIn = $(this).attr('data-animation-in');
             var nAnimOut = $(this).attr('data-animation-out')
-
-            eliminar(id, element);
+                       
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                        eliminar(id, element);
           }
                 });
             });

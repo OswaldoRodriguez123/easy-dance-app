@@ -43,6 +43,7 @@ use App\Incidencia;
 use App\Sugerencia;
 use App\Staff;
 use App\CredencialAlumno;
+use App\Llamada;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Image;
@@ -1574,6 +1575,108 @@ class AlumnoController extends BaseController
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
+    }
+
+    public function indexLlamada($id){
+
+      $interesado = Alumno::find($id);
+
+      $llamadas = Llamada::where('usuario_id', $id)->where('usuario_tipo',2)->get();
+
+      return view('participante.alumno.llamada.principal')->with(['id' => $id, 'llamadas' => $llamadas, 'interesado' => $interesado]);
+    }
+
+    public function createLlamada($id){
+        $academia = Academia::find(Auth::user()->academia_id);
+        if($academia->pais_id == 11){
+            $hora = Carbon::now('America/Bogota');  
+        }else{
+            $hora = Carbon::now('America/Caracas');
+        }
+      $hora_actual = $hora->format('H:i');
+      // $hora_actual = $hora->sub(new DateInterval('PT30H'))->format('H:i');
+      $interesado = Visitante::find($id);
+      return view('participante.alumno.llamada.create')->with(['id' => $id, 'interesado' => $interesado, 'hora_actual' => $hora_actual]);
+    }
+
+    public function storeLlamada(Request $request){
+
+      $rules = [
+          'status' => 'required',
+          'hora_llamada' => 'required'
+
+      ];
+
+      $messages = [
+
+          'status.required' => 'Ups! El Estatus es requerido',
+          'hora_llamada.required' => 'Ups! La hora es requerida',
+
+      ];
+
+      $validator = Validator::make($request->all(), $rules, $messages);
+
+      if ($validator->fails()){
+
+          return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+      }
+
+      else{
+
+
+        $academia = Academia::find(Auth::user()->academia_id);
+        if($academia->pais_id == 11){
+            $fecha_llamada = Carbon::now('America/Bogota');  
+        }else{
+            $fecha_llamada = Carbon::now('America/Caracas');
+        }
+
+        if($request->fecha_siguiente){
+
+          $fecha_siguiente = Carbon::createFromFormat('d/m/Y', $request->fecha_siguiente);
+          
+          if($fecha_llamada > $fecha_siguiente ) {
+
+             return response()->json(['errores' => ['fecha_siguiente' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha mayor a hoy']], 'status' => 'ERROR'],422);
+           } 
+
+         }else{
+          $fecha_siguiente = '';
+         }
+
+         if($request->hora_siguiente){
+          $hora_siguiente = $request->hora_siguiente;
+         }else{
+          $hora_siguiente = '';
+         }
+
+        $llamada = new Llamada;
+        
+        $llamada->usuario_id = $request->id;
+        $llamada->usuario_tipo = 2;
+        $llamada->observacion = $request->observacion;
+        $llamada->status = $request->status;
+        $llamada->fecha_llamada = $fecha_llamada;
+        $llamada->hora_llamada = $request->hora_llamada;
+        $llamada->fecha_siguiente = $fecha_siguiente;
+        $llamada->hora_siguiente = $hora_siguiente;
+
+        if($llamada->save()){
+
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+        }
+      }
+    }
+
+    public function eliminarLlamada($id){
+
+      $llamada=Llamada::find($id);
+      $llamada->delete();
+      
+      return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
 
