@@ -1251,6 +1251,7 @@ class TallerController extends BaseController {
             $taller = Taller::find($id);
             
             if($taller->delete()){
+                $delete = ConfigServicios::where('tipo',5)->where('tipo_id',$id)->delete();
                 return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);

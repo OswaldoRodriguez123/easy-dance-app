@@ -5,9 +5,9 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\ConfigClasesGrupales;
+use App\ConfigServicios;
 use App\ClaseGrupal;
 use App\InscripcionClaseGrupal;
-use App\ConfigServicios;
 use App\Academia;
 use App\Notificacion;
 use App\NotificacionUsuario;
@@ -484,6 +484,10 @@ class ConfigClasesGrupalesController extends BaseController {
         $clasegrupal = ConfigClasesGrupales::find($id);
         
         if($clasegrupal->delete()){
+
+            $in = array(3,4);
+
+            $delete = ConfigServicios::whereIn('tipo',$in)->where('tipo_id',$id)->delete();
             return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);

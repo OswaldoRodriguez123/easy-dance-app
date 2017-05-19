@@ -340,6 +340,7 @@ class PaqueteController extends BaseController {
         $paquete = Paquete::find($id);
         
         if($paquete->delete()){
+            $delete = ConfigServicios::where('tipo',15)->where('tipo_id',$id)->delete();
             return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);

@@ -1034,6 +1034,8 @@ class ConfigClasePersonalizadaController extends BaseController {
         $clasepersonalizada = ClasePersonalizada::find($id);
         
         if($clasepersonalizada->delete()){
+
+            $delete = ConfigServicios::where('tipo',9)->where('tipo_id',$id)->delete();
             return response()->json(['mensaje' => '¡Excelente! La Clase Personalizada se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);

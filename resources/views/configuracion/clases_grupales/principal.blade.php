@@ -241,7 +241,6 @@
             var nTitle="Ups! ";
             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
             // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-            swal("Hecho!","Eliminado con éxito!","success");
             
             eliminar(id, element);
                 }
@@ -258,10 +257,10 @@
                     dataType: 'json',
                     data:id,
                     success:function(respuesta){
-
-                    t.row( $(element).parents('tr') )
-                      .remove()
-                      .draw();
+                        swal("Hecho!","Eliminado con éxito!","success");
+                        t.row( $(element).parents('tr') )
+                          .remove()
+                          .draw();
 
                     },
                     error:function(msj){

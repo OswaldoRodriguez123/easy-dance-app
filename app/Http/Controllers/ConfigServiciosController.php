@@ -5,6 +5,10 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\ConfigServicios;
+use App\ClasePersonalizada;
+use App\Taller;
+use App\ConfigClasesGrupales;
+use App\Paquete;
 use App\Academia;
 use Validator;
 use Session;
@@ -344,6 +348,29 @@ class ConfigServiciosController extends BaseController {
         $servicio = ConfigServicios::find($id);
         
         if($servicio->delete()){
+
+            if($servicio->tipo == 5){
+                $delete = Taller::withTrashed()->find($servicio->tipo_id);
+                if($delete){
+                    $delete->delete();
+                }
+            }else if($servicio->tipo == 9){
+                $delete = ClasePersonalizada::withTrashed()->find($servicio->tipo_id);
+                if($delete){
+                    $delete->delete();
+                }
+            }else if($servicio->tipo == 3 OR $servicio->tipo == 4){
+                $delete = ConfigClasesGrupales::withTrashed()->find($servicio->tipo_id);
+                if($delete){
+                    $delete->delete();
+                }
+            }else if($servicio->tipo == 15){
+                $delete = Paquete::withTrashed()->find($servicio->tipo_id);
+                if($delete){
+                    $delete->delete();
+                }
+            }
+
             return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
