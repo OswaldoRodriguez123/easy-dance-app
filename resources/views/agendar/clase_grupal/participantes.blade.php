@@ -1219,7 +1219,7 @@
                                       </td>
                                   </tr>
                                 @else
-                                  <tr data-tipo ="{{$alumno['tipo']}}" id="{{$alumno['inscripcion_id']}}" class="seleccion seleccion_deleted">
+                                  <tr data-tipo ="{{$alumno['tipo']}}" data-sexo="{{$alumno['sexo']}}" id="{{$alumno['inscripcion_id']}}" class="seleccion seleccion_deleted">
                                       <td class="text-center previa"><span style="display: none">2</span><span class="c-amarillo"><b>R</b></span></td>
                                       <td class="text-center previa">
 
@@ -2320,67 +2320,67 @@
             });
       
         function eliminar(id, element){
-         var tipo = $(element).closest('tr').data('tipo');
-         if(tipo == 1){
-          var route = route_eliminar + id;
-         }else{
-          var route = route_eliminar_reserva + id;
-         }
-         
-         var token = "{{ csrf_token() }}";
-         var sexo = $(element).closest('tr').data('sexo');
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    data: id,
-                    success:function(respuesta){
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          // finprocesado();
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
+          procesando()
+          var tipo = $(element).closest('tr').data('tipo');
+          if(tipo == 1){
+            var route = route_eliminar + id;
+          }else{
+            var route = route_eliminar_reserva + id;
+          }
+          var token = $('input:hidden[name=_token]').val();
+          $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+            dataType: 'json',
+            data: id,
+            success:function(respuesta){
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+                // finprocesado();
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
 
-                          t.row( $(element).parents('tr') )
-                            .remove()
-                            .draw();
+                t.row( $(element).parents('tr') )
+                  .remove()
+                  .draw();
 
-                          swal("Exito!","La reservación ha sido eliminada!","success");
+                swal("Exito!","La reservación ha sido eliminada!","success");
+                var sexo = $(element).closest('tr').data('sexo');
 
-                          if(sexo == 'F'){
+                if(sexo == 'F'){
 
-                            mujeres = mujeres - 1
+                  mujeres = mujeres - 1
 
-                            $('#span_mujeres').text(mujeres)
+                  $('#span_mujeres').text(mujeres)
 
-                          }else{
-                            hombres = hombres - 1
+                }else{
+                  hombres = hombres - 1
 
-                            $('#span_hombres').text(hombres)
-                          }
-                        
-                        }
-                    },
-                    error:function(msj){
-                                $("#msj-danger").fadeIn(); 
-                                var text="";
-                                console.log(msj);
-                                var merror=msj.responseJSON;
-                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                $("#msj-error").html(text);
-                                setTimeout(function(){
-                                         $("#msj-danger").fadeOut();
-                                        }, 3000);
-                                }
-                });
-      }
+                  $('#span_hombres').text(hombres)
+                }
+                finprocesado()
+              
+              }
+            },
+            error:function(msj){
+              $("#msj-danger").fadeIn(); 
+              var text="";
+              console.log(msj);
+              var merror=msj.responseJSON;
+              text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+              $("#msj-error").html(text);
+              setTimeout(function(){
+                       $("#msj-danger").fadeOut();
+                      }, 3000);
+              }
+          });
+        }
 
     $(document).on({
     'show.bs.modal': function () {

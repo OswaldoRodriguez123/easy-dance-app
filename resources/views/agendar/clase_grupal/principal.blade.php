@@ -224,11 +224,11 @@
         $(".button_derecha").removeAttr("disabled");
 
 
-        if( i == 1){
+        if(i == 1){
             $(".button_izquierda").attr("disabled","disabled");
         }
 
-        if( i == 7){
+        if(i == 7){
             $(".button_derecha").attr("disabled","disabled");
         }
 

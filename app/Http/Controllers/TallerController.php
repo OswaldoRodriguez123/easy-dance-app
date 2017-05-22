@@ -42,28 +42,29 @@ class TallerController extends BaseController {
         $academia = Academia::find(Auth::user()->academia_id);
         $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-        if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6){
+        foreach($talleres as $taller){
 
-            return view('agendar.taller.principal')->with(['taller' => $talleres, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo]);
+            $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
+            if($fecha >= Carbon::now()){
 
-        }else{
+                $dias_restantes = $fecha->diffInDays();
+                $status = 'Activa';
 
-            foreach($talleres as $taller){
-
-                $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
-
-                if($fecha > Carbon::now()){
-
-                    $collection=collect($taller);     
-                    $taller_array = $collection->toArray();
-
-                    $array[$taller->id] = $taller_array;
-                }
+            }else{
+                $dias_restantes = 0;
+                $status = 'Vencida';
             }
 
-             return view('agendar.taller.principal')->with(['taller' => $array, 'academia' => $academia]);
-
+            $collection=collect($taller);  
+            $taller_array = $collection->toArray();   
+            $taller_array['status']=$status;
+            $taller_array['dias_restantes']=$dias_restantes;
+            
+            $array[$taller->id] = $taller_array;
         }
+
+        return view('agendar.taller.principal')->with(['talleres' => $array, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo]);
+        
     }
 
     public function indexconacademia($id)

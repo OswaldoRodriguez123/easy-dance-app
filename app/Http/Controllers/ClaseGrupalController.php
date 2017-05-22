@@ -132,6 +132,9 @@ class ClaseGrupalController extends BaseController {
             $geoip->setIp($request->ip());
             $actual->tz = $geoip->getTimezone();
             $hoy = $actual->dayOfWeek;
+            if($hoy == 0){
+                $hoy = 7;
+            } 
 
             $alumnos = Alumno::where('academia_id',Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
