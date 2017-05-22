@@ -105,7 +105,7 @@
                                 $hora_start=explode(':',$evento->hora_inicio);
                                 $hora_end=explode(':',$evento->hora_final);
 
-                                if(\Carbon\Carbon::parse($clase['fecha_inicio']) >= \Carbon\Carbon::now()->subDay()){
+                                if(\Carbon\Carbon::parse($evento->fecha) >= \Carbon\Carbon::now()->subDay()){
                                     $etiqueta = $evento->color_etiqueta;
                                     $actividad = 'actividad';
                                     $url = "{{url('/')}}/configuracion/eventos-laborales/detalle/{{$evento->id}}";
