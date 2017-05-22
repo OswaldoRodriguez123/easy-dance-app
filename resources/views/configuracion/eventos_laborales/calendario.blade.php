@@ -99,20 +99,32 @@
                         @foreach ($eventos as $evento)
                         {
                             <?php
-                            $fecha_start=explode('-',$evento->fecha);
-                            $fecha_end=explode('-',$evento->fecha);
-                            $hora_start=explode(':',$evento->hora_inicio);
-                            $hora_end=explode(':',$evento->hora_final);
+                        
+                                $fecha_start=explode('-',$evento->fecha);
+                                $fecha_end=explode('-',$evento->fecha);
+                                $hora_start=explode(':',$evento->hora_inicio);
+                                $hora_end=explode(':',$evento->hora_final);
+
+                                if(\Carbon\Carbon::parse($clase['fecha_inicio']) >= \Carbon\Carbon::now()->subDay()){
+                                    $etiqueta = $evento->color_etiqueta;
+                                    $actividad = 'actividad';
+                                    $url = "{{url('/')}}/configuracion/eventos-laborales/detalle/{{$evento->id}}";
+                                }else{
+                                    $etiqueta = '#B8B8B8';
+                                    $actividad = 'disabled';
+                                    $url = '';
+                                }
+                       
                             ?>
                             id: 'evento-{{$evento->id}}',
                             title: "{{$evento->nombre}}" ,
                             start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
                             end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
                             allDay: false,
-                            backgroundColor:'{{$evento->color_etiqueta}}',
-                            className: 'actividad',
-                            url: '{{url('/')}}/configuracion/eventos-laborales/detalle/{{$evento->id}}'
-                            },
+                            backgroundColor:'{{$etiqueta}}',
+                            className: '{{$actividad}}',
+                            url: '{{$url}}',
+                        },
                         @endforeach
 
                         
@@ -257,6 +269,17 @@
                     e.preventDefault();
                      
                 });
+
+                $('.disabled').attr('data-trigger','hover');
+                $('.disabled').attr('data-toggle','popover');
+                $('.disabled').attr('data-placement','top');
+                $('.disabled').attr('data-content','<p class="c-negro">Esta actividad esta vencida</p>');
+                $('.disabled').attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;');
+                $('.disabled').attr('data-container','body');
+                $('.disabled').attr('data-html','true');
+                $('.disabled').attr('title','');
+
+                $('[data-toggle="popover"]').popover(); 
 
                 function htmlEscape(s) {
                     return (s + '').replace(/&/g, '&amp;')

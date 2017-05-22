@@ -67,6 +67,7 @@ class TallerController extends BaseController {
 
             return view('agendar.taller.principal')->with(['talleres' => $array, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo]);
         }else{
+            
             foreach($talleres as $taller){
 
                 $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
