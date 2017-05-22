@@ -42,28 +42,85 @@ class TallerController extends BaseController {
         $academia = Academia::find(Auth::user()->academia_id);
         $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-        foreach($talleres as $taller){
+        if($usuario_tipo == 1 OR $usuario_tipo == 3 OR $usuario_tipo == 5 || $usuario_tipo == 6){
 
-            $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
-            if($fecha >= Carbon::now()){
+            foreach($talleres as $taller){
 
-                $dias_restantes = $fecha->diffInDays();
-                $status = 'Activa';
+                $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
+                if($fecha >= Carbon::now()){
 
-            }else{
-                $dias_restantes = 0;
-                $status = 'Vencida';
+                    $dias_restantes = $fecha->diffInDays();
+                    $status = 'Activa';
+
+                }else{
+                    $dias_restantes = 0;
+                    $status = 'Vencida';
+                }
+
+                $collection=collect($taller);  
+                $taller_array = $collection->toArray();   
+                $taller_array['status']=$status;
+                $taller_array['dias_restantes']=$dias_restantes;
+                
+                $array[$taller->id] = $taller_array;
             }
 
-            $collection=collect($taller);  
-            $taller_array = $collection->toArray();   
-            $taller_array['status']=$status;
-            $taller_array['dias_restantes']=$dias_restantes;
-            
-            $array[$taller->id] = $taller_array;
-        }
+            return view('agendar.taller.principal')->with(['talleres' => $array, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo]);
+        }else{
+            foreach($talleres as $taller){
 
-        return view('agendar.taller.principal')->with(['talleres' => $array, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo]);
+                $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
+                $dia_de_semana = $fecha->dayOfWeek;
+
+                if($fecha >= Carbon::now() && $taller->boolean_promocionar == 1){
+
+                    $dia_string = '';
+
+                    $i = $fecha->dayOfWeek;
+
+                    if($i == 1){
+
+                      $dia = 'Lunes';
+
+                    }else if($i == 2){
+
+                      $dia = 'Martes';
+
+                    }else if($i == 3){
+
+                      $dia = 'Miercoles';
+
+                    }else if($i == 4){
+
+                      $dia = 'Jueves';
+
+                    }else if($i == 5){
+
+                      $dia = 'Viernes';
+
+                    }else if($i == 6){
+
+                      $dia = 'Sabado';
+
+                    }else if($i == 0){
+
+                      $dia = 'Domingo';
+
+                    }
+     
+                    $dia_string = $dia;
+                    
+
+                    $collection=collect($taller);     
+                    $taller_array = $collection->toArray();
+
+                    $taller_array['dias_de_semana']=$dia_string;
+                    $array[$taller->id] = $taller_array;
+                }
+            }
+
+            return view('agendar.taller.principal_alumno')->with(['talleres' => $array, 'academia' => $academia]);
+        }
         
     }
 
