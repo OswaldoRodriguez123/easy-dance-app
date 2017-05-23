@@ -915,14 +915,14 @@ class AsistenciaController extends BaseController
 
 
       $staff = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-
-      $alumnoc = DB::table('alumnos')
-        ->join('users', 'users.usuario_id', '=', 'alumnos.id')
-        ->select('alumnos.id as id')
-        ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-        ->where('alumnos.deleted_at', '=', null)
-        ->where('users.usuario_tipo', '=', 2)
-        ->where('users.confirmation_token', '!=', null)
+      $in = array(2,4);
+      $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+          ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+          ->select('alumnos.id as id')
+          ->where('users.academia_id','=', Auth::user()->academia_id)
+          ->where('alumnos.deleted_at', '=', null)
+          ->whereIn('usuarios_tipo.tipo', $in)
+          ->where('users.confirmation_token', '!=', null)
       ->get();
 
       $collection=collect($alumnoc);

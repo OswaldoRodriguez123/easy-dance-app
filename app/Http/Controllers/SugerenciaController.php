@@ -79,11 +79,10 @@ class SugerenciaController extends BaseController {
                     // ->get();
                     
                     // foreach ($usuarios as $usuario) {
-                    
-                    $instructor = Instructor::join('users', 'users.usuario_id', '=', 'instructores.id')
-                        ->select('users.*')
-                        ->where('instructores.id','=', $request->instructor_id)
-                        ->where('users.usuario_tipo', 3)
+
+                    $instructor = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                        ->where('usuarios_tipo.tipo_id',$request->instructor_id)
+                        ->where('usuarios_tipo.tipo',3)
                     ->first();
 
                     if($instructor){
@@ -112,9 +111,9 @@ class SugerenciaController extends BaseController {
     {
 
         $sugerencia = Sugerencia::join('users', 'sugerencias.usuario_id', '=', 'users.id')
-                ->select('sugerencias.*', 'users.nombre as nombre', 'users.apellido as apellido')
-                ->where('sugerencias.id', '=' , $id)
-            ->first();
+            ->select('sugerencias.*', 'users.nombre as nombre', 'users.apellido as apellido')
+            ->where('sugerencias.id', '=' , $id)
+        ->first();
 
         if($sugerencia){
 
