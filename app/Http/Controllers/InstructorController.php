@@ -319,47 +319,51 @@ class InstructorController extends BaseController {
                 $usuario->password = bcrypt(str_random(8));
                 $usuario->usuario_id = $instructor->id;
                 $usuario->usuario_tipo = 3;
+
+                $usuario->save();
+
+                $usuario_tipo = new UsuarioTipo;
+                $usuario_tipo->usuario_id = $usuario->id;
+                $usuario_tipo->tipo = 3;
+                $usuario_tipo->tipo_id = $instructor->id;
+                $usuario_tipo->save();
                 
-            }else{
-                $usuario->usuario_tipo = $usuario->usuario_tipo.',3';
-                $usuario->usuario_id = $usuario->usuario_id.','.$instructor->id;
             }
 
-            if($usuario->save()){
+            
+            if($request->imagePerfilBase64){
 
-                if($request->imagePerfilBase64){
+                $nombre_img = "usuario-". $usuario->id . $extension;
+                $image = base64_decode($base64_string);
 
-                    $nombre_img = "usuario-". $usuario->id . $extension;
-                    $image = base64_decode($base64_string);
+                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(300, 300);
+                $img->save('assets/uploads/usuario/'.$nombre_img);
 
-                    // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
-                    $img = Image::make($image)->resize(300, 300);
-                    $img->save('assets/uploads/usuario/'.$nombre_img);
+                $usuario->imagen = $nombre_img;
+                $usuario->save();
 
-                    $usuario->imagen = $nombre_img;
-                    $usuario->save();
-
-                }
-
-                // $academia = Academia::find(Auth::user()->academia_id);
-                // $contrasena = $usuario->password;
-                // $subj = $instructor->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
-
-                // $array = [
-                //    'nombre' => $request->nombre,
-                //    'academia' => $academia->nombre,
-                //    'usuario' => $request->correo,
-                //    'contrasena' => $contrasena,
-                //    'subj' => $subj
-                // ];
-
-                // Mail::send('correo.inscripcion', $array, function($msj) use ($array){
-                //         $msj->subject($array['subj']);
-                //         $msj->to($array['usuario']);
-                //     });
-
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
             }
+
+            // $academia = Academia::find(Auth::user()->academia_id);
+            // $contrasena = $usuario->password;
+            // $subj = $instructor->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
+
+            // $array = [
+            //    'nombre' => $request->nombre,
+            //    'academia' => $academia->nombre,
+            //    'usuario' => $request->correo,
+            //    'contrasena' => $contrasena,
+            //    'subj' => $subj
+            // ];
+
+            // Mail::send('correo.inscripcion', $array, function($msj) use ($array){
+            //         $msj->subject($array['subj']);
+            //         $msj->to($array['usuario']);
+            //     });
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

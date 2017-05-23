@@ -23,6 +23,7 @@ use App\ConfigServicios;
 use App\ClaseGrupal;
 use App\MercadopagoMovs;
 use App\User;
+use App\UsuarioTipo;
 use App\Familia;
 use App\Paquete;
 use App\CredencialAlumno;
@@ -2445,6 +2446,13 @@ class AdministrativoController extends BaseController {
                     $usuario->usuario_id = $alumno->id;
 
                     if($usuario->save()){
+
+                        $usuario_tipo = new UsuarioTipo;
+                        $usuario_tipo->usuario_id = $usuario->id;
+                        $usuario_tipo->tipo = 2;
+                        $usuario_tipo->tipo_id = $alumno->id;
+                        $usuario_tipo->save();
+
                         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'alumno' => $alumno, 200]);
                     }else{
                         return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);

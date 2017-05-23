@@ -14,6 +14,7 @@ use App\ConfigServicios;
 use App\ConfigProductos;
 use App\PagoStaff;
 use App\User;
+use App\UsuarioTipo;
 use App\DiasDeSemana;
 use Mail;
 use DB;
@@ -196,10 +197,15 @@ class StaffController extends BaseController
                     $usuario->password = bcrypt(str_random(8));
                     $usuario->usuario_id = $staff->id;
                     $usuario->usuario_tipo = 8;
+
+                    $usuario->save();
+
+                    $usuario_tipo = new UsuarioTipo;
+                    $usuario_tipo->usuario_id = $usuario->id;
+                    $usuario_tipo->tipo = 8;
+                    $usuario_tipo->tipo_id = $staff->id;
+                    $usuario_tipo->save();
                     
-                }else{
-                    $usuario->usuario_tipo = $usuario->usuario_tipo.',8';
-                    $usuario->usuario_id = $usuario->usuario_id.','.$staff->id;
                 }
 
                 $horarios = Session::get('horarios_staff');

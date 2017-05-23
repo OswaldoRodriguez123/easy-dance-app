@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Alumno;
 use App\User;
+use App\UsuarioTipo;
 use App\Familia;
 use App\Academia;
 use App\ItemsFacturaProforma;
@@ -234,6 +235,12 @@ class FamiliaController extends BaseController {
 
                 $usuario->usuario_id = $alumno->id;
                 $usuario->save();
+
+                $usuario_tipo = new UsuarioTipo;
+                $usuario_tipo->usuario_id = $usuario->id;
+                $usuario_tipo->tipo = 4;
+                $usuario_tipo->tipo_id = $alumno->id;
+                $usuario_tipo->save();
                 
 
                 if($request->rol == "0"){

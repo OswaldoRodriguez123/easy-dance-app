@@ -20,6 +20,7 @@ use App\Instructor;
 use App\Participante;
 use App\Reservacion;
 use App\User;
+use App\UsuarioTipo;
 use Redirect;
 use Illuminate\Support\Facades\View;
 
@@ -111,6 +112,12 @@ class ValidacionController extends BaseController {
                                         $usuario->usuario_tipo = 2;
 
                                         $usuario->save();
+
+                                        $usuario_tipo = new UsuarioTipo;
+                                        $usuario_tipo->usuario_id = $usuario->id;
+                                        $usuario_tipo->tipo = 2;
+                                        $usuario_tipo->tipo_id = $alumno->id;
+                                        $usuario_tipo->save();
 
                                     }
 

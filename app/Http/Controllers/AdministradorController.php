@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\User;
+use App\UsuarioTipo;
 use App\Sucursal;
 use App\Academia;
 use Illuminate\Support\Facades\Auth;
@@ -134,6 +135,12 @@ class AdministradorController extends BaseController
 
             if($usuario->save())
             {
+
+                $usuario_tipo = new UsuarioTipo;
+                $usuario_tipo->usuario_id = $usuario->id;
+                $usuario_tipo->tipo = $request->usuario_tipo;
+                $usuario_tipo->tipo_id = 0;
+                $usuario_tipo->save();
 
                 $link = "confirmacion/?token=".$usuario->confirmation_token;
 

@@ -404,14 +404,19 @@ class AlumnoController extends BaseController
                     $usuario->confirmation_token = str_random(40);
                     $usuario->password = bcrypt($password);
                     $usuario->usuario_id = $alumno->id;
-                    $usuario->usuario_tipo = 2;
+                    $usuario->usuario_tipo = 2; 
 
-                }else{
-                    $usuario->usuario_tipo = $usuario->usuario_tipo.',2';
-                    $usuario->usuario_id = $usuario->usuario_id.','.$alumno->id;
+                    $usuario->save();
+
+                    $usuario_tipo = new UsuarioTipo;
+                    $usuario_tipo->usuario_id = $usuario->id;
+                    $usuario_tipo->tipo = 2;
+                    $usuario_tipo->tipo_id = $alumno->id;
+                    $usuario_tipo->save();
+
                 }
 
-                $usuario->save();
+               
 
             }
             
