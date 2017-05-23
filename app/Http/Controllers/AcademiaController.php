@@ -114,17 +114,13 @@ class AcademiaController extends BaseController {
 
     public function PostSeleccionar($id)
     {
-        $usuario_tipo = Auth::user()->usuario_tipo;
-        $usuario_id = Auth::user()->usuario_id;
-        $tipos_usuario = explode(',',$usuario_tipo);
-        $ids_usuario = explode(',',$usuario_id);
+        $tipos = UsuarioTipo::where('usuario_id',Auth::user()->id)->get();
         $i = 0;
-        foreach($tipos_usuario as $tipo){
-            if($tipo == $id){
-                Session::put('easydance_usuario_id',$ids_usuario[$i]);
+        foreach($tipos as $tipo){
+            if($tipo->tipo == $id){
+                Session::put('easydance_usuario_id',$tipo->tipo_id);
                 break;
             }
-            $i++;
         }
         Session::put('easydance_usuario_tipo',$id);
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
@@ -234,7 +230,7 @@ class AcademiaController extends BaseController {
             }else if($usuario_tipo == 2 || $usuario_tipo == 4){
 
                 $alumno = Alumno::find($usuario_id);
-
+                
                 if(!$alumno){
                     return view('inicio.cuenta-deshabilitada');
                 }else{
