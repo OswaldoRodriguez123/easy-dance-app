@@ -28,6 +28,8 @@
                     <div class="card">
                         <div class="card-header text-center">
 
+                        <div class="text-left"><a class="text-success f-20" href="{{url('/')}}/administrativo/transferencias">Confirmar Transferencia</a></div>
+
                         <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a icon_a-punto-de-venta f-25"></i> Sección Administrativa</p>
                         <hr class="linea-morada">
                                                               

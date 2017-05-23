@@ -728,7 +728,7 @@
 
                         <div class="clearfix p-b-35"></div>
 
-                        <label for="id" id="id-numero_cuenta">Número de transferencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el numero de cuenta" title="" data-original-title="Ayuda"></i>
+                        <label for="id" id="id-numero_cuenta">Número de transferencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Ingresa el numero de transferencia" title="" data-original-title="Ayuda"></i>
                         <div class="input-group">
                           <span class="input-group-addon"><i class="zmdi icon_c-money f-22"></i></span>
                           <div class="fg-line"> 

@@ -80,7 +80,7 @@
                                     <td class="text-center previa">{{$campana['fecha_inicio']}}</td>
                                     <td class="text-center previa">{{$campana['fecha_final']}}</td>
                                     <td class="text-center previa">
-                                        <span class="{{ empty($promocion['dias_restantes']) ? 'c-youtube' : '' }}">{{$campana['status']}}</span>
+                                        <span class="{{ empty($campana['dias_restantes']) ? 'c-youtube' : '' }}">{{$campana['status']}}</span>
                                         Restan {{$campana['dias_restantes']}} Días
                                     </td>
                                     <td class="text-center previa">{{ number_format($campana['cantidad'], 2, '.' , '.') }} </td>

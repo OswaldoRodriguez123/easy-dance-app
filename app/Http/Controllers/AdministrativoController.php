@@ -40,6 +40,10 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App\ConfigPagosStaff;
 use App\PagoStaff;
+use App\Transferencia;
+use App\Sugerencia;
+use App\Notificacion;
+use App\NotificacionUsuario;
 
 class AdministrativoController extends BaseController {
 
@@ -113,7 +117,7 @@ class AdministrativoController extends BaseController {
 
 
 
-            return view('vista_alumno.administrativo')->with(['facturas'=> $array, 'proforma' => $proforma_join, 'total' => $total, 'fecha_vencimiento' => $fecha_vencimiento]); 
+            return view('vista_alumno.administrativo.administrativo')->with(['facturas'=> $array, 'proforma' => $proforma_join, 'total' => $total, 'fecha_vencimiento' => $fecha_vencimiento]); 
         }
         else{
             return redirect("/"); 
@@ -211,12 +215,9 @@ class AdministrativoController extends BaseController {
 
 	public function generarpagos()
 	{
-        // if (Auth::check())
-        // {
-            $academia = Academia::find(Auth::user()->academia_id);
+     
+        $academia = Academia::find(Auth::user()->academia_id);
 
-        // }
-        
         if (Session::has('arreglo')) {
             Session::forget('arreglo'); 
         }
@@ -288,71 +289,11 @@ class AdministrativoController extends BaseController {
 		return view('administrativo.pagos.pagos')->with(['alumnos' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto]);
 	}
 
-    // public function gestion($id)
-    // {
-    //     $proforma = FacturaProforma::find($id);
-    //     $alumno = Alumno::where('id', '=', $proforma->alumno_id)->first();
-    //     $academia = Academia::find(Auth::user()->academia_id);
-
-    //     if($proforma)
-    //     {
-
-    //         if (Session::has('pagos')) {
-    //             Session::forget('pagos'); 
-    //         }
-
-    //         $item_factura = ItemsFacturaProforma::where('factura_id', '=', $id)->get();
-
-    //         $factura = DB::table('facturas')->orderBy('created_at', 'desc')->first();
-
-    //         $formas_pago = DB::table('formas_pago')->get();
-
-    //         if($factura){
-
-    //             $numero_factura = $factura->numero_factura + 1;
-    //         }
-    //         else{
-
-    //             if($academia->numero_factura){
-    //                 $numero_factura = $academia->numero_factura;
-    //             }
-    //             else{
-    //                 $numero_factura = 1;
-    //             }
-                
-    //         }
-            
-
-    //         $subtotal = 0;
-    //         $impuesto = 0;
-
-    //         foreach($item_factura as $item){
-
-    //             $subtotal = $subtotal + $item['importe_neto'];
-
-    //             if($item['impuesto']){
-    //                 $impuesto = $impuesto + ($item['importe_neto'] * ($item['impuesto'] / 100));
-    //             }
-
-    //         }
-
-    //         $total = $subtotal + $impuesto;
-
-    //         // dd($academia->porcentaje_impuesto);
-
-    //         return view('administrativo.pagos.gestion')->with(['subtotal' => $subtotal, 'impuesto' => $impuesto, 'total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'id' => $id, 'alumno' => $alumno , 'porcentaje_impuesto' => $academia->porcentaje_impuesto]);
-    //     }
-    //     return view('menu.index');
-    // }
-
     public function generarpagoscondeuda($id)
     {
-        // if (Auth::check())
-        // {
-            $academia = Academia::find(Auth::user()->academia_id);
+    
+        $academia = Academia::find(Auth::user()->academia_id);
 
-        // }
-        
         if (Session::has('arreglo')) {
             Session::forget('arreglo'); 
         }
@@ -380,8 +321,6 @@ class AdministrativoController extends BaseController {
             $collection=collect($tmp);
             $grouped = $collection->groupBy('id');     
             $servicio = $grouped->toArray();
-
-            // dd($servicio);
 
         }
 
@@ -1326,14 +1265,10 @@ class AdministrativoController extends BaseController {
             $importe_neto = 0;
             
             foreach($item as $tmp){
-
-            $factura_id = $tmp->id;
-            $importe_neto = $importe_neto + $tmp->importe_neto;
-            // $id_alumno = $item['']
-            // $iva = $item['costo'] * ($academia->porcentaje_impuesto / 100);
+                $factura_id = $tmp->id;
+                $importe_neto = $importe_neto + $tmp->importe_neto;
             }
-            // $factura_join[$i]->setAttribute('total',  $importe_neto);
-            // $factura_join[$id]->total = $importe_neto;
+
             $presupuesto_join[$i]->total=$importe_neto;
             $array[$factura_id] = $presupuesto_join[$i];
             $i = $i + 1;
@@ -1344,12 +1279,9 @@ class AdministrativoController extends BaseController {
 
     public function presupuesto()
     {
-        // if (Auth::check())
-        // {
-            $academia = Academia::find(Auth::user()->academia_id);
+       
+        $academia = Academia::find(Auth::user()->academia_id);
 
-        // }
-        
         if (Session::has('arreglo')) {
             Session::forget('arreglo'); 
         }
@@ -1384,11 +1316,6 @@ class AdministrativoController extends BaseController {
         return view('administrativo.presupuesto.presupuesto')->with(['alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'servicio' => $servicio, 'producto' => $producto, 'impuesto' => $academia->porcentaje_impuesto]);
     }
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
     public function agregaritempresupuesto(Request $request){
         
     $rules = [
@@ -1431,9 +1358,6 @@ class AdministrativoController extends BaseController {
                  $importe_neto = $importe_neto - $iva;
             }
 
-            // $iva = $precio_neto * ($request->impuestoglobal / 100);
-            // $importe_neto = $precio_neto - $iva;
-
             $array = array(['id' => $id[0] , 'nombre' => $servicio->nombre , 'tipo' => 1, 'cantidad' => $request->cantidad, 'precio_neto' => $servicio->costo, 'impuesto' => $request->impuesto, 'importe_neto' => $importe_neto]);
             }
 
@@ -1449,18 +1373,11 @@ class AdministrativoController extends BaseController {
                  $importe_neto = $importe_neto - $iva;
             }
 
-            // $iva = $precio_neto * ($request->impuestoglobal / 100);
-            // $importe_neto = $precio_neto - $iva;
-
             $array = array(['id' => $id[0] , 'nombre' => $producto->nombre , 'tipo' => 2, 'cantidad' => $request->cantidad, 'precio_neto' => $producto->costo, 'impuesto' => $request->impuesto, 'importe_neto' => $importe_neto]);
             }
 
 
         Session::push('arreglo', $array);
-
-        // $contador = count(Session::get('arreglo'));
-        // $contador = $contador - 1;
-
         $items = Session::get('arreglo');
         end( $items );
         $contador = key( $items );
@@ -1479,9 +1396,7 @@ class AdministrativoController extends BaseController {
 
         $impuesto_total = $importe_neto * ($impuesto / 100);
 
-        // unset($arreglo[$id]);
         unset($arreglo[$id]);
-        // Session::forget('arreglo');
         Session::put('arreglo', $arreglo);
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'impuesto' => $impuesto_total, 'importe_neto' => $importe_neto, 200]);
@@ -1499,7 +1414,6 @@ class AdministrativoController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno");
     }
 
 
@@ -1624,17 +1538,7 @@ class AdministrativoController extends BaseController {
 
         }
 
-        
-
     }
-
-	public function PrimerPaso(Request $request)
-	{
-
-        return view('administrativo.segundopaso')->with(['factura' => $request, 'impuesto' => Impuesto::all(), 'config_productos' => ConfigProductos::all()]);
-
-	}
-
 
     public function storeProforma(Request $request)
     {
@@ -1717,276 +1621,96 @@ class AdministrativoController extends BaseController {
     public function GenerarPresupuesto(Request $request)
     {
         
-    $rules = [
-        'alumno_id' => 'required',
-        'fecha_valida' => 'required',
-        'nota_cliente' => 'required',
+        $rules = [
+            'alumno_id' => 'required',
+            'fecha_valida' => 'required',
+            'nota_cliente' => 'required',
 
-    ];
+        ];
 
-    $messages = [
+        $messages = [
 
-        'alumno_id.required' => 'Ups! El Cliente es requerido',
-        'fecha_valida.required' => 'Ups! El Campo Valido Hasta? es requerido',
-        'nota_cliente.required' => 'Ups! El Campo Nota Cliente es requerido'
-    ];
+            'alumno_id.required' => 'Ups! El Cliente es requerido',
+            'fecha_valida.required' => 'Ups! El Campo Valido Hasta? es requerido',
+            'nota_cliente.required' => 'Ups! El Campo Nota Cliente es requerido'
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
+        }else{
 
-    else{
-
-        $fecha_valida = Carbon::createFromFormat('d/m/Y', $request->fecha_valida)->toDateString();
-        
-
-        if($fecha_valida < Carbon::now()->toDateString())
-        {
-            return response()->json(['errores' => ['fecha_valida' => [0, 'Fecha Invalida']],  'status' => 'ERROR'],422);
-        }
-
-        if (Session::has('arreglo')) {
-               
+            if(Session::has('arreglo')) {
+                   
                 $arreglo = Session::get('arreglo');
 
-                if (count($arreglo) == 0){
-
-                    return response()->json(['errores' => ['linea' => [0, 'Debe agregar una linea de pago']], 'status' => 'ERROR'],422);
+                $fecha_valida = Carbon::createFromFormat('d/m/Y', $request->fecha_valida);
+            
+                if($fecha_valida < Carbon::now())
+                {
+                    return response()->json(['errores' => ['fecha_valida' => [0, 'Fecha Invalida']],  'status' => 'ERROR'],422);
                 }
 
+                $presupuesto = new Presupuesto;
 
-            $presupuesto = new Presupuesto;
+                $presupuesto->alumno_id = $request->alumno_id;
+                $presupuesto->academia_id = Auth::user()->academia_id;
+                $presupuesto->fecha = Carbon::now()->toDateString();
+                $presupuesto->fecha_valida = $fecha_valida;
+                $presupuesto->nota_cliente = $request->nota_cliente;
 
-            $presupuesto->alumno_id = $request->alumno_id;
-            $presupuesto->academia_id = Auth::user()->academia_id;
-            $presupuesto->fecha = Carbon::now()->toDateString();
-            $presupuesto->fecha_valida = $fecha_valida;
-            $presupuesto->nota_cliente = $request->nota_cliente;
+                if($presupuesto->save()){
 
+                    for($i = 0; $i < count($arreglo) ; $i++)
+                    {
 
-            if($presupuesto->save()){
+                        $id = $arreglo[$i][0]['id'];
+                        $nombre = $arreglo[$i][0]['nombre'];
+                        $tipo = $arreglo[$i][0]['tipo'];
+                        $cantidad = $arreglo[$i][0]['cantidad'];
+                        $precio_neto = $arreglo[$i][0]['precio_neto'];
+                        $impuesto = $arreglo[$i][0]['impuesto'];
+                        $importe_neto = $arreglo[$i][0]['importe_neto'];
+                    
+                        $item_presupuesto = new ItemsPresupuesto;
+                        
+                        $item_presupuesto->presupuesto_id = $presupuesto->id;
+                        $item_presupuesto->item_id = $id;
+                        $item_presupuesto->nombre = $nombre;
+                        $item_presupuesto->tipo = $tipo;
+                        $item_presupuesto->cantidad = $cantidad;
+                        $item_presupuesto->precio_neto = $precio_neto;
+                        $item_presupuesto->impuesto = $impuesto;
+                        $item_presupuesto->importe_neto = $importe_neto;
 
-            $save = true;
+                        $item_presupuesto->save();
+                    }
+                    
 
-            for($i = 0; $i < count($arreglo) ; $i++)
-            
-            {
+                    $total = ItemsPresupuesto::where('id', '=', $presupuesto->id)->sum('precio_neto');
+                    $alumno = Alumno::find($request->alumno_id);
 
-                $id = $arreglo[$i][0]['id'];
-                $nombre = $arreglo[$i][0]['nombre'];
-                $tipo = $arreglo[$i][0]['tipo'];
-                $cantidad = $arreglo[$i][0]['cantidad'];
-                $precio_neto = $arreglo[$i][0]['precio_neto'];
-                $impuesto = $arreglo[$i][0]['impuesto'];
-                $importe_neto = $arreglo[$i][0]['importe_neto'];
-            
-                $item_presupuesto = new ItemsPresupuesto;
-                
-                $item_presupuesto->presupuesto_id = $presupuesto->id;
-                $item_presupuesto->item_id = $id;
-                $item_presupuesto->nombre = $nombre;
-                $item_presupuesto->tipo = $tipo;
-                $item_presupuesto->cantidad = $cantidad;
-                $item_presupuesto->precio_neto = $precio_neto;
-                $item_presupuesto->impuesto = $impuesto;
-                $item_presupuesto->importe_neto = $importe_neto;
+                    return response()->json(['alumno'=> $alumno, 'presupuesto' => $presupuesto->id, 'total' => $total, 'status' => 'OK', 200]);
+              
+                }
 
-                $item_presupuesto->save();
-
-            }
-            
-            if($save){
-
-                $total = ItemsPresupuesto::where('id', '=', $presupuesto->id)->sum('precio_neto');
-
-                $alumno = Alumno::find($request->alumno_id);
-
-                return response()->json(['alumno'=> $alumno, 'presupuesto' => $presupuesto->id, 'total' => $total, 'status' => 'OK', 200]);
-
-                // return redirect('administrativo/pagos2/{{$factura->id}}')->with(['alumno'=> $alumno, 'factura' => $factura->id, 'total' => $total]);
-                // return redirect("/home")
-            
             }else{
-                
-                // $destroy = FacturaProforma::find($factura->id);
-                // $destroy->delete();
-                return response()->json(['errores'=>'error', 'status' => 'ERROR-REGISTROITEM'],422);
-
+                return response()->json(['errores' => ['linea' => [0, 'Debe agregar una linea de pago']], 'status' => 'ERROR'],422);
+            }
         }
-        
-        // return redirect("/home");
-        //return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-    }
-
-        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-    }
-        return response()->json(['errores' => ['linea' => [0, 'Debe agregar una linea de pago']], 'status' => 'ERROR'],422);
-    }
     }
     
-
-	public function updateContacto(Request $request){
-
-    $rules = [
-        'correo' => 'email|max:255',
-        'telefono' => 'digits:11',
-        'celular' => 'digits:11',
-    ];
-
-    $messages = [
-
-        'correo.email' => 'Ups! El correo tiene una dirección inválida',
-        'correo.max' => 'El máximo de caracteres permitidos son 255',
-        'correo.unique' => 'Ups! Ya este correo ha sido registrado',
-        'telefono.digits' => 'El telefono local debe poseer 11 digitos',
-        'celular.digits' => 'El telefono local debe poseer 11 digitos',
-    ];
-
-    $validator = Validator::make($request->all(), $rules, $messages);
-
-    if ($validator->fails()){
-
-        // return redirect("alumno/edit/{$request->id}")
-
-        // ->withErrors($validator)
-        // ->withInput();
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
-
-    }
-
-    else{
-
-		$academia = Academia::find($request->academia_id);
-
-        $academia->correo = $request->correo;
-        $academia->telefono = $request->telefono;
-        $academia->celular = $request->celular;
-        $academia->geolocalizacion = $request->geolocalizacion;
-        $academia->facebook = $request->facebook;
-        $academia->twitter = $request->twitter;
-        $academia->linkedin = $request->linkedin;
-        $academia->instagram = $request->instagram;
-        $academia->pagina_web = $request->pagina_web;
-        $academia->youtube = $request->youtube;
-		
-        if($academia->save()){
-            // return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-            return view('academia.especiales')->with('academia', $academia);
-
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-		// return redirect("alumno/edit/{$request->id}");
-		}
-	}
-
-	public function updateEspeciales(Request $request){
-
-        $academia = Academia::find($request->academia_id);
-        $id = $request->academia_id;
-
-		$normativa = $request->normativa;
-		$manual = $request->manual;
-        $programacion = $request->programacion;
-
-        $nombre_normativa = $academia->nombre." - ".$id.".pdf";
-        $nombre_manual = $academia->nombre." - ".$id.".pdf";
-        $nombre_programacion = $academia->nombre." - ".$id.".pdf";
-
-        if (!empty($normativa)) {
-            $r_normativa = Storage::disk('normativas')->put($nombre_normativa,  \File::get($normativa));
-            if($r_normativa){
-                $academia->normativa = "normativas/".$nombre_normativa;
-            }
-        }
-        if (!empty($manual)) {
-             $r_manual = Storage::disk('manuales')->put($nombre_manual,  \File::get($manual));
-            if($r_manual){
-                $academia->manual = "manuales/".$nombre_manual;
-            }
-        }
-        
-        if (!empty($programacion)) {
-            $r_programacion = Storage::disk('programaciones')->put($nombre_programacion,  \File::get($programacion));
-            if($r_programacion){
-                $academia->programacion = "programaciones/".$nombre_programacion;
-            }
-        }
-        
-       if($academia->save()){
-            // return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-            return view('academia.administrativo')->with('academia', $academia);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-
-	}
-
-    public function updateAdministrativo(Request $request){
-
-    $rules = [
-        'porcentaje_impuesto' => 'required|numeric',
-        'numero_factura' => 'required|numeric',
-
-    ];
-
-    $messages = [
-        
-        'porcentaje_impuesto.required' => 'Ups! Debes ingresar el campo de Porcentaje de impuesto',
-        'porcentaje_impuesto.numeric' => 'Ups! El campo de Porcentaje de impuesto  en inválido , debe contener sólo números',
-        'numero_factura.required' => 'Ups! Debes ingresar el campo de Próximo número de factura',
-        'numero_factura.numeric' => 'Ups! El campo de “ Próximo número de factura” es inválido, debe contener sólo  números',
-
-    ];
-
-    $validator = Validator::make($request->all(), $rules, $messages);
-
-    if ($validator->fails()){
-
-        // return redirect("alumno/edit/{$request->id}")
-
-        // ->withErrors($validator)
-        // ->withInput();
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
-
-    }
-
-    else{
-
-        $academia = Academia::find($request->academia_id);
-
-        $academia->porcentaje_impuesto = $request->porcentaje_impuesto;
-        $academia->numero_factura = $request->numero_factura;
-
-        
-        if($academia->save()){
-            // return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-            return view('alumno.index')->with('academia', $academia);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-        // return redirect("alumno/edit/{$request->id}");
-        }
-    }
-
     public function generar_acuerdo(Request $request)
     {
-        //dd($request->fecha);
-
 
         $rules = [        
         
-        'fecha' => 'required',
-        'frecuencia' => 'required',
-        'partes' => 'required|numeric',
+            'fecha' => 'required',
+            'frecuencia' => 'required',
+            'partes' => 'required|numeric',
 
         ];
 
@@ -2012,8 +1736,6 @@ class AdministrativoController extends BaseController {
             $partes=$request->partes;
             $cantidad=$monto/$request->partes;
 
-            //dd($fecha_acuerdo);
-
             $dt = Carbon::create($fecha_acuerdo[2], $fecha_acuerdo[1], $fecha_acuerdo[0], 0);
             $arrayAcuerdoFecha=array();
             $arrayAcuerdo=array();
@@ -2037,7 +1759,6 @@ class AdministrativoController extends BaseController {
 
             }
 
-            //dd($arrayAcuerdo);
 
             $arrayAcuerdo=array('frecuencia'=>$frecuencia, 'partes'=>$partes , 'fechas_acuerdo'=>$arrayAcuerdoFecha);
 
@@ -2049,8 +1770,6 @@ class AdministrativoController extends BaseController {
 
     public function updateAcuerdo(Request $request)
     {
-        //dd($request->fecha);
-
 
         $rules = [        
         
@@ -2109,39 +1828,33 @@ class AdministrativoController extends BaseController {
     public function storeAcuerdo(Request $request)
     {
         
-    $rules = [
+        $rules = [
 
-        'alumno_id' => 'required',
-        'porcentaje_retraso' => 'numeric',
-        'tiempo_tolerancia' => 'numeric',
+            'alumno_id' => 'required',
+            'porcentaje_retraso' => 'numeric',
+            'tiempo_tolerancia' => 'numeric',
 
-    ];
+        ];
 
-    $messages = [
+        $messages = [
 
-        'alumno_id.required' => 'Ups! El Cliente es requerido',
-        'porcentaje_retraso.numeric' => 'Ups! El campo de porcentaje de retraso es inválido , debe contener sólo números',
-        'tiempo_tolerancia.numeric' => 'Ups! El campo de tiempo de tolerancia es inválido , debe contener sólo números',  
-    ];
+            'alumno_id.required' => 'Ups! El Cliente es requerido',
+            'porcentaje_retraso.numeric' => 'Ups! El campo de porcentaje de retraso es inválido , debe contener sólo números',
+            'tiempo_tolerancia.numeric' => 'Ups! El campo de tiempo de tolerancia es inválido , debe contener sólo números',  
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-    }
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+        }
 
-    else{
+        else{
 
             if (Session::has('acuerdos')) {
                
                 $arreglo = Session::get('acuerdos');
-
-                if (count($arreglo) == 0){
-
-                    return response()->json(['errores' => ['linea' => [0, 'Debes generar un acuerdo primero']], 'status' => 'ERROR'],422);
-                }
-
                 $id_proforma = Session::get('id_proforma');
                 $array_descripcion = array();
 
@@ -2247,8 +1960,6 @@ class AdministrativoController extends BaseController {
                         foreach($id_proforma as $proforma_id)
                         {
                             $delete = ItemsFacturaProforma::find($proforma_id)->delete();
-
-
                         }
 
                     }else{
@@ -2256,19 +1967,15 @@ class AdministrativoController extends BaseController {
                         $delete = ItemsFacturaProforma::where('alumno_id', '=', $request->alumno_id)->delete();
 
                     }
-
-         
                     return response()->json(['status' => 'OK', 200]);
 
                 }else{
                     return response()->json(['errores'=>'error', 'status' => 'ERROR-ACUERDO'],422);
                 }  
-               
-                     
+            }else{
+                return response()->json(['errores' => ['linea' => [0, 'Debes generar un acuerdo primero']], 'status' => 'ERROR'],422);
+            }
         }
-            return response()->json(['errores' => ['linea' => [0, 'Debes generar un acuerdo primero']], 'status' => 'ERROR'],422);
-        }
-
     }
 
     public function eliminaracuerdo($id)
@@ -2287,7 +1994,6 @@ class AdministrativoController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno");
     }
 
         public function getFactura($id){
@@ -2324,22 +2030,7 @@ class AdministrativoController extends BaseController {
             ->where('facturas.id','=',$id)
         ->first();
 
-        $PerctIVA = 0;
-                            
-
-        // $subtotales = DB::table('facturas')->join('items_factura','facturas.id','=','items_factura.factura_id')
-        //             ->select('items_factura.precio_neto AS subtotal')
-        //             ->where('facturas.id','=',$id)
-        //             ->sum('items_factura.importe_neto');
-
-        // $IvaBs = ($subtotales * $PerctIVA)/100;
-        // $subtotales = $subtotales - $IvaBs;
-        // $total = $subtotales + $IvaBs;
-
-        // $IvaBs = ($subtotales * $PerctIVA)/100;
-
-        // $total = $subtotales + $IvaBs;
-
+        $PerctIVA = 0;  
         $subtotal = 0;
         $impuesto = 0;
 
@@ -2389,22 +2080,7 @@ class AdministrativoController extends BaseController {
                             ->where('presupuestos.id','=',$id)
                             ->first();
 
-        $PerctIVA = 0;
-                            
-
-        // $subtotales = DB::table('facturas')->join('items_factura','facturas.id','=','items_factura.factura_id')
-        //             ->select('items_factura.precio_neto AS subtotal')
-        //             ->where('facturas.id','=',$id)
-        //             ->sum('items_factura.importe_neto');
-
-        // $IvaBs = ($subtotales * $PerctIVA)/100;
-        // $subtotales = $subtotales - $IvaBs;
-        // $total = $subtotales + $IvaBs;
-
-        // $IvaBs = ($subtotales * $PerctIVA)/100;
-
-        // $total = $subtotales + $IvaBs;
-
+        $PerctIVA = 0;            
         $subtotal = 0;
         $impuesto = 0;
 
@@ -2455,21 +2131,6 @@ class AdministrativoController extends BaseController {
                             ->first();
 
         $PerctIVA = 0;
-                            
-
-        // $subtotales = DB::table('facturas')->join('items_factura','facturas.id','=','items_factura.factura_id')
-        //             ->select('items_factura.precio_neto AS subtotal')
-        //             ->where('facturas.id','=',$id)
-        //             ->sum('items_factura.importe_neto');
-
-        // $IvaBs = ($subtotales * $PerctIVA)/100;
-        // $subtotales = $subtotales - $IvaBs;
-        // $total = $subtotales + $IvaBs;
-
-        // $IvaBs = ($subtotales * $PerctIVA)/100;
-
-        // $total = $subtotales + $IvaBs;
-
         $subtotal = 0;
         $impuesto = 0;
 
@@ -2504,20 +2165,6 @@ class AdministrativoController extends BaseController {
                 ]);
     }
 
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function CancelarPago()
 	{	
 		if (Session::has('arreglo')) {
@@ -2533,94 +2180,86 @@ class AdministrativoController extends BaseController {
 
 	public function pendientes($id)
     {
-            if (Session::has('pendientes')) {
-                Session::forget('pendientes'); 
-            }
+        if (Session::has('pendientes')) {
+            Session::forget('pendientes'); 
+        }
 
-            $items_factura = DB::table('facturas_proforma')
-                ->join('items_factura_proforma', 'facturas_proforma.id', '=', 'items_factura_proforma.factura_id')
-                ->select('items_factura_proforma.*')
-                ->where('facturas_proforma.alumno_id', '=', $id)
-            ->get();
+        $items_factura = DB::table('facturas_proforma')
+            ->join('items_factura_proforma', 'facturas_proforma.id', '=', 'items_factura_proforma.factura_id')
+            ->select('items_factura_proforma.*')
+            ->where('facturas_proforma.alumno_id', '=', $id)
+        ->get();
 
-            $i = 0;
+        $i = 0;
 
-            foreach($items_factura as $item_factura){
+        foreach($items_factura as $item_factura){
 
-                // $items = Session::get('arreglo');
-                // end( $items );
-                // $contador = key( $items );
+            $array = array(['factura' => $item_factura->id, 'id' => $item_factura->item_id , 'nombre' => $item_factura->nombre  , 'tipo' => $item_factura->tipo , 'cantidad' => $item_factura->cantidad , 'precio_neto' => $item_factura->precio_neto , 'impuesto' => $item_factura->impuesto , 'importe_neto' => $item_factura->importe_neto ]);
 
-                $array = array(['factura' => $item_factura->id, 'id' => $item_factura->item_id , 'nombre' => $item_factura->nombre  , 'tipo' => $item_factura->tipo , 'cantidad' => $item_factura->cantidad , 'precio_neto' => $item_factura->precio_neto , 'impuesto' => $item_factura->impuesto , 'importe_neto' => $item_factura->importe_neto ]);
+            Session::push('pendientes', $array);
+            $i = $i + 1;
+        }
 
-                Session::push('pendientes', $array);
-                $i = $i + 1;
-            }
+        
+        $arreglo = Session::get('pendientes');
 
-            
-            $arreglo = Session::get('pendientes');
-
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $arreglo, 200]);
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $arreglo, 200]);
 
     }
 
     public function pagospendientes($id)
     {
-            $subtotal = 0;
-            $impuesto = 0;
+        $subtotal = 0;
+        $impuesto = 0;
 
-            if(Session::has('acuerdos'))
-            {
-             Session::forget('acuerdos'); 
-            }
+        if(Session::has('acuerdos'))
+        {
+         Session::forget('acuerdos'); 
+        }
 
-            $acuerdos_pendientes = DB::table('items_factura_proforma')
-            ->select('items_factura_proforma.*')
-            ->where('alumno_id', '=', $id)
+        $acuerdos_pendientes = ItemsFacturaProforma::where('alumno_id', '=', $id)
             ->where('tipo' , '=', 6)
-            ->get();
+        ->get();
 
-            if($acuerdos_pendientes){
-                return response()->json(['errores' => ['alumno_id' => [0, 'No se puede generar un acuerdo de pago, debido a que este participante ya posee uno asignado']], 'status' => 'ERROR'],422);
-            }
-            
-            $items_factura = ItemsFacturaProforma::where('alumno_id', '=', $id)->get();
+        if($acuerdos_pendientes){
+            return response()->json(['errores' => ['alumno_id' => [0, 'No se puede generar un acuerdo de pago, debido a que este participante ya posee uno asignado']], 'status' => 'ERROR'],422);
+        }
+        
+        $items_factura = ItemsFacturaProforma::where('alumno_id', '=', $id)->get();
 
-            $total = 0;
+        $total = 0;
 
-            foreach($items_factura as $item_factura){
+        foreach($items_factura as $item_factura){
 
-                $total = $total + $item_factura['importe_neto'];
+            $total = $total + $item_factura['importe_neto'];
 
-            }
+        }
 
-            if($total > 0){
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'total' => $total, 200]);
-            }
-            else{
-                return response()->json(['errores' => ['alumno_id' => [0, 'Este participante no presenta deuda para generar acuerdo de pago, selecciona otro participante']], 'status' => 'ERROR'],422);
-            }
+        if($total > 0){
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'total' => $total, 200]);
+        }
+        else{
+            return response()->json(['errores' => ['alumno_id' => [0, 'Este participante no presenta deuda para generar acuerdo de pago, selecciona otro participante']], 'status' => 'ERROR'],422);
+        }
     }
 
     public function itemspendientes($id)
     {
             
-            $items_factura = ItemsFacturaProforma::where('alumno_id', '=', $id)->get();
+        $items_factura = ItemsFacturaProforma::where('alumno_id', '=', $id)->get();
 
-            $total = 0;
-            $i = 0;
-            $array = array();
-            foreach($items_factura as $item_factura){
+        $total = 0;
+        $i = 0;
+        $array = array();
+        foreach($items_factura as $item_factura){
 
-                $array[] = array(['id' => $item_factura->id, 'item_id' => $item_factura->item_id , 'nombre' => $item_factura->nombre , 'tipo' => $item_factura->tipo, 'cantidad' => $item_factura->cantidad, 'precio_neto' => $item_factura->precio_neto, 'impuesto' => intval($item_factura->impuesto), 'importe_neto' => $item_factura->importe_neto]);
+            $array[] = array(['id' => $item_factura->id, 'item_id' => $item_factura->item_id , 'nombre' => $item_factura->nombre , 'tipo' => $item_factura->tipo, 'cantidad' => $item_factura->cantidad, 'precio_neto' => $item_factura->precio_neto, 'impuesto' => intval($item_factura->impuesto), 'importe_neto' => $item_factura->importe_neto]);
 
-                $total = $total + $item_factura['importe_neto'];
-                $i = $i + 1;
-            }
+            $total = $total + $item_factura['importe_neto'];
+            $i = $i + 1;
+        }
 
-            //dd($array);
-
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'total' => $total, 'items' => $array , 200]);
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'total' => $total, 'items' => $array , 200]);
 
     }
 
@@ -2637,32 +2276,32 @@ class AdministrativoController extends BaseController {
         $academia = Academia::find(Auth::user()->academia_id);
         $factura = DB::table('facturas')->orderBy('created_at', 'desc')->where('academia_id', '=', Auth::user()->academia_id)->first();
 
-            $formas_pago = DB::table('formas_pago')->get();
+        $formas_pago = DB::table('formas_pago')->get();
 
-            if($factura){
+        if($factura){
 
-                $tmp = $factura->numero_factura + 1;
+            $tmp = $factura->numero_factura + 1;
+            $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
+        }
+        else{
+
+            if($academia->numero_factura){
+                $tmp = $academia->numero_factura;
                 $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
             }
             else{
-
-                if($academia->numero_factura){
-                    $tmp = $academia->numero_factura;
-                    $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
-                }
-                else{
-                    $tmp = 1;
-                    $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
-                }
-                
+                $tmp = 1;
+                $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
             }
+            
+        }
 
-            $factura_proforma = ItemsFacturaProforma::find($id);
+        $factura_proforma = ItemsFacturaProforma::find($id);
 
-            $alumno_id = $factura_proforma->alumno_id;
-            $alumno = Alumno::where('id', '=', $alumno_id)->first();
-            $total = $factura_proforma->importe_neto;
-            Session::push('id_proforma', $id);
+        $alumno_id = $factura_proforma->alumno_id;
+        $alumno = Alumno::where('id', '=', $alumno_id)->first();
+        $total = $factura_proforma->importe_neto;
+        Session::push('id_proforma', $id);
 
         return view('vista_alumno.pagar')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'alumno' => $alumno , 'porcentaje_impuesto' => $academia->porcentaje_impuesto]);
 
@@ -2694,125 +2333,234 @@ class AdministrativoController extends BaseController {
     {
         $request->merge(array('correo' => trim($request->correo)));
 
-    $rules = [
-        'identificacion' => 'required|min:7|numeric',
-        'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'sexo' => 'required',
-        'rol' => 'required'
-    ];
+        $rules = [
+            'identificacion' => 'required|min:7|numeric',
+            'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+            'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+            'sexo' => 'required',
+            'rol' => 'required'
+        ];
 
-    $messages = [
+        $messages = [
 
-        'identificacion.required' => 'Ups! El identificador es requerido',
-        'identificacion.min' => 'El mínimo de numeros permitidos son 5',
-        'identificacion.max' => 'El maximo de numeros permitidos son 20',
-        'identificacion.numeric' => 'Ups! El identificador es inválido , debe contener sólo números',
-        'identificacion.unique' => 'Ups! Ya este usuario ha sido registrado',
-        'nombre.required' => 'Ups! El Nombre  es requerido ',
-        'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre.max' => 'El máximo de caracteres permitidos son 20',
-        'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
-        'apellido.required' => 'Ups! El Apellido  es requerido ',
-        'apellido.min' => 'El mínimo de caracteres permitidos son 3',
-        'apellido.max' => 'El máximo de caracteres permitidos son 20',
-        'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
-        'sexo.required' => 'Ups! El Sexo  es requerido ',
-        'rol.required' => 'Ups! El Rol del representante es requerido ',
-    ];
+            'identificacion.required' => 'Ups! El identificador es requerido',
+            'identificacion.min' => 'El mínimo de numeros permitidos son 5',
+            'identificacion.max' => 'El maximo de numeros permitidos son 20',
+            'identificacion.numeric' => 'Ups! El identificador es inválido , debe contener sólo números',
+            'identificacion.unique' => 'Ups! Ya este usuario ha sido registrado',
+            'nombre.required' => 'Ups! El Nombre  es requerido ',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+            'nombre.max' => 'El máximo de caracteres permitidos son 20',
+            'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
+            'apellido.required' => 'Ups! El Apellido  es requerido ',
+            'apellido.min' => 'El mínimo de caracteres permitidos son 3',
+            'apellido.max' => 'El máximo de caracteres permitidos son 20',
+            'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
+            'sexo.required' => 'Ups! El Sexo  es requerido ',
+            'rol.required' => 'Ups! El Rol del representante es requerido ',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-    }
-
-    else{
-
-        if($request->fecha_nacimiento){
-
-            $edad = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->diff(Carbon::now())->format('%y');
-
-            if($edad < 1){
-                return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
-            }
-
-            $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
-
-        }else{
-            $fecha_nacimiento = '';
-        }
-
-        $nombre = title_case($request->nombre);
-        $apellido = title_case($request->apellido);
-        $direccion = $request->direccion;
-        $correo = strtolower($request->correo);
-        
-
-        $alumno = new Alumno;
-
-        $alumno->academia_id = Auth::user()->academia_id;
-        $alumno->identificacion = $request->identificacion;
-        $alumno->nombre = $nombre;
-        $alumno->apellido = $apellido;
-        $alumno->sexo = $request->sexo;
-        $alumno->fecha_nacimiento = $fecha_nacimiento;
-        $alumno->correo = $correo;
-        $alumno->telefono = $request->telefono;
-        $alumno->celular = $request->celular;
-        $alumno->direccion = $direccion;
-        $alumno->alergia = 0;
-        $alumno->asma = 0;
-        $alumno->convulsiones = 0;
-        $alumno->cefalea = 0;
-        $alumno->hipertension = 0;
-        $alumno->lesiones = 0;
-
-        if($request->rol == "0"){
-
-            $alumno->tipo = 2;
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
         }
 
-        if($alumno->save()){
+        else{
 
-            if($correo){
+            if($request->fecha_nacimiento){
 
-                $usuario = new User;
+                $edad = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->diff(Carbon::now())->format('%y');
 
-                $usuario->academia_id = Auth::user()->academia_id;
-                $usuario->nombre = $nombre;
-                $usuario->apellido = $apellido;
-                $usuario->telefono = $request->telefono;
-                $usuario->celular = $request->celular;
-                $usuario->sexo = $request->sexo;
-                $usuario->email = $correo;
-                $usuario->como_nos_conociste_id = 1;
-                $usuario->direccion = $direccion;
-                // $usuario->confirmation_token = str_random(40);
-                $usuario->password = bcrypt(str_random(8));
-                $usuario->usuario_tipo = 2;
-                $usuario->usuario_id = $alumno->id;
-
-                if($usuario->save()){
-                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'alumno' => $alumno, 200]);
-                }else{
-                    return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+                if($edad < 1){
+                    return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
                 }
 
+                $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
+
             }else{
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'alumno' => $alumno, 200]);
+                $fecha_nacimiento = '';
             }
-      
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+
+            $nombre = title_case($request->nombre);
+            $apellido = title_case($request->apellido);
+            $direccion = $request->direccion;
+            $correo = strtolower($request->correo);
+            
+
+            $alumno = new Alumno;
+
+            $alumno->academia_id = Auth::user()->academia_id;
+            $alumno->identificacion = $request->identificacion;
+            $alumno->nombre = $nombre;
+            $alumno->apellido = $apellido;
+            $alumno->sexo = $request->sexo;
+            $alumno->fecha_nacimiento = $fecha_nacimiento;
+            $alumno->correo = $correo;
+            $alumno->telefono = $request->telefono;
+            $alumno->celular = $request->celular;
+            $alumno->direccion = $direccion;
+            $alumno->alergia = 0;
+            $alumno->asma = 0;
+            $alumno->convulsiones = 0;
+            $alumno->cefalea = 0;
+            $alumno->hipertension = 0;
+            $alumno->lesiones = 0;
+
+            if($request->rol == "0"){
+
+                $alumno->tipo = 2;
+
+            }
+
+            if($alumno->save()){
+
+                if($correo){
+
+                    $usuario = new User;
+
+                    $usuario->academia_id = Auth::user()->academia_id;
+                    $usuario->nombre = $nombre;
+                    $usuario->apellido = $apellido;
+                    $usuario->telefono = $request->telefono;
+                    $usuario->celular = $request->celular;
+                    $usuario->sexo = $request->sexo;
+                    $usuario->email = $correo;
+                    $usuario->como_nos_conociste_id = 1;
+                    $usuario->direccion = $direccion;
+                    // $usuario->confirmation_token = str_random(40);
+                    $usuario->password = bcrypt(str_random(8));
+                    $usuario->usuario_tipo = 2;
+                    $usuario->usuario_id = $alumno->id;
+
+                    if($usuario->save()){
+                        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'alumno' => $alumno, 200]);
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+                    }
+
+                }else{
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'alumno' => $alumno, 200]);
+                }
+          
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+            }
         }
     }
 
+    public function principalTransferencias()
+    {
+
+        return view('vista_alumno.administrativo.transferencias');
     }
 
+    public function confirmarTransferencia()
+    {
+        return view('vista_alumno.administrativo.confirmar');
+    }
 
+    public function storeTransferencia(Request $request)
+    {
+
+        $rules = [
+            'banco' => 'required|min:3|max:20',
+            'referencia' => 'required|min:3|max:20',
+            'cantidad' => 'required',
+        ];
+
+        $messages = [
+
+            'banco.required' => 'Ups! El banco es requerido ',
+            'banco.min' => 'El mínimo de caracteres permitidos son 3',
+            'banco.max' => 'El máximo de caracteres permitidos son 20',
+            'referencia.required' => 'Ups! La referencia es requerido ',
+            'referencia.min' => 'El mínimo de caracteres permitidos son 3',
+            'referencia.max' => 'El máximo de caracteres permitidos son 20',
+            'cantidad.required' => 'Ups! El monto es requerida',
+
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
+            $usuario_id = Session::get('easydance_usuario_id');
+
+            $transferencia = new Transferencia;
+
+            $transferencia->academia_id = Auth::user()->academia_id;
+            $transferencia->banco = $request->banco;
+            $transferencia->referencia = $request->referencia;
+            $transferencia->cantidad = $request->cantidad;
+            $transferencia->usuario_tipo = $usuario_tipo;
+            $transferencia->usuario_id = $usuario_id;
+
+            if($transferencia->save()){
+
+                $sugerencia = new Sugerencia;
+
+                $sugerencia->usuario_id = Auth::user()->id;
+                $sugerencia->fecha = Carbon::now();
+                $sugerencia->mensaje = Auth::user()->nombre . " " . Auth::user()->apellido . " ha realizado una transferencia al banco " . $request->banco . " con el numero de referencia " . $request->referencia . " por un monto de " . number_format($request->cantidad, 2, '.' , '.');
+                $sugerencia->academia_id = Auth::user()->academia_id;
+
+                if($sugerencia->save()){
+
+                    $notificacion = new Notificacion; 
+
+                    $notificacion->tipo_evento = 5;
+                    $notificacion->evento_id = $transferencia->id;
+                    $notificacion->mensaje = Auth::user()->nombre . " " . Auth::user()->apellido . " ha realizado una transferencia";
+                    $notificacion->titulo = "Nueva Transferencia";
+
+                    if($notificacion->save()){
+
+                        $not_in = array(2,4);
+                        $usuarios = User::where('academia_id',Auth::user()->academia_id)->whereNotIn('usuario_tipo',$not_in)->get();
+                        $correos = array();
+
+                        foreach($usuarios as $usuario){
+
+                            $usuarios_notificados = new NotificacionUsuario;
+                            $usuarios_notificados->id_usuario = $usuario->id;
+                            $usuarios_notificados->id_notificacion = $notificacion->id;
+                            $usuarios_notificados->visto = 0;
+                            $usuarios_notificados->save();
+
+                            $correos[] = $usuario->email;
+                        }
+
+                        $array = [
+                            'nombre' => Auth::user()->nombre . " " . Auth::user()->apellido,
+                            'email' => $correos,
+                            'banco' => $request->banco,
+                            'referencia' => $request->referencia,
+                            'cantidad' => $request->cantidad,
+                            'subj' => 'Han realizado una transferencia'
+                        ];
+
+                        Mail::send('correo.transferencia', $array, function($msj) use ($array){
+                            $msj->subject($array['subj']);
+                            $msj->to($array['email']);
+                        });
+                          
+                        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+                }
+            }
+        }
+    }
     
 }

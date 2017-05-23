@@ -36,8 +36,7 @@ class NotificacionController extends BaseController
             $timezone = 'America/Caracas';
         }
 
-        $notificaciones = DB::table('notificacion_usuario')
-            ->join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
+        $notificaciones = NotificacionUsuario::join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
             ->join('users','notificacion_usuario.id_usuario','=','users.id')
             ->join('sugerencias','notificacion.evento_id','=','sugerencias.id')
             ->select('notificacion.*','notificacion_usuario.visto as visto', 'sugerencias.mensaje', 'sugerencias.usuario_id as usuario_id')
@@ -57,7 +56,6 @@ class NotificacionController extends BaseController
 
             $usuario = User::find($notificacion->usuario_id);
         
-
             $fecha_tmp = Carbon::createFromFormat('Y-m-d H:i:s', $notificacion->created_at, $timezone);
 
             $dia = $fecha_tmp->format('d'); 

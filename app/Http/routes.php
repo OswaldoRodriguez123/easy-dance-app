@@ -126,7 +126,6 @@ Route::get('blog/directorio', 'BlogController@directorio');
 
 Route::group(['middleware' => ['auth','verified'] ], function () {
 
-	Route::get('notificacion', 'NotificacionController@consulta');
 	Route::get('/logout', 'LoginController@getLogout');
 	Route::get('/seleccionar-tipo', 'AcademiaController@seleccionar_tipo');
 	Route::post('/seleccionar-tipo/{id}', 'AcademiaController@postSeleccionar');
@@ -134,6 +133,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	//NOTIFICACIONES
 	
+	Route::get('notificacion', 'NotificacionController@consulta');
 	Route::get('notificaciones', 'NotificacionController@principal');
 	Route::post('notificaciones', 'NotificacionController@responderNotificacion');
 	Route::post('notificacion_revisado', 'NotificacionController@revisarNotificacion');
@@ -1090,6 +1090,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		// --- ADMINISTRATIVO --- 
 
 		Route::get('administrativo', 'AdministrativoController@index');
+		Route::get('administrativo/transferencias', 'AdministrativoController@principalTransferencias');
+		Route::post('administrativo/transferencias', 'AdministrativoController@storeTransferencia');
+		Route::get('administrativo/transferencias/confirmar', 'AdministrativoController@confirmarTransferencia');
 		Route::get('administrativo/factura/{id}', 'AdministrativoController@getFactura');
 
 		// ASISTENCIA
