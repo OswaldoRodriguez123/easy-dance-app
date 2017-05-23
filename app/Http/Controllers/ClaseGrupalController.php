@@ -656,7 +656,7 @@ class ClaseGrupalController extends BaseController {
                 ->sum('importe_neto');
 
                 $activacion = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                    ->where('usuario_id', $alumno->id)
+                    ->where('usuarios_tipo.tipo_id', $alumno->id)
                     ->whereIn('usuarios_tipo.tipo', $tipo_clase)
                     ->where('users.confirmation_token', '!=', null)
                 ->first();
