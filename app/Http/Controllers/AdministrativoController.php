@@ -2519,7 +2519,7 @@ class AdministrativoController extends BaseController {
                     $notificacion = new Notificacion; 
 
                     $notificacion->tipo_evento = 5;
-                    $notificacion->evento_id = $transferencia->id;
+                    $notificacion->evento_id = $sugerencia->id;
                     $notificacion->mensaje = Auth::user()->nombre . " " . Auth::user()->apellido . " ha realizado una transferencia";
                     $notificacion->titulo = "Nueva Transferencia";
 
