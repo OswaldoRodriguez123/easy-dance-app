@@ -42,12 +42,12 @@ class EvaluacionController extends BaseController
 
         $array = array(2, 4);
 
-         $alumnoc = DB::table('users')
-            ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+        $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+            ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
             ->select('alumnos.id as id')
             ->where('users.academia_id','=', Auth::user()->academia_id)
             ->where('alumnos.deleted_at', '=', null)
-             ->whereIn('users.usuario_tipo', $array)
+            ->whereIn('usuarios_tipo.tipo', $array)
             ->where('users.confirmation_token', '!=', null)
         ->get();
 
@@ -73,12 +73,12 @@ class EvaluacionController extends BaseController
 
         $array = array(2, 4);
 
-         $alumnoc = DB::table('users')
-            ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+        $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+            ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
             ->select('alumnos.id as id')
             ->where('users.academia_id','=', Auth::user()->academia_id)
             ->where('alumnos.deleted_at', '=', null)
-            ->whereIn('users.usuario_tipo', $array)
+            ->whereIn('usuarios_tipo.tipo', $array)
             ->where('users.confirmation_token', '!=', null)
         ->get();
 
@@ -105,12 +105,12 @@ class EvaluacionController extends BaseController
 
         $array = array(2, 4);
 
-         $alumnoc = DB::table('users')
-            ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+        $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+            ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
             ->select('alumnos.id as id')
             ->where('users.academia_id','=', Auth::user()->academia_id)
             ->where('alumnos.deleted_at', '=', null)
-             ->whereIn('users.usuario_tipo', $array)
+            ->whereIn('usuarios_tipo.tipo', $array)
             ->where('users.confirmation_token', '!=', null)
         ->get();
 
@@ -135,12 +135,12 @@ class EvaluacionController extends BaseController
 
         $array = array(2, 4);
 
-         $alumnoc = DB::table('users')
-            ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+        $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+            ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
             ->select('alumnos.id as id')
             ->where('users.academia_id','=', Auth::user()->academia_id)
             ->where('alumnos.deleted_at', '=', null)
-             ->whereIn('users.usuario_tipo', $array)
+            ->whereIn('usuarios_tipo.tipo', $array)
             ->where('users.confirmation_token', '!=', null)
         ->get();
 
@@ -247,18 +247,11 @@ class EvaluacionController extends BaseController
                 $notificacion->titulo = "Nueva Valoración";
 
                 if($notificacion->save()){
-
-                  $tmp = User::where('usuario_id', $request->alumno_id)->first();
-
-                  if($tmp){
-                    $es_representante = Familia::where('representante_id', $tmp->id)->first();
-
-                    if(!$es_representante){
-                        $usuario = User::where('usuario_id' , $request->alumno_id)->where('usuario_tipo', 2)->first();
-                    }
-                    else{
-                        $usuario = User::where('usuario_id' , $request->alumno_id)->where('usuario_tipo', 4)->first();
-                    }
+                    $in = array(2,4);
+                    $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                        ->where('usuarios_tipo.tipo_id',$request->alumno_id)
+                        ->whereIn('usuarios_tipo.tipo',$in)
+                    ->first();
 
                     if($usuario){
 
@@ -268,7 +261,6 @@ class EvaluacionController extends BaseController
                       $usuarios_notificados->visto = 0;
                       $usuarios_notificados->save();
                     }
-                  }
                     
                 }
 

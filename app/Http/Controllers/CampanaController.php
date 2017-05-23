@@ -1548,7 +1548,10 @@ class CampanaController extends BaseController {
 
             $recaudado = $recaudado + $patrocinador_monto;
 
-            $usuario = User::where('usuario_id',$patrocinador->usuario_id)->whereIn('usuario_tipo',$array)->first();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$patrocinador->usuario_id)
+                ->whereIn('usuarios_tipo.tipo',$array)
+            ->first();
 
             if($usuario){
 
@@ -1789,7 +1792,10 @@ class CampanaController extends BaseController {
                     $array = array(2, 4);
                     $alumno_id = $request->alumno_id;
                     $alumno = Alumno::find($request->alumno_id);
-                    $usuario = User::where('usuario_id', $alumno->id)->whereIn('usuario_tipo', $array)->first();
+                    $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                        ->where('usuarios_tipo.tipo_id',$alumno->id)
+                        ->whereIn('usuarios_tipo.tipo',$array)
+                    ->first();
                     $usuario_id = $usuario->id;
                 }else{
                     $alumno_id = Auth::user()->usuario_id;

@@ -40,33 +40,33 @@
 
             <div class="text-center guia">
 
-              @foreach($usuarios as $tipo)
+              @foreach($tipos as $tipo)
 
-                @if($tipo == 1 OR $tipo == 5)
+                @if($tipo->tipo == 1 OR $tipo->tipo == 5)
                   <hr>
                   <div class="clearfix"></div><br>
                   <p class="m-t-5 m-b-5 f-22"><a class="usuario_tipo" id="1" href="#" >Entrar como Administrador <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i>  
                     <i class="zmdi zmdi-thumb-up f-50 padding"></i> </a>
                   </p>
-                @elseif($tipo == 2)
+                @elseif($tipo->tipo == 2)
                   <hr>
                   <div class="clearfix"></div><br>
                   <p class="m-t-5 m-b-5 f-22"><a class="usuario_tipo" id="2" href="#" >Entrar como Alumno <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i>  
                     <i class="zmdi zmdi-thumb-up f-50 padding"></i> </a>
                   </p>
-                @elseif($tipo == 3)
+                @elseif($tipo->tipo == 3)
                   <hr>
                   <div class="clearfix"></div><br>
                   <p class="m-t-5 m-b-5 f-22"><a class="usuario_tipo" id="3" href="#" >Entrar como Instructor <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i>  
                     <i class="zmdi zmdi-thumb-up f-50 padding"></i> </a>
                   </p>
-                @elseif($tipo == 4)
+                @elseif($tipo->tipo == 4)
                   <hr>
                   <div class="clearfix"></div><br>
                   <p class="m-t-5 m-b-5 f-22"><a class="usuario_tipo" id="4" href="#" >Entrar como Representante <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i>  
                     <i class="zmdi zmdi-thumb-up f-50 padding"></i> </a>
                   </p>
-                @elseif($tipo == 6)
+                @elseif($tipo->tipo == 6)
                   <hr>
                   <div class="clearfix"></div><br>
                   <p class="m-t-5 m-b-5 f-22"><a class="usuario_tipo" id="6" href="#" >Entrar como Recepcionista <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i>  

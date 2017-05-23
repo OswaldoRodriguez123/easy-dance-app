@@ -136,8 +136,9 @@ class ReporteController extends BaseController
         foreach($inscritos as $inscrito){
 
             $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+                ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                 ->where('alumnos.id','=', $inscrito->id)
-                ->whereIn('users.usuario_tipo', $array)
+                ->whereIn('usuarios_tipo.tipo', $array)
                 ->where('users.confirmation_token', '!=', null)
             ->first();
 

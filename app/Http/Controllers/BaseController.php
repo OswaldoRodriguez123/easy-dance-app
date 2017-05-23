@@ -75,8 +75,7 @@ class BaseController extends Controller {
 
                 if($notificacion->tipo_evento == 5)
                 {
-                    $usuario = DB::table('sugerencias')
-                        ->join('users','users.id','=','sugerencias.usuario_id')
+                    $usuario = User::join('sugerencias','users.id','=','sugerencias.usuario_id')
                         ->select('users.imagen', 'users.sexo')
                         ->where('sugerencias.id','=',$notificacion->evento_id)
                     ->first();

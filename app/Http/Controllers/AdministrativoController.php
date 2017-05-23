@@ -1040,8 +1040,12 @@ class AdministrativoController extends BaseController {
 
                 //FINAL
 
+                $in = array(2,4);
                 $academia = Academia::find(Auth::user()->academia_id);
-                $usuario = User::where('usuario_id', $request->id)->first();
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->whereIn('usuarios_tipo.tipo', $in)
+                    ->where('usuarios_tipo.tipo_id', $request->id)
+                ->first();
 
                 if($usuario){
 
@@ -2531,7 +2535,11 @@ class AdministrativoController extends BaseController {
                     if($notificacion->save()){
 
                         $not_in = array(2,4);
-                        $usuarios = User::where('academia_id',Auth::user()->academia_id)->whereNotIn('usuario_tipo',$not_in)->get();
+                        $usuarios = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                            ->whereNotIn('usuarios_tipo.tipo', $not_in)
+                            ->where('academia_id',Auth::user()->academia_id)
+                        ->get();
+                        
                         $correos = array();
 
                         foreach($usuarios as $usuario){

@@ -633,7 +633,11 @@ class FamiliaController extends BaseController {
 
         foreach($alumnos as $alumno){
 
-            $representante = User::where('usuario_id', $alumno->id)->where('usuario_tipo', 4)->first();
+            $representante = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$alumno->id)
+                ->where('usuarios_tipo.tipo',4)
+            ->first();
+
             if($representante){
                 $es_representante = 1;
             }else{

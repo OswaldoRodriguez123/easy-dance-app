@@ -651,7 +651,11 @@ class ExamenController extends BaseController {
 
               foreach($alumnos as $alumno){
 
-                $usuario = User::where('usuario_id',$alumno->id)->whereIn('usuario_tipo',$array)->first();
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id',$alumno->id)
+                    ->whereIn('usuarios_tipo.tipo',$array)
+                ->first();
+
 
                 if($usuario){
 

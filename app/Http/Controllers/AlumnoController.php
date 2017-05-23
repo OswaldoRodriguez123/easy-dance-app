@@ -60,20 +60,21 @@ class AlumnoController extends BaseController
     
     public function principal()
 	{
+
+        $in = array(2,4);
         
-        $alumnoc = DB::table('users')
-            ->join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+        $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+            ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
             ->select('alumnos.id as id')
             ->where('users.academia_id','=', Auth::user()->academia_id)
             ->where('alumnos.deleted_at', '=', null)
-            ->where('users.usuario_tipo', '=', 2)
+            ->whereIn('usuarios_tipo.tipo', $in)
             ->where('users.confirmation_token', '!=', null)
         ->get();
 
         $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->where('tipo', 1)->orderBy('nombre', 'asc')->get();
 
         $array = array();
-        $in = array(2,4);
 
         foreach($alumnos as $alumno){
 
@@ -81,24 +82,28 @@ class AlumnoController extends BaseController
                 ->where('alumno_id','=',$alumno->id)
             ->sum('importe_neto');
 
-            $activacion = User::where('usuario_id', $alumno->id)
-                ->whereIn('usuario_tipo', $in)
-                ->where('confirmation_token', '!=', null)
+            $activacion = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id', $alumno->id)
+                ->whereIn('usuarios_tipo.tipo', $in)
+                ->where('users.confirmation_token', '!=', null)
             ->first();
 
             $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
             $collection=collect($alumno);     
             $alumno_array = $collection->toArray();
 
-            $usuario = User::where('usuario_id',$alumno->id)->whereIn('usuario_tipo',$in)->first();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$alumno->id)
+                ->whereIn('usuarios_tipo.tipo',$in)
+            ->first();
 
             if($usuario){
 
-              if($usuario->imagen){
-                $imagen = $usuario->imagen;
-              }else{
-                $imagen = '';
-              }
+                if($usuario->imagen){
+                    $imagen = $usuario->imagen;
+                }else{
+                    $imagen = '';
+                }
 
             }else{
                 $imagen = '';
@@ -541,7 +546,10 @@ class AlumnoController extends BaseController
             }
 
             $in = array(2,4);
-            $usuario = User::where('usuario_id',$id)->whereIn('usuario_tipo',$in)->first();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$id)
+                ->whereIn('usuarios_tipo.tipo',$in)
+            ->first();
 
             if($usuario){
                 $imagen = $usuario->imagen;
@@ -803,7 +811,10 @@ class AlumnoController extends BaseController
     {  
         $in = array(2,4);
 
-        $usuario = User::where('usuario_id', $request->id)->whereIn('usuario_tipo', $in)->first();
+        $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->where('usuarios_tipo.tipo_id',$request->id)
+            ->whereIn('usuarios_tipo.tipo',$in)
+        ->first();
 
         if($usuario){
                  
@@ -921,7 +932,10 @@ class AlumnoController extends BaseController
         if($alumno->save()){
 
             $in = array(2,4);
-            $usuario = User::where('usuario_id', $request->id)->whereIn('usuario_tipo',$in)->first();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$request->id)
+                ->whereIn('usuarios_tipo.tipo',$in)
+            ->first();
 
             if($usuario){
 
@@ -967,7 +981,10 @@ class AlumnoController extends BaseController
         if($alumno->save()){
 
             $in = array(2,4);
-            $usuario = User::where('usuario_id', $request->id)->whereIn('usuario_tipo',$in)->first();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$request->id)
+                ->whereIn('usuarios_tipo.tipo',$in)
+            ->first();
 
             if($usuario){
 
@@ -1018,7 +1035,10 @@ class AlumnoController extends BaseController
             if($alumno->save()){
 
                 $in = array(2,4);
-                $usuario = User::where('usuario_id', $request->id)->whereIn('usuario_tipo',$in)->first();
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id',$request->id)
+                    ->whereIn('usuarios_tipo.tipo',$in)
+                ->first();
 
                 if($usuario){
 
@@ -1049,7 +1069,10 @@ class AlumnoController extends BaseController
         if($alumno->save()){
 
             $in = array(2,4);
-            $usuario = User::where('usuario_id', $request->id)->whereIn('usuario_tipo',$in)->first();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$request->id)
+                ->whereIn('usuarios_tipo.tipo',$in)
+            ->first();
 
             if($usuario){
 
@@ -1081,7 +1104,10 @@ class AlumnoController extends BaseController
         if($alumno->save()){
 
             $in = array(2,4);
-            $usuario = User::where('usuario_id', $request->id)->whereIn('usuario_tipo',$in)->first();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$request->id)
+                ->whereIn('usuarios_tipo.tipo',$in)
+            ->first();
      
             if($usuario){
 
@@ -1458,7 +1484,10 @@ class AlumnoController extends BaseController
                     $delete = PerfilEvaluativo::where('usuario_id', $hijo->id)->forceDelete();
                     $delete = CredencialAlumno::where('alumno_id',$hijo->id)->forceDelete();
 
-                    $usuario = User::where('usuario_id', $hijo->id)->whereIn('usuario_tipo', $array)->first();
+                    $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                        ->where('usuarios_tipo.tipo_id',$hijo->id)
+                        ->whereIn('usuarios_tipo.tipo',$in)
+                    ->first();
 
                     if($usuario){
                         $notificaciones_usuarios = NotificacionUsuario::where('id_usuario', $usuario->id)->get();
@@ -1473,17 +1502,25 @@ class AlumnoController extends BaseController
                         $delete = Incidencia::where('usuario_id', $usuario->id)->forceDelete();
                         $delete = Sugerencia::where('usuario_id', $usuario->id)->forceDelete();
 
-                        $delete = User::where('usuario_id', $id)->whereIn('usuario_tipo', $array)->forceDelete();
+                        $delete = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                            ->where('usuarios_tipo.tipo_id',$id)
+                            ->whereIn('usuarios_tipo.tipo',$array)
+                        ->forceDelete();
 
                     }
-
-                    $delete = User::where('usuario_id', $hijo->id)->whereIn('usuario_tipo', $array)->forceDelete();
+                    $delete = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                        ->where('usuarios_tipo.tipo_id',$hijo->id)
+                        ->whereIn('usuarios_tipo.tipo',$array)
+                    ->forceDelete();
                     $delete = Alumno::withTrashed()->where('id',$hijo->id)->forceDelete();
                 }
             }
         }
 
-        $usuario = User::where('usuario_id', $id)->whereIn('usuario_tipo', $array)->first();
+        $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->where('usuarios_tipo.tipo_id',$id)
+            ->whereIn('usuarios_tipo.tipo',$in)
+        ->first();
 
         if($usuario){
 
@@ -1504,7 +1541,10 @@ class AlumnoController extends BaseController
 
         }
 
-        $delete = User::where('usuario_id', $id)->whereIn('usuario_tipo', $array)->forceDelete();
+        $delete = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->where('usuarios_tipo.tipo_id',$id)
+            ->whereIn('usuarios_tipo.tipo',$array)
+        ->forceDelete();
         $delete = Alumno::withTrashed()->where('id',$id)->forceDelete();
 
 

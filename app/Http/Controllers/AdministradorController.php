@@ -22,12 +22,12 @@ class AdministradorController extends BaseController
         $academia = Academia::find(Auth::user()->academia_id);
         $array = array(1, 5, 6);
 
-        $usuarios = DB::table('users')
-            ->join('academias', 'users.academia_id', '=', 'academias.id')
+        $usuarios = User::join('academias', 'users.academia_id', '=', 'academias.id')
             ->join('sucursales', 'academias.sucursal_id', '=', 'sucursales.id')
+            ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
             ->select('academias.nombre as nombre_academia', 'users.*', 'sucursales.id', 'users.usuario_tipo')
             ->where('sucursales.id','=', $academia->sucursal_id)
-            ->whereIn('users.usuario_tipo', $array)
+            ->whereIn('usuarios_tipo.tipo', $array)
         ->get();
 
         return view('configuracion.sucursales.principal')->with('usuarios', $usuarios);

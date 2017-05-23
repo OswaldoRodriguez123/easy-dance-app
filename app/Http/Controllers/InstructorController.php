@@ -42,15 +42,18 @@ class InstructorController extends BaseController {
 
             foreach($instructores as $instructor){
 
-                $usuario = User::where('usuario_id',$instructor->id)->where('usuario_tipo',3)->first();
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo',3)
+                    ->where('usuarios_tipo.tipo_id',$instructor->id)
+                ->first();
 
                 if($usuario){
 
-                  if($usuario->imagen){
-                    $imagen = $usuario->imagen;
-                  }else{
-                    $imagen = '';
-                  }
+                    if($usuario->imagen){
+                        $imagen = $usuario->imagen;
+                    }else{
+                        $imagen = '';
+                    }
 
                 }else{
                     $imagen = '';
@@ -435,8 +438,11 @@ class InstructorController extends BaseController {
 
         if($instructor->save()){
 
-            $usuario = User::where('usuario_id', $request->id)->where('usuario_tipo',3)->first();
-     
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$request->id)
+                ->where('usuarios_tipo.tipo',3)
+            ->first();
+
             if($usuario){
 
                 $usuario->nombre = $nombre;
@@ -477,7 +483,10 @@ class InstructorController extends BaseController {
 
         if($instructor->save()){
 
-            $usuario = User::where('usuario_id', $request->id)->where('usuario_tipo',3)->first();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$request->id)
+                ->where('usuarios_tipo.tipo',3)
+            ->first();
      
             if($usuario){
 
@@ -525,7 +534,10 @@ class InstructorController extends BaseController {
             $instructor->correo = $correo;
 
             if($instructor->save()){
-                $usuario = User::where('usuario_id', $request->id)->where('usuario_tipo',3)->first();
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id',$request->id)
+                    ->where('usuarios_tipo.tipo',3)
+                ->first();
          
                 if($usuario){
 
@@ -555,7 +567,10 @@ class InstructorController extends BaseController {
 
         if($instructor->save()){
 
-            $usuario = User::where('usuario_id', $request->id)->where('usuario_tipo',3)->first();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$request->id)
+                ->where('usuarios_tipo.tipo',3)
+            ->first();
          
             if($usuario){
 
@@ -584,7 +599,10 @@ class InstructorController extends BaseController {
         $instructor->direccion = $request->direccion;
 
         if($instructor->save()){
-            $usuario = User::where('usuario_id', $request->id)->where('usuario_tipo',3)->first();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$request->id)
+                ->where('usuarios_tipo.tipo',3)
+            ->first();
          
             if($usuario){
 
@@ -743,7 +761,10 @@ class InstructorController extends BaseController {
         $instructor->imagen = $nombre_img;
         $instructor->save();
 
-        $usuario = User::where('usuario_tipo',3)->where('usuario_id', $request->id)->first();
+        $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->where('usuarios_tipo.tipo_id',$request->id)
+            ->where('usuarios_tipo.tipo',3)
+        ->first();
 
         if($usuario){
 
@@ -897,7 +918,10 @@ class InstructorController extends BaseController {
                 ->where('instructores.id', $id)
             ->get();
 
-            $usuario = User::where('usuario_id',$id)->where('usuario_tipo',3)->first();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$id)
+                ->where('usuarios_tipo.tipo',3)
+            ->first();
 
             if($usuario){
 

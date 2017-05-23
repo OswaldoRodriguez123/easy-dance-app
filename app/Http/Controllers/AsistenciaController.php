@@ -803,7 +803,10 @@ class AsistenciaController extends BaseController
     
       foreach($alumnos as $alumno){
 
-        $usuario = User::where('usuario_id',$alumno->id)->whereIn('usuario_tipo',$array)->first();
+        $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->where('usuarios_tipo.tipo_id',$alumno->id)
+            ->whereIn('usuarios_tipo.tipo',$array)
+        ->first();
         $inscripcion = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
@@ -886,7 +889,10 @@ class AsistenciaController extends BaseController
 
       foreach($instructores as $instructor){
 
-        $usuario = User::where('usuario_id',$instructor->id)->where('usuario_tipo',3)->first();
+        $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->where('usuarios_tipo.tipo',3)
+            ->where('usuarios_tipo.tipo_id',$instructor->id)
+        ->first();
 
         if($usuario){
 

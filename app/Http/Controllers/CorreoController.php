@@ -42,7 +42,11 @@ class CorreoController extends BaseController {
 	public function correoInformacion(Request $request){
 
 		$array = array(2, 4);
-		$alumnos = User::whereIn('usuario_tipo', $array)->where('academia_id', Auth::user()->academia_id)->get();
+		$alumnos = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->where('academia_id', Auth::user()->academia_id)
+            ->whereIn('usuarios_tipo.tipo',$array)
+        ->get();
+
 
 		foreach($alumnos as $alumno)
 		{
@@ -98,7 +102,10 @@ class CorreoController extends BaseController {
     else{
 
 		$array = array(2, 4);
-		$alumnos = User::whereIn('usuario_tipo', $array)->where('academia_id', Auth::user()->academia_id)->get();
+		$alumnos = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->where('academia_id', Auth::user()->academia_id)
+            ->whereIn('usuarios_tipo.tipo',$array)
+        ->get();
 
 		$subj = $request->subj;
 		$msj_html = $request->msj_html;
@@ -316,7 +323,10 @@ class CorreoController extends BaseController {
 				if($usuario->correo){
 
 					$in = array(2,4);
-					$tiene_cuenta = User::where('usuario_id', $id)->whereIn('usuario_tipo', $in)->where('confirmation_token', null)->count();
+					$tiene_cuenta = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+			            ->where('usuarios_tipo.tipo_id', $id)
+			            ->whereIn('usuarios_tipo.tipo',$in)
+			        ->count();
 					
 				}else{
 					$tiene_cuenta = 0;
@@ -326,7 +336,10 @@ class CorreoController extends BaseController {
 			if($tipo == 2)
 			{
 				$usuario = Instructor::find($id);
-				$tiene_cuenta = User::where('usuario_id', $id)->where('usuario_tipo', 3)->where('confirmation_token', null)->count();
+				$tiene_cuenta = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+		            ->where('usuarios_tipo.tipo_id', $id)
+		            ->where('usuarios_tipo.tipo',3)
+		        ->count();
 			}
 
 			if($tipo == 3)

@@ -33,6 +33,7 @@ use App\Paises;
 use App\Regalo;
 use App\PerfilEvaluativo;
 use App\User;
+use App\UsuarioTipo;
 use App\Factura;
 use App\Pago;
 use App\ItemsFactura;
@@ -69,19 +70,17 @@ class AcademiaController extends BaseController {
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         
         if(!$usuario_tipo){
-            $usuario_tipo = Auth::user()->usuario_tipo;
-            $explode = explode(',',$usuario_tipo);
-            $i = 0;
-            foreach($explode as $ext){
-                $usuario_tipo = $ext;
-                $i++;
+            $tipos = UsuarioTipo::where('usuario_id',Auth::user()->id)->get();
+            foreach($tipos as $tipo){
+                $usuario_tipo = $tipo->tipo;
+                $usuario_id = $tipo->tipo_id;
             }
 
-            if($i > 1){
-                return view('login.seleccionar-tipo')->with('usuarios',$explode);
+            if(count($tipos) > 1){
+                return view('login.seleccionar-tipo')->with('tipos',$tipos);
             }else{
-                Session::put('easydance_usuario_tipo',$ext);
-                Session::put('easydance_usuario_id',Auth::user()->usuario_id);
+                Session::put('easydance_usuario_tipo',$usuario_tipo);
+                Session::put('easydance_usuario_id',$usuario_id);
                 return redirect('/inicio');
             }
         }else{
@@ -125,6 +124,28 @@ class AcademiaController extends BaseController {
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         $usuario_id = Session::get('easydance_usuario_id');
 
+        $usuarios = User::all();
+
+        foreach($usuarios as $usuario){
+            $tipos = explode(',',$usuario->usuario_tipo);
+            $ids = explode(',',$usuario->usuario_id);
+            $i = 0;
+
+            foreach($tipos as $tipo){
+
+                $usuario_tipos = UsuarioTipo::where('usuario_id',$usuario->id)->where('tipo',$tipo)->first();
+
+                if(!$usuario_tipos){
+                    $usuario_tipos = new UsuarioTipo;
+                    $usuario_tipos->usuario_id = $usuario->id;
+                    $usuario_tipos->tipo = $tipo;
+                    $usuario_tipos->tipo_id = $ids[$i];
+                    $usuario_tipos->save();
+                }
+                $i++;
+            }
+        }
+
         if($usuario_tipo){
 
             //ADMINISTRADOR
@@ -144,21 +165,22 @@ class AcademiaController extends BaseController {
 
 
                         if(Carbon::now()->addMonth() > $fecha_final && $fecha_final > Carbon::now()){
-                            $usuarios = User::where('academia_id',Auth::user()->academia_id)->get();
+                            $usuarios = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                                ->select('users.id','usuarios_tipo.tipo')
+                                ->where('academia_id',Auth::user()->academia_id)
+                            ->get();
                             foreach($usuarios as $usuario){
-                                $explode = explode(',',$usuario->usuario_tipo);
 
-                                foreach($explode as $tipo){
-                                    if($tipo == 1 OR $tipo == 3 OR $tipo == 5 OR $tipo == 6){
-                                        $vencimiento = new VencimientoClaseGrupal;
+                                if($usuario->tipo == 1 OR $usuario->tipo == 3 OR $usuario->tipo == 5 OR $usuario->tipo == 6){
+                                    $vencimiento = new VencimientoClaseGrupal;
 
-                                        $vencimiento->clase_grupal_id = $clase_grupal->id;
-                                        $vencimiento->usuario_id = $usuario->id;
-                                        $vencimiento->save();
+                                    $vencimiento->clase_grupal_id = $clase_grupal->id;
+                                    $vencimiento->usuario_id = $usuario->id;
+                                    $vencimiento->save();
 
-                                        break;
-                                    }
+                                    break;
                                 }
+                                
                             }
                         }
 
@@ -379,7 +401,10 @@ class AcademiaController extends BaseController {
 
                     foreach($credenciales_alumno as $credencial_alumno){
 
-                        $instructor = User::where('usuario_tipo',3)->where('usuario_id',$credencial_alumno->instructor_id)->first();
+                        $instructor = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                            ->where('usuarios_tipo.tipo',3)
+                            ->where('usuarios_tipo.tipo_id',$credencial_alumno->instructor_id)
+                        ->first();
 
                         if($instructor){
 

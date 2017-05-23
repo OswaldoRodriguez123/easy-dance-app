@@ -655,9 +655,10 @@ class ClaseGrupalController extends BaseController {
                     ->where('alumno_id','=',$alumno->id)
                 ->sum('importe_neto');
 
-                $activacion = User::where('usuario_id', $alumno->id)
-                    ->whereIn('usuario_tipo', $tipo_clase)
-                    ->where('confirmation_token', '!=', null)
+                $activacion = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuario_id', $alumno->id)
+                    ->whereIn('usuarios_tipo.tipo', $tipo_clase)
+                    ->where('users.confirmation_token', '!=', null)
                 ->first();
 
                 if($activacion){
@@ -666,7 +667,11 @@ class ClaseGrupalController extends BaseController {
                     $activacion = 0;
                 }
 
-                $usuario = User::where('usuario_id',$alumno->id)->whereIn('usuario_tipo',$in)->first();
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id',$alumno->id)
+                    ->whereIn('usuarios_tipo.tipo',$in)
+                ->first();
+
 
                 if($usuario){
 
@@ -1279,9 +1284,10 @@ class ClaseGrupalController extends BaseController {
             $notificacion->titulo = "Nueva Clase Grupal";
 
             if($notificacion->save()){
-                $alumnos_a_notificar = DB::table('users')
+                $in = array(2,4);
+                $alumnos_a_notificar = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                     ->select('users.id')
-                    ->where('users.usuario_tipo','=',2)
+                    ->where('usuarios_tipo.tipo','=',$in)
                     ->where('users.academia_id', '=', Auth::user()->academia_id)
                 ->get();
                 
