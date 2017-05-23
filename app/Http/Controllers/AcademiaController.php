@@ -68,27 +68,27 @@ class AcademiaController extends BaseController {
     public function seleccionar_tipo()
     {
 
-        $usuarios = User::all();
+        // $usuarios = User::all();
 
-        foreach($usuarios as $usuario){
-            $tipos = explode(',',$usuario->usuario_tipo);
-            $ids = explode(',',$usuario->usuario_id);
-            $i = 0;
+        // foreach($usuarios as $usuario){
+        //     $tipos = explode(',',$usuario->usuario_tipo);
+        //     $ids = explode(',',$usuario->usuario_id);
+        //     $i = 0;
 
-            foreach($tipos as $tipo){
+        //     foreach($tipos as $tipo){
 
-                $usuario_tipos = UsuarioTipo::where('usuario_id',$usuario->id)->where('tipo',$tipo)->first();
+        //         $usuario_tipos = UsuarioTipo::where('usuario_id',$usuario->id)->where('tipo',$tipo)->first();
 
-                if(!$usuario_tipos){
-                    $usuario_tipos = new UsuarioTipo;
-                    $usuario_tipos->usuario_id = $usuario->id;
-                    $usuario_tipos->tipo = $tipo;
-                    $usuario_tipos->tipo_id = $ids[$i];
-                    $usuario_tipos->save();
-                }
-                $i++;
-            }
-        }
+        //         if(!$usuario_tipos){
+        //             $usuario_tipos = new UsuarioTipo;
+        //             $usuario_tipos->usuario_id = $usuario->id;
+        //             $usuario_tipos->tipo = $tipo;
+        //             $usuario_tipos->tipo_id = $ids[$i];
+        //             $usuario_tipos->save();
+        //         }
+        //         $i++;
+        //     }
+        // }
         
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         
