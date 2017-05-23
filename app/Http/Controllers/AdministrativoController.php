@@ -769,26 +769,29 @@ class AdministrativoController extends BaseController {
                             if($item_proforma->tipo == 6){
 
                                 $acuerdo = Acuerdo::find($item_proforma->item_id);
-                                $fecha_vencimiento = Carbon::createFromFormat('Y-m-d', $item_proforma->fecha_vencimiento);
-                                $fecha_limite = $fecha_vencimiento->addDays($acuerdo->tiempo_tolerancia);
+                                if($acuerdo){
 
-                                if($fecha_limite < Carbon::now())
-                                {
-                                    $mora = ($item_proforma->importe_neto * $acuerdo->porcentaje_retraso)/100;
+                                    $fecha_vencimiento = Carbon::createFromFormat('Y-m-d', $item_proforma->fecha_vencimiento);
+                                    $fecha_limite = $fecha_vencimiento->addDays($acuerdo->tiempo_tolerancia);
 
-                                    $item_factura = new ItemsFacturaProforma;
-                                                                                
-                                    $item_factura->alumno_id = $request->id;
-                                    $item_factura->academia_id = Auth::user()->academia_id;
-                                    $item_factura->fecha = Carbon::now()->toDateString();
-                                    $item_factura->item_id = $item_proforma->item_id;
-                                    $item_factura->nombre = 'Retraso de pago ' .  $item_proforma->nombre;
-                                    $item_factura->tipo = $tipo;
-                                    $item_factura->cantidad = 1;
-                                    $item_factura->importe_neto = $mora;
-                                    $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                                    if($fecha_limite < Carbon::now())
+                                    {
+                                        $mora = ($item_proforma->importe_neto * $acuerdo->porcentaje_retraso)/100;
 
-                                    $item_factura->save();
+                                        $item_factura = new ItemsFacturaProforma;
+                                                                                    
+                                        $item_factura->alumno_id = $request->id;
+                                        $item_factura->academia_id = Auth::user()->academia_id;
+                                        $item_factura->fecha = Carbon::now()->toDateString();
+                                        $item_factura->item_id = $item_proforma->item_id;
+                                        $item_factura->nombre = 'Retraso de pago ' .  $item_proforma->nombre;
+                                        $item_factura->tipo = $tipo;
+                                        $item_factura->cantidad = 1;
+                                        $item_factura->importe_neto = $mora;
+                                        $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+
+                                        $item_factura->save();
+                                    }
                                 }
                             }
                             else if($item_proforma->tipo == 3 OR $item_proforma->tipo == 4){
@@ -897,26 +900,28 @@ class AdministrativoController extends BaseController {
                         if($item_proforma->tipo == 6){
 
                             $acuerdo = Acuerdo::find($item_proforma->item_id);
-                            $fecha_vencimiento = Carbon::createFromFormat('Y-m-d', $item_proforma->fecha_vencimiento);
-                            $fecha_limite = $fecha_vencimiento->addDays($acuerdo->tiempo_tolerancia);
+                            if($acuerdo){
+                                $fecha_vencimiento = Carbon::createFromFormat('Y-m-d', $item_proforma->fecha_vencimiento);
+                                $fecha_limite = $fecha_vencimiento->addDays($acuerdo->tiempo_tolerancia);
 
-                            if($fecha_limite < Carbon::now())
-                            {
-                                $mora = ($item_proforma->importe_neto * $acuerdo->porcentaje_retraso)/100;
+                                if($fecha_limite < Carbon::now())
+                                {
+                                    $mora = ($item_proforma->importe_neto * $acuerdo->porcentaje_retraso)/100;
 
-                                $item_factura = new ItemsFacturaProforma;
-                                                                            
-                                $item_factura->alumno_id = $request->id;
-                                $item_factura->academia_id = Auth::user()->academia_id;
-                                $item_factura->fecha = Carbon::now()->toDateString();
-                                $item_factura->item_id = $item_proforma->item_id;
-                                $item_factura->nombre = 'Retraso de pago ' .  $item_proforma->nombre;
-                                $item_factura->tipo = $tipo;
-                                $item_factura->cantidad = 1;
-                                $item_factura->importe_neto = $mora;
-                                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                                    $item_factura = new ItemsFacturaProforma;
+                                                                                
+                                    $item_factura->alumno_id = $request->id;
+                                    $item_factura->academia_id = Auth::user()->academia_id;
+                                    $item_factura->fecha = Carbon::now()->toDateString();
+                                    $item_factura->item_id = $item_proforma->item_id;
+                                    $item_factura->nombre = 'Retraso de pago ' .  $item_proforma->nombre;
+                                    $item_factura->tipo = $tipo;
+                                    $item_factura->cantidad = 1;
+                                    $item_factura->importe_neto = $mora;
+                                    $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
 
-                                $item_factura->save();
+                                    $item_factura->save();
+                                }
                             }
 
                         }
