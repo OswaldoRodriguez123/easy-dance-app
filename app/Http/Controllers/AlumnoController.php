@@ -552,6 +552,7 @@ class AlumnoController extends BaseController
             }
 
             $in = array(2,4);
+
             $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                 ->where('usuarios_tipo.tipo_id',$id)
                 ->whereIn('usuarios_tipo.tipo',$in)
@@ -576,7 +577,7 @@ class AlumnoController extends BaseController
                 $tipo_pago = 'Contado';
             }
 
-            return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $total, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'edad' => $edad, 'tipo_pago' => $tipo_pago, 'credenciales' => $credenciales]);
+            return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $total, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'edad' => $edad, 'tipo_pago' => $tipo_pago, 'credenciales' => $credenciales, 'usuario' => $usuario]);
         }else{
            return redirect("participante/alumno"); 
         }
@@ -716,9 +717,14 @@ class AlumnoController extends BaseController
                 $total = $total + $items_factura->importe_neto;
                 
         }
+        $in = array(2,4);
 
         $alumno = Alumno::find($id);
-        return view('participante.alumno.operacion')->with(['id' => $id, 'alumno' => $alumno, 'total' => $total]);        
+        $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->where('usuarios_tipo.tipo_id',$alumno->id)
+            ->whereIn('usuarios_tipo.tipo',$in)
+        ->first();
+        return view('participante.alumno.operacion')->with(['id' => $id, 'alumno' => $alumno, 'total' => $total, 'usuario' => $usuario]);        
     }
 
     public function deuda($id)
@@ -1014,11 +1020,11 @@ class AlumnoController extends BaseController
     public function updateCorreo(Request $request){
 
         $rules = [
-            'correo' => 'email|max:255|unique:users,email, '.$request->id.',usuario_id',
+            'correo' => 'required|email|max:255|unique:users,email, '.$request->id.',usuario_id',
         ];
 
         $messages = [
-
+            'correo.required' => 'Ups! El correo es requerido',
             'correo.email' => 'Ups! El correo tiene una dirección inválida',
             'correo.max' => 'El máximo de caracteres permitidos son 255',
             'correo.unique' => 'Ups! Ya este correo ha sido registrado',
@@ -1725,5 +1731,62 @@ class AlumnoController extends BaseController
       return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
+    public function crearCuenta($id){
+
+        $alumno = Alumno::find($id);
+
+        if($alumno){
+
+            if($alumno->correo){
+
+                $in = array(2,4);
+
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id',$alumno->id)
+                    ->whereIn('usuarios_tipo.tipo',$in)
+                ->first();
+
+                if(!$usuario){
+
+                    $password = str_random(8);
+                                
+                    $usuario = new User;
+
+                    $usuario->academia_id = Auth::user()->academia_id;
+                    $usuario->nombre = $alumno->nombre;
+                    $usuario->apellido = $alumno->apellido;
+                    $usuario->telefono = $alumno->telefono;
+                    $usuario->celular = $alumno->celular;
+                    $usuario->sexo = $alumno->sexo;
+                    $usuario->email = $alumno->correo;
+                    $usuario->como_nos_conociste_id = 1;
+                    $usuario->direccion = $alumno->direccion;
+                    $usuario->confirmation_token = str_random(40);
+                    $usuario->password = bcrypt($password);
+                    $usuario->usuario_id = $alumno->id;
+                    $usuario->usuario_tipo = 2; 
+
+                    $usuario->save();
+
+                    $usuario_tipo = new UsuarioTipo;
+                    $usuario_tipo->usuario_id = $usuario->id;
+                    $usuario_tipo->tipo = 2;
+                    $usuario_tipo->tipo_id = $alumno->id;
+                    $usuario_tipo->save();
+                  
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+                }else{
+                    return response()->json(['error_mensaje' => 'Ups! El alumno ya posee una cuenta'], 422);
+                }
+
+            }else{
+                return response()->json(['error_mensaje' => 'Ups! El alumno no posee correo electronico para crear su cuenta'], 422);
+            }
+
+        }else{
+            return response()->json(['error_mensaje' => 'Ups! No Hemos encontrado la siguiente información del identificador asociada a tu cuenta', 'status' => 'ERROR'],422);
+        }
+    }
 
 }

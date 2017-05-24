@@ -1142,7 +1142,12 @@
                                     <a href="{{url('/')}}/participante/alumno/deuda/{{$id}}"><i class="icon_a-pagar f-20 m-r-5 boton blue sa-warning" data-original-title="Pagar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   @endif
                                   
-                                  <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  @if($usuario)
+                                    <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  @else
+                                    <a class="email" style="display:none"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                    <a class="usuario"><i class="zmdi zmdi-alert-circle-o f-20 m-r-5 boton blue sa-warning" data-original-title="Crear Cuenta" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  @endif
                                   <a href="{{url('/')}}/participante/alumno/transferir/{{$id}}"><i class="zmdi zmdi-trending-up zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Transferir" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/participante/alumno/evaluaciones/{{$id}}"><i class="zmdi glyphicon glyphicon-search f-20 m-r-5 boton blue sa-warning" data-original-title="Valoración" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a class="reservar"><i class="zmdi zmdi-phone zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Reservar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
@@ -1333,6 +1338,7 @@
     route_agregar_cantidad="{{url('/')}}/participante/alumno/agregar_cantidad";
     route_eliminar_cantidad="{{url('/')}}/participante/alumno/eliminar_cantidad/";
     route_cancelar_cantidad="{{url('/')}}/participante/alumno/cancelar_cantidad";
+    route_agregar="{{url('/')}}/participante/alumno/crear_cuenta/";
 
     total = "{{$total}}";
     puntos_referidos = "{{$puntos_referidos}}";
@@ -2376,6 +2382,46 @@
                         }
         });
     });
+
+    $(".usuario").click(function(){
+      element = this;
+      swal({   
+        title: "Desea crearle la cuenta al alumno?",   
+        text: "Confirmar creación!",   
+        type: "warning",   
+        showCancelButton: true,   
+        confirmButtonColor: "#DD6B55",   
+        confirmButtonText: "Crear!",  
+        cancelButtonText: "Cancelar",         
+        closeOnConfirm: true 
+      }, function(isConfirm){   
+        if (isConfirm) {
+
+          procesando();
+          var token = '{{ csrf_token() }}';
+          var route = route_agregar + "{{$id}}";
+                
+          $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            dataType: 'json',
+            success:function(respuesta){
+              finprocesado();
+              swal('Exito!','La cuenta ha sido creada','success');
+              $(element).hide();
+              $('.email').show();
+
+            },
+            error:function(msj){
+              swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+              finprocesado();
+            }
+          });
+        }
+      });
+    });
+
 
    </script> 
   

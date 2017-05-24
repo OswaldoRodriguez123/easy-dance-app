@@ -44,16 +44,39 @@
                             </a>
                         </li>
                     @endif
-                    <li data-ripplecator class ="dark-ripples">
-                        <a class="email" id="{{$id}}">
-                            <span class="ca-icon-c"><i class="zmdi zmdi-email f-35 boton blue sa-warning" 
-                                   data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
-                            <div class="ca-content-c">
-                                <h2 class="ca-main-c">Enviar Correo</h2>
-                                <h3 class="ca-sub-c"></h3>
-                            </div>
-                        </a>
-                    </li>
+                    @if($usuario)
+                        <li data-ripplecator class ="dark-ripples">
+                            <a class="email" id="{{$id}}">
+                                <span class="ca-icon-c"><i class="zmdi zmdi-email f-35 boton blue sa-warning" 
+                                       data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                                <div class="ca-content-c">
+                                    <h2 class="ca-main-c">Enviar Correo</h2>
+                                    <h3 class="ca-sub-c"></h3>
+                                </div>
+                            </a>
+                        </li>
+                    @else
+                        <li class="email" id="{{$id}}" style="display: none" data-ripplecator class ="dark-ripples">
+                            <a>
+                                <span class="ca-icon-c"><i class="zmdi zmdi-email f-35 boton blue sa-warning" 
+                                       data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                                <div class="ca-content-c">
+                                    <h2 class="ca-main-c">Enviar Correo</h2>
+                                    <h3 class="ca-sub-c"></h3>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="usuario" data-ripplecator class ="dark-ripples">
+                            <a>
+                                <span class="ca-icon-c"><i class="zmdi zmdi-alert-circle-o f-35 boton blue sa-warning" 
+                                       data-original-title="Crear Cuenta" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
+                                <div class="ca-content-c">
+                                    <h2 class="ca-main-c">Crear Cuenta</h2>
+                                    <h3 class="ca-sub-c"></h3>
+                                </div>
+                            </a>
+                        </li>
+                    @endif
                     <li data-ripplecator class ="dark-ripples">
                         <a class = "transferir">
                             <span class="ca-icon-c"><i class="zmdi zmdi-trending-up zmdi-hc-fw f-35 boton blue sa-warning" 
@@ -125,6 +148,7 @@
     route_eliminar="{{url('/')}}/participante/alumno/eliminar/";
     route_principal="{{url('/')}}/participante/alumno";
     route_email="{{url('/')}}/correo/sesion/";
+    route_agregar="{{url('/')}}/participante/alumno/crear_cuenta/";
     
     $(document).ready(function(){
 
@@ -320,6 +344,45 @@
                         swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
                         }
         });
+    });
+
+    $(".usuario").click(function(){
+      element = this;
+      swal({   
+        title: "Desea crearle la cuenta al alumno?",   
+        text: "Confirmar creación!",   
+        type: "warning",   
+        showCancelButton: true,   
+        confirmButtonColor: "#DD6B55",   
+        confirmButtonText: "Crear!",  
+        cancelButtonText: "Cancelar",         
+        closeOnConfirm: true 
+      }, function(isConfirm){   
+        if (isConfirm) {
+
+          procesando();
+          var token = '{{ csrf_token() }}';
+          var route = route_agregar + "{{$id}}";
+                
+          $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            dataType: 'json',
+            success:function(respuesta){
+              finprocesado();
+              swal('Exito!','La cuenta ha sido creada','success');
+              $(element).hide();
+              $('.email').show();
+
+            },
+            error:function(msj){
+              swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+              finprocesado();
+            }
+          });
+        }
+      });
     });
 
 	</script>

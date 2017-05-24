@@ -531,6 +531,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('participante/alumno/llamadas/agregar', 'AlumnoController@storeLlamada');
 		Route::delete('participante/alumno/llamadas/eliminar/{id}', 'AlumnoController@eliminarLlamada');
 
+		Route::post('participante/alumno/crear_cuenta/{id}', 'AlumnoController@crearCuenta');
+
 		//INSTRUCTOR
 
 		Route::get('participante/instructor', 'InstructorController@index');

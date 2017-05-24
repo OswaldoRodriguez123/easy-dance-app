@@ -323,21 +323,23 @@ class CorreoController extends BaseController {
 				if($usuario->correo){
 
 					$in = array(2,4);
-					$tiene_cuenta = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+					$sin_confirmar = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
 			            ->where('usuarios_tipo.tipo_id', $id)
+			            ->where('users.confirmation_token', '!=', null)
 			            ->whereIn('usuarios_tipo.tipo',$in)
 			        ->count();
 					
 				}else{
-					$tiene_cuenta = 0;
+					$sin_confirmar = 0;
 				}
 			}
 
 			if($tipo == 2)
 			{
 				$usuario = Instructor::find($id);
-				$tiene_cuenta = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+				$sin_confirmar = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
 		            ->where('usuarios_tipo.tipo_id', $id)
+		            ->where('users.confirmation_token', '!=', null)
 		            ->where('usuarios_tipo.tipo',3)
 		        ->count();
 			}
@@ -345,16 +347,16 @@ class CorreoController extends BaseController {
 			if($tipo == 3)
 			{
 				$usuario = Visitante::find($id);
-				$tiene_cuenta = 0;
+				$sin_confirmar = 0;
 			}
 
 			if($tipo == 4)
 			{
 				$usuario = Proveedor::find($id);
-				$tiene_cuenta = 0;
+				$sin_confirmar = 0;
 			}
 
-			return view('correo.indexsinselector')->with(['usuario' => $usuario, 'id' => $id, 'tiene_cuenta' => $tiene_cuenta, 'tipo' => $tipo]);
+			return view('correo.indexsinselector')->with(['usuario' => $usuario, 'id' => $id, 'sin_confirmar' => $sin_confirmar, 'tipo' => $tipo]);
 
 		}
 		else{
