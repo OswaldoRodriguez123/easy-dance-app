@@ -17,6 +17,7 @@ use App\ItemsFacturaProforma;
 use App\Academia;
 use App\Familia;
 use App\User;
+use App\UsuarioTipo;
 use App\PerfilEvaluativo;
 use Mail;
 use DB;
