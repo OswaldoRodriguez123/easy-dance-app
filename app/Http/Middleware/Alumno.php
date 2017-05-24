@@ -24,7 +24,7 @@ class Alumno
         $usuario_tipo = Session::get('easydance_usuario_tipo');
 
         if($usuario_tipo){
-            if($usuario_tipo == 2 || $usuario_tipo == 3 || $usuario_tipo == 1 || $usuario_tipo == 6 || $usuario_tipo == 5){
+            if($usuario_tipo == 2 || $usuario_tipo == 3 || $usuario_tipo == 4 || $usuario_tipo == 1 || $usuario_tipo == 6 || $usuario_tipo == 5){
                 return $next($request);
             }
             abort(403);

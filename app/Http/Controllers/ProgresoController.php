@@ -8,6 +8,7 @@ use App\Academia;
 use App\InscripcionClaseGrupal;
 use App\ClaseGrupal;
 use App\Progreso;
+use App\ProgresoPaso;
 use App\Examen;
 use App\Instructor;
 use App\Evaluacion;
@@ -109,10 +110,6 @@ class ProgresoController extends BaseController {
     			$clase_10 = Progreso::where('clase_grupal_id',$id)->where('tipo',10)->first();
     			$clase_11 = Progreso::where('clase_grupal_id',$id)->where('tipo',11)->first();
     			$clase_12 = Progreso::where('clase_grupal_id',$id)->where('tipo',12)->first();
-    			// $clase_13 = Progreso::where('clase_grupal_id',$id)->where('tipo',13)->first();
-    			// $clase_14 = Progreso::where('clase_grupal_id',$id)->where('tipo',14)->first();
-    			// $clase_15 = Progreso::where('clase_grupal_id',$id)->where('tipo',15)->first();
-    			// $clase_16 = Progreso::where('clase_grupal_id',$id)->where('tipo',16)->first();
     			
     		}
     		else{
@@ -176,26 +173,6 @@ class ProgresoController extends BaseController {
     			$clase_12->clase_grupal_id = $id;
     			$clase_12->tipo = 12;
     			$clase_12->save();
-
-    			// $clase_13 = new Progreso;
-    			// $clase_13->clase_grupal_id = $id;
-    			// $clase_13->tipo = 13;
-    			// $clase_13->save();
-
-    			// $clase_14 = new Progreso;
-    			// $clase_14->clase_grupal_id = $id;
-    			// $clase_14->tipo = 14;
-    			// $clase_14->save();
-
-    			// $clase_15 = new Progreso;
-    			// $clase_15->clase_grupal_id = $id;
-    			// $clase_15->tipo = 15;
-    			// $clase_15->save();
-
-    			// $clase_16 = new Progreso;
-    			// $clase_16->clase_grupal_id = $id;
-    			// $clase_16->tipo = 16;
-    			// $clase_16->save();
     		}
 
             $examen = Examen::where('clase_grupal_id',$id)->first();
@@ -242,10 +219,6 @@ class ProgresoController extends BaseController {
             $clase_10 = Progreso::where('clase_grupal_id',$id)->where('tipo',10)->first();
             $clase_11 = Progreso::where('clase_grupal_id',$id)->where('tipo',11)->first();
             $clase_12 = Progreso::where('clase_grupal_id',$id)->where('tipo',12)->first();
-            // $clase_13 = Progreso::where('clase_grupal_id',$id)->where('tipo',13)->first();
-            // $clase_14 = Progreso::where('clase_grupal_id',$id)->where('tipo',14)->first();
-            // $clase_15 = Progreso::where('clase_grupal_id',$id)->where('tipo',15)->first();
-            // $clase_16 = Progreso::where('clase_grupal_id',$id)->where('tipo',16)->first();
             
         }
         else{
@@ -312,6 +285,11 @@ class ProgresoController extends BaseController {
 
         }
 
+        $tmp = ProgresoPaso::where('clase_grupal_id',$id)->where('status',1)->get();
+        $collection=collect($tmp);
+        $grouped = $collection->groupBy('codigo');     
+        $pasos = $grouped->toArray();
+        
         if($usuario_tipo == 2 OR $usuario_tipo == 4)
         {
 
@@ -336,13 +314,12 @@ class ProgresoController extends BaseController {
             }else{
                 $notas = ['nota' => '', 'total' => '', 'porcentaje' => ''];
             }
-
-    	   return view('progreso.programacion')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'notas' => $notas]);
             
         }else{
-
-            return view('progreso.programacion')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'notas' => '']);
+            $notas = '';
         }
+
+        return view('progreso.programacion')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'notas' => $notas, 'pasos' => $pasos, 'id' => $id]);
     }
 
 
@@ -419,6 +396,27 @@ class ProgresoController extends BaseController {
         }else{
             return redirect("/inicio"); 
         }
+    }
+
+    public function updatePaso(Request $request)
+    {
+        $paso = ProgresoPaso::where('clase_grupal_id',$request->clase_grupal_id)->where('codigo',$request->id)->first();
+
+        if(!$paso){
+            $paso = new ProgresoPaso;
+            $paso->clase_grupal_id = $request->clase_grupal_id;
+            $paso->codigo = $request->id;
+        }
+
+        $paso->status = $request->valor;
+
+        if($paso->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+        }
+
     }
 
 }

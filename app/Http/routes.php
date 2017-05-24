@@ -145,6 +145,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::get('blog/publicar', 'BlogController@publicar');
 	Route::post('blog/publicar', 'BlogController@store');
 
+	//
+
+	Route::get('/inicio', 'AcademiaController@index');
+
 	// DESDE AQUI NECESITAN ESTAR AUTENTICADO
 
 	/*------------------------------------------------------
@@ -470,6 +474,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	-----------------------------------------------------------*/
 	Route::group(['middleware' => 'recepcionista'], function() {
 
+		//PRINCIPAL
+
+		Route::get('/', 'AcademiaController@menu');
 		Route::get('/listo', 'AcademiaController@listo');
 
 		//ALUMNO
@@ -1056,9 +1063,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	    // PRINCIPAL
 	    
-		Route::get('/inicio', 'AcademiaController@index');
 		Route::post('/inicio/condiciones', 'UsuarioController@aceptar_condiciones');
-		Route::get('/', 'AcademiaController@menu');
 		
 		//AGENDAR
 
@@ -1161,11 +1166,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	Route::group(['middleware' => ['instructor']], function() {
 
-	    // PRINCIPAL
-	    
-		Route::get('/inicio', 'AcademiaController@index');
-		Route::get('/', 'AcademiaController@menu');
-
 		//PERFIL Y PAGOS
 
 		Route::get('perfil-profesional', 'InstructorController@perfil_instructor');
@@ -1183,6 +1183,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('nivelaciones', 'ClaseGrupalController@principalnivelaciones');
 		Route::get('agendar/clases-grupales/nivelaciones/{id}', 'ClaseGrupalController@nivelaciones');
 		Route::post('agendar/clases-grupales/nivelaciones/agregar', 'ClaseGrupalController@storeNivelaciones');
+		Route::post('programacion/update/paso', 'ProgresoController@updatePaso');
 
 		//EXAMENES
 
