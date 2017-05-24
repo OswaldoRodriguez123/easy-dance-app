@@ -8,6 +8,7 @@ use App\Instructor;
 use App\ClaseGrupal;
 use App\Academia;
 use App\User;
+use App\UsuarioTipo;
 use App\PerfilInstructor;
 use Mail;
 use Validator;
