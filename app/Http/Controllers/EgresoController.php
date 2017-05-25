@@ -48,7 +48,7 @@ class EgresoController extends BaseController {
     	$academia = Academia::find(Auth::user()->academia_id);
         $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-        return view('administrativo.egresos.fiestas')->with(['fiestas', Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'usuario_tipo' => $usuario_tipo]);
+        return view('administrativo.egresos.fiestas')->with(['fiestas' => Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'usuario_tipo' => $usuario_tipo]);
     }
 
      public function talleres(){
