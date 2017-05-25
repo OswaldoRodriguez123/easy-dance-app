@@ -369,6 +369,7 @@
 
                     <form name="formInvitacion" id="formInvitacion">
                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                      <input name="id" value="{{$id}}" type="hidden">
                       <div class="col-sm-6">
                         <label id="id-invitacion_nombre">Ingresa tu nombre </label>
                         <div class="input-group input-group-lg">
@@ -1015,7 +1016,7 @@
         headers: {'X-CSRF-TOKEN': token},
         type: 'POST',
         dataType: 'json',
-        data:datos+"&id=1",
+        data:datos,
         success:function(respuesta){
           setTimeout(function(){ 
             var nFrom = $(this).attr('data-from');
