@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterAddTelefonoPatrocinadoresProformaTable extends Migration
+class AlterRenamePatrocinadorToCoordinadorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AlterAddTelefonoPatrocinadoresProformaTable extends Migration
     public function up()
     {
         Schema::table('patrocinadores_proforma', function (Blueprint $table) {
-            $table->string('telefono');
+            $table->renameColumn('patrocinador', 'coordinador');
         });
     }
 
@@ -25,7 +25,7 @@ class AlterAddTelefonoPatrocinadoresProformaTable extends Migration
     public function down()
     {
         Schema::table('patrocinadores_proforma', function (Blueprint $table) {
-            $table->dropColumn('telefono');
+            $table->renameColumn('coordinador', 'patrocinador');
         });
     }
 }
