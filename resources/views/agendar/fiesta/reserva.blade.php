@@ -342,7 +342,7 @@
 
                     <form name="formInvitacion" id="formInvitacion">
                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                      <input name="id" value="{{$id}}" type="hidden">
+                      <input name="id" value="{{$fiesta->id}}" type="hidden">
                       <div class="col-sm-6">
                         <label id="id-invitacion_nombre">Ingresa tu nombre </label>
                         <div class="input-group input-group-lg">
@@ -467,7 +467,7 @@
                   <form name="form_normal" id="form_normal">
                     <input name="_token" value="{{ csrf_token() }}" type="hidden">
                     <input name="form" value="2" type="hidden">
-                    <input name="id" value="{{$id}}" type="hidden">
+                    <input name="id" value="{{$fiesta->id}}" type="hidden">
 
                     <div class="col-sm-12" style="padding:0px">
                

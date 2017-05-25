@@ -369,7 +369,7 @@
 
                     <form name="formInvitacion" id="formInvitacion">
                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                      <input name="id" value="{{$id}}" type="hidden">
+                      <input name="id" value="{{$campana->id}}" type="hidden">
                       <div class="col-sm-6">
                         <label id="id-invitacion_nombre">Ingresa tu nombre </label>
                         <div class="input-group input-group-lg">
