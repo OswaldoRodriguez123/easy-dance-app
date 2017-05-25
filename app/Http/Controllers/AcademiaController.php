@@ -1350,6 +1350,8 @@ class AcademiaController extends BaseController {
         $inscripciones = InscripcionClaseGrupal::where('alumno_id',$id)->get();
         $in = array(1,2);
         $status = true;
+        $alumno = Alumno::find($id);
+        $fecha_registro = Carbon::createFromFormat('Y-m-d H:i:s', $alumno->created_at);
 
         foreach($inscripciones as $inscripcion_clase_grupal){
 
@@ -1362,6 +1364,10 @@ class AcademiaController extends BaseController {
 
                 $horario = HorarioClaseGrupal::where('clase_grupal_id',$clase_grupal->clase_grupal_id)->first();
                 $fecha_clase = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+
+                if($fecha_registro > $fecha_clase){
+                    $fecha_clase = $fecha_registro;
+                }
 
                 if($fecha_clase <= Carbon::now()){
 

@@ -1091,6 +1091,7 @@ class AsistenciaController extends BaseController
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id', 'inscripcion_clase_grupal.fecha_pago')
                 ->where('inscripcion_clase_grupal.alumno_id', '=', $request->id)
+                ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
                 ->where('clases_grupales.deleted_at', '=', null)
           ->get();
 
@@ -1245,6 +1246,7 @@ class AsistenciaController extends BaseController
         ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
         ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id', 'inscripcion_clase_grupal.fecha_pago')
         ->where('inscripcion_clase_grupal.alumno_id', '=', $request->id)
+        ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
         ->where('clases_grupales.deleted_at', '=', null)
   ->get();
 
@@ -1396,6 +1398,7 @@ class AsistenciaController extends BaseController
           ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
           ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id', 'inscripcion_clase_grupal.fecha_pago')
           ->where('inscripcion_clase_grupal.alumno_id', '=', $request->id)
+          ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
           ->where('clases_grupales.deleted_at', '=', null)
     ->get();
 
