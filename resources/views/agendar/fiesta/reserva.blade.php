@@ -790,6 +790,8 @@
   <script type="text/javascript">
 
     route_agregar="{{url('/')}}/agendar/fiestas/pagar/boleto";
+    route_agregar_contribucion="{{url('/')}}/agendar/fiestas/contribuir/contribucion";
+    route_enhorabuena="{{url('/')}}/agendar/fiestas/contribuir/enhorabuena/";
 
     route_enviar_invitacion="{{url('/')}}/agendar/fiestas/invitar";
     route_agregar_invitacion="{{url('/')}}/agendar/fiestas/invitar/agregar";
@@ -1143,6 +1145,62 @@
                                     
         });
 
+        $(".guardar").click(function(){
+          var route = route_agregar_contribucion;
+          var token = $('input:hidden[name=_token]').val();
+          var form = $(this).data('formulario');
+          var datos = $( "#form_normal" ).serialize();
+
+          procesando();
+          limpiarMensaje();
+          $.ajax({
+              url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:datos,
+              success:function(respuesta){
+                setTimeout(function(){ 
+                  if(respuesta.status=="OK"){
+                    $("#form_normal")[0].reset();
+                    window.location = route_enhorabuena + "{{$fiesta->id}}"
+                  }else{
+                    var nTitle="Ups! ";
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    var nType = 'danger';
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY"; 
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                  }                      
+                }, 1000);
+              },
+              error:function(msj){
+                setTimeout(function(){ 
+                  if(msj.responseJSON.status=="ERROR"){
+                    console.log(msj.responseJSON.errores);
+                    errores(msj.responseJSON.errores);
+                    var nTitle="    Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                  }else{
+                    var nTitle="   Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  }                        
+                  finprocesado();
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nType = 'danger';
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY";                       
+                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                }, 1000);
+              }
+          });
+        });
+
         $("#guardar_invitacion").click(function(){
 
           var route = route_enviar_invitacion;
@@ -1176,9 +1234,9 @@
               },
               error:function(msj){
                 setTimeout(function(){ 
-                  // if (typeof msj.responseJSON === "undefined") {
-                  //   window.location = "{{url('/')}}/error";
-                  // }
+                  if (typeof msj.responseJSON === "undefined") {
+                    window.location = "{{url('/')}}/error";
+                  }
                   if(msj.responseJSON.status=="ERROR"){
                     console.log(msj.responseJSON.errores);
                     errores(msj.responseJSON.errores);

@@ -1517,4 +1517,10 @@ class FiestaController extends BaseController {
 
     }
 
+    public function enhorabuena($id)
+    {
+        $nombre = Session::get('nombre_contribuyente');
+        return view('agendar.fiesta.enhorabuena')->with(['id' => $id, 'nombre' => $nombre]);
+    }
+
 }
