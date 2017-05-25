@@ -475,6 +475,7 @@ class ClaseGrupalController extends BaseController {
 
             $reservaciones = Reservacion::where('tipo_reservacion_id', '=', $id)
                 ->where('tipo_reservacion', '=', '1')
+                ->where('boolean_confirmacion', '=', 0)
             ->get();
 
             $now = Carbon::now();
