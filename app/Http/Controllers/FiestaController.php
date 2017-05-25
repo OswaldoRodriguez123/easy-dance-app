@@ -1637,13 +1637,13 @@ class FiestaController extends BaseController {
 
     public function principalpatrocinadores($id){
 
-        $patrocinadores = DB::table('patrocinadores')
-            // ->join('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
-            ->join('alumnos','patrocinadores.usuario_id', '=', 'alumnos.id')
-            ->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido')
+         $patrocinadores = Patrocinador::Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
+            ->Leftjoin('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
+            ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, patrocinadores.created_at, patrocinadores.monto, patrocinadores.tipo_moneda')
             ->where('patrocinadores.tipo_evento_id', '=', $id)
             ->where('patrocinadores.tipo_evento', '=', 2)
-         ->get();
+            ->orderBy('patrocinadores.created_at', 'desc')
+        ->get();
 
         return view('agendar.fiesta.patrocinadores')->with(['patrocinadores' => $patrocinadores, 'id' => $id]);
 
