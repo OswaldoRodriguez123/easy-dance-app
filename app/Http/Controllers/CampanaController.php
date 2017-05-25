@@ -954,9 +954,9 @@ class CampanaController extends BaseController {
                 ];
 
                 Mail::send('correo.confirmacion_campana', $array, function($msj) use ($array){
-                        $msj->subject($array['subj']);
-                        $msj->to($array['correo']);
-                    });
+                    $msj->subject($array['subj']);
+                    $msj->to($array['correo']);
+                });
 
             }
 
@@ -1382,7 +1382,7 @@ class CampanaController extends BaseController {
         if($campana){
             $recompensas = Recompensa::where('campana_id' , $id)->get();
             $datos = DatosBancarios::where('tipo_evento_id' , $id)->where('tipo_evento',1)->get();
-           return view('especiales.campana.planilla')->with(['campana' => $campana, 'recompensas' => $recompensas, 'datos' => $datos]);
+            return view('especiales.campana.planilla')->with(['campana' => $campana, 'recompensas' => $recompensas, 'datos' => $datos]);
         }else{
            return redirect("especiales/campañas"); 
         }
@@ -1874,7 +1874,8 @@ class CampanaController extends BaseController {
 
                 $UsuarioExterno->nombre = $request->nombre;
                 $UsuarioExterno->sexo = $request->sexo;
-                $UsuarioExterno->campana_id = $request->campana_id;
+                $UsuarioExterno->tipo_evento_id = $request->tipo_evento_id;
+                $UsuarioExterno->tipo_evento = 1;
                 $UsuarioExterno->monto = $request->monto;
                 $UsuarioExterno->correo = $request->email_externo;
 
@@ -1966,7 +1967,7 @@ class CampanaController extends BaseController {
             
         if($contribucion->save()){
 
-            $campana = Campana::find($contribucion->campana_id);
+            $campana = Campana::find($contribucion->tipo_evento_id);
 
             $numerofactura = Factura::orderBy('created_at', 'desc')
                 ->where('facturas.academia_id', '=', $campana->academia_id)
@@ -1989,7 +1990,8 @@ class CampanaController extends BaseController {
 
             $UsuarioExterno->nombre = $contribucion->nombre;
             $UsuarioExterno->sexo = $contribucion->sexo;
-            $UsuarioExterno->campana_id = $contribucion->campana_id;
+            $UsuarioExterno->tipo_evento_id = $contribucion->tipo_evento_id;
+            $UsuarioExterno->tipo_evento = 1;
             $UsuarioExterno->monto = $contribucion->monto;
             $UsuarioExterno->correo = $contribucion->correo;
 
@@ -2022,7 +2024,7 @@ class CampanaController extends BaseController {
             $patrocinador = new Patrocinador;
 
             $patrocinador->academia_id = $campana->academia_id;
-            $patrocinador->tipo_evento_id = $contribucion->campana_id;
+            $patrocinador->tipo_evento_id = $contribucion->tipo_evento_id;
             $patrocinador->tipo_evento = 1;
             $patrocinador->externo_id = $UsuarioExterno->id;
             $patrocinador->tipo_id = 1;
@@ -2331,6 +2333,7 @@ class CampanaController extends BaseController {
 
                    'nombre' => $patrocinador->nombre . ' ' .$patrocinador->apellido,
                    'link' => "http://app.easydancelatino.com/especiales/campañas/progreso/".$patrocinador->campana_id,
+                   'link_invitar' => "http://app.easydancelatino.com/especiales/campañas/progreso/".$patrocinador->campana_id,
                    'correo' => $patrocinador->correo,
                    'subj' => $subj,
                    'link_invitar' => $link,

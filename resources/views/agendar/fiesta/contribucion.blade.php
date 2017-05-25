@@ -21,7 +21,7 @@
                 
                     <div class="block-header">
 
-                        <?php $url = "/especiales/campañas/detalle/$id" ?>
+                        <?php $url = "/agendar/fiestas/detalle/$id" ?>
                         <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                     </div> 
                     
@@ -123,8 +123,8 @@
             
         <script type="text/javascript">
 
-        route_eliminar="{{url('/')}}/especiales/campañas/contribuciones/eliminar/";
-        route_confirmar="{{url('/')}}/especiales/campañas/contribuciones/confirmar/";
+        route_eliminar="{{url('/')}}/agendar/fiestas/contribuciones/eliminar/";
+        route_confirmar="{{url('/')}}/agendar/fiestas/contribuciones/confirmar/";
 
         $(document).ready(function(){
 

@@ -786,8 +786,27 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::put('agendar/fiestas/update/presentacion', 'FiestaController@updatePresentacion');
 		Route::put('agendar/fiestas/update/imagen_presentacion', 'FiestaController@updateImagenPresentacion');
 
+		Route::post('agendar/fiestas/agregardatosfijos', 'FiestaController@agregardatosfijos');
+	    Route::post('agendar/fiestas/eliminardatosfijos/{id}', 'FiestaController@eliminardatosfijos');
+
 		Route::get('agendar/fiestas/pagar/boleto/{id}', 'FiestaController@pagarBoleto');
 		Route::post('agendar/fiestas/pagar', 'FiestaController@storePatrocinador');
+
+		//CONTRIBUCIONES
+
+		Route::get('agendar/fiestas/contribuciones/{id}', 'FiestaController@principalcontribuciones');
+		Route::post('agendar/fiestas/contribuciones/confirmar/{id}', 'FiestaController@confirmarcontribucion');
+		Route::delete('agendar/fiestas/contribuciones/eliminar/{id}', 'FiestaController@eliminarcontribucion');
+
+		//PATROCINADORES
+
+		Route::get('agendar/fiestas/patrocinadores/{id}', 'FiestaController@principalpatrocinadores');
+		Route::get('agendar/fiestas/patrocinadores/detalle/{id}', 'FiestaController@detallepatrocinador');
+		Route::put('agendar/fiestas/patrocinadores/update/nombre', 'FiestaController@updateNombrePatrocinador');
+		Route::put('agendar/fiestas/patrocinadores/update/monto', 'FiestaController@updateMontoPatrocinador');
+		Route::delete('agendar/fiestas/patrocinadores/eliminar/{id}', 'FiestaController@eliminarpatrocinador');
+		Route::post('agendar/fiestas/patrocinadores/enviar/{id}', 'FiestaController@ReenviarCorreoPatrocinador');
+		Route::post('agendar/fiestas/patrocinadores/update/patrocinador', 'FiestaController@updatePatrocinador');
 
 		//CITAS
 

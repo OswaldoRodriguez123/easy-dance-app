@@ -15,6 +15,9 @@ use App\Alumno;
 use App\Patrocinador;
 use App\PatrocinadorProforma;
 use App\ItemsFacturaProforma;
+use App\Factura;
+use App\ItemsFactura;
+use App\UsuarioExterno;
 use App\User;
 use App\DatosBancarios;
 use Validator;
@@ -836,7 +839,8 @@ class FiestaController extends BaseController {
                 ->where('boletos.tipo_evento',1)
                 ->where('boletos.tipo_evento_id',$id)
             ->get();
-            return view('agendar.fiesta.planilla')->with(['fiesta' => $fiesta, 'config_boletos' => $config_boletos, 'boletos' => $boletos]);
+            $datos = DatosBancarios::where('tipo_evento_id' , $id)->where('tipo_evento',2)->get();
+            return view('agendar.fiesta.planilla')->with(['fiesta' => $fiesta, 'config_boletos' => $config_boletos, 'boletos' => $boletos, 'datos' => $datos]);
         }else{
             return redirect("agendar/fiestas"); 
         }
@@ -1050,6 +1054,8 @@ class FiestaController extends BaseController {
                     $imagen = '';
                   }
 
+                }else{
+                    $imagen = '';
                 }
 
                 $collection=collect($patrocinador);     
@@ -1522,6 +1528,391 @@ class FiestaController extends BaseController {
     {
         $nombre = Session::get('nombre_contribuyente');
         return view('agendar.fiesta.enhorabuena')->with(['id' => $id, 'nombre' => $nombre]);
+    }
+
+    public function principalcontribuciones($id){
+
+        $contribuciones = PatrocinadorProforma::where('tipo_evento_id', $id)
+            ->where('tipo_evento',2)
+            ->where('status', 0)
+        ->get();
+
+        return view('agendar.fiesta.contribucion')->with(['contribuciones' => $contribuciones, 'id' => $id]);
+
+    }
+
+    public function confirmarcontribucion($id)
+    {
+
+        $contribucion = PatrocinadorProforma::find($id);
+
+        $contribucion->status = 1;
+            
+        if($contribucion->save()){
+
+            $fiesta = Fiesta::find($contribucion->tipo_evento_id);
+
+            $numerofactura = Factura::orderBy('created_at', 'desc')
+                ->where('facturas.academia_id', '=', $fiesta->academia_id)
+            ->first();
+
+            if($numerofactura){
+               $numero_factura = $numerofactura->numero_factura + 1;
+            }else{
+                $academia = Academia::find($fiesta->academia_id);
+                    
+                if($academia->numero_factura){
+                    $numero_factura = $academia->numero_factura;
+                }
+                else{
+                    $numero_factura = 1;
+                }
+            }
+
+            $UsuarioExterno = new UsuarioExterno;
+
+            $UsuarioExterno->nombre = $contribucion->nombre;
+            $UsuarioExterno->sexo = $contribucion->sexo;
+            $UsuarioExterno->tipo_evento_id = $contribucion->tipo_evento_id;
+            $UsuarioExterno->tipo_evento = 2;
+            $UsuarioExterno->monto = $contribucion->monto;
+            $UsuarioExterno->correo = $contribucion->correo;
+
+            $UsuarioExterno->save();
+
+            $factura = new Factura;
+
+            $factura->externo_id = $UsuarioExterno->id;
+            $factura->academia_id = $fiesta->academia_id;
+            $factura->fecha = Carbon::now()->toDateString();
+            $factura->hora = Carbon::now()->toTimeString();
+            $factura->numero_factura = $numero_factura;
+            $factura->concepto = 'Contribucion para la fiesta '. $fiesta->nombre;
+
+            $factura->save();
+
+            $item_factura = new ItemsFactura;
+
+            $item_factura->factura_id = $factura->id;
+            $item_factura->item_id = $factura->id;
+            $item_factura->nombre = 'Contribucion para la fiesta '. $fiesta->nombre;
+            $item_factura->tipo = 12;
+            $item_factura->cantidad = 1;
+            $item_factura->precio_neto = 0;
+            $item_factura->impuesto = 0;
+            $item_factura->importe_neto = $contribucion->monto;
+
+            $item_factura->save();
+
+            $patrocinador = new Patrocinador;
+
+            $patrocinador->academia_id = $fiesta->academia_id;
+            $patrocinador->tipo_evento_id = $contribucion->tipo_evento_id;
+            $patrocinador->tipo_evento = 2;
+            $patrocinador->externo_id = $UsuarioExterno->id;
+            $patrocinador->tipo_id = 1;
+            $patrocinador->tipo_moneda = $contribucion->tipo_moneda;
+            $patrocinador->monto = $contribucion->monto;
+            $patrocinador->transferencia_id = $contribucion->id;
+
+            $patrocinador->save();
+
+            return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function eliminarcontribucion($id)
+    {
+
+        $contribucion = PatrocinadorProforma::find($id);
+            
+        if($contribucion->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function principalpatrocinadores($id){
+
+        $patrocinadores = DB::table('patrocinadores')
+            // ->join('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
+            ->join('alumnos','patrocinadores.usuario_id', '=', 'alumnos.id')
+            ->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido')
+            ->where('patrocinadores.tipo_evento_id', '=', $id)
+            ->where('patrocinadores.tipo_evento', '=', 2)
+         ->get();
+
+        return view('agendar.fiesta.patrocinadores')->with(['patrocinadores' => $patrocinadores, 'id' => $id]);
+
+    }
+
+    public function detallepatrocinador($id)
+    {
+
+        $patrocinador = DB::table('patrocinadores')
+             ->join('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
+             ->select('patrocinadores.*', 'usuario_externos.nombre')
+             ->where('patrocinadores.id', '=', $id)
+         ->first();
+
+        if($patrocinador){
+           return view('especiales.campana.planilla_patrocinador')->with(['patrocinador' => $patrocinador, 'id' => $id, 'campana_id' => $patrocinador->campana_id]);
+        }else{
+           return redirect("especiales/campañas"); 
+        }
+    }
+
+    public function updatePatrocinador(Request $request){
+
+        $rules = [
+            'monto' => 'required|numeric',
+            'cantidad' => 'required|numeric',
+        ];
+
+        $messages = [
+
+            'monto.required' => 'Ups! El monto es requerido',
+            'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+            'cantidad.required' => 'Ups! La cantidad es requerida',
+            'cantidad.numeric' => 'Ups! La cantidad es inválida, debe contener sólo números',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $patrocinador = Patrocinador::find($request->id);
+
+            $monto_anterior = $patrocinador->monto;
+            $cantidad_anterior = $patrocinador->cantidad;
+
+            $patrocinador->cantidad = $request->cantidad;
+            $patrocinador->monto = $request->monto;
+
+            if($patrocinador->save()){
+
+                // $item_factura = ItemsFactura::where('item_id',$patrocinador->item_id)->where('tipo',11)->first();
+
+                // if($item_factura){
+                //     $item_factura->importe_neto = $request->monto;
+                //     $item_factura->save();
+                // }
+
+                $proforma = ItemsFacturaProforma::where('item_id',$patrocinador->item_id)->where('tipo',11)->first();
+
+                if($proforma){
+                    $proforma->cantidad = $request->cantidad;
+                    $proforma->importe_neto = $request->monto;
+                    $proforma->save();
+                }else{
+                    $monto = $request->monto - $monto_anterior;
+
+                    if($cantidad_anterior != $request->cantidad)
+                    {
+                        $cantidad = $request->cantidad - $cantidad_anterior;
+                    }else{
+                        $cantidad = $request->cantidad;
+                    }
+                    
+                    if($monto > 0){
+
+                        $item_factura = new ItemsFacturaProforma;
+                    
+                        $item_factura->alumno_id = $patrocinador->usuario_id;
+                        $item_factura->academia_id = Auth::user()->academia_id;
+                        $item_factura->fecha = Carbon::now()->toDateString();
+                        $item_factura->item_id = $patrocinador->item_id;
+                        $item_factura->nombre = 'Campaña - Contribucion';
+                        $item_factura->tipo = 11;
+                        $item_factura->cantidad = $cantidad;
+                        $item_factura->precio_neto = 0;
+                        $item_factura->impuesto = 0;
+                        $item_factura->importe_neto = $monto;
+                        $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                    }
+                    
+                }
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'patrocinador' => $patrocinador, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function updateMontoPatrocinador(Request $request){
+
+        $rules = [
+            'monto' => 'required|numeric',
+        ];
+
+        $messages = [
+
+            'monto.required' => 'Ups! El monto es requerido',
+            'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $patrocinador = Patrocinador::find($request->id);
+            $patrocinador->monto = $request->monto;
+
+
+            if($patrocinador->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function updateNombrePatrocinador(Request $request){
+
+        $rules = [
+            'nombre' => 'required|min:3|max:40',
+        ];
+
+        $messages = [
+
+            'nombre.required' => 'Ups! El Nombre es requerido',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+            'nombre.max' => 'El máximo de caracteres permitidos son 40',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+
+        else{
+
+            $patrocinador = Patrocinador::find($request->id);
+
+            $usuario_externo = UsuarioExterno::find($patrocinador->externo_id);
+
+            $usuario_externo->nombre = $request->nombre;
+
+            if($usuario_externo->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function eliminarpatrocinador($id)
+    {
+
+        $patrocinador = Patrocinador::find($id);
+        $usuario_externo = UsuarioExterno::find($patrocinador->externo_id);
+
+        if($usuario_externo){
+            $usuario_externo->delete();
+        }
+
+        $item_factura = ItemsFactura::where('item_id',$patrocinador->item_id)->where('tipo',11)->first();
+
+        if($item_factura){
+            $factura = Factura::find($item_factura->factura_id);
+            $item_factura->delete();
+
+            $items_factura = ItemsFactura::where('factura_id',$factura->id)->get();
+            if(!$items_factura){
+                $factura->delete();
+            }
+        }
+
+        $proforma = ItemsFacturaProforma::where('item_id',$patrocinador->item_id)->where('tipo',11)->first();
+        if($proforma){
+            $proforma->delete();
+        }
+        
+            
+        if($patrocinador->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function agregardatosfijos(Request $request){
+        
+        $rules = [
+
+            'nombre_banco' => 'required',
+            'tipo_cuenta' => 'required',
+            'numero_cuenta' => 'required',
+            'rif' => 'required',
+            'nombre_creador' => 'required',
+        ];
+
+        $messages = [
+
+            'nombre_banco.required' => 'Ups! El Banco es requerido',
+            'tipo_cuenta.required' => 'Ups! El tipo de cuenta es requerida',
+            'numero_cuenta.required' => 'Ups! El número de cuenta es requerido',
+            'rif.required' => 'Ups! El Rif - Cedula es requerido',
+            'nombre_creador.required' => 'Ups! El nombre es requerido',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $nombre = title_case($request->nombre_recompensa);
+
+            $datos = New DatosBancarios;
+
+            $datos->tipo_evento_id = $request->id;
+            $datos->tipo_evento = 2;
+            $datos->nombre_banco = $request->nombre_banco;
+            $datos->tipo_cuenta = $request->tipo_cuenta;
+            $datos->numero_cuenta = $request->numero_cuenta;
+            $datos->rif = $request->rif;
+            $datos->nombre = $request->nombre_creador;
+
+            $datos->save();
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $datos, 'id' => $datos->id, 200]);
+
+        }
+    }
+
+    public function eliminardatosfijos($id){
+
+        $datos = DatosBancarios::find($id);
+
+        $datos->delete();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
     }
 
 }

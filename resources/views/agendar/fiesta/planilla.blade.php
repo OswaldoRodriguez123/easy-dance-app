@@ -876,6 +876,187 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalDatos-Fiesta" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro">Editar Fiesta<button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+
+                        <form name="edit_datos_fiesta" id="edit_datos_fiesta"  >
+                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <div class="modal-body">
+                        
+                          <div class="row p-t-20 p-b-0">
+                            
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group fg-line">
+                                        <label for="id">Nombre del Banco</label>
+                                        <div class="fg-line">                       
+                                        <input type="text" class="form-control input-sm" name="nombre_banco" id="nombre_banco" placeholder="Banco del Tesoro">
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-nombre_banco">
+                                      <span >
+                                          <small id="error-nombre_banco_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+                                     
+
+                                    <div class="clearfix p-b-35"></div>
+
+                                    <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="form-group fg-line">
+                                            <label for="id">Tipo de Cuenta</label>
+                                            <div class="fg-line">                       
+                                            <input type="text" class="form-control input-sm" name="tipo_cuenta" id="tipo_cuenta" placeholder="Cuenta Corriente">
+                                          </div>
+                                        </div>
+                                        <div class="has-error" id="error-tipo_cuenta">
+                                          <span >
+                                              <small id="error-tipo_cuenta_mensaje" class="help-block error-span" ></small>                                           
+                                          </span>
+                                        </div>
+                                    </div>
+                                   </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                                    <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="form-group fg-line">
+                                            <label for="id">Número de Cuenta</label>
+                                            <div class="fg-line">                       
+                                            <input type="text" class="form-control input-sm input-mask" name="numero_cuenta" id="numero_cuenta" data-mask="0000-0000-00-0000000000" placeholder="Ingresa Número de Cuenta">
+                                          </div>
+                                        </div>
+                                        <div class="has-error" id="error-numero_cuenta">
+                                          <span >
+                                              <small id="error-numero_cuenta_mensaje" class="help-block error-span" ></small>                                           
+                                          </span>
+                                        </div>
+                                    </div>
+                                   </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="form-group fg-line">
+                                            <label for="id">Rif - Cédula</label>
+                                            <div class="fg-line">                       
+                                            <input type="text" class="form-control input-sm" name="rif" id="rif" placeholder="Ingresa Numero de Cuenta">
+                                          </div>
+                                        </div>
+                                        <div class="has-error" id="error-rif">
+                                          <span >
+                                              <small id="error-rif_mensaje" class="help-block error-span" ></small>                                           
+                                          </span>
+                                        </div>
+                                    </div>
+                                   </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <div class="form-group fg-line">
+                                            <label for="id">Nombre</label>
+                                            <div class="fg-line">                       
+                                            <input type="text" class="form-control input-sm" name="nombre_creador" id="nombre_creador" placeholder="Ej. Valeria Zambrano">
+                                          </div>
+                                        </div>
+                                        <div class="has-error" id="error-nombre_creador">
+                                          <span >
+                                              <small id="error-nombre_creador_mensaje" class="help-block error-span" ></small>                                           
+                                          </span>
+                                        </div>
+                                    </div>
+                                   </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class ="col-sm-12">
+
+                                 <br><br>
+
+                                 <div class="card-header text-left">
+                                <button type="button" class="btn btn-blanco m-r-10 f-10" id="adddatos" >Agregar Linea</button>
+                                </div>
+
+                                <br></br>
+
+                              </div>
+
+                              <div class="clearfix"></div>
+
+                          <div class="table-responsive row">
+                           <div class="col-md-12">
+                            <table class="table table-striped table-bordered text-center " id="tabledatos" >
+                            <thead>
+                                <tr>
+                                    
+                                    <th class="text-center" data-column-id="nombre_banco"></th>
+                                    <th class="text-center" data-column-id="tipo" data-type="numeric"></th>
+                                    <th class="text-center" data-column-id="numero"></th>
+                                    <th class="text-center" data-column-id="rif"></th>
+                                    <th class="text-center" data-column-id="nombre_creador"></th>
+                                    <th class="text-center" data-column-id="operaciones"></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            @foreach ($datos as $dato)
+                                <?php $id = $dato->id; ?>
+                                <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">{{$dato->nombre_banco}}</td>
+                                    <td class="text-center previa">{{$dato->tipo_cuenta}}</td>
+                                    <td class="text-center previa">{{$dato->numero_cuenta}}</td>
+                                    <td class="text-center previa">{{$dato->rif}}</td>
+                                    <td class="text-center previa">{{$dato->nombre}}</td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                  </tr>
+                            @endforeach 
+                                                           
+                            </tbody>
+                            </table>
+
+                            </div>
+                            </div>
+
+                            
+                          <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+
+                            <input type="hidden" name="id" value="{{$fiesta->id}}"></input>
+                            
+                            <div class="col-sm-12">                            
+
+                               <a class="btn-blanco m-r-5 f-12 dismiss" href="#">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+
+                        </div>
+                        </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
             
             <section id="content">
                 <div class="container">
@@ -932,6 +1113,8 @@
                                     <hr></hr>
                                     
                                     <a href="{{url('/')}}/agendar/fiestas/progreso/{{$fiesta->id}}"><i class="icon_e-ver-progreso f-16 m-r-5 boton blue"  data-original-title="Ver Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                    <a href="{{url('/')}}/agendar/fiestas/contribuciones/{{$fiesta->id}}"><i class="icon_c-money f-16 m-r-5 boton blue"  data-original-title="Ver Contribuciones" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                    <a href="{{url('/')}}/agendar/fiestas/patrocinadores/{{$fiesta->id}}"><i class="icon_a-campana f-16 m-r-5 boton blue"  data-original-title="Ver Patrocinadores" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
 
                                     <a href="{{url('/')}}/agendar/fiestas/egresos/{{$fiesta->id}}"><i class="fa fa-money f-16 m-r-5 boton blue"  data-original-title="Egresos" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
 
@@ -1055,6 +1238,14 @@
                              </td>
                              <td id="fiesta-condiciones" class="f-14 m-l-15" data-valor="{{$fiesta->condiciones}}" ><span id="fiesta-condiciones"><span>{{ str_limit($fiesta->condiciones, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalDatos-Fiesta">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($datos) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_c-piggy-bank f-22"></i> </span>
+                               <span class="f-14"> Datos Bancaríos </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="fiesta-datos"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalBoletos-Fiesta">
                              <td width="50%"> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-boletos" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>                              
@@ -1114,6 +1305,8 @@
     route_eliminar="{{url('/')}}/agendar/fiestas/eliminar/";
     route_agregar_boleto="{{url('/')}}/agendar/fiestas/agregarboletofijo";
     route_eliminar_boleto="{{url('/')}}/agendar/fiestas/eliminarboletofijo/";
+    route_agregardatos="{{url('/')}}/agendar/fiestas/agregardatosfijos";
+    route_eliminardatos="{{url('/')}}/agendar/fiestas/eliminardatosfijos";
     route_principal="{{url('/')}}/agendar/fiestas";
 
     $(document).ready(function(){
@@ -1222,6 +1415,41 @@
               }
           }
     });
+
+      var h=$('#tabledatos').DataTable({
+        processing: true,
+        serverSide: false, 
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        order: [[0, 'asc']],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
 
     $('#modalFecha-Fiesta').on('show.bs.modal', function (event) {
       limpiarMensaje();
@@ -1631,6 +1859,136 @@
 
               
           });
+
+    $("#adddatos").click(function(){
+
+      var route = route_agregardatos;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $( "#edit_datos_fiesta" ).serialize(); 
+
+      $("#adddatos").attr("disabled","disabled");
+      $("#adddatos").css({
+          "opacity": ("0.2")
+      }); 
+
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:datos,
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
+
+                $("#edit_datos_fiesta")[0].reset();
+
+                var nombre_banco = respuesta.array.nombre_banco;
+                var tipo_cuenta = respuesta.array.tipo_cuenta;
+                var numero_cuenta = respuesta.array.numero_cuenta;
+                var rif = respuesta.array.rif;
+                var nombre = respuesta.array.nombre;
+
+                var rowId=respuesta.id;
+                var rowNode=h.row.add( [
+                ''+nombre_banco+'',
+                ''+tipo_cuenta+'',
+                ''+numero_cuenta+'',
+                ''+rif+'',
+                ''+nombre+'',
+                '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                ] ).draw(false).node();
+                $( rowNode )
+                .attr('id',rowId)
+                .addClass('seleccion');
+
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }                       
+              $("#adddatos").removeAttr("disabled");
+              $("#adddatos").css({
+                  "opacity": ("1")
+              });
+
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }                        
+              $("#adddatos").removeAttr("disabled");
+              $("#adddatos").css({
+                  "opacity": ("1")
+              });
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
+
+    });
+
+    $('#tabledatos tbody').on( 'click', 'i.zmdi-delete', function () {
+        var padre=$(this).parents('tr');
+        var token = $('input:hidden[name=_token]').val();
+        var id = $(this).closest('tr').attr('id');
+        $.ajax({
+             url: route_eliminardatos+"/"+id,
+             headers: {'X-CSRF-TOKEN': token},
+             type: 'POST',
+             dataType: 'json',                
+            success: function (data) {
+              if(data.status=='OK'){
+
+              h.row(padre)
+                .remove()
+                .draw();
+                             
+              }else{
+                swal(
+                  'Solicitud no procesada',
+                  'Ha ocurrido un error, intente nuevamente por favor',
+                  'error'
+                );
+              }
+            },
+            error:function (xhr, ajaxOptions, thrownError){
+              swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+            }
+          })
+      });
+
+
+    $(".dismiss").click(function(){
+      $('.modal').modal('hide');
+    });
 
     $('#config_boleto_id').on('change', function(){
       if ($(this).val()== 6) {
