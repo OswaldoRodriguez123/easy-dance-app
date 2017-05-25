@@ -31,6 +31,11 @@ Route::get('/activar/completado', 'RegistroController@activarcompletado');
 
 Route::get('/restablecer', 'LoginController@restablecer');
 Route::post('/password/email', 'Auth\PasswordController@sendResetLinkEmail');
+Route::get('/password/reset/{token?}', 'Auth\PasswordController@showResetForm');
+Route::post('/password/reset', 'Auth\PasswordController@reset');
+$this->get('password/reset/{token?}', 'Auth\PasswordController@showResetForm');
+        $this->post('password/email', 'Auth\PasswordController@sendResetLinkEmail');
+        $this->post('password/reset', 'Auth\PasswordController@reset');
 Route::get('/restablecer/confirmar', 'LoginController@restablecerconfirmar');
 Route::get('/restablecer/fallo', 'LoginController@restablecerfallo');
 Route::get('/restablecer/completado', 'LoginController@restablecercompletado');
@@ -773,6 +778,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::put('agendar/fiestas/update/mostrar', 'FiestaController@updateMostrar');
 		Route::put('agendar/fiestas/update/presentacion', 'FiestaController@updatePresentacion');
 		Route::put('agendar/fiestas/update/imagen_presentacion', 'FiestaController@updateImagenPresentacion');
+
+		Route::get('agendar/fiestas/pagar/boleto/{id}', 'FiestaController@pagarBoleto');
+		Route::post('agendar/fiestas/pagar', 'FiestaController@storePatrocinador');
 
 		//CITAS
 

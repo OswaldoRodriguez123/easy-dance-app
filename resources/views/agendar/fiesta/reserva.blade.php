@@ -116,6 +116,38 @@
                     <div class="clearfix p-b-15"></div>
                   </div>
                 </div>
+
+                <div class="clearfix p-b-15"></div>
+
+                @if(Auth::check())
+                  @foreach ($boletos as $boleto)
+
+                    <div style="border: 1px solid;">
+                      <div style="width:100%; padding:5px;background-color:#4E1E43;color:#fff" class="text-center f-16">
+                        Boleto
+                      </div>
+
+                      <div class="col-sm-12">
+                        <span class="text-center f-25 f-700" >{{ number_format($boleto->costo, 2, '.' , '.') }} </span> 
+                        <br>
+                        <span class="text-center f-20 f-700" > {{$boleto->nombre}}</span> 
+                        <br>
+                        
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+                        <div class="clearfix p-b-15"></div>
+                      </div>
+
+                      <span class="text-center">
+
+                          <button id="{{$boleto->id}}" name ="{{$boleto->id}}" class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 boleto" style="width:100%; padding:5px"> </i> Pagar </button>
+                      </span>
+                    </div>
+
+                    <div class="clearfix p-b-15"></div>
+
+                  @endforeach 
+                @endif
               </div>
         </div>
 
@@ -233,8 +265,7 @@
 
         <script type="text/javascript">
 
-        //route_agregar="{{url('/')}}/especiales/campañas/contribuir";
-        route_agregar="{{url('/')}}/especiales/campañas/contribuir/recompensa";
+        route_agregar="{{url('/')}}/agendar/fiestas/pagar/boleto";
         route_agregar_unsign="{{url('/')}}/especiales/campañas/contribuir/campaña";
         route_agregar_contribucion="{{url('/')}}/especiales/campañas/contribuir/contribucion";
         route_enhorabuena="{{url('/')}}/especiales/campañas/contribuir/enhorabuena/";
@@ -349,31 +380,6 @@
         $("#modalConfirmar").scrollTop(0);         
 
       }
-
-
-        $(".recompensa").click(function(){   
-
-          procesando();         
-      
-          recompensa = this.id;            
-         
-          var route=route_agregar+"/"+recompensa;             
-          window.location=route;    
-      
-        });
-
-         $(".recompensa_otra").click(function(){   
-
-          procesando();         
-      
-          recompensa = this.id;            
-  
-          campana = "1"    
-          var route=route_agregar_unsign+"/"+campana;   
-          window.location=route;    
-   
-      
-          });
 
         $(".a-prevent").click(function(){
 
@@ -639,6 +645,18 @@
                       }
 
                     });
+
+
+        $(".boleto").click(function(){   
+
+          procesando();         
+      
+          boleto = this.id;            
+         
+          var route=route_agregar+"/"+boleto;             
+          window.location=route;    
+      
+        });
 
         </script>
 @stop        

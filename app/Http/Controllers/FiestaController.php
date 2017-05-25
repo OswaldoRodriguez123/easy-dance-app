@@ -11,6 +11,9 @@ use App\ConfigBoletos;
 use App\DiasDeSemana;
 use App\Egreso;
 use App\ConfigEgreso;
+use App\Alumno;
+use App\Patrocinador;
+use App\ItemsFacturaProforma;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -894,36 +897,163 @@ class FiestaController extends BaseController {
 
         $fiesta = Fiesta::find($id);
 
-        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $fiesta->fecha_inicio);
+        if($fiesta){
 
-        if(Carbon::now() > $fecha_inicio){
-            $inicio = 1;
+            $fecha_inicio = Carbon::createFromFormat('Y-m-d', $fiesta->fecha_inicio);
+
+            if(Carbon::now() > $fecha_inicio){
+                $inicio = 1;
+            }else{
+                $inicio = 0;
+            }
+
+            $academia = Academia::find($fiesta->academia_id);
+
+            if($fiesta->link_video){
+
+                $parts = parse_url($clase_grupal_join->link_video);
+                $partes = explode( '=', $parts['query'] );
+                $link_video = $partes[1];
+
+            }else{
+                $link_video = '';
+            }
+
+            if(Auth::check()){
+
+                $usuario_tipo = Session::get('easydance_usuario_tipo');
+
+            }else{
+                $usuario_tipo = 0;
+            
+            }
+
+            $boletos = Boleto::join('config_boletos', 'boletos.config_boleto_id' , '=', 'config_boletos.id')
+                ->select('boletos.*', 'config_boletos.nombre')
+                ->where('boletos.tipo_evento',1)
+                ->where('boletos.tipo_evento_id',$id)
+            ->get();
+
+            return view('agendar.fiesta.reserva')->with(['fiesta' => $fiesta, 'id' => $id, 'link_video' => $link_video, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo, 'inicio' => $inicio, 'boletos' => $boletos]);
+
         }else{
-            $inicio = 0;
+           return redirect("agendar/fiestas"); 
+        }
+    }
+
+    public function pagarBoleto($id)
+    {   
+
+        $boleto = Boleto::join('fiestas', 'boletos.tipo_evento_id' , '=', 'fiestas.id')
+            ->join('config_boletos', 'boletos.config_boleto_id' , '=', 'config_boletos.id')
+            ->select('boletos.*', 'fiestas.academia_id', 'config_boletos.nombre')
+            ->where('boletos.id',$id)
+        ->first();
+
+        if($boleto){
+
+            if(Auth::check()){
+                $usuario_tipo = Session::get('easydance_usuario_tipo');
+                $user_id = Auth::user()->id;
+                $usuario_nombre = Auth::user()->nombre . ' ' . Auth::user()->apellido;
+                $usuario_id = Auth::user()->usuario_id;
+            }else{
+                $usuario_tipo = '';
+                $user_id = '';
+                $usuario_nombre = '';
+                $usuario_id = '';
+            }
+
+            $academia = Academia::find($boleto->academia_id);
+
+            $fiesta = Fiesta::find($boleto->tipo_evento_id);
+            $alumnos = Alumno::where('academia_id', '=' ,  $fiesta->academia_id)->OrderBy('nombre')->get();
+
+            return view('agendar.fiesta.pagar_boleto')->with(['id' => $id, 'boleto' => $boleto, 'academia' => $academia,  'fiesta' => $fiesta, 'alumnos' => $alumnos, 'usuario_tipo' => $usuario_tipo, 'usuario_id' => $usuario_id, 'usuario_nombre' => $usuario_nombre, 'user_id' => $user_id]);
+        }else{
+             return redirect("agendar/fiestas"); 
         }
 
-        $academia = Academia::find($fiesta->academia_id);
+    }
 
-        if($fiesta->link_video){
+    public function storePatrocinador(Request $request)
+    {
 
-            $parts = parse_url($clase_grupal_join->link_video);
-            $partes = explode( '=', $parts['query'] );
-            $link_video = $partes[1];
+        $rules = [
+            'alumno_id' => 'required',
+            'cantidad' => 'required|numeric',
+            'boleto_id' => 'required',
+            'tipo_evento_id' => 'required',
+        ];
 
-        }else{
-            $link_video = '';
+        $messages = [
+            
+            'alumno_id.required' => 'Ups! El patrocinador es requerido',
+            'cantidad.required' => 'Ups! La cantidad es requerida',
+            'cantidad.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
+            'boleto_id.required' => 'Ups! El boleto es requerido',
+            'tipo_evento_id.required' => 'Ups! La campaña es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
         }
 
-        if(Auth::check()){
+        else{
 
-            $usuario_tipo = Session::get('easydance_usuario_tipo');
+            $boleto = Boleto::join('config_boletos', 'boletos.config_boleto_id' , '=', 'config_boletos.id')
+                ->select('boletos.*', 'config_boletos.nombre')
+                ->where('boletos.id',$request->boleto_id)
+            ->first();
 
-        }else{
-            $usuario_tipo = 0;
-        
+            $monto = $boleto->costo * $request->cantidad;
+
+            $patrocinador = new Patrocinador;
+
+            $patrocinador->academia_id = Auth::user()->academia_id;
+            $patrocinador->tipo_evento_id = $request->tipo_evento_id;
+            $patrocinador->tipo_evento = 2;
+            $patrocinador->usuario_id = $request->alumno_id;
+            $patrocinador->tipo_id = 1;
+            $patrocinador->monto = $monto;
+            $patrocinador->cantidad = $request->cantidad;
+
+            if($patrocinador->save()){
+
+                $item_factura = new ItemsFacturaProforma;
+                
+                $item_factura->alumno_id = $request->alumno_id;
+                $item_factura->academia_id = Auth::user()->academia_id;
+                $item_factura->fecha = Carbon::now()->toDateString();
+                $item_factura->item_id = $request->boleto_id;
+                $item_factura->nombre = 'Boleto ' . $boleto->nombre;
+                $item_factura->tipo = 14;
+                $item_factura->cantidad = $request->cantidad;
+                $item_factura->precio_neto = 0;
+                $item_factura->impuesto = 0;
+                $item_factura->importe_neto = $monto;
+                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+
+                if($item_factura->save()){
+
+                    $patrocinador->item_id = $item_factura->id;
+                    $patrocinador->save();
+
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 200]);
+                }
+                else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+
         }
-
-        return view('agendar.fiesta.reserva')->with(['fiesta' => $fiesta, 'id' => $id, 'link_video' => $link_video, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo, 'inicio' => $inicio]);
     }
 
 }

@@ -21,12 +21,12 @@
     <div class="container">
 
     <div class="block-header">
-            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/campañas/progreso/{{$campana->id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i>Volver</a>
+            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/fiestas/progreso/{{$fiesta->id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i>Volver</a>
         </div> 
 
         <div class="card">
             <div class="card-header text-center">
-                <span class="f-30 c-morado"><i class="icon_a-campana f-25"></i> Verificación de datos</span>
+                <span class="f-30 c-morado"><i class="icon_a-fiesta f-25"></i> Verificación de datos</span>
             </div>
             <div class="card-body">
             
@@ -48,8 +48,8 @@
                     <div class="text-center">
                       
                     <p class="f-30">Hola, mi nombre es Peggy de Easy dance</p> 
-                    <p class="f-25">Estás aquí porqué apoyas la campaña de {{$academia->nombre}} </p> 
-                    <p class="f-25">Llamada, <span class="f-700" style="color:black">{{$campana->nombre}}</span></p>
+                    <p class="f-25">Estás aquí porqué quieres asistir a la fiesta de {{$academia->nombre}} </p> 
+                    <p class="f-25">Llamada, <span class="f-700" style="color:black">{{$fiesta->nombre}}</span></p>
                     <div class="text-center c-morado f-30">Dime,  ¿Cuál es tu nombre? </div>
                     <br>
                     <div class="clearfix m-20 m-b-25"></div>
@@ -108,7 +108,7 @@
                       <p class="f-30">Muy bien <span class="f-700" id="mostrar">Nombre</span></p> 
                     @endif
               
-                        <span class="f-25 c-morado text-center">Gracias por tu Colaboración para "{{$recompensas->nombre}}"</span>
+                        <span class="f-25 c-morado text-center">Estas a punto de adquirir el boleto "{{$boleto->nombre}}"</span>
                         <div class="clearfix p-b-15"></div>
                         @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                           <span class="f-16 c-morado">Selecciona el patrocinador</span>
@@ -263,8 +263,7 @@
             
 	<script type="text/javascript">
 
-        route_mercadopago="{{url('/')}}/especiales/campañas/contribuir/mercadopago";
-        route_agregar="{{url('/')}}/especiales/campañas/contribuir";
+        route_agregar="{{url('/')}}/agendar/fiestas/pagar";
 
         $(document).ready(function(){
 
@@ -349,178 +348,96 @@
 
         });
 
-        //RETURN DE MERCADOPAGO
-        function respuesta_mercadopago(json) {
+        //PAGO NORMAL, VERSION ANTERIOR
+        $("#guardar").click(function(){
 
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nAnimIn = "animated flipInY";
-            var nAnimOut = "animated flipOutY";                       
-
-            var response = JSON.stringify(json);
-            if (json.collection_status=='approved'){
-              var nTitle = 'Pago acreditado!';
-              var nMensaje = ' Hemos recibido su pago satisfactoriamente, gracias';
-              var nType = 'success';
-            } else if(json.collection_status=='pending'){
-              var nTitle = 'Oops';
-              var nMensaje = ' El usuario no completó el pago';
-              var nType = 'warning';              
-            } else if(json.collection_status=='in_process'){    
-              var nTitle = 'Pago en Proceso';
-              var nMensaje = ' El pago está siendo revisado';
-              var nType = 'info';
-            } else if(json.collection_status=='rejected'){
-              var nTitle = 'Oops';
-              var nMensaje = ' El pago fué rechazado, el usuario puede intentar nuevamente el pago';
-              var nType = 'warning';              
-            } else if(json.collection_status==null){
-              var nTitle = 'Proceso Imcompleto!';
-              var nMensaje = ' El usuario no completó el proceso de pago, no se ha generado ningún pago';
-              var nType = 'warning';
-              
-            }
-            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-            procesar_mercadopago(json);
-        }
-
-        function procesar_mercadopago(response){
-          
-            var recompensa_nombre = "{{$recompensas->nombre}}";
-            var campana_id = "{{$campana->id}}";
-            var monto = "{{$recompensas->cantidad}}"
-            var route = route_mercadopago;
-            var token = $('input:hidden[name=_token]').val();
-            var nombre = $("input[name=nombre]").val();
-            var email_externo = $('#email_externo').val();
-            var campana_nombre = "{{$campana->nombre}}";
-            var academia_id = "{{$academia->id}}";
-            var alumno_id = $("#alumno_id").val();
-            var sexo = $("input[name=sexo]").val();
-
-            $.ajax({
+          procesando();
+          var route = route_agregar;
+          var token = $('input:hidden[name=_token]').val();
+          var datos = "&boleto_id={{$boleto->id}}&tipo_evento_id={{$fiesta->id}}&alumno_id="+$("#alumno_id").val()+"&cantidad="+$("#cantidad").val(); 
+          $("#guardar").attr("disabled","disabled");
+          $("#guardar").css({
+            "opacity": ("0.2")
+          });
+          procesando();
+          $(".cancelar").attr("disabled","disabled");
+          $(".procesando").removeClass('hidden');
+          $(".procesando").addClass('show');         
+          $.ajax({
               url: route,
                   headers: {'X-CSRF-TOKEN': token},
                   type: 'POST',
                   dataType: 'json',
-                  data: {
-                      json: response,
-                      recompensa : recompensa_nombre,
-                      campana_id : campana_id,
-                      monto : monto,
-                      nombre: nombre,
-                      email_externo: email_externo,
-                      academia_id: academia_id,
-                      alumno_id: alumno_id,
-                      campaña_nombre: campaña_nombre,
-                      sexo: sexo
-
-                  },
+                  data:datos,
               success:function(respuesta){
+                setTimeout(function(){ 
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY"; 
+                  if(respuesta.status=="OK"){
+                    var nType = 'success';
+                    var nTitle="Ups! ";
+                    var nMensaje=respuesta.mensaje;
 
+                    if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6)
+                    {
+                      window.location = "{{url('/')}}/participante/alumno/deuda/" + respuesta.id;
+                    }else{
+                      window.location = "{{url('/')}}/administrativo";
+                    }
+
+                  }else{
+                    var nTitle="Ups! ";
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    var nType = 'danger';
+                  }                       
+                  $(".procesando").removeClass('show');
+                  $(".procesando").addClass('hidden');
+                  $("#guardar").removeAttr("disabled");
+                  // finprocesado();
+                  $("#guardar").css({
+                    "opacity": ("1")
+                  });
+                  $(".cancelar").removeAttr("disabled");
+
+                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                }, 1000);
               },
               error:function(msj){
-
+                setTimeout(function(){ 
+                  // if (typeof msj.responseJSON === "undefined") {
+                  //   window.location = "{{url('/')}}/error";
+                  // }
+                  if(msj.responseJSON.status=="ERROR"){
+                    console.log(msj.responseJSON.errores);
+                    errores(msj.responseJSON.errores);
+                    var nTitle="    Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                  }else{
+                    var nTitle="   Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  }                        
+                  $("#guardar").removeAttr("disabled");
+                  $("#guardar").css({
+                    "opacity": ("1")
+                  });
+                  $(".cancelar").removeAttr("disabled");
+                  finprocesado();
+                  $(".procesando").removeClass('show');
+                  $(".procesando").addClass('hidden');
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nType = 'danger';
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY";                       
+                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                }, 1000);
               }
-            });
-
-              setTimeout(function(){ window.location = "{{url('/')}}/especiales/campañas/progreso/"+{{$campana->id}}; },3000);
-
-            }
-
-              //PAGO NORMAL, VERSION ANTERIOR
-              $("#guardar").click(function(){
-
-                procesando();
-                var route = route_agregar;
-                var token = $('input:hidden[name=_token]').val();
-                var datos = "&recompensa_id={{$recompensa->id}}&tipo_evento_id={{$campana->id}}&alumno_id="+$("#alumno_id").val()+"&cantidad="+$("#cantidad").val(); 
-                $("#guardar").attr("disabled","disabled");
-                $("#guardar").css({
-                  "opacity": ("0.2")
-                });
-                procesando();
-                $(".cancelar").attr("disabled","disabled");
-                $(".procesando").removeClass('hidden');
-                $(".procesando").addClass('show');         
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:datos,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
-
-                          if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6)
-                          {
-                            window.location = "{{url('/')}}/participante/alumno/deuda/" + respuesta.id;
-                          }else{
-                            window.location = "{{url('/')}}/administrativo";
-                          }
-
-                          
-
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        $("#guardar").removeAttr("disabled");
-                        // finprocesado();
-                        $("#guardar").css({
-                          "opacity": ("1")
-                        });
-                        $(".cancelar").removeAttr("disabled");
-
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        $("#guardar").css({
-                          "opacity": ("1")
-                        });
-                        $(".cancelar").removeAttr("disabled");
-                        finprocesado();
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-            });
+          });
+      });
 
       $("#cambio").keyup(function(){
 

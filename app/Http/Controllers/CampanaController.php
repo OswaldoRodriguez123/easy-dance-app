@@ -725,7 +725,7 @@ class CampanaController extends BaseController {
             'alumno_id' => 'required',
             'cantidad' => 'required|numeric',
             'recompensa_id' => 'required',
-            'campana_id' => 'required',
+            'tipo_evento_id' => 'required',
         ];
 
         $messages = [
@@ -734,7 +734,7 @@ class CampanaController extends BaseController {
             'cantidad.required' => 'Ups! La cantidad es requerida',
             'cantidad.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
             'recompensa_id.required' => 'Ups! La recompensa es requerida',
-            'campana_id.required' => 'Ups! La campaña es requerida',
+            'tipo_evento_id.required' => 'Ups! La campaña es requerida',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -747,55 +747,53 @@ class CampanaController extends BaseController {
 
         else{
 
-                $recompensa = Recompensa::find($request->recompensa_id);
-                $monto = $recompensa->cantidad * $request->cantidad;
+            $recompensa = Recompensa::find($request->recompensa_id);
+            $monto = $recompensa->cantidad * $request->cantidad;
 
-                $patrocinador = new Patrocinador;
+            $patrocinador = new Patrocinador;
 
-                $patrocinador->academia_id = Auth::user()->academia_id;
-                $patrocinador->tipo_evento_id = $request->campana_id;
-                $patrocinador->tipo_evento = 1;
-                $patrocinador->usuario_id = $request->alumno_id;
-                $patrocinador->tipo_id = 1;
-                $patrocinador->monto = $monto;
-                $patrocinador->cantidad = $request->cantidad;
+            $patrocinador->academia_id = Auth::user()->academia_id;
+            $patrocinador->tipo_evento_id = $request->tipo_evento_id;
+            $patrocinador->tipo_evento = 1;
+            $patrocinador->usuario_id = $request->alumno_id;
+            $patrocinador->tipo_id = 1;
+            $patrocinador->monto = $monto;
+            $patrocinador->cantidad = $request->cantidad;
 
-                if($patrocinador->save()){
+            if($patrocinador->save()){
 
-                    $item_factura = new ItemsFacturaProforma;
-                    
-                    $item_factura->alumno_id = $request->alumno_id;
-                    $item_factura->academia_id = Auth::user()->academia_id;
-                    $item_factura->fecha = Carbon::now()->toDateString();
-                    $item_factura->item_id = $request->recompensa_id;
-                    // $item_factura->nombre = 'Campaña - Contribucion';
-                    $item_factura->nombre = $recompensa->nombre;
-                    $item_factura->tipo = 11;
-                    $item_factura->cantidad = $request->cantidad;
-                    $item_factura->precio_neto = 0;
-                    $item_factura->impuesto = 0;
-                    $item_factura->importe_neto = $monto;
-                    $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                $item_factura = new ItemsFacturaProforma;
+                
+                $item_factura->alumno_id = $request->alumno_id;
+                $item_factura->academia_id = Auth::user()->academia_id;
+                $item_factura->fecha = Carbon::now()->toDateString();
+                $item_factura->item_id = $request->recompensa_id;
+                // $item_factura->nombre = 'Campaña - Contribucion';
+                $item_factura->nombre = $recompensa->nombre;
+                $item_factura->tipo = 11;
+                $item_factura->cantidad = $request->cantidad;
+                $item_factura->precio_neto = 0;
+                $item_factura->impuesto = 0;
+                $item_factura->importe_neto = $monto;
+                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
 
-                    if($item_factura->save()){
+                if($item_factura->save()){
 
-                        $item_factura->item_id = $item_factura->id;
-                        $item_factura->save();
-                        $patrocinador->item_id = $item_factura->id;
-                        $patrocinador->save();
+                    $patrocinador->item_id = $item_factura->id;
+                    $patrocinador->save();
 
-                        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 200]);
-                    }
-                    else{
-                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-                    }
-
-                }else{
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 200]);
+                }
+                else{
                     return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
                 }
 
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
+
         }
+    }
 
     public function storeTransferencia(Request $request)
     {
