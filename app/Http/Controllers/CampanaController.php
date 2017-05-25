@@ -802,98 +802,95 @@ class CampanaController extends BaseController {
     public function storeTransferencia(Request $request)
     {
 
-    if($request->tipo_contribuyente == 1)
-    {
+        if($request->tipo_contribuyente == 1)
+        {
 
-        $rules = [
-            'nombre' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-            'sexo' => 'required',
-            'correo' => 'email',
-            'telefono' => 'required',
-            'monto' => 'required|numeric',
-        ];
+            $rules = [
+                'nombre' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+                'sexo' => 'required',
+                'correo' => 'email',
+                'telefono' => 'required',
+                'monto' => 'required|numeric',
+            ];
 
-        $messages = [
-            'nombre.required' => 'Ups! El Nombre del contribuyente es requerido',
-            'nombre.min' => 'El mínimo de caracteres permitidos son 5',
-            'nombre.max' => 'El máximo de caracteres permitidos son 50',
-            'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
-            'sexo.required' => 'Ups! El Sexo  es requerido ',
-            'correo.email' => 'Ups! El correo tiene una dirección inválida',
-            'telefono.required' => 'Ups! El número telefónico es requerido',
-            'monto.required' => 'Ups! El monto es requerido',
-            'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
-        ];
-    }else if($request->tipo_contribuyente == 2)
-    {
+            $messages = [
+                'nombre.required' => 'Ups! El Nombre del contribuyente es requerido',
+                'nombre.min' => 'El mínimo de caracteres permitidos son 5',
+                'nombre.max' => 'El máximo de caracteres permitidos son 50',
+                'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
+                'sexo.required' => 'Ups! El Sexo  es requerido ',
+                'correo.email' => 'Ups! El correo tiene una dirección inválida',
+                'telefono.required' => 'Ups! El número telefónico es requerido',
+                'monto.required' => 'Ups! El monto es requerido',
+                'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+            ];
+        }else if($request->tipo_contribuyente == 2){
 
-        $rules = [
-            'nombre' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-            'correo' => 'email',
-            'telefono' => 'required',
-            'monto' => 'required|numeric',
-        ];
+            $rules = [
+                'nombre' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+                'correo' => 'email',
+                'telefono' => 'required',
+                'monto' => 'required|numeric',
+            ];
 
-        $messages = [
-            'nombre.required' => 'Ups! El Apellido es requerido',
-            'nombre.min' => 'El mínimo de caracteres permitidos son 5',
-            'nombre.max' => 'El máximo de caracteres permitidos son 50',
-            'nombre.regex' => 'Ups! El apellido es inválido, debe ingresar sólo letras',
-            'correo.email' => 'Ups! El correo tiene una dirección inválida',
-            'telefono.required' => 'Ups! El número telefónico es requerido',
-            'monto.required' => 'Ups! El monto es requerido',
-            'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
-        ];
-    }else if($request->tipo_contribuyente == 3)
-    {
+            $messages = [
+                'nombre.required' => 'Ups! El Apellido es requerido',
+                'nombre.min' => 'El mínimo de caracteres permitidos son 5',
+                'nombre.max' => 'El máximo de caracteres permitidos son 50',
+                'nombre.regex' => 'Ups! El apellido es inválido, debe ingresar sólo letras',
+                'correo.email' => 'Ups! El correo tiene una dirección inválida',
+                'telefono.required' => 'Ups! El número telefónico es requerido',
+                'monto.required' => 'Ups! El monto es requerido',
+                'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+            ];
+        }else if($request->tipo_contribuyente == 3){
 
-        $rules = [
-            'nombre' => 'required|min:3|max:50',
-            'correo' => 'email',
-            'telefono' => 'required',
-            'coordinador' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-            'monto' => 'required|numeric',
-        ];
+            $rules = [
+                'nombre' => 'required|min:3|max:50',
+                'correo' => 'email',
+                'telefono' => 'required',
+                'coordinador' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+                'monto' => 'required|numeric',
+            ];
 
-        $messages = [
-            'nombre.required' => 'Ups! El Nombre es requerido',
-            'nombre.min' => 'El mínimo de caracteres permitidos son 5',
-            'nombre.max' => 'El máximo de caracteres permitidos son 50',
-            'correo.email' => 'Ups! El correo tiene una dirección inválida',
-            'telefono.required' => 'Ups! El número telefónico es requerido',
-            'coordinador.required' => 'Ups! El Patrocinador es requerido',
-            'coordinador.min' => 'El mínimo de caracteres permitidos son 5',
-            'coordinador.max' => 'El máximo de caracteres permitidos son 50',
-            'coordinador.regex' => 'Ups! El Nombre del coordinador es inválido, debe ingresar sólo letras',
-            'monto.required' => 'Ups! El monto es requerido',
-            'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
-        ];
-    }else
-    {
+            $messages = [
+                'nombre.required' => 'Ups! El Nombre es requerido',
+                'nombre.min' => 'El mínimo de caracteres permitidos son 5',
+                'nombre.max' => 'El máximo de caracteres permitidos son 50',
+                'correo.email' => 'Ups! El correo tiene una dirección inválida',
+                'telefono.required' => 'Ups! El número telefónico es requerido',
+                'coordinador.required' => 'Ups! El Patrocinador es requerido',
+                'coordinador.min' => 'El mínimo de caracteres permitidos son 5',
+                'coordinador.max' => 'El máximo de caracteres permitidos son 50',
+                'coordinador.regex' => 'Ups! El Nombre del coordinador es inválido, debe ingresar sólo letras',
+                'monto.required' => 'Ups! El monto es requerido',
+                'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+            ];
+        }else{
 
-        $rules = [
-            'monto' => 'required|numeric',
-        ];
+            $rules = [
+                'monto' => 'required|numeric',
+            ];
 
-        $messages = [
-            'monto.required' => 'Ups! El monto es requerido',
-            'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
-        ];
-    }
+            $messages = [
+                'monto.required' => 'Ups! El monto es requerido',
+                'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+            ];
+        }
 
-    if($request->tipo_cuenta == 2)
-    {
+        if($request->tipo_cuenta == 2)
+        {
 
-        $rules = [
-            'nombre_banco' => 'required',
-            'numero_cuenta' => 'required',
-        ];
+            $rules = [
+                'nombre_banco' => 'required',
+                'numero_cuenta' => 'required',
+            ];
 
-        $messages = [
-            'nombre_banco.required' => 'Ups! El Nombre del banco es requerido',
-            'numero_cuenta.required' => 'Ups! El Numero de Transferencia es requerido',
-        ];
-    }
+            $messages = [
+                'nombre_banco.required' => 'Ups! El Nombre del banco es requerido',
+                'numero_cuenta.required' => 'Ups! El Numero de Transferencia es requerido',
+            ];
+        }
 
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -902,7 +899,9 @@ class CampanaController extends BaseController {
 
             return response()->json(['errores'=>$validator->messages(), 'form' => $request->form, 'status' => 'ERROR'],422);
 
-        }if($request->tipo_contribuyente == 1){
+        }
+
+        if($request->tipo_contribuyente == 1){
             $sexo = $request->sexo;
             $nombre = $request->nombre;
         }else if($request->tipo_contribuyente == 2){

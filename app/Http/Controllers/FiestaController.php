@@ -13,6 +13,7 @@ use App\Egreso;
 use App\ConfigEgreso;
 use App\Alumno;
 use App\Patrocinador;
+use App\PatrocinadorProforma;
 use App\ItemsFacturaProforma;
 use App\User;
 use App\DatosBancarios;
@@ -898,6 +899,7 @@ class FiestaController extends BaseController {
 
     public function progreso($id)
     {
+        Session::forget('invitaciones');
 
         $fiesta = Fiesta::find($id);
 
@@ -1299,7 +1301,7 @@ class FiestaController extends BaseController {
 
         }else{
 
-            $contribucion = TransferenciaCampana::find($request->id);
+            $contribucion = PatrocinadorProforma::find($request->id);
             $id = $contribucion->tipo_evento_id;
             $nombre = $contribucion->nombre;
 
@@ -1346,6 +1348,173 @@ class FiestaController extends BaseController {
     public function enhorabuena_invitacion_sinid()
     {
         return view('agendar.fiesta.enhorabuena_invitacion');
+    }
+
+    public function storeTransferencia(Request $request)
+    {
+
+        if($request->tipo_contribuyente == 1)
+        {
+
+            $rules = [
+                'nombre' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+                'sexo' => 'required',
+                'correo' => 'email',
+                'telefono' => 'required',
+                'monto' => 'required|numeric',
+            ];
+
+            $messages = [
+                'nombre.required' => 'Ups! El Nombre del contribuyente es requerido',
+                'nombre.min' => 'El mínimo de caracteres permitidos son 5',
+                'nombre.max' => 'El máximo de caracteres permitidos son 50',
+                'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
+                'sexo.required' => 'Ups! El Sexo  es requerido ',
+                'correo.email' => 'Ups! El correo tiene una dirección inválida',
+                'telefono.required' => 'Ups! El número telefónico es requerido',
+                'monto.required' => 'Ups! El monto es requerido',
+                'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+            ];
+        }else if($request->tipo_contribuyente == 2){
+
+            $rules = [
+                'nombre' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+                'correo' => 'email',
+                'telefono' => 'required',
+                'monto' => 'required|numeric',
+            ];
+
+            $messages = [
+                'nombre.required' => 'Ups! El Apellido es requerido',
+                'nombre.min' => 'El mínimo de caracteres permitidos son 5',
+                'nombre.max' => 'El máximo de caracteres permitidos son 50',
+                'nombre.regex' => 'Ups! El apellido es inválido, debe ingresar sólo letras',
+                'correo.email' => 'Ups! El correo tiene una dirección inválida',
+                'telefono.required' => 'Ups! El número telefónico es requerido',
+                'monto.required' => 'Ups! El monto es requerido',
+                'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+            ];
+        }else if($request->tipo_contribuyente == 3){
+
+            $rules = [
+                'nombre' => 'required|min:3|max:50',
+                'correo' => 'email',
+                'telefono' => 'required',
+                'coordinador' => 'required|min:3|max:50|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+                'monto' => 'required|numeric',
+            ];
+
+            $messages = [
+                'nombre.required' => 'Ups! El Nombre es requerido',
+                'nombre.min' => 'El mínimo de caracteres permitidos son 5',
+                'nombre.max' => 'El máximo de caracteres permitidos son 50',
+                'correo.email' => 'Ups! El correo tiene una dirección inválida',
+                'telefono.required' => 'Ups! El número telefónico es requerido',
+                'coordinador.required' => 'Ups! El Patrocinador es requerido',
+                'coordinador.min' => 'El mínimo de caracteres permitidos son 5',
+                'coordinador.max' => 'El máximo de caracteres permitidos son 50',
+                'coordinador.regex' => 'Ups! El Nombre del coordinador es inválido, debe ingresar sólo letras',
+                'monto.required' => 'Ups! El monto es requerido',
+                'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+            ];
+        }else{
+
+            $rules = [
+                'monto' => 'required|numeric',
+            ];
+
+            $messages = [
+                'monto.required' => 'Ups! El monto es requerido',
+                'monto.numeric' => 'Ups! El monto es inválido, debe contener sólo números',
+            ];
+        }
+
+        if($request->tipo_cuenta == 2)
+        {
+
+            $rules = [
+                'nombre_banco' => 'required',
+                'numero_cuenta' => 'required',
+            ];
+
+            $messages = [
+                'nombre_banco.required' => 'Ups! El Nombre del banco es requerido',
+                'numero_cuenta.required' => 'Ups! El Numero de Transferencia es requerido',
+            ];
+        }
+
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'form' => $request->form, 'status' => 'ERROR'],422);
+
+        }
+
+        if($request->tipo_contribuyente == 1){
+            $sexo = $request->sexo;
+            $nombre = $request->nombre;
+        }else if($request->tipo_contribuyente == 2){
+            $sexo = 'FA';
+            $nombre = 'Flia ' . $request->nombre;
+        }else if($request->tipo_contribuyente == 3){
+            $sexo = 'O';
+            $nombre = $request->nombre;
+        }else{
+            $sexo = 'A';
+            $nombre = 'Anónimo';
+        }
+
+        Session::put('nombre_contribuyente', $nombre);
+
+        $transferencia = new PatrocinadorProforma;
+
+        $transferencia->tipo_evento_id = $request->id;
+        $transferencia->tipo_evento = 2;
+        $transferencia->nombre = $nombre;
+        $transferencia->sexo = $sexo;
+        $transferencia->monto = $request->monto;
+        $transferencia->tipo_moneda = $request->tipo_moneda;
+        $transferencia->nombre_banco = $request->nombre_banco;
+        $transferencia->tipo_cuenta = $request->tipo_cuenta;
+        $transferencia->numero_cuenta = $request->numero_cuenta;
+        $transferencia->telefono = $request->telefono;
+        $transferencia->correo = $request->correo;
+        $transferencia->coordinador = $request->correo;
+
+        if($transferencia->save()){
+
+            if($request->correo)
+            {
+                $fiesta = Fiesta::find($request->id);
+
+                $subj = 'ESTAMOS MUY FELICES CON TU CONTRIBUCIÓN';
+
+                $array = [
+
+                   'nombre' => $request->nombre,
+                   'link' => "http://app.easydancelatino.com/agendar/fiestas/progreso/".$request->id,
+                   'correo' => $transferencia->correo,
+                   'subj' => $subj,
+                   'id' => $transferencia->id,
+                   'fiesta' => $fiesta->nombre
+
+                ];
+
+                Mail::send('correo.confirmacion_fiesta', $array, function($msj) use ($array){
+                    $msj->subject($array['subj']);
+                    $msj->to($array['correo']);
+                });
+
+            }
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+  
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
     }
 
 }

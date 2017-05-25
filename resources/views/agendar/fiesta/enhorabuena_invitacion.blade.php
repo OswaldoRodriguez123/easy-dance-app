@@ -49,7 +49,8 @@
 
                             <div class="clearfix p-b-35"></div>
 
-                            <div class="opaco-0-8 f-20 text-center">Gracias por el apoyo que nos estas brindando a esta campaña
+                            <div class="opaco-0-8 f-20 text-center">
+                              Gracias por el apoyo que nos estas brindando a esta fiesta
                             </div>
 
                             <div class="opaco-0-8 f-20 text-center">Continúa así
