@@ -17,6 +17,7 @@ use App\InscripcionTaller;
 use App\ItemsFacturaProforma;
 use App\Egreso;
 use App\ConfigEgreso;
+use App\Reservacion;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -1201,9 +1202,7 @@ class TallerController extends BaseController {
                 $link_video = '';
             }
 
-         $cantidad_reservaciones = DB::table('reservaciones')
-             ->select('reservaciones.*')
-             ->where('tipo_id', '=', $id)
+         $cantidad_reservaciones = Reservacion::where('tipo_reservacion_id', '=', $id)
              ->where('tipo_reservacion', '=', 2)
          ->count();
 
