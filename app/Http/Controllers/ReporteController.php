@@ -2330,13 +2330,6 @@ class ReporteController extends BaseController
     public function AsistenciasPersonalFiltros(Request $request)
     {
         
-        $query = Asistencia::join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
-            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion', 'asistencias.clase_grupal_id', 'asistencias.id', 'config_clases_grupales.nombre as clase_grupal_nombre')
-            ->where('alumnos.deleted_at',null)
-            ->where('clases_grupales.deleted_at',null);
-
         $query = Staff::where('academia_id','=',Auth::user()->academia_id);
 
         if($request->boolean_fecha){
@@ -2371,8 +2364,13 @@ class ReporteController extends BaseController
 
         $staffs = $query->get();
 
-        $fecha_final = Carbon::now()->toDateString();
-        $fecha_final_limite = Carbon::createFromFormat('Y-m-d H:i:s', $fecha_final . " 00:00:00");
+        $hoy = Carbon::now()->toDateString();
+        $fecha_final_limite = Carbon::createFromFormat('Y-m-d H:i:s', $hoy . " 00:00:00");
+        $fecha_final = Carbon::createFromFormat('Y-m-d H:i:s', $end . " 00:00:00");
+
+        if($fecha_final > $fecha_final_limite){
+            $fecha_final = $fecha_final_limite;
+        }
 
         $efectivos = 0;
         $retrasos = 0;
@@ -2393,14 +2391,9 @@ class ReporteController extends BaseController
             foreach($horarios as $horario){
 
                 $fecha_inicio = Carbon::createFromFormat('Y-m-d H:i:s', $start . " 00:00:00");
-                $fecha_final = Carbon::createFromFormat('Y-m-d H:i:s', $end . " 00:00:00");
 
                 $entrada_horario = Carbon::createFromFormat('H:i:s', $horario->hora_inicio);
                 $salida_horario = Carbon::createFromFormat('H:i:s', $horario->hora_final);
-
-                if($fecha_final > $fecha_final_limite){
-                    $fecha_final = $fecha_final_limite;
-                }
 
                 while($fecha_inicio <= $fecha_final){
 
