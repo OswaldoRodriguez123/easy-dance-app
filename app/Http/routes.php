@@ -106,7 +106,7 @@ Route::post('agendar/fiestas/invitar', 'FiestaController@invitar');
 Route::get('agendar/fiestas/invitacion/enhorabuena/{id}', 'FiestaController@enhorabuena_invitacion');
 Route::get('agendar/fiestas/invitacion/enhorabuena', 'FiestaController@enhorabuena_invitacion_sinid');
 
-Route::post('agendar/fiestasfiestas/contribuir/contribucion', 'FiestaController@storeTransferencia');
+Route::post('agendar/fiestas/contribuir/contribucion', 'FiestaController@storeTransferencia');
 Route::get('agendar/fiestas/contribuir/enhorabuena/{id}', 'FiestaController@enhorabuena');
 
 // CAMPAÑAS USUARIO
