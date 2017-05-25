@@ -34,6 +34,7 @@ class FiestaController extends BaseController {
     public function index()
     {
         $fiestas = Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $array = array();
 
         foreach($fiestas as $fiesta){
 
