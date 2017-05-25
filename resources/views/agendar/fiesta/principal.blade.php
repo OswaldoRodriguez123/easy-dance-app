@@ -54,17 +54,22 @@
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre de la fiesta/evento</th>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="horario" data-order="desc">Horario</th>
+                                    <th class="text-center" data-column-id="status" data-type="numeric">Status</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($fiesta as $fiestas)
-                                <?php $id = $fiestas->id; ?>
+                            @foreach ($fiestas as $fiesta)
+                                <?php $id = $fiesta['id']; ?>
                                 <tr id="{{$id}}" class="seleccion"> 
-                                    <td class="text-center previa">{{$fiestas->nombre}}</td>
-                                    <td class="text-center previa">{{$fiestas->fecha_inicio}}</td>
-                                    <td class="text-center previa">{{$fiestas->hora_inicio}} - {{$fiestas->hora_final}}</td>
+                                    <td class="text-center previa">{{$fiesta['nombre']}}</td>
+                                    <td class="text-center previa">{{$fiesta['fecha_inicio']}}</td>
+                                    <td class="text-center previa">{{$fiesta['hora_inicio']}} - {{$fiesta['hora_final']}}</td>
+                                    <td class="text-center previa">
+                                        <span class="{{ empty($fiesta['dias_restantes']) ? 'c-youtube' : '' }}">{{$fiesta['status']}}</span>
+                                        Restan {{$fiesta['dias_restantes']}} Días
+                                    </td>
                                     <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach  

@@ -28,7 +28,30 @@ class FiestaController extends BaseController {
 
     public function index()
     {
-        return view('agendar.fiesta.principal')->with('fiesta', Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+        $fiestas = Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        foreach($fiestas as $fiesta){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $fiesta->fecha_inicio);
+
+            if($fecha >= Carbon::now()){
+
+                $dias_restantes = $fecha->diffInDays();
+                $status = 'Activa';
+
+            }else{
+                $dias_restantes = 0;
+                $status = 'Vencida';
+            }
+
+            $collection=collect($fiesta);  
+            $fiesta_array = $collection->toArray();   
+            $fiesta_array['status']=$status;
+            $fiesta_array['dias_restantes']=$dias_restantes;
+            $array[$fiesta->id] = $fiesta_array;
+        }
+
+        return view('agendar.fiesta.principal')->with('fiestas', $array);
     }
 
     /**
