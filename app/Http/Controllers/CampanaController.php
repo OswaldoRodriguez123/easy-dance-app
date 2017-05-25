@@ -936,6 +936,7 @@ class CampanaController extends BaseController {
 
             if($request->correo)
             {
+
                 $campaña = Campana::find($transferencia->campana_id);
 
                 $subj = 'ESTAMOS MUY FELICES CON TU CONTRIBUCIÓN';
@@ -944,6 +945,7 @@ class CampanaController extends BaseController {
 
                    'nombre' => $request->nombre,
                    'link' => "http://app.easydancelatino.com/especiales/campañas/progreso/".$request->id,
+                   'link_invitar' => "http://app.easydancelatino.com/especiales/campañas/progreso/".$request->id,
                    'correo' => $transferencia->correo,
                    'subj' => $subj,
                    'id' => $transferencia->id,

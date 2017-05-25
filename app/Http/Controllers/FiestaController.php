@@ -1495,6 +1495,7 @@ class FiestaController extends BaseController {
 
                    'nombre' => $request->nombre,
                    'link' => "http://app.easydancelatino.com/agendar/fiestas/progreso/".$request->id,
+                   'link_invitar' => "http://app.easydancelatino.com/agendar/fiestas/progreso/".$request->id,
                    'correo' => $transferencia->correo,
                    'subj' => $subj,
                    'id' => $transferencia->id,
