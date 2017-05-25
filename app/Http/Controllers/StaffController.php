@@ -556,49 +556,54 @@ class StaffController extends BaseController
 
     public function agregar_horario_fijo(Request $request){
         
-    $rules = [
+        $rules = [
 
-        'dia_de_semana_id' => 'required',
-        'hora_inicio' => 'required',
-        'hora_final' => 'required',
-    ];
+            'dia_de_semana_id' => 'required',
+            'hora_inicio' => 'required',
+            'hora_final' => 'required',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'dia_de_semana_id.required' => 'Ups! El Dia es requerido',
-        'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
-        'hora_final.required' => 'Ups! La hora final es requerida',
-    ];
+            'dia_de_semana_id.required' => 'Ups! El Dia es requerido',
+            'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
+            'hora_final.required' => 'Ups! La hora final es requerida',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
-
-    else{
-
-        $horario = new HorarioStaff;
-        
-        $horario->staff_id = $request->id;                   
-        $horario->dia_de_semana_id = $request->dia_de_semana_id;
-        $horario->hora_inicio = $request->hora_inicio;
-        $horario->hora_final = $request->hora_final;
-
-        if($horario->save()){
-
-            $dia_de_semana = DiasDeSemana::find($request->dia_de_semana_id);
-
-            $array=array('dia_de_semana' => $dia_de_semana->nombre, 'hora_inicio' => $request->hora_inicio , 'hora_final' => $request->hora_final);
-
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $horario->id, 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
 
+        else{
 
+            $horario = HorarioStaff::where('staff_id',$request->id)->where('dia_de_semana_id',$request->dia_de_semana_id)->first();
+
+            if(!$horario){
+
+                $horario = new HorarioStaff;
+                
+                $horario->staff_id = $request->id;                   
+                $horario->dia_de_semana_id = $request->dia_de_semana_id;
+                $horario->hora_inicio = $request->hora_inicio;
+                $horario->hora_final = $request->hora_final;
+
+                if($horario->save()){
+
+                    $dia_de_semana = DiasDeSemana::find($request->dia_de_semana_id);
+
+                    $array=array('dia_de_semana' => $dia_de_semana->nombre, 'hora_inicio' => $request->hora_inicio , 'hora_final' => $request->hora_final);
+
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $horario->id, 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+            }else{
+                return response()->json(['errores' => ['dia_de_semana_id' => [0, 'Ups! Ya posee un horario configurado para este día']], 'status' => 'ERROR'],422);
+            }
         }
     }
 
