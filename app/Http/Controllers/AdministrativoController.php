@@ -848,17 +848,7 @@ class AdministrativoController extends BaseController {
                                 }     
                                         
                             }
-                            else if ($item_proforma->tipo == 2) {
-
-                                $inventario=ConfigProductos::find($item_proforma->item_id);
-
-                                $cantidad_actual=$inventario->cantidad;
-                                $cantidad_vendida=$item_proforma->cantidad;
-
-                                $inventario->cantidad=$cantidad_actual-$cantidad_vendida;
-
-                                $inventario->save();
-                            }else if ($item_proforma->tipo == 15) {
+                            else if ($item_proforma->tipo == 15) {
 
                                 $servicio = ConfigServicios::withTrashed()->find($item_proforma->item_id);
                                 $paquete = Paquete::withTrashed()->find($servicio->tipo_id);
@@ -978,17 +968,6 @@ class AdministrativoController extends BaseController {
                                 }
                             }     
                                     
-                        }
-                        else if ($item_proforma->tipo == 2) {
-
-                            $inventario=ConfigProductos::find($item_proforma->item_id);
-
-                            $cantidad_actual=$inventario->cantidad;
-                            $cantidad_vendida=$item_proforma->cantidad;
-
-                            $inventario->cantidad=$cantidad_actual-$cantidad_vendida;
-
-                            $inventario->save();
                         }else if ($item_proforma->tipo == 15) {
 
                             $servicio = ConfigServicios::withTrashed()->find($item_proforma->item_id);
@@ -1429,45 +1408,58 @@ class AdministrativoController extends BaseController {
 
     public function agregaritem(Request $request){
         
-    $rules = [
-        'alumno_id' => 'required',
-        'combo' => 'required',
-        'cantidad' => 'required|numeric|min:1',
-    ];
+        $rules = [
+            'alumno_id' => 'required',
+            'combo' => 'required',
+            'cantidad' => 'required|numeric|min:1',
+        ];
 
-    $messages = [
-        'alumno_id.required' => 'Ups! El Cliente es requerido',
-        'combo.required' => 'Ups! El Producto o Servicio es requerido',
-        'cantidad.required' => 'Ups! El Cantidad es invalido, solo se aceptan numeros',
-        'cantidad.numeric' => 'Ups! El Cantidad es requerido',
-        'cantidad.min' => 'El mínimo de cantidad permitida es 1',
-    ];
+        $messages = [
+            'alumno_id.required' => 'Ups! El Cliente es requerido',
+            'combo.required' => 'Ups! El Producto o Servicio es requerido',
+            'cantidad.required' => 'Ups! El Cantidad es invalido, solo se aceptan numeros',
+            'cantidad.numeric' => 'Ups! El Cantidad es requerido',
+            'cantidad.min' => 'El mínimo de cantidad permitida es 1',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
+        }
 
-    else{
+        else{
 
-        $array = array();
+            $array = array();
+            $explode = explode("-", $request->combo);
+            $item_id = $explode[0];
+            $tipo = $explode[2];
 
-        $id = explode("-", $request->combo);
+            if($request->tipo == "servicio"){
 
+                $producto_servicio = ConfigServicios::find($item_id);
+                $importe_neto = $producto_servicio->costo * $request->cantidad;
 
-        if($request->tipo == "servicio"){
+                if($request->impuesto == 0 and $producto_servicio->incluye_iva == 1){
+                    $academia = Academia::find(Auth::user()->academia_id);
+                    $iva = $importe_neto * ($academia->porcentaje_impuesto / 100);
 
-            $servicio = ConfigServicios::find($id[0]);
-            $importe_neto = $servicio->costo * $request->cantidad;
+                    $importe_neto = $importe_neto - $iva;
+                }
 
-            if($request->impuesto == 0 and $servicio->incluye_iva == 1){
-                $academia = Academia::find(Auth::user()->academia_id);
-                $iva = $importe_neto * ($academia->porcentaje_impuesto / 100);
+            }else{
 
-                $importe_neto = $importe_neto - $iva;
+                $producto_servicio = ConfigProductos::find($item_id);
+                $importe_neto = $producto_servicio->costo * $request->cantidad;
+
+                if($request->impuesto == 0 and $producto_servicio->incluye_iva == 1){
+                     $academia = Academia::find(Auth::user()->academia_id);
+                     $iva = $importe_neto * ($academia->porcentaje_impuesto / 100);
+
+                     $importe_neto = $importe_neto - $iva;
+                }
             }
 
             $item_factura = new ItemsFacturaProforma;
@@ -1475,59 +1467,44 @@ class AdministrativoController extends BaseController {
             $item_factura->alumno_id = $request->alumno_id;
             $item_factura->academia_id = Auth::user()->academia_id;
             $item_factura->fecha = Carbon::now()->toDateString();
-            $item_factura->item_id = $id[0];
-            $item_factura->nombre = $servicio->nombre;
-            $item_factura->tipo = $id[2];
+            $item_factura->item_id = $item_id;
+            $item_factura->nombre = $producto_servicio->nombre;
+            $item_factura->tipo = $tipo;
             $item_factura->cantidad = $request->cantidad;
-            $item_factura->precio_neto = $servicio->costo;
+            $item_factura->precio_neto = $producto_servicio->costo;
             $item_factura->impuesto = $request->impuesto;
             $item_factura->importe_neto = $importe_neto;
             $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
                         
-            $item_factura->save();
+            if($item_factura->save()){
 
-            $array = array(['id' =>  $item_factura->id, 'item_id' => $id[0] , 'nombre' => $servicio->nombre , 'tipo' => $id[2], 'cantidad' => $request->cantidad, 'precio_neto' => $servicio->costo, 'impuesto' => intval($request->impuesto), 'importe_neto' => $importe_neto, 'operacion' => '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>']);
+                if($tipo == 2){
 
-            }else if($request->tipo == "producto"){
+                    $inventario = ConfigProductos::find($item_id);
 
+                    if($inventario){
 
-                $producto = ConfigProductos::find($id[0]);
-                $importe_neto = $producto->costo * $request->cantidad;
+                        $cantidad_actual = $inventario->cantidad;
+                        $cantidad_vendida = $request->cantidad;
 
-                if($request->impuesto == 0 and $producto->incluye_iva == 1){
-                     $academia = Academia::find(Auth::user()->academia_id);
-                     $iva = $importe_neto * ($academia->porcentaje_impuesto / 100);
+                        $inventario->cantidad = $cantidad_actual - $cantidad_vendida;
 
-                     $importe_neto = $importe_neto - $iva;
+                        $inventario->save();
+                    }
                 }
 
-                $item_factura = new ItemsFacturaProforma;
-                        
-                $item_factura->alumno_id = $request->alumno_id;
-                $item_factura->academia_id = Auth::user()->academia_id;
-                $item_factura->fecha = Carbon::now()->toDateString();
-                $item_factura->item_id = $id[0];
-                $item_factura->nombre = $producto->nombre;
-                $item_factura->tipo = $id[2];
-                $item_factura->cantidad = $request->cantidad;
-                $item_factura->precio_neto = $producto->costo;
-                $item_factura->impuesto = $request->impuesto;
-                $item_factura->importe_neto = $importe_neto;
-                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
-                            
-                $item_factura->save();
+                $array = array(['id' => $item_factura->id, 'item_id' => $item_id , 'nombre' => $producto_servicio->nombre , 'tipo' => $tipo, 'cantidad' => $request->cantidad, 'precio_neto' => $producto_servicio->costo, 'impuesto' => intval($request->impuesto), 'importe_neto' => $importe_neto, 'operacion' => '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>']);
 
-                $array = array(['id' => $item_factura->id, 'item_id' => $id[0] , 'nombre' => $producto->nombre , 'tipo' => $id[2], 'cantidad' => $request->cantidad, 'precio_neto' => $producto->costo, 'impuesto' => intval($request->impuesto), 'importe_neto' => $importe_neto , 'operacion' => '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>']);
-                }
-
-                 $last_proforma = DB::table('items_factura_proforma')
-                    ->where('fecha' , '=', Carbon::now()->toDateString())
+                $last_proforma = ItemsFacturaProforma::where('fecha' , '=', Carbon::now()->toDateString())
                     ->where('academia_id' , '=', Auth::user()->academia_id)
                 ->get();
 
-         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'proforma' => $last_proforma , 200]);
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'proforma' => $last_proforma , 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
 
-    }
+        }
     }
 
     public function eliminaritem($id){
@@ -1610,6 +1587,21 @@ class AdministrativoController extends BaseController {
                     $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
                     
                     $item_factura->save();
+
+                    if($tipo == 2){
+
+                        $inventario = ConfigProductos::find($item_id);
+
+                        if($inventario){
+
+                            $cantidad_actual = $inventario->cantidad;
+                            $cantidad_vendida = $cantidad;
+
+                            $inventario->cantidad = $cantidad_actual - $cantidad_vendida;
+
+                            $inventario->save();
+                        }
+                    }
 
                     Session::push('id_proforma', $item_factura->id);
 

@@ -51,7 +51,9 @@ class CampanaController extends BaseController {
                 $recaudado = 0;
                 $patrocinador_monto = 0;
 
-                $patrocinadores = Patrocinador::where('campana_id', '=' ,  $campana->id)->get();
+                $patrocinadores = Patrocinador::where('tipo_evento_id', '=' ,  $campana->id)
+                    ->where('tipo_evento', '=', 1)
+                ->get();
 
                 foreach($patrocinadores as $patrocinador){
 
@@ -101,7 +103,9 @@ class CampanaController extends BaseController {
                     $recaudado = 0;
                     $patrocinador_monto = 0;
 
-                    $patrocinadores = Patrocinador::where('campana_id', '=' ,  $campana->id)->get();
+                    $patrocinadores = Patrocinador::where('tipo_evento_id', '=' ,  $campana->id)
+                        ->where('tipo_evento', '=', 1)
+                    ->get();
 
                     foreach($patrocinadores as $patrocinador){
 
@@ -136,7 +140,8 @@ class CampanaController extends BaseController {
             // ->join('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
             ->join('alumnos','patrocinadores.usuario_id', '=', 'alumnos.id')
             ->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido')
-            ->where('patrocinadores.campana_id', '=', $id)
+            ->where('patrocinadores.tipo_evento_id', '=', $id)
+            ->where('patrocinadores.tipo_evento', '=', 1)
          ->get();
 
         return view('especiales.campana.patrocinadores')->with(['patrocinadores' => $patrocinadores, 'id' => $id]);
@@ -748,7 +753,8 @@ class CampanaController extends BaseController {
                 $patrocinador = new Patrocinador;
 
                 $patrocinador->academia_id = Auth::user()->academia_id;
-                $patrocinador->campana_id = $request->campana_id;
+                $patrocinador->tipo_evento_id = $request->campana_id;
+                $patrocinador->tipo_evento = 1;
                 $patrocinador->usuario_id = $request->alumno_id;
                 $patrocinador->tipo_id = 1;
                 $patrocinador->monto = $monto;
@@ -1432,7 +1438,8 @@ class CampanaController extends BaseController {
             ->Leftjoin('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
              //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
             ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, patrocinadores.created_at, patrocinadores.monto, patrocinadores.tipo_moneda')
-            ->where('patrocinadores.campana_id', '=', $id)
+            ->where('patrocinadores.tipo_evento_id', '=', $id)
+            ->where('patrocinadores.tipo_evento', '=', 1)
             ->orderBy('patrocinadores.created_at', 'desc')
         ->get();
 
@@ -1782,10 +1789,6 @@ class CampanaController extends BaseController {
                     }
             }
 
-            $mercadopago = new MercadopagoMovs;
-            $factura = new Factura;
-            $patrocinador = new Patrocinador;
-
             if($request->json['collection_status']!=null){
 
                 if($request->alumno_id){
@@ -1802,7 +1805,8 @@ class CampanaController extends BaseController {
                     $usuario_id = Auth::user()->id;
                 }
 
-                //$factura->alumno_id = $request->alumno;
+                $factura = new Factura;
+
                 $factura->alumno_id = $alumno_id;
                 $factura->academia_id = Auth::user()->academia_id;
                 $factura->fecha = Carbon::now()->toDateString();
@@ -1825,6 +1829,8 @@ class CampanaController extends BaseController {
 
                 $item_factura->save();
 
+                $mercadopago = new MercadopagoMovs;
+
                 $mercadopago->academia_id = Auth::user()->academia_id;
                 $mercadopago->alumno_id = $alumno_id;
                 $mercadopago->numero_factura = $numero_factura;
@@ -1835,8 +1841,11 @@ class CampanaController extends BaseController {
 
                 $mercadopago->save();
 
+                $patrocinador = new Patrocinador;
+
                 $patrocinador->academia_id = Auth::user()->academia_id;
-                $patrocinador->campana_id = $request->campana_id;
+                $patrocinador->tipo_evento_id = $request->campana_id;
+                $patrocinador->tipo_evento = 1;
                 $patrocinador->usuario_id = $usuario_id;
                 $patrocinador->tipo_id = 1;
                 $patrocinador->monto = $request->monto;
@@ -1991,8 +2000,6 @@ class CampanaController extends BaseController {
             }
 
             $UsuarioExterno = new UsuarioExterno;
-            $factura = new Factura;
-            $patrocinador = new Patrocinador;
 
             $UsuarioExterno->nombre = $contribucion->nombre;
             $UsuarioExterno->sexo = $contribucion->sexo;
@@ -2001,6 +2008,8 @@ class CampanaController extends BaseController {
             $UsuarioExterno->correo = $contribucion->correo;
 
             $UsuarioExterno->save();
+
+            $factura = new Factura;
 
             $factura->externo_id = $UsuarioExterno->id;
             $factura->academia_id = $campana->academia_id;
@@ -2024,8 +2033,11 @@ class CampanaController extends BaseController {
 
             $item_factura->save();
 
+            $patrocinador = new Patrocinador;
+
             $patrocinador->academia_id = $campana->academia_id;
-            $patrocinador->campana_id = $contribucion->campana_id;
+            $patrocinador->tipo_evento_id = $contribucion->campana_id;
+            $patrocinador->tipo_evento = 1;
             $patrocinador->externo_id = $UsuarioExterno->id;
             $patrocinador->tipo_id = 1;
             $patrocinador->tipo_moneda = $contribucion->tipo_moneda;

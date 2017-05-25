@@ -79,8 +79,8 @@ class HerramientaController extends BaseController {
     $messages = [
 
         'nombre_estudio.required' => 'Ups! El Nombre es requerido',
-        'cantidad_estudio.required' => 'Ups! El Cantidad es invalida, solo se aceptan numeros',
-        'cantidad_estudio.numeric' => 'Ups! La Cantidad es requerida',
+        'cantidad_estudio.required' => 'Ups! La Cantidad es requerida',
+        'cantidad_estudio.numeric' => 'Ups! La Cantidad es invalida, solo se aceptan numeros',
         'cantidad_estudio.min' => 'El mínimo de cantidad permitida es 1',
     ];
 

@@ -6,11 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Fiesta;
 use App\Academia;
-use App\ConfigEstudios;
+use App\Boleto;
 use App\ConfigBoletos;
 use App\DiasDeSemana;
-use App\ConfigEspecialidades;
-use App\Instructor;
 use App\Egreso;
 use App\ConfigEgreso;
 use Validator;
@@ -53,56 +51,130 @@ class FiestaController extends BaseController {
 
     public function agregarboleto(Request $request){
 
-    $rules = [
+        $rules = [
 
-        'tipo' => 'required',
-        'cantidad' => 'required|numeric|min:1',
-        'costo' => 'required|numeric',
-    ];
+            'config_boleto_id' => 'required',
+            'costo' => 'required|numeric',
+            'cantidad' => 'required|numeric|min:1',
 
-    $messages = [
+        ];
 
-        'tipo.required' => 'Ups! El Tipo de Boleto es requerido',
-        'cantidad.required' => 'Ups! La Cantidad es requerida',
-        'costo.required' => 'Ups! El Costo es requerido',
-    ];
+        $messages = [
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+            'config_boleto_id.required' => 'Ups! Nombre es requerido',
+            'costo.numeric' => 'Ups! El Costo es invalido, solo se aceptan numeros',
+            'costo.min' => 'El mínimo de cantidad permitida es 1',
+            'cantidad.required' => 'Ups! La Cantidad es requerida',
+            'cantidad.numeric' => 'Ups! La Cantidad es invalida, solo se aceptan numeros',
+            'cantidad.min' => 'El mínimo de cantidad permitida es 1',
 
-    if ($validator->fails()){
+        ];
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    }
+        if ($validator->fails()){
 
-    else{
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-        $find = ConfigBoletos::find($request->tipo);
-        $tipo = $find->nombre;
- 
-        $array = array(['tipo' => $tipo , 'cantidad' => $request->cantidad, 'costo' => $request->costo]);
+        }
 
-        Session::push('boleto', $array);
+        else{
 
-        $contador = count(Session::get('horario'));
-        $contador = $contador - 1;
+            $config_boleto = ConfigBoletos::find($request->config_boleto_id);
+            $nombre = $config_boleto->nombre;
+     
+            $array = array(['nombre' => $nombre , 'cantidad' => $request->cantidad, 'costo' => $request->costo]);
 
-         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
+            Session::push('boleto', $array);
 
-    }
+            $item = Session::get('horarios_staff');
+            end( $item );
+            $contador = key( $item );
+
+             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
+
+        }
     }
 
     public function eliminarboleto($id){
 
         $arreglo = Session::get('boleto');
 
-        // unset($arreglo[$id]);
         unset($arreglo[$id]);
-        Session::forget('boleto');
         Session::push('boleto', $arreglo);
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
+    }
+
+    public function agregarboletofijo(Request $request){
+        
+        $rules = [
+
+            'config_boleto_id' => 'required',
+            'costo' => 'required|numeric',
+            'cantidad' => 'required|numeric|min:1',
+        ];
+
+        $messages = [
+
+            'config_boleto_id.required' => 'Ups! El Nombre es requerido',
+            'costo.required' => 'Ups! El Costo es requerido',
+            'costo.numeric' => 'Ups! El Costo es invalido, solo se aceptan numeros',
+            'costo.min' => 'El mínimo de cantidad permitida es 1',
+            'cantidad.required' => 'Ups! La Cantidad es requerida',
+            'cantidad.numeric' => 'Ups! La Cantidad es invalida, solo se aceptan numeros',
+            'cantidad.min' => 'El mínimo de cantidad permitida es 1',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $boleto = Boleto::where('config_boleto_id',$request->config_boleto_id)->where('tipo_evento',1)->where('tipo_evento_id',$request->id)->first();
+
+            if($boleto){
+                return response()->json(['errores' => ['config_boleto_id' => [0, 'Ups! Ya posee boletos para este tipo de boleto']], 'status' => 'ERROR'],422);
+            }
+
+            $config_boleto = ConfigBoletos::find($request->config_boleto_id);
+            $array = array(['nombre' => $config_boleto->nombre , 'cantidad' => $request->cantidad, 'costo' => $request->costo]);
+
+            $boleto = new Boleto;
+                                            
+            $boleto->tipo_evento_id = $request->id;
+            $boleto->tipo_evento = 1;
+            $boleto->config_boleto_id = $request->config_boleto_id;
+            $boleto->cantidad = $request->cantidad;
+            $boleto->costo = $request->costo;
+
+            if($boleto->save()){
+
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $boleto->id, 200]);
+
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function eliminarboletofijo($id)
+    {
+        
+        $boleto = Boleto::find($id);
+        
+        if($boleto->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El Boleto se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+       
     }
 
     public function agregarhorario(Request $request){
@@ -727,8 +799,13 @@ class FiestaController extends BaseController {
         $fiesta = Fiesta::find($id);
 
         if($fiesta){
-            $usuario_tipo = Session::get('easydance_usuario_tipo');
-            return view('agendar.fiesta.planilla')->with(['fiesta' => $fiesta, 'usuario_tipo' => $usuario_tipo]);
+            $config_boletos = ConfigBoletos::all();
+            $boletos = Boleto::join('config_boletos', 'boletos.config_boleto_id' , '=', 'config_boletos.id')
+                ->select('boletos.*', 'config_boletos.nombre')
+                ->where('boletos.tipo_evento',1)
+                ->where('boletos.tipo_evento_id',$id)
+            ->get();
+            return view('agendar.fiesta.planilla')->with(['fiesta' => $fiesta, 'config_boletos' => $config_boletos, 'boletos' => $boletos]);
         }else{
             return redirect("agendar/fiestas"); 
         }

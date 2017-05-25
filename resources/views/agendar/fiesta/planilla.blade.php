@@ -732,12 +732,155 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalBoletos-Fiesta" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Fiesta<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_boleto_fiesta" id="edit_boleto_fiesta"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" name="id" value="{{$fiesta->id}}"></input>
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               
+                              <div class="col-sm-12">
+
+                                    <label for="id">Boletos</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa los boletos que ofreceras en la fiesta." title="" data-original-title="Ayuda"></i>
+
+                                    <div class="clearfix m-b-20"></div>
+
+
+                                      <div class="form-group fg-line">
+                                        <label for="nombre">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de boleto" title="" data-original-title="Ayuda"></i>
+
+
+                                      <div class="select">
+                                          <select class="form-control" id="config_boleto_id" name="config_boleto_id">
+                                          @foreach ( $config_boletos as $config_boleto )
+                                          <option value = "{{ $config_boleto->id }}">{{ $config_boleto->nombre }}</option>
+                                          @endforeach 
+                                          </select>
+                                      </div> 
+
+                                     </div>
+                                     <div class="has-error" id="error-config_boleto_id">
+                                          <span >
+                                              <small class="help-block error-span" id="error-config_boleto_id_mensaje" ></small>                                
+                                          </span>
+                                      </div>
+
+
+                                    <div class="clearfix p-b-35"></div>
+                 
+                                
+                                    
+                                    <label for="costo" id="id-costo">Costo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el costo de cada boleto" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_b-costo f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="costo" id="costo" placeholder="Ej. 2500">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-costo">
+                                      <span >
+                                          <small class="help-block error-span" id="error-costo_mensaje" ></small>                               
+                                      </span>
+                                  </div>
+
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <label for="cantidad" id="id-cantidad">Cantidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de boletos a ofrecer" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="cantidad" id="cantidad" placeholder="Ej. 50">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-cantidad">
+                                      <span >
+                                          <small class="help-block error-span" id="error-cantidad_mensaje" ></small>                               
+                                      </span>
+                                  </div>
+                              
+
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="card-header text-left">
+
+                              <button type="button" class="btn btn-blanco m-r-10 f-10" name= "agregar" id="agregar" > Agregar Linea</button>
+
+                              </div>
+                              </div>
+                              <div class="clearfix p-b-35"></div>
+
+                          <div class="table-responsive row">
+                           <div class="col-md-12">
+                            <table class="table table-striped table-bordered text-center " id="tablelistar" >
+                            <thead>
+                                <tr>
+                                    <th class="text-center" data-column-id="nombre">Nombre</th>
+                                    <th class="text-center" data-column-id="costo">Costo</th>
+                                    <th class="text-center" data-column-id="cantidad">Cantidad</th>
+                                    <th class="text-center" data-column-id="operacion">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            @foreach ($boletos as $boleto)
+                                <?php $id = $boleto->id; ?>
+                                <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">{{$boleto->nombre}}</td>
+                                    <td class="text-center previa">{{$boleto->costo}}</td>
+                                    <td class="text-center previa">{{$boleto->cantidad}}</td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                  </tr>
+                            @endforeach 
+                   
+                            </tbody>
+                          </table>
+
+
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+         
+                      
+                      <div class="clearfix p-b-35"></div>
+
+                      <div class="clearfix"></div> 
+                       <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 dismiss" href="#" id="dismiss" name="dismiss">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                              <div class="clearfix p-b-35"></div>
+                      
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
             
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                      @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/fiestas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Fiestas o Eventos</a>
                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -750,10 +893,6 @@
                                            
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                         </ul>
-                      @else
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
-                      @endif
-
 
                     </div> 
                     
@@ -784,8 +923,6 @@
                                     </li>
                                   </ul>
 
-                                  @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-
                                   <div class="col-sm-12 text-center"> 
 
                                     <br></br>
@@ -811,7 +948,6 @@
                                    
                                   </div>
 
-                                  @endif
 
                                 </div>                
                               </div>
@@ -827,14 +963,7 @@
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
 
-                           @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-                              <tr class="detalle" data-toggle="modal" href="#modalNombre-Fiesta">
-
-                            @else
-
-                              <tr class="disabled">
-
-                            @endif
+                            <tr class="detalle" data-toggle="modal" href="#modalNombre-Fiesta">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($fiesta->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-campana f-22"></i> </span>
@@ -842,14 +971,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="fiesta-nombre" class="capitalize">{{$fiesta->nombre}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-                              <tr class="detalle" data-toggle="modal" href="#modalDescripcion-Fiesta">
-
-                            @else
-
-                              <tr class="disabled">
-
-                            @endif
+                            <tr class="detalle" data-toggle="modal" href="#modalDescripcion-Fiesta">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-descripcion" class="zmdi {{ empty($fiesta->descripcion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
@@ -857,14 +979,7 @@
                              </td>
                              <td id="fiesta-descripcion" class="f-14 m-l-15 capitalize" data-valor="{{$fiesta->descripcion}}" >{{ str_limit($fiesta->descripcion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-                              <tr class="detalle" data-toggle="modal" href="#modalFecha-Fiesta">
-
-                            @else
-
-                              <tr class="disabled">
-
-                            @endif
+                            <tr class="detalle" data-toggle="modal" href="#modalFecha-Fiesta">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_inicio" class="zmdi {{ empty($fiesta->fecha_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
@@ -872,14 +987,7 @@
                              </td>
                              <td class="f-14 m-l-15"><span id="fiesta-fecha_inicio">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$fiesta->fecha_inicio)->format('d/m/Y')}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
-                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-                              <tr class="detalle" data-toggle="modal" href="#modalHorario-Fiesta">
-
-                            @else
-
-                              <tr class="disabled">
-
-                            @endif
+                            <tr class="detalle" data-toggle="modal" href="#modalHorario-Fiesta">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-hora_inicio" class="zmdi {{ empty($fiesta->hora_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-alarm f-22"></i> </span>
@@ -887,14 +995,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="fiesta-hora_inicio">{{$fiesta->hora_inicio}}</span> - <span id="fiesta-hora_final">{{$fiesta->hora_final}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-                              <tr class="detalle" data-toggle="modal" href="#modalLugar-Fiesta">
-
-                            @else
-
-                              <tr class="disabled">
-
-                            @endif
+                            <tr class="detalle" data-toggle="modal" href="#modalLugar-Fiesta">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-lugar" class="zmdi {{ empty($fiesta->lugar) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-estudio-salon f-22"></i> </span>
@@ -902,22 +1003,8 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="fiesta-lugar" class="capitalize">{{$fiesta->lugar}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-<!--                             <tr class="detalle" data-toggle="modal" href="#modalBoletos-Fiesta">
-                             <td width="50%"> 
-                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-boletos" class="zmdi c-amarillo zmdi-dot-circle zmdi-hc-fw"></i></span>                              
-                              <span class="m-l-10 m-r-10"> <i class="icon_a-boletos f-22"></i> </span>
-                              <span class="f-14">Boletos </span>
-                             </td>
-                             <td class="f-14 m-l-15" id="fiesta-boletos" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr> -->
-                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-                              <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-Fiesta">
+                            <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-Fiesta">
 
-                            @else
-
-                              <tr class="disabled">
-
-                            @endif
                                <td>
                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-color_etiqueta" class="zmdi  {{ empty($fiesta->color_etiqueta) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                  <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-invert-colors f-22"></i> </span>
@@ -927,15 +1014,8 @@
                                 <span id="fiesta-color_etiqueta">{{$fiesta->color_etiqueta}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
                                
                                 </td>
-                              </tr>
-                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-                              <tr class="detalle" data-toggle="modal" href="#modalImagen-Fiesta">
-
-                            @else
-
-                              <tr class="disabled">
-
-                            @endif
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalImagen-Fiesta">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagen" class="zmdi {{ empty($fiesta->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
@@ -943,14 +1023,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="fiesta-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-                              <tr class="detalle" data-toggle="modal" href="#modalLink-Fiesta">
-
-                            @else
-
-                              <tr class="disabled">
-
-                            @endif
+                            <tr class="detalle" data-toggle="modal" href="#modalLink-Fiesta">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-link_video" class="zmdi {{ empty($fiesta->link_video) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10">  <i class="zmdi zmdi-videocam f-22"></i> </span>
@@ -958,7 +1031,6 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="fiesta-link_video"><span>{{$fiesta->link_video}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-
                             <tr class="detalle" data-toggle="modal" href="#modalPresentacion-Fiesta">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-presentacion" class="zmdi {{ empty($fiesta->presentacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -975,21 +1047,21 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="fiesta-imagen_presentacion"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-
-                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-                              <tr class="detalle" data-toggle="modal" href="#modalCondiciones-Fiesta">
-
-                            @else
-
-                              <tr class="disabled">
-
-                            @endif
+                            <tr class="detalle" data-toggle="modal" href="#modalCondiciones-Fiesta">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-condiciones" class="zmdi {{ empty($fiesta->condiciones) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_d-normativas f-22"></i> </span>
                                <span class="f-14"> Condiciones y Normativas </span>
                              </td>
                              <td id="fiesta-condiciones" class="f-14 m-l-15" data-valor="{{$fiesta->condiciones}}" ><span id="fiesta-condiciones"><span>{{ str_limit($fiesta->condiciones, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalBoletos-Fiesta">
+                             <td width="50%"> 
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-boletos" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>                              
+                              <span class="m-l-10 m-r-10"> <i class="icon_a-boletos f-22"></i> </span>
+                              <span class="f-14">Boletos </span>
+                             </td>
+                             <td class="f-14 m-l-15" id="fiesta-boletos" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalMostrar-Fiesta">
                              <td> 
@@ -1040,6 +1112,8 @@
    <script type="text/javascript">
     route_update="{{url('/')}}/agendar/fiestas/update";
     route_eliminar="{{url('/')}}/agendar/fiestas/eliminar/";
+    route_agregar_boleto="{{url('/')}}/agendar/fiestas/agregarboletofijo";
+    route_eliminar_boleto="{{url('/')}}/agendar/fiestas/eliminarboletofijo/";
     route_principal="{{url('/')}}/agendar/fiestas";
 
     $(document).ready(function(){
@@ -1112,6 +1186,43 @@
 
       });
 
+
+      var t=$('#tablelistar').DataTable({
+        processing: true,
+        serverSide: false, 
+        pageLength: 25,
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        order: [[0, 'asc']],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
+        },
+        language: {
+              processing:     "Procesando ...",
+              search:         "Buscar:",
+              lengthMenu:     "Mostrar _MENU_ Registros",
+              info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+              infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+              infoFiltered:   "(filtrada de _MAX_ registros en total)",
+              infoPostFix:    "",
+              loadingRecords: "...",
+              zeroRecords:    "No se encontraron registros coincidentes",
+              emptyTable:     "No hay datos disponibles en la tabla",
+              paginate: {
+                  first:      "Primero",
+                  previous:   "Anterior",
+                  next:       "Siguiente",
+                  last:       "Ultimo"
+              },
+              aria: {
+                  sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                  sortDescending: ": habilitado para ordenar la columna en orden descendente"
+              }
+          }
+    });
+
     $('#modalFecha-Fiesta').on('show.bs.modal', function (event) {
       limpiarMensaje();
       $("#fecha_inicio").val($("#fiesta-fecha_inicio").text()); 
@@ -1140,7 +1251,7 @@
 
 
     function limpiarMensaje(){
-        var campo = ["nombre", "apellido", "sexo", "correo", "telefono", "celular", "empresa"];
+        var campo = ["nombre", "descripcion", "fecha", "hora_inicio", "hora_final", "imagen",  "lugar" , "link_video", "color_etiqueta", "config_boleto_id", "cantidad", "costo", "condiciones"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -1148,8 +1259,6 @@
       }
 
       function errores(merror){
-        console.log(merror);
-        var campo = ["nombre", "apellido", "sexo", "correo", "telefono", "celular", "empresa"];
          $.each(merror, function (n, c) {
              console.log(n);
            $.each(this, function (name, value) {
@@ -1408,6 +1517,129 @@
           $("#boolean_promocionar").val('0');
         }    
       });
+
+
+      $("#agregar").click(function(){
+        var datos = $( "#edit_boleto_fiesta" ).serialize(); 
+        procesando();
+        var route = route_agregar_boleto;
+        var token = $('input:hidden[name=_token]').val();
+        limpiarMensaje();
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                data: datos ,
+            success:function(respuesta){
+              setTimeout(function(){ 
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY"; 
+                if(respuesta.status=="OK"){
+
+                  var nType = 'success';
+                  var nTitle="Ups! ";
+                  var nMensaje=respuesta.mensaje;
+
+                  var nombre = respuesta.array[0].nombre;
+                  var cantidad = respuesta.array[0].cantidad;
+                  var costo = respuesta.array[0].costo;
+
+                  var rowId=respuesta.id;
+                  var rowNode=t.row.add( [
+                  ''+nombre+'',
+                  ''+cantidad+'',
+                  ''+costo+'',
+                  '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                  ] ).draw(false).node();
+                  $( rowNode )
+                  .attr('id',rowId)
+                  .addClass('seleccion');
+
+                  $("#edit_boleto_fiesta")[0].reset();
+                  $('.selectpicker').selectpicker('refresh')
+
+                }else{
+                  var nTitle="Ups! ";
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  var nType = 'danger';
+                }                       
+                finprocesado();
+
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              }, 1000);
+            },
+            error:function(msj){
+              setTimeout(function(){ 
+                // if (typeof msj.responseJSON === "undefined") {
+                //   window.location = "{{url('/')}}/error";
+                // }
+                if(msj.responseJSON.status=="ERROR"){
+                  console.log(msj.responseJSON.errores);
+                  errores(msj.responseJSON.errores);
+                  var nTitle="    Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                }else{
+                  var nTitle="   Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                }                        
+                finprocesado();
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nType = 'danger';
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY";                       
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+              }, 1000);
+            }
+        });
+      });
+
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+      var padre=$(this).parents('tr');
+      var token = $('input:hidden[name=_token]').val();
+      var id = $(this).closest('tr').attr('id');
+            $.ajax({
+                 url: route_eliminar_boleto+id,
+                 headers: {'X-CSRF-TOKEN': token},
+                 type: 'POST',
+                 dataType: 'json',                
+                success: function (data) {
+                  if(data.status=='OK'){
+
+                    t.row($('#'+id))
+                    .remove()
+                    .draw();
+                      
+                                       
+                  }else{
+                    swal(
+                      'Solicitud no procesada',
+                      'Ha ocurrido un error, intente nuevamente por favor',
+                      'error'
+                    );
+                  }
+                },
+                error:function (xhr, ajaxOptions, thrownError){
+                  swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                }
+              })
+
+              
+          });
+
+    $('#config_boleto_id').on('change', function(){
+      if ($(this).val()== 6) {
+            $('#costo').prop('readonly', true);
+            $('input[name="costo"]').val(0)
+      } else  {
+            $('#costo').prop('readonly', false);
+      }
+    });
     
    </script> 
 

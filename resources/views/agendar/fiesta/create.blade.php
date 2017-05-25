@@ -754,49 +754,40 @@
   }
 
   var t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false, 
-        pageLength: 25,
-        //bPaginate: false, 
-        bFilter:false, 
-        bSort:false, 
-        order: [[0, 'asc']],
-        fnDrawCallback: function() {
-          $('.dataTables_paginate').show();
-          /*if ($('#tablelistar tr').length < 25) {
-              $('.dataTables_paginate').hide();
-          }
-          else{
-             $('.dataTables_paginate').show();
-          }*/
-        },
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         "Buscar:",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
-        });
+      processing: true,
+      serverSide: false, 
+      pageLength: 25,
+      bPaginate: false, 
+      bFilter:false, 
+      bSort:false, 
+      order: [[0, 'asc']],
+      fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+        $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+        $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
+      },
+      language: {
+            processing:     "Procesando ...",
+            search:         "Buscar:",
+            lengthMenu:     "Mostrar _MENU_ Registros",
+            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+            infoPostFix:    "",
+            loadingRecords: "...",
+            zeroRecords:    "No se encontraron registros coincidentes",
+            emptyTable:     "No hay datos disponibles en la tabla",
+            paginate: {
+                first:      "Primero",
+                previous:   "Anterior",
+                next:       "Siguiente",
+                last:       "Ultimo"
+            },
+            aria: {
+                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+            }
+        }
+  });
 
   var h=$('#tablehorario').DataTable({
         processing: true,
@@ -987,13 +978,13 @@
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
 
-                          var tipo = respuesta.array[0].tipo;
+                          var nombre = respuesta.array[0].nombre;
                           var cantidad = respuesta.array[0].cantidad;
                           var costo = respuesta.array[0].costo;
 
                           var rowId=respuesta.id;
                           var rowNode=t.row.add( [
-                          ''+tipo+'',
+                          ''+nombre+'',
                           ''+cantidad+'',
                           ''+costo+'',
                           '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
@@ -1198,24 +1189,23 @@
 
 
       function limpiarMensaje(){
-        var campo = ["nombre", "descripcion", "fecha", "hora_inicio", "hora_final", "imagen",  "lugar" , "link_video", "color_etiqueta", "tipo", "cantidad", "costo", "condiciones"];
+        var campo = ["nombre", "descripcion", "fecha", "hora_inicio", "hora_final", "imagen",  "lugar" , "link_video", "color_etiqueta", "config_boleto_id", "cantidad", "costo", "condiciones"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
         }
       }
 
-    $('#tipo').on('change', function(){
-    if ($(this).val()== 6) {
-          $('#costo').prop('readonly', true);
-          $('input[name="costo"]').val(0)
-    } else  {
-          $('#costo').prop('readonly', false);
-    }
+    $('#config_boleto_id').on('change', function(){
+      if ($(this).val()== 6) {
+            $('#costo').prop('readonly', true);
+            $('input[name="costo"]').val(0)
+      } else  {
+            $('#costo').prop('readonly', false);
+      }
     });
 
     function errores(merror){
-      var campo = ["nombre", "descripcion", "fecha", "hora_inicio", "hora_final", "imagen",  "lugar" , "link_video", "color_etiqueta", "tipo", "cantidad", "costo", "condiciones"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {
