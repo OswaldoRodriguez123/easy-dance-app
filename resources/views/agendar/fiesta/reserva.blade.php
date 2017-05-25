@@ -1213,7 +1213,7 @@
               headers: {'X-CSRF-TOKEN': token},
               type: 'POST',
               dataType: 'json',
-              data:datos+"&id=1",
+              data:datos,
               success:function(respuesta){
                 setTimeout(function(){ 
                   var nFrom = $(this).attr('data-from');

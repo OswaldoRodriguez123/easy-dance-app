@@ -1280,28 +1280,6 @@ class FiestaController extends BaseController {
 
         if(isset($request->invitacion_nombre))
         {
-
-            $rules = [
-
-                'invitacion_nombre' => 'required',
-
-
-            ];
-
-            $messages = [
-
-                'invitacion_nombre.required' => 'Ups! El Nombre es requerido',
-
-            ];
-
-            $validator = Validator::make($request->all(), $rules, $messages);
-
-            if ($validator->fails()){
-
-                return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-            }
-
             $id = $request->id;
             $nombre = $request->invitacion_nombre;
 
@@ -1340,7 +1318,8 @@ class FiestaController extends BaseController {
                 });
             }
            
-         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
         }else{
             return response()->json(['errores' => ['linea' => [0, 'Ups! Debes agregar un correo electrónico primero']], 'status' => 'ERROR'],422);
         }

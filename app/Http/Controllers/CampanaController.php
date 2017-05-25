@@ -2114,71 +2114,49 @@ class CampanaController extends BaseController {
 
         if(isset($request->invitacion_nombre))
         {
-
-            $rules = [
-
-                'invitacion_nombre' => 'required',
-
-
-            ];
-
-            $messages = [
-
-                'invitacion_nombre.required' => 'Ups! El Nombre es requerido',
-
-            ];
-
-            $validator = Validator::make($request->all(), $rules, $messages);
-
-            if ($validator->fails()){
-
-                return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-            }
-
-            $campana_id = $request->id;
+            $id = $request->id;
             $nombre = $request->invitacion_nombre;
 
         }else{
 
             $contribucion = PatrocinadorProforma::find($request->id);
-            $campana_id = $contribucion->campana_id;
+            $id = $contribucion->campana_id;
             $nombre = $contribucion->nombre;
 
         }
-
         
-            $invitaciones = Session::get('invitaciones');
+        $invitaciones = Session::get('invitaciones');
 
-            if($invitaciones)
-            {
+        if($invitaciones)
+        {
 
-                foreach($invitaciones as $invitacion){
+            foreach($invitaciones as $invitacion){
 
-                    $campaña = Campana::find($campana_id);
+                $campaña = Campana::find($id);
 
-                    $subj =  $nombre . ' te invita a contribuir con la campaña “'.$campaña->nombre.'”';
-                    
-                    $array = [
-                       'correo' => $invitacion[0]['email'],
-                       'nombre_envio' => $nombre,
-                       'nombre_destino' => $invitacion[0]['nombre'],
-                       'id' => $campana_id,
-                       'subj' => $subj,
-                       'campaña' => $campaña->nombre,
-                       'link' => "http://app.easydancelatino.com/especiales/campañas/progreso/".$campana_id
-                    ];
+                $subj =  $nombre . ' te invita a contribuir con la campaña “'.$campaña->nombre.'”';
+                
+                $array = [
+                   'correo' => $invitacion[0]['email'],
+                   'nombre_envio' => $nombre,
+                   'nombre_destino' => $invitacion[0]['nombre'],
+                   'id' => $campana_id,
+                   'subj' => $subj,
+                   'campaña' => $campaña->nombre,
+                   'link' => "http://app.easydancelatino.com/especiales/campañas/progreso/".$id
+                ];
 
-                     Mail::send('correo.invitacion_campana', $array , function($msj) use ($array){
-                        $msj->subject($array['subj']);
-                        $msj->to($array['correo']);
-                    });
-                }
-               
-             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-            }else{
-                return response()->json(['errores' => ['linea' => [0, 'Ups! Debes agregar un correo electrónico primero']], 'status' => 'ERROR'],422);
+                 Mail::send('correo.invitacion_campana', $array , function($msj) use ($array){
+                    $msj->subject($array['subj']);
+                    $msj->to($array['correo']);
+                });
             }
+           
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+        }else{
+            return response()->json(['errores' => ['linea' => [0, 'Ups! Debes agregar un correo electrónico primero']], 'status' => 'ERROR'],422);
+        }
     }
 
     public function enhorabuena_invitacion($id)
