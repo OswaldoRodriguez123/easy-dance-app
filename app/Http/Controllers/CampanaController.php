@@ -15,7 +15,7 @@ use App\Factura;
 use App\ItemsFactura;
 use App\MercadopagoMovs;
 use App\UsuarioExterno;
-use App\TransferenciaCampana;
+use App\PatrocinadorProforma;
 use App\DatosBancarios;
 use App\Egreso;
 use App\ConfigEgreso;
@@ -358,7 +358,10 @@ class CampanaController extends BaseController {
 
     public function principalcontribuciones($id){
 
-        $contribuciones = TransferenciaCampana::where('campana_id', $id)->where('status', 0)->get();
+        $contribuciones = PatrocinadorProforma::where('tipo_evento_id', $id)
+            ->where('tipo_evento',1)
+            ->where('status', 0)
+        ->get();
 
         return view('especiales.campana.contribucion')->with(['contribuciones' => $contribuciones, 'id' => $id]);
 
@@ -915,9 +918,10 @@ class CampanaController extends BaseController {
 
         Session::put('nombre_contribuyente', $nombre);
 
-        $transferencia = new TransferenciaCampana;
+        $transferencia = new PatrocinadorProforma;
 
-        $transferencia->campana_id = $request->id;
+        $transferencia->tipo_evento_id = $request->id;
+        $transferencia->tipo_evento = 1;
         $transferencia->nombre = $nombre;
         $transferencia->sexo = $sexo;
         $transferencia->monto = $request->monto;
@@ -1955,7 +1959,7 @@ class CampanaController extends BaseController {
     public function confirmarcontribucion($id)
     {
 
-        $contribucion = TransferenciaCampana::find($id);
+        $contribucion = PatrocinadorProforma::find($id);
 
         $contribucion->status = 1;
             
@@ -1963,9 +1967,7 @@ class CampanaController extends BaseController {
 
             $campana = Campana::find($contribucion->campana_id);
 
-            $numerofactura = DB::table('facturas')
-                ->select('facturas.*')
-                ->orderBy('created_at', 'desc')
+            $numerofactura = Factura::orderBy('created_at', 'desc')
                 ->where('facturas.academia_id', '=', $campana->academia_id)
             ->first();
 
@@ -2038,7 +2040,7 @@ class CampanaController extends BaseController {
     public function eliminarcontribucion($id)
     {
 
-        $contribucion = TransferenciaCampana::find($id);
+        $contribucion = PatrocinadorProforma::find($id);
             
         if($contribucion->delete()){
             return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
@@ -2136,7 +2138,7 @@ class CampanaController extends BaseController {
 
         }else{
 
-            $contribucion = TransferenciaCampana::find($request->id);
+            $contribucion = PatrocinadorProforma::find($request->id);
             $campana_id = $contribucion->campana_id;
             $nombre = $contribucion->nombre;
 

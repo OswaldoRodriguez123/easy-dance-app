@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use Session;
 use Illuminate\Support\Facades\Auth;
 use Image;
+use Mail;
 
 class FiestaController extends BaseController {
 
