@@ -14,6 +14,8 @@ use App\ConfigEgreso;
 use App\Alumno;
 use App\Patrocinador;
 use App\ItemsFacturaProforma;
+use App\User;
+use App\DatosBancarios;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -899,16 +901,6 @@ class FiestaController extends BaseController {
 
         if($fiesta){
 
-            $fecha_inicio = Carbon::createFromFormat('Y-m-d', $fiesta->fecha_inicio);
-
-            if(Carbon::now() > $fecha_inicio){
-                $inicio = 1;
-            }else{
-                $inicio = 0;
-            }
-
-            $academia = Academia::find($fiesta->academia_id);
-
             if($fiesta->link_video){
 
                 $parts = parse_url($clase_grupal_join->link_video);
@@ -919,13 +911,149 @@ class FiestaController extends BaseController {
                 $link_video = '';
             }
 
-            if(Auth::check()){
+            $patrocinadores = DB::table('patrocinadores')
+                ->Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
+                ->Leftjoin('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
+                 //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
+                ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, patrocinadores.created_at, patrocinadores.monto, patrocinadores.tipo_moneda')
+                ->where('patrocinadores.tipo_evento_id', '=', $id)
+                ->where('patrocinadores.tipo_evento', '=', 2)
+                ->orderBy('patrocinadores.created_at', 'desc')
+            ->get();
 
-                $usuario_tipo = Session::get('easydance_usuario_tipo');
+            mb_internal_encoding("UTF-8");
 
-            }else{
-                $usuario_tipo = 0;
-            
+            $array_fecha_de_realizacion = array();
+            $now = Carbon::now();
+            $recaudado = 0;
+            $array_patrocinador = array();
+
+            foreach($patrocinadores as $patrocinador){
+
+                $patrocinador->Nombres = title_case($patrocinador->Nombres);
+
+                $fecha_de_registro = new Carbon($patrocinador->created_at);
+                $diferencia_tiempo = $fecha_de_registro->diffInDays($now);
+
+                if($diferencia_tiempo<1){
+
+                    $fecha_de_registro = new Carbon($patrocinador->created_at);
+                    $diferencia_tiempo = $fecha_de_registro->diffInHours($now);
+
+                    if($diferencia_tiempo<1){
+
+                        $fecha_de_registro = new Carbon($patrocinador->created_at);
+                        $diferencia_tiempo = $fecha_de_registro->diffInMinutes($now);
+
+                        if($diferencia_tiempo<1){
+
+                            $fecha_de_registro = new Carbon($patrocinador->created_at);
+                            $diferencia_tiempo = $fecha_de_registro->diffInSeconds($now);
+
+                            if($diferencia_tiempo==1){
+                                $fecha_de_realizacion = "hace ".$diferencia_tiempo." segundo";
+                            }else{
+                                $fecha_de_realizacion = "hace ".$diferencia_tiempo." Segundos";
+                            }
+                        }else{
+
+                            if($diferencia_tiempo==1){
+                                $fecha_de_realizacion = "hace ".$diferencia_tiempo." minuto";
+                            }else{
+                                $fecha_de_realizacion = "hace ".$diferencia_tiempo." minutos";
+                            }
+                        }
+                    }else{
+
+                        if($diferencia_tiempo==1){
+                            $fecha_de_realizacion = "hace ".$diferencia_tiempo." hora";
+                        }else{
+                            $fecha_de_realizacion = "hace ".$diferencia_tiempo." horas";
+                        }
+                    }
+                }else{
+
+                    if($diferencia_tiempo==1){
+                        $hora_segundos = $fecha_de_registro->format('H:i');
+                        $fecha_de_realizacion = "Ayer a las ".$hora_segundos;
+                    }else{
+                        $hora_segundos = $fecha_de_registro->format('H:i');
+                        $dia = $fecha_de_registro->format('d');
+
+                        switch ($fecha_de_registro->month) {
+                            case 1:
+                                $mes = "Enero";
+                                break;
+                            case 2:
+                                $mes = "Febrero";
+                                break;
+                            case 3:
+                                $mes = "Marzo";
+                                break;
+                            case 4:
+                                $mes = "Abril";
+                                break;
+                            case 5:
+                                $mes = "Mayo";
+                                break;
+                            case 6:
+                                $mes = "Junio";
+                                break;
+                            case 7:
+                                $mes = "Julio";
+                                break;
+                            case 8:
+                                $mes = "Agosto";
+                                break;
+                            case 9:
+                                $mes = "Septiembre";
+                                break;
+                            case 10:
+                                $mes = "Octubre";
+                                break;
+                            case 11:
+                                $mes = "Noviembre";
+                                break;
+                            case 12:
+                                $mes = "Diciembre";
+                                break;
+                        }
+                        $fecha_de_realizacion = $dia . " de " . $mes . " a las ".$hora_segundos;
+                    }
+                }
+
+                $array_fecha_de_realizacion[$patrocinador->id]=$fecha_de_realizacion;
+
+                if($patrocinador->tipo_moneda == 1){
+                    $patrocinador_monto = $patrocinador->monto;
+                }else{
+                    $patrocinador_monto = $patrocinador->monto * 1000;
+                }
+
+                $recaudado = $recaudado + $patrocinador->cantidad;
+
+                $array = array(2,4);
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id',$patrocinador->usuario_id)
+                    ->whereIn('usuarios_tipo.tipo',$array)
+                ->first();
+
+                if($usuario){
+
+                  if($usuario->imagen){
+                    $imagen = $usuario->imagen;
+                  }else{
+                    $imagen = '';
+                  }
+
+                }
+
+                $collection=collect($patrocinador);     
+                $patrocinador_array = $collection->toArray();
+                    
+                $patrocinador_array['imagen']=$imagen;
+                $array_patrocinador[$patrocinador->id] = $patrocinador_array;
+              
             }
 
             $boletos = Boleto::join('config_boletos', 'boletos.config_boleto_id' , '=', 'config_boletos.id')
@@ -934,7 +1062,31 @@ class FiestaController extends BaseController {
                 ->where('boletos.tipo_evento_id',$id)
             ->get();
 
-            return view('agendar.fiesta.reserva')->with(['fiesta' => $fiesta, 'id' => $id, 'link_video' => $link_video, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo, 'inicio' => $inicio, 'boletos' => $boletos]);
+            $total_boletos = Boleto::join('config_boletos', 'boletos.config_boleto_id' , '=', 'config_boletos.id')
+                ->select('boletos.*', 'config_boletos.nombre')
+                ->where('boletos.tipo_evento',1)
+                ->where('boletos.tipo_evento_id',$id)
+            ->sum('cantidad');
+
+            if($total_boletos){
+                $porcentaje = intval(($recaudado / $total_boletos) * 100);
+            }else{
+                $total_boletos = 0;
+                $porcentaje = 0;
+            }
+
+            $cantidad = Patrocinador::where('tipo_evento_id', '=' ,  $id)->where('tipo_evento',2)->count();
+            $academia = Academia::find($fiesta->academia_id);
+            $datos = DatosBancarios::where('tipo_evento_id', $fiesta->id)->where('tipo_evento',2)->get();
+            $fecha_inicio = Carbon::createFromFormat('Y-m-d', $fiesta->fecha_inicio);
+
+            if(Carbon::now() < $fecha_inicio){
+                $activa = 1;
+            }else{
+                $activa = 0;
+            }
+
+            return view('agendar.fiesta.reserva')->with(['fiesta' => $fiesta, 'id' => $id , 'link_video' => $link_video, 'boletos' => $boletos, 'patrocinadores' => $array_patrocinador, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'academia' => $academia, 'fecha_de_realizacion' => $array_fecha_de_realizacion, 'datos' => $datos, 'activa' => $activa, 'tipo_evento' => "Fiesta", 'total_boletos' => $total_boletos]);
 
         }else{
            return redirect("agendar/fiestas"); 
@@ -1054,6 +1206,144 @@ class FiestaController extends BaseController {
             }
 
         }
+    }
+
+    public function principalinvitar($id){
+
+        Session::forget('invitaciones');
+
+        return view('agendar.fiesta.invitar')->with('id', $id);
+
+    }
+
+    public function agregarlinea(Request $request){
+        
+    $rules = [
+
+        'nombre_invitado' => 'required',
+        'correo_invitado' => 'required|email',
+
+    ];
+
+    $messages = [
+
+        'nombre_invitado.required' => 'Ups! El Nombre es requerido',
+        'correo_invitado.required' => 'Ups! El Correo es requerido',
+        'correo_invitado.email' => 'Ups! El correo tiene una dirección inválida',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $array = array(['nombre' => $request->nombre_invitado, 'email' => $request->correo_invitado]);
+
+        Session::push('invitaciones', $array);
+
+        $items = Session::get('invitaciones');
+        end( $items );
+        $contador = key( $items );
+
+         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
+
+        }
+    }
+
+    public function eliminarlinea($id){
+
+        $arreglo = Session::get('invitaciones');
+
+        unset($arreglo[$id]);
+        Session::put('invitaciones', $arreglo);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+
+    }
+
+    public function invitar(Request $request){
+
+        if(isset($request->invitacion_nombre))
+        {
+
+            $rules = [
+
+                'invitacion_nombre' => 'required',
+
+
+            ];
+
+            $messages = [
+
+                'invitacion_nombre.required' => 'Ups! El Nombre es requerido',
+
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+
+            if ($validator->fails()){
+
+                return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+            }
+
+            $id = $request->id;
+            $nombre = $request->invitacion_nombre;
+
+        }else{
+
+            $contribucion = TransferenciaCampana::find($request->id);
+            $id = $contribucion->tipo_evento_id;
+            $nombre = $contribucion->nombre;
+
+        }
+
+        $invitaciones = Session::get('invitaciones');
+
+        if($invitaciones)
+        {
+
+            foreach($invitaciones as $invitacion){
+
+                $fiesta = Campana::find($id);
+
+                $subj =  $nombre . ' te invita a asistir a la fiesta “'.$fiesta->nombre.'”';
+                
+                $array = [
+                   'correo' => $invitacion[0]['email'],
+                   'nombre_envio' => $nombre,
+                   'nombre_destino' => $invitacion[0]['nombre'],
+                   'id' => $id,
+                   'subj' => $subj,
+                   'fiesta' => $fiesta->nombre,
+                   'link' => "http://app.easydancelatino.com/especiales/campañas/progreso/".$campana_id
+                ];
+
+                 Mail::send('correo.invitacion_fiesta', $array , function($msj) use ($array){
+                    $msj->subject($array['subj']);
+                    $msj->to($array['correo']);
+                });
+            }
+           
+         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores' => ['linea' => [0, 'Ups! Debes agregar un correo electrónico primero']], 'status' => 'ERROR'],422);
+        }
+    }
+
+    public function enhorabuena_invitacion($id)
+    {
+        return view('agendar.fiesta.enhorabuena_invitacion')->with('id', $id);
+    }
+
+    public function enhorabuena_invitacion_sinid()
+    {
+        return view('agendar.fiesta.enhorabuena_invitacion');
     }
 
 }

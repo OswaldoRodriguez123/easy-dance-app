@@ -16,7 +16,7 @@ use App\ItemsFactura;
 use App\MercadopagoMovs;
 use App\UsuarioExterno;
 use App\TransferenciaCampana;
-use App\DatosBancariosCampana;
+use App\DatosBancarios;
 use App\Egreso;
 use App\ConfigEgreso;
 use Validator;
@@ -692,9 +692,10 @@ class CampanaController extends BaseController {
                 {
                     foreach($arreglos as $arreglo){
 
-                        $dato = New DatosBancariosCampana;
+                        $dato = New DatosBancarios;
 
-                        $dato->campana_id = $campana->id;
+                        $dato->tipo_evento_id = $campana->id;
+                        $dato->tipo_evento = 1;
                         $dato->nombre_banco = $arreglo[0]['nombre_banco'];
                         $dato->tipo_cuenta = $arreglo[0]['tipo_cuenta'];
                         $dato->numero_cuenta = $arreglo[0]['numero_cuenta'];
@@ -1375,7 +1376,7 @@ class CampanaController extends BaseController {
 
         if($campana){
             $recompensas = Recompensa::where('campana_id' , $id)->get();
-            $datos = DatosBancariosCampana::where('campana_id' , $id)->get();
+            $datos = DatosBancarios::where('tipo_evento_id' , $id)->where('tipo_evento',1)->get();
            return view('especiales.campana.planilla')->with(['campana' => $campana, 'recompensas' => $recompensas, 'datos' => $datos]);
         }else{
            return redirect("especiales/campañas"); 
@@ -1399,197 +1400,181 @@ class CampanaController extends BaseController {
 
         $campaña = Campana::find($id);
 
-        if($campaña->link_video){
+        if($campaña){
 
-            $parts = parse_url($campaña->link_video);
-            $partes = explode( '=', $parts['query'] );
-            $link_video = $partes[1];
+            if($campaña->link_video){
 
-        }else{
+                $parts = parse_url($campaña->link_video);
+                $partes = explode( '=', $parts['query'] );
+                $link_video = $partes[1];
 
-            $link_video = '';
-        }
+            }else{
 
-        $recompensas = Recompensa::where('campana_id', $id)->get();
+                $link_video = '';
+            }
 
-         // $cantidad_reservaciones = DB::table('reservaciones')
-         //     ->select('reservaciones.*')
-         //     ->where('tipo_id', '=', $id)
-         //     ->where('tipo_reservacion', '=', 1)
-         // ->count();
+            $patrocinadores = DB::table('patrocinadores')
+                ->Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
+                ->Leftjoin('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
+                 //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
+                ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, patrocinadores.created_at, patrocinadores.monto, patrocinadores.tipo_moneda')
+                ->where('patrocinadores.tipo_evento_id', '=', $id)
+                ->where('patrocinadores.tipo_evento', '=', 1)
+                ->orderBy('patrocinadores.created_at', 'desc')
+            ->get();
 
-         // if($clase_grupal_join->cupo_reservacion == 0){
-         //    $cupo_reservacion = 1;
-         // }
-         // else{
-         //    $cupo_reservacion = $clase_grupal_join->cupo_reservacion;
-         // }
+            mb_internal_encoding("UTF-8");
 
-         // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
+            $array_fecha_de_realizacion = array();
+            $now = Carbon::now();
+            $recaudado = 0;
+            $array_patrocinador = array();
 
-        $alumnos = Alumno::where('academia_id', '=' ,  $campaña->academia_id)->orderBy('nombre', 'asc')->get();
-         // $recaudado = Patrocinador::where('campana_id', '=' ,  $id)->sum('monto');
-        $cantidad = Patrocinador::where('campana_id', '=' ,  $id)->count();
+            foreach($patrocinadores as $patrocinador){
 
-        $patrocinadores = DB::table('patrocinadores')
-            ->Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
-            ->Leftjoin('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
-             //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
-            ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, patrocinadores.created_at, patrocinadores.monto, patrocinadores.tipo_moneda')
-            ->where('patrocinadores.tipo_evento_id', '=', $id)
-            ->where('patrocinadores.tipo_evento', '=', 1)
-            ->orderBy('patrocinadores.created_at', 'desc')
-        ->get();
-
-        mb_internal_encoding("UTF-8");
-
-        $fecha_de_realizacion_general = array();
-        $now = Carbon::now();
-        $recaudado = 0;
-        $array = array(2,4);
-        $array_patrocinador = array();
-
-        foreach($patrocinadores as $patrocinador){
-
-            $patrocinador->Nombres = title_case($patrocinador->Nombres);
-
-            $fecha_de_registro = new Carbon($patrocinador->created_at);
-            $diferencia_tiempo = $fecha_de_registro->diffInDays($now);
-
-            if($diferencia_tiempo<1){
+                $patrocinador->Nombres = title_case($patrocinador->Nombres);
 
                 $fecha_de_registro = new Carbon($patrocinador->created_at);
-                $diferencia_tiempo = $fecha_de_registro->diffInHours($now);
+                $diferencia_tiempo = $fecha_de_registro->diffInDays($now);
 
                 if($diferencia_tiempo<1){
 
                     $fecha_de_registro = new Carbon($patrocinador->created_at);
-                    $diferencia_tiempo = $fecha_de_registro->diffInMinutes($now);
+                    $diferencia_tiempo = $fecha_de_registro->diffInHours($now);
 
                     if($diferencia_tiempo<1){
 
                         $fecha_de_registro = new Carbon($patrocinador->created_at);
-                        $diferencia_tiempo = $fecha_de_registro->diffInSeconds($now);
+                        $diferencia_tiempo = $fecha_de_registro->diffInMinutes($now);
 
-                        if($diferencia_tiempo==1){
-                            $fecha_de_realizacion = "hace ".$diferencia_tiempo." segundo";
+                        if($diferencia_tiempo<1){
+
+                            $fecha_de_registro = new Carbon($patrocinador->created_at);
+                            $diferencia_tiempo = $fecha_de_registro->diffInSeconds($now);
+
+                            if($diferencia_tiempo==1){
+                                $fecha_de_realizacion = "hace ".$diferencia_tiempo." segundo";
+                            }else{
+                                $fecha_de_realizacion = "hace ".$diferencia_tiempo." Segundos";
+                            }
                         }else{
-                            $fecha_de_realizacion = "hace ".$diferencia_tiempo." Segundos";
+
+                            if($diferencia_tiempo==1){
+                                $fecha_de_realizacion = "hace ".$diferencia_tiempo." minuto";
+                            }else{
+                                $fecha_de_realizacion = "hace ".$diferencia_tiempo." minutos";
+                            }
                         }
                     }else{
 
                         if($diferencia_tiempo==1){
-                            $fecha_de_realizacion = "hace ".$diferencia_tiempo." minuto";
+                            $fecha_de_realizacion = "hace ".$diferencia_tiempo." hora";
                         }else{
-                            $fecha_de_realizacion = "hace ".$diferencia_tiempo." minutos";
+                            $fecha_de_realizacion = "hace ".$diferencia_tiempo." horas";
                         }
                     }
                 }else{
 
                     if($diferencia_tiempo==1){
-                        $fecha_de_realizacion = "hace ".$diferencia_tiempo." hora";
+                        $hora_segundos = $fecha_de_registro->format('H:i');
+                        $fecha_de_realizacion = "Ayer a las ".$hora_segundos;
                     }else{
-                        $fecha_de_realizacion = "hace ".$diferencia_tiempo." horas";
+                        $hora_segundos = $fecha_de_registro->format('H:i');
+                        $dia = $fecha_de_registro->format('d');
+
+                        switch ($fecha_de_registro->month) {
+                            case 1:
+                                $mes = "Enero";
+                                break;
+                            case 2:
+                                $mes = "Febrero";
+                                break;
+                            case 3:
+                                $mes = "Marzo";
+                                break;
+                            case 4:
+                                $mes = "Abril";
+                                break;
+                            case 5:
+                                $mes = "Mayo";
+                                break;
+                            case 6:
+                                $mes = "Junio";
+                                break;
+                            case 7:
+                                $mes = "Julio";
+                                break;
+                            case 8:
+                                $mes = "Agosto";
+                                break;
+                            case 9:
+                                $mes = "Septiembre";
+                                break;
+                            case 10:
+                                $mes = "Octubre";
+                                break;
+                            case 11:
+                                $mes = "Noviembre";
+                                break;
+                            case 12:
+                                $mes = "Diciembre";
+                                break;
+                        }
+                        $fecha_de_realizacion = $dia . " de " . $mes . " a las ".$hora_segundos;
                     }
                 }
-            }else{
 
-                if($diferencia_tiempo==1){
-                    $hora_segundos = $fecha_de_registro->format('H:i');
-                    $fecha_de_realizacion = "Ayer a las ".$hora_segundos;
+                $array_fecha_de_realizacion[$patrocinador->id]=$fecha_de_realizacion;
+
+                if($patrocinador->tipo_moneda == 1){
+                    $patrocinador_monto = $patrocinador->monto;
                 }else{
-                    $hora_segundos = $fecha_de_registro->format('H:i');
-                    $dia = $fecha_de_registro->format('d');
-
-                    switch ($fecha_de_registro->month) {
-                        case 1:
-                            $mes = "Enero";
-                            break;
-                        case 2:
-                            $mes = "Febrero";
-                            break;
-                        case 3:
-                            $mes = "Marzo";
-                            break;
-                        case 4:
-                            $mes = "Abril";
-                            break;
-                        case 5:
-                            $mes = "Mayo";
-                            break;
-                        case 6:
-                            $mes = "Junio";
-                            break;
-                        case 7:
-                            $mes = "Julio";
-                            break;
-                        case 8:
-                            $mes = "Agosto";
-                            break;
-                        case 9:
-                            $mes = "Septiembre";
-                            break;
-                        case 10:
-                            $mes = "Octubre";
-                            break;
-                        case 11:
-                            $mes = "Noviembre";
-                            break;
-                        case 12:
-                            $mes = "Diciembre";
-                            break;
-                    }
-                    $fecha_de_realizacion = $dia . " de " . $mes . " a las ".$hora_segundos;
+                    $patrocinador_monto = $patrocinador->monto * 1000;
                 }
+
+                $recaudado = $recaudado + $patrocinador_monto;
+
+                $array = array(2,4);
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id',$patrocinador->usuario_id)
+                    ->whereIn('usuarios_tipo.tipo',$array)
+                ->first();
+
+                if($usuario){
+
+                  if($usuario->imagen){
+                    $imagen = $usuario->imagen;
+                  }else{
+                    $imagen = '';
+                  }
+
+                }
+
+                $collection=collect($patrocinador);     
+                $patrocinador_array = $collection->toArray();
+                    
+                $patrocinador_array['imagen']=$imagen;
+                $array_patrocinador[$patrocinador->id] = $patrocinador_array;
+              
             }
 
-            $fecha_de_realizacion_general[$patrocinador->id]=$fecha_de_realizacion;
+            $recompensas = Recompensa::where('campana_id', $id)->get();
+            $cantidad = Patrocinador::where('tipo_evento_id', '=' ,  $id)->where('tipo_evento',1)->count();
+            $porcentaje = intval(($recaudado / $campaña->cantidad) * 100);
+            $academia = Academia::find($campaña->academia_id);
+            $datos = DatosBancarios::where('tipo_evento_id', $campaña->id)->where('tipo_evento',1)->get();
+            $fecha_final = Carbon::createFromFormat('Y-m-d', $campaña->fecha_final);
 
-            if($patrocinador->tipo_moneda == 1){
-                $patrocinador_monto = $patrocinador->monto;
+            if(Carbon::now() < $fecha_final){
+                $activa = 1;
             }else{
-                $patrocinador_monto = $patrocinador->monto * 1000;
+                $activa = 0;
             }
 
-            $recaudado = $recaudado + $patrocinador_monto;
-
-            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                ->where('usuarios_tipo.tipo_id',$patrocinador->usuario_id)
-                ->whereIn('usuarios_tipo.tipo',$array)
-            ->first();
-
-            if($usuario){
-
-              if($usuario->imagen){
-                $imagen = $usuario->imagen;
-              }else{
-                $imagen = '';
-              }
-
-            }
-
-            $collection=collect($patrocinador);     
-            $patrocinador_array = $collection->toArray();
-                
-            $patrocinador_array['imagen']=$imagen;
-            $array_patrocinador[$patrocinador->id] = $patrocinador_array;
-          
-        }
-
-        $porcentaje = intval(($recaudado / $campaña->cantidad) * 100);
-        $academia = Academia::find($campaña->academia_id);
-
-        $datos = DatosBancariosCampana::where('campana_id', $campaña->id)->get();
-
-        $fecha_final = Carbon::createFromFormat('Y-m-d', $campaña->fecha_final);
-
-        if(Carbon::now() < $fecha_final){
-            $activa = 1;
+            return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $array_patrocinador, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'academia' => $academia, 'fecha_de_realizacion' => $array_fecha_de_realizacion, 'datos' => $datos, 'activa' => $activa, 'tipo_evento' => "Campaña"]);
         }else{
-            $activa = 0;
+            return redirect("especiales/campañas"); 
         }
-
-        return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $array_patrocinador, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'alumnos' => $alumnos, 'academia' => $academia, 'fecha_de_realizacion' => $fecha_de_realizacion_general, 'datos' => $datos, 'activa' => $activa]);
     }
 
     public function contribuirCampana($id)
@@ -2289,9 +2274,10 @@ class CampanaController extends BaseController {
 
         $nombre = title_case($request->nombre_recompensa);
 
-        $datos = New DatosBancariosCampana;
+        $datos = New DatosBancarios;
 
-        $datos->campana_id = $request->id;
+        $datos->tipo_evento_id = $request->id;
+        $datos->tipo_evento = 1;
         $datos->nombre_banco = $request->nombre_banco;
         $datos->tipo_cuenta = $request->tipo_cuenta;
         $datos->numero_cuenta = $request->numero_cuenta;
@@ -2307,7 +2293,7 @@ class CampanaController extends BaseController {
 
     public function eliminardatosfijos($id){
 
-        $datos = DatosBancariosCampana::find($id);
+        $datos = DatosBancarios::find($id);
 
         $datos->delete();
 

@@ -99,6 +99,13 @@ Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
 
 Route::get('agendar/fiestas/progreso/{id}', 'FiestaController@progreso');
 
+Route::get('agendar/fiestas/invitar/{id}', 'FiestaController@principalinvitar');
+Route::post('agendar/fiestas/invitar/agregar', 'FiestaController@agregarlinea');
+Route::post('agendar/fiestas/invitar/eliminar/{id}', 'FiestaController@eliminarlinea');
+Route::post('agendar/fiestas/invitar', 'FiestaController@invitar');	
+Route::get('agendar/fiestas/invitacion/enhorabuena/{id}', 'FiestaController@enhorabuena_invitacion');
+Route::get('agendar/fiestas/invitacion/enhorabuena', 'FiestaController@enhorabuena_invitacion_sinid');
+
 // CAMPAÑAS USUARIO
 
 Route::get('especiales/campañas/progreso/{id}', 'CampanaController@progreso');
