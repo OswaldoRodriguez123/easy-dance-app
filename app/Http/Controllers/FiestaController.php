@@ -1311,7 +1311,7 @@ class FiestaController extends BaseController {
 
             foreach($invitaciones as $invitacion){
 
-                $fiesta = Campana::find($id);
+                $fiesta = Fiesta::find($id);
 
                 $subj =  $nombre . ' te invita a asistir a la fiesta “'.$fiesta->nombre.'”';
                 
