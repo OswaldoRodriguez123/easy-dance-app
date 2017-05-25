@@ -1322,7 +1322,7 @@ class FiestaController extends BaseController {
                    'id' => $id,
                    'subj' => $subj,
                    'fiesta' => $fiesta->nombre,
-                   'link' => "http://app.easydancelatino.com/agendar/fiestas/progreso/".$campana_id
+                   'link' => "http://app.easydancelatino.com/agendar/fiestas/progreso/".$id
                 ];
 
                  Mail::send('correo.invitacion_fiesta', $array , function($msj) use ($array){
