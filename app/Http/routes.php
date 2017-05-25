@@ -30,6 +30,7 @@ Route::get('/activar/completado', 'RegistroController@activarcompletado');
 // RESTABLECIMIENTO DE CONTRASEÑA
 
 Route::get('/restablecer', 'LoginController@restablecer');
+Route::post('/password/email', 'Auth\PasswordController@sendResetLinkEmail');
 Route::get('/restablecer/confirmar', 'LoginController@restablecerconfirmar');
 Route::get('/restablecer/fallo', 'LoginController@restablecerfallo');
 Route::get('/restablecer/completado', 'LoginController@restablecercompletado');
