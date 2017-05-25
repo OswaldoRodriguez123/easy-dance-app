@@ -14,6 +14,7 @@ class AlterAddTelefonoPatrocinadoresProformaTable extends Migration
     {
         Schema::table('patrocinadores_proforma', function (Blueprint $table) {
             $table->string('telefono');
+            $table->string('coordinador');
         });
     }
 
@@ -26,6 +27,7 @@ class AlterAddTelefonoPatrocinadoresProformaTable extends Migration
     {
         Schema::table('patrocinadores_proforma', function (Blueprint $table) {
             $table->dropColumn('telefono');
+            $table->dropColumn('coordinador');
         });
     }
 }
