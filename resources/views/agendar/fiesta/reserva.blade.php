@@ -466,7 +466,7 @@
                   <form name="form_normal" id="form_normal">
                     <input name="_token" value="{{ csrf_token() }}" type="hidden">
                     <input name="form" value="2" type="hidden">
-                    <input name="id" value="{{$fiesta->id}}" type="hidden">
+                    <input name="id" value="{{$id}}" type="hidden">
 
                     <div class="col-sm-12" style="padding:0px">
                
@@ -1163,7 +1163,7 @@
                 setTimeout(function(){ 
                   if(respuesta.status=="OK"){
                     $("#form_normal")[0].reset();
-                    window.location = route_enhorabuena + "{{$fiesta->id}}"
+                    window.location = route_enhorabuena + "{{$id}}"
                   }else{
                     var nTitle="Ups! ";
                     var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
