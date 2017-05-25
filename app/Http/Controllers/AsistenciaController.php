@@ -69,8 +69,7 @@ class AsistenciaController extends BaseController
 
       if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
       {
-        $alumnos = DB::table('alumnos')
-            ->join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')
+        $alumnos = Alumno::join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')
             ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('academias', 'asistencias.academia_id', '=', 'academias.id')
@@ -80,8 +79,7 @@ class AsistenciaController extends BaseController
             ->limit(150)
         ->get();
 
-        $clases_personalizadas = DB::table('alumnos')
-            ->join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')
+        $clases_personalizadas = Alumno::join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')
             ->join('inscripcion_clase_personalizada', 'asistencias.tipo_id', '=', 'inscripcion_clase_personalizada.id')
             ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
             ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
@@ -90,8 +88,7 @@ class AsistenciaController extends BaseController
             ->where('asistencias.tipo','=',3)
         ->get();
 
-        $citas = DB::table('alumnos')
-            ->join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')
+        $citas = Alumno::join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')
             ->join('citas', 'asistencias.tipo_id', '=', 'citas.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
             ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
@@ -100,8 +97,7 @@ class AsistenciaController extends BaseController
             ->where('asistencias.tipo','=',4)
         ->get();
 
-        $instructores = DB::table('asistencias_instructor')
-            ->join('clases_grupales', 'asistencias_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+        $instructores = AsistenciaInstructor::join('clases_grupales', 'asistencias_instructor.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('academias', 'asistencias_instructor.academia_id', '=', 'academias.id')
             ->join('instructores', 'asistencias_instructor.instructor_id', '=', 'instructores.id')
@@ -109,8 +105,7 @@ class AsistenciaController extends BaseController
             ->where('academias.id','=',Auth::user()->academia_id)
         ->get();
 
-        $staff = DB::table('asistencias_staff')
-            ->join('academias', 'asistencias_staff.academia_id', '=', 'academias.id')
+        $staff = AsistenciaStaff::join('academias', 'asistencias_staff.academia_id', '=', 'academias.id')
             ->join('staff', 'asistencias_staff.staff_id', '=', 'staff.id')
             ->join('config_staff', 'staff.cargo', '=', 'config_staff.id')
             ->select('asistencias_staff.fecha', 'asistencias_staff.hora', 'staff.nombre', 'staff.apellido', 'asistencias_staff.hora_salida', 'config_staff.nombre as cargo')
@@ -745,8 +740,7 @@ class AsistenciaController extends BaseController
         ->orderBy('nombre', 'asc')
       ->get();
 
-      $alumnos_inscritos = DB::table('inscripcion_clase_grupal')
-        ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+      $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
         ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
         ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
         ->select('alumnos.*', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.clase_grupal_id as clase_grupal_id', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'config_clases_grupales.asistencia_amarilla', 'config_clases_grupales.asistencia_rojo')
@@ -935,8 +929,7 @@ class AsistenciaController extends BaseController
     }
 
     private function deuda($id){
-        $alumnod = DB::table('alumnos')
-            ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+        $alumnod = Alumno::join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
             ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
             ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
             ->where('items_factura_proforma.alumno_id', $id)
@@ -957,24 +950,21 @@ class AsistenciaController extends BaseController
     {
       //$ClaseGrupal=ClaseGrupal::all();
 
-      $claseGrupal= DB::table('clases_grupales')
-            ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+      $claseGrupal= ClaseGrupal::join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id')
-            ->where('clases_grupales.deleted_at', '=', null)
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
       ->get();
 
-      $horarios_clase_grupales= DB::table('horario_clase_grupales')
-            ->join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
+      $horarios_clase_grupales= HorarioClaseGrupal::join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_estudios', 'horario_clase_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
             ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'horario_clase_grupales.fecha as fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id', 'horario_clase_grupales.id as horario_id')
-            ->where('horario_clase_grupales.deleted_at', '=', null)
+            ->where('clases_grupales.deleted_at', '=', null)
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
@@ -1078,8 +1068,7 @@ class AsistenciaController extends BaseController
     public function consulta_clase_grupales_alumno(Request $request)
     {
     	
-        $clases_grupales= DB::table('clases_grupales')
-            ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+        $clases_grupales= ClaseGrupal::join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
@@ -1088,23 +1077,21 @@ class AsistenciaController extends BaseController
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
-        $horarios_clase_grupales= DB::table('horario_clase_grupales')
-            ->join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
+        $horarios_clase_grupales= HorarioClaseGrupal::join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_estudios', 'horario_clase_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
             ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'horario_clase_grupales.fecha as fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id', 'horario_clase_grupales.id as horario_id')
-            ->where('horario_clase_grupales.deleted_at', '=', null)
+            ->where('clases_grupales.deleted_at', '=', null)
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
-         $inscripciones = DB::table('inscripcion_clase_grupal')
-                ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+         $inscripciones = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id', 'inscripcion_clase_grupal.fecha_pago')
                 ->where('inscripcion_clase_grupal.alumno_id', '=', $request->id)
-                ->where('inscripcion_clase_grupal.deleted_at', '=', null)
+                ->where('clases_grupales.deleted_at', '=', null)
           ->get();
 
       $array = array();
@@ -1254,33 +1241,28 @@ class AsistenciaController extends BaseController
     public function consulta_clase_personalizadas_alumno(Request $request)
     {
 
-    $inscripciones = DB::table('inscripcion_clase_grupal')
-        ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+    $inscripciones = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
         ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
         ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id', 'inscripcion_clase_grupal.fecha_pago')
         ->where('inscripcion_clase_grupal.alumno_id', '=', $request->id)
-        ->where('inscripcion_clase_grupal.deleted_at', '=', null)
-    ->get();
+        ->where('clases_grupales.deleted_at', '=', null)
+  ->get();
 
-    $clases_personalizadas = DB::table('inscripcion_clase_personalizada')
-      ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
+    $clases_personalizadas = InscripcionClasePersonalizada::join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
       ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
       ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
       ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.id', 'inscripcion_clase_personalizada.fecha_inicio', 'inscripcion_clase_personalizada.boolean_alumno_aceptacion', 'clases_personalizadas.color_etiqueta', 'clases_personalizadas.descripcion')
       ->where('inscripcion_clase_personalizada.alumno_id','=', $request->id)
       ->where('inscripcion_clase_personalizada.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'))
-      // ->where('inscripcion_clase_personalizada.estatus','=', 1)
     ->get();
 
-    $horarios = DB::table('horarios_clases_personalizadas')
-      ->join('inscripcion_clase_personalizada', 'horarios_clases_personalizadas.clase_personalizada_id', '=', 'inscripcion_clase_personalizada.id')
+    $horarios = HorarioClasePersonalizada::join('inscripcion_clase_personalizada', 'horarios_clases_personalizadas.clase_personalizada_id', '=', 'inscripcion_clase_personalizada.id')
       ->join('config_especialidades', 'horarios_clases_personalizadas.especialidad_id', '=', 'config_especialidades.id')
       ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
       ->join('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
       ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','horarios_clases_personalizadas.hora_inicio','horarios_clases_personalizadas.hora_final', 'inscripcion_clase_personalizada.id', 'horarios_clases_personalizadas.fecha', 'inscripcion_clase_personalizada.boolean_alumno_aceptacion', 'clases_personalizadas.color_etiqueta', 'clases_personalizadas.descripcion')
       ->where('inscripcion_clase_personalizada.alumno_id','=', $request->id)
       ->where('horarios_clases_personalizadas.fecha', '>=', Carbon::now()->format('Y-m-d'))
-      // ->where('inscripcion_clase_personalizada.estatus','=', 1)
     ->get();
 
       $array = array();
@@ -1401,8 +1383,7 @@ class AsistenciaController extends BaseController
       $geoip->setIp($request->ip());
       $fechaActual->tz = $geoip->getTimezone();
       
-    $citas = DB::table('citas')
-      ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
+    $citas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
       ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
       ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
       ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as nombre', 'citas.color_etiqueta')
@@ -1411,12 +1392,11 @@ class AsistenciaController extends BaseController
       ->where('citas.fecha', '=', $fechaActual->format('Y-m-d'))
     ->get();
 
-    $inscripciones = DB::table('inscripcion_clase_grupal')
-        ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
-        ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-        ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id', 'inscripcion_clase_grupal.fecha_pago')
-        ->where('inscripcion_clase_grupal.alumno_id', '=', $request->id)
-        ->where('inscripcion_clase_grupal.deleted_at', '=', null)
+      $inscripciones = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+          ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+          ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id', 'inscripcion_clase_grupal.fecha_pago')
+          ->where('inscripcion_clase_grupal.alumno_id', '=', $request->id)
+          ->where('clases_grupales.deleted_at', '=', null)
     ->get();
 
       $array = array();
