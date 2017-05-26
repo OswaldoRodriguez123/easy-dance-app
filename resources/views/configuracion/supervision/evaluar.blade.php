@@ -105,7 +105,7 @@
 	  							<div class="col-md-4 m-b-25">
 
 	                  				<div class="m-b-20 m-l-25">
-	                  					{{(strlen($item)}}
+	                  					{{strlen($item)}}
 		                  				@if(strlen($item) <= 30)
 
 		                  					{{$item}}
