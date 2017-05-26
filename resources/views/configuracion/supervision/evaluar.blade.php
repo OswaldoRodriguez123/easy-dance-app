@@ -143,7 +143,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="text-right m-r-25 f-20 f-500">Total: 
-									<span class="f-30" id="puntos_acumulados">0</span> acumulados de <span id="puntos_totales" class="f-30">{{(count($items_a_evaluar))*10}}</span>
+									<span class="f-30" id="puntos_acumulados">0</span> acumulados de <span id="puntos_totales" class="f-30">{{$numero_de_items*10}}</span>
 									<div class="text-right" id="id-total"></div>
 									<input type="hidden" name="total_nota" id="total_nota" value="0">
 								</div>
@@ -230,17 +230,15 @@
 		route_agregar="{{url('/')}}/configuracion/supervisiones/evaluar";
 		route_principal="{{url('/')}}/configuracion/supervisiones/evaluaciones";
 
-		var puntos_acumulados = parseInt("{{count($items_a_evaluar)}}");
-		var numero_items = parseInt("{{$numero_de_items}}");
-		var puntos_totales = parseInt("{{(count($items_a_evaluar))*10}}")
 		var arrayNotas = new Array();
 		var items_a_evaluar = <?php echo json_encode($items_a_evaluar);?>;
 		var sliders = <?php echo json_encode($sliders);?>;
+		var cantidad_items = parseInt("{{$numero_de_items}}");
+		var puntos_totales = parseInt("{{$numero_de_items*10}}")
 		var nota_actual = 0;
+		var puntos_acumulados = 0;
 
 		$(document).ready(function() {
-
-		    nota_actual = $("#total_nota").attr("value");
 
 			$("#agregar_evaluacion")[0].reset();
 
@@ -264,7 +262,7 @@
 			    $('#slider'+id).Link('lower').to($('#value-lower'+id));
 			});
 			
-			for (var i = 0; i < "{{count($items_a_evaluar)}}"; i++) {
+			for (var i = 0; i < cantidad_items; i++) {
 				arrayNotas[i] = 0;
 			}
 
@@ -292,9 +290,7 @@
 
 	  	function porcentaje(){
 
-		    var nota_total = numero_items*10;
-		    
-		    porcetaje = (puntos_acumulados*100)/nota_total;
+		    porcetaje = (puntos_acumulados*100)/puntos_totales;
 		    porcetaje = porcetaje.toFixed(2);
 		    $("#barra_de_progreso").attr("value",porcetaje);
 		    $("#text-progreso").text(porcetaje+"%");
@@ -428,9 +424,9 @@
 
 			$.each(sliders,function(index,array){
 				$('#slider'+array).find('.noUi-origin').css('left','0%');
-				$('#value-lower'+array).text("1.00");
-				$("#puntos_acumulados").html(sliders.length);
-				$("#total_nota").val(sliders.length);
+				$('#value-lower'+array).text("0.00");
+				$("#puntos_acumulados").html(0;
+				$("#total_nota").val(0);
 				$("#agregar_evaluacion")[0].reset();
 			});
 
@@ -466,7 +462,7 @@
 	  			
 	  			puntos_totales = puntos_totales + 10
 	  			puntos_acumulados =  parseInt(puntos_acumulados) + valor;
-	  			numero_items++
+	  			cantidad_items++
 	  			arrayNotas[id] = valor;
 
 	  		}else{
@@ -480,7 +476,7 @@
 
 	  			puntos_totales = puntos_totales - 10
 	  			puntos_acumulados = parseInt(puntos_acumulados) - valor;
-	  			numero_items--
+	  			cantidad_items--
 	  			arrayNotas[id] = 0;
 	  		}
 
