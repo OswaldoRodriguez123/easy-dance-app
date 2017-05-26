@@ -1656,13 +1656,31 @@ class SupervisionController extends BaseController {
 
     public function eliminar_configuracion($id){
 
-    	$cargos = ConfigSupervision::where('cargo_id', $id)->where('academia_id', Auth::user()->academia_id);
+    	$supervisiones = Supervision::withTrashed()
+    		->join('staff', 'supervisiones.staff_id','=','staff.id')
+    		->select('supervisiones.id')
+	        ->where('staff.academia_id',Auth::user()->academia_id)
+	        ->where('supervisiones.cargo',$id)
+        ->get();
+        
+        foreach($supervisiones as $supervision){
 
-    	if($cargos->delete()){
-			return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-		}else{
-			return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-		}
+        	$evaluaciones = SupervisionEvaluacion::withTrashed()->where('supervision_id',$supervision->id)->get();
+
+        	foreach($evaluaciones as $evaluacion){
+        		$detalles_evaluacion = DetalleSupervisionEvaluacion::where('evaluacion_id',$evaluacion->id)->delete();
+        		$evaluacion->forceDelete();
+        	}
+
+        	$horarios_supervision = HorarioSupervision::where('supervision_id',$supervision->id)->delete();
+        	$supervision->forceDelete();
+        }
+
+        $config_supervision = ConfigSupervision::where('cargo_id',$id)
+        	->where('academia_id',Auth::user()->academia_id)
+        ->forceDelete();
+
+		return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
     }
 

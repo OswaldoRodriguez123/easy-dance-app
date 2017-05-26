@@ -39,7 +39,6 @@ use App\Patrocinador;
 use App\Egreso;
 use App\Puntaje;
 use App\ConfigFormulaExito;
-use App\ConfigSupervision;
 use Validator;
 use Carbon\Carbon;
 use Storage;
