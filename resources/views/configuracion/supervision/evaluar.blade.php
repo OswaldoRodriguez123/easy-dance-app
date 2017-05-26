@@ -143,7 +143,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="text-right m-r-25 f-20 f-500">Total: 
-									<span class="f-30" id="puntos_acumulados">{{count($items_a_evaluar)}}</span> acumulados de <span id="puntos_totales" class="f-30">{{(count($items_a_evaluar))*10}}</span>
+									<span class="f-30" id="puntos_acumulados">0</span> acumulados de <span id="puntos_totales" class="f-30">{{(count($items_a_evaluar))*10}}</span>
 									<div class="text-right" id="id-total"></div>
 									<input type="hidden" name="total_nota" id="total_nota" value="{{count($items_a_evaluar)}}">
 								</div>
@@ -263,14 +263,9 @@
 
 			    $('#slider'+id).Link('lower').to($('#value-lower'+id));
 			});
-
-
-			$("#barra-progreso").css({
-		    	"width": ("{{$numero_de_items}}" + "%")
-		 	});
 			
 			for (var i = 0; i < "{{count($items_a_evaluar)}}"; i++) {
-				arrayNotas[i]=1;
+				arrayNotas[i] = 0;
 			}
 
 			$('.slider-mov').change(function() {
