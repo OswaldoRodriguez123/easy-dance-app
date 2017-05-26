@@ -235,6 +235,7 @@
 		var puntos_totales = parseInt("{{(count($items_a_evaluar))*10}}")
 		var arrayNotas = new Array();
 		var items_a_evaluar = <?php echo json_encode($items_a_evaluar);?>;
+		var sliders = <?php echo json_encode($sliders);?>;
 		var nota_actual = 0;
 
 		$(document).ready(function() {
@@ -246,9 +247,23 @@
 		  	$("#supervisor_id").val("{{$supervision->supervisor_id}}")
 		  	$("#supervisor_id").selectpicker('render');
 
-			@foreach($sliders as $slider)
-				loadId({{$slider}});
-			@endforeach
+		  	$.each(sliders,function(index,id){
+
+			  	$('#slider'+id).noUiSlider ({
+					start: [ 1 ],
+				    //connect: true,
+				    //direction: 'rtl',
+				    behaviour: 'tap-drag',
+				    step: 1,
+					range: {
+						'min': 1,
+						'max': 10
+					}
+				});
+
+			    $('#slider'+id).Link('lower').to($('#value-lower'+id));
+			});
+
 
 			$("#barra-progreso").css({
 		    	"width": ("{{$numero_de_items}}" + "%")
@@ -277,24 +292,6 @@
 
 
 		//READY
-
-		//Aqui cargo las barra de Slide	
-		function loadId(id){
-
-			$('#slider'+id).noUiSlider ({
-				start: [ 1 ],
-			    //connect: true,
-			    //direction: 'rtl',
-			    behaviour: 'tap-drag',
-			    step: 1,
-				range: {
-					'min': 1,
-					'max': 10
-				}
-			});
-
-		    $('#slider'+id).Link('lower').to($('#value-lower'+id));
-		}
 
 		setInterval(porcentaje, 1000);
 
