@@ -187,7 +187,11 @@
                                 <?php $id = $nivel->id; ?>
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$nivel->nombre}}</td>
-                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></i></td>
+                                    <td class="text-center"> 
+                                      @if($nivel->academia_id)
+                                        <i class="zmdi zmdi-delete f-20 p-r-10"></i>
+                                      @endif
+                                    </td>
                                   </tr>
                             @endforeach 
                    
@@ -349,7 +353,11 @@
                                 <?php $id = $staff->id; ?>
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$staff->nombre}}</td>
-                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></i></td>
+                                    <td class="text-center"> 
+                                      @if($staff->academia_id)
+                                        <i class="zmdi zmdi-delete f-20 p-r-10"></i>
+                                      @endif
+                                    </td>
                                   </tr>
                             @endforeach 
                    

@@ -244,7 +244,7 @@
                                 <td class="text-center previa">{{$clase_personalizada->nombre}}</td>
                                 <td class="text-center previa">{{ number_format($clase_personalizada->costo, 2, '.' , '.') }}</td>
 
-                                <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                <td class="text-center disabled"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
 
                                 </tr>
 
@@ -278,6 +278,7 @@
         route_detalle="{{url('/')}}/configuracion/clases-personalizadas/detalle"
         route_operacion="{{url('/')}}/configuracion/clases-personalizadas/operaciones"
         route_configuracion="{{url('/')}}/configuracion/clases-personalizadas/configurar"
+        route_eliminar="{{url('/')}}/configuracion/clases-personalizadas/eliminar/";
 
         tipo = 'activas';
             
@@ -312,7 +313,7 @@
         pageLength: 25,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -565,6 +566,60 @@
                                     '</div>'
                 });
     };
+
+    $("i[name=eliminar]").click(function(){
+                id = this.id;
+                element = this;
+                swal({   
+                    title: "Desea eliminar la clase personalizada?",   
+                    text: "Confirmar eliminación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Eliminar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+    
+            
+              eliminar(id, element);
+                }
+            });
+        });
+      function eliminar(id, element){
+         var route = route_eliminar + id;
+         var token = "{{ csrf_token() }}";
+         procesando()
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'DELETE',
+                    dataType: 'json',
+                    data:id,
+                    success:function(respuesta){
+                        swal("Hecho!","Eliminado con éxito!","success");
+                        t.row( $(element).parents('tr') )
+                          .remove()
+                          .draw();
+                        finprocesado()
+
+                    },
+                    error:function(msj){
+                                finprocesado()
+                                $("#msj-danger").fadeIn(); 
+                                var text="";
+                                console.log(msj);
+                                var merror=msj.responseJSON;
+                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                $("#msj-error").html(text);
+                                setTimeout(function(){
+                                         $("#msj-danger").fadeOut();
+                                        }, 3000);
+                                }
+                });
+      }
 
 
 		</script>

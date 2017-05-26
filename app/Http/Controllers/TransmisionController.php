@@ -16,7 +16,29 @@ class TransmisionController extends BaseController {
 
 	public function index()
     {
-        return view('agendar.transmision.principal')->with('transmisiones', Transmision::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+    	$transmisiones = Transmision::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+    	foreach($transmisiones as $transmision){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $transmision->fecha);
+            if($fecha >= Carbon::now()){
+
+                $dias_restantes = $fecha->diffInDays();
+                $status = 'Activa';
+
+            }else{
+                $dias_restantes = 0;
+                $status = 'Vencida';
+            }
+
+            $collection=collect($transmision);  
+            $transmision_array = $collection->toArray();   
+            $transmision_array['status']=$status;
+            $transmision_array['dias_restantes']=$dias_restantes;
+            
+            $array[$transmision->id] = $transmision_array;
+        }
+        return view('agendar.transmision.principal')->with('transmisiones', $array);
     }
 
 	public function create()

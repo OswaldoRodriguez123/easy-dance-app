@@ -57,8 +57,8 @@ class HerramientaController extends BaseController {
         $academia = Academia::find(Auth::user()->academia_id);
 
         $estudios = ConfigEstudios::where('academia_id' , Auth::user()->academia_id)->get();
-        $niveles = ConfigNiveles::where('academia_id' , Auth::user()->academia_id)->get();
-        $config_staff = ConfigStaff::where('academia_id' , Auth::user()->academia_id)->get();
+        $niveles = ConfigNiveles::where('academia_id' , Auth::user()->academia_id)->orWhere('academia_id', null)->get();
+        $config_staff = ConfigStaff::where('academia_id' , Auth::user()->academia_id)->orWhere('academia_id', null)->get();
         $config_formula = ConfigFormulaExito::where('academia_id' , Auth::user()->academia_id)->get();
         $valoraciones = ConfigTipoExamen::where('academia_id' , Auth::user()->academia_id)->get();
         $puntajes = Puntaje::where('academia_id' , Auth::user()->academia_id)->get();

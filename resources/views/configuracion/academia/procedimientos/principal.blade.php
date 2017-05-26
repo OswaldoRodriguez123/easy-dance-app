@@ -19,11 +19,51 @@
 
 @section('content')
 
+<div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                <h4 class="modal-title c-negro">Procedimientos <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+            </div>
+
+            <div class="clearfix p-b-15"></div>
+            <div class="clearfix p-b-15"></div>
+
+            <div class="row">
+
+                <div class="col-sm-10 col-sm-offset-1 error_general">
+
+
+                    <div align="center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x c-morado"></i></div>
+                    <div class="c-morado f-30 text-center"> No se encontraron resultados </div>
+
+
+                </div>
+
+                <div class="clearfix p-b-15"></div>
+                <div class="clearfix p-b-15"></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container">
 
     <div class="block-header">
         <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
-        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+
+            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
+                            
+            <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
+                            
+            <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
+                            
+            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
+                           
+            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+        </ul>    
     </div> 
     
     <div class="card">
@@ -83,7 +123,12 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/coordinacion-de-pista-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+
+                                            @if($coordinacion)
+                                                <a href="{{url('/')}}/{{$coordinacion}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @else
+                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -106,7 +151,11 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/productora-de-eventos-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @if($evento)
+                                                <a href="{{url('/')}}/{{$evento}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @else
+                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -129,7 +178,11 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/ventas-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @if($venta)
+                                                <a href="{{url('/')}}/{{$venta}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @else
+                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -152,7 +205,11 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/supervisores-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @if($supervisor)
+                                                <a href="{{url('/')}}/{{$supervisor}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @else
+                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -175,7 +232,11 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/recepcionistas-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @if($recepcionista)
+                                                <a href="{{url('/')}}/{{$recepcionista}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @else
+                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -198,7 +259,11 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/instructores-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @if($instructor)
+                                                <a href="{{url('/')}}/{{$instructor}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @else
+                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -221,7 +286,11 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/administrativo-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @if($administrativo)
+                                                <a href="{{url('/')}}/{{$administrativo}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @else
+                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -244,7 +313,11 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/ambiente-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @if($ambiente)
+                                                <a href="{{url('/')}}/{{$ambiente}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @else
+                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -268,7 +341,11 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/roles-de-aplicacion-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @if($rol)
+                                                <a href="{{url('/')}}/{{$rol}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @else
+                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -291,7 +368,11 @@
                                         <br>
 
                                         <div class="text-right">
-                                            <a href="{{url('/')}}/assets/uploads/procedimientos/guia-de-atencion-al-cliente-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @if($guia)
+                                                <a href="{{url('/')}}/{{$guia}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                            @else
+                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -308,4 +389,18 @@
 
 
 
+@stop
+
+@section('js') 
+
+
+    <script type="text/javascript">
+
+        $( ".no_procedimiento" ).click(function() {
+
+            $('#modalError').modal('show')
+
+        });
+    </script>
+    
 @stop

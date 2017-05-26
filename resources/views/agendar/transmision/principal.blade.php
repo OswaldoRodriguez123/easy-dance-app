@@ -54,6 +54,7 @@
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Tema</th>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc">Hora</th>
+                                    <th class="text-center" data-column-id="status" data-type="numeric">Status</th>
                                     <th class="text-center" data-column-id="presentador" data-order="desc">Presentador</th>
                                     <th class="text-center" data-column-id="invitado" data-order="desc">Invitado</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
@@ -62,13 +63,17 @@
                             <tbody class="text-center" >
 
                             @foreach ($transmisiones as $transmision)
-                                <?php $id = $transmision->id; ?>
+                                <?php $id = $transmision['id']; ?>
                                 <tr id="{{$id}}" class="seleccion"> 
-                                    <td class="text-center previa">{{$transmision->tema}}</td>
-                                    <td class="text-center previa">{{$transmision->fecha}}</td>
-                                    <td class="text-center previa">{{$transmision->hora}}</td>
-                                    <td class="text-center previa">{{$transmision->presentador}}</td>
-                                    <td class="text-center previa">{{$transmision->invitado}}</td>
+                                    <td class="text-center previa">{{$transmision['tema']}}</td>
+                                    <td class="text-center previa">{{$transmision['fecha']}}</td>
+                                    <td class="text-center previa">{{$transmision['hora']}}</td>
+                                    <td class="text-center previa">
+                                        <span class="{{ empty($transmision['dias_restantes']) ? 'c-youtube' : '' }}">{{$transmision['status']}}</span>
+                                        Restan {{$transmision['dias_restantes']}} Días
+                                    </td>
+                                    <td class="text-center previa">{{$transmision['presentador']}}</td>
+                                    <td class="text-center previa">{{$transmision['invitado']}}</td>
                                     <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach  

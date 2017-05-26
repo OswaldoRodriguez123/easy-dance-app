@@ -102,7 +102,7 @@
                                             <div class="eos-group-title">BÁSICO 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
                                               <li class="eos-item">
-                                                <a class="{{ empty($pasos['n1v1']) ? 'disabled' : 'video_url' }}" data-url="207961670">01. Ángulos Arriba
+                                                <a class="video_url" data-url="207961670">01. Ángulos Arriba
 
                                                   @if($usuario_tipo == 3)
                                                     <input id="n1v1" class="pull-right checkbox {{ empty($pasos['n1v1']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n1v1']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
@@ -111,7 +111,7 @@
                                                 </a> 
                                               </li>
                                               <li class="eos-item">
-                                                <a class="{{ empty($pasos['n1v2']) ? 'disabled' : 'video_url' }}" data-url="207961713">02. Ángulos Pa Alante
+                                                <a class="video_url" data-url="207961713">02. Ángulos Pa Alante
 
                                                   @if($usuario_tipo == 3)
                                                     <input id="n1v2" class="pull-right checkbox {{ empty($pasos['n1v2']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n1v2']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
@@ -120,7 +120,7 @@
                                                 </a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="{{ empty($pasos['n1v3']) ? 'disabled' : 'video_url' }}" data-url="207961777">03. Ángulos Diagonal Alante
+                                                <a class="video_url" data-url="207961777">03. Ángulos Diagonal Alante
 
                                                   @if($usuario_tipo == 3)
                                                     <input id="n1v3" class="pull-right checkbox {{ empty($pasos['n1v3']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n1v3']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
@@ -129,7 +129,7 @@
                                                 </a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="{{ empty($pasos['n1v4']) ? 'disabled' : 'video_url' }}" data-url="207961828">04. Ángulos Cruzados Alante
+                                                <a class="video_url" data-url="207961828">04. Ángulos Cruzados Alante
 
                                                   @if($usuario_tipo == 3)
                                                     <input id="n1v4" class="pull-right checkbox {{ empty($pasos['n1v4']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n1v4']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">

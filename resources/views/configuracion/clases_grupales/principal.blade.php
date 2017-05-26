@@ -249,6 +249,7 @@
       function eliminar(id, element){
          var route = route_eliminar + id;
          var token = "{{ csrf_token() }}";
+         procesando()
                 
                 $.ajax({
                     url: route,
@@ -261,9 +262,11 @@
                         t.row( $(element).parents('tr') )
                           .remove()
                           .draw();
+                        finprocesado()
 
                     },
                     error:function(msj){
+                                finprocesado()
                                 $("#msj-danger").fadeIn(); 
                                 var text="";
                                 console.log(msj);

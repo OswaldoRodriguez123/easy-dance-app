@@ -54,6 +54,7 @@ use Session;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use Image;
+use File;
 use Illuminate\Support\Facades\Input;
 
 class AcademiaController extends BaseController {
@@ -1462,8 +1463,89 @@ class AcademiaController extends BaseController {
 
         $id = Auth::user()->academia_id;
 
-        return view('configuracion.academia.procedimientos.principal')->with(['id' => $id]);
-        
+        $file = File::exists('assets/uploads/procedimientos/coordinacion-de-pista-'.$id.'.pdf');
+
+        if($file){
+            $coordinacion = 'assets/uploads/procedimientos/coordinacion-de-pista-'.$id.'.pdf';
+        }else{
+            $coordinacion = '';
+        }
+
+        $file = File::exists('assets/uploads/procedimientos/productora-de-eventos-'.$id.'.pdf');
+
+        if($file){
+            $evento = 'assets/uploads/procedimientos/productora-de-eventos-'.$id.'.pdf';
+        }else{
+            $evento = '';
+        }
+
+
+        $file = File::exists('assets/uploads/procedimientos/ventas-'.$id.'.pdf');
+
+        if($file){
+            $venta = 'assets/uploads/procedimientos/ventas-'.$id.'.pdf';
+        }else{
+            $venta = '';
+        }
+
+        $file = File::exists('assets/uploads/procedimientos/supervisores-'.$id.'.pdf');
+
+        if($file){
+            $supervisor = 'assets/uploads/procedimientos/supervisores-'.$id.'.pdf';
+        }else{
+            $supervisor = '';
+        }
+
+        $file = File::exists('assets/uploads/procedimientos/recepcionistas-'.$id.'.pdf');
+
+        if($file){
+            $recepcionista = 'assets/uploads/procedimientos/recepcionistas-'.$id.'.pdf';
+        }else{
+            $recepcionista = '';
+        }
+
+        $file = File::exists('assets/uploads/procedimientos/instructores-'.$id.'.pdf');
+
+        if($file){
+            $instructor = 'assets/uploads/procedimientos/instructores-'.$id.'.pdf';
+        }else{
+            $instructor = '';
+        }
+
+        $file = File::exists('assets/uploads/procedimientos/administrativo-'.$id.'.pdf');
+
+        if($file){
+            $administrativo = 'assets/uploads/procedimientos/administrativo-'.$id.'.pdf';
+        }else{
+            $administrativo = '';
+        }
+
+        $file = File::exists('assets/uploads/procedimientos/ambiente-'.$id.'.pdf');
+
+        if($file){
+            $ambiente = 'assets/uploads/procedimientos/ambiente-'.$id.'.pdf';
+        }else{
+            $ambiente = '';
+        }
+
+        $file = File::exists('assets/uploads/procedimientos/roles-de-aplicacion-'.$id.'.pdf');
+
+        if($file){
+            $rol = 'assets/uploads/procedimientos/roles-de-aplicacion-'.$id.'.pdf';
+        }else{
+            $rol = '';
+        }
+
+        $file = File::exists('assets/uploads/procedimientos/guia-de-atencion-al-cliente-'.$id.'.pdf');
+
+        if($file){
+            $guia = 'assets/uploads/procedimientos/guia-de-atencion-al-cliente-'.$id.'.pdf';
+        }else{
+            $guia = '';
+        }
+
+
+        return view('configuracion.academia.procedimientos.principal')->with(['id' => $id, 'coordinacion' => $coordinacion, 'evento' => $evento, 'venta' => $venta, 'supervisor' => $supervisor, 'recepcionista' => $recepcionista, 'instructor' => $instructor, 'administrativo' => $administrativo, 'ambiente' => $ambiente, 'rol' => $rol, 'guia' => $guia]);
         
     }
 
