@@ -93,37 +93,34 @@
 							
 							<hr>
 
-							<?php $i=0 ?>
-							<?php $j = 1 ?>
+							<?php 
+								$i = 0;
+								$j = 1;
+								$sliders = array();
+							?>
 
-							@foreach( $items_a_evaluar as $items)
+							@foreach( $items_a_evaluar as $item)
 	  							<?php $id = $i ?>
 
 	  							<div class="col-md-4 m-b-25">
 
 	                  				<div class="m-b-20 m-l-25">
+		                  				@if(strlen($item) <= 30)
 
-		                  				@if(strlen($items) <= 30)
-
-		                  					{{$items}}
+		                  					{{$item}}
 		                  				@else
-											{{ str_limit($items, $limit = 30, $end = '') }} <span class="mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{$items}}" title="" data-original-title="Ayuda">... <span class="c-azul">Ver mas</span></span> 
+											{{ str_limit($item, $limit = 30, $end = '') }} <span class="mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{$item}}" title="" data-original-title="Ayuda">... <span class="c-azul">Ver mas</span></span> 
 		                  				@endif
-
 	                  				</div>
 	  								<div class="clearfix"></div>  
 	  								<div class="input-slider m-b-25 m-l-25 slider-mov div_{{$id}}" id="slider{{$id}}"></div>
 	  								<strong class="pull-right text-muted slider-value slider-value-visible div_{{$id}}" id="value-lower{{$id}}"></strong>
 
 	  								<div class="text-center p-t-10">
-
 		  								<div class="checkbox">
 		  									<span id="span_{{$id}}" style="margin-right: 5px">Deshabilitar el item a evaluar</span> <input style="opacity: 1; position: relative" id="checkbox_{{$id}}" type="checkbox" checked>
 		  								</div>
-
 	  								</div>
-
-	  				                  
 	  							</div>
 
 
@@ -134,7 +131,7 @@
 	  									$j = 0;
 	  								}
 
-				                  	$item[$i] = $i; 
+				                  	$sliders[$i] = $i; 
 				                  	$i++;
 				                  	$j++;
 				                ?>
@@ -249,8 +246,8 @@
 		  	$("#supervisor_id").val("{{$supervision->supervisor_id}}")
 		  	$("#supervisor_id").selectpicker('render');
 
-			@foreach( $item as $items)
-				loadId({{$items}});
+			@foreach($sliders as $slider)
+				loadId({{$slider}});
 			@endforeach
 
 			$("#barra-progreso").css({
@@ -435,13 +432,11 @@
 				}
 				$("#cancelar").click(function(){
 
-					var items_examen = <?php echo json_encode($item);?>;
-
-					$.each(items_examen,function(index,array){
+					$.each(sliders,function(index,array){
 						$('#slider'+array).find('.noUi-origin').css('left','0%');
 						$('#value-lower'+array).text("1.00");
-						$("#puntos_acumulados").html(items_examen.length);
-						$("#total_nota").val(items_examen.length);
+						$("#puntos_acumulados").html(sliders.length);
+						$("#total_nota").val(sliders.length);
 						$("#agregar_evaluacion")[0].reset();
 					});
 

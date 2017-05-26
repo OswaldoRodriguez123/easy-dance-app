@@ -311,7 +311,7 @@
 
                                 {{$academia->correo}} </br></br>
 
-                                <b>NOS ESCANTA VERTE BAILAR</b>
+                                <b>NOS ENCANTA VERTE BAILAR</b>
 
 
                                 </span>
