@@ -420,12 +420,13 @@
 			}, 800);
 
 		}
+
 		$("#cancelar").click(function(){
 
-			$.each(sliders,function(index,array){
+			$.each(sliders, function(index,array){
 				$('#slider'+array).find('.noUi-origin').css('left','0%');
 				$('#value-lower'+array).text("0.00");
-				$("#puntos_acumulados").html(0;
+				$("#puntos_acumulados").html(0);
 				$("#total_nota").val(0);
 				$("#agregar_evaluacion")[0].reset();
 			});
