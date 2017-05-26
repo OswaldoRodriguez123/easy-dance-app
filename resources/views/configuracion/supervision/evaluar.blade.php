@@ -145,7 +145,7 @@
 								<div class="text-right m-r-25 f-20 f-500">Total: 
 									<span class="f-30" id="puntos_acumulados">0</span> acumulados de <span id="puntos_totales" class="f-30">{{(count($items_a_evaluar))*10}}</span>
 									<div class="text-right" id="id-total"></div>
-									<input type="hidden" name="total_nota" id="total_nota" value="{{count($items_a_evaluar)}}">
+									<input type="hidden" name="total_nota" id="total_nota" value="0">
 								</div>
 
 				               <div class="has-error" id="error-total_nota">
