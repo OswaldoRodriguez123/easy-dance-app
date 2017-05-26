@@ -284,7 +284,7 @@ class StaffController extends BaseController
             $horarios = HorarioStaff::join('dias_de_semana', 'horarios_staff.dia_de_semana_id', '=', 'dias_de_semana.id')
                 ->join('staff', 'horarios_staff.staff_id', '=', 'staff.id')
                 ->select('horarios_staff.*', 'dias_de_semana.nombre as dia')
-                ->where('staff.academia_id' , Auth::user()->academia_id)
+                ->where('staff.id' , $id)
             ->get();
 
             $pagos_staff = ConfigPagosStaff::join('config_servicios', 'config_pagos_staff.servicio_id', '=', 'config_servicios.id')
