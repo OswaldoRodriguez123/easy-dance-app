@@ -245,7 +245,7 @@
 		  	$("#supervisor_id").val("{{$supervision->supervisor_id}}")
 		  	$("#supervisor_id").selectpicker('render');
 
-		  	$.each(sliders,function(index,id){
+		  	$.each(sliders, function(index,id){
 
 			  	$('#slider'+id).noUiSlider ({
 					start: [ 0 ],
@@ -292,6 +292,7 @@
 
 		    porcetaje = (puntos_acumulados*100)/puntos_totales;
 		    porcetaje = porcetaje.toFixed(2);
+
 		    $("#barra_de_progreso").attr("value",porcetaje);
 		    $("#text-progreso").text(porcetaje+"%");
 		    $("#barra-progreso").css({
@@ -423,10 +424,11 @@
 
 		$("#cancelar").click(function(){
 
-			$.each(sliders, function(index,array){
-				$('#slider'+array).find('.noUi-origin').css('left','0%');
-				$('#value-lower'+array).text("0.00");
+			$.each(sliders, function(index,id){
+				$('#slider'+id).find('.noUi-origin').css('left','0%');
+				$('#value-lower'+id).text("0.00");
 				$("#puntos_acumulados").html(0);
+				puntos_acumulados = 0;
 				$("#total_nota").val(0);
 				$("#agregar_evaluacion")[0].reset();
 			});
