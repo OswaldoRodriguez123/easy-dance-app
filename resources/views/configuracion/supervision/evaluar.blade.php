@@ -250,13 +250,13 @@
 		  	$.each(sliders,function(index,id){
 
 			  	$('#slider'+id).noUiSlider ({
-					start: [ 1 ],
+					start: [ 0 ],
 				    //connect: true,
 				    //direction: 'rtl',
 				    behaviour: 'tap-drag',
 				    step: 1,
 					range: {
-						'min': 1,
+						'min': 0,
 						'max': 10
 					}
 				});
@@ -341,108 +341,110 @@
 	  	}
 
 		//GUARDAR EXAMEN
-	  		$("#guardar").click(function(){
-	                var route = route_agregar;
-	                var token = $('input:hidden[name=_token]').val();
-	                var datos = $( "#agregar_evaluacion" ).serialize();
 
-	                procesando();
-	                limpiarMensaje();
-	                $.ajax({
+  		$("#guardar").click(function(){
+            var route = route_agregar;
+            var token = $('input:hidden[name=_token]').val();
+            var datos = $( "#agregar_evaluacion" ).serialize();
 
-	      						url: route,
-	      						headers: {'X-CSRF-TOKEN': token},
-	      						type: 'POST',
-	      						dataType: 'json',
-	      						data: datos+'&nota_detalle='+arrayNotas+'&nombre_detalle='+items_a_evaluar,
-	                    success:function(respuesta){
-	                      setTimeout(function(){ 
-	                        var nFrom = $(this).attr('data-from');
-	                        var nAlign = $(this).attr('data-align');
-	                        var nIcons = $(this).attr('data-icon');
-	                        var nAnimIn = "animated flipInY";
-	                        var nAnimOut = "animated flipOutY"; 
-	                        if(respuesta.status=="OK"){
+            procesando();
+            limpiarMensaje();
 
-	                        	var nType = 'success';
-	                        	$("#agregar_evaluacion")[0].reset();
-	                        	var nTitle="Ups! ";
-	                        	var nMensaje=respuesta.mensaje;
-	                        	window.location = route_principal;
-	                          	
-	                        }else{
-	                          var nTitle="Ups! ";
-	                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-	                          var nType = 'danger';
-	                          finprocesado();
-	                          
-	                        } 
+            $.ajax({
 
-	                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                      
-	                        
-	                      }, 1000);
-	                    },
-	                    error:function(msj){
-	                      setTimeout(function(){ 
-	                        if(msj.responseJSON.status=="ERROR"){
-	                          console.log(msj.responseJSON.errores);
-	                          errores(msj.responseJSON.errores);
-	                          var nTitle="    Ups! "; 
-	                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-	                        }else{
-	                          var nTitle="   Ups! "; 
-	                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-	                        }                        
-	                        finprocesado();
-	                        var nFrom = $(this).attr('data-from');
-	                        var nAlign = $(this).attr('data-align');
-	                        var nIcons = $(this).attr('data-icon');
-	                        var nType = 'danger';
-	                        var nAnimIn = "animated flipInY";
-	                        var nAnimOut = "animated flipOutY";                       
-	                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-	                      }, 1000);
-	                    }
-	                });
-	            });
+				url: route,
+				headers: {'X-CSRF-TOKEN': token},
+				type: 'POST',
+				dataType: 'json',
+				data: datos+'&nota_detalle='+arrayNotas+'&nombre_detalle='+items_a_evaluar,
+                success:function(respuesta){
+                  setTimeout(function(){ 
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY"; 
+                    if(respuesta.status=="OK"){
+
+                    	var nType = 'success';
+                    	$("#agregar_evaluacion")[0].reset();
+                    	var nTitle="Ups! ";
+                    	var nMensaje=respuesta.mensaje;
+                    	window.location = route_principal;
+                      	
+                    }else{
+                      var nTitle="Ups! ";
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                      var nType = 'danger';
+                      finprocesado();
+                      
+                    } 
+
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                      
+                    
+                  }, 1000);
+                },
+                error:function(msj){
+                  setTimeout(function(){ 
+                    if(msj.responseJSON.status=="ERROR"){
+                      console.log(msj.responseJSON.errores);
+                      errores(msj.responseJSON.errores);
+                      var nTitle="    Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                    }else{
+                      var nTitle="   Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    }                        
+                    finprocesado();
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nType = 'danger';
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY";                       
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                  }, 1000);
+                }
+            });
+       	});
 
 
-				function errores(merror){
-					var elemento="";
-					var contador=0;
-					$.each(merror, function (n, c) {
-						if(contador==0){
-						elemento=n;
-						}
-						contador++;
-
-						$.each(this, function (name, value) {              
-						  var error=value;
-						  $("#error-"+n+"_mensaje").html(error);             
-						});
-					});
-
-					$('html,body').animate({
-					    scrollTop: $("#id-"+elemento).offset().top-90,
-					}, 800);
-
+		function errores(merror){
+			var elemento="";
+			var contador=0;
+			$.each(merror, function (n, c) {
+				if(contador==0){
+				elemento=n;
 				}
-				$("#cancelar").click(function(){
+				contador++;
 
-					$.each(sliders,function(index,array){
-						$('#slider'+array).find('.noUi-origin').css('left','0%');
-						$('#value-lower'+array).text("1.00");
-						$("#puntos_acumulados").html(sliders.length);
-						$("#total_nota").val(sliders.length);
-						$("#agregar_evaluacion")[0].reset();
-					});
-
-			        $("#supervisor_id").val("{{$supervision->supervisor_id}}")
-			        $("#supervisor_id").selectpicker('render');
-
-					$('html,body').animate({scrollTop: $("#id-supervisor_id").
-						offset().top-90,}, 800);
+				$.each(this, function (name, value) {              
+				  var error=value;
+				  $("#error-"+n+"_mensaje").html(error);             
 				});
+			});
+
+			$('html,body').animate({
+			    scrollTop: $("#id-"+elemento).offset().top-90,
+			}, 800);
+
+		}
+		$("#cancelar").click(function(){
+
+			$.each(sliders,function(index,array){
+				$('#slider'+array).find('.noUi-origin').css('left','0%');
+				$('#value-lower'+array).text("1.00");
+				$("#puntos_acumulados").html(sliders.length);
+				$("#total_nota").val(sliders.length);
+				$("#agregar_evaluacion")[0].reset();
+			});
+
+	        $("#supervisor_id").val("{{$supervision->supervisor_id}}")
+	        $("#supervisor_id").selectpicker('render');
+
+			$('html,body').animate({scrollTop: $("#id-supervisor_id").
+				offset().top-90,}, 800);
+		});
 
 	  	function limpiarMensaje(){
 	    	var campo = ["supervisor_id"];
