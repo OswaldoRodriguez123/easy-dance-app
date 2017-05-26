@@ -2731,32 +2731,38 @@ class ClaseGrupalController extends BaseController {
 
         }else{
 
-            $inscripcion = InscripcionClaseGrupal::find($request->transferir_inscripcion_id);
+            $id = $request->transferir_inscripcion_id;
+
+            $inscripcion = InscripcionClaseGrupal::find($id);
             $clasegrupal = ClaseGrupal::find($request->clase_grupal_id);
 
             if($clasegrupal && $inscripcion)
             {
 
-                $id = $request->transferir_inscripcion_id;
+                $config_clase_grupal = ConfigClasesGrupales::find($clasegrupal->clase_grupal_id);
                 
-                $existe = InscripcionClaseGrupal::where('alumno_id', $inscripcion->alumno_id)->where('clase_grupal_id', $request->clase_grupal_id)->first();
+                $inscripcion_anterior = InscripcionClaseGrupal::withTrashed()
+                    ->where('alumno_id', $inscripcion->alumno_id)
+                    ->where('clase_grupal_id', $request->clase_grupal_id)
+                ->first();
 
-                if(!$existe){
+                if(!$inscripcion_anterior){
 
-                    $config_clase_grupal = ConfigClasesGrupales::find($clasegrupal->clase_grupal_id);
-
+                    $inscripcion->fecha_a_comprobar = Carbon::now()->addWeeks(2)->toDateString();
                     $inscripcion->clase_grupal_id = $request->clase_grupal_id;
                     $inscripcion->costo_mensualidad = $config_clase_grupal->costo_mensualidad;
                     $inscripcion->save();
                     
                 }else{
 
-                    $inscripcion->delete();
+                    $inscripcion_anterior->fecha_a_comprobar = Carbon::now()->addWeeks(2)->toDateString();
+                    $inscripcion_anterior->costo_mensualidad = $config_clase_grupal->costo_mensualidad;
+                    $inscripcion_anterior->deleted_at = null;
+                    $inscripcion_anterior->save();
+                    $inscripcion->forceDelete();
                 }
                 
-                
-                return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 'id' => $id, 200]);
-                
+                return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha actualizado satisfactoriamente', 'status' => 'OK', 'id' => $id, 200]);
                     
             }else{
                 return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]); 

@@ -1365,9 +1365,16 @@ class AcademiaController extends BaseController {
 
                 $horario = HorarioClaseGrupal::where('clase_grupal_id',$clase_grupal->clase_grupal_id)->first();
                 $fecha_clase = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                $fecha_a_comparar = Carbon::createFromFormat('Y-m-d', $inscripcion_clase_grupal->fecha_a_comparar);
 
                 if($fecha_registro > $fecha_clase){
                     $fecha_clase = $fecha_registro;
+                }
+
+                // CASO ESPECIFICO, SI TRANSFIEREN A UN ALUMNO DE CLASE GRUPAL A OTRA, ESTE QUEDA COMO INACTIVO Y NO PUEDE ACCEDER AL SISTEMA, EN ESTE CASO SE LE AÑADE UNA FECHA PRORROGA PARA ACCEDER AL SISTEMA
+
+                if($fecha_a_comparar > $fecha_clase){
+                    $fecha_clase = $fecha_a_comparar;
                 }
 
                 if($fecha_clase <= Carbon::now()){
