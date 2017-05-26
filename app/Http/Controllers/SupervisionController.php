@@ -27,7 +27,7 @@ class SupervisionController extends BaseController {
 	{
 
         $supervisiones = Supervision::join('staff', 'staff.id', '=', 'supervisiones.staff_id')
-        	->join('config_staff', 'supervision.cargo', '=', 'config_staff.id')
+        	->join('config_staff', 'supervisiones.cargo', '=', 'config_staff.id')
             ->select('staff.*', 'supervisiones.supervisor_id', 'supervisiones.fecha_inicio', 'supervisiones.fecha_final', 'config_staff.nombre as cargo', 'supervisiones.id')
             ->where('staff.academia_id', Auth::user()->academia_id)
         ->get();
