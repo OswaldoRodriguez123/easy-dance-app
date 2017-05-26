@@ -151,6 +151,7 @@ class ClaseGrupalController extends BaseController {
                 $clase_grupal = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                     ->select('clases_grupales.fecha_inicio')
                     ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
+                    ->where('clases_grupales.deleted_at', null)
                     ->orderBy('inscripcion_clase_grupal.created_at', 'desc')
                 ->first();
 
