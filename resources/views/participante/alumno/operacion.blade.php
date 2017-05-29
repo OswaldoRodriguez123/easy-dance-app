@@ -102,7 +102,7 @@
 
                     <li data-ripplecator class ="dark-ripples">
                         <a class="reservar">
-                            <span class="ca-icon-c"><i  class="zmdi zmdi-phone f-35 boton blue sa-warning" name="eliminar" id="{{$id}}" data-original-title="Reservar" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
+                            <span class="ca-icon-c"><i  class="icon_a-reservaciones f-35 boton blue sa-warning" name="eliminar" id="{{$id}}" data-original-title="Reservar" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
                             <div class="ca-content-c">
                                 <h2 class="ca-main-c">Reservar</h2>
                                 <h3 class="ca-sub-c"></h3>

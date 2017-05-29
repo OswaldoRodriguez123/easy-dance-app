@@ -12,6 +12,8 @@ use App\InscripcionTaller;
 use App\InscripcionClaseGrupal;
 use App\InscripcionCoreografia;
 use App\InscripcionClasePersonalizada;
+use App\ClaseGrupal;
+use App\HorarioClaseGrupal;
 use App\ClasePersonalizada;
 use App\ItemsFacturaProforma;
 use App\Academia;

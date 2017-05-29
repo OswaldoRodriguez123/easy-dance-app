@@ -365,7 +365,7 @@
         processing: true,
         serverSide: false,
         pageLength: 50,
-        order: [[0, 'desc']],
+        order: [[0, 'asc'], [1, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
         },

@@ -754,6 +754,7 @@
 
                 finprocesado();
 
+                window.location=route_principal; 
                 notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
               }, 1000);
 
@@ -843,6 +844,7 @@
                       $('.modal').modal('hide');
 
                       finprocesado();
+                      window.location=route_principal; 
 
                       notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
                     }, 1000);

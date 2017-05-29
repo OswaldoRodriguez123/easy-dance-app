@@ -140,7 +140,7 @@
                                           <div class="input-group">
                                             <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
                                             <div class="fg-line">
-                                            <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="000,000,000,000" placeholder="Ej. 5000">
+                                            <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="000,000,000,000" data-mask-reverse="true" placeholder="Ej. 5000">
                                             </div>
                                           </div>
                                         </div>
