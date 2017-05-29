@@ -410,8 +410,6 @@
                                     <div class="select">
                                           <select class="form-control" id="tipo" name="tipo">
                                             <option value="1">Academia Recepción</option>
-<!--                                             <option value="3">Inscripción y Mensualidad</option>
-                                            <option value="9">Clase Personalizada</option> -->
                                             <option value="14">Fiesta y Eventos</option>
                                             <option value="5">Taller</option>
                                             <option value="11">Campaña</option>
@@ -561,7 +559,11 @@
                              </td>
                              <td id="servicio-descripcion" class="f-14 m-l-15" data-valor="{{$servicio->descripcion}}"><span ><span>{{ str_limit($servicio->descripcion, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalTipo-Servicio">
+                            @if($servicio->tipo == 3 OR $servicio->tipo == 4 OR $servicio->tipo == 9)
+                              <tr class="disabled">
+                            @else
+                              <tr class="detalle" data-toggle="modal" href="#modalTipo-Servicio">
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tipo" class="zmdi {{ empty($servicio->tipo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-especialidad f-22"></i> </span>
