@@ -11,7 +11,6 @@ use App\Instructor;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use App\CentauroSMS\CentauroSMS;
-use PulkitJalan\GeoIP\GeoIP;
 use Carbon\Carbon;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;

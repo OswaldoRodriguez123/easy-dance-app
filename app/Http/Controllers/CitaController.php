@@ -40,9 +40,9 @@ class CitaController extends BaseController {
 
 
         $fechaActual = Carbon::now();
-        $geoip = new GeoIP();
-        $geoip->setIp($request->ip());
-        $fechaActual->tz = $geoip->getTimezone();
+        // $geoip = new GeoIP();
+        // $geoip->setIp($request->ip());
+        // $fechaActual->tz = $geoip->getTimezone();
 
         $activas = Cita::where('estatus', 1)->where('academia_id','=', Auth::user()->academia_id)->get();
 

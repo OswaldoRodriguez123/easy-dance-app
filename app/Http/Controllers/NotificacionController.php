@@ -19,14 +19,10 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Sugerencia;
 use App\User;
-use PulkitJalan\GeoIP\GeoIP;
 
 class NotificacionController extends BaseController
 {
     public function principal(Request $request){
-
-        // $geoip = new GeoIP();
-        // $geoip->setIp($request->ip());
 
         $academia = Academia::find(Auth::user()->academia_id);
 

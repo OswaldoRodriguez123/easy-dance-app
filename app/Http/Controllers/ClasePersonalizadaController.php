@@ -47,9 +47,9 @@ class ClasePersonalizadaController extends BaseController {
         if($usuario_tipo != 2 AND $usuario_tipo != 4){
 
             $fechaActual = Carbon::now();
-            $geoip = new GeoIP();
-            $geoip->setIp($request->ip());
-            $fechaActual->tz = $geoip->getTimezone();
+            // $geoip = new GeoIP();
+            // $geoip->setIp($request->ip());
+            // $fechaActual->tz = $geoip->getTimezone();
 
             // $activas = ClasePersonalizada::join('inscripcion_clase_personalizada', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
             //         ->where('clases_personalizadas.academia_id', Auth::user()->academia_id)

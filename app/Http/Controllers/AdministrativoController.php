@@ -1101,67 +1101,70 @@ class AdministrativoController extends BaseController {
 
         $factura = Factura::find($id);
 
-        $pagos = Pago::where('factura_id',$id)->delete();
-        $items_factura = ItemsFactura::where('factura_id',$id)->delete();
-        
-        if($factura->delete()){
-            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        if($factura){
+
+            $pagos = Pago::where('factura_id',$id)->delete();
+            $items_factura = ItemsFactura::where('factura_id',$id)->delete();
+            
+            if($factura->delete()){
+                return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
     }
 
 
     public function enviarfactura($id)
     {
-            
-            $academia = Academia::find(Auth::user()->academia_id);
-            $factura = Factura::find($id);
-            $total_pago = Pago::where('factura_id', $id)->sum('monto');
-            $alumno = Alumno::find($factura->alumno_id);
+        
+        $academia = Academia::find(Auth::user()->academia_id);
+        $factura = Factura::find($id);
+        $total_pago = Pago::where('factura_id', $id)->sum('monto');
+        $alumno = Alumno::find($factura->alumno_id);
 
-            $array_descripcion = array();
+        $array_descripcion = array();
 
-            $item_factura = ItemsFactura::where('factura_id', '=', $factura->id)->get();
+        $item_factura = ItemsFactura::where('factura_id', '=', $factura->id)->get();
 
-            foreach($item_factura as $item){
+        foreach($item_factura as $item){
 
-                array_push($array_descripcion, $item->cantidad . ' ' . $item->nombre);
-               
-            }
+            array_push($array_descripcion, $item->cantidad . ' ' . $item->nombre);
+           
+        }
 
-            $descripcion = implode(",", $array_descripcion);
+        $descripcion = implode(",", $array_descripcion);
 
-            $subj = 'Pago realizado exitósamente';
+        $subj = 'Pago realizado exitósamente';
 
-            $array = [
+        $array = [
 
-               'correo_destino' => $alumno->correo,
-               'nombre' => $academia->nombre,
-               'correo' => $academia->correo,
-               'telefono' => $academia->celular,
-               'fecha' => $factura->fecha,
-               'hora' => $factura->hora,
-               'factura' => $factura->numero_factura,
-               'total' => $total_pago,
-               'descripcion' => $descripcion,
-               'subj' => $subj
-            ];
+           'correo_destino' => $alumno->correo,
+           'nombre' => $academia->nombre,
+           'correo' => $academia->correo,
+           'telefono' => $academia->celular,
+           'fecha' => $factura->fecha,
+           'hora' => $factura->hora,
+           'factura' => $factura->numero_factura,
+           'total' => $total_pago,
+           'descripcion' => $descripcion,
+           'subj' => $subj
+        ];
 
-            Mail::send('correo.factura', $array, function($msj) use ($array){
-                    $msj->subject($array['subj']);
-                    $msj->to($array['correo_destino']);
-                });
+        Mail::send('correo.factura', $array, function($msj) use ($array){
+                $msj->subject($array['subj']);
+                $msj->to($array['correo_destino']);
+            });
 
-            return response()->json(['mensaje' => '¡Excelente! El campo se ha eliminado satisfactoriamente', 'status' => 'OK', 'factura' => $factura->id, 200]);
+        return response()->json(['mensaje' => '¡Excelente! El campo se ha eliminado satisfactoriamente', 'status' => 'OK', 'factura' => $factura->id, 200]);
 
     }
 
     public function principalacuerdo()
     {
-        $acuerdo_join = DB::table('acuerdos')
-            ->join('alumnos', 'acuerdos.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'acuerdos.*')
+        $acuerdo_join = Acuerdo::join('alumnos', 'acuerdos.alumno_id', '=', 'alumnos.id')
+            ->select('acuerdos.*', 'alumnos.nombre as nombre', 'alumnos.apellido as apellido')
+            ->where('acuerdos.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
         return view('administrativo.acuerdo.principal')->with('acuerdos' , $acuerdo_join);
@@ -1176,49 +1179,47 @@ class AdministrativoController extends BaseController {
 
     public function acuerdoconalumno($id)
     {
-            $total = 0;
+        $total = 0;
 
-            if(Session::has('acuerdos'))
-            {
-                Session::forget('acuerdos'); 
-            }
+        if(Session::has('acuerdos'))
+        {
+            Session::forget('acuerdos'); 
+        }
 
-            $id_proforma = Session::get('id_proforma');
+        $id_proforma = Session::get('id_proforma');
 
-            if($id_proforma){
+        if($id_proforma){
 
-                foreach($id_proforma as $proforma_id){
+            foreach($id_proforma as $proforma_id){
 
-                    $items_factura = ItemsFacturaProforma::find($proforma_id);
+                $items_factura = ItemsFacturaProforma::find($proforma_id);
 
-                    $total = $total + $items_factura['importe_neto'];
-
-                }
-
-            }else{
-            
-                $items_factura = ItemsFacturaProforma::where('alumno_id', '=', $id)->get();
-
-                foreach($items_factura as $item_factura){
-
-                    $total = $total + $item_factura['importe_neto'];
-
-                }
+                $total = $total + $items_factura['importe_neto'];
 
             }
 
-            $acuerdos_pendientes = DB::table('items_factura_proforma')
-            ->select('items_factura_proforma.*')
-            ->where('alumno_id', '=', $id)
+        }else{
+        
+            $items_factura = ItemsFacturaProforma::where('alumno_id', '=', $id)->get();
+
+            foreach($items_factura as $item_factura){
+
+                $total = $total + $item_factura['importe_neto'];
+
+            }
+
+        }
+
+        $acuerdos_pendientes = ItemsFacturaProforma::where('alumno_id', '=', $id)
             ->where('tipo' , '=', 6)
-            ->get();
+        ->get();
 
-            if($acuerdos_pendientes){
-                $acuerdo = 1;
-            }
-            else{
-                $acuerdo = 0;
-            }
+        if($acuerdos_pendientes){
+            $acuerdo = 1;
+        }
+        else{
+            $acuerdo = 0;
+        }
         
         return view('administrativo.acuerdo.acuerdo')->with(['alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'id' => $id, 'total' => $total, 'acuerdo' => $acuerdo]);
     }
@@ -1226,16 +1227,13 @@ class AdministrativoController extends BaseController {
     public function principalpresupuesto()
     {
       
-        $presupuesto_join = DB::table('presupuestos')
-            ->join('alumnos', 'presupuestos.alumno_id', '=', 'alumnos.id')
-            // ->join('pagos', 'facturas.id', '=', 'pagos.factura_id')
+        $presupuesto_join = Presupuesto::join('alumnos', 'presupuestos.alumno_id', '=', 'alumnos.id')
             ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'presupuestos.fecha as fecha', 'presupuestos.fecha_valida as fecha_valida', 'presupuestos.id as id')
             ->where('presupuestos.academia_id' , '=' , Auth::user()->academia_id)
             ->OrderBy('presupuestos.created_at')
         ->get();
 
-        $items_presupuesto = DB::table('presupuestos')
-            ->join('items_presupuesto', 'items_presupuesto.presupuesto_id', '=', 'presupuestos.id')
+        $items_presupuesto = Presupuesto::join('items_presupuesto', 'items_presupuesto.presupuesto_id', '=', 'presupuestos.id')
             ->select('items_presupuesto.importe_neto', 'presupuestos.id')
             ->where('presupuestos.academia_id' , '=' , Auth::user()->academia_id)
             ->OrderBy('presupuestos.created_at')
@@ -1307,73 +1305,73 @@ class AdministrativoController extends BaseController {
 
     public function agregaritempresupuesto(Request $request){
         
-    $rules = [
+        $rules = [
 
-        'combo' => 'required',
-        'cantidad' => 'required|numeric|min:1',
-    ];
+            'combo' => 'required',
+            'cantidad' => 'required|numeric|min:1',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'combo.required' => 'Ups! El Producto o Servicio es requerido',
-        'cantidad.required' => 'Ups! El Cantidad es invalido, solo se aceptan numeros',
-        'cantidad.numeric' => 'Ups! El Cantidad es requerido',
-        'cantidad.min' => 'El mínimo de cantidad permitida es 1',
-    ];
+            'combo.required' => 'Ups! El Producto o Servicio es requerido',
+            'cantidad.required' => 'Ups! El Cantidad es invalido, solo se aceptan numeros',
+            'cantidad.numeric' => 'Ups! El Cantidad es requerido',
+            'cantidad.min' => 'El mínimo de cantidad permitida es 1',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
+        }
 
-    else{
+        else{
 
-        $array = array();
+            $array = array();
 
-        $id = explode("-", $request->combo);
-
-
-        if($request->tipo == "servicio"){
-            $servicio = ConfigServicios::find($id[0]);
-            $importe_neto = $servicio->costo * $request->cantidad;
-
-            if($request->impuesto == 0 and $servicio->incluye_iva == 1){
-                 $academia = Academia::find(Auth::user()->academia_id);
-                 $iva = $importe_neto * ($academia->porcentaje_impuesto / 100);
-
-                 $importe_neto = $importe_neto - $iva;
-            }
-
-            $array = array(['id' => $id[0] , 'nombre' => $servicio->nombre , 'tipo' => 1, 'cantidad' => $request->cantidad, 'precio_neto' => $servicio->costo, 'impuesto' => $request->impuesto, 'importe_neto' => $importe_neto]);
-            }
-
-        if($request->tipo == "producto"){
-
-            $producto = ConfigProductos::find($id[0]);
-            $importe_neto = $producto->costo * $request->cantidad;
-
-            if($request->impuesto == 0 and $producto->incluye_iva == 1){
-                 $academia = Academia::find(Auth::user()->academia_id);
-                 $iva = $importe_neto * ($academia->porcentaje_impuesto / 100);
-
-                 $importe_neto = $importe_neto - $iva;
-            }
-
-            $array = array(['id' => $id[0] , 'nombre' => $producto->nombre , 'tipo' => 2, 'cantidad' => $request->cantidad, 'precio_neto' => $producto->costo, 'impuesto' => $request->impuesto, 'importe_neto' => $importe_neto]);
-            }
+            $id = explode("-", $request->combo);
 
 
-        Session::push('arreglo', $array);
-        $items = Session::get('arreglo');
-        end( $items );
-        $contador = key( $items );
+            if($request->tipo == "servicio"){
+                $servicio = ConfigServicios::find($id[0]);
+                $importe_neto = $servicio->costo * $request->cantidad;
 
-         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
+                if($request->impuesto == 0 and $servicio->incluye_iva == 1){
+                     $academia = Academia::find(Auth::user()->academia_id);
+                     $iva = $importe_neto * ($academia->porcentaje_impuesto / 100);
 
-    }
+                     $importe_neto = $importe_neto - $iva;
+                }
+
+                $array = array(['id' => $id[0] , 'nombre' => $servicio->nombre , 'tipo' => 1, 'cantidad' => $request->cantidad, 'precio_neto' => $servicio->costo, 'impuesto' => $request->impuesto, 'importe_neto' => $importe_neto]);
+                }
+
+            if($request->tipo == "producto"){
+
+                $producto = ConfigProductos::find($id[0]);
+                $importe_neto = $producto->costo * $request->cantidad;
+
+                if($request->impuesto == 0 and $producto->incluye_iva == 1){
+                     $academia = Academia::find(Auth::user()->academia_id);
+                     $iva = $importe_neto * ($academia->porcentaje_impuesto / 100);
+
+                     $importe_neto = $importe_neto - $iva;
+                }
+
+                $array = array(['id' => $id[0] , 'nombre' => $producto->nombre , 'tipo' => 2, 'cantidad' => $request->cantidad, 'precio_neto' => $producto->costo, 'impuesto' => $request->impuesto, 'importe_neto' => $importe_neto]);
+                }
+
+
+            Session::push('arreglo', $array);
+            $items = Session::get('arreglo');
+            end( $items );
+            $contador = key( $items );
+
+             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
+
+        }
     }
 
     public function eliminaritempresupuesto($id){
@@ -1614,7 +1612,8 @@ class AdministrativoController extends BaseController {
 
                 return response()->json(['status' => 'OK', 200]);
                 
-        }
+            }
+            
             return response()->json(['errores' => ['linea' => [0, 'DDebe agregar una linea de pago']], 'status' => 'ERROR'],422);
         }
 

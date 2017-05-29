@@ -33,9 +33,8 @@ class VisitanteController extends BaseController {
     public function index(Request $request)
     {
 
-        $geoip = new GeoIP();
-        $geoip->setIp($request->ip());
-
+        // $geoip = new GeoIP();
+        // $geoip->setIp($request->ip());
 
         $visitantes = Visitante::Leftjoin('staff', 'visitantes_presenciales.instructor_id', '=', 'staff.id')
             ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
@@ -49,7 +48,7 @@ class VisitanteController extends BaseController {
         foreach($visitantes as $visitante){
 
             $fecha = Carbon::createFromFormat('Y-m-d', $visitante->fecha_registro);
-            $fecha->tz = $geoip->getTimezone();
+            // $fecha->tz = $geoip->getTimezone();
 
             $collection=collect($visitante);     
             $visitante_array = $collection->toArray();

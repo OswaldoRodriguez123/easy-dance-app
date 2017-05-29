@@ -975,9 +975,9 @@ class AsistenciaController extends BaseController
       $arrayClaseGrupal=array();
 
       $fechaActual = Carbon::now();
-      $geoip = new GeoIP();
-      $geoip->setIp($request->ip());
-      $fechaActual->tz = $geoip->getTimezone();
+      // $geoip = new GeoIP();
+      // $geoip->setIp($request->ip());
+      // $fechaActual->tz = $geoip->getTimezone();
       $diaActual = $fechaActual->dayOfWeek;
 
       $collection = collect($claseGrupal);
@@ -1148,9 +1148,9 @@ class AsistenciaController extends BaseController
 	    $arrayClases=array();
 
       $fechaActual = Carbon::now();
-      $geoip = new GeoIP();
-      $geoip->setIp($request->ip());
-      $fechaActual->tz = $geoip->getTimezone();
+      // $geoip = new GeoIP();
+      // $geoip->setIp($request->ip());
+      // $fechaActual->tz = $geoip->getTimezone();
       $diaActual = $fechaActual->dayOfWeek;
 
       $collection = collect($clases_grupales);
@@ -1318,9 +1318,9 @@ class AsistenciaController extends BaseController
       $arrayClases=array();
 
       $fechaActual = Carbon::now();
-      $geoip = new GeoIP();
-      $geoip->setIp($request->ip());
-      $fechaActual->tz = $geoip->getTimezone();
+      // $geoip = new GeoIP();
+      // $geoip->setIp($request->ip());
+      // $fechaActual->tz = $geoip->getTimezone();
 
       $collection = collect($inscripciones);
 
@@ -1381,9 +1381,9 @@ class AsistenciaController extends BaseController
     {
 
       $fechaActual = Carbon::now();
-      $geoip = new GeoIP();
-      $geoip->setIp($request->ip());
-      $fechaActual->tz = $geoip->getTimezone();
+      // $geoip = new GeoIP();
+      // $geoip->setIp($request->ip());
+      // $fechaActual->tz = $geoip->getTimezone();
       
     $citas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
       ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
@@ -1453,9 +1453,9 @@ class AsistenciaController extends BaseController
       $arrayClases=array();
 
       $fechaActual = Carbon::now();
-      $geoip = new GeoIP();
-      $geoip->setIp($request->ip());
-      $fechaActual->tz = $geoip->getTimezone();
+      // $geoip = new GeoIP();
+      // $geoip->setIp($request->ip());
+      // $fechaActual->tz = $geoip->getTimezone();
 
       $collection = collect($inscripciones);
 
@@ -1551,10 +1551,9 @@ class AsistenciaController extends BaseController
                 }
 
                 $actual = Carbon::now();
-                $geoip = new GeoIP();
-                $geoip->setIp($request->ip());
-
-                $actual->tz = $geoip->getTimezone();
+                // $geoip = new GeoIP();
+                // $geoip->setIp($request->ip());
+                // $actual->tz = $geoip->getTimezone();
 
                 $fecha_actual=$actual->toDateString();
                 $hora_actual=$actual->toTimeString();
@@ -1643,12 +1642,9 @@ class AsistenciaController extends BaseController
             $clase_id=explode('-', $clase);
 
                 $actual = Carbon::now();
-                $geoip = new GeoIP();
-                $geoip->setIp($request->ip());
-
-                // $actual->tz = 'America/Caracas';
-                // $actual->tz = $request->timezone;
-                $actual->tz = $geoip->getTimezone();
+                // $geoip = new GeoIP();
+                // $geoip->setIp($request->ip());
+                // $actual->tz = $geoip->getTimezone();
                 
                 $fecha_actual=$actual->toDateString();
                 $hora_actual=$actual->toTimeString();
@@ -1771,10 +1767,10 @@ class AsistenciaController extends BaseController
           if($estatu=="asociado" OR $request->es_instructor) {
 
             $actual = Carbon::now();
-            $geoip = new GeoIP();
-            $geoip->setIp($request->ip());
+            // $geoip = new GeoIP();
+            // $geoip->setIp($request->ip());
+            // $actual->tz = $geoip->getTimezone();
 
-            $actual->tz = $geoip->getTimezone();
             $fecha_actual=$actual->toDateString();
             $hora_actual=$actual->toTimeString();
 
@@ -1858,9 +1854,10 @@ class AsistenciaController extends BaseController
         $asistencia = AsistenciaStaff::where('staff_id', $id)->where('hora_salida', '00:00:00')->first();
 
         $actual = Carbon::now();
-        $geoip = new GeoIP();
-        $geoip->setIp($request->ip());
-        $actual->tz = $geoip->getTimezone();
+        // $geoip = new GeoIP();
+        // $geoip->setIp($request->ip());
+        // $actual->tz = $geoip->getTimezone();
+        
         $fecha_actual=$actual->toDateString();
         $hora_actual=$actual->toTimeString();
 

@@ -128,9 +128,10 @@ class ClaseGrupalController extends BaseController {
             }
 
             $actual = Carbon::now();
-            $geoip = new GeoIP();
-            $geoip->setIp($request->ip());
-            $actual->tz = $geoip->getTimezone();
+            // $geoip = new GeoIP();
+            // $geoip->setIp($request->ip());
+            // $actual->tz = $geoip->getTimezone();
+
             $hoy = $actual->dayOfWeek;
             if($hoy == 0){
                 $hoy = 7;
@@ -3171,9 +3172,10 @@ class ClaseGrupalController extends BaseController {
         }
 
         $actual = Carbon::now();
-        $geoip = new GeoIP();
-        $geoip->setIp($request->ip());
-        $actual->tz = $geoip->getTimezone();
+        // $geoip = new GeoIP();
+        // $geoip->setIp($request->ip());
+        // $actual->tz = $geoip->getTimezone();
+
         $hoy = $actual->dayOfWeek;
 
         return view('vista_instructor.nivelaciones')->with(['clase_grupal_join' => $array, 'hoy' => $hoy, 'academia' => $academia]);
@@ -3277,9 +3279,10 @@ class ClaseGrupalController extends BaseController {
         }
 
         $actual = Carbon::now();
-        $geoip = new GeoIP();
-        $geoip->setIp($request->ip());
-        $actual->tz = $geoip->getTimezone();
+        // $geoip = new GeoIP();
+        // $geoip->setIp($request->ip());
+        // $actual->tz = $geoip->getTimezone();
+        
         $hoy = $actual->dayOfWeek;
 
         return view('vista_instructor.clase_grupal')->with(['clase_grupal_join' => $array, 'hoy' => $hoy, 'academia' => $academia]);

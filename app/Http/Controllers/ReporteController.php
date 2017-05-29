@@ -390,9 +390,9 @@ class ReporteController extends BaseController
             if($request->tipo){
 
                 $actual = Carbon::now();
-                $geoip = new GeoIP();
-                $geoip->setIp($request->ip());
-                $actual->tz = $geoip->getTimezone();
+                // $geoip = new GeoIP();
+                // $geoip->setIp($request->ip());
+                // $actual->tz = $geoip->getTimezone();
 
                 if($request->tipo == 1){
                     $start = $actual->toDateString();
@@ -1859,9 +1859,9 @@ class ReporteController extends BaseController
     public function Master(Request $request){
 
         $actual = Carbon::now();
-        $geoip = new GeoIP();
-        $geoip->setIp($request->ip());
-        $actual->tz = $geoip->getTimezone();
+        // $geoip = new GeoIP();
+        // $geoip->setIp($request->ip());
+        // $actual->tz = $geoip->getTimezone();
 
         $start = $actual->startOfMonth()->toDateString();
         $end = $actual->endOfMonth()->toDateString(); 
@@ -2091,9 +2091,9 @@ class ReporteController extends BaseController
             if($request->tipo){
 
                 $actual = Carbon::now();
-                $geoip = new GeoIP();
-                $geoip->setIp($request->ip());
-                $actual->tz = $geoip->getTimezone();
+                // $geoip = new GeoIP();
+                // $geoip->setIp($request->ip());
+                // $actual->tz = $geoip->getTimezone();
 
                 if($request->tipo == 1){
                     $start = $actual->toDateString();
@@ -2341,9 +2341,9 @@ class ReporteController extends BaseController
             if($request->fecha){
 
                 $actual = Carbon::now();
-                $geoip = new GeoIP();
-                $geoip->setIp($request->ip());
-                $actual->tz = $geoip->getTimezone();
+                // $geoip = new GeoIP();
+                // $geoip->setIp($request->ip());
+                // $actual->tz = $geoip->getTimezone();
 
                 if($request->fecha == 1){
                     $start = $actual->toDateString();
