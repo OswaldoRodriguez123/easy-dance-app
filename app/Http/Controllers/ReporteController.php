@@ -1233,148 +1233,142 @@ class ReporteController extends BaseController
 
         if($request->tipo == 1 OR $request->tipo == 2){
 
-            $query = Alumno::join('inscripcion_clase_grupal','inscripcion_clase_grupal.alumno_id','=','alumnos.id')
-                ->select('alumnos.id as id',
-                         'alumnos.nombre',
-                         'alumnos.apellido')
-                ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
-                ->distinct('id')
-                ->orderBy('nombre', 'asc');
-                    
-            //CLASE GRUPAL
-
-            if($request->clase_grupal_id)
-            {
-                $query->where('inscripcion_clase_grupal.clase_grupal_id','=', $request->clase_grupal_id);
-            }
-            $alumnos = $query->get();
             $tipos_pago = FormasPago::all();
-
 
             foreach($tipos_pago as $tipo_pago){
                 $array_pago[$tipo_pago->id] = ['nombre' => $tipo_pago->nombre, 'cantidad' => 0];
 
             }
 
-            foreach($alumnos as $alumno){
+            $query = Factura::join('items_factura', 'items_factura.factura_id', '=', 'facturas.id')
+                ->join('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
+                ->select('facturas.*',
+                     'items_factura.tipo',
+                     'items_factura.item_id',
+                     'alumnos.nombre',
+                     'alumnos.apellido')
+                ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
+                ->distinct('facturas.id');
 
-                $query = Factura::join('items_factura', 'items_factura.factura_id', '=', 'facturas.id')
-                    ->select('facturas.*',
-                         'items_factura.tipo',
-                         'items_factura.item_id')
-                    ->distinct('facturas.id');
+            //CLASE GRUPAL
 
-                //LINEA DE SERVICIO
+            if($request->clase_grupal_id)
+            {
+                $query->join('inscripcion_clase_grupal','inscripcion_clase_grupal.alumno_id','=','alumnos.id')
+                    ->where('inscripcion_clase_grupal.clase_grupal_id','=', $request->clase_grupal_id);
+            }
 
-                if($request->servicio_tipo)
+            //LINEA DE SERVICIO
+
+            if($request->servicio_tipo)
+            {
+
+                if($request->servicio_tipo == 99)
                 {
-
-                    if($request->servicio_tipo == 99)
-                    {
-                        $not_in = array(5,11,14);
-                        $query->whereNotIn('items_factura.tipo', $not_in);
-                    }else if($request->servicio_tipo == 3){
-                        $in = array(3,4);
-                        $query->whereIn('items_factura.tipo', $in);
-                    }else{
-                        $query->where('items_factura.tipo', $request->servicio_tipo);
-                    }
-                }
-
-                //DETALLE
-
-                // if($request->nombre)
-                // {
-                //     $array_explode = explode(",", $request->nombre);
-                //     $tipo = array();
-
-                //     foreach($array_explode as $explode){
-                //         $tipo[] = $explode;
-                //     }
-
-                //     $query->whereIn('items_factura.nombre', $tipo);
-                // }
-
-                if($request->servicio_id)
-                {
-                    if($request->tipo_dropdown == 2){
-
-                        $query->where('items_factura.item_id', $request->servicio_id);
-
-                    }
-                }
-
-                //FECHA
-
-                if($request->boolean_fecha){
-
-                    $fecha = explode(' - ', $request->fecha2);
-                    $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
-                    $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
-                    $query->whereBetween('facturas.fecha', [$start,$end]);
-
+                    $not_in = array(5,11,14);
+                    $query->whereNotIn('items_factura.tipo', $not_in);
+                }else if($request->servicio_tipo == 3){
+                    $in = array(3,4);
+                    $query->whereIn('items_factura.tipo', $in);
                 }else{
-
-                    if($request->tipo){
-                        if($request->fecha == 1){
-                            $start = Carbon::now()->toDateString();
-                            $end = Carbon::now()->toDateString();  
-                        }else if($request->fecha == 2){
-                            $start = Carbon::now()->startOfMonth()->toDateString();
-                            $end = Carbon::now()->endOfMonth()->toDateString();  
-                        }else if($request->fecha == 3){
-                            $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-                            $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
-                        }
-
-                        $query->whereBetween('facturas.fecha', [$start,$end]);
-                    }
+                    $query->where('items_factura.tipo', $request->servicio_tipo);
                 }
+            }
 
-                $facturas = $query->get();
+            //DETALLE
 
-                foreach($facturas as $factura){
+            // if($request->nombre)
+            // {
+            //     $array_explode = explode(",", $request->nombre);
+            //     $tipo = array();
 
-                    $tipos_pago = Pago::join('formas_pago', 'pagos.forma_pago', '=', 'formas_pago.id')
-                        ->where('factura_id', $factura->id)
-                    ->get();
+            //     foreach($array_explode as $explode){
+            //         $tipo[] = $explode;
+            //     }
 
-                    $pago = '';
-                    $importe_neto = 0;
+            //     $query->whereIn('items_factura.nombre', $tipo);
+            // }
 
-                    if($tipos_pago){
+            if($request->servicio_id)
+            {
+                if($request->tipo_dropdown == 2){
 
-                        foreach($tipos_pago as $tipo_pago){
-
-                            if(!$pago){
-                                $pago = $tipo_pago->nombre;
-                            }
-
-                            $array_pago[$tipo_pago->forma_pago]['cantidad'] += $tipo_pago->monto;
-
-                            $importe_neto += $tipo_pago->monto;
-                            
-                        }
-
-                    }else{
-                        $pago = 'Efectivo';
-                    }
-
-                    $collection=collect($factura);     
-                    $factura_array = $collection->toArray();
-                    $factura_array['cliente'] = $alumno->nombre . ' ' . $alumno->apellido;
-                    $factura_array['fecha'] = Carbon::parse($factura->fecha)->toDateString();
-                    $factura_array['hora'] = Carbon::parse($factura->created_at)->toTimeString();
-                    $factura_array['tipo_pago'] = $pago;
-                    $factura_array['tipo'] = 1;
-                    $factura_array['nombre'] = $factura->concepto;
-                    $factura_array['importe_neto'] = $importe_neto;
-                    $array[$factura->id] = $factura_array;
-
-                    $total_ingreso = $total_ingreso + $factura->importe_neto;
+                    $query->where('items_factura.item_id', $request->servicio_id);
 
                 }
             }
+
+            //FECHA
+
+            if($request->boolean_fecha){
+
+                $fecha = explode(' - ', $request->fecha2);
+                $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+                $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+                $query->whereBetween('facturas.fecha', [$start,$end]);
+
+            }else{
+
+                if($request->tipo){
+                    if($request->fecha == 1){
+                        $start = Carbon::now()->toDateString();
+                        $end = Carbon::now()->toDateString();  
+                    }else if($request->fecha == 2){
+                        $start = Carbon::now()->startOfMonth()->toDateString();
+                        $end = Carbon::now()->endOfMonth()->toDateString();  
+                    }else if($request->fecha == 3){
+                        $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                        $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
+                    }
+
+                    $query->whereBetween('facturas.fecha', [$start,$end]);
+                }
+            }
+
+            $facturas = $query->get();
+
+            foreach($facturas as $factura){
+
+                $tipos_pago = Pago::join('formas_pago', 'pagos.forma_pago', '=', 'formas_pago.id')
+                    ->where('factura_id', $factura->id)
+                ->get();
+
+                $pago = '';
+                $importe_neto = 0;
+
+                if($tipos_pago){
+
+                    foreach($tipos_pago as $tipo_pago){
+
+                        if(!$pago){
+                            $pago = $tipo_pago->nombre;
+                        }
+
+                        $array_pago[$tipo_pago->forma_pago]['cantidad'] += $tipo_pago->monto;
+
+                        $importe_neto += $tipo_pago->monto;
+                        
+                    }
+
+                }else{
+                    $pago = 'Efectivo';
+                }
+
+                $collection=collect($factura);     
+                $factura_array = $collection->toArray();
+                $factura_array['cliente'] = $factura->nombre . ' ' . $factura->apellido;
+                $factura_array['fecha'] = Carbon::parse($factura->fecha)->toDateString();
+                $factura_array['hora'] = Carbon::parse($factura->created_at)->toTimeString();
+                $factura_array['tipo_pago'] = $pago;
+                $factura_array['tipo'] = 1;
+                $factura_array['nombre'] = $factura->concepto;
+                $factura_array['importe_neto'] = $importe_neto;
+                $array[$factura->id] = $factura_array;
+
+                $total_ingreso = $total_ingreso + $factura->importe_neto;
+
+            }
+          
         }
 
 
