@@ -367,7 +367,8 @@
         pageLength: 50,
         order: [[0, 'asc'], [1, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -440,7 +441,13 @@
                         ] ).draw(false).node();
                         $( rowNode )
                             .attr('id',array.id)
-                            .addClass('seleccion');
+                            .data('tipo',array.tipo)
+
+                        if(array.tipo == 1)
+                            $( rowNode ).addClass('seleccion');
+                        else{
+                            $( rowNode ).addClass('disabled');
+                        }
                     });
 
 
@@ -577,14 +584,6 @@
         function formatmoney(n) {
             return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
         } 
-
-        function previa(t){
-
-            var row = $(t).closest('tr').attr('id');
-            var route =route_detalle+"/"+row;
-            window.location=route;
-
-        }
 
         $('body').on('click','.servicio_detalle',function(e){
             
@@ -828,6 +827,24 @@
             $("#boolean_fecha").val('0');
         })
 
+        function pad (str, max) {
+          str = str.toString();
+          return str.length < max ? pad("0" + str, max) : str;
+        }
+
+        function previa(t){
+
+            var row = $(t).closest('tr');
+            var tipo = row.data('tipo')
+
+            console.log(tipo)
+
+            if(tipo == 1){
+                var id = row.attr('id');
+                var route =route_detalle+"/"+id;
+                window.location=route;
+            }
+        }
 
         </script>
 

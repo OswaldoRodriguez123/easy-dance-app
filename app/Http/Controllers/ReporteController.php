@@ -1234,11 +1234,12 @@ class ReporteController extends BaseController
         if($request->tipo == 1 OR $request->tipo == 2){
 
             $query = Alumno::join('inscripcion_clase_grupal','inscripcion_clase_grupal.alumno_id','=','alumnos.id')
-            ->select('alumnos.id as id',
-                     'alumnos.nombre',
-                     'alumnos.apellido')
-            ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
-            ->orderBy('nombre', 'asc');
+                ->select('alumnos.id as id',
+                         'alumnos.nombre',
+                         'alumnos.apellido')
+                ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
+                ->distinct('id')
+                ->orderBy('nombre', 'asc');
                     
             //CLASE GRUPAL
 
@@ -1246,9 +1247,6 @@ class ReporteController extends BaseController
             {
                 $query->where('inscripcion_clase_grupal.clase_grupal_id','=', $request->clase_grupal_id);
             }
-
-            $query->distinct('id');
-
             $alumnos = $query->get();
             $tipos_pago = FormasPago::all();
 
@@ -1260,7 +1258,11 @@ class ReporteController extends BaseController
 
             foreach($alumnos as $alumno){
 
-                $query = Factura::join('items_factura', 'items_factura.factura_id', '=', 'facturas.id')->where('alumno_id', $alumno->id);
+                $query = Factura::join('items_factura', 'items_factura.factura_id', '=', 'facturas.id')
+                    ->select('facturas.*',
+                         'items_factura.tipo',
+                         'items_factura.item_id')
+                    ->distinct('facturas.id');
 
                 //LINEA DE SERVICIO
 
@@ -1334,19 +1336,28 @@ class ReporteController extends BaseController
                 foreach($facturas as $factura){
 
                     $tipos_pago = Pago::join('formas_pago', 'pagos.forma_pago', '=', 'formas_pago.id')
-                        ->where('factura_id', $factura->factura_id)
+                        ->where('factura_id', $factura->id)
                     ->get();
 
-                    foreach($tipos_pago as $tipo_pago){
+                    $pago = '';
+                    $importe_neto = 0;
 
-                        $array_pago[$tipo_pago->forma_pago]['cantidad'] += $tipo_pago->monto;
-                        
-                    }
+                    if($tipos_pago){
 
-                    if(count($tipos_pago) <= 1){
-                        $pago = $tipos_pago[0]->nombre;
+                        foreach($tipos_pago as $tipo_pago){
+
+                            if(!$pago){
+                                $pago = $tipo_pago->nombre;
+                            }
+
+                            $array_pago[$tipo_pago->forma_pago]['cantidad'] += $tipo_pago->monto;
+
+                            $importe_neto += $tipo_pago->monto;
+                            
+                        }
+
                     }else{
-                        $pago = $tipos_pago[0]->nombre . ' ...';
+                        $pago = 'Efectivo';
                     }
 
                     $collection=collect($factura);     
@@ -1354,8 +1365,10 @@ class ReporteController extends BaseController
                     $factura_array['cliente'] = $alumno->nombre . ' ' . $alumno->apellido;
                     $factura_array['fecha'] = Carbon::parse($factura->fecha)->toDateString();
                     $factura_array['hora'] = Carbon::parse($factura->created_at)->toTimeString();
-                    $factura_array['tipo_pago']=$pago;
-                    $factura_array['tipo']=1;
+                    $factura_array['tipo_pago'] = $pago;
+                    $factura_array['tipo'] = 1;
+                    $factura_array['nombre'] = $factura->concepto;
+                    $factura_array['importe_neto'] = $importe_neto;
                     $array[$factura->id] = $factura_array;
 
                     $total_ingreso = $total_ingreso + $factura->importe_neto;

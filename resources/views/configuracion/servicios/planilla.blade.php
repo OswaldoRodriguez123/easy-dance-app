@@ -243,99 +243,6 @@
                 </div>
             </div>
 
-            <!-- <div class="modal fade" id="modalOpciones-Servicio" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Servicio<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="edit_opciones_servicio" id="edit_opciones_servicio"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-12">
-                                <div class="form-group">
-                                    <div class="form-group fg-line">
-                                        <label for="cantidad_sesiones" id="id-cantidad_sesiones">Número de Sesiones</label>
-                                        <input type="text" class="form-control input-sm input-mask" name="cantidad_sesiones" id="cantidad_sesiones" data-mask="00" placeholder="Ej. 10">
-                                    </div>
-                                    <div class="has-error" id="error-cantidad_sesiones">
-                                      <span >
-                                          <small id="error-cantidad_sesiones_mensaje" class="help-block error-span" ></small>                                           
-                                      </span>
-                                    </div>
-                                </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-
-                                        
-                                        <div class="form-group">
-                                        
-                                        <div class="col-sm-3">
-                                        <label for="cantidad_sesiones" id="id-cantidad_sesiones">El servicio expira </label>
-                                        </div>
-                                        <div class="col-sm-2">
-                                        <input type="text" class="form-control input-sm input-mask" name="meses_expiracion" id="meses_expiracion" data-mask="00" placeholder="Ej. 10">
-                                        </div>
-                                        <div class="col-sm-3">
-                                        <label for="cantidad_sesiones" id="id-cantidad_sesiones">meses después de </label>
-                                        </div>
-
-                                        <div class="col-sm-3">
-                                        <div class="select">
-                                        <select class="form-control f-16" id="meses_despues" name="meses_despues">
-                                        
-                                        <option value = "1">La primera clase</option>
-                                        <option value = "2">La fecha de la venta</option>
-                                            </select> 
-
-                                      </div>
-                                      </div>
-                                      <div class="col-sm-3">
-
-                                      </div>
-
-                                      <br><br>
-                                  <div class="col-sm-12">
-                                    <div class="has-error" id="error-meses_expiracion">
-                                      <span >
-                                          <small id="error-meses_expiracion_mensaje" class="help-block error-span" ></small>                                           
-                                      </span>
-                                    </div>
-                                </div>
-                               </div>
-
-                               <div class="clearfix"></div> 
-
-                               <input type="hidden" name="id" value="{{$servicio->id}}"></input>
-
-                               
-                               
-                           </div>
-                           
-                        </div>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-12 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-12">                            
-
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_opciones_servicio" data-update="opciones" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                            </div>
-                        </div></form>
-                    </div>
-                </div>
-            </div>
- -->
             <div class="modal fade" id="modalImpuesto-Servicio" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -484,9 +391,6 @@
                             <div class="text-center p-t-30">       
                               <div class="row p-b-15 ">
                                 <div class="col-md-12" data-src="/assets/img/ayuda-configuracion.jpg">
-                                  <!--<div class="text-center">
-                                    <img src="{{url('/')}}/assets/img/detalle_alumnos.jpg" class="img-responsive img-efecto text-center" alt="">
-                                  </div>-->
                                   <ul class="ca-menu-planilla">
                                     <li>
                                         <a href="#" class="disabled">
@@ -516,8 +420,8 @@
 
                                 </div>                
                               </div>
-                              </div>
-                              </div>
+                            </div>
+                          </div>
 
 					           	<div class="col-sm-9">
 
@@ -571,14 +475,6 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="servicio-tipo" data-valor="{{$servicio->tipo}}">{{$tipo}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-<!--                             <tr class="detalle" data-toggle="modal" href="#modalOpciones-Servicio">
-                             <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-opciones" class="zmdi {{ empty($servicio->numero_sesiones) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-city-alt zmdi-hc-fw f-22"></i> </span>
-                               <span class="f-14"> Opciones Avanzadas </span>
-                             </td>
-                             <td class="f-14 m-l-15" > <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr> -->
                             <tr class="detalle" data-toggle="modal" href="#modalImpuesto-Servicio">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-impuesto" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
@@ -664,19 +560,18 @@
 
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInLeftBig';
-        //var cardImg = $(this).closest('#content').find('h1');
         if (animation === "hinge") {
-        animationDuration = 3100;
+          animationDuration = 3100;
         }
         else {
-        animationDuration = 3200;
+          animationDuration = 3200;
         }
-        //$("h1").removeAttr('class');
+
         $(".container").addClass('animated '+animation);
 
-            setTimeout(function(){
-                $(".card-body").removeClass(animation);
-            }, animationDuration);
+        setTimeout(function(){
+            $(".card-body").removeClass(animation);
+        }, animationDuration);
 
       });
 
@@ -700,7 +595,6 @@
       limpiarMensaje();
        var descripcion=$("#servicio-descripcion").data('valor');
        $("#descripcion").val(descripcion);
-      //$("#direccion").val($("#alumno-direccion").text());
     })
 
 
@@ -718,7 +612,6 @@
          $.each(merror, function (n, c) {
              console.log(n);
            $.each(this, function (name, value) {
-              //console.log(this);
               var error=value;
               $("#error-"+n+"_mensaje").html(error);
               console.log(value);
@@ -731,7 +624,6 @@
           if(c.name=='descripcion' || c.name=='nombre'){
              $("#servicio-"+c.name).data('valor',c.value);
              $("#servicio-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
-            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else if (c.name=='incluye_iva'){
             if(c.value ==1){
               $("#servicio-"+c.name).text('Si');
@@ -806,7 +698,6 @@
     };
 
     $(".guardar").click(function(){
-        //$(this).data('formulario');
         var nFrom = $(this).attr('data-from');
         var nAlign = $(this).attr('data-align');
         var nIcons = $(this).attr('data-icon');
@@ -910,8 +801,6 @@
             var nType = 'success';
             var nAnimIn = $(this).attr('data-animation-in');
             var nAnimOut = $(this).attr('data-animation-out')
-                        // swal("Done!","It was succesfully deleted!","success");
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
                         eliminar(id);
           }
                 });
@@ -954,8 +843,6 @@
         }
       };
     
-   </script> 
-
-   <!--<script src="{{url('/')}}/assets/js/script/alumno-planilla.js"></script>-->        
+   </script>       
 		
 @stop
