@@ -1373,8 +1373,10 @@ class AcademiaController extends BaseController {
 
                 // CASO ESPECIFICO, SI TRANSFIEREN A UN ALUMNO DE CLASE GRUPAL A OTRA, ESTE QUEDA COMO INACTIVO Y NO PUEDE ACCEDER AL SISTEMA, EN ESTE CASO SE LE AÑADE UNA FECHA PRORROGA PARA ACCEDER AL SISTEMA
 
-                if($fecha_a_comparar > $fecha_clase){
-                    $fecha_clase = $fecha_a_comparar;
+                if($fecha_a_comparar){
+                    if($fecha_a_comparar > $fecha_clase){
+                        $fecha_clase = $fecha_a_comparar;
+                    }
                 }
 
                 if($fecha_clase <= Carbon::now()){
