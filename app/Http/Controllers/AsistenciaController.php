@@ -933,7 +933,7 @@ class AsistenciaController extends BaseController
         $alumnod = Alumno::join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
             ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
             ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-            ->where('items_factura_proforma.alumno_id', $id)
+            ->where('items_factura_proforma.usuario_id', $id)
         ->get();
 
         if(count($alumnod)>0){
