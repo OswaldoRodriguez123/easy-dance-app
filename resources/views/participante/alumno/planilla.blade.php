@@ -1564,14 +1564,6 @@
 
       Webcam.attach( '#webcam' );
 
-      Webcam.on( 'live', function() {
-        console.log('live')
-      });
-      
-      Webcam.on( 'error', function(err) {
-         swal('Solicitud no procesada','No posees una camara conectada','error');
-      });
-
     })
 
     $('#modalImagen-Alumno').on('hidden.bs.modal', function (event) {
