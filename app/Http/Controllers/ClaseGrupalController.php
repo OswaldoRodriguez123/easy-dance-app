@@ -655,7 +655,8 @@ class ClaseGrupalController extends BaseController {
                 }
 
                 $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
-                    ->where('alumno_id','=',$alumno->id)
+                    ->where('usuario_id','=',$alumno->id)
+                    ->where('usuario_tipo',2)
                 ->sum('importe_neto');
 
                 $activacion = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
@@ -1399,8 +1400,7 @@ class ClaseGrupalController extends BaseController {
             $alumnosclasegrupal->deleted_at = null;
             $alumnosclasegrupal->save();
 
-            $deuda = DB::table('alumnos')
-                ->join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
+            $deuda = Alumno::join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
                 ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
                 ->where('alumnos.id','=', $alumnosclasegrupal->alumno_id)
             ->sum('items_factura_proforma.importe_neto');
@@ -1500,7 +1500,8 @@ class ClaseGrupalController extends BaseController {
 
                     $item_factura = new ItemsFacturaProforma;
                         
-                    $item_factura->alumno_id = $request->alumno_id;
+                    $item_factura->usuario_id = $request->alumno_id;
+                    $item_factura->usuario_tipo = 1;
                     $item_factura->academia_id = Auth::user()->academia_id;
                     $item_factura->fecha = Carbon::now()->toDateString();
                     $item_factura->item_id = $servicio_id;
@@ -1521,7 +1522,8 @@ class ClaseGrupalController extends BaseController {
 
                     $item_factura = new ItemsFacturaProforma;
                         
-                    $item_factura->alumno_id = $request->alumno_id;
+                    $item_factura->usuario_id = $request->alumno_id;
+                    $item_factura->usuario_tipo = 1;
                     $item_factura->academia_id = Auth::user()->academia_id;
                     $item_factura->fecha = Carbon::now()->toDateString();
                     $item_factura->item_id = $servicio_id;
@@ -1596,7 +1598,8 @@ class ClaseGrupalController extends BaseController {
 
                     $item_factura = new ItemsFacturaProforma;
                         
-                    $item_factura->alumno_id = $request->alumno_id;
+                    $item_factura->usuario_id = $request->alumno_id;
+                    $item_factura->usuario_tipo = 1;
                     $item_factura->academia_id = Auth::user()->academia_id;
                     $item_factura->fecha = Carbon::now()->toDateString();
                     $item_factura->item_id = $clasegrupal->servicio_id;
@@ -1617,7 +1620,8 @@ class ClaseGrupalController extends BaseController {
 
                     $item_factura = new ItemsFacturaProforma;
                         
-                    $item_factura->alumno_id = $request->alumno_id;
+                    $item_factura->usuario_id = $request->alumno_id;
+                    $item_factura->usuario_tipo = 1;
                     $item_factura->academia_id = Auth::user()->academia_id;
                     $item_factura->fecha = Carbon::now()->toDateString();
                     $item_factura->item_id = $clasegrupal->servicio_id;
