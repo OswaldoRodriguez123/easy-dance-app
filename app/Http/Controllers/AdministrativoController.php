@@ -1274,7 +1274,7 @@ class AdministrativoController extends BaseController {
 
             $array = [
 
-               'correo_destino' => $alumno->correo,
+               'correo_destino' => $usuario->correo,
                'nombre' => $academia->nombre,
                'correo' => $academia->correo,
                'telefono' => $academia->celular,
@@ -1485,12 +1485,6 @@ class AdministrativoController extends BaseController {
             ->OrderBy('presupuestos.created_at')
         ->get();
 
-        $items_presupuesto = Presupuesto::join('items_presupuesto', 'items_presupuesto.presupuesto_id', '=', 'presupuestos.id')
-            ->select('items_presupuesto.importe_neto', 'presupuestos.id')
-            ->where('presupuestos.academia_id' , '=' , Auth::user()->academia_id)
-            ->OrderBy('presupuestos.created_at')
-        ->get();
-
         $array=array();
 
         foreach($presupuestos as $presupuesto){
@@ -1612,7 +1606,7 @@ class AdministrativoController extends BaseController {
             end( $items );
             $contador = key( $items );
 
-             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
 
         }
     }
@@ -1645,7 +1639,6 @@ class AdministrativoController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
-
 
     public function agregaritem(Request $request){
         
@@ -1762,7 +1755,7 @@ class AdministrativoController extends BaseController {
 
         $impuesto_total = $importe_neto * ($impuesto / 100);
 
-        if(ItemsFacturaProforma::find($id)->delete()){
+        if($factura_proforma->delete()){
 
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'impuesto' => $impuesto_total, 'importe_neto' => $importe_neto, 200]);
         }else{
@@ -2239,23 +2232,31 @@ class AdministrativoController extends BaseController {
 
     public function eliminaracuerdo($id)
     {
-        $items_acuerdo = ItemsAcuerdo::where('acuerdo_id',$id)->get();
-        
-        foreach($items_acuerdo as $item){
-            $proforma = ItemsFacturaProforma::find($item->item_id)->delete();
-            $item->delete();
-        }
+       
 
         $acuerdo = Acuerdo::find($id);
+
+        if($acuerdo){
+
+             $items_acuerdo = ItemsAcuerdo::where('acuerdo_id',$id)->get();
         
-        if($acuerdo->delete()){
-            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            foreach($items_acuerdo as $item){
+                $proforma = ItemsFacturaProforma::find($item->item_id)->delete();
+                $item->delete();
+            }
+            
+            if($acuerdo->delete()){
+                return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
 
-        public function getFactura($id){
+    public function getFactura($id){
+        
         //DATOS DE ENCABEZADO
         
         $factura = Factura::find($id);
@@ -2378,6 +2379,7 @@ class AdministrativoController extends BaseController {
     }
 
     public function detalleacuerdo($id){
+
         //DATOS DE ENCABEZADO
         
         $acuerdo = Acuerdo::find($id);
@@ -2424,15 +2426,15 @@ class AdministrativoController extends BaseController {
         $total = $subtotal + $impuesto;
 
         return view('administrativo.acuerdo.planilla')->with([
-                'facturas'          => $acuerdo, 
-                'usuario'           => $usuario, 
-                'academia'          => $academia, 
-                'subtotal'          => $subtotal, 
-                'iva'               => $impuesto, 
-                'total'             => $total, 
-                'porcentajeIVA'     => $PerctIVA,
-                'detalleFactura'    => $detalle 
-                ]);
+            'facturas'          => $acuerdo, 
+            'usuario'           => $usuario, 
+            'academia'          => $academia, 
+            'subtotal'          => $subtotal, 
+            'iva'               => $impuesto, 
+            'total'             => $total, 
+            'porcentajeIVA'     => $PerctIVA,
+            'detalleFactura'    => $detalle 
+        ]);
     }
 
 	public function CancelarPago()
@@ -2709,7 +2711,6 @@ class AdministrativoController extends BaseController {
 
     public function principalTransferencias()
     {
-
         return view('vista_alumno.administrativo.transferencias');
     }
 
@@ -2822,5 +2823,4 @@ class AdministrativoController extends BaseController {
             }
         }
     }
-    
 }
