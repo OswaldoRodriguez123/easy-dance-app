@@ -135,7 +135,7 @@ class AlumnoController extends BaseController
     public function eliminados()
     {
         $alumnod = DB::table('alumnos')
-            ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+            ->join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
             ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
             ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
@@ -158,7 +158,7 @@ class AlumnoController extends BaseController
     public function inactivos()
     {
         $alumnod = DB::table('alumnos')
-            ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+            ->join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
             ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
             ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
@@ -186,7 +186,7 @@ class AlumnoController extends BaseController
     public function congelados()
     {
         $alumnod = DB::table('alumnos')
-            ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+            ->join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
             ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
             ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
@@ -708,7 +708,7 @@ class AlumnoController extends BaseController
     {   
         $item_factura = DB::table('items_factura_proforma')
             ->select('items_factura_proforma.*')
-            ->where('items_factura_proforma.alumno_id', '=', $id)
+            ->where('items_factura_proforma.usuario_id', '=', $id)
             ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
         ->get();
 
@@ -737,7 +737,7 @@ class AlumnoController extends BaseController
         ->first();
 
         $proforma = DB::table('items_factura_proforma')
-            ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+            ->join('alumnos', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
             ->select('items_factura_proforma.*')
             ->where('alumnos.id', '=', $id)
         ->get();

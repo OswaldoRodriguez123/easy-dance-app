@@ -739,7 +739,7 @@ class ReporteController extends BaseController
                 $deuda = DB::table('items_factura_proforma')
                     ->select('items_factura_proforma.*')
                     ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                    ->where('items_factura_proforma.alumno_id', $asistencia->alumno_id)
+                    ->where('items_factura_proforma.usuario_id', $asistencia->alumno_id)
                 ->first();
 
                 if($pertenece){
@@ -798,7 +798,7 @@ class ReporteController extends BaseController
                     $deuda = DB::table('items_factura_proforma')
                         ->select('items_factura_proforma.*')
                         ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                        ->where('items_factura_proforma.alumno_id', $inscripcion->alumno_id)
+                        ->where('items_factura_proforma.usuario_id', $inscripcion->alumno_id)
                     ->first();
 
 
@@ -865,7 +865,7 @@ class ReporteController extends BaseController
                 $deuda = DB::table('items_factura_proforma')
                     ->select('items_factura_proforma.*')
                     ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                    ->where('items_factura_proforma.alumno_id', $inscripcion->alumno_id)
+                    ->where('items_factura_proforma.usuario_id', $inscripcion->alumno_id)
                 ->first();
 
 
@@ -899,7 +899,7 @@ class ReporteController extends BaseController
                     $deuda = DB::table('items_factura_proforma')
                         ->select('items_factura_proforma.*')
                         ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                        ->where('items_factura_proforma.alumno_id', $asistencia->alumno_id)
+                        ->where('items_factura_proforma.usuario_id', $asistencia->alumno_id)
                     ->first();
 
   
@@ -1842,7 +1842,7 @@ class ReporteController extends BaseController
             $deuda = DB::table('items_factura_proforma')
                 ->select('items_factura_proforma.*')
                 ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                ->where('items_factura_proforma.alumno_id', $asistencia->alumno_id)
+                ->where('items_factura_proforma.usuario_id', $asistencia->alumno_id)
             ->first();
 
             if($deuda){

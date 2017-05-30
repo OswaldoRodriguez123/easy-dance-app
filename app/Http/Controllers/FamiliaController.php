@@ -30,7 +30,7 @@ class FamiliaController extends BaseController {
         ->get();
 
         $alumnod = DB::table('alumnos')
-            ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+            ->join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
             ->join('users', 'alumnos.id', '=', 'users.usuario_id')
             ->join('familias', 'familias.id', '=', 'alumnos.familia_id')
             ->select('familias.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')

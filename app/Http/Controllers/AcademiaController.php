@@ -1156,9 +1156,9 @@ class AcademiaController extends BaseController {
 
                             $FacturaProforma = ItemsFacturaProforma::select(
                             'items_factura_proforma.tipo', 
-                            'items_factura_proforma.alumno_id')
+                            'items_factura_proforma.usuario_id')
                             ->where('items_factura_proforma.tipo','=',$tipo)
-                            ->where('items_factura_proforma.alumno_id', '=', $InscripcionClase->AlumnoId)
+                            ->where('items_factura_proforma.usuario_id', '=', $InscripcionClase->AlumnoId)
                             ->where('items_factura_proforma.item_id', '=', $configClases->clase_grupal_id)
                             ->get()->count();
 
@@ -1251,9 +1251,9 @@ class AcademiaController extends BaseController {
 
                     $FacturaProforma = ItemsFacturaProforma::select(
                     'items_factura_proforma.tipo', 
-                    'items_factura_proforma.alumno_id')
+                    'items_factura_proforma.usuario_id')
                     ->where('items_factura_proforma.tipo','=',$tipo)
-                    ->where('items_factura_proforma.alumno_id', '=', $InscripcionClase->AlumnoId)
+                    ->where('items_factura_proforma.usuario_id', '=', $InscripcionClase->AlumnoId)
                     ->get()->count();
 
                     /** AQUI CONVERTIMOS LA FECHA PREFERENCIAL PARA PODER

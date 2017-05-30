@@ -1400,7 +1400,7 @@ class ClaseGrupalController extends BaseController {
             $alumnosclasegrupal->save();
 
             $deuda = DB::table('alumnos')
-                ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+                ->join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
                 ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
                 ->where('alumnos.id','=', $alumnosclasegrupal->alumno_id)
             ->sum('items_factura_proforma.importe_neto');
@@ -1538,7 +1538,7 @@ class ClaseGrupalController extends BaseController {
                 }
 
                 $deuda = DB::table('alumnos')
-                    ->join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+                    ->join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
                     ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
                     ->where('alumnos.id','=', $request->alumno_id)
                 ->sum('items_factura_proforma.importe_neto');
