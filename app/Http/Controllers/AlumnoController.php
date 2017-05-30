@@ -36,6 +36,7 @@ use App\Factura;
 use App\ItemsFactura;
 use App\Pago;
 use App\Acuerdo;
+use App\ItemsAcuerdo;
 use App\ItemsPresupuesto;
 use App\Presupuesto;
 use App\Asistencia;
@@ -82,7 +83,8 @@ class AlumnoController extends BaseController
         foreach($alumnos as $alumno){
 
             $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
-                ->where('alumno_id','=',$alumno->id)
+                ->where('usuario_id','=',$alumno->id)
+                ->where('usuario_tipo','=',1)
             ->sum('importe_neto');
 
             $activacion = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
@@ -534,7 +536,8 @@ class AlumnoController extends BaseController
 
             $descripcion = implode(", ", $array_descripcion);
 
-            $total =ItemsFacturaProforma::where('alumno_id', '=', $id)
+            $total =ItemsFacturaProforma::where('usuario_id', '=', $id)
+                ->where('usuario_tipo','=',1)
                 ->where('fecha_vencimiento','<=',Carbon::today())
             ->sum('importe_neto');
 
@@ -761,16 +764,14 @@ class AlumnoController extends BaseController
     {   
         $alumno = Alumno::find($id);
 
-        $factura_join = DB::table('facturas')
-            ->join('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
+        $factura_join = Factura::join('alumnos', 'facturas.usuario_id', '=', 'alumnos.id')
             ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id')
-            ->where('alumno_id', '=', $id)
+            ->where('alumnos.id', '=', $id)
         ->get();
 
-        $alumnod = DB::table('facturas')
-            ->join('items_factura', 'items_factura.factura_id', '=', 'facturas.id')
+        $alumnod = Factura::join('items_factura', 'items_factura.factura_id', '=', 'facturas.id')
             ->select('items_factura.importe_neto', 'facturas.id')
-            ->where('facturas.alumno_id','=',$id)
+            ->where('facturas.usuario_id','=',$id)
         ->get();
 
         if($alumnod){
@@ -1427,27 +1428,43 @@ class AlumnoController extends BaseController
     }
 
     public function eliminar_permanentemente($id){
-        $delete = ItemsFacturaProforma::where('alumno_id',$id)->forceDelete();
+        $delete = ItemsFacturaProforma::where('usuario_id',$id)->where('usuario_tipo',1)->forceDelete();
         $evaluaciones = Evaluacion::where('alumno_id',$id)->get();
+
         foreach($evaluaciones as $evaluacion){
             $detalle_evaluacion = DetalleEvaluacion::where('evaluacion_id',$evaluacion->id)->forceDelete();
         }
-        $delete = Evaluacion::where('alumno_id',$id)->forceDelete();
-        $facturas = Factura::where('alumno_id',$id)->get();
+
+        $delete = Evaluacion::where('alumno_id',$id)->forceDelete();        
+        $delete = AlumnoRemuneracion::where('alumno_id', $id)->forceDelete();
+
+        $facturas = Factura::where('usuario_id',$id)->where('usuario_tipo',1)->get();
+
         foreach($facturas as $factura)
         {
             $delete = ItemsFactura::where('factura_id',$factura->id)->forceDelete();
             $delete = Pago::where('factura_id',$factura->id)->forceDelete();
         }
-        $delete = AlumnoRemuneracion::where('alumno_id', $id)->forceDelete();
-        $delete = Factura::where('alumno_id',$id)->forceDelete();
-        $delete = Acuerdo::where('alumno_id',$id)->forceDelete();
 
-        $presupuestos = Factura::where('alumno_id',$id)->get();
+        $delete = Factura::where('usuario_id',$id)->where('usuario_tipo',1)->forceDelete();
+
+        $acuerdos = Acuerdo::where('usuario_id',$id)->where('usuario_tipo',1)->get();
+
+        foreach($acuerdos as $acuerdo)
+        {
+            $delete = ItemsAcuerdo::where('acuerdo_id',$acuerdo->id)->forceDelete();
+        }
+
+        $delete = Acuerdo::where('usuario_id',$id)->where('usuario_tipo',1)->forceDelete();
+
+        $presupuestos = Presupuesto::where('alumno_id',$id)->get();
+
         foreach($presupuestos as $presupuesto)
         {
             $delete = ItemsPresupuesto::where('presupuesto_id',$presupuesto->id)->forceDelete();
         }
+
+        $delete = Acuerdo::where('usuario_id',$id)->where('usuario_tipo',1)->forceDelete();
         $delete = Presupuesto::where('alumno_id',$id)->forceDelete();
         $delete = InscripcionClaseGrupal::where('alumno_id',$id)->forceDelete();
         $delete = InscripcionTaller::where('alumno_id',$id)->forceDelete();
@@ -1473,26 +1490,34 @@ class AlumnoController extends BaseController
                         $detalle_evaluacion = DetalleEvaluacion::where('evaluacion_id',$evaluacion->id)->forceDelete();
                     }
                     $delete = Evaluacion::where('alumno_id',$hijo->id)->forceDelete();
-                    $facturas = Factura::where('alumno_id',$hijo->id)->get();
+                    $delete = AlumnoRemuneracion::where('alumno_id', $hijo->id)->forceDelete();
+                    $facturas = Factura::where('usuario_id',$hijo->id)->where('usuario_tipo',1)->get();
                     foreach($facturas as $factura)
                     {
                         $delete = ItemsFactura::where('factura_id',$factura->id)->forceDelete();
                         $delete = Pago::where('factura_id',$factura->id)->forceDelete();
                     }
-                    $delete = AlumnoRemuneracion::where('alumno_id', $hijo->id)->forceDelete();
-                    $delete = Factura::where('alumno_id',$hijo->id)->forceDelete();
-                    $delete = Acuerdo::where('alumno_id',$hijo->id)->forceDelete();
+                    $delete = Factura::where('usuario_id',$hijo->id)->forceDelete();
+                    $acuerdos = Acuerdo::where('usuario_id',$hijo->id)->where('usuario_tipo',1)->get();
 
-                    $presupuestos = Factura::where('alumno_id',$hijo->id)->get();
+                    foreach($acuerdos as $acuerdo)
+                    {
+                        $delete = ItemsAcuerdo::where('acuerdo_id',$acuerdo->id)->forceDelete();
+                    }
+
+                    $delete = Acuerdo::where('usuario_id',$hijo->id)->where('usuario_tipo',1)->forceDelete();
+
+                    $presupuestos = Presupuesto::where('alumno_id',$hijo->id)->get();
+
                     foreach($presupuestos as $presupuesto)
                     {
                         $delete = ItemsPresupuesto::where('presupuesto_id',$presupuesto->id)->forceDelete();
                     }
+
                     $delete = Presupuesto::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = InscripcionClaseGrupal::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = InscripcionTaller::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = InscripcionClasePersonalizada::where('alumno_id',$hijo->id)->forceDelete();
-                    // $delete = InscripcionCoreografia::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = Asistencia::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = Cita::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = PerfilEvaluativo::where('usuario_id', $hijo->id)->forceDelete();
