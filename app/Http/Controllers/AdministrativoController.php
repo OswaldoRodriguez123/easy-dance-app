@@ -872,9 +872,9 @@ class AdministrativoController extends BaseController {
 
                         $item_proforma = ItemsFacturaProforma::where('id', '=', $id)->first();
 
-                        if($item_proforma){
+                        $tipo = $item_proforma->tipo;
 
-                            $tipo = $item_proforma->tipo;
+                        if($item_proforma){
 
                             if($item_proforma->tipo == 6){
 
@@ -896,7 +896,7 @@ class AdministrativoController extends BaseController {
                                         $item_factura->fecha = Carbon::now()->toDateString();
                                         $item_factura->item_id = $item_proforma->item_id;
                                         $item_factura->nombre = 'Retraso de pago ' .  $item_proforma->nombre;
-                                        $item_factura->tipo = $tipo;
+                                        $item_factura->tipo = $item_proforma->tipo;
                                         $item_factura->cantidad = 1;
                                         $item_factura->importe_neto = $mora;
                                         $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
@@ -1023,7 +1023,7 @@ class AdministrativoController extends BaseController {
                                     $item_factura->fecha = Carbon::now()->toDateString();
                                     $item_factura->item_id = $item_proforma->item_id;
                                     $item_factura->nombre = 'Retraso de pago ' .  $item_proforma->nombre;
-                                    $item_factura->tipo = $tipo;
+                                    $item_factura->tipo = $item_proforma->tipo;
                                     $item_factura->cantidad = 1;
                                     $item_factura->importe_neto = $mora;
                                     $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
@@ -1178,7 +1178,7 @@ class AdministrativoController extends BaseController {
                     $celular = getLimpiarNumero($alumno->celular);
                 }
 
-                if($academia->pais_id == 11 && strlen($celular) == 10){
+                if($academia->pais_id == 11 && strlen($celular) == 10 && $tipo != 2){
                     
                     $mensaje = $alumno->nombre.'. hemos registrado satisfactoriamente tu pago, gracias por usar nuestros servicios. ¡Nos encanta verte bailar!.';
 
