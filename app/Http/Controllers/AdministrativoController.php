@@ -2467,7 +2467,7 @@ class AdministrativoController extends BaseController {
             return response()->json(['errores' => ['usuario_id' => [0, 'No se puede generar un acuerdo de pago, debido a que este participante ya posee uno asignado']], 'status' => 'ERROR'],422);
         }
         
-        $items_factura = ItemsFacturaProforma::where('usuario_id', '=', $id)->get();
+        $items_factura = ItemsFacturaProforma::where('usuario_id', '=', $usuario_id)->where('usuario_tipo',$usuario_tipo)->get();
 
         $total = 0;
 
@@ -2479,8 +2479,7 @@ class AdministrativoController extends BaseController {
 
         if($total > 0){
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'total' => $total, 200]);
-        }
-        else{
+        }else{
             return response()->json(['errores' => ['usuario_id' => [0, 'Este participante no presenta deuda para generar acuerdo de pago, selecciona otro participante']], 'status' => 'ERROR'],422);
         }
     }
