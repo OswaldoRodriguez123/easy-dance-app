@@ -420,7 +420,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('administrativo/acuerdos', 'AdministrativoController@principalacuerdo');
 		Route::get('administrativo/acuerdos/detalle/{id}', 'AdministrativoController@detalleacuerdo');
 		Route::get('administrativo/acuerdos/generar', 'AdministrativoController@acuerdo');
-		Route::get('administrativo/acuerdos/generar/{id}', 'AdministrativoController@acuerdoconalumno');
+		Route::get('administrativo/acuerdos/generar/{id}', 'AdministrativoController@acuerdoconid');
 		Route::post('administrativo/acuerdo/generar', 'AdministrativoController@generar_acuerdo');
 		Route::post('administrativo/pagos/pendiente/{id}', 'AdministrativoController@pagospendientes');
 		Route::post('administrativo/acuerdo/guardar', 'AdministrativoController@storeAcuerdo');

@@ -1380,7 +1380,7 @@ class AdministrativoController extends BaseController {
         return view('administrativo.acuerdo.acuerdo')->with(['usuarios' => $array]);
     }
 
-    public function acuerdoconalumno($id)
+    public function acuerdoconid($id)
     {
         $total = 0;
 
@@ -1413,9 +1413,13 @@ class AdministrativoController extends BaseController {
 
         }
 
-        $acuerdo = ItemsFacturaProforma::where('usuario_id', '=', $id)
+        $explode = explode("-", $id);
+        $usuario_tipo = $explode[0];
+        $usuario_id = $explode[1];
+
+        $acuerdo = ItemsFacturaProforma::where('usuario_id', '=', $usuario_id)
             ->where('tipo' , '=', 6)
-            ->where('usuario_tipo' , '=', 1)
+            ->where('usuario_tipo' , '=', $usuario_tipo)
         ->count();
 
         $array = array();
