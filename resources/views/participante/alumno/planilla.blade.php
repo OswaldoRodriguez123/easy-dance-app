@@ -1555,18 +1555,15 @@
     $('#modalImagen-Alumno').on('show.bs.modal', function (event) {
       limpiarMensaje();
 
-      Webcam.on( 'load', function() {
-        
-        Webcam.set({
-          width: 300,
-          height: 300,
-          image_format: 'jpeg',
-          jpeg_quality: 90
-        });
-
-        Webcam.attach( '#webcam' );
+      Webcam.set({
+        width: 300,
+        height: 300,
+        image_format: 'jpeg',
+        jpeg_quality: 90
       });
-  
+
+      Webcam.attach( '#webcam' );
+
       Webcam.on( 'live', function() {
         console.log('live')
       });
