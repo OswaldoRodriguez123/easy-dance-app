@@ -929,7 +929,8 @@ class AsistenciaController extends BaseController
     }
 
     private function deuda($id){
-        $alumnod = Alumno::join('items_factura_proforma', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+
+        $alumnod = Alumno::join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
             ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
             ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
             ->where('items_factura_proforma.alumno_id', $id)
