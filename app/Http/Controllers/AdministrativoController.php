@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Alumno;
 use App\AlumnoRemuneracion;
+use App\Staff;
 use App\Acuerdo;
 use App\ItemsAcuerdo;
 use App\Pago;
@@ -24,6 +25,7 @@ use App\ClaseGrupal;
 use App\MercadopagoMovs;
 use App\User;
 use App\UsuarioTipo;
+use App\UsuarioExterno;
 use App\Familia;
 use App\Paquete;
 use App\CredencialAlumno;
@@ -63,38 +65,35 @@ class AdministrativoController extends BaseController {
         {
 
 
-		  $factura_join = DB::table('facturas')
-            ->join('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
-            ->where('facturas.alumno_id' , '=' , $usuario_id)
-            ->OrderBy('facturas.created_at')
-        ->get();
-
-        $array=array();
-
-        foreach($factura_join as $factura){
-
-
-            $total = ItemsFactura::where('factura_id', '=' ,  $factura->id)->sum('importe_neto');
-            $collection=collect($factura);     
-            $factura_array = $collection->toArray();
-            
-            $factura_array['total']=$total;
-            $array[$factura->id] = $factura_array;
-
-        }
-
-            $proforma_join = DB::table('items_factura_proforma')
-                ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'items_factura_proforma.fecha_vencimiento as fecha_vencimiento', 'items_factura_proforma.id', 'items_factura_proforma.importe_neto as total', 'items_factura_proforma.nombre as concepto', 'items_factura_proforma.cantidad')
-                ->where('items_factura_proforma.alumno_id' , '=' , $usuario_id)
+            $factura_join = Factura::join('alumnos', 'facturas.usuario_id', '=', 'alumnos.id')
+                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
+                ->where('facturas.usuario_id' , '=' , $usuario_id)
+                ->OrderBy('facturas.created_at')
             ->get();
 
-            $total = DB::table('items_factura_proforma')
-            ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
-            ->where('items_factura_proforma.alumno_id', $usuario_id)
-            ->where('alumnos.deleted_at' , '=' , null)
-            ->sum('.items_factura_proforma.importe_neto');
+            $array=array();
+
+            foreach($factura_join as $factura){
+
+
+                $total = ItemsFactura::where('factura_id', '=' ,  $factura->id)->sum('importe_neto');
+                $collection=collect($factura);     
+                $factura_array = $collection->toArray();
+                
+                $factura_array['total']=$total;
+                $array[$factura->id] = $factura_array;
+
+            }
+
+            $proforma_join = ItemsFacturaProforma::join('alumnos', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
+                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'items_factura_proforma.fecha_vencimiento as fecha_vencimiento', 'items_factura_proforma.id', 'items_factura_proforma.importe_neto as total', 'items_factura_proforma.nombre as concepto', 'items_factura_proforma.cantidad')
+                ->where('items_factura_proforma.usuario_id' , '=' , $usuario_id)
+            ->get();
+
+            $total = ItemsFacturaProforma::join('alumnos', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
+                ->where('items_factura_proforma.usuario_id', $usuario_id)
+                ->where('alumnos.deleted_at' , '=' , null)
+            ->sum('items_factura_proforma.importe_neto');
 
             $fecha_vencimiento = null;
             $primera_fecha = false;
@@ -119,8 +118,7 @@ class AdministrativoController extends BaseController {
 
 
             return view('vista_alumno.administrativo.administrativo')->with(['facturas'=> $array, 'proforma' => $proforma_join, 'total' => $total, 'fecha_vencimiento' => $fecha_vencimiento]); 
-        }
-        else{
+        }else{
             return redirect("/"); 
         }                   
 	}
@@ -149,7 +147,8 @@ class AdministrativoController extends BaseController {
     public function principalpagos()
     {
 
-        $array = array();
+        $array_factura = array();
+        $array_proforma = array();
 
         // $factura_join = DB::table('facturas')
         //     ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
@@ -169,49 +168,78 @@ class AdministrativoController extends BaseController {
         //      ->orderBy('patrocinadores.monto', 'desc')
         //  ->get();
 
-        $factura_join = Factura::join('alumnos', 'facturas.alumno_id', '=', 'alumnos.id') 
-            ->selectRaw('CONCAT(alumnos.nombre, " " , alumnos.apellido) as nombre, facturas.numero_factura as factura, facturas.fecha as fecha, facturas.id, facturas.concepto')
-            ->where('facturas.academia_id' , '=' , Auth::user()->academia_id)
-            ->OrderBy('facturas.created_at', 'desc')
+        $facturas = Factura::where('academia_id' , '=' , Auth::user()->academia_id)
+            ->OrderBy('created_at', 'desc')
             ->limit(150)
         ->get();
 
+        foreach($facturas as $factura){
 
-        foreach($factura_join as $factura){
-
-            $tipo_pago = Pago::join('formas_pago', 'pagos.forma_pago', '=', 'formas_pago.id')
+            $tipos_pago = Pago::join('formas_pago', 'pagos.forma_pago', '=', 'formas_pago.id')
                 ->where('factura_id', $factura->id)
             ->get();
 
-            if(count($tipo_pago) <= 1){
-                $pago = $tipo_pago[0]->nombre;
+            $pago = '';
+
+            if($tipos_pago){
+
+                foreach($tipos_pago as $tipo_pago){
+
+                    if(!$pago){
+                        $pago = $tipo_pago->nombre;
+                    }
+                    
+                }
+
             }else{
-                $pago = $tipo_pago[0]->nombre . ' ...';
+                $pago = 'Efectivo';
             }
 
             $total = ItemsFactura::where('factura_id', '=' ,  $factura->id)->sum('importe_neto');
-            $collection=collect($factura);     
-            $factura_array = $collection->toArray();
-            
-            $factura_array['total']=$total;
-            $factura_array['tipo_pago']=$pago;
-            $array[$factura->id] = $factura_array;
+
+            if($factura->usuario_tipo == 1){
+                $usuario = Alumno::withTrashed()->find($factura->usuario_id);
+
+            }else{
+                $usuario = Staff::withTrashed()->find($factura->usuario_id);
+            }
+
+            if($usuario){
+
+                $collection=collect($factura);     
+                $factura_array = $collection->toArray();
+                
+                $factura_array['nombre'] = $usuario->nombre . ' '. $usuario->apellido;
+                $factura_array['total']=$total;
+                $factura_array['tipo_pago']=$pago;
+                $array_factura[$factura->id] = $factura_array;
+            }
 
         }
 
-        $proforma_join = DB::table('items_factura_proforma')
-            ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'items_factura_proforma.fecha_vencimiento as fecha_vencimiento', 'items_factura_proforma.id', 'items_factura_proforma.importe_neto as total', 'items_factura_proforma.nombre as concepto', 'items_factura_proforma.cantidad', 'items_factura_proforma.tipo')
-            ->where('items_factura_proforma.academia_id' , '=' , Auth::user()->academia_id)
+        $proformas = ItemsFacturaProforma::where('academia_id' , '=' , Auth::user()->academia_id)
         ->get();
 
-        $total = DB::table('items_factura_proforma')
-            ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
-            ->where('items_factura_proforma.academia_id', Auth::user()->academia_id)
-            ->where('alumnos.deleted_at' , '=' , null)
-        ->sum('.items_factura_proforma.importe_neto');
+        foreach($proformas as $proforma){
 
-        return view('administrativo.pagos.principal')->with(['facturas'=> $array, 'proforma' => $proforma_join, 'total' => $total]);
+            if($proforma->usuario_tipo == 1){
+                $usuario = Alumno::withTrashed()->find($proforma->usuario_id);
+
+            }else{
+                $usuario = Staff::withTrashed()->find($proforma->usuario_id);
+            }
+
+            $collection=collect($proforma);     
+            $proforma_array = $collection->toArray();
+            
+            $proforma_array['nombre']= $usuario->nombre . ' '. $usuario->apellido;
+            $array_proforma[$proforma->id] = $proforma_array;
+
+        }
+
+        $total = ItemsFacturaProforma::where('academia_id', Auth::user()->academia_id)->sum('importe_neto');
+
+        return view('administrativo.pagos.principal')->with(['facturas'=> $array_factura, 'proformas' => $array_proforma, 'total' => $total]);
     }
 
 	public function generarpagos()
@@ -256,38 +284,64 @@ class AdministrativoController extends BaseController {
 
         }
 
-        $proforma_join = DB::table('items_factura_proforma')
-            ->join('alumnos', 'items_factura_proforma.alumno_id', '=', 'alumnos.id')
+        $proforma_join = ItemsFacturaProforma::join('alumnos', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
             ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'items_factura_proforma.fecha_vencimiento as fecha_vencimiento', 'items_factura_proforma.id', 'items_factura_proforma.importe_neto as total', 'items_factura_proforma.nombre as concepto', 'items_factura_proforma.cantidad')
             ->where('items_factura_proforma.academia_id' , '=' , Auth::user()->academia_id)
             ->where('alumnos.deleted_at' , '=' , null)
         ->get();
 
-        $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
-
         $array = array();
+
+        $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
         foreach($alumnos as $alumno)
         {
-            $total = ItemsFacturaProforma::where('alumno_id', $alumno->id)->sum('importe_neto');
+            $total = ItemsFacturaProforma::where('usuario_id', $alumno->id)->where('usuario_tipo',1)->sum('importe_neto');
 
             if(!$total){
                 $total = 0;
             }
 
             $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
-                ->where('alumno_id','=',$alumno->id)
+                ->where('usuario_id','=',$alumno->id)
+                ->where('usuario_tipo',1)
             ->first();
 
             $collection=collect($alumno);     
             $alumno_array = $collection->toArray();
             
+            $alumno_array['id']='1-'.$alumno->id;
             $alumno_array['deuda']=$deuda;
             $alumno_array['total']=$total;
-            $array[$alumno->id] = $alumno_array;
+            $array['1-'.$alumno->id] = $alumno_array;
         }
 
-		return view('administrativo.pagos.pagos')->with(['alumnos' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto]);
+        $staffs = Staff::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($staffs as $staff)
+        {
+            $total = ItemsFacturaProforma::where('usuario_id', $staff->id)->where('usuario_tipo',2)->sum('importe_neto');
+
+            if(!$total){
+                $total = 0;
+            }
+
+            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                ->where('usuario_id','=',$staff->id)
+                ->where('usuario_tipo',2)
+            ->first();
+
+            $collection=collect($staff);     
+            $staff_array = $collection->toArray();
+
+            $staff_array['id']='2-'.$staff->id;
+            $staff_array['identificacion']='';
+            $staff_array['deuda']=$deuda;
+            $staff_array['total']=$total;
+            $array['2-'.$staff->id] = $staff_array;
+        }
+
+		return view('administrativo.pagos.pagos')->with(['usuarios' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto]);
 	}
 
     public function generarpagoscondeuda($id)
@@ -311,93 +365,145 @@ class AdministrativoController extends BaseController {
             Session::forget('gestion'); 
         }
 
-        $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-        $servicio=array();
+        $servicios_productos = array();
 
-        foreach($config_servicio as $item){
+        $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre','asc')->get();
 
-            $iva = $item['costo'] * ($academia->porcentaje_impuesto / 100);
-            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'costo' => $item['costo'], 'iva' => $iva, 'incluye_iva' => $item['incluye_iva']);
+        foreach($config_servicio as $servicio){
 
-            $collection=collect($tmp);
-            $grouped = $collection->groupBy('id');     
-            $servicio = $grouped->toArray();
+            $iva = $servicio['costo'] * ($academia->porcentaje_impuesto / 100);
+
+            $servicios_productos['1-'.$servicio->id]=array('id' => $servicio['id'], 'nombre' => $servicio['nombre'] , 'costo' => $servicio['costo'], 'iva' => $iva, 'incluye_iva' => $servicio['incluye_iva'], 'tipo' => $servicio['tipo'], 'disponibilidad' => 0, 'servicio_producto' => 1);
 
         }
 
-        $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-        $producto=array();
+        $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre','asc')->get();
 
-        foreach($config_producto as $items){
+        foreach($config_producto as $producto){
 
-            $iva = $items['costo'] * ($academia->porcentaje_impuesto / 100);
-            $tmp2[]=array('id' => $items['id'], 'nombre' => $items['nombre'] , 'costo' => $items['costo'], 'iva' => $iva, 'incluye_iva' => $items['incluye_iva']);
+            $iva = $producto['costo'] * ($academia->porcentaje_impuesto / 100);
+            $servicios_productos['2-'.$producto->id]=array('id' => $producto['id'], 'nombre' => $producto['nombre'] , 'costo' => $producto['costo'], 'iva' => $iva, 'incluye_iva' => $producto['incluye_iva'], 'disponibilidad' => $producto['cantidad'], 'tipo' => $producto['tipo'], 'servicio_producto' => 2);
 
-            $collection2=collect($tmp2);
-            $grouped2 = $collection2->groupBy('id');     
-            $producto = $grouped2->toArray();
         }
 
-        return view('administrativo.pagos.pagos')->with(['alumno' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'servicio' => $servicio, 'producto' => $producto, 'impuesto' => $academia->porcentaje_impuesto, 'id' => $id]);
+        $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($alumnos as $alumno)
+        {
+            $total = ItemsFacturaProforma::where('usuario_id', $alumno->id)->where('usuario_tipo',1)->sum('importe_neto');
+
+            if(!$total){
+                $total = 0;
+            }
+
+            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                ->where('usuario_id','=',$alumno->id)
+                ->where('usuario_tipo',1)
+            ->first();
+
+            $collection=collect($alumno);     
+            $alumno_array = $collection->toArray();
+            
+            $alumno_array['id']='1-'.$alumno->id;
+            $alumno_array['deuda']=$deuda;
+            $alumno_array['total']=$total;
+            $array['1-'.$alumno->id] = $alumno_array;
+        }
+
+        $staffs = Staff::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($staffs as $staff)
+        {
+            $total = ItemsFacturaProforma::where('usuario_id', $staff->id)->where('usuario_tipo',2)->sum('importe_neto');
+
+            if(!$total){
+                $total = 0;
+            }
+
+            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                ->where('usuario_id','=',$staff->id)
+                ->where('usuario_tipo',2)
+            ->first();
+
+            $collection=collect($staff);     
+            $staff_array = $collection->toArray();
+
+            $staff_array['id']='2-'.$staff->id;
+            $staff_array['identificacion']='';
+            $staff_array['deuda']=$deuda;
+            $staff_array['total']=$total;
+            $array['2-'.$staff->id] = $staff_array;
+        }
+
+        return view('administrativo.pagos.pagos')->with(['usuarios' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto, 'id' => $id]);
     }
 
     public function gestion(Request $request)
     {
 
-            if (Session::has('gestion')) {
-                Session::forget('gestion'); 
-            }
+        if (Session::has('gestion')) {
+            Session::forget('gestion'); 
+        }
 
-            if (Session::has('id_proforma')) {
-                Session::forget('id_proforma'); 
-            }
+        if (Session::has('id_proforma')) {
+            Session::forget('id_proforma'); 
+        }
 
-            $subtotal = 0;
-            $impuesto = 0;
-            $total = 0;
+        $subtotal = 0;
+        $impuesto = 0;
+        $total = 0;
 
-            $item_factura = explode(",", $request->items_factura);
+        $items_factura = explode(",", $request->items_factura);
 
-            if($request->alumno_id == ''){
-                return response()->json(['errores' => ['alumno_id' => [0, 'Ups! El Cliente es requerido']], 'status' => 'ERROR'],422);
-            }
+        if($request->usuario_id == ''){
+            return response()->json(['errores' => ['usuario_id' => [0, 'Ups! El Cliente es requerido']], 'status' => 'ERROR'],422);
+        }
 
-            if($request->items_factura == ''){
+        $explode = explode("-", $request->usuario_id);
+        $usuario_tipo = $explode[0];
+        $usuario_id = $explode[1];
 
-                $items_factura = ItemsFacturaProforma::where('alumno_id', '=', $request->alumno_id)->get();
+        if($request->items_factura == ''){
 
-                if($items_factura){
+            $items_factura = ItemsFacturaProforma::where('usuario_id', '=', $usuario_id)->where('usuario_tipo', '=', $usuario_tipo)->get();
 
-                    foreach($items_factura as $item){
+            if($items_factura){
 
-                        $total = $total + $item->importe_neto;
-                        Session::push('id_proforma', $item->id);
-                    
-                    } 
+                foreach($items_factura as $item){
 
-                }else{
-
-                    return response()->json(['errores' => ['combo' => [0, 'Debe seleccionar un item a pagar primero']], 'status' => 'ERROR'],422);
-                }
+                    $total = $total + $item->importe_neto;
+                    Session::push('id_proforma', $item->id);
+                
+                } 
 
             }else{
 
-                foreach($item_factura as $id){
-
-                    $items_factura = ItemsFacturaProforma::where('id', '=', $id)->first();
-
-                    if($items_factura){
-
-                        $total = $total + $items_factura->importe_neto;
-                        Session::push('id_proforma', $items_factura->id);
-                    }
-     
-                }
+                return response()->json(['errores' => ['combo' => [0, 'Debe seleccionar un item a pagar primero']], 'status' => 'ERROR'],422);
             }
-            $array = array(['total' => $total, 'alumno_id' => $request->alumno_id]);
-            Session::put('gestion', $array);
 
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+
+            foreach($items_factura as $id){
+
+                $item_factura = ItemsFacturaProforma::where('id', '=', $id)->first();
+
+                if($item_factura){
+
+                    $total = $total + $item_factura->importe_neto;
+                    Session::push('id_proforma', $item_factura->id);
+                }
+ 
+            }
+        }
+
+        $explode = explode("-", $request->usuario_id);
+        $usuario_tipo = $explode[0];
+        $usuario_id = $explode[1];
+
+        $array = array(['total' => $total, 'usuario_id' => $usuario_id, 'usuario_tipo' => $usuario_tipo]);
+        Session::put('gestion', $array);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
     }
 
@@ -413,79 +519,58 @@ class AdministrativoController extends BaseController {
 
         $academia = Academia::find(Auth::user()->academia_id);
 
-        $factura = DB::table('facturas')->orderBy('created_at', 'desc')->where('academia_id', '=', Auth::user()->academia_id)->first();
+        $factura = Factura::orderBy('created_at', 'desc')
+            ->where('academia_id', '=', Auth::user()->academia_id)
+        ->first();
 
-            $formas_pago = DB::table('formas_pago')->get();
+        $formas_pago = DB::table('formas_pago')->get();
 
-            if($factura){
+        if($factura){
 
-                $tmp = $factura->numero_factura + 1;
+            $tmp = $factura->numero_factura + 1;
+            $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
+        }
+        else{
+
+            if($academia->numero_factura){
+                $tmp = $academia->numero_factura;
                 $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
             }
             else{
-
-                if($academia->numero_factura){
-                    $tmp = $academia->numero_factura;
-                    $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
-                }
-                else{
-                    $tmp = 1;
-                    $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
-                }
-                
+                $tmp = 1;
+                $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
             }
+            
+        }
 
-            $arreglo = Session::get('gestion');
+        $arreglo = Session::get('gestion');
 
-            $alumno_id = $arreglo[0]['alumno_id'];
-            $alumno = Alumno::withTrashed()->where('id', '=', $alumno_id)->first();
-            $total = $arreglo[0]['total'];
+        $usuario_id = $arreglo[0]['usuario_id'];
+        $usuario_tipo = $arreglo[0]['usuario_tipo'];
 
-            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id', $alumno_id)->first();
+        if($usuario_tipo == 1){
+            $usuario = Alumno::withTrashed()->find($usuario_id);
 
+            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id', $usuario_id)->first();
             if($alumno_remuneracion){
                 $puntos_referidos = $alumno_remuneracion->remuneracion;
             }else{
                 $puntos_referidos = 0;
             }
 
-            $acuerdos_pendientes = DB::table('items_factura_proforma')
-            ->select('items_factura_proforma.*')
-            ->where('alumno_id', '=', $alumno_id )
+        }else{
+            $usuario = Staff::withTrashed()->find($usuario_id);
+            $puntos_referidos = 0;
+        }
+        
+        $total = $arreglo[0]['total'];
+
+        $acuerdo = ItemsFacturaProforma::where('usuario_id', '=', $usuario_id)
             ->where('tipo' , '=', 6)
-            ->get();
+            ->where('usuario_tipo' , '=', $usuario_tipo)
+        ->count();
 
-            if($acuerdos_pendientes){
-                $acuerdo = 1;
-            }else{
-                $acuerdo = 0;
-            }
-
-        //MERCADO PAGO
-        /*$preference_data = array(
-        "items" => array(
-            array(
-            //"id" => $array['mov_id'],
-            //"title" => $array['mov_nomplan'].', este paquete incluye '.$array['mov_sms'].' SMS',
-            "currency_id" => "VEF",
-            "title" => 'Servicio',
-            "picture_url" => "http://app.easydancelatino.com/assets/img/EASY_DANCE_3_.jpg",
-            "description" => 'Servicio de Baile',
-            //"category_id" => "Category",
-            "quantity" => 1,
-            "unit_price" =>  4 //intval($total)
-            )
-        ),
-            "payer" => array(
-              "name" => $alumno->nombre,
-              "surname" => $alumno->apellido,
-              "email" => $alumno->correo,
-              //"date_created" => "2014-07-28T09:50:37.521-04:00"
-            )
-        );
-        $preference = MP::create_preference($preference_data);*/
-
-        return view('administrativo.pagos.gestion')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'alumno' => $alumno , 'porcentaje_impuesto' => $academia->porcentaje_impuesto, 'acuerdo' => $acuerdo, 'puntos_referidos' => $puntos_referidos /*, 'datos' => $preference*/]);
+        return view('administrativo.pagos.gestion')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'usuario' => $usuario , 'porcentaje_impuesto' => $academia->porcentaje_impuesto, 'acuerdo' => $acuerdo, 'puntos_referidos' => $puntos_referidos, 'usuario_tipo' => $usuario_tipo, 'usuario_id' => $usuario_id]);
 
     }
 
@@ -504,42 +589,61 @@ class AdministrativoController extends BaseController {
         }
         
         $academia = Academia::find(Auth::user()->academia_id);
-        $factura = DB::table('facturas')->orderBy('created_at', 'desc')->where('academia_id', '=', Auth::user()->academia_id)->first();
+        $factura = Factura::orderBy('created_at', 'desc')
+            ->where('academia_id', '=', Auth::user()->academia_id)
+        ->first();
 
-            $formas_pago = DB::table('formas_pago')->get();
+        $formas_pago = DB::table('formas_pago')->get();
 
-            if($factura){
+        if($factura){
 
-                $tmp = $factura->numero_factura + 1;
+            $tmp = $factura->numero_factura + 1;
+            $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
+        }
+        else{
+
+            if($academia->numero_factura){
+                $tmp = $academia->numero_factura;
                 $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
             }
             else{
-
-                if($academia->numero_factura){
-                    $tmp = $academia->numero_factura;
-                    $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
-                }
-                else{
-                    $tmp = 1;
-                    $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
-                }
-                
+                $tmp = 1;
+                $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
             }
+            
+        }
 
-            $factura_proforma = ItemsFacturaProforma::find($id);
+        $factura_proforma = ItemsFacturaProforma::find($id);
 
-            $alumno_id = $factura_proforma->alumno_id;
-            $alumno = Alumno::withTrashed()->where('id', '=', $alumno_id)->first();
-            $total = $factura_proforma->importe_neto;
-            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id', $alumno_id)->first();
+        $usuario_id = $factura_proforma->usuario_id;
+        $usuario_tipo = $factura_proforma->usuario_tipo;
+
+        if($usuario_tipo == 1){
+            $usuario = Alumno::withTrashed()->find($usuario_id);
+
+            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id', $usuario_id)->first();
+
             if($alumno_remuneracion){
                 $puntos_referidos = $alumno_remuneracion->remuneracion;
             }else{
                 $puntos_referidos = 0;
             }
-            Session::push('id_proforma', $id);
 
-        return view('administrativo.pagos.gestion')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'alumno' => $alumno , 'porcentaje_impuesto' => $academia->porcentaje_impuesto, 'puntos_referidos' => $puntos_referidos]);
+        }else{
+            $usuario = Staff::withTrashed()->find($usuario_id);
+            $puntos_referidos = 0;
+        }
+
+        $total = $factura_proforma->importe_neto;
+
+        $acuerdo = ItemsFacturaProforma::where('usuario_id', '=', $usuario_id)
+            ->where('tipo' , '=', 6)
+            ->where('usuario_tipo' , '=', $usuario_tipo)
+        ->count();
+   
+        Session::push('id_proforma', $id);
+
+        return view('administrativo.pagos.gestion')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'usuario' => $usuario , 'porcentaje_impuesto' => $academia->porcentaje_impuesto, 'puntos_referidos' => $puntos_referidos, 'usuario_tipo' => $usuario_tipo, 'usuario_id' => $usuario_id, 'acuerdo' => $acuerdo]);
 
     }
 
@@ -572,7 +676,7 @@ class AdministrativoController extends BaseController {
         $monto = str_replace(',', '', $request->monto);
 
         if($request->forma_pago_id == 4){
-            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id',$request->alumno_id)->first();
+            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id',$request->usuario_id)->first();
             if($alumno_remuneracion){
                 $puntos_referidos = Session::get('puntos_referidos');
                 $puntos_totales = $alumno_remuneracion->remuneracion - $puntos_referidos;
@@ -655,8 +759,7 @@ class AdministrativoController extends BaseController {
 
     public function storeFactura(Request $request)
     {
-        $alumno = Alumno::withTrashed()->find($request->id);
- 
+       
         if (Session::has('pagos')) {
            
             $arreglo = Session::get('pagos');
@@ -667,6 +770,13 @@ class AdministrativoController extends BaseController {
 
             }
 
+             if($request->usuario_tipo == 1){
+                $usuario = Alumno::withTrashed()->find($request->usuario_id);
+
+            }else{
+                $usuario = Staff::withTrashed()->find($request->usuario_id);
+            }
+     
             $total_proforma = $request->total;
             $total_pago = 0;
 
@@ -692,7 +802,6 @@ class AdministrativoController extends BaseController {
             }
 
             $id_proforma = Session::get('id_proforma');
-
             $contador = count($id_proforma);
 
             $id = $id_proforma[0];
@@ -707,7 +816,8 @@ class AdministrativoController extends BaseController {
 
             $factura = new Factura;
 
-            $factura->alumno_id = $request->id;
+            $factura->usuario_id = $request->usuario_id;
+            $factura->usuario_tipo = $request->usuario_tipo;
             $factura->academia_id = Auth::user()->academia_id;
             $factura->fecha = Carbon::now()->toDateString();
             $factura->hora = Carbon::now()->toTimeString();
@@ -737,7 +847,6 @@ class AdministrativoController extends BaseController {
                 
                     $pago = new Pago;
 
-                    $pago->alumno_id = $request->id;
                     $pago->academia_id = Auth::user()->academia_id;
                     $pago->fecha = Carbon::now()->toDateString();
                     $pago->factura_id = $factura->id;
@@ -781,7 +890,8 @@ class AdministrativoController extends BaseController {
 
                                         $item_factura = new ItemsFacturaProforma;
                                                                                     
-                                        $item_factura->alumno_id = $request->id;
+                                        $item_factura->usuario_id = $request->usuario_id;
+                                        $item_factura->usuario_tipo = $request->usuario_tipo;
                                         $item_factura->academia_id = Auth::user()->academia_id;
                                         $item_factura->fecha = Carbon::now()->toDateString();
                                         $item_factura->item_id = $item_proforma->item_id;
@@ -801,7 +911,7 @@ class AdministrativoController extends BaseController {
                                     ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                                     ->join('config_servicios', 'config_servicios.tipo_id', '=', 'config_clases_grupales.id')
                                     ->select('inscripcion_clase_grupal.instructor_id as staff_id', 'config_servicios.id as servicio_id', 'config_servicios.tipo as tipo_servicio')
-                                    ->where('inscripcion_clase_grupal.alumno_id', $request->id)
+                                    ->where('inscripcion_clase_grupal.alumno_id', $request->usuario_id)
                                     ->where('config_servicios.tipo_id',$item_proforma->item_id)
                                     ->where('config_servicios.tipo',$item_proforma->tipo)
                                 ->first();
@@ -856,7 +966,7 @@ class AdministrativoController extends BaseController {
                                 $credencial = new CredencialAlumno;
 
                                 $credencial->cantidad = $paquete->cantidad_clases_grupales;
-                                $credencial->alumno_id = $request->id;
+                                $credencial->alumno_id = $request->usuario_id;
 
                                 $credencial->save();
                             }
@@ -891,6 +1001,7 @@ class AdministrativoController extends BaseController {
                         if($item_proforma->tipo == 6){
 
                             $acuerdo = Acuerdo::find($item_proforma->item_id);
+
                             if($acuerdo){
                                 $fecha_vencimiento = Carbon::createFromFormat('Y-m-d', $item_proforma->fecha_vencimiento);
                                 $fecha_limite = $fecha_vencimiento->addDays($acuerdo->tiempo_tolerancia);
@@ -901,7 +1012,8 @@ class AdministrativoController extends BaseController {
 
                                     $item_factura = new ItemsFacturaProforma;
                                                                                 
-                                    $item_factura->alumno_id = $request->id;
+                                    $item_factura->usuario_id = $request->usuario_id;
+                                    $item_factura->usuario_tipo = $request->usuario_tipo;
                                     $item_factura->academia_id = Auth::user()->academia_id;
                                     $item_factura->fecha = Carbon::now()->toDateString();
                                     $item_factura->item_id = $item_proforma->item_id;
@@ -922,7 +1034,7 @@ class AdministrativoController extends BaseController {
                                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                                 ->join('config_servicios', 'config_servicios.tipo_id', '=', 'config_clases_grupales.id')
                                 ->select('inscripcion_clase_grupal.instructor_id as staff_id', 'config_servicios.id as servicio_id', 'config_servicios.tipo as tipo_servicio')
-                                ->where('inscripcion_clase_grupal.alumno_id', $request->id)
+                                ->where('inscripcion_clase_grupal.alumno_id', $request->usuario_id)
                                 ->where('config_servicios.tipo_id',$item_proforma->item_id)
                                 ->where('config_servicios.tipo',$item_proforma->tipo)
                             ->first();
@@ -976,7 +1088,7 @@ class AdministrativoController extends BaseController {
                             $credencial = new CredencialAlumno;
 
                             $credencial->cantidad = $paquete->cantidad_clases_grupales;
-                            $credencial->alumno_id = $request->id;
+                            $credencial->alumno_id = $request->usuario_id;
 
                             $credencial->save();
                         }
@@ -1002,7 +1114,8 @@ class AdministrativoController extends BaseController {
 
                     $items_factura_proforma = new ItemsFacturaProforma;
 
-                    $items_factura_proforma->alumno_id = $request->id;
+                    $items_factura_proforma->usuario_id = $request->usuario_id;
+                    $items_factura_proforma->usuario_tipo = $request->usuario_tipo;
                     $items_factura_proforma->academia_id = Auth::user()->academia_id;
                     $items_factura_proforma->fecha = Carbon::now()->toDateString();
                     $items_factura_proforma->item_id = $factura->id;
@@ -1020,11 +1133,16 @@ class AdministrativoController extends BaseController {
 
                 //FINAL
 
-                $in = array(2,4);
+                if($request->usuario_tipo == 1){
+                    $in = array(2,4);
+                }else{
+                    $in = array(3);
+                }
+
                 $academia = Academia::find(Auth::user()->academia_id);
                 $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                     ->whereIn('usuarios_tipo.tipo', $in)
-                    ->where('usuarios_tipo.tipo_id', $request->id)
+                    ->where('usuarios_tipo.tipo_id', $request->usuario_id)
                 ->first();
 
                 if($usuario){
@@ -1121,40 +1239,48 @@ class AdministrativoController extends BaseController {
         $academia = Academia::find(Auth::user()->academia_id);
         $factura = Factura::find($id);
         $total_pago = Pago::where('factura_id', $id)->sum('monto');
-        $alumno = Alumno::find($factura->alumno_id);
 
-        $array_descripcion = array();
-
-        $item_factura = ItemsFactura::where('factura_id', '=', $factura->id)->get();
-
-        foreach($item_factura as $item){
-
-            array_push($array_descripcion, $item->cantidad . ' ' . $item->nombre);
-           
+        if($factura->usuario_tipo == 1){
+            $usuario = Alumno::withTrashed()->find($factura->usuario_id);
+        }else{
+            $usuario = Staff::withTrashed()->find($factura->usuario_id);
         }
 
-        $descripcion = implode(",", $array_descripcion);
+        if($usuario->correo){
 
-        $subj = 'Pago realizado exitósamente';
+            $array_descripcion = array();
 
-        $array = [
+            $item_factura = ItemsFactura::where('factura_id', '=', $factura->id)->get();
 
-           'correo_destino' => $alumno->correo,
-           'nombre' => $academia->nombre,
-           'correo' => $academia->correo,
-           'telefono' => $academia->celular,
-           'fecha' => $factura->fecha,
-           'hora' => $factura->hora,
-           'factura' => $factura->numero_factura,
-           'total' => $total_pago,
-           'descripcion' => $descripcion,
-           'subj' => $subj
-        ];
+            foreach($item_factura as $item){
 
-        Mail::send('correo.factura', $array, function($msj) use ($array){
+                array_push($array_descripcion, $item->cantidad . ' ' . $item->nombre);
+               
+            }
+
+            $descripcion = implode(",", $array_descripcion);
+
+            $subj = 'Pago realizado exitósamente';
+
+            $array = [
+
+               'correo_destino' => $alumno->correo,
+               'nombre' => $academia->nombre,
+               'correo' => $academia->correo,
+               'telefono' => $academia->celular,
+               'fecha' => $factura->fecha,
+               'hora' => $factura->hora,
+               'factura' => $factura->numero_factura,
+               'total' => $total_pago,
+               'descripcion' => $descripcion,
+               'subj' => $subj
+            ];
+
+            Mail::send('correo.factura', $array, function($msj) use ($array){
                 $msj->subject($array['subj']);
                 $msj->to($array['correo_destino']);
             });
+        }
 
         return response()->json(['mensaje' => '¡Excelente! El campo se ha eliminado satisfactoriamente', 'status' => 'OK', 'factura' => $factura->id, 200]);
 
@@ -1162,19 +1288,86 @@ class AdministrativoController extends BaseController {
 
     public function principalacuerdo()
     {
-        $acuerdo_join = Acuerdo::join('alumnos', 'acuerdos.alumno_id', '=', 'alumnos.id')
-            ->select('acuerdos.*', 'alumnos.nombre as nombre', 'alumnos.apellido as apellido')
-            ->where('acuerdos.academia_id', '=' ,  Auth::user()->academia_id)
-        ->get();
+        $acuerdos = Acuerdo::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        return view('administrativo.acuerdo.principal')->with('acuerdos' , $acuerdo_join);
+        $array = array();
+
+        foreach($acuerdos as $acuerdo){
+
+            if($acuerdo->usuario_tipo == 1){
+                $usuario = Alumno::withTrashed()->find($acuerdo->usuario_id);
+
+            }else{
+                $usuario = Staff::withTrashed()->find($acuerdo->usuario_id);
+            }
+
+            $collection=collect($acuerdo);     
+            $acuerdo_array = $collection->toArray();
+            
+            $acuerdo_array['nombre'] = $usuario->nombre . ' '. $usuario->apellido;
+            $array[$acuerdo->id] = $acuerdo_array;
+
+        }
+
+        return view('administrativo.acuerdo.principal')->with('acuerdos' , $array);
     }
 
     public function acuerdo()
     {
         Session::forget('acuerdos');
+
+        $array = array();
+
+        $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($alumnos as $alumno)
+        {
+            $total = ItemsFacturaProforma::where('usuario_id', $alumno->id)->where('usuario_tipo',1)->sum('importe_neto');
+
+            if(!$total){
+                $total = 0;
+            }
+
+            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                ->where('usuario_id','=',$alumno->id)
+                ->where('usuario_tipo',1)
+            ->first();
+
+            $collection=collect($alumno);     
+            $alumno_array = $collection->toArray();
+            
+            $alumno_array['id']='1-'.$alumno->id;
+            $alumno_array['deuda']=$deuda;
+            $alumno_array['total']=$total;
+            $array['1-'.$alumno->id] = $alumno_array;
+        }
+
+        $staffs = Staff::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($staffs as $staff)
+        {
+            $total = ItemsFacturaProforma::where('usuario_id', $staff->id)->where('usuario_tipo',2)->sum('importe_neto');
+
+            if(!$total){
+                $total = 0;
+            }
+
+            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                ->where('usuario_id','=',$staff->id)
+                ->where('usuario_tipo',2)
+            ->first();
+
+            $collection=collect($staff);     
+            $staff_array = $collection->toArray();
+
+            $staff_array['id']='2-'.$staff->id;
+            $staff_array['identificacion']='';
+            $staff_array['deuda']=$deuda;
+            $staff_array['total']=$total;
+            $array['2-'.$staff->id] = $staff_array;
+        }
         
-        return view('administrativo.acuerdo.acuerdo')->with(['alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get()]);
+        return view('administrativo.acuerdo.acuerdo')->with(['usuarios' => $array]);
     }
 
     public function acuerdoconalumno($id)
@@ -1200,7 +1393,7 @@ class AdministrativoController extends BaseController {
 
         }else{
         
-            $items_factura = ItemsFacturaProforma::where('alumno_id', '=', $id)->get();
+            $items_factura = ItemsFacturaProforma::where('usuario_id', '=', $id)->get();
 
             foreach($items_factura as $item_factura){
 
@@ -1210,24 +1403,69 @@ class AdministrativoController extends BaseController {
 
         }
 
-        $acuerdos_pendientes = ItemsFacturaProforma::where('alumno_id', '=', $id)
+        $acuerdo = ItemsFacturaProforma::where('usuario_id', '=', $id)
             ->where('tipo' , '=', 6)
-        ->get();
+            ->where('usuario_tipo' , '=', 1)
+        ->count();
 
-        if($acuerdos_pendientes){
-            $acuerdo = 1;
+        $array = array();
+
+        $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($alumnos as $alumno)
+        {
+            $total = ItemsFacturaProforma::where('usuario_id', $alumno->id)->where('usuario_tipo',1)->sum('importe_neto');
+
+            if(!$total){
+                $total = 0;
+            }
+
+            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                ->where('usuario_id','=',$alumno->id)
+                ->where('usuario_tipo',1)
+            ->first();
+
+            $collection=collect($alumno);     
+            $alumno_array = $collection->toArray();
+            
+            $alumno_array['id']='1-'.$alumno->id;
+            $alumno_array['deuda']=$deuda;
+            $alumno_array['total']=$total;
+            $array['1-'.$alumno->id] = $alumno_array;
         }
-        else{
-            $acuerdo = 0;
+
+        $staffs = Staff::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($staffs as $staff)
+        {
+            $total = ItemsFacturaProforma::where('usuario_id', $staff->id)->where('usuario_tipo',2)->sum('importe_neto');
+
+            if(!$total){
+                $total = 0;
+            }
+
+            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                ->where('usuario_id','=',$staff->id)
+                ->where('usuario_tipo',2)
+            ->first();
+
+            $collection=collect($staff);     
+            $staff_array = $collection->toArray();
+
+            $staff_array['id']='2-'.$staff->id;
+            $staff_array['identificacion']='';
+            $staff_array['deuda']=$deuda;
+            $staff_array['total']=$total;
+            $array['2-'.$staff->id] = $staff_array;
         }
-        
-        return view('administrativo.acuerdo.acuerdo')->with(['alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'id' => $id, 'total' => $total, 'acuerdo' => $acuerdo]);
+
+        return view('administrativo.acuerdo.acuerdo')->with(['usuarios' => $array, 'id' => $id, 'total' => $total, 'acuerdo' => $acuerdo]);
     }
 
     public function principalpresupuesto()
     {
       
-        $presupuesto_join = Presupuesto::join('alumnos', 'presupuestos.alumno_id', '=', 'alumnos.id')
+        $presupuestos = Presupuesto::join('alumnos', 'presupuestos.alumno_id', '=', 'alumnos.id')
             ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'presupuestos.fecha as fecha', 'presupuestos.fecha_valida as fecha_valida', 'presupuestos.id as id')
             ->where('presupuestos.academia_id' , '=' , Auth::user()->academia_id)
             ->OrderBy('presupuestos.created_at')
@@ -1239,26 +1477,17 @@ class AdministrativoController extends BaseController {
             ->OrderBy('presupuestos.created_at')
         ->get();
 
-        $collection=collect($items_presupuesto);
-        $grouped = $collection->groupBy('id');     
-        $deuda = $grouped->toArray();
-
         $array=array();
-        $i = 0;
-        $importe_neto = 0;
-        $total = 0;
 
-        foreach($deuda as $item){
-            $importe_neto = 0;
+        foreach($presupuestos as $presupuesto){
+
+            $total = ItemsPresupuesto::where('presupuesto_id' , $presupuesto->id)->sum('importe_neto');
             
-            foreach($item as $tmp){
-                $factura_id = $tmp->id;
-                $importe_neto = $importe_neto + $tmp->importe_neto;
-            }
+            $collection=collect($presupuesto);
+            $presupuesto_array = $collection->toArray();
 
-            $presupuesto_join[$i]->total=$importe_neto;
-            $array[$factura_id] = $presupuesto_join[$i];
-            $i = $i + 1;
+            $presupuesto_array['total']=$total;
+            $array[$presupuesto->id] = $presupuesto_array;
         }
 
         return view('administrativo.presupuesto.principal')->with('presupuestos', $array);
@@ -1407,13 +1636,13 @@ class AdministrativoController extends BaseController {
     public function agregaritem(Request $request){
         
         $rules = [
-            'alumno_id' => 'required',
+            'usuario_id' => 'required',
             'combo' => 'required',
             'cantidad' => 'required|numeric|min:1',
         ];
 
         $messages = [
-            'alumno_id.required' => 'Ups! El Cliente es requerido',
+            'usuario_id.required' => 'Ups! El Cliente es requerido',
             'combo.required' => 'Ups! El Producto o Servicio es requerido',
             'cantidad.required' => 'Ups! El Cantidad es invalido, solo se aceptan numeros',
             'cantidad.numeric' => 'Ups! El Cantidad es requerido',
@@ -1434,6 +1663,10 @@ class AdministrativoController extends BaseController {
             $explode = explode("-", $request->combo);
             $item_id = $explode[0];
             $tipo = $explode[2];
+
+            $explode = explode("-", $request->usuario_id);
+            $usuario_tipo = $explode[0];
+            $usuario_id = $explode[1];
 
             if($request->tipo == "servicio"){
 
@@ -1462,7 +1695,8 @@ class AdministrativoController extends BaseController {
 
             $item_factura = new ItemsFacturaProforma;
                         
-            $item_factura->alumno_id = $request->alumno_id;
+            $item_factura->usuario_id = $usuario_id;
+            $item_factura->usuario_tipo = $usuario_tipo;
             $item_factura->academia_id = Auth::user()->academia_id;
             $item_factura->fecha = Carbon::now()->toDateString();
             $item_factura->item_id = $item_id;
@@ -1530,13 +1764,13 @@ class AdministrativoController extends BaseController {
         
     $rules = [
 
-        'alumno_id' => 'required',
+        'usuario_id' => 'required',
 
     ];
 
     $messages = [
 
-        'alumno_id.required' => 'Ups! El Cliente es requerido',
+        'usuario_id.required' => 'Ups! El Cliente es requerido',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -1572,7 +1806,7 @@ class AdministrativoController extends BaseController {
                 
                     $item_factura = new ItemsFacturaProforma;
                     
-                    $item_factura->alumno_id = $request->alumno_id;
+                    $item_factura->usuario_id = $request->usuario_id;
                     $item_factura->academia_id = Auth::user()->academia_id;
                     $item_factura->fecha = Carbon::now()->toDateString();
                     $item_factura->item_id = $item_id;
@@ -1607,16 +1841,19 @@ class AdministrativoController extends BaseController {
 
                 }
 
-                $array = array(['total' => $total , 'alumno_id' => $request->alumno_id]);
+                $explode = explode("-", $request->usuario_id);
+                $usuario_tipo = $explode[0];
+                $usuario_id = $explode[1];
+
+                $array = array(['total' => $total , 'usuario_id' => $usuario_id , 'usuario_tipo' => $usuario_tipo]);
                 Session::put('gestion', $array);
 
                 return response()->json(['status' => 'OK', 200]);
                 
+            }else{
+                return response()->json(['errores' => ['linea' => [0, 'Debe agregar una linea de pago']], 'status' => 'ERROR'],422);
             }
-            
-            return response()->json(['errores' => ['linea' => [0, 'DDebe agregar una linea de pago']], 'status' => 'ERROR'],422);
         }
-
     }
 
     public function GenerarPresupuesto(Request $request)
@@ -1831,7 +2068,7 @@ class AdministrativoController extends BaseController {
         
         $rules = [
 
-            'alumno_id' => 'required',
+            'usuario_id' => 'required',
             'porcentaje_retraso' => 'numeric',
             'tiempo_tolerancia' => 'numeric',
 
@@ -1839,7 +2076,7 @@ class AdministrativoController extends BaseController {
 
         $messages = [
 
-            'alumno_id.required' => 'Ups! El Cliente es requerido',
+            'usuario_id.required' => 'Ups! El Cliente es requerido',
             'porcentaje_retraso.numeric' => 'Ups! El campo de porcentaje de retraso es inválido , debe contener sólo números',
             'tiempo_tolerancia.numeric' => 'Ups! El campo de tiempo de tolerancia es inválido , debe contener sólo números',  
         ];
@@ -1872,7 +2109,7 @@ class AdministrativoController extends BaseController {
 
                 }else{
 
-                    $item_proforma = ItemsFacturaProforma::where('alumno_id', '=', $request->alumno_id)->get();
+                    $item_proforma = ItemsFacturaProforma::where('usuario_id', '=', $request->usuario_id)->get();
 
                     foreach($item_proforma as $items_proforma){
 
@@ -1890,10 +2127,15 @@ class AdministrativoController extends BaseController {
                 $partes = $arreglo['partes'];
                 $fecha_inicio = $arreglo['fechas_acuerdo'][0]['fecha_frecuencia'];
 
+                $explode = explode("-", $request->usuario_id);
+                $usuario_tipo = $explode[0];
+                $usuario_id = $explode[1];
+
                 $acuerdo = new Acuerdo;
 
                 $acuerdo->academia_id = Auth::user()->academia_id;
-                $acuerdo->alumno_id = $request->alumno_id;
+                $acuerdo->usuario_id = $usuario_id;
+                $acuerdo->usuario_tipo = $usuario_tipo;
                 $acuerdo->fecha_inicio = Carbon::createFromFormat('d-m-Y', $fecha_inicio)->toDateString();
                 $acuerdo->frecuencia = $frecuencia;
                 $acuerdo->cuotas = $partes;
@@ -1919,7 +2161,8 @@ class AdministrativoController extends BaseController {
                     
                         $item_factura = new ItemsFacturaProforma;
                         
-                        $item_factura->alumno_id = $request->alumno_id;
+                        $item_factura->usuario_id = $usuario_id;
+                        $item_factura->usuario_tipo = $usuario_tipo;
                         $item_factura->academia_id = Auth::user()->academia_id;
                         $item_factura->fecha = Carbon::now()->toDateString();
                         $item_factura->item_id = $id;
@@ -1965,10 +2208,11 @@ class AdministrativoController extends BaseController {
 
                     }else{
 
-                        $delete = ItemsFacturaProforma::where('alumno_id', '=', $request->alumno_id)->delete();
+                        $delete = ItemsFacturaProforma::where('usuario_id', '=', $request->usuario_id)->delete();
 
                     }
-                    return response()->json(['status' => 'OK', 200]);
+
+                    return response()->json(['status' => 'OK', 'usuario_id' => $usuario_id, 'usuario_tipo' => $usuario_tipo, 200]);
 
                 }else{
                     return response()->json(['errores'=>'error', 'status' => 'ERROR-ACUERDO'],422);
@@ -2001,24 +2245,28 @@ class AdministrativoController extends BaseController {
         //DATOS DE ENCABEZADO
         
         $factura = Factura::find($id);
-        $alumno = DB::table('facturas')->join('alumnos', 'facturas.alumno_id','=','alumnos.id')
-                            ->select('alumnos.nombre AS alumno_nombre', 'alumnos.apellido AS alumno_apellido', 'alumnos.identificacion AS dni', 'alumnos.direccion AS direccion', 'alumnos.telefono AS telefono', 'alumnos.correo AS email')
-                            ->where('facturas.id','=',$id)
-                            ->first();
 
-        $alumno = DB::table('facturas')
-            ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
-            ->Leftjoin('usuario_externos','facturas.externo_id', '=', 'usuario_externos.id')
-            // ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
-            ->selectRaw('IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as nombre, alumnos.identificacion AS dni, IF(alumnos.correo is null, usuario_externos.correo, alumnos.correo) as email, alumnos.direccion AS direccion, alumnos.telefono AS telefono')
-            // ->select('alumnos.nombre AS alumno_nombre', 'alumnos.apellido AS alumno_apellido', 'alumnos.identificacion AS dni', 'alumnos.direccion AS direccion', 'alumnos.telefono AS telefono', 'alumnos.correo AS email')
-            ->where('facturas.id','=',$id)
-        ->first();
+        // $alumno = Factura::Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
+        //     ->Leftjoin('usuario_externos','facturas.externo_id', '=', 'usuario_externos.id')
+        //     ->selectRaw('IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as nombre, alumnos.identificacion AS dni, IF(alumnos.correo is null, usuario_externos.correo, alumnos.correo) as email, alumnos.direccion AS direccion, alumnos.telefono AS telefono')
+        //     ->where('facturas.id','=',$id)
+        // ->first();
+
+        if($factura->usuario_id){
+
+            if($factura->usuario_tipo == 1){
+                $usuario = Alumno::withTrashed()->find($factura->usuario_id);
+            }else{
+                $usuario = Staff::withTrashed()->find($factura->usuario_id);
+            }            
+        }else{
+            $usuario = UsuarioExterno::withTrashed()->find($factura->externo_id);
+        }
 
 
         $academia = DB::table('facturas')
             ->join('academias', 'facturas.academia_id','=','academias.id')
-            ->Leftjoin('paises', 'academias.pais_id','=','paises.id')
+            ->join('paises', 'academias.pais_id','=','paises.id')
             ->select('academias.nombre AS academia_nombre',
                      'academias.direccion AS academia_direccion',
                      'academias.telefono AS academia_telefono',
@@ -2039,7 +2287,7 @@ class AdministrativoController extends BaseController {
         $detalle = ItemsFactura::select('factura_id', 'item_id', 'nombre', 'tipo', 
                                         'cantidad', 'precio_neto', 'impuesto', 'importe_neto')
                                 ->where('factura_id','=',$id)
-                                ->get();
+        ->get();
 
         foreach($detalle as $tmp){
 
@@ -2055,7 +2303,7 @@ class AdministrativoController extends BaseController {
 
         return view('administrativo.factura')->with([
                 'facturas'          => $factura, 
-                'alumno'            => $alumno, 
+                'usuario'           => $usuario, 
                 'academia'          => $academia, 
                 'subtotal'          => $subtotal, 
                 'iva'               => $impuesto, 
@@ -2119,17 +2367,24 @@ class AdministrativoController extends BaseController {
         //DATOS DE ENCABEZADO
         
         $acuerdo = Acuerdo::find($id);
-        $alumno = DB::table('acuerdos')->join('alumnos', 'acuerdos.alumno_id','=','alumnos.id')
-                            ->select('alumnos.nombre AS alumno_nombre', 'alumnos.apellido AS alumno_apellido', 'alumnos.identificacion AS dni', 'alumnos.direccion AS direccion', 'alumnos.telefono AS telefono', 'alumnos.correo AS email')
-                            ->where('acuerdos.id','=',$id)
-                            ->first();
+
+        if($acuerdo->usuario_id){
+
+            if($acuerdo->usuario_tipo == 1){
+                $usuario = Alumno::withTrashed()->find($acuerdo->usuario_id);
+            }else{
+                $usuario = Staff::withTrashed()->find($acuerdo->usuario_id);
+            }            
+        }else{
+            $usuario = UsuarioExterno::withTrashed()->find($acuerdo->externo_id);
+        }
 
         $academia = DB::table('acuerdos')
-                            ->join('academias', 'acuerdos.academia_id','=','academias.id')
-                            ->join('paises', 'academias.pais_id','=','paises.id')
-                            ->select('academias.nombre AS academia_nombre', 'academias.direccion AS academia_direccion', 'academias.telefono AS academia_telefono', 'academias.correo AS academia_email', 'paises.nombre as academia_pais', 'academias.imagen as imagen_academia', 'academias.porcentaje_impuesto')
-                            ->where('acuerdos.id','=',$id)
-                            ->first();
+            ->join('academias', 'acuerdos.academia_id','=','academias.id')
+            ->join('paises', 'academias.pais_id','=','paises.id')
+            ->select('academias.nombre AS academia_nombre', 'academias.direccion AS academia_direccion', 'academias.telefono AS academia_telefono', 'academias.correo AS academia_email', 'paises.nombre as academia_pais', 'academias.imagen as imagen_academia', 'academias.porcentaje_impuesto')
+            ->where('acuerdos.id','=',$id)
+        ->first();
 
         $PerctIVA = 0;
         $subtotal = 0;
@@ -2156,7 +2411,7 @@ class AdministrativoController extends BaseController {
 
         return view('administrativo.acuerdo.planilla')->with([
                 'facturas'          => $acuerdo, 
-                'alumno'            => $alumno, 
+                'usuario'           => $usuario, 
                 'academia'          => $academia, 
                 'subtotal'          => $subtotal, 
                 'iva'               => $impuesto, 
@@ -2179,35 +2434,6 @@ class AdministrativoController extends BaseController {
         }
 	}
 
-	public function pendientes($id)
-    {
-        if (Session::has('pendientes')) {
-            Session::forget('pendientes'); 
-        }
-
-        $items_factura = DB::table('facturas_proforma')
-            ->join('items_factura_proforma', 'facturas_proforma.id', '=', 'items_factura_proforma.factura_id')
-            ->select('items_factura_proforma.*')
-            ->where('facturas_proforma.alumno_id', '=', $id)
-        ->get();
-
-        $i = 0;
-
-        foreach($items_factura as $item_factura){
-
-            $array = array(['factura' => $item_factura->id, 'id' => $item_factura->item_id , 'nombre' => $item_factura->nombre  , 'tipo' => $item_factura->tipo , 'cantidad' => $item_factura->cantidad , 'precio_neto' => $item_factura->precio_neto , 'impuesto' => $item_factura->impuesto , 'importe_neto' => $item_factura->importe_neto ]);
-
-            Session::push('pendientes', $array);
-            $i = $i + 1;
-        }
-
-        
-        $arreglo = Session::get('pendientes');
-
-        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $arreglo, 200]);
-
-    }
-
     public function pagospendientes($id)
     {
         $subtotal = 0;
@@ -2218,15 +2444,20 @@ class AdministrativoController extends BaseController {
          Session::forget('acuerdos'); 
         }
 
-        $acuerdos_pendientes = ItemsFacturaProforma::where('alumno_id', '=', $id)
+        $explode = explode("-", $id);
+        $usuario_tipo = $explode[0];
+        $usuario_id = $explode[1];
+
+        $acuerdos_pendientes = ItemsFacturaProforma::where('usuario_id', '=', $usuario_id)
             ->where('tipo' , '=', 6)
-        ->get();
+            ->where('usuario_tipo' , '=', $usuario_tipo)
+        ->count();
 
         if($acuerdos_pendientes){
-            return response()->json(['errores' => ['alumno_id' => [0, 'No se puede generar un acuerdo de pago, debido a que este participante ya posee uno asignado']], 'status' => 'ERROR'],422);
+            return response()->json(['errores' => ['usuario_id' => [0, 'No se puede generar un acuerdo de pago, debido a que este participante ya posee uno asignado']], 'status' => 'ERROR'],422);
         }
         
-        $items_factura = ItemsFacturaProforma::where('alumno_id', '=', $id)->get();
+        $items_factura = ItemsFacturaProforma::where('usuario_id', '=', $id)->get();
 
         $total = 0;
 
@@ -2240,14 +2471,18 @@ class AdministrativoController extends BaseController {
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'total' => $total, 200]);
         }
         else{
-            return response()->json(['errores' => ['alumno_id' => [0, 'Este participante no presenta deuda para generar acuerdo de pago, selecciona otro participante']], 'status' => 'ERROR'],422);
+            return response()->json(['errores' => ['usuario_id' => [0, 'Este participante no presenta deuda para generar acuerdo de pago, selecciona otro participante']], 'status' => 'ERROR'],422);
         }
     }
 
     public function itemspendientes($id)
     {
-            
-        $items_factura = ItemsFacturaProforma::where('alumno_id', '=', $id)->get();
+        
+        $explode = explode("-", $id);
+        $usuario_tipo = $explode[0];
+        $usuario_id = $explode[1];
+
+        $items_factura = ItemsFacturaProforma::where('usuario_id', '=', $usuario_id)->where('usuario_tipo',$usuario_tipo)->get();
 
         $total = 0;
         $i = 0;
@@ -2299,8 +2534,8 @@ class AdministrativoController extends BaseController {
 
         $factura_proforma = ItemsFacturaProforma::find($id);
 
-        $alumno_id = $factura_proforma->alumno_id;
-        $alumno = Alumno::where('id', '=', $alumno_id)->first();
+        $usuario_id = $factura_proforma->usuario_id;
+        $alumno = Alumno::where('id', '=', $usuario_id)->first();
         $total = $factura_proforma->importe_neto;
         Session::push('id_proforma', $id);
 
@@ -2317,7 +2552,7 @@ class AdministrativoController extends BaseController {
         if($request->json['collection_status']!=null){
 
             $mercadopago->academia_id = Auth::user()->academia_id;
-            $mercadopago->alumno_id = $request->alumno;
+            $mercadopago->usuario_id = $request->alumno;
             $mercadopago->status_pago = $request->json['collection_status'];
             $mercadopago->pago_id = $request->json['collection_id'];
             $mercadopago->preference_id = $request->json['preference_id'];

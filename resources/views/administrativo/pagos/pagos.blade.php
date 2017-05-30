@@ -452,23 +452,23 @@
                                  
                                     <div class="col-sm-12">
                                  
-                                     <label for="alumno" id = "id-alumno_id">Nombre del Cliente</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un participante al cual gestionarás su pago" title="" data-original-title="Ayuda"></i>
+                                     <label for="alumno" id = "id-usuario_id">Nombre del Cliente</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un participante al cual gestionarás su pago" title="" data-original-title="Ayuda"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-alumnos f-22"></i></span>
                                     <div class="fg-line">
                                       <div class="select">
-                                        <select class="selectpicker" name="alumno_id" id="alumno_id" data-live-search="true">
+                                        <select class="selectpicker" name="usuario_id" id="usuario_id" data-live-search="true">
                                           <option value="">Selecciona</option>
-                                          @foreach ( $alumnos as $alumno )
-                                          <option data-content = "{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion']}} - Debe: {{ number_format($alumno['total'], 2, '.' , '.')}} <i class='zmdi zmdi-money {{ empty($alumno['deuda']) ? 'c-verde ' : 'c-youtube' }} f-20'></i>" value = "{{ $alumno['id'] }}"></option>
+                                          @foreach ( $usuarios as $usuario )
+                                            <option data-content = "{{ $usuario['nombre'] }} {{ $usuario['apellido'] }} {{ $usuario['identificacion']}} - Debe: {{ number_format($usuario['total'], 2, '.' , '.')}} <i class='zmdi zmdi-money {{ empty($usuario['deuda']) ? 'c-verde ' : 'c-youtube' }} f-20'></i>" value = "{{ $usuario['id'] }}"></option>
                                           @endforeach
                                         </select>
                                       </div>
                                     </div>
-                                    <div class="has-error" id="error-alumno_id">
+                                    <div class="has-error" id="error-usuario_id">
                                       <span >
-                                        <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
+                                        <small class="help-block error-span" id="error-usuario_id_mensaje" ></small>                                           
                                       </span>
                                     </div>
                                   </div>
@@ -637,7 +637,6 @@
                             <thead>
                                 <tr>
                                     <th style="width:7%"><input style="margin-left:2%" name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
-                                    <th class="text-center" data-column-id="id" data-identifier="true" data-order="desc">#</th>
                                     <th class="text-center" data-column-id="nombre">Producto o Servicio</th>
                                     <th class="text-center" data-column-id="cantidad">Cantidad</th>
                                     <th class="text-center" data-column-id="precio_neto" data-order="desc">Precio (Neto)</th>
@@ -738,7 +737,7 @@
   var subtotalfinal = 0;
   var impuestofinal = 0;
   var totalfinal = 0;
-  var alumno_id = '';
+  var usuario_id = '';
   var tipo = 'servicio';
   var checked = [];
   var itemlist= 0;
@@ -797,9 +796,9 @@
         }, animationDuration);
 
     $("#agregar_item")[0].reset();
-    $('#alumno_id').val('');
-    alumno_id = '';
-    $('#alumno_id').selectpicker('render');
+    $('#usuario_id').val('');
+    usuario_id = '';
+    $('#usuario_id').selectpicker('render');
 
     id = "{{{ $id or 'Default' }}}";
     $('#disponibilidad_productos').hide();
@@ -807,9 +806,9 @@
 
     if(id != 'Default'){
 
-      $("#alumno_id").val("{{{ $id or 'Default' }}}");
-      $('#alumno_id').selectpicker('refresh');
-      alumno_id = id;
+      $("#usuario_id").val("{{{ $id or 'Default' }}}");
+      $('#usuario_id').selectpicker('refresh');
+      usuario_id = id;
 
       var route = route_pendientes + id;
       var token = $('input:hidden[name=_token]').val();
@@ -833,7 +832,6 @@
                 itemlist=array.length;
                 var rowNode=t.row.add( [
                 ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',  
-                ''+array[0].id+'',
                 ''+array[0].nombre+'',
                 ''+array[0].cantidad+'',
                 ''+formatmoney(parseFloat(array[0].precio_neto))+'',
@@ -918,7 +916,7 @@
     }
 
     t=$('#tablelistar').DataTable({
-      "columnDefs": [ {
+        "columnDefs": [ {
           "targets": [ 0 ],
           "orderable": false
         } ],
@@ -935,30 +933,30 @@
           $('td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "disabled");
         },
         language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
+                      processing:     "Procesando ...",
+                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                    searchPlaceholder: "BUSCAR",
+                    lengthMenu:     "Mostrar _MENU_ Registros",
+                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                    infoPostFix:    "",
+                    loadingRecords: "...",
+                    zeroRecords:    "No se encontraron registros coincidentes",
+                    emptyTable:     "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first:      "Primero",
+                        previous:   "Anterior",
+                        next:       "Siguiente",
+                        last:       "Ultimo"
+                    },
+                    aria: {
+                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
                     }
+                }
 
-        });
+    });
 
     $('#example-select-all').on('click', function(){
       // Check/uncheck all checkboxes in the table
@@ -1023,7 +1021,7 @@
 
       var route = route_factura;
       var token = $('input:hidden[name=_token]').val();
-      var datos = "&alumno_id="+alumno_id+"&items_factura="+checked;
+      var datos = "&usuario_id="+usuario_id+"&items_factura="+checked;
       limpiarMensaje();
       procesando();
       $.ajax({
@@ -1040,7 +1038,7 @@
               var nAnimIn = "animated flipInY";
               var nAnimOut = "animated flipOutY"; 
               if(respuesta.status=="OK"){
-                window.location = "{{url('/')}}/administrativo/pagos/gestion";
+                window.location = route_factura;
 
               }else{
                 var nTitle="Ups! ";
@@ -1279,14 +1277,14 @@
                 var datos = $( "#agregar_item" ).serialize(); 
                 limpiarMensaje();
 
-                alumno_id = $("#alumno_id").val();
+                usuario_id = $("#usuario_id").val();
 
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:datos + "&impuestoglobal="+impuestoglobal + "&alumno_id="+alumno_id,
+                        data:datos + "&impuestoglobal="+impuestoglobal + "&usuario_id="+usuario_id,
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
@@ -1303,7 +1301,6 @@
                           var rowId=respuesta.array[0].id;
                           var rowNode=t.row.add( [
                           ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',
-                          ''+respuesta.array[0].id+'',
                           ''+respuesta.array[0].nombre+'',
                           ''+respuesta.array[0].cantidad+'',
                           ''+formatmoney(parseFloat(respuesta.array[0].precio_neto))+'',
@@ -1427,13 +1424,13 @@
                 }
               })
               t.row( $(this).parents('tr') )
-                            .remove()
-                            .draw();
+                .remove()
+                .draw();
            });
         
 
       function limpiarMensaje(){
-        var campo = ["alumno_id", "combo", "cantidad", "linea"];
+        var campo = ["usuario_id", "combo", "cantidad", "linea"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -1441,7 +1438,7 @@
       }
 
       function errores(merror){
-      var campo = ["alumno_id", "combo", "cantidad", "linea"];
+      var campo = ["usuario_id", "combo", "cantidad", "linea"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {
@@ -1480,9 +1477,9 @@
                   if(data.status=='OK'){
 
                     $("#agregar_item")[0].reset();
-                    $('#alumno_id').val('');
-                    alumno_id = '';
-                    $('#alumno_id').selectpicker('render');
+                    $('#usuario_id').val('');
+                    usuario_id = '';
+                    $('#usuario_id').selectpicker('render');
                     limpiarMensaje();
                     impuestoglobal = 0;
                     subtotalglobal = 0;
@@ -1510,11 +1507,11 @@
               })
 
         $('html,body').animate({
-        scrollTop: $("#id-alumno_id").offset().top-90,
+        scrollTop: $("#id-usuario_id").offset().top-90,
         }, 1000);
       });
 
-  $("#alumno_id").change(function(){
+  $("#usuario_id").change(function(){
 
     t
       .clear()
@@ -1522,9 +1519,9 @@
 
     procesando();
 
-    alumno_id = $("#alumno_id").val();
+    usuario_id = $("#usuario_id").val();
 
-      if($("#alumno_id").val() != ""){
+      if($("#usuario_id").val() != ""){
 
         $("#add").removeAttr("disabled");
         $("#add").css({
@@ -1582,7 +1579,6 @@
                 var rowId=array[0].id;
                 var rowNode=t.row.add( [
                 ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',  
-                ''+array[0].id+'',
                 ''+array[0].nombre+'',
                 ''+array[0].cantidad+'',
                 ''+formatmoney(parseFloat(array[0].precio_neto))+'',
@@ -1666,10 +1662,10 @@
                 var nTitle="Ups! ";
                 var nMensaje=respuesta.mensaje;
 
-                $('#alumno_id').prepend( new Option(respuesta.alumno.nombre + ' ' + respuesta.alumno.apellido + ' ' + respuesta.alumno.identificacion + ' - Debe: 0',respuesta.alumno.id));
-                $('#alumno_id').val(respuesta.alumno.id);
-                $('#alumno_id').selectpicker('render');
-                $('#alumno_id').selectpicker('refresh');
+                $('#usuario_id').prepend( new Option(respuesta.alumno.nombre + ' ' + respuesta.alumno.apellido + ' ' + respuesta.alumno.identificacion + ' - Debe: 0','1-'+respuesta.alumno.id));
+                $('#usuario_id').val(respuesta.alumno.id);
+                $('#usuario_id').selectpicker('render');
+                $('#usuario_id').selectpicker('refresh');
 
                 $('.modal').modal('hide');
 

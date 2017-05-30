@@ -91,15 +91,15 @@
                                     <div class="i-to">
                                         <p class="c-gray">Acuerdo para</p>
                                         
-                                        <h4>{{ $alumno->alumno_nombre }} {{ $alumno->alumno_apellido }}</h4>
+                                        <h4>{{ $usuario->nombre }} {{ $usuario->apellido }}</h4>
                                         
                                         <span class="text-muted">
                                             <address>
-                                                {{ str_limit($alumno->direccion, $limit = 30, $end = '...') }}
+                                                {{ str_limit($usuario->direccion, $limit = 30, $end = '...') }}
                                             </address>
                 
-                                            {!! $alumno->telefono !!}<br/>
-                                            {!! $alumno->email !!}
+                                            {!! $usuario->telefono !!}<br/>
+                                            {!! $usuario->correo !!}
                                         </span>
                                     </div>
                                 </div>

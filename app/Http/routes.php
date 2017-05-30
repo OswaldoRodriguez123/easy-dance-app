@@ -405,7 +405,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('administrativo/pagos/eliminarpago/{id}', 'AdministrativoController@eliminarpago');
 		Route::post('administrativo/pagos/cancelargestion', 'AdministrativoController@CancelarGestion');
 
-		Route::post('administrativo/pagos/factura/{id}', 'AdministrativoController@storeFactura');
+		Route::post('administrativo/pagos/factura', 'AdministrativoController@storeFactura');
 		Route::delete('administrativo/pagos/eliminar-factura/{id}', 'AdministrativoController@eliminar_factura');
 		Route::post('administrativo/factura/enviar/{id}', 'AdministrativoController@enviarfactura');
 		Route::post('administrativo/pagos/agregarcliente', 'AdministrativoController@AgregarCliente');

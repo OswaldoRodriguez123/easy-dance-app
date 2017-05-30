@@ -49,39 +49,68 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="sexo">Sexo</th>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
+                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="empresa" data-order="desc">Empresa</th>
+                                    <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="celular" data-order="desc">Telefono Movil</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
+                                @foreach ($proveedores as $proveedor)
+                                    <?php $id = $proveedor['id']; ?>
+                                    <tr id="{{$id}}" class="seleccion" >
 
-                            @foreach ($proveedor as $proveedores)
-                                <?php $id = $proveedores['id']; ?>
-                                <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">                  
-                                    @if($proveedores['sexo']=='F')
-                                    <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
-                                    @else
-                                    <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
-                                    @endif</td>
-                                    <?php $tmp = explode(" ", $proveedores['nombre']);
-                                    $nombre_proveedor = $tmp[0];
+                                        <?php 
+                                            $tmp = explode(" ", $proveedor['nombre']);
+                                            $nombre_proveedor = $tmp[0];
 
-                                    $tmp = explode(" ", $proveedores['apellido']);
-                                    $apellido_proveedor= $tmp[0];
+                                            $tmp = explode(" ", $proveedor['apellido']);
+                                            $apellido_proveedor= $tmp[0];
+                                        ?>
 
-                                    ?>
+                                        <td class="text-center previa">{{$nombre_proveedor}} {{$apellido_proveedor}} </td>
+                                        <td class="text-center previa">{{$proveedor['empresa']}}</td>
+                                        <td class="text-center previa">                  
+                                            @if($proveedor['sexo']=='F')
+                                                <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                            @else
+                                                <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                            @endif
+                                        </td>
+                                        <td class="text-center previa">{{$proveedor['celular']}}</td>
+                                        <td class="text-center previa"> 
 
-                                    <td class="text-center previa">{{$nombre_proveedor}} {{$apellido_proveedor}} </td>
-                                    <td class="text-center previa">{{$proveedores['empresa']}}</td>
-                                    <td class="text-center previa">{{$proveedores['celular']}}</td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
-                                </tr>
-                            @endforeach 
-                                                           
+                                            <ul class="top-menu">
+                                                <li class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                                       <span class="f-15 f-700" style="color:black"> 
+                                                            <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                       </span>
+                                                    </a>
+
+                                                      <div class="dropup" dropdown-append-to-body>
+                                                        <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
+
+                                                            @if($proveedor['correo'])
+                                                                <li class="hidden-xs">
+                                                                    <a class="email"><i class="zmdi zmdi-email f-20"></i>&nbsp;Enviar Correo</a>
+                                                                </li>
+                                                            @endif
+
+                                                            <li class="hidden-xs">
+                                                                <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
+                                                            </li>
+
+
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </ul>
+
+                                        </td>
+                                    </tr>
+                                @endforeach                  
                             </tbody>
                         </table>
                          </div>
@@ -93,11 +122,7 @@
                               </div>
                             </div>
                         </div>
-                        
-                        
                     </div>
-                    
-                    
                 </div>
             </section>
 @stop
@@ -106,83 +131,164 @@
             
     <script type="text/javascript">
          
-            route_detalle="{{url('/')}}/configuracion/proveedor/detalle";
-            route_operacion="{{url('/')}}/configuracion/proveedor/operaciones";
+        route_detalle="{{url('/')}}/configuracion/proveedor/detalle";
+        route_operacion="{{url('/')}}/configuracion/proveedor/operaciones";
+        route_eliminar="{{url('/')}}/configuracion/proveedor/eliminar/";
+        route_email="{{url('/')}}/correo/sesion/";
             
-            $(document).ready(function(){
+        $(document).ready(function(){
 
             t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25,   
-        order: [[1, 'asc']],
-        fnDrawCallback: function() {
-        if ("{{count($proveedor)}}" < 25) {
-              $('.dataTables_paginate').hide();
-              $('#tablelistar_length').hide();
-          }else{
-             $('.dataTables_paginate').show();
-          }
-        },
-        pageLength: 25,
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
+                processing: true,
+                serverSide: false,
+                pageLength: 25,   
+                order: [[0 ,'asc']],
+                fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+                },
+                language: {
+                    processing:     "Procesando ...",
+                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                    searchPlaceholder: "BUSCAR",
+                    lengthMenu:     "Mostrar _MENU_ Registros",
+                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                    infoPostFix:    "",
+                    loadingRecords: "...",
+                    zeroRecords:    "No se encontraron registros coincidentes",
+                    emptyTable:     "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first:      "Primero",
+                        previous:   "Anterior",
+                        next:       "Siguiente",
+                        last:       "Ultimo"
+                    },
+                    aria: {
+                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
                     }
+                }
+            });
         });
-    
 
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
+        function previa(t){
+            var id = $(t).closest('tr').attr('id');
+            var route =route_detalle+"/"+id;
+            window.location=route;
+        }
 
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-      });
-
-     function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        var id_proveedor = row.split('_');
-        var route =route_detalle+"/"+id_proveedor[1];
-        window.location=route;
-      }
-
-      $("i[name=operacion").click(function(){
+        $("i[name=operacion").click(function(){
             var route =route_operacion+"/"+this.id;
             window.location=route;
-         });
+        });
+
+        $(".eliminar").click(function(){
+            var id = $(this).closest('tr').attr('id');
+            swal({   
+                title: "Desea eliminar al proveedor?",   
+                text: "Confirmar eliminación!",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+                if (isConfirm) {
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nType = 'success';
+                    var nAnimIn = $(this).attr('data-animation-in');
+                    var nAnimOut = $(this).attr('data-animation-out')
+                    eliminar(id);
+                }
+            });
+        });
+        function eliminar(id){
+            var route = route_eliminar + id;
+            var token = '{{ csrf_token() }}';
+            procesando();
+                    
+            $.ajax({
+                url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'DELETE',
+                dataType: 'json',
+                data:id,
+                success:function(respuesta){
+                    finprocesado();
+                    swal("Exito!","Ha sido eliminado!","success");
+                    t.row($('#'+id))
+                      .remove()
+                      .draw();
+
+                },
+                error:function(msj){
+                    finprocesado();
+                    $("#msj-danger").fadeIn(); 
+                    var text="";
+                    console.log(msj);
+                    var merror=msj.responseJSON;
+                    text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                    $("#msj-error").html(text);
+                    setTimeout(function(){
+                             $("#msj-danger").fadeOut();
+                            }, 3000);
+                    }
+            });
+        }
+
+        $(".email").click(function(){
+            var route = route_email + 4;
+            var token = '{{ csrf_token() }}';
+            var id = $(this).closest('tr').attr('id');
+                    
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                dataType: 'json',
+                success:function(respuesta){
+
+                    procesando();
+                    window.location="{{url('/')}}/correo/"+id
+
+                },
+                error:function(msj){
+                            // $("#msj-danger").fadeIn(); 
+                            // var text="";
+                            // console.log(msj);
+                            // var merror=msj.responseJSON;
+                            // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                            // $("#msj-error").html(text);
+                            // setTimeout(function(){
+                            //          $("#msj-danger").fadeOut();
+                            //         }, 3000);
+                            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                            }
+            });
+        });
+
+        $('#tablelistar tbody').on( 'mouseenter', 'i.zmdi-wrench', function () {
+
+            if($('.dropdown').hasClass('open')){
+
+            }else{
+                $( this ).click();
+            }
+     
+        });
+
+        $('.table-responsive').on('show.bs.dropdown', function () {
+          $('.table-responsive').css( "overflow", "inherit" );
+        });
+
+        $('.table-responsive').on('hide.bs.dropdown', function () {
+          $('.table-responsive').css( "overflow", "auto" );
+        })
 
     </script>
 @stop

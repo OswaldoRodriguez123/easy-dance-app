@@ -38,17 +38,16 @@
                                            
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                         </ul>
-                      <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
-                  </div> 
+                    </div> 
             
                     
                       <div class="card">
                         <div class="card-header text-center">
                             <div class="col-sm-4 text-left">
-                            <span class="f-16 p-t-0">Cliente: {{$alumno->nombre}} {{$alumno->apellido}}</span>
+                            <span class="f-16 p-t-0">Cliente: {{$usuario->nombre}} {{$usuario->apellido}}</span>
                             <div class="clearfix p-b-15"></div>
 
-                            <a id="id-generar" href="{{url('/')}}/administrativo/acuerdos/generar/{{$alumno->id}}"><span class="f-16 p-t-0 text-success" id="acuerdo">Generar acuerdo de pago <i class="icon_a icon_a-acuerdo-de-pago f-14"></i></span></a></div>
+                            <a id="id-generar" href="{{url('/')}}/administrativo/acuerdos/generar/{{$usuario_tipo}}-{{$usuario_id}}"><span class="f-16 p-t-0 text-success" id="acuerdo">Generar acuerdo de pago <i class="icon_a icon_a-acuerdo-de-pago f-14"></i></span></a></div>
 
                             <div class="col-sm-4 c-morado">
                             </div>
@@ -59,7 +58,9 @@
 
                             <div class="clearfix p-b-15"></div>
 
-                            <span class="f-16 p-t-0">Puntos acumulados </span><span class = "f-16">{{$puntos_referidos}}</span>
+                            @if($usuario_tipo == 1)
+                              <span class="f-16 p-t-0">Puntos acumulados </span><span class = "f-16">{{$puntos_referidos}}</span>
+                            @endif
 
                             </div>
 
@@ -69,10 +70,13 @@
                         
                         <div class="card-body p-b-20">
                           <form name="gestionar_pago" id="gestionar_pago">
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <div class="row p-l-10 p-r-10">
-                            <hr>
-                            <div class="clearfix p-b-15"></div>
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="totaldeuda" value="{{$total}}">
+                            <input type="hidden" name="usuario_id" value="{{$usuario_id}}">
+                            <input type="hidden" name="usuario_tipo" value="{{$usuario_tipo}}">
+                              <div class="row p-l-10 p-r-10">
+                                <hr>
+                                  <div class="clearfix p-b-15"></div>
 
                           
                                     <div class="col-sm-12">
@@ -132,7 +136,7 @@
                             </div>
 
                             <div class="col-sm-3 text-center">
-                                <input type="text" data-mask="000,000,000,000" reverse= "true" class="form-control input-sm" name="monto" id="monto" placeholder="Ej. 100">
+                                <input type="text" data-mask="000,000,000,000" data-mask-reverse="true" class="form-control input-sm" name="monto" id="monto" placeholder="Ej. 100">
                             </div>
 
                             <div class="clearfix p-b-35"></div>
@@ -234,7 +238,6 @@
 
                             <div class="col-sm-6 text-right pull-right" style="padding-right: 0px">  
                               
-                              <!--<a href="{{-- $datos['response']['init_point'] --}}" name="MP-Checkout" class="btn btn-blanco m-r-10 f-14 guardar VeOn" mp-mode="modal" onreturn="respuesta_mercadopago">Mercado Pago</a>-->
                               <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "guardar" id="guardar" >Pagar Ya <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
 
                               <button type="button" class="cancelar btn btn-default" name="cancelar" id="cancelar">Cancelar</button>
@@ -261,12 +264,11 @@
 
   route_agregar="{{url('/')}}/administrativo/pagos/agregarpago";
   route_principal="{{url('/')}}/administrativo/pagos"; 
-  route_factura="{{url('/')}}/administrativo/pagos/factura/";
+  route_factura="{{url('/')}}/administrativo/pagos/factura";
   route_eliminar="{{url('/')}}/administrativo/pagos/eliminarpago";
   route_cancelar = "{{url('/')}}/administrativo/pagos/cancelargestion";
   route_imprimir="{{url('/')}}/administrativo/factura/";
-  //route_mercadopago="{{url('/')}}/administrativo/pagos/facturamercadopago/";
-  //
+
   var puntos_referidos = "{{$puntos_referidos}}"
 
   function formatmoney(n) {
@@ -293,8 +295,6 @@
      totalglobal = parseFloat("{{$total}}");
      totaldeuda =  parseFloat("{{$total}}");
 
-     // $("#subtotal").text(formatmoney(subtotalglobal));
-     // $("#impuestototal").text(formatmoney(impuestoglobal));
      $("#total").text(formatmoney(totalglobal));
      $("#total2").text(formatmoney(totalglobal));
 
@@ -303,7 +303,6 @@
   $("#forma_pago_id").change(function(){
 
     if($(this).val() != 4){
-
       $("#monto").val(formatDot(totalglobal));
     }else{
       if(totalglobal <= puntos_referidos)
@@ -339,14 +338,6 @@
         bSort:false, 
         bInfo:false,
         order: [[0, 'asc']],
-        fnDrawCallback: function() {
-          $('.dataTables_paginate').hide();
-          /*if ($('#tablelistar tr').length < 25) {
-              $('.dataTables_paginate').hide();
-          }else{
-             $('.dataTables_paginate').show();
-          }*/
-        },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
         },
@@ -417,109 +408,68 @@
                 });
             };
 
- $("#guardar").click(function(){
+       $("#guardar").click(function(){
 
-                // if(totalglobal == 0){
+          var route = route_factura;
+          var token = $('input:hidden[name=_token]').val();
+          var datos = $( "#gestionar_pago" ).serialize(); 
+          procesando(); 
+          limpiarMensaje();
+          $.ajax({
+              url: route,
+                  headers: {'X-CSRF-TOKEN': token},
+                  type: 'POST',
+                  dataType: 'json',
+                  data: datos,
+              success:function(respuesta){
+                setTimeout(function(){ 
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY"; 
+                  if(respuesta.status=="OK"){
 
-                  var id = "{{$alumno->id}}";
-                  var route = route_factura + id;
-                  var token = $('input:hidden[name=_token]').val();
-                  var datos = $( "#gestionar_pago" ).serialize(); 
-                  procesando(); 
-                  limpiarMensaje();
-                  $.ajax({
-                      url: route,
-                          headers: {'X-CSRF-TOKEN': token},
-                          type: 'POST',
-                          dataType: 'json',
-                          data: "&total="+totaldeuda+
-                          "&id="+id,
-                      success:function(respuesta){
-                        setTimeout(function(){ 
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY"; 
-                          if(respuesta.status=="OK"){
-                            // finprocesado();
-                            // var nType = 'success';
-                            // $("#gestionar_pago")[0].reset();
-                            // var nTitle="Ups! ";
-                            // var nMensaje=respuesta.mensaje;
-                            // window.location = route_imprimir + respuesta.factura;
+                    window.location = route_principal;
+                    
+                  }else{
+                    var nTitle="Ups! ";
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    var nType = 'danger';
 
-                            if(respuesta.route){
+                    finprocesado();
 
-                              $.ajax({
-                                url: respuesta.route,
-                                headers: {'X-CSRF-TOKEN': token},
-                                type: 'POST',
-                                dataType: 'json',
-                                success:function(respuesta){
-                           
-                                },
-                                error:function(msj){
-                                
-                                }
-                              }); 
-
-                              setTimeout(function(){ 
-
-                                window.location = route_principal;
-
-                              }, 2000);
-
-                            }else{
-                              window.location = route_principal;
-                            }
-                          }else{
-                            var nTitle="Ups! ";
-                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                            var nType = 'danger';
-
-                            finprocesado();
-
-                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                          }                       
-                          
-                        }, 1000);
-                      },
-                      error:function(msj){
-                        setTimeout(function(){ 
-                          // if (typeof msj.responseJSON === "undefined") {
-                          //   window.location = "{{url('/')}}/error";
-                          // }
-                          if(msj.responseJSON.status=="ERROR"){
-                            console.log(msj.responseJSON.errores);
-                            errores(msj.responseJSON.errores);
-                            var nTitle="    Ups! "; 
-                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                          }else{
-                            var nTitle="   Ups! "; 
-                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          }                        
-                          finprocesado();
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nType = 'danger';
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY";                       
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                        }, 1000);
-                      }
-                  });
-                // }
-                // else{
-
-                //   $("#error-linea_mensaje").html("Debes ingresar la cantidad solicitada");
-                //   $('html,body').animate({
-                //       scrollTop: $("#id-linea").offset().top-90,
-                //   }, 1000);   
-
-                // }
-            });
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                  }                       
+                  
+                }, 1000);
+              },
+              error:function(msj){
+                setTimeout(function(){ 
+                  // if (typeof msj.responseJSON === "undefined") {
+                  //   window.location = "{{url('/')}}/error";
+                  // }
+                  if(msj.responseJSON.status=="ERROR"){
+                    console.log(msj.responseJSON.errores);
+                    errores(msj.responseJSON.errores);
+                    var nTitle="    Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                  }else{
+                    var nTitle="   Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  }                        
+                  finprocesado();
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nType = 'danger';
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY";                       
+                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                }, 1000);
+              }
+          });
+        });
 
         $("#add").click(function(){
 
@@ -542,7 +492,7 @@
                           headers: {'X-CSRF-TOKEN': token},
                           type: 'POST',
                           dataType: 'json',
-                          data:datos + "&alumno_id={{$alumno->id}}",
+                          data:datos,
                       success:function(respuesta){
                         setTimeout(function(){ 
                           var nFrom = $(this).attr('data-from');
@@ -727,7 +677,7 @@
       }
 
     function errores(merror){
-      var campo = ["alumno_id", "combo", "cantidad"];
+      var campo = ["usuario_id", "combo", "cantidad"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {

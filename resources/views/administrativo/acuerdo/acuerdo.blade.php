@@ -166,32 +166,31 @@
                                  
                                     <div class="col-sm-12">
                                  
-                                     <label for="alumno" id="id-alumno_id">Nombre del Cliente</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un participante al cual gestionarás su pago" title="" data-original-title="Ayuda"></i>
-                                     </div>
+                                      <label for="usuario" id="id-usuario_id">Nombre del Cliente</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un participante al cual gestionarás su pago" title="" data-original-title="Ayuda"></i>
+                                    </div>
                                     
-                                    <div class="col-xs-6">
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-alumnos f-22"></i></span>
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="alumno_id" id="alumno_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $alumnos as $alumno )
-                                          <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
-                                          @endforeach
-                                        </select>
+                                    <div class="col-md-6">
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_a-alumnos f-22"></i></span>
+                                        <div class="select">
+                                          <select class="selectpicker" name="usuario_id" id="usuario_id" data-live-search="true">
+                                            <option value="">Selecciona</option>
+                                            @foreach ( $usuarios as $usuario )
+                                            <option value = "{{ $usuario['id'] }}">{{ $usuario['nombre'] }} {{ $usuario['apellido'] }} {{ $usuario['identificacion'] }}</option>
+                                            @endforeach
+                                          </select>
+                                        </div>
+                                      <div class="has-error" id="error-usuario_id">
+                                        <span >
+                                          <small class="help-block error-span" id="error-usuario_id_mensaje" ></small>                                           
+                                        </span>
                                       </div>
-                                    
-                                    </div>
-                                    <div class="has-error" id="error-alumno_id">
-                                      <span >
-                                        <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
                                     </div>
                                   </div>
-                                  <div class="col-xs-6 text-center c-morado">
-                                  <span class="f-16 p-t-0">Debe </span><span class="f-16 p-t-0" id="total2" name="total2">0</span></div> 
+
+                                  <div class="col-md-6 text-center c-morado">
+                                    <span class="f-16 p-t-0">Debe </span><span class="f-16 p-t-0" id="total2" name="total2">0</span>
+                                  </div> 
                               </div>
 
                               <div class="clearfix p-b-35"></div>
@@ -501,14 +500,15 @@
   var route_pendientes="{{url('/')}}/administrativo/pagos/pendiente/";
   var router_generar_acuerdo="{{url('/')}}/administrativo/acuerdo/generar";
   var route_principal="{{url('/')}}/participante/alumno/deuda/";
+  var route_principal2="{{url('/')}}/administrativo/acuerdos";
 
   var totalglobal = 0;
 
-  $('#alumno_id').selectpicker('deselectAll');
+  $('#usuario_id').selectpicker('deselectAll');
   $('#frecuencia').selectpicker('deselectAll');
   $('#fecha').val('');
   $('#partes').val('');
-  $('#alumno_id').selectpicker('refresh');
+  $('#usuario_id').selectpicker('refresh');
   $('#frecuencia').selectpicker('refresh');
 
   $('#fecha').prop('readonly', true);
@@ -530,14 +530,14 @@
 
   $( document ).ready(function() {
 
-    tmp = "{{{ $acuerdo or 'Default' }}}";
+    tiene_acuerdo = "{{{ $acuerdo or 'Default' }}}";
 
-    if(tmp == 0 && tmp != 'Default'){
+    if(tiene_acuerdo == 0 && tiene_acuerdo != 'Default'){
 
       totalglobal = parseFloat("{{{$total or 'Default' }}}");
 
-      $("#alumno_id").val("{{{$id or 'Default' }}}");
-      $('#alumno_id').selectpicker('refresh');
+      $("#usuario_id").val("{{{$id or 'Default' }}}");
+      $('#usuario_id').selectpicker('refresh');
       $("#total2").text(formatmoney(totalglobal));
 
       $('#fecha').prop('readonly', false);
@@ -558,14 +558,12 @@
 
     $('body,html').animate({scrollTop : 0}, 2000);
         var animation = 'fadeInUpBig';
-        //var cardImg = $(this).closest('#content').find('h1');
         if (animation === "hinge") {
         animationDuration = 3100;
         }
         else {
         animationDuration = 3200;
         }
-        //$("h1").removeAttr('class');
         $(".container").addClass('animated '+animation);
 
         setTimeout(function(){
@@ -624,51 +622,42 @@
             };
 
   var t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25, 
-        bPaginate: false,
-        bInfo:false,
-        bFilter:false, 
-        bSort:false, 
-        bInfo:false,
-        order: [[0, 'asc']],
-        /*fnDrawCallback: function() {
-          $('.dataTables_paginate').show();
-        if ($('{ { count(acuerdos) } }').length < 25) {
-              $('.dataTables_paginate').hide();
-          }
-          else{
-             $('.dataTables_paginate').show();
-          }
-        },*/
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         "Buscar:",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
+    processing: true,
+    serverSide: false,
+    pageLength: 25, 
+    bPaginate: false,
+    bInfo:false,
+    bFilter:false, 
+    bSort:false, 
+    bInfo:false,
+    order: [[0, 'asc']],
+    fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+      $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+      $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+    },
+    language: {
+                    processing:     "Procesando ...",
+                    search:         "Buscar:",
+                    lengthMenu:     "Mostrar _MENU_ Registros",
+                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                    infoPostFix:    "",
+                    loadingRecords: "...",
+                    zeroRecords:    "No se encontraron registros coincidentes",
+                    emptyTable:     "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first:      "Primero",
+                        previous:   "Anterior",
+                        next:       "Siguiente",
+                        last:       "Ultimo"
+                    },
+                    aria: {
+                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
                     }
-        });
+                }
+  });
 
   function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
                 $.growl({
@@ -782,7 +771,6 @@
             var nTitle="   Ups! "; 
             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
           }                        
-          //$(".generar_acuerdo").removeAttr("disabled");
           $("#generar").removeAttr("disabled");
              $("#generar").css({
             "opacity": ("1")
@@ -801,80 +789,84 @@
 
   $("#guardar").click(function(){
 
-                id = $("#alumno_id").val()
-                porcentaje_retraso = $("#porcentaje_retraso").val()
-                tiempo_tolerancia = $("#tiempo_tolerancia").val()
-                tipo = $("#tipo").val()
+        id = $("#usuario_id").val()
+        porcentaje_retraso = $("#porcentaje_retraso").val()
+        tiempo_tolerancia = $("#tiempo_tolerancia").val()
+        tipo = $("#tipo").val()
 
-                var route = route_agregar;
-                var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#generar_acuerdo" ).serialize(); 
-                $("#guardar").attr("disabled","disabled");
-                $(".cancelar").attr("disabled","disabled");
-                $(".procesando").removeClass('hidden');
-                $(".procesando").addClass('show');         
-                limpiarMensaje();
-                procesando();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:"&alumno_id="+id+"&porcentaje_retraso="+porcentaje_retraso+"&tiempo_tolerancia="+tiempo_tolerancia+"&tipo="+tipo,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
+        var route = route_agregar;
+        var token = $('input:hidden[name=_token]').val();
+        var datos = $( "#generar_acuerdo" ).serialize(); 
+        $("#guardar").attr("disabled","disabled");
+        $(".cancelar").attr("disabled","disabled");
+        $(".procesando").removeClass('hidden');
+        $(".procesando").addClass('show');         
+        limpiarMensaje();
+        procesando();
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                data:"&usuario_id="+id+"&porcentaje_retraso="+porcentaje_retraso+"&tiempo_tolerancia="+tiempo_tolerancia+"&tipo="+tipo,
+            success:function(respuesta){
+              setTimeout(function(){ 
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY"; 
+                if(respuesta.status=="OK"){
 
-                          window.location = route_principal + id;
+                  if(respuesta.usuario_tipo == 1){
+                    window.location = route_principal + respuesta.usuario_id;
+                  }else{
+                    window.location = route_principal2;
+                  }
 
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
+                }else{
+                  var nTitle="Ups! ";
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  var nType = 'danger';
+                }                       
+                $(".procesando").removeClass('show');
+                $(".procesando").addClass('hidden');
+                $("#guardar").removeAttr("disabled");
+                $(".cancelar").removeAttr("disabled");
 
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        finprocesado();
-                        $(".cancelar").removeAttr("disabled");
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-            });
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              }, 1000);
+            },
+            error:function(msj){
+              setTimeout(function(){ 
+                // if (typeof msj.responseJSON === "undefined") {
+                //   window.location = "{{url('/')}}/error";
+                // }
+                if(msj.responseJSON.status=="ERROR"){
+                  console.log(msj.responseJSON.errores);
+                  errores(msj.responseJSON.errores);
+                  var nTitle="    Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                }else{
+                  var nTitle="   Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                }                        
+                $("#guardar").removeAttr("disabled");
+                finprocesado();
+                $(".cancelar").removeAttr("disabled");
+                $(".procesando").removeClass('show');
+                $(".procesando").addClass('hidden');
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nType = 'danger';
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY";                       
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+              }, 1000);
+            }
+        });
+    });
 
     $("#actualizar").click(function(){
 
@@ -952,7 +944,7 @@
     });
 
       function limpiarMensaje(){
-        var campo = ["alumno_id", "linea", "fecha", "frecuencia", "partes"];
+        var campo = ["usuario_id", "linea", "fecha", "frecuencia", "partes"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -960,7 +952,7 @@
       }
 
       function errores(merror){
-      var campo = ["alumno_id", "linea", "fecha", "frecuencia", "partes"];
+      var campo = ["usuario_id", "linea", "fecha", "frecuencia", "partes"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {
@@ -991,10 +983,10 @@
     $("#generar_acuerdo")[0].reset();
 
     limpiarMensaje();
-    $('#alumno_id').val('');
+    $('#usuario_id').val('');
     $('#frecuencia').val('');
 
-    $('#alumno_id').selectpicker('render');
+    $('#usuario_id').selectpicker('render');
     $('#frecuencia').selectpicker('render');
 
 
@@ -1055,7 +1047,7 @@
     
   }
 
-  $("#alumno_id").change(function(){
+  $("#usuario_id").change(function(){
 
     procesando();
 
@@ -1082,8 +1074,6 @@
             t
               .clear()
               .draw();
-
-
 
               $('#fecha').prop('readonly', false);
               $('#frecuencia').removeAttr('disabled');

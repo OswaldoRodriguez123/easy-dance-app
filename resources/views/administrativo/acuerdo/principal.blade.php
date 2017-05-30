@@ -49,7 +49,6 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="factura" data-type="numeric">#</th>
                                     <th class="text-center" data-column-id="cliente">Cliente</th>
                                     <th class="text-center" data-column-id="fecha" data-order="desc">Fecha del Primer Pago</th>
                                     <th class="text-center" data-column-id="frecuencia" data-order="desc">Frecuencia</th>
@@ -61,15 +60,16 @@
                             <tbody>
                             
                              @foreach ($acuerdos as $acuerdo)
-                                <?php $id = $acuerdo->id; ?>
+                                <?php $id = $acuerdo['id']; ?>
                                 <tr id="{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$acuerdo->id}}</td>
-                                    <td class="text-center previa">{{$acuerdo->nombre}} {{$acuerdo->apellido}}</td>
-                                    <td class="text-center previa">{{$acuerdo->fecha_inicio}}</td>
-                                    <td class="text-center previa">{{$acuerdo->frecuencia}}</td>
-                                    <td class="text-center previa">{{$acuerdo->cuotas}}</td>
-                                    <td class="text-center previa">{{$acuerdo->total}}</td>
-                                    <td class="text-center"> <!-- <i data-toggle="modal" name="correo" id={{$id}} class="zmdi zmdi-email f-20 p-r-10"></i> --> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                    <td class="text-center previa">{{$acuerdo['nombre']}}</td>
+                                    <td class="text-center previa">{{$acuerdo['fecha_inicio']}}</td>
+                                    <td class="text-center previa">{{$acuerdo['frecuencia']}}</td>
+                                    <td class="text-center previa">{{$acuerdo['cuotas']}}</td>
+                                    <td class="text-center previa">{{$acuerdo['total']}}</td>
+                                    <td class="text-center"> 
+                                        <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10"></i>
+                                    </td>
                                 </tr>
 
 

@@ -81,15 +81,15 @@
                                     <div class="i-to">
                                         <p class="c-gray">Factura para</p>
                                         
-                                        <h4>{{ $alumno->nombre }}</h4>
+                                        <h4>{{ $usuario->nombre }}</h4>
                                         
                                         <span class="text-muted">
                                             <address>
-                                                {{ str_limit($alumno->direccion, $limit = 30, $end = '...') }}
+                                                {{ str_limit($usuario->direccion, $limit = 30, $end = '...') }}
                                             </address>
                 
-                                            {!! $alumno->telefono !!}<br/>
-                                            {!! $alumno->email !!}
+                                            {!! $usuario->telefono !!}<br/>
+                                            {!! $usuario->correo !!}
                                         </span>
                                     </div>
                                 </div>
@@ -132,7 +132,6 @@
                             
                             <table class="table i-table m-t-25 m-b-25">
                                 <thead class="text-uppercase">
-                                    <th class="c-gray">ITEM ID</th>
                                     <th class="c-gray">NOMBRE</th>
                                     <th class="c-gray">CANTIDAD</th>
                                     <th class="c-gray">NETO</th>
@@ -148,17 +147,16 @@
                                         
                                       <?php $id = $detalle->item_id ?>
                                         <tr id="row_{{$id}}" class="seleccion" >
-                                            <td class="text-center disabled">{{ $detalle->item_id }}</td>
-                                            <td class="disabled">{!! $detalle->nombre !!}</td>
+                                            <td class="disabled">{{ $detalle->nombre }}</td>
                                             <td class="disabled">{{ $detalle->cantidad }}</td>
-                                            <td class="disabled">{{$academia->pais_moneda}} {{ number_format($detalle->importe_neto,2,",",".") }}</td>
+                                            <td class="disabled">{{ $academia->pais_moneda }} {{ number_format($detalle->importe_neto,2,",",".") }}</td>
                                             <td class="disabled">% {{$detalle->impuesto}} </td>
                                             <td class="highlight disabled">{{$academia->pais_moneda}} {{ number_format($detalle->importe_neto,2,",",".")  }} </td>
                                         </tr>
                                        
                                     @endforeach 
                                         <tr>
-                                            <td colspan="4"></td>
+                                            <td colspan="3"></td>
                                             <td> TOTAL FACTURA </td>
                                             <td class="highlight">{{$academia->pais_moneda}} {{ number_format($total,2,",",".") }}</td>
                                         </tr>

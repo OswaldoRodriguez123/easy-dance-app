@@ -42,7 +42,8 @@ class AgendarController extends BaseController
         $arrayCitas=array();
         $arrayTransmisiones=array();
 
-
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+        $usuario_id = Session::get('easydance_usuario_id');
 
     	$talleres=Taller::where('academia_id', '=' ,  Auth::user()->academia_id)
             ->where('talleres.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'))
@@ -65,38 +66,30 @@ class AgendarController extends BaseController
 
     		$arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/talleres/operaciones/".$id);
 
-			$c=0;
-
-			
 			while($dt->timestamp<$df->timestamp){
 				$fecha="";
 				$fecha=$dt->addWeek()->toDateString();
 				$arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/talleres/operaciones/".$id);
-				$c++;
 			}
-
 		}
 
 		$clasegrupal = ClaseGrupal::join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->join('config_especialidades', 'config_especialidades.id', '=', 'clases_grupales.especialidad_id')
-                ->join('config_niveles_baile', 'config_niveles_baile.id', '=', 'clases_grupales.nivel_baile_id')
-                ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
-                ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->join('config_especialidades', 'config_especialidades.id', '=', 'clases_grupales.especialidad_id')
+            ->join('config_niveles_baile', 'config_niveles_baile.id', '=', 'clases_grupales.nivel_baile_id')
+            ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
+            ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
         $horarios_clasegrupal = HorarioClaseGrupal::join('clases_grupales', 'clases_grupales.id', '=', 'horario_clase_grupales.clase_grupal_id')
-                ->Leftjoin('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-                ->Leftjoin('config_especialidades', 'config_especialidades.id', '=', 'horario_clase_grupales.especialidad_id')
-                ->Leftjoin('config_niveles_baile', 'config_niveles_baile.id', '=', 'clases_grupales.nivel_baile_id')
-                ->Leftjoin('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
-                ->select('clases_grupales.fecha_final', 'horario_clase_grupales.fecha as fecha_inicio', 'horario_clase_grupales.hora_inicio', 'horario_clase_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horario_clase_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'clases_grupales.id', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
-                ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
-                ->where('clases_grupales.deleted_at', '=', null)
+            ->join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+            ->join('config_especialidades', 'config_especialidades.id', '=', 'horario_clase_grupales.especialidad_id')
+            ->join('config_niveles_baile', 'config_niveles_baile.id', '=', 'clases_grupales.nivel_baile_id')
+            ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
+            ->select('clases_grupales.id', 'clases_grupales.fecha_final', 'horario_clase_grupales.fecha as fecha_inicio', 'horario_clase_grupales.hora_inicio', 'horario_clase_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horario_clase_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
+            ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+            ->where('clases_grupales.deleted_at', '=', null)
         ->get();
-
-    	$usuario_tipo = Session::get('easydance_usuario_tipo');
-        $usuario_id = Session::get('easydance_usuario_id');
 
         foreach ($clasegrupal as $clase) {
 
@@ -146,9 +139,6 @@ class AgendarController extends BaseController
             }
 
     		$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$fecha_inicio,"fecha_final"=>$fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-
-			$c=0;
-
 			
 			while($dt->timestamp<$df->timestamp){
                 $nombre = $clase->nombre;
@@ -170,10 +160,7 @@ class AgendarController extends BaseController
                         $arrayClases[]=array("id"=>$clase->id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo);
                      }
                 }
-				
-				$c++;
 			}
-
 		}
 
         foreach ($horarios_clasegrupal as $clase) {
@@ -216,9 +203,6 @@ class AgendarController extends BaseController
 
             $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
 
-            $c=0;
-
-            
             while($dt->timestamp<$df->timestamp){
                 $fecha="";
                 $fecha=$dt->addWeek()->toDateString();
@@ -238,9 +222,7 @@ class AgendarController extends BaseController
                         $arrayClases[]=array("id"=>$clase->id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo);
                      }
                 }
-                $c++;
             }
-
         }
 
         $config_clases_personalizadas = ConfigClasesPersonalizadas::where('academia_id',Auth::user()->academia_id)->first();
@@ -274,9 +256,7 @@ class AgendarController extends BaseController
 
         $horarios_clasespersonalizadas = $query->get();
 
-
     	foreach ($clasespersonalizadas as $clasepersonalizada) {
-
 
     		$fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
     		$fecha_end=explode('-',$clasepersonalizada->fecha_inicio);
@@ -309,16 +289,12 @@ class AgendarController extends BaseController
             $id=$instructor."!".$especialidad."!".$clase_personalizada_nombre."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
 
     		$arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-
-			$c=0;
 			
 			while($dt->timestamp<$df->timestamp){
 				$fecha="";
 				$fecha=$dt->addWeek()->toDateString();
 				$arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-				$c++;
 			}
-
 		}
 
         foreach ($horarios_clasespersonalizadas as $clasepersonalizada) {
@@ -360,13 +336,10 @@ class AgendarController extends BaseController
 
             $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
 
-            $c=0;
-            
             while($dt->timestamp<$df->timestamp){
                 $fecha="";
                 $fecha=$dt->addWeek()->toDateString();
                 $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-                $c++;
             }
 
         }
@@ -397,13 +370,10 @@ class AgendarController extends BaseController
 
     		$arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
 
-			$c=0;
-			
 			while($dt->timestamp<$df->timestamp){
 				$fecha="";
 				$fecha=$dt->addWeek()->toDateString();
 				$arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-				$c++;
 			}
 
 		}
@@ -480,7 +450,6 @@ class AgendarController extends BaseController
             }
 
             $arrayTransmisiones[]=array("id"=>$id,"nombre"=>'Transmisión', "fecha"=> $fecha, "hora"=>$hora, "etiqueta"=>$etiqueta,"url"=>$url);
-
         }
 
         return view('agendar.index')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas, 'transmisiones' => $arrayTransmisiones, 'usuario_tipo' => $usuario_tipo]);

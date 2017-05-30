@@ -24,7 +24,7 @@ class ProveedorController extends BaseController {
 
     public function principal()
     {
-        return view('configuracion.proveedor.principal')->with('proveedor', Proveedor::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
+        return view('configuracion.proveedor.principal')->with('proveedores', Proveedor::where('academia_id', '=' ,  Auth::user()->academia_id)->get());
     }
 
     public function operar($id)

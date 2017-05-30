@@ -127,7 +127,7 @@
                                             <?php $id = $factura['id']; ?>
 
                                             <tr id="{{$id}}" class="seleccion">
-                                                <td class="text-center previa">{{str_pad($factura['factura'], 10, "0", STR_PAD_LEFT)}}</td>
+                                                <td class="text-center previa">{{str_pad($factura['numero_factura'], 10, "0", STR_PAD_LEFT)}}</td>
                                                 <td class="text-center previa">{{$factura['nombre']}}</td>
                                                 <td class="text-center previa">{{$factura['tipo_pago']}}</td>
                                                 <td class="text-center previa">{{ str_limit($factura['concepto'], $limit = 50, $end = '...') }}
@@ -162,8 +162,8 @@
 
         tipo = 'pagadas';
 
-        var proforma = <?php echo json_encode($proforma);?>;
-        var factura = <?php echo json_encode($facturas);?>;
+        var proformas = <?php echo json_encode($proformas);?>;
+        var facturas = <?php echo json_encode($facturas);?>;
 
         function formatmoney(n) {
             return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
@@ -263,7 +263,7 @@
 
                 document.getElementById('fecha').innerHTML = 'Fecha'; 
 
-                $.each(factura, function (index, array) {
+                $.each(facturas, function (index, array) {
                     concepto = array.concepto;
                     if(concepto.length > 50)
                     {
@@ -302,7 +302,7 @@
 
                 var total = 0 
 
-                $.each(proforma, function (index, array) {
+                $.each(proformas, function (index, array) {
 
                     total = total + parseFloat(array.total)
                     concepto = array.concepto;
@@ -335,7 +335,7 @@
 
             setTimeout(function(){
 
-                var tmp = $.grep(proforma, function(e){ return e.tipo == 3; });
+                var tmp = $.grep(proformas, function(e){ return e.tipo == 3; });
 
                 var total = 0;
 
@@ -372,7 +372,7 @@
 
                 var total = 0
 
-                var tmp = $.grep(proforma, function(e){ return e.tipo == 4; });
+                var tmp = $.grep(proformas, function(e){ return e.tipo == 4; });
 
                 $.each(tmp, function (index, array) {
 
@@ -406,7 +406,7 @@
             setTimeout(function(){
 
                 var total = 0
-                var tmp = $.grep(proforma, function(e){ return e.tipo == 6; });
+                var tmp = $.grep(proformas, function(e){ return e.tipo == 6; });
 
                 $.each(tmp, function (index, array) {
 
