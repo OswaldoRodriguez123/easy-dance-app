@@ -656,7 +656,7 @@ class ClaseGrupalController extends BaseController {
 
                 $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
                     ->where('usuario_id','=',$alumno->id)
-                    ->where('usuario_tipo',2)
+                    ->where('usuario_tipo',1)
                 ->sum('importe_neto');
 
                 $activacion = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
