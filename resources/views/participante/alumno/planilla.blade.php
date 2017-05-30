@@ -1569,7 +1569,7 @@
       });
       
       Webcam.on( 'error', function(err) {
-         swal('Solicitud no procesada',err,'error');
+         swal('Solicitud no procesada','No posees una camara conectada','error');
       });
 
     })
