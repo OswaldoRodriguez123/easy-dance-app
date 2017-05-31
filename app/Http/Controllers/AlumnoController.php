@@ -734,29 +734,19 @@ class AlumnoController extends BaseController
 
     public function deuda($id)
     {   
-        $alumno = DB::table('alumnos')
-            ->select('alumnos.*')
-            ->where('alumnos.id', '=', $id)
-        ->first();
+        $alumno = Alumno::find($id);
 
-        $proforma = DB::table('items_factura_proforma')
-            ->join('alumnos', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
-            ->select('items_factura_proforma.*')
-            ->where('alumnos.id', '=', $id)
-        ->get();
-
-        foreach($proforma as $proformas){
-            if($proformas->fecha_vencimiento <= Carbon::today()){
-                $proformas->vencido = true;
-            }
-        }
-        
         if($alumno){
 
-           return view('participante.alumno.deuda')->with(['alumno' => $alumno , 'id' => $id, 'proforma' => $proforma]);
+            $proforma = ItemsFacturaProforma::join('alumnos', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
+                ->select('items_factura_proforma.*')
+                ->where('alumnos.id', '=', $id)
+            ->get();
+
+            return view('participante.alumno.deuda')->with(['alumno' => $alumno , 'id' => $id, 'proforma' => $proforma]);
 
         }else{
-           return redirect("participante/alumno/detalle/"+$id); 
+           return redirect("participante/alumno"); 
         }
     }
 
@@ -764,53 +754,30 @@ class AlumnoController extends BaseController
     {   
         $alumno = Alumno::find($id);
 
-        $factura_join = Factura::join('alumnos', 'facturas.usuario_id', '=', 'alumnos.id')
-            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id')
-            ->where('alumnos.id', '=', $id)
-        ->get();
+        if($alumno){
 
-        $alumnod = Factura::join('items_factura', 'items_factura.factura_id', '=', 'facturas.id')
-            ->select('items_factura.importe_neto', 'facturas.id')
-            ->where('facturas.usuario_id','=',$id)
-        ->get();
 
-        if($alumnod){
-
-            $collection=collect($alumnod);
-            $grouped = $collection->groupBy('id');     
-            $facturado = $grouped->toArray();
+            $facturas = Factura::join('alumnos', 'facturas.usuario_id', '=', 'alumnos.id')
+                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id')
+                ->where('alumnos.id', '=', $id)
+            ->get();
 
             $array=array();
-            $i = 0;
-            $importe_neto = 0;
 
-            foreach($facturado as $item){
-                $importe_neto = 0;
-                foreach($item as $tmp){
+            foreach($facturas as $factura){
 
-                $factura_id = $tmp->id;
-                $importe_neto = $importe_neto + $tmp->importe_neto;
-                // $id_alumno = $item['']
-                // $iva = $item['costo'] * ($academia->porcentaje_impuesto / 100);
-                }
+                $total = ItemsFacturaProforma::where('factura_id',$factura->id)->sum('importe_neto');
 
-                // $factura_join[$i]->setAttribute('total',  $importe_neto);
-                // $factura_join[$id]->total = $importe_neto;
-                $factura_join[$i]->total=$importe_neto;
-                $array[$factura_id] = $factura_join[$i];
-                $i = $i + 1;
+                $collection=collect($factura);     
+                $factura_array = $collection->toArray();
+                $factura_array['total']=$total;
+                $array[$factura->id] = $factura_array;
             }
 
-            if($factura_join){
+            return view('participante.alumno.historial')->with(['facturas' => $array, 'alumno' => $alumno]);
 
-               return view('participante.alumno.historial')->with(['facturas' => $array, 'alumno' => $alumno]);
-
-            }else{
-               return redirect("participante/alumno/detalle/"+$id); 
-            }
-        }
-        else{
-            return view('participante.alumno.historial')->with(['alumno' => $alumno, 'facturas' => array()]);
+        }else{
+            return redirect("participante/alumno"); 
         }
     }
 
