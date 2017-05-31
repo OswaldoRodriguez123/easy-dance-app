@@ -3250,6 +3250,10 @@ class ClaseGrupalController extends BaseController {
             $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
             $dia_de_semana = $fecha->dayOfWeek;
 
+            if($dia_de_semana == 0){
+                $dia_de_semana = 7;
+            } 
+
             if($fecha > Carbon::now()){
                 $inicio = 0;
             }else{
@@ -3267,6 +3271,10 @@ class ClaseGrupalController extends BaseController {
         foreach($horarios_clase_grupales as $clase_grupal){
             $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
             $dia_de_semana = $fecha->dayOfWeek;
+
+            if($dia_de_semana == 0){
+                $dia_de_semana = 7;
+            } 
 
             if($fecha > Carbon::now()){
                 $inicio = 0;
