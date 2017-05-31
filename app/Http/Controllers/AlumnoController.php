@@ -766,7 +766,7 @@ class AlumnoController extends BaseController
 
             foreach($facturas as $factura){
 
-                $total = ItemsFacturaProforma::where('factura_id',$factura->id)->sum('importe_neto');
+                $total = ItemsFactura::where('factura_id',$factura->id)->sum('importe_neto');
 
                 $collection=collect($factura);     
                 $factura_array = $collection->toArray();
