@@ -758,7 +758,7 @@ class AlumnoController extends BaseController
 
 
             $facturas = Factura::join('alumnos', 'facturas.usuario_id', '=', 'alumnos.id')
-                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id')
+                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura', 'facturas.fecha as fecha', 'facturas.id')
                 ->where('alumnos.id', '=', $id)
             ->get();
 
