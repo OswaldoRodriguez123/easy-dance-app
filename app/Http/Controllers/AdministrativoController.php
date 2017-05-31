@@ -2238,12 +2238,8 @@ class AdministrativoController extends BaseController {
 
         if($acuerdo){
 
-             $items_acuerdo = ItemsAcuerdo::where('acuerdo_id',$id)->get();
-        
-            foreach($items_acuerdo as $item){
-                $proforma = ItemsFacturaProforma::find($item->item_id)->delete();
-                $item->delete();
-            }
+            $items_acuerdo = ItemsAcuerdo::where('acuerdo_id',$id)->delete();
+            $proforma = ItemsFacturaProforma::where('item_id',$id)->where('tipo',6)->delete();
             
             if($acuerdo->delete()){
                 return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
