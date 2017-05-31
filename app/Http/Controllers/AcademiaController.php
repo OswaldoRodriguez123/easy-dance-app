@@ -1346,114 +1346,118 @@ class AcademiaController extends BaseController {
     public function inactividad(){
 
         $id = Session::get('easydance_usuario_id');
-
-        $asistencia_roja = 6;
-        $inscripciones = InscripcionClaseGrupal::where('alumno_id',$id)->get();
-        $in = array(1,2);
-        $status = true;
         $alumno = Alumno::find($id);
-        $fecha_registro = Carbon::createFromFormat('Y-m-d H:i:s', $alumno->created_at);
 
-        foreach($inscripciones as $inscripcion_clase_grupal){
+        if($alumno){
 
-            $inasistencias = 0;
+            $inscripciones = InscripcionClaseGrupal::where('alumno_id',$id)->get();
+            $fecha_registro = Carbon::createFromFormat('Y-m-d H:i:s', $alumno->created_at);
+            $asistencia_roja = 6;
+            $in = array(1,2);
+            $status = true;
 
-            $clase_grupal = ClaseGrupal::find($inscripcion_clase_grupal->clase_grupal_id);
+            foreach($inscripciones as $inscripcion_clase_grupal){
 
-            if($clase_grupal)
-            {
+                $inasistencias = 0;
 
-                $horario = HorarioClaseGrupal::where('clase_grupal_id',$clase_grupal->clase_grupal_id)->first();
-                $fecha_clase = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-                $fecha_a_comparar = Carbon::createFromFormat('Y-m-d', $inscripcion_clase_grupal->fecha_a_comparar);
+                $clase_grupal = ClaseGrupal::find($inscripcion_clase_grupal->clase_grupal_id);
 
-                if($fecha_registro > $fecha_clase){
-                    $fecha_clase = $fecha_registro;
-                }
+                if($clase_grupal){
 
-                // CASO ESPECIFICO, SI TRANSFIEREN A UN ALUMNO DE CLASE GRUPAL A OTRA, ESTE QUEDA COMO INACTIVO Y NO PUEDE ACCEDER AL SISTEMA, EN ESTE CASO SE LE AÑADE UNA FECHA PRORROGA PARA ACCEDER AL SISTEMA
+                    $horario = HorarioClaseGrupal::where('clase_grupal_id',$clase_grupal->clase_grupal_id)->first();
+                    $fecha_clase = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                    $fecha_a_comparar = Carbon::createFromFormat('Y-m-d', $inscripcion_clase_grupal->fecha_a_comparar);
 
-                if($fecha_a_comparar){
-                    if($fecha_a_comparar > $fecha_clase){
-                        $fecha_clase = $fecha_a_comparar;
-                    }
-                }
-
-                if($fecha_clase <= Carbon::now()){
-
-                    if($horario){
-
-                        $fecha_horario = Carbon::createFromFormat('Y-m-d', $horario->fecha);
-                        $dia_clase = $fecha_clase->dayOfWeek;
-                        $dia_horario = $fecha_horario->dayOfWeek;
-
-                        $dias = abs($dia_clase - $dia_horario);
-
-                    }else{
-                        $dias = 7;
+                    if($fecha_registro > $fecha_clase){
+                        $fecha_clase = $fecha_registro;
                     }
 
-                    $ultima_asistencia_clase = Asistencia::where('tipo',1)->where('alumno_id',$id)->orderBy('created_at', 'desc')->first();
+                    // CASO ESPECIFICO, SI TRANSFIEREN A UN ALUMNO DE CLASE GRUPAL A OTRA, ESTE QUEDA COMO INACTIVO Y NO PUEDE ACCEDER AL SISTEMA, EN ESTE CASO SE LE AÑADE UNA FECHA PRORROGA PARA ACCEDER AL SISTEMA
 
-                    $ultima_asistencia_horario = Asistencia::where('tipo',2)->where('alumno_id',$id)->orderBy('created_at', 'desc')->first();
+                    if($fecha_a_comparar){
+                        if($fecha_a_comparar > $fecha_clase){
+                            $fecha_clase = $fecha_a_comparar;
+                        }
+                    }
 
-                    if($ultima_asistencia_horario OR $ultima_asistencia_clase){
+                    if($fecha_clase <= Carbon::now()){
 
-                        if($ultima_asistencia_horario){
-                            if($ultima_asistencia_clase){
-                                $fecha_horario = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_horario->fecha);
-                                $fecha_clase = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_clase->fecha);
+                        if($horario){
 
-                                if($fecha_clase > $fecha_horario){
-                                    $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_clase->fecha);
+                            $fecha_horario = Carbon::createFromFormat('Y-m-d', $horario->fecha);
+                            $dia_clase = $fecha_clase->dayOfWeek;
+                            $dia_horario = $fecha_horario->dayOfWeek;
+
+                            $dias = abs($dia_clase - $dia_horario);
+
+                        }else{
+                            $dias = 7;
+                        }
+
+                        $ultima_asistencia_clase = Asistencia::where('tipo',1)->where('alumno_id',$id)->orderBy('created_at', 'desc')->first();
+
+                        $ultima_asistencia_horario = Asistencia::where('tipo',2)->where('alumno_id',$id)->orderBy('created_at', 'desc')->first();
+
+                        if($ultima_asistencia_horario OR $ultima_asistencia_clase){
+
+                            if($ultima_asistencia_horario){
+                                if($ultima_asistencia_clase){
+                                    $fecha_horario = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_horario->fecha);
+                                    $fecha_clase = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_clase->fecha);
+
+                                    if($fecha_clase > $fecha_horario){
+                                        $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_clase->fecha);
+                                    }else{
+                                        $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_horario->fecha);
+                                    }
+
                                 }else{
                                     $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_horario->fecha);
                                 }
 
                             }else{
-                                $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_horario->fecha);
+                                $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_clase->fecha);
                             }
-
                         }else{
-                            $fecha = Carbon::createFromFormat('Y-m-d', $ultima_asistencia_clase->fecha);
+                            $fecha = $fecha_clase;
                         }
-                    }else{
-                        $fecha = $fecha_clase;
-                    }
 
-                    while($fecha <= Carbon::now())
-                    {
-                        $fecha_a_comparar = $fecha->toDateString();
+                        while($fecha <= Carbon::now())
+                        {
+                            $fecha_a_comparar = $fecha->toDateString();
 
-                        $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha_a_comparar)
-                            ->where('fecha_final', '>=', $fecha_a_comparar)
-                            ->where('tipo_id', $clase_grupal->id)
-                            ->whereIn('tipo', $in)
-                        ->first();
+                            $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha_a_comparar)
+                                ->where('fecha_final', '>=', $fecha_a_comparar)
+                                ->where('tipo_id', $clase_grupal->id)
+                                ->whereIn('tipo', $in)
+                            ->first();
 
-                        if(!$horario_bloqueado){
-                            $fecha->addDays($dias);
-                            $inasistencias++;
+                            if(!$horario_bloqueado){
+                                $fecha->addDays($dias);
+                                $inasistencias++;
+                            }
+                            
                         }
                         
+                        if($inasistencias <= $asistencia_roja){
+                            $status = true;
+                            break;
+                        }else{
+                            $status = false;
+                        }
+
                     }
                     
-                    if($inasistencias <= $asistencia_roja){
-                        $status = true;
-                        break;
-                    }else{
-                        $status = false;
-                    }
-
                 }
-                
+
             }
 
-        }
-
-        if($status){
-            Session::put('fecha_comprobacion',Carbon::now()->toDateString());
-            return $this->index();
+            if($status){
+                Session::put('fecha_comprobacion',Carbon::now()->toDateString());
+                return $this->index();
+            }else{
+                return view('inicio.cuenta-deshabilitada');
+            }
         }else{
             return view('inicio.cuenta-deshabilitada');
         }
