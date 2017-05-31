@@ -62,11 +62,11 @@
                             <tbody>
 
                             @foreach ($facturas as $factura)
-                                <?php $id = $factura->id; ?>
+                                <?php $id = $factura['id']; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{str_pad($factura->factura, 10, "0", STR_PAD_LEFT)}}</td>
-                                    <td class="text-center previa">{{$factura->fecha}}</td>
-                                    <td class="text-center previa">{{$factura->total}}</td>
+                                    <td class="text-center previa">{{str_pad($factura['numero_factura'], 10, "0", STR_PAD_LEFT)}}</td>
+                                    <td class="text-center previa">{{$factura['fecha']}}</td>
+                                    <td class="text-center previa">{{$factura['total']}}</td>
                                     <td class="text-center"> <i data-toggle="modal" name="correo" id={{$id}} class="zmdi zmdi-email f-20 p-r-10"></i></td>
                                 </tr>
 
