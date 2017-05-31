@@ -1433,11 +1433,11 @@ class AdministrativoController extends BaseController {
         $array = array();
 
         $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+        $total = ItemsFacturaProforma::where('usuario_id', $usuario_id)->where('usuario_tipo',$usuario_tipo)->sum('importe_neto');
 
         foreach($alumnos as $alumno)
         {
-            $total = ItemsFacturaProforma::where('usuario_id', $alumno->id)->where('usuario_tipo',1)->sum('importe_neto');
-
+        
             if(!$total){
                 $total = 0;
             }
@@ -1464,8 +1464,7 @@ class AdministrativoController extends BaseController {
 
         foreach($staffs as $staff)
         {
-            $total = ItemsFacturaProforma::where('usuario_id', $staff->id)->where('usuario_tipo',2)->sum('importe_neto');
-
+            
             if(!$total){
                 $total = 0;
             }
