@@ -191,7 +191,7 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:"&items_factura="+selected+"&alumno_id="+alumno_id,
+                        data:"&items_factura="+selected+"&usuario_id=1-"+alumno_id,
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
