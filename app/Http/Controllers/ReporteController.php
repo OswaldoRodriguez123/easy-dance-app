@@ -730,16 +730,12 @@ class ReporteController extends BaseController
 
             foreach($asistencias as $asistencia){
 
-                $pertenece = DB::table('inscripcion_clase_grupal')
-                    ->select('inscripcion_clase_grupal.*')
-                    ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $asistencia->clase_grupal_id)
+                $pertenece = InscripcionClaseGrupal::where('inscripcion_clase_grupal.clase_grupal_id', '=', $asistencia->clase_grupal_id)
                     ->where('inscripcion_clase_grupal.alumno_id', '=', $asistencia->alumno_id)
                 ->first();
 
-                $deuda = DB::table('items_factura_proforma')
-                    ->select('items_factura_proforma.*')
-                    ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                    ->where('items_factura_proforma.usuario_id', $asistencia->alumno_id)
+                $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                    ->where('usuario_id', $asistencia->alumno_id)
                 ->first();
 
                 if($pertenece){
@@ -795,12 +791,9 @@ class ReporteController extends BaseController
               
                     $pertenece = '';
 
-                    $deuda = DB::table('items_factura_proforma')
-                        ->select('items_factura_proforma.*')
-                        ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                        ->where('items_factura_proforma.usuario_id', $inscripcion->alumno_id)
+                    $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                        ->where('usuario_id', $inscripcion->alumno_id)
                     ->first();
-
 
                     if($deuda){
                         $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
@@ -862,10 +855,8 @@ class ReporteController extends BaseController
                     $hora = '';
                 }
 
-                $deuda = DB::table('items_factura_proforma')
-                    ->select('items_factura_proforma.*')
-                    ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                    ->where('items_factura_proforma.usuario_id', $inscripcion->alumno_id)
+                $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                    ->where('usuario_id', $inscripcion->alumno_id)
                 ->first();
 
 
@@ -896,10 +887,8 @@ class ReporteController extends BaseController
 
                 if($existe == false){
 
-                    $deuda = DB::table('items_factura_proforma')
-                        ->select('items_factura_proforma.*')
-                        ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                        ->where('items_factura_proforma.usuario_id', $asistencia->alumno_id)
+                    $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                        ->where('usuario_id', $asistencia->alumno_id)
                     ->first();
 
   
@@ -1241,7 +1230,7 @@ class ReporteController extends BaseController
             }
 
             $query = Factura::join('items_factura', 'items_factura.factura_id', '=', 'facturas.id')
-                ->join('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
+                ->join('alumnos', 'facturas.usuario_id', '=', 'alumnos.id')
                 ->select('facturas.*',
                      'items_factura.tipo',
                      'items_factura.item_id',
@@ -1839,10 +1828,8 @@ class ReporteController extends BaseController
 
         foreach($asistencias as $asistencia){
 
-            $deuda = DB::table('items_factura_proforma')
-                ->select('items_factura_proforma.*')
-                ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-                ->where('items_factura_proforma.usuario_id', $asistencia->alumno_id)
+            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                ->where('usuario_id', $asistencia->alumno_id)
             ->first();
 
             if($deuda){
