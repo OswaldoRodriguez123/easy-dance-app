@@ -1338,8 +1338,12 @@ class AdministrativoController extends BaseController {
                 $total = 0;
             }
 
-            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
-                ->where('usuario_id','=',$alumno->id)
+            // $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+            //     ->where('usuario_id','=',$alumno->id)
+            //     ->where('usuario_tipo',1)
+            // ->first();
+
+            $deuda = ItemsFacturaProforma::where('usuario_id','=',$alumno->id)
                 ->where('usuario_tipo',1)
             ->first();
 
@@ -1362,8 +1366,12 @@ class AdministrativoController extends BaseController {
                 $total = 0;
             }
 
-            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
-                ->where('usuario_id','=',$staff->id)
+            // $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+            //     ->where('usuario_id','=',$staff->id)
+            //     ->where('usuario_tipo',2)
+            // ->first();
+
+            $deuda = ItemsFacturaProforma::where('usuario_id','=',$staff->id)
                 ->where('usuario_tipo',2)
             ->first();
 
@@ -1434,8 +1442,12 @@ class AdministrativoController extends BaseController {
                 $total = 0;
             }
 
-            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
-                ->where('usuario_id','=',$alumno->id)
+            // $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+            //     ->where('usuario_id','=',$alumno->id)
+            //     ->where('usuario_tipo',1)
+            // ->first();
+
+            $deuda = ItemsFacturaProforma::where('usuario_id','=',$alumno->id)
                 ->where('usuario_tipo',1)
             ->first();
 
@@ -1458,8 +1470,12 @@ class AdministrativoController extends BaseController {
                 $total = 0;
             }
 
-            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
-                ->where('usuario_id','=',$staff->id)
+            // $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+            //     ->where('usuario_id','=',$staff->id)
+            //     ->where('usuario_tipo',2)
+            // ->first();
+
+            $deuda = ItemsFacturaProforma::where('usuario_id','=',$staff->id)
                 ->where('usuario_tipo',2)
             ->first();
 
