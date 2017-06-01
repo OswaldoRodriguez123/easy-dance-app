@@ -364,24 +364,24 @@
                 var nType = 'success';
                 var nTitle="Ups! ";
                 var nMensaje=respuesta.mensaje;
+                
+                $.each(por_pagar, function (array) {
+                  $.each(respuesta.array, function (id) {
+                      console.log(array);
+                      if(array.id == id){
+                          por_pagar.splice( $.inArray(array, por_pagar), 1 );
 
-                $.each(respuesta.array, function (id) {
-                  $.each(por_pagar, function (array) {
-                    console.log(array);
-                    if(array.id == id){
-                        por_pagar.splice( $.inArray(array, por_pagar), 1 );
+                          t.row($('#'+id))
+                            .remove()
+                            .draw();
 
-                        t.row($('#'+id))
-                          .remove()
-                          .draw();
+                          pagadas.push(array);
 
-                        pagadas.push(array);
-
-                        total = total - array.monto;
-                        $('#total').text(formatmoney(parseFloat(total)));
-                    }
-                  })
-                });
+                          total = total - array.monto;
+                          $('#total').text(formatmoney(parseFloat(total)));
+                      }
+                  });
+                })
 
                 $('#clase_grupal_id').val('');
                 $('#clase_grupal_id').selectpicker('refresh');
