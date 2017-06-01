@@ -802,15 +802,37 @@ class AdministrativoController extends BaseController {
         //PARA CREAR EL CONCEPTO DE LA FACTURA
 
         $id_proforma = Session::get('id_proforma');
-        $contador = count($id_proforma);
 
-        $id = $id_proforma[0];
-        $item_proforma = ItemsFacturaProforma::where('id', '=', $id)->first();
+        if($id_proforma){
 
-        if($contador > 1){
-            $concepto = $item_proforma->cantidad . ' ' . $item_proforma->nombre . '...';
+            $contador = count($id_proforma);
+
+            $id = $id_proforma[0];
+            $item_proforma = ItemsFacturaProforma::where('id', '=', $id)->first();
+
+            if($item_proforma){
+
+                if($contador > 1){
+                    $concepto = $item_proforma->cantidad . ' ' . $item_proforma->nombre . '...';
+                }else{
+                    $concepto = $item_proforma->cantidad . ' ' . $item_proforma->nombre;
+                }
+            }else{
+                $concepto = 'Factura ' . $numero_factura;
+            }
         }else{
-            $concepto = $item_proforma->cantidad . ' ' . $item_proforma->nombre;
+            $concepto = 'Factura ' . $numero_factura;
+        }
+
+        //PARA COMPROBAR EL TOTAL DE LA PROFORMA
+
+        $total_proforma = 0;
+
+        foreach($id_proforma as $id){
+            $item_proforma = ItemsFacturaProforma::find($id);
+            if($item_proforma){
+                $total_proforma += $items_proforma->importe_neto;
+            }
         }
 
         //PARA CREAR LA FACTURA
@@ -860,8 +882,6 @@ class AdministrativoController extends BaseController {
             }
 
             //PARA COMPROBAR LOS DISTINTOS PROCESOS QUE SE TIENEN QUE HACER CON LOS TIPOS DE PROFORMA 
-
-            $total_proforma = 0;
 
             foreach($id_proforma as $id){
 
