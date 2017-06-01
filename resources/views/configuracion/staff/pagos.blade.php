@@ -364,9 +364,9 @@
                 var nType = 'success';
                 var nTitle="Ups! ";
                 var nMensaje=respuesta.mensaje;
-                
-                $.each(por_pagar, function (array) {
-                  $.each(respuesta.array, function (id) {
+
+                $.each(por_pagar, function (i, array) {
+                  $.each(respuesta.array, function (index, id) {
                       console.log(array);
                       if(array.id == id){
                           por_pagar.splice( $.inArray(array, por_pagar), 1 );
