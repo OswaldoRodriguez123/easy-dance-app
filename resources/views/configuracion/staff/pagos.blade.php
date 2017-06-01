@@ -365,11 +365,10 @@
                 var nTitle="Ups! ";
                 var nMensaje=respuesta.mensaje;
 
-                $.each(respuesta.array, function (index, id) {
-
-                  $.map(por_pagar, function(array, i) {
+                $.each(respuesta.array, function (i, id) {
+                  $.each(por_pagar, function (index, array) {
                     if(array.id == id){
-                        por_pagar.splice( $.inArray(por_pagar[i], por_pagar), 1 );
+                        por_pagar.splice( $.inArray(por_pagar[index], por_pagar), 1 );
 
                         t.row($('#'+id))
                           .remove()
