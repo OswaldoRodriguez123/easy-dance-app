@@ -367,31 +367,25 @@
 
                 $.each(respuesta.array, function (index, id) {
 
-                  var pago = $.grep(por_pagar, function(e){ return e.id == id; });
+                  $.map(por_pagar, function(array, i) {
+                    if(array.id == id){
+                        por_pagar.splice( $.inArray(por_pagar[i], por_pagar), 1 );
 
-                  pagadas.push(pago[0]);
+                        t.row($('#'+id))
+                          .remove()
+                          .draw();
+                          
+                        pagadas.push(array);
 
-                  indexes = $.map(por_pagar, function(obj, index) {
-                      if(obj.id == id){
-                          por_pagar.splice( $.inArray(por_pagar[index], por_pagar), 1 );
-
-                          t.row( $('#'+id) )
-                            .remove()
-                            .draw();
-
-                          total = total - obj.monto;
-
-                          $('#total').text(total);
-
-
-                      }
+                        total = total - array.monto;
+                        $('#total').text(total);
+                    }
                   })
                 });
 
                 $('#clase_grupal_id').val('');
                 $('#clase_grupal_id').selectpicker('refresh');
                 
-
               }else{
                 var nTitle="Ups! ";
                 var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
