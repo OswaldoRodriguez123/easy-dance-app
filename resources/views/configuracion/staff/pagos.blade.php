@@ -340,7 +340,7 @@
     $("#pagar").click(function(){
 
 
-      // procesando();
+      procesando();
 
       var route = route_pagar;
       var token = "{{ csrf_token() }}";
@@ -391,12 +391,8 @@
                 var nTitle="Ups! ";
                 var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                 var nType = 'danger';
-              }                       
-              $("#add").removeAttr("disabled");
-                $("#add").css({
-                  "opacity": ("1")
-                });
-
+              }
+              finprocesado();                  
               notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
             }, 1000);
           },
@@ -413,17 +409,14 @@
               }else{
                 var nTitle="   Ups! "; 
                 var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              }
-              $("#add").removeAttr("disabled");
-                $("#add").css({
-                  "opacity": ("1")
-                });                        
+              }                       
               var nFrom = $(this).attr('data-from');
               var nAlign = $(this).attr('data-align');
               var nIcons = $(this).attr('data-icon');
               var nType = 'danger';
               var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY";                       
+              var nAnimOut = "animated flipOutY";   
+              finprocesado();
               notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
             }, 1000);
           }
