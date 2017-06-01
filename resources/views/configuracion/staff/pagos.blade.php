@@ -365,24 +365,25 @@
                 var nTitle="Ups! ";
                 var nMensaje=respuesta.mensaje;
 
-                $.each(por_pagar, function (i, array) {
-                  $.each(respuesta.array, function (index, id) {
-                      if(array){
-                        if(array.id == id){
-                            por_pagar.splice( $.inArray(array, por_pagar), 1 );
+                $.each(respuesta.array, function (i, id) {
+                  $.each(por_pagar, function (j, array) {
+                    console.log(array)
+                    if($array){
+                      if(array.id == id){
+                        por_pagar.splice( $.inArray(array, por_pagar), 1 );
 
-                            t.row($('#'+id))
-                              .remove()
-                              .draw();
+                        t.row($('#'+id))
+                          .remove()
+                          .draw();
 
-                            pagadas.push(array);
+                        pagadas.push(array);
 
-                            total = total - array.monto;
-                            $('#total').text(formatmoney(parseFloat(total)));
-                        }
+                        total = total - array.monto;
+                        $('#total').text(formatmoney(parseFloat(total)));
                       }
-                  });
-                })
+                    }
+                  })
+                });
 
                 $('#clase_grupal_id').val('');
                 $('#clase_grupal_id').selectpicker('refresh');
