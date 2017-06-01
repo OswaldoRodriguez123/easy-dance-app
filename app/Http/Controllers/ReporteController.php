@@ -1354,13 +1354,11 @@ class ReporteController extends BaseController
                 $factura_array['importe_neto'] = $importe_neto;
                 $array[$factura->id] = $factura_array;
 
-                $total_ingreso = $total_ingreso + $factura->importe_neto;
+                $total_ingreso = $total_ingreso + $importe_neto;
 
             }
           
         }
-
-
 
         if($request->tipo == 1 OR $request->tipo == 3){
 
