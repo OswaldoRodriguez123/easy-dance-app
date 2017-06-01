@@ -374,11 +374,11 @@
                         t.row($('#'+id))
                           .remove()
                           .draw();
-                          
+
                         pagadas.push(array);
 
                         total = total - array.monto;
-                        $('#total').text(total);
+                        $('#total').text(formatmoney(parseFloat(total)));
                     }
                   })
                 });
