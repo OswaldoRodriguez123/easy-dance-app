@@ -367,18 +367,19 @@
 
                 $.each(por_pagar, function (i, array) {
                   $.each(respuesta.array, function (index, id) {
-                      console.log(array);
-                      if(array.id == id){
-                          por_pagar.splice( $.inArray(array, por_pagar), 1 );
+                      if(array){
+                        if(array.id == id){
+                            por_pagar.splice( $.inArray(array, por_pagar), 1 );
 
-                          t.row($('#'+id))
-                            .remove()
-                            .draw();
+                            t.row($('#'+id))
+                              .remove()
+                              .draw();
 
-                          pagadas.push(array);
+                            pagadas.push(array);
 
-                          total = total - array.monto;
-                          $('#total').text(formatmoney(parseFloat(total)));
+                            total = total - array.monto;
+                            $('#total').text(formatmoney(parseFloat(total)));
+                        }
                       }
                   });
                 })
