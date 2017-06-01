@@ -69,28 +69,6 @@ class AcademiaController extends BaseController {
     public function seleccionar_tipo()
     {
 
-        // $usuarios = User::all();
-
-        // foreach($usuarios as $usuario){
-        //     $tipos = explode(',',$usuario->usuario_tipo);
-        //     $ids = explode(',',$usuario->usuario_id);
-        //     $i = 0;
-
-        //     foreach($tipos as $tipo){
-
-        //         $usuario_tipos = UsuarioTipo::where('usuario_id',$usuario->id)->where('tipo',$tipo)->first();
-
-        //         if(!$usuario_tipos){
-        //             $usuario_tipos = new UsuarioTipo;
-        //             $usuario_tipos->usuario_id = $usuario->id;
-        //             $usuario_tipos->tipo = $tipo;
-        //             $usuario_tipos->tipo_id = $ids[$i];
-        //             $usuario_tipos->save();
-        //         }
-        //         $i++;
-        //     }
-        // }
-        
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         
         if(!$usuario_tipo){
@@ -143,6 +121,16 @@ class AcademiaController extends BaseController {
         $academia = Academia::find(Auth::user()->academia_id);
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         $usuario_id = Session::get('easydance_usuario_id');
+
+         $proformas = ItemsFacturaProforma::where('tipo',6)->get();
+
+        foreach($proformas as $proforma){
+            $acuerdo = ItemsAcuerdo::where('acuerdo_id',$proforma->item_id)->where('fecha_vencimiento',$proforma->fecha_vencimiento)->first();
+            if($acuerdo){
+                $proforma->item_id = $acuerdo->id;
+                $proforma->save();
+            }
+        }
 
         if($usuario_tipo){
 
@@ -1284,7 +1272,7 @@ class AcademiaController extends BaseController {
                             $item_factura->fecha = Carbon::now()->toDateString();
                                                             //$item_factura->item_id = $id;
                             $item_factura->nombre = 'Mora por retraso de pago Cuota ' .  $configClases->nombre;
-                            $item_factura->tipo = 8;
+                            $item_factura->tipo = 4;
                             $item_factura->cantidad = 1;
                             $item_factura->importe_neto = $mora;
                             $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
@@ -1321,7 +1309,7 @@ class AcademiaController extends BaseController {
                     $item_factura->academia_id = Auth::user()->academia_id;
                     $item_factura->fecha = Carbon::now()->toDateString();
                     $item_factura->nombre = 'Mora por retraso de pago ' .  $proforma->nombre;
-                    $item_factura->tipo = 8;
+                    $item_factura->tipo = 6;
                     $item_factura->cantidad = 1;
 
                     $item_factura->importe_neto = $mora;

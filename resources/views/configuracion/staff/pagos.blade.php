@@ -213,11 +213,10 @@
 
             $.each(pagadas, function (index, array) {
                 var rowNode=t.row.add( [
-                ''+ ' ' +'',
-                ''+array.fecha+'',
-                ''+array.servicio+'',
-                ''+array.monto+'',
-                // '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
+                  ''+ ' ' +'',
+                  ''+array.fecha+'',
+                  ''+array.servicio+'',
+                  ''+formatmoney(parseFloat(array.monto))+'',
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
@@ -240,13 +239,10 @@
 
             $.each(por_pagar, function (index, array) {
                 var rowNode=t.row.add( [
-
-
-                ''+checkbox+'', 
-                ''+array.fecha+'',
-                ''+array.servicio+'',
-                ''+array.monto+'',
-                // '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                  ''+checkbox+'', 
+                  ''+array.fecha+'',
+                  ''+array.servicio+'',
+                  ''+formatmoney(parseFloat(array.monto))+'',
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)

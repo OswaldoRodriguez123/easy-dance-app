@@ -232,11 +232,11 @@ class AdministrativoController extends BaseController {
             $collection=collect($proforma);     
             $proforma_array = $collection->toArray();
             
-            $proforma_array['nombre']= $usuario->nombre . ' '. $usuario->apellido;
+            $proforma_array['usuario']= $usuario->nombre . ' '. $usuario->apellido;
             $array_proforma[$proforma->id] = $proforma_array;
 
         }
-
+        
         $total = ItemsFacturaProforma::where('academia_id', Auth::user()->academia_id)->sum('importe_neto');
 
         return view('administrativo.pagos.principal')->with(['facturas'=> $array_factura, 'proformas' => $array_proforma, 'total' => $total]);
@@ -567,9 +567,10 @@ class AdministrativoController extends BaseController {
             
             $total = $gestion[0]['total'];
 
-            $acuerdo = ItemsFacturaProforma::where('usuario_id', '=', $usuario_id)
-                ->where('tipo' , '=', 6)
-                ->where('usuario_tipo' , '=', $usuario_tipo)
+            $acuerdo = Acuerdo::join('items_acuerdo', 'items_acuerdo.acuerdo_id', '=', 'acuerdos.id')
+                ->where('acuerdos.usuario_id', '=', $usuario_id)
+                ->where('acuerdos.usuario_tipo' , '=', $usuario_tipo)
+                ->where('items_acuerdo.boolean_pagado' , 0)
             ->count();
 
             return view('administrativo.pagos.gestion')->with(['total' => $total, 'numero_factura' => $numero_factura , 'formas_pago' => $formas_pago, 'usuario' => $usuario , 'porcentaje_impuesto' => $academia->porcentaje_impuesto, 'acuerdo' => $acuerdo, 'puntos_referidos' => $puntos_referidos, 'usuario_tipo' => $usuario_tipo, 'usuario_id' => $usuario_id]);
@@ -643,9 +644,10 @@ class AdministrativoController extends BaseController {
 
             $total = $factura_proforma->importe_neto;
 
-            $acuerdo = ItemsFacturaProforma::where('usuario_id', '=', $usuario_id)
-                ->where('tipo' , '=', 6)
-                ->where('usuario_tipo' , '=', $usuario_tipo)
+            $acuerdo = Acuerdo::join('items_acuerdo', 'items_acuerdo.acuerdo_id', '=', 'acuerdos.id')
+                ->where('acuerdos.usuario_id', '=', $usuario_id)
+                ->where('acuerdos.usuario_tipo' , '=', $usuario_tipo)
+                ->where('items_acuerdo.boolean_pagado' , 0)
             ->count();
        
             Session::push('id_proforma', $id);
@@ -775,16 +777,6 @@ class AdministrativoController extends BaseController {
         if(!$pagos){
             return response()->json(['errores' => ['linea' => [0, 'Ups! ha ocurrido un error, debes agregar una linea de pago']], 'status' => 'ERROR'],422);
         }
-
-        //REVISAR QUE TIPO DE USUARIO ES EL QUE ESTA PAGANDO
-
-        if($request->usuario_tipo == 1){
-            $usuario = Alumno::withTrashed()->find($request->usuario_id);
-            $in = array(2,4);
-        }else{
-            $usuario = Staff::withTrashed()->find($request->usuario_id);
-            $in = array(3);
-        }
  
         //PARA CONFIRGURAR EL NUMERO DE FACTURA
 
@@ -885,31 +877,40 @@ class AdministrativoController extends BaseController {
 
                     if($item_proforma->tipo == 6){
 
-                        $acuerdo = Acuerdo::find($item_proforma->item_id);
-                        if($acuerdo){
+                        $item_acuerdo = ItemsAcuerdo::find($item_proforma->item_id);
 
-                            $fecha_vencimiento = Carbon::createFromFormat('Y-m-d', $item_proforma->fecha_vencimiento);
-                            $fecha_limite = $fecha_vencimiento->addDays($acuerdo->tiempo_tolerancia);
+                        if($item_acuerdo){
 
-                            if($fecha_limite < Carbon::now())
-                            {
-                                $mora = ($item_proforma->importe_neto * $acuerdo->porcentaje_retraso)/100;
+                            $acuerdo = Acuerdo::find($item_acuerdo->acuerdo_id);
 
-                                $item_factura = new ItemsFacturaProforma;
-                                                                            
-                                $item_factura->usuario_id = $request->usuario_id;
-                                $item_factura->usuario_tipo = $request->usuario_tipo;
-                                $item_factura->academia_id = Auth::user()->academia_id;
-                                $item_factura->fecha = Carbon::now()->toDateString();
-                                $item_factura->item_id = $item_proforma->item_id;
-                                $item_factura->nombre = 'Retraso de pago ' .  $item_proforma->nombre;
-                                $item_factura->tipo = $item_proforma->tipo;
-                                $item_factura->cantidad = 1;
-                                $item_factura->importe_neto = $mora;
-                                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                            if($acuerdo){
 
-                                $item_factura->save();
+                                $fecha_vencimiento = Carbon::createFromFormat('Y-m-d', $item_acuerdo->fecha_vencimiento);
+                                $fecha_limite = $fecha_vencimiento->addDays($acuerdo->tiempo_tolerancia);
+
+                                if($fecha_limite < Carbon::now())
+                                {
+                                    $mora = ($item_acuerdo->importe_neto * $acuerdo->porcentaje_retraso)/100;
+
+                                    $item_factura = new ItemsFacturaProforma;
+                                                                                
+                                    $item_factura->usuario_id = $request->usuario_id;
+                                    $item_factura->usuario_tipo = $request->usuario_tipo;
+                                    $item_factura->academia_id = Auth::user()->academia_id;
+                                    $item_factura->fecha = Carbon::now()->toDateString();
+                                    $item_factura->item_id = $item_proforma->item_id;
+                                    $item_factura->nombre = 'Mora por retraso de pago ' .  $item_proforma->nombre;
+                                    $item_factura->tipo = $acuerdo->tipo;
+                                    $item_factura->cantidad = 1;
+                                    $item_factura->importe_neto = $mora;
+                                    $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+
+                                    $item_factura->save();
+                                }
                             }
+
+                            $item_acuerdo->boolean_pagado = 1;
+                            $item_acuerdo->save();
                         }
                     }else if($item_proforma->tipo == 3 OR $item_proforma->tipo == 4){
 
@@ -1043,44 +1044,49 @@ class AdministrativoController extends BaseController {
                 $items_factura_proforma->save();
             }
 
-            //FINAL
+            //REVISAR QUE TIPO DE USUARIO ES EL QUE ESTA PAGANDO
 
-            $academia = Academia::find(Auth::user()->academia_id);
-            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                ->whereIn('usuarios_tipo.tipo', $in)
-                ->where('usuarios_tipo.tipo_id', $request->usuario_id)
-            ->first();
+            if($request->usuario_tipo == 1){
+            
+                $academia = Academia::find(Auth::user()->academia_id);
+                $in = array(2,4);
 
-            if($usuario){
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->whereIn('usuarios_tipo.tipo', $in)
+                    ->where('usuarios_tipo.tipo_id', $request->usuario_id)
+                ->first();
 
-                if($usuario->familia_id){
-                    $es_representante = Familia::where('representante_id', $usuario->id)->first();
-                    if($es_representante){
+                if($usuario){
+
+                    if($usuario->familia_id){
+                        $es_representante = Familia::where('representante_id', $usuario->id)->first();
+                        if($es_representante){
+                            $correo = $usuario->email;
+                            $celular = getLimpiarNumero($usuario->celular);
+                        }else{
+                            $familia = Familia::find($usuario->familia_id);
+                            $representante = User::find($familia->representante_id);
+                            $correo = $representante->email;
+                            $celular = getLimpiarNumero($representante->celular);
+                        }
+                    }else{
                         $correo = $usuario->email;
                         $celular = getLimpiarNumero($usuario->celular);
-                    }else{
-                        $familia = Familia::find($usuario->familia_id);
-                        $representante = User::find($familia->representante_id);
-                        $correo = $representante->email;
-                        $celular = getLimpiarNumero($representante->celular);
                     }
+
                 }else{
-                    $correo = $usuario->email;
-                    $celular = getLimpiarNumero($usuario->celular);
+                    $correo = $usuario->correo;
+                    $celular = getLimpiarNumero($alumno->celular);
                 }
 
-            }else{
-                $correo = $usuario->correo;
-                $celular = getLimpiarNumero($alumno->celular);
-            }
+                if($academia->pais_id == 11 && strlen($celular) == 10 && $tipo != 2){
+                    
+                    $mensaje = $usuario->nombre.'. hemos registrado satisfactoriamente tu pago, gracias por usar nuestros servicios. ¡Nos encanta verte bailar!.';
 
-            if($academia->pais_id == 11 && strlen($celular) == 10 && $tipo != 2){
-                
-                $mensaje = $usuario->nombre.'. hemos registrado satisfactoriamente tu pago, gracias por usar nuestros servicios. ¡Nos encanta verte bailar!.';
+                    $client = new Client(); //GuzzleHttp\Client
+                    $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
 
-                $client = new Client(); //GuzzleHttp\Client
-                $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
-
+                }
             }
 
             // $subj = 'Pago realizado exitósamente';
@@ -1126,7 +1132,7 @@ class AdministrativoController extends BaseController {
             $items_factura = ItemsFactura::where('factura_id',$id)->delete();
             
             if($factura->delete()){
-                return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+                return response()->json(['mensaje' => '¡Excelente! La factura se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
@@ -1195,18 +1201,22 @@ class AdministrativoController extends BaseController {
 
         foreach($acuerdos as $acuerdo){
 
-            if($acuerdo->usuario_tipo == 1){
-                $usuario = Alumno::withTrashed()->find($acuerdo->usuario_id);
+            $items_acuerdo = ItemsAcuerdo::where('acuerdo_id',$acuerdo->id)->where('boolean_pagado',0)->count();
 
-            }else{
-                $usuario = Staff::withTrashed()->find($acuerdo->usuario_id);
+            if($items_acuerdo){
+
+                if($acuerdo->usuario_tipo == 1){
+                    $usuario = Alumno::withTrashed()->find($acuerdo->usuario_id);
+
+                }else{
+                    $usuario = Staff::withTrashed()->find($acuerdo->usuario_id);
+                }
+
+                $collection=collect($acuerdo);     
+                $acuerdo_array = $collection->toArray();
+                $acuerdo_array['nombre'] = $usuario->nombre . ' '. $usuario->apellido;
+                $array[$acuerdo->id] = $acuerdo_array;
             }
-
-            $collection=collect($acuerdo);     
-            $acuerdo_array = $collection->toArray();
-            
-            $acuerdo_array['nombre'] = $usuario->nombre . ' '. $usuario->apellido;
-            $array[$acuerdo->id] = $acuerdo_array;
 
         }
 
@@ -1316,9 +1326,10 @@ class AdministrativoController extends BaseController {
         $usuario_tipo = $explode[0];
         $usuario_id = $explode[1];
 
-        $acuerdo = ItemsFacturaProforma::where('usuario_id', '=', $usuario_id)
-            ->where('tipo' , '=', 6)
-            ->where('usuario_tipo' , '=', $usuario_tipo)
+        $acuerdo = Acuerdo::join('items_acuerdo', 'items_acuerdo.acuerdo_id', '=', 'acuerdos.id')
+            ->where('acuerdos.usuario_id', '=', $usuario_id)
+            ->where('acuerdos.usuario_tipo' , '=', $usuario_tipo)
+            ->where('items_acuerdo.boolean_pagado' , 0)
         ->count();
 
         $array = array();
@@ -1476,7 +1487,6 @@ class AdministrativoController extends BaseController {
 
             $id = explode("-", $request->combo);
 
-
             if($request->tipo == "servicio"){
                 $servicio = ConfigServicios::find($id[0]);
                 $importe_neto = $servicio->costo * $request->cantidad;
@@ -1489,7 +1499,7 @@ class AdministrativoController extends BaseController {
                 }
 
                 $array = array(['id' => $id[0] , 'nombre' => $servicio->nombre , 'tipo' => 1, 'cantidad' => $request->cantidad, 'precio_neto' => $servicio->costo, 'impuesto' => $request->impuesto, 'importe_neto' => $importe_neto]);
-                }
+            }
 
             if($request->tipo == "producto"){
 
@@ -1504,7 +1514,7 @@ class AdministrativoController extends BaseController {
                 }
 
                 $array = array(['id' => $id[0] , 'nombre' => $producto->nombre , 'tipo' => 2, 'cantidad' => $request->cantidad, 'precio_neto' => $producto->costo, 'impuesto' => $request->impuesto, 'importe_neto' => $importe_neto]);
-                }
+            }
 
 
             Session::push('arreglo', $array);
@@ -1568,9 +1578,7 @@ class AdministrativoController extends BaseController {
 
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-        }
-
-        else{
+        }else{
 
             $array = array();
             $explode = explode("-", $request->combo);
@@ -1675,97 +1683,87 @@ class AdministrativoController extends BaseController {
     public function storeProforma(Request $request)
     {
         
-    $rules = [
+        $rules = [
 
-        'usuario_id' => 'required',
+            'usuario_id' => 'required',
 
-    ];
+        ];
 
-    $messages = [
+        $messages = [
 
-        'usuario_id.required' => 'Ups! El Cliente es requerido',
-    ];
+            'usuario_id.required' => 'Ups! El Cliente es requerido',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-    }
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+        }
 
-    else{
+        else{
 
-            if (Session::has('arreglo')) {
-               
-                $arreglo = Session::get('arreglo');
+            $proformas = Session::get('arreglo');
 
-                if (count($arreglo) == 0){
-
-                    return response()->json(['errores' => ['linea' => [0, 'Debe agregar una linea de pago']], 'status' => 'ERROR'],422);
-                }
-
-                $total = 0;
-
-                for($i = 0; $i < count($arreglo) ; $i++)
-                {
-
-                    $item_id = $arreglo[$i][0]['item_id'];
-                    $nombre = $arreglo[$i][0]['nombre'];
-                    $tipo = $arreglo[$i][0]['tipo'];
-                    $cantidad = $arreglo[$i][0]['cantidad'];
-                    $precio_neto = $arreglo[$i][0]['precio_neto'];
-                    $impuesto = $arreglo[$i][0]['impuesto'];
-                    $importe_neto = $arreglo[$i][0]['importe_neto'];
-                
-                    $item_factura = new ItemsFacturaProforma;
-                    
-                    $item_factura->usuario_id = $request->usuario_id;
-                    $item_factura->academia_id = Auth::user()->academia_id;
-                    $item_factura->fecha = Carbon::now()->toDateString();
-                    $item_factura->item_id = $item_id;
-                    $item_factura->nombre = $nombre;
-                    $item_factura->tipo = $tipo;
-                    $item_factura->cantidad = $cantidad;
-                    $item_factura->precio_neto = $precio_neto;
-                    $item_factura->impuesto = $impuesto;
-                    $item_factura->importe_neto = $importe_neto;
-                    $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
-                    
-                    $item_factura->save();
-
-                    if($tipo == 2){
-
-                        $inventario = ConfigProductos::find($item_id);
-
-                        if($inventario){
-
-                            $cantidad_actual = $inventario->cantidad;
-                            $cantidad_vendida = $cantidad;
-
-                            $inventario->cantidad = $cantidad_actual - $cantidad_vendida;
-
-                            $inventario->save();
-                        }
-                    }
-
-                    Session::push('id_proforma', $item_factura->id);
-
-                    $total = $total + $importe_neto;
-
-                }
-
-                $explode = explode("-", $request->usuario_id);
-                $usuario_tipo = $explode[0];
-                $usuario_id = $explode[1];
-
-                $array = array(['total' => $total , 'usuario_id' => $usuario_id , 'usuario_tipo' => $usuario_tipo]);
-                Session::put('gestion', $array);
-
-                return response()->json(['status' => 'OK', 200]);
-                
-            }else{
+            if ($proformas){
                 return response()->json(['errores' => ['linea' => [0, 'Debe agregar una linea de pago']], 'status' => 'ERROR'],422);
             }
+
+            $total = 0;
+
+            foreach($proformas as $proforma){
+
+                $item_id = $proforma[0]['item_id'];
+                $nombre = $proforma[0]['nombre'];
+                $tipo = $proforma[0]['tipo'];
+                $cantidad = $proforma[0]['cantidad'];
+                $precio_neto = $proforma[0]['precio_neto'];
+                $impuesto = $proforma[0]['impuesto'];
+                $importe_neto = $proforma[0]['importe_neto'];
+            
+                $item_factura = new ItemsFacturaProforma;
+                
+                $item_factura->usuario_id = $request->usuario_id;
+                $item_factura->academia_id = Auth::user()->academia_id;
+                $item_factura->fecha = Carbon::now()->toDateString();
+                $item_factura->item_id = $item_id;
+                $item_factura->nombre = $nombre;
+                $item_factura->tipo = $tipo;
+                $item_factura->cantidad = $cantidad;
+                $item_factura->precio_neto = $precio_neto;
+                $item_factura->impuesto = $impuesto;
+                $item_factura->importe_neto = $importe_neto;
+                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                
+                $item_factura->save();
+
+                if($tipo == 2){
+
+                    $inventario = ConfigProductos::find($item_id);
+
+                    if($inventario){
+
+                        $cantidad_actual = $inventario->cantidad;
+                        $inventario->cantidad = $cantidad_actual - $cantidad;
+                        $inventario->save();
+
+                    }
+                }
+
+                Session::push('id_proforma', $item_factura->id);
+
+                $total = $total + $importe_neto;
+
+            }
+
+            $explode = explode("-", $request->usuario_id);
+            $usuario_tipo = $explode[0];
+            $usuario_id = $explode[1];
+
+            $array = array(['total' => $total , 'usuario_id' => $usuario_id , 'usuario_tipo' => $usuario_tipo]);
+            Session::put('gestion', $array);
+
+            return response()->json(['status' => 'OK', 200]);
         }
     }
 
@@ -2003,135 +2001,118 @@ class AdministrativoController extends BaseController {
 
         else{
 
-            if (Session::has('acuerdos')) {
+            $acuerdo = Session::get('acuerdos');
+
+            if (!$acuerdo) {
+                return response()->json(['errores' => ['linea' => [0, 'Debes generar un acuerdo primero']], 'status' => 'ERROR'],422);
+            }
                
-                $arreglo = Session::get('acuerdos');
-                $id_proforma = Session::get('id_proforma');
-                $array_descripcion = array();
+            $id_proforma = Session::get('id_proforma');
+            $array_descripcion = array();
 
-                if($id_proforma){
+            $explode = explode("-", $request->usuario_id);
+            $usuario_tipo = $explode[0];
+            $usuario_id = $explode[1];
 
-                    foreach($id_proforma as $proforma_id)
-                    {
+            if($id_proforma){
 
-                        $item_proforma = ItemsFacturaProforma::find($proforma_id);
+                foreach($id_proforma as $id)
+                {
+                    $item_proforma = ItemsFacturaProforma::find($id);
+                    array_push($array_descripcion, $item_proforma->cantidad . ' ' . $item_proforma->nombre);
+                }
 
-                        array_push($array_descripcion, $item_proforma->cantidad . ' ' . $item_proforma->nombre);
+            }else{
 
-                    }
+                $item_proforma = ItemsFacturaProforma::where('usuario_id', '=', $usuario_id)->where('usuario_tipo',$usuario_tipo)->get();
 
-                }else{
+                foreach($item_proforma as $items_proforma){
+                    array_push($array_descripcion, $items_proforma->cantidad . ' ' . $items_proforma->nombre);
+                }
 
-                    $item_proforma = ItemsFacturaProforma::where('usuario_id', '=', $request->usuario_id)->get();
+            }
 
-                    foreach($item_proforma as $items_proforma){
+            $descripcion = implode(",", $array_descripcion);
+            $nombre = 'Acuerdo de pago para ' . $descripcion;
+            $total = 0;
 
-                        array_push($array_descripcion, $items_proforma->cantidad . ' ' . $items_proforma->nombre);
+            $fechas_acuerdo = $acuerdo['fechas_acuerdo'];
+            $frecuencia = $acuerdo['frecuencia'];
+            $partes = $acuerdo['partes'];
+            $fecha_inicio = $acuerdo['fechas_acuerdo'][0]['fecha_frecuencia'];
 
-                    }
+            $acuerdo = new Acuerdo;
+
+            $acuerdo->academia_id = Auth::user()->academia_id;
+            $acuerdo->usuario_id = $usuario_id;
+            $acuerdo->usuario_tipo = $usuario_tipo;
+            $acuerdo->fecha_inicio = Carbon::createFromFormat('d-m-Y', $fecha_inicio)->toDateString();
+            $acuerdo->frecuencia = $frecuencia;
+            $acuerdo->cuotas = $partes;
+            $acuerdo->tipo = $request->tipo;
+            $acuerdo->porcentaje_retraso = $request->porcentaje_retraso;
+            $acuerdo->tiempo_tolerancia = $request->tiempo_tolerancia;
+
+            if($acuerdo->save())
+            {
+                foreach($fechas_acuerdo as $fechas){
+
+                    $fecha = Carbon::createFromFormat('d-m-Y', $fechas['fecha_frecuencia'])->toDateString();
+                    $importe_neto = $fechas['cantidad'];
+
+                    $item_acuerdo = new ItemsAcuerdo;
+                    
+                    $item_acuerdo->acuerdo_id = $acuerdo->id;
+                    $item_acuerdo->fecha = Carbon::now()->toDateString();
+                    $item_acuerdo->item_id = $acuerdo->id;
+                    $item_acuerdo->nombre = $nombre;
+                    $item_acuerdo->tipo = $request->tipo;
+                    $item_acuerdo->cantidad = 1;
+                    $item_acuerdo->precio_neto = 0;
+                    $item_acuerdo->impuesto = 0;
+                    $item_acuerdo->importe_neto = $importe_neto;
+                    $item_acuerdo->fecha_vencimiento = $fecha;
+
+                    $item_acuerdo->save();
+
+                    $item_factura = new ItemsFacturaProforma;
+                    
+                    $item_factura->usuario_id = $usuario_id;
+                    $item_factura->usuario_tipo = $usuario_tipo;
+                    $item_factura->academia_id = Auth::user()->academia_id;
+                    $item_factura->fecha = Carbon::now()->toDateString();
+                    $item_factura->item_id = $item_acuerdo->id;
+                    $item_factura->nombre = $nombre;
+                    $item_factura->tipo = 6;
+                    $item_factura->cantidad = 1;
+                    $item_factura->precio_neto = 0;
+                    $item_factura->impuesto = 0;
+                    $item_factura->importe_neto = $importe_neto;
+                    $item_factura->fecha_vencimiento = $fecha;
+
+                    $item_factura->save();
+
+                    $total += $importe_neto;
 
                 }
 
-                $descripcion = implode(",", $array_descripcion);
-                $total = 0;
+                $acuerdo->total = $total;
+                $acuerdo->save();
 
-                $fechas_acuerdo = $arreglo['fechas_acuerdo'];
-                $frecuencia = $arreglo['frecuencia'];
-                $partes = $arreglo['partes'];
-                $fecha_inicio = $arreglo['fechas_acuerdo'][0]['fecha_frecuencia'];
+                if($id_proforma){
 
-                $explode = explode("-", $request->usuario_id);
-                $usuario_tipo = $explode[0];
-                $usuario_id = $explode[1];
-
-                $acuerdo = new Acuerdo;
-
-                $acuerdo->academia_id = Auth::user()->academia_id;
-                $acuerdo->usuario_id = $usuario_id;
-                $acuerdo->usuario_tipo = $usuario_tipo;
-                $acuerdo->fecha_inicio = Carbon::createFromFormat('d-m-Y', $fecha_inicio)->toDateString();
-                $acuerdo->frecuencia = $frecuencia;
-                $acuerdo->cuotas = $partes;
-                $acuerdo->tipo = $request->tipo;
-                $acuerdo->porcentaje_retraso = $request->porcentaje_retraso;
-                $acuerdo->tiempo_tolerancia = $request->tiempo_tolerancia;
-
-                if($acuerdo->save())
-                {
-
-                    foreach($fechas_acuerdo as $fechas){
-
-                        $fecha = Carbon::createFromFormat('d-m-Y', $fechas['fecha_frecuencia'])->toDateString();
-
-                        $id = $acuerdo->id;
-                        $nombre = 'Acuerdo de pago para ' . $descripcion;
-                        $tipo = $request->tipo;
-                        $cantidad = 1;
-                        $precio_neto = 0;
-                        $impuesto = 0;
-                        $importe_neto = $fechas['cantidad'];
-
-                    
-                        $item_factura = new ItemsFacturaProforma;
-                        
-                        $item_factura->usuario_id = $usuario_id;
-                        $item_factura->usuario_tipo = $usuario_tipo;
-                        $item_factura->academia_id = Auth::user()->academia_id;
-                        $item_factura->fecha = Carbon::now()->toDateString();
-                        $item_factura->item_id = $id;
-                        $item_factura->nombre = $nombre;
-                        $item_factura->tipo = $tipo;
-                        $item_factura->cantidad = $cantidad;
-                        $item_factura->precio_neto = $precio_neto;
-                        $item_factura->impuesto = $impuesto;
-                        $item_factura->importe_neto = $importe_neto;
-                        $item_factura->fecha_vencimiento = $fecha;
-
-                        $item_factura->save();
-
-
-                        $item_acuerdo = new ItemsAcuerdo;
-                        
-                        $item_acuerdo->acuerdo_id = $id;
-                        $item_acuerdo->fecha = Carbon::now()->toDateString();
-                        $item_acuerdo->item_id = $item_factura->id;
-                        $item_acuerdo->nombre = $nombre;
-                        $item_acuerdo->tipo = $tipo;
-                        $item_acuerdo->cantidad = $cantidad;
-                        $item_acuerdo->precio_neto = $precio_neto;
-                        $item_acuerdo->impuesto = $impuesto;
-                        $item_acuerdo->importe_neto = $importe_neto;
-                        $item_acuerdo->fecha_vencimiento = $fecha;
-
-                        $item_acuerdo->save();
-
-                        $total = $total + $importe_neto;
-
+                    foreach($id_proforma as $id)
+                    {
+                        $delete = ItemsFacturaProforma::find($id)->delete();
                     }
-
-                    $acuerdo->total = $total;
-                    $acuerdo->save();
-
-                    if($id_proforma){
-
-                        foreach($id_proforma as $proforma_id)
-                        {
-                            $delete = ItemsFacturaProforma::find($proforma_id)->delete();
-                        }
-
-                    }else{
-
-                        $delete = ItemsFacturaProforma::where('usuario_id', '=', $request->usuario_id)->delete();
-
-                    }
-
-                    return response()->json(['status' => 'OK', 'usuario_id' => $usuario_id, 'usuario_tipo' => $usuario_tipo, 200]);
 
                 }else{
-                    return response()->json(['errores'=>'error', 'status' => 'ERROR-ACUERDO'],422);
-                }  
+                    $delete = ItemsFacturaProforma::where('usuario_id', '=', $usuario_id)->where('usuario_tipo',$usuario_tipo)->where('tipo','!=',6)->delete();
+                }
+
+                return response()->json(['status' => 'OK', 'usuario_id' => $usuario_id, 'usuario_tipo' => $usuario_tipo, 200]);
             }else{
-                return response()->json(['errores' => ['linea' => [0, 'Debes generar un acuerdo primero']], 'status' => 'ERROR'],422);
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-ACUERDO'],422);
             }
         }
     }
@@ -2310,7 +2291,7 @@ class AdministrativoController extends BaseController {
 
         //DATOS DE DETALLE
         $detalle = ItemsAcuerdo::select('id', 'item_id', 'nombre', 'tipo', 
-                'cantidad', 'precio_neto', 'impuesto', 'importe_neto')
+                'cantidad', 'precio_neto', 'impuesto', 'importe_neto', 'boolean_pagado')
             ->where('acuerdo_id','=',$id)
         ->get();
 
@@ -2366,12 +2347,13 @@ class AdministrativoController extends BaseController {
         $usuario_tipo = $explode[0];
         $usuario_id = $explode[1];
 
-        $acuerdos_pendientes = ItemsFacturaProforma::where('usuario_id', '=', $usuario_id)
-            ->where('tipo' , '=', 6)
-            ->where('usuario_tipo' , '=', $usuario_tipo)
+        $acuerdo = Acuerdo::join('items_acuerdo', 'items_acuerdo.acuerdo_id', '=', 'acuerdos.id')
+            ->where('acuerdos.usuario_id', '=', $usuario_id)
+            ->where('acuerdos.usuario_tipo' , '=', $usuario_tipo)
+            ->where('items_acuerdo.boolean_pagado' , 0)
         ->count();
 
-        if($acuerdos_pendientes){
+        if($acuerdo){
             return response()->json(['errores' => ['usuario_id' => [0, 'No se puede generar un acuerdo de pago, debido a que este participante ya posee uno asignado']], 'status' => 'ERROR'],422);
         }
         

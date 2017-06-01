@@ -1210,6 +1210,7 @@ class AlumnoController extends BaseController
 
     public function agregar_remuneracion(Request $request){
 
+
         $rules = [
             'concepto' => 'required',
             'remuneracion' => 'required|numeric',
@@ -1217,6 +1218,7 @@ class AlumnoController extends BaseController
         ];
 
         $messages = [
+
             'concepto.required' => 'Ups! El concepto es requerido ',
             'remuneracion.required' => 'Ups! El cantidad es requerida',
             'remuneracion.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
@@ -1243,10 +1245,16 @@ class AlumnoController extends BaseController
 
             $fecha_vencimiento = $fecha_vencimiento->toDateString();
 
-            $remuneracion = new AlumnoRemuneracion;
+            $remuneracion = AlumnoRemuneracion::where('alumno_id',$request->id)->first();
 
-            $remuneracion->alumno_id = $request->id;
-            $remuneracion->concepto = $request->concepto;
+            if(!$remuneracion){
+
+                $remuneracion = new AlumnoRemuneracion;
+
+                $remuneracion->alumno_id = $request->id;
+                $remuneracion->concepto = $request->concepto;
+            }
+
             $remuneracion->remuneracion = $request->remuneracion;
             $remuneracion->fecha_vencimiento = $fecha_vencimiento;
 

@@ -69,26 +69,26 @@
                                     <div class="p-t-10">
 
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="tipo_proforma" id="todos" value="todos" type="radio" checked >
+                                        <input name="tipo_proforma" id="todos" type="radio" value="0">
                                         <i class="input-helper"></i>  
                                         Todos <i id="todos2" name="todos2" class="zmdi zmdi-money-box zmdi-hc-fw f-20"></i>
                                     </label>
 
 
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="tipo_proforma" id="inscripcion" value="inscripcion" type="radio" >
+                                        <input name="tipo_proforma" id="inscripcion" type="radio" value="3" >
                                         <i class="input-helper"></i>  
                                         Inscripción <i id="inscripcion2" name="inscripcion2" class="zmdi zmdi-money-box zmdi-hc-fw c-verde f-20"></i>
                                     </label>
 
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="tipo_proforma" id="mensualidad" value="mensualidad" type="radio" >
+                                        <input name="tipo_proforma" id="mensualidad" type="radio" value="4" >
                                         <i class="input-helper"></i>  
                                         Mensualidad <i id="mensualidad2" name="mensualidad2" class="zmdi zmdi-money-box zmdi-hc-fw f-20"></i>
                                     </label>
 
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="tipo_proforma" id="acuerdo" value="acuerdo" type="radio" >
+                                        <input name="tipo_proforma" id="acuerdo" type="radio" value="6" >
                                         <i class="input-helper"></i>  
                                         Acuerdo de Pago <i id="acuerdo2" name="acuerdo2" class="zmdi zmdi-money-box zmdi-hc-fw f-20"></i>
                                     </label>
@@ -223,36 +223,67 @@
         }
 
          $('input[name="tipo"]').on('change', function(){
-            procesando();
-            t.clear().draw();
+
             if ($(this).val()=='pagadas') {
-                  tipo = 'pagadas';
                   rechargeFactura();
             } else  {
-                  tipo= 'proformas';
-                  rechargeProforma();
+                 $('#todos').click()
             }
          });
 
          $('input[name="tipo_proforma"]').on('change', function(){
-            procesando();
+
             t.clear().draw();
-            if ($(this).val()=='inscripcion') {
-                  tipo_proforma = 'inscripcion';
-                  rechargeInscripcion();
-            }else if ($(this).val()=='mensualidad') {
-                  tipo_proforma = 'mensualidad';
-                  rechargeMensualidad();
-            }else if ($(this).val()=='acuerdo') {
-                  tipo_proforma = 'acuerdo';
-                  rechargeAcuerdo();
-            }else {
-                  tipo_proforma = 'todos';
-                  rechargeProforma();
-            } 
+            procesando();
+
+            tipo = $(this).val()
+            
+            setTimeout(function(){
+            
+                var total = 0 
+
+                $.each(proformas, function (index, array) {
+
+                    if(array.tipo == tipo || tipo == 0){
+
+                        nombre = array.nombre
+
+                        if(nombre.length > 50)
+                        {
+                            nombre = nombre.substr(0, 50) + "...";
+                        }
+
+                        total = total + parseFloat(array.importe_neto)
+                        var rowNode=t.row.add( [
+                        ''+array.id+'',
+                        ''+array.usuario+'',
+                        '',
+                        ''+nombre+'',
+                        ''+array.fecha_vencimiento+'',
+                        ''+formatmoney(parseFloat(array.importe_neto))+'',
+                        '<i name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i class="eliminar zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                        ] ).draw(false).node();
+                        $( rowNode )
+                            .attr('id',array.id)
+                            .addClass('text-center');
+                    }
+                });
+            
+
+                $('#total').text(formatmoney(total))
+                $('#checkbox_tipo').show();
+                $('#monto').show();
+                t.column(2).visible(false);
+                document.getElementById('fecha').innerHTML = 'Fecha de Vencimiento';
+
+                finprocesado();
+            }, 1000);
          });
 
         function rechargeFactura(){
+
+            t.clear().draw();
+            procesando();
 
             setTimeout(function(){
 
@@ -270,7 +301,7 @@
                         concepto = concepto.substr(0, 50) + "...";
                     }
                     var rowNode=t.row.add( [
-                    ''+pad(array.factura, 10)+'',
+                    ''+pad(array.numero_factura, 10)+'',
                     ''+array.nombre+'',
                     ''+array.tipo_pago+'',
                     ''+concepto+'',
@@ -288,151 +319,6 @@
              }, 1000);
 
             
-        }
-
-        function rechargeProforma(){
-
-            setTimeout(function(){
-            
-                $('#monto').show();
-
-                t.column(2).visible(false);
-
-                document.getElementById('fecha').innerHTML = 'Fecha de Vencimiento';
-
-                var total = 0 
-
-                $.each(proformas, function (index, array) {
-
-                    total = total + parseFloat(array.total)
-                    concepto = array.concepto;
-                    var rowNode=t.row.add( [
-                    ''+array.id+'',
-                    ''+array.nombre+ ' '+array.apellido+'',
-                    '',
-                    ''+array.cantidad+ ' ' +concepto+'',
-                    ''+array.fecha_vencimiento+'',
-                    ''+formatmoney(parseFloat(array.total))+'',
-                    '<i name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i class="eliminar zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
-                    ] ).draw(false).node();
-                    $( rowNode )
-                        .attr('id',array.id)
-                        .addClass('text-center');
-                });
-
-                $('#total').text(formatmoney(total))
-
-                $('#todos').click();
-                $('#checkbox_tipo').show();
-
-                finprocesado();
-
-            }, 1000);
-
-        }
-
-        function rechargeInscripcion(){
-
-            setTimeout(function(){
-
-                var tmp = $.grep(proformas, function(e){ return e.tipo == 3; });
-
-                var total = 0;
-
-                $.each(tmp, function (index, array) {
-
-                    total = total + parseFloat(array.total)
-
-                    concepto = array.concepto;
-                    var rowNode=t.row.add( [
-                    ''+array.id+'',
-                    ''+array.nombre+ ' '+array.apellido+'',
-                    '',
-                    ''+array.cantidad+ ' ' +concepto+'',
-                    ''+array.fecha_vencimiento+'',
-                    ''+formatmoney(parseFloat(array.total))+'',
-                    '<i name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i class="eliminar zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
-                    ] ).draw(false).node();
-                    $( rowNode )
-                        .attr('id',array.id)
-                        .addClass('text-center');
-                });
-
-                $('#total').text(formatmoney(total))
-
-                finprocesado();
-
-            }, 1000);
-
-        }
-
-        function rechargeMensualidad(){
-
-            setTimeout(function(){
-
-                var total = 0
-
-                var tmp = $.grep(proformas, function(e){ return e.tipo == 4; });
-
-                $.each(tmp, function (index, array) {
-
-                    total = total + parseFloat(array.total)
-
-                    concepto = array.concepto;
-                    var rowNode=t.row.add( [
-                    ''+array.id+'',
-                    ''+array.nombre+ ' '+array.apellido+'',
-                    '',
-                    ''+array.cantidad+ ' ' +concepto+'',
-                    ''+array.fecha_vencimiento+'',
-                    ''+formatmoney(parseFloat(array.total))+'',
-                    '<i name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i class="eliminar zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
-                    ] ).draw(false).node();
-                    $( rowNode )
-                        .attr('id',array.id)
-                        .addClass('text-center');
-                });
-
-                $('#total').text(formatmoney(total))
-
-                finprocesado();
-
-            }, 1000);
-
-        }
-
-        function rechargeAcuerdo(){
-
-            setTimeout(function(){
-
-                var total = 0
-                var tmp = $.grep(proformas, function(e){ return e.tipo == 6; });
-
-                $.each(tmp, function (index, array) {
-
-                    total = total + parseFloat(array.total)
-
-                    concepto = array.concepto;
-                    var rowNode=t.row.add( [
-                    ''+array.id+'',
-                    ''+array.nombre+ ' '+array.apellido+'',
-                    '',
-                    ''+array.cantidad+ ' ' +concepto+'',
-                    ''+array.fecha_vencimiento+'',
-                    ''+formatmoney(parseFloat(array.total))+'',
-                    '<i name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i class="eliminar zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
-                    ] ).draw(false).node();
-                    $( rowNode )
-                        .attr('id',array.id)
-                        .addClass('text-center');
-                });
-
-                $('#total').text(formatmoney(total))
-
-                finprocesado();
-
-            }, 1000);
-
         }
 
         $("#pagadas").click(function(){

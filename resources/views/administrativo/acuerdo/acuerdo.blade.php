@@ -176,7 +176,7 @@
                                           <select class="selectpicker" name="usuario_id" id="usuario_id" data-live-search="true">
                                             <option value="">Selecciona</option>
                                             @foreach ( $usuarios as $usuario )
-                                            <option value = "{{ $usuario['id'] }}">{{ $usuario['nombre'] }} {{ $usuario['apellido'] }} {{ $usuario['identificacion'] }}</option>
+                                              <option data-content = "{{ $usuario['nombre'] }} {{ $usuario['apellido'] }} {{ $usuario['identificacion']}} - Debe: {{ number_format($usuario['total'], 2, '.' , '.')}} <i class='zmdi zmdi-money {{ empty($usuario['deuda']) ? 'c-verde ' : 'c-youtube' }} f-20'></i>" value = "{{ $usuario['id'] }}"></option>
                                             @endforeach
                                           </select>
                                         </div>
@@ -187,10 +187,6 @@
                                       </div>
                                     </div>
                                   </div>
-
-                                  <div class="col-md-6 text-center c-morado">
-                                    <span class="f-16 p-t-0">Debe </span><span class="f-16 p-t-0" id="total2" name="total2">0</span>
-                                  </div> 
                               </div>
 
                               <div class="clearfix p-b-35"></div>
@@ -538,7 +534,6 @@
 
       $("#usuario_id").val("{{{$id or 'Default' }}}");
       $('#usuario_id').selectpicker('refresh');
-      $("#total2").text(formatmoney(totalglobal));
 
       $('#fecha').prop('readonly', false);
       $('#frecuencia').removeAttr('disabled');
@@ -719,7 +714,6 @@
       dataType: 'json',
       data:datos +"&total="+totalglobal,
       success:function(respuesta){
-        console.log(respuesta);
         setTimeout(function(){ 
           $(".generar_acuerdo").removeAttr("disabled");
           var nFrom = $(this).attr('data-from');
@@ -992,8 +986,6 @@
 
     $('#fecha').val('');
     $('#partes').val('');
-    $('#total2').text('');
-
 
     $('#fecha').prop('readonly', true);
     $("#frecuencia").attr("disabled","disabled");
@@ -1022,7 +1014,6 @@
 
   function acuerdo(acuerdo){
     var acuerdo_fechas=acuerdo.fechas_acuerdo;
-    console.log(t);
     $.each(acuerdo_fechas, function (n, c) {  
 
       var numero = acuerdo_fechas[n].numero;
@@ -1038,7 +1029,6 @@
         $( rowNode )
         .attr('id',rowId)       
         .addClass('seleccion');
-      console.log(c);
     });  
 
     $('html,body').animate({
@@ -1054,7 +1044,6 @@
     id = $(this).val();
     limpiarMensaje();
     var route = route_pendientes + id;
-    console.log(route);
     var token = $('input:hidden[name=_token]').val();
     $.ajax({
       url: route,
@@ -1062,7 +1051,6 @@
       type: 'POST',
       dataType: 'json',
       success:function(respuesta){
-        console.log(respuesta);
         setTimeout(function(){ 
           var nFrom = $(this).attr('data-from');
           var nAlign = $(this).attr('data-align');
@@ -1075,24 +1063,23 @@
               .clear()
               .draw();
 
-              $('#fecha').prop('readonly', false);
-              $('#frecuencia').removeAttr('disabled');
-              $('#frecuencia').selectpicker('refresh');
-              $('#partes').prop('readonly', false);;
-              $('#generar').removeAttr('disabled');
-              $('#guardar').removeAttr('disabled');
-              $("#generar").css({
-                "opacity": ("1")
-              });
-              $("#guardar").css({
-                "opacity": ("1")
-              });
+            $('#fecha').prop('readonly', false);
+            $('#frecuencia').removeAttr('disabled');
+            $('#frecuencia').selectpicker('refresh');
+            $('#partes').prop('readonly', false);;
+            $('#generar').removeAttr('disabled');
+            $('#guardar').removeAttr('disabled');
+            $("#generar").css({
+              "opacity": ("1")
+            });
+            $("#guardar").css({
+              "opacity": ("1")
+            });
 
-              $('html,body').animate({
-                scrollTop: $("#id-linea").offset().top-90,
-              }, 1000);
+            $('html,body').animate({
+              scrollTop: $("#id-linea").offset().top-90,
+            }, 1000);
 
-            $("#total2").text(formatmoney(respuesta.total));
             totalglobal = respuesta.total;
 
           }else{
@@ -1139,7 +1126,6 @@
           var nType = 'danger';
           var nAnimIn = "animated flipInY";
           var nAnimOut = "animated flipOutY";
-          $("#total2").text(0);
           totalglobal = 0;                       
           notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
         }, 1000);
@@ -1163,7 +1149,6 @@
 
   function previa(t){
     var padre=$(t).closest('tr');
-    console.log(padre);
     var td_fecha = $(padre).find('td:eq(1)').text();
     var fecha = td_fecha.split("-")
     $('#fecha_actualizada').val(fecha[0]+'/'+fecha[1]+'/'+fecha[2]);

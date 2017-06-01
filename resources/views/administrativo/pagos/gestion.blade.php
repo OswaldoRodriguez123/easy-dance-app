@@ -44,10 +44,14 @@
                       <div class="card">
                         <div class="card-header text-center">
                             <div class="col-sm-4 text-left">
-                            <span class="f-16 p-t-0">Cliente: {{$usuario->nombre}} {{$usuario->apellido}}</span>
-                            <div class="clearfix p-b-15"></div>
+                              <span class="f-16 p-t-0">Cliente: {{$usuario->nombre}} {{$usuario->apellido}}</span>
+                              <div class="clearfix p-b-15"></div>
 
-                            <a id="id-generar" href="{{url('/')}}/administrativo/acuerdos/generar/{{$usuario_tipo}}-{{$usuario_id}}"><span class="f-16 p-t-0 text-success" id="acuerdo">Generar acuerdo de pago <i class="icon_a icon_a-acuerdo-de-pago f-14"></i></span></a></div>
+                              @if($acuerdo == 0)
+                                <a id="id-generar" href="{{url('/')}}/administrativo/acuerdos/generar/{{$usuario_tipo}}-{{$usuario_id}}"><span class="f-16 p-t-0 text-success" id="acuerdo">Generar acuerdo de pago <i class="icon_a icon_a-acuerdo-de-pago f-14"></i></span></a>
+                              @endif
+
+                            </div>
 
                             <div class="col-sm-4 c-morado">
                             </div>
@@ -283,14 +287,6 @@
 
     $("#gestionar_pago")[0].reset();
     $('#forma_pago_id').selectpicker('render');
-
-     acuerdo = "{{{ $acuerdo or 'Default' }}}";
-
-     if(acuerdo == 1){
-
-        $("#acuerdo").hide();
-        
-     }
 
      totalglobal = parseFloat("{{$total}}");
      totaldeuda =  parseFloat("{{$total}}");

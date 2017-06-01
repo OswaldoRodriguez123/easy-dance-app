@@ -142,7 +142,7 @@
                             
                             <table class="table i-table m-t-25 m-b-25">
                                 <thead class="text-uppercase">
-                                    <th class="c-gray">ITEM ID</th>
+                                    <th class="c-gray"></th>
                                     <th class="c-gray">NOMBRE</th>
                                     <th class="c-gray">CANTIDAD</th>
                                     <th class="c-gray">NETO</th>
@@ -158,7 +158,13 @@
                                         
                                       <?php $id = $detalle->item_id ?>
                                         <tr id="row_{{$id}}" class="seleccion" >
-                                            <td class="text-center previa">{{ $detalle->id }}</td>
+                                            <td class="text-center previa">
+                                                @if($detalle->boolean_pagado)
+                                                    <i class="zmdi zmdi-check c-verde f-20" data-html="true" data-original-title="" data-content="Item pagado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
+                                                @else
+                                                    <i class="zmdi zmdi-dot-circle c-amarillo f-20" data-html="true" data-original-title="" data-content="Item sin pagar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
+                                                @endif
+                                            </td>
                                             <td class="">{!! $detalle->nombre !!}</td>
                                             <td class="">{{ $detalle->cantidad }}</td>
                                             <td class="">Bs {{ number_format($detalle->importe_neto,2,",",".") }}</td>

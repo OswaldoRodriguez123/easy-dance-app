@@ -64,7 +64,7 @@
                                     <td class="text-center previa">{{$presupuesto['nombre']}} {{$presupuesto['apellido']}}</td>
                                     <td class="text-center previa">{{$presupuesto['fecha']}}</td>
                                     <td class="text-center previa">{{$presupuesto['fecha_valida']}}</td>
-                                    <td class="text-center previa">{{$presupuesto['total']}}</td>
+                                    <td class="text-center previa">{{ number_format($presupuesto['total'], 2, '.' , '.') }}</td>
                                     <td class="text-center"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10"></i></td>
                                 </tr>
                             @endforeach 

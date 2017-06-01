@@ -66,7 +66,7 @@
                                     <td class="text-center previa">{{$acuerdo['fecha_inicio']}}</td>
                                     <td class="text-center previa">{{$acuerdo['frecuencia']}}</td>
                                     <td class="text-center previa">{{$acuerdo['cuotas']}}</td>
-                                    <td class="text-center previa">{{$acuerdo['total']}}</td>
+                                    <td class="text-center previa">{{ number_format($acuerdo['total'], 2, '.' , '.') }}</td>
                                     <td class="text-center"> 
                                         <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10"></i>
                                     </td>

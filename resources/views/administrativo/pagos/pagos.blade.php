@@ -512,7 +512,7 @@
                                     
                                  </div>
                                 </div>                                
-                            <div class="clearfix p-b-35"></div>
+                              <div class="clearfix p-b-35"></div>
 
                                   <div class="col-sm-2 text-center">
 
@@ -549,24 +549,23 @@
 
                               <div class="clearfix p-b-35"></div>
 
-                                    <div class="col-sm-2">
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="form-control" name="combo" id="combo">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $servicios_productos as $servicio_producto )
-                           
-                                            <option value = "{{$servicio_producto['id']}}-{{$servicio_producto['costo']}}-{{$servicio_producto['tipo']}}-{{$servicio_producto['servicio_producto']}}-{{$servicio_producto['incluye_iva']}}-{{$servicio_producto['disponibilidad']}}">{{$servicio_producto['nombre']}}</option>
+                              <div class="col-sm-2">
+                                <div class="fg-line">
+                                  <div class="select">
+                                    <select class="form-control" name="combo" id="combo">
+                                      <option value="">Selecciona</option>
+                                      @foreach ( $servicios_productos as $servicio_producto )
+                       
+                                        <option @if($servicio_producto['tipo'] == '2') style="display:none" @endif value = "{{$servicio_producto['id']}}-{{$servicio_producto['costo']}}-{{$servicio_producto['tipo']}}-{{$servicio_producto['servicio_producto']}}-{{$servicio_producto['incluye_iva']}}-{{$servicio_producto['disponibilidad']}}">{{$servicio_producto['nombre']}}</option>
 
-                                          @endforeach
-                                        </select>
-                                      </div>
-                                    </div>
+                                      @endforeach
+                                    </select>
                                   </div>
+                                </div>
+                              </div>
 
                               <div class="col-sm-2 text-center">
-                                <!-- <input type="text" class="form-control input-sm" name="cantidad" id="cantidad" placeholder="Ej. 1"> -->
-                                <input autocomplete="off" name="cantidad" id="cantidad" maxlength="5" class="form-control input-mask" data-mask="00000" placeholder="Ej. 10" type="text" >
+                                <input name="cantidad" id="cantidad" class="form-control input-mask" maxlength="5" data-mask="00000" placeholder="Ej. 10" type="text" >
                               </div>
 
                               <div class="col-sm-2 text-center" id="disponibilidad_productos_campo">
@@ -578,15 +577,15 @@
                               </div>
 
                               <div class="col-sm-2">
-                                    <div class="fg-line">
-                                      <div class="select text-center">
-                                        <select class="form-control" name="impuesto" id="impuesto">
-                                          <option value="0">0 %</option>
-                                          <option value = "{{ $impuesto }}">{{$impuesto}} %</option>
-                                        </select>
-                                      </div>
-                                    </div>
+                                <div class="fg-line">
+                                  <div class="select text-center">
+                                    <select class="form-control" name="impuesto" id="impuesto">
+                                      <option value="0">0 %</option>
+                                      <option value = "{{ $impuesto }}">{{$impuesto}} %</option>
+                                    </select>
                                   </div>
+                                </div>
+                              </div>
 
                               <div class="col-sm-2 text-center">
                                 <input type="text" class="form-control input-sm text-center" name="importe_neto" id="importe_neto" readonly="readonly" placeholder="Ej. 12" value="0">
@@ -731,189 +730,182 @@
 
 @stop
 @section('js') 
-<script type="text/javascript">
+  <script type="text/javascript">
 
-  var impuestoglobal
-  var subtotalfinal = 0;
-  var impuestofinal = 0;
-  var totalfinal = 0;
-  var usuario_id = '';
-  var tipo = 'servicio';
-  var checked = [];
-  var itemlist= 0;
-  var disponible = 0;
-  var servicios_productos = '';
-  var servicios = []
-  var productos = []
+    var impuestoglobal
+    var subtotalfinal = 0;
+    var impuestofinal = 0;
+    var impuestoglobal = 0;
+    var subtotalglobal = 0;
+    var totalfinal = 0;
+    var usuario_id = '';
+    var checked = [];
+    var itemlist = 0;
+    var disponible = 0;
+    var servicios_productos = '';
 
-  route_agregar="{{url('/')}}/administrativo/pagos/agregaritem";
-  route_factura="{{url('/')}}/administrativo/pagos/gestion";
-  route_eliminar="{{url('/')}}/administrativo/pagos/eliminaritem";
-  route_pagar="{{url('/')}}/administrativo/pagos/factura";
-  route_cancelar = "{{url('/')}}/administrativo/pagos/cancelarpago"
-  route_proforma="{{url('/')}}/administrativo/pagos/pendiente/";
-  route_pendientes="{{url('/')}}/administrativo/pagos/itemspendientes/";
-  route_alumno="{{url('/')}}/participante/alumno/deuda/";
-  route_agregar_cliente="{{url('/')}}/administrativo/pagos/agregarcliente";
+    route_agregar="{{url('/')}}/administrativo/pagos/agregaritem";
+    route_factura="{{url('/')}}/administrativo/pagos/gestion";
+    route_eliminar="{{url('/')}}/administrativo/pagos/eliminaritem";
+    route_pagar="{{url('/')}}/administrativo/pagos/factura";
+    route_cancelar = "{{url('/')}}/administrativo/pagos/cancelarpago"
+    route_proforma="{{url('/')}}/administrativo/pagos/pendiente/";
+    route_pendientes="{{url('/')}}/administrativo/pagos/itemspendientes/";
+    route_alumno="{{url('/')}}/participante/alumno/deuda/";
+    route_agregar_cliente="{{url('/')}}/administrativo/pagos/agregarcliente";
 
-  function formatmoney(n) {
-    return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
-  }
+    $( document ).ready(function() {
 
+      servicios_productos = $('#combo option')
 
-  $( document ).ready(function() {
+      $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
-    servicios_productos = $('#combo option')
-
-    $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
-
-      A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
-      }
-
-    });
-
-    $('#apellido').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
-
-      A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
-      }
-
-    });
-
-
-    $('body,html').animate({scrollTop : 0}, 2000);
-        var animation = 'fadeInUpBig';
-        if (animation === "hinge") {
-        animationDuration = 3100;
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
-        else {
-        animationDuration = 3200;
+
+      });
+
+      $('#apellido').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
+
+        A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
-        //$("h1").removeAttr('class');
-        $(".container").addClass('animated '+animation);
 
-        setTimeout(function(){
-                $(".card-body").removeClass(animation);
-        }, animationDuration);
+      });
 
-    $("#agregar_item")[0].reset();
-    $('#usuario_id').val('');
-    usuario_id = '';
-    $('#usuario_id').selectpicker('render');
 
-    id = "{{{ $id or 'Default' }}}";
-    $('#disponibilidad_productos').hide();
-    $('#disponibilidad_productos_campo').hide();
+      $('body,html').animate({scrollTop : 0}, 2000);
+          var animation = 'fadeInUpBig';
+          if (animation === "hinge") {
+          animationDuration = 3100;
+          }
+          else {
+          animationDuration = 3200;
+          }
+          //$("h1").removeAttr('class');
+          $(".container").addClass('animated '+animation);
 
-    if(id != 'Default'){
+          setTimeout(function(){
+                  $(".card-body").removeClass(animation);
+          }, animationDuration);
 
-      $("#usuario_id").val("{{{ $id or 'Default' }}}");
-      $('#usuario_id').selectpicker('refresh');
-      usuario_id = id;
+      $("#agregar_item")[0].reset();
+      $('#usuario_id').val('');
+      usuario_id = '';
+      $('#usuario_id').selectpicker('render');
 
-      var route = route_pendientes + id;
-      var token = $('input:hidden[name=_token]').val();
-      $.ajax({
-        url: route,
-        headers: {'X-CSRF-TOKEN': token},
-        type: 'POST',
-        dataType: 'json',
-        success:function(respuesta){
-          setTimeout(function(){ 
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nAnimIn = "animated flipInY";
-            var nAnimOut = "animated flipOutY"; 
-            if(respuesta.status=="OK"){
+      id = "{{{ $id or 'Default' }}}";
+      $('#disponibilidad_productos').hide();
+      $('#disponibilidad_productos_campo').hide();
 
-              $.each(respuesta.items, function (index, array) {
+      if(id != 'Default'){
 
-                var rowId=array[0].id;
-                itemlist=array.length;
-                var rowNode=t.row.add( [
-                ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',  
-                ''+array[0].nombre+'',
-                ''+array[0].cantidad+'',
-                ''+formatmoney(parseFloat(array[0].precio_neto))+'',
-                ''+array[0].impuesto+'',
-                ''+formatmoney(parseFloat(array[0].importe_neto))+'',
-                ''+ ' ' +''
-                ] ).draw(false).node();
-                $( rowNode )
-                .attr('id',rowId)
-                // .attr('data-precio',precio_neto)
-                .addClass('seleccion');
+        $("#usuario_id").val("{{{ $id or 'Default' }}}");
+        $('#usuario_id').selectpicker('refresh');
+        usuario_id = id;
 
-              });
+        var route = route_pendientes + id;
+        var token = $('input:hidden[name=_token]').val();
+        $.ajax({
+          url: route,
+          headers: {'X-CSRF-TOKEN': token},
+          type: 'POST',
+          dataType: 'json',
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
 
-              var importe_neto = respuesta.total;
-              var impuesto = "{{$impuesto}}";
-              impuestoglobal = parseFloat(importe_neto) * (impuesto / 100);
-              subtotalglobal = parseFloat(importe_neto) - impuestoglobal;
+                $.each(respuesta.items, function (index, array) {
 
-              totalfinal = subtotalglobal + impuestoglobal;
+                  var rowId=array[0].id;
+                  itemlist=array.length;
+                  var rowNode=t.row.add( [
+                  ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',  
+                  ''+array[0].nombre+'',
+                  ''+array[0].cantidad+'',
+                  ''+formatmoney(parseFloat(array[0].precio_neto))+'',
+                  ''+array[0].impuesto+'',
+                  ''+formatmoney(parseFloat(array[0].importe_neto))+'',
+                  ''+ ' ' +''
+                  ] ).draw(false).node();
+                  $( rowNode )
+                  .attr('id',rowId)
+                  .addClass('seleccion');
 
-              $("#subtotal").text(formatmoney(subtotalglobal));
-              $("#impuestototal").text(formatmoney(impuestoglobal));
-              $("#total").text(formatmoney(totalfinal));
+                });
 
-            }else{
-              var nTitle="Ups! ";
-              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              var nType = 'danger';
-            }                       
-          }, 1000);
-          
-        },
-        error:function(msj){
-          setTimeout(function(){ 
-            if (typeof msj.responseJSON === "undefined") {
-              window.location = "{{url('/')}}/error";
-            }
-            if(msj.responseJSON.status=="ERROR"){
-              errores(msj.responseJSON.errores);
-              var nTitle="    Ups! "; 
-              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-            }else{
-              var nTitle="   Ups! "; 
-              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-            }
+                var importe_neto = respuesta.total;
+                var impuesto = "{{$impuesto}}";
+                impuestoglobal = parseFloat(importe_neto) * (impuesto / 100);
+                subtotalglobal = parseFloat(importe_neto) - impuestoglobal;
 
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'danger';
-            var nAnimIn = "animated flipInY";
-            var nAnimOut = "animated flipOutY";                       
-            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-          }, 1000);
-       }
-     });
+                totalfinal = subtotalglobal + impuestoglobal;
 
-    setTimeout(function(){ 
+                $("#subtotal").text(formatmoney(subtotalglobal));
+                $("#impuestototal").text(formatmoney(impuestoglobal));
+                $("#total").text(formatmoney(totalfinal));
 
-      $('html,body').animate({
-            scrollTop: $("#id-combo").offset().top-90,
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }                       
             }, 1000);
+            
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              if (typeof msj.responseJSON === "undefined") {
+                window.location = "{{url('/')}}/error";
+              }
+              if(msj.responseJSON.status=="ERROR"){
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }
 
-      }, 1000);
-    }
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+         }
+       });
 
-    else{
-
-      $("#add").attr("disabled","disabled");
-        $("#add").css({
-          "opacity": ("0.2")
-        });
-
-        setTimeout(function(){ 
+      setTimeout(function(){ 
 
         $('html,body').animate({
-            scrollTop: $("#content").offset().top-90,
-            }, 1000);
+              scrollTop: $("#id-combo").offset().top-90,
+              }, 1000);
 
         }, 1000);
-    }
+      }
+
+      else{
+
+        $("#add").attr("disabled","disabled");
+          $("#add").css({
+            "opacity": ("0.2")
+          });
+
+          setTimeout(function(){ 
+
+          $('html,body').animate({
+              scrollTop: $("#content").offset().top-90,
+              }, 1000);
+
+          }, 1000);
+      }
 
     t=$('#tablelistar').DataTable({
         "columnDefs": [ {
@@ -956,163 +948,132 @@
                     }
                 }
 
+      });
+
+      $('input[name=servicio]').click();
     });
 
-    $('#example-select-all').on('click', function(){
-      // Check/uncheck all checkboxes in the table
-      var rows = t.rows({ 'search': 'applied' }).nodes();
-      $('input[type="checkbox"]', rows).prop('checked', this.checked);
-
-   });
-
-  $("#agregar_item")[0].reset();
-    rechargeServicio();
-
-    impuestoglobal = 0;
-    subtotalglobal = 0;
-
-  });
-
-  function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
-                $.growl({
-                    icon: icon,
-                    title: titulo,
-                    message: mensaje,
-                    url: ''
-                },{
-                        element: 'body',
-                        type: type,
-                        allow_dismiss: true,
-                        placement: {
-                                from: from,
-                                align: align
-                        },
-                        offset: {
-                            x: 20,
-                            y: 85
-                        },
-                        spacing: 10,
-                        z_index: 1070,
-                        delay: 2500,
-                        timer: 2000,
-                        url_target: '_blank',
-                        mouse_over: false,
-                        animate: {
-                                enter: animIn,
-                                exit: animOut
-                        },
-                        icon_type: 'class',
-                        template: '<div data-growl="container" class="alert" role="alert">' +
-                                        '<button type="button" class="close" data-growl="dismiss">' +
-                                            '<span aria-hidden="true">&times;</span>' +
-                                            '<span class="sr-only">Close</span>' +
-                                        '</button>' +
-                                        '<span data-growl="icon"></span>' +
-                                        '<span data-growl="title"></span>' +
-                                        '<span data-growl="message"></span>' +
-                                        '<a href="#" data-growl="url"></a>' +
-                                    '</div>'
-                });
-            };
-
-  $("#pagar").click(function(){
-
-    var checked = getChecked();
-
-      var route = route_factura;
-      var token = $('input:hidden[name=_token]').val();
-      var datos = "&usuario_id="+usuario_id+"&items_factura="+checked;
-      limpiarMensaje();
-      procesando();
-      $.ajax({
-          url: route,
-              headers: {'X-CSRF-TOKEN': token},
-              type: 'POST',
-              dataType: 'json',
-              data:datos,
-          success:function(respuesta){
-            setTimeout(function(){ 
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY"; 
-              if(respuesta.status=="OK"){
-                window.location = route_factura;
-
-              }else{
-                var nTitle="Ups! ";
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                var nType = 'danger';
-              }                       
-              // finprocesado();
-
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-            }, 1000);
-          },
-          error:function(msj){
-            setTimeout(function(){ 
-              if (typeof msj.responseJSON === "undefined") {
-                window.location = "{{url('/')}}/error";
-              }
-              if(msj.responseJSON.status=="ERROR"){
-                console.log(msj.responseJSON.errores);
-                errores(msj.responseJSON.errores);
-                var nTitle="    Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-              }else{
-                var nTitle="   Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              }                        
-              finprocesado();
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nType = 'danger';
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY";                       
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-            }, 1000);
-          }
-      });
-  });
-
-    function rechargeServicio(){
-
-      tipo = 'servicio';
-      $( "#producto2" ).removeClass( "c-verde" );
-      $( "#servicio2" ).addClass( "c-verde" );
-
-      $.each(servicios_productos, function (index, array) {
-        id = array.value
-        explode = id.split('-');
-        if(explode[3] == '1'){
-          $('#combo option[value="'+array.value+'"]').show();
-        }else{
-          $('#combo option[value="'+array.value+'"]').hide();
-        }
-      });
-
-      $('#disponibilidad_productos').hide();
-      $('#disponibilidad_productos_campo').hide();
-
+    function formatmoney(n) {
+      return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     }
 
-    // function rechargeProducto(){
+    $('#example-select-all').on('click', function(){
+        // Check/uncheck all checkboxes in the table
+        var rows = t.rows({ 'search': 'applied' }).nodes();
+        $('input[type="checkbox"]', rows).prop('checked', this.checked);
 
-    //   $('#combo').append( new Option("Selecciona",""));
-    //   $.each(productos, function (index, array) {
-    //     $('#combo').append( new Option(array.nombre,array.id + "-" + array.costo + "-" + array.tipo));
-    //   });
+     });
 
+    function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
+        $.growl({
+            icon: icon,
+            title: titulo,
+            message: mensaje,
+            url: ''
+        },{
+                element: 'body',
+                type: type,
+                allow_dismiss: true,
+                placement: {
+                        from: from,
+                        align: align
+                },
+                offset: {
+                    x: 20,
+                    y: 85
+                },
+                spacing: 10,
+                z_index: 1070,
+                delay: 2500,
+                timer: 2000,
+                url_target: '_blank',
+                mouse_over: false,
+                animate: {
+                        enter: animIn,
+                        exit: animOut
+                },
+                icon_type: 'class',
+                template: '<div data-growl="container" class="alert" role="alert">' +
+                                '<button type="button" class="close" data-growl="dismiss">' +
+                                    '<span aria-hidden="true">&times;</span>' +
+                                    '<span class="sr-only">Close</span>' +
+                                '</button>' +
+                                '<span data-growl="icon"></span>' +
+                                '<span data-growl="title"></span>' +
+                                '<span data-growl="message"></span>' +
+                                '<a href="#" data-growl="url"></a>' +
+                            '</div>'
+        });
+    };
 
-    // } 
+    $("#pagar").click(function(){
+
+      var checked = getChecked();
+
+        var route = route_factura;
+        var token = $('input:hidden[name=_token]').val();
+        var datos = "&usuario_id="+usuario_id+"&items_factura="+checked;
+        limpiarMensaje();
+        procesando();
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                data:datos,
+            success:function(respuesta){
+              setTimeout(function(){ 
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY"; 
+                if(respuesta.status=="OK"){
+                  window.location = route_factura;
+
+                }else{
+                  var nTitle="Ups! ";
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  var nType = 'danger';
+                }                       
+                // finprocesado();
+
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              }, 1000);
+            },
+            error:function(msj){
+              setTimeout(function(){ 
+                if (typeof msj.responseJSON === "undefined") {
+                  window.location = "{{url('/')}}/error";
+                }
+                if(msj.responseJSON.status=="ERROR"){
+                  console.log(msj.responseJSON.errores);
+                  errores(msj.responseJSON.errores);
+                  var nTitle="    Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                }else{
+                  var nTitle="   Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                }                        
+                finprocesado();
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nType = 'danger';
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY";                       
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+              }, 1000);
+            }
+        });
+    });
 
     $('input[name="tipo"]').on('change', function(){
 
+      $('#combo').val('');
+
       if($(this).val()=='servicio') {
 
-        tipo = 'servicio';
         $( "#producto2" ).removeClass( "c-verde" );
         $( "#servicio2" ).addClass( "c-verde" );
 
@@ -1131,7 +1092,6 @@
 
       }else{
 
-        tipo = 'producto';
         $( "#servicio2" ).removeClass( "c-verde" );
         $( "#producto2" ).addClass( "c-verde" );
 
@@ -1159,15 +1119,11 @@
     $("#combo").change(function(){
 
       var combo = $(this).val();
-      var split = combo.split('-');
-      var costo = split[1];
-      var index = split[0];      
+      var split = combo.split('-');  
       var incluye_iva = split[4];
       var disponibilidad = split[5];
-      var cantidad = $('input[name="cantidad"]').val()
-      var costo2 = parseFloat(costo);
-      var cantidad2 = parseFloat(cantidad);
-      var impuesto = $("#impuesto option:selected").val();
+      var costo = parseFloat(split[1]);
+      var cantidad = 1
 
       if(incluye_iva == 0){
         $("#impuesto").val($('#impuesto option').first().val());
@@ -1176,73 +1132,55 @@
         $("#impuesto").val($('#impuesto option').last().val());
       }
 
-      var total = costo2 * cantidad2
+      var total = costo * cantidad
 
-      if(isNaN(total) || total == 0){
-        costo2 = 0;
-      }
-
-      $('input[name="precio_neto"]').val(formatmoney(costo2))
-
-
-      if(isNaN(total)){
-        total = 0;
-      }
-
+      $('input[name="precio_neto"]').val(formatmoney(costo))
       $('input[name="importe_neto"]').val(formatmoney(total))
       $('input[name="cantidad"]').val(1)
       $('input[name="campo_disponibilidad"]').val(disponibilidad)
+
     });
 
     $("#cantidad").change(function(){
 
       var combo = $("#combo option:selected" ).val();
       var split = combo.split('-');
-      var costo = split[1];
-      var cantidad = $(this).val();
-      var costo2 = parseFloat(costo);
-      var cantidad2 = parseFloat(cantidad);
-      var impuesto = $("#impuesto option:selected" ).val();
+      var incluye_iva = split[4];
+      var disponibilidad = split[5];
+      var costo = parseFloat(split[1]);
+      var cantidad = parseFloat($(this).val())
 
-      var total = costo2 * cantidad2
-
-      if(isNaN(total) || total == 0){
-        costo2 = 0;
+      if(incluye_iva == 0){
+        $("#impuesto").val($('#impuesto option').first().val());
+      }
+      else{
+        $("#impuesto").val($('#impuesto option').last().val());
       }
 
-      $('input[name="precio_neto"]').val(formatmoney(costo2))
+      var total = costo * cantidad
 
-
-      if(isNaN(total)){
-        total = 0;
-      }
-
+      $('input[name="precio_neto"]').val(formatmoney(costo))
       $('input[name="importe_neto"]').val(formatmoney(total))
+      $('input[name="cantidad"]').val(cantidad)
+      $('input[name="campo_disponibilidad"]').val(disponibilidad)
       
     });
 
     $("#impuesto").change(function(){
 
       var combo = $("#combo option:selected" ).val();
-      var split = combo.split('-');
-      var costo = split[1];
-      var cantidad = $('input[name="cantidad"]').val()
-      var costo2 = parseFloat(costo);
-      var cantidad2 = parseFloat(cantidad);
-      var total = costo2 * cantidad2
-      var impuesto = $("#impuesto option:selected" ).val();
+      var split = combo.split('-');  
+      var incluye_iva = split[4];
+      var disponibilidad = split[5];
+      var costo = parseFloat(split[1]);
+      var cantidad = parseFloat($('input[name="cantidad"]').val())
 
-      if(isNaN(total) || total == 0){
-        costo2 = 0;
-      }
+      var total = costo * cantidad
 
-      $('input[name="precio_neto"]').val(formatmoney(costo2))
-
-      if(isNaN(total)){
-        total = 0;
-      }
-
+      $('input[name="precio_neto"]').val(formatmoney(costo))
       $('input[name="importe_neto"]').val(formatmoney(total))
+      $('input[name="cantidad"]').val(cantidad)
+      $('input[name="campo_disponibilidad"]').val(disponibilidad)
       
     });
 
@@ -1273,117 +1211,114 @@
         });
 
       var route = route_agregar;
-                var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_item" ).serialize(); 
-                limpiarMensaje();
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $( "#agregar_item" ).serialize(); 
+      limpiarMensaje();
 
-                usuario_id = $("#usuario_id").val();
+      usuario_id = $("#usuario_id").val();
 
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:datos + "&impuestoglobal="+impuestoglobal + "&usuario_id="+usuario_id,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          var nType = 'success';
-                          $("#mujer").prop("checked", true);
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:datos + "&impuestoglobal="+impuestoglobal + "&usuario_id="+usuario_id,
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+                var nType = 'success';
+                $("#mujer").prop("checked", true);
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
 
-                          var rowId=respuesta.array[0].id;
-                          var rowNode=t.row.add( [
-                          ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',
-                          ''+respuesta.array[0].nombre+'',
-                          ''+respuesta.array[0].cantidad+'',
-                          ''+formatmoney(parseFloat(respuesta.array[0].precio_neto))+'',
-                          ''+respuesta.array[0].impuesto+'',
-                          ''+formatmoney(parseFloat(respuesta.array[0].importe_neto))+'',
-                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
-                          ] ).draw(false).node();
-                          $( rowNode )
-                          .attr('id',rowId)
-                          // .attr('data-precio',precio_neto)
-                          .addClass('seleccion');
-                          
-                          var importe_neto = respuesta.array[0].importe_neto;
-                          var impuesto = respuesta.array[0].impuesto;
-                          // var preciostring = importe_neto.toString(); 
-                          // precioint = preciostring.replace(",", "");
+                var rowId=respuesta.array[0].id;
+                var rowNode=t.row.add( [
+                ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',
+                ''+respuesta.array[0].nombre+'',
+                ''+respuesta.array[0].cantidad+'',
+                ''+formatmoney(parseFloat(respuesta.array[0].precio_neto))+'',
+                ''+respuesta.array[0].impuesto+'',
+                ''+formatmoney(parseFloat(respuesta.array[0].importe_neto))+'',
+                '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                ] ).draw(false).node();
+                $( rowNode )
+                .attr('id',rowId)
+                // .attr('data-precio',precio_neto)
+                .addClass('seleccion');
+                
+                var importe_neto = respuesta.array[0].importe_neto;
+                var impuesto = respuesta.array[0].impuesto;
+                // var preciostring = importe_neto.toString(); 
+                // precioint = preciostring.replace(",", "");
 
-                          subtotalfinal = parseFloat(importe_neto);
-                          impuestofinal = parseFloat(subtotalfinal) * (impuesto / 100);
+                subtotalfinal = parseFloat(importe_neto);
+                impuestofinal = parseFloat(subtotalfinal) * (impuesto / 100);
 
-                          subtotalglobal = subtotalglobal + subtotalfinal;
-                          impuestoglobal = impuestofinal + impuestoglobal;
-                          subtotalglobal = subtotalglobal - impuestofinal;
-                          totalfinal = subtotalglobal + impuestoglobal;
+                subtotalglobal = subtotalglobal + subtotalfinal;
+                impuestoglobal = impuestofinal + impuestoglobal;
+                subtotalglobal = subtotalglobal - impuestofinal;
+                totalfinal = subtotalglobal + impuestoglobal;
 
-                          $("#subtotal").text(formatmoney(subtotalglobal));
-                          $("#impuestototal").text(formatmoney(impuestoglobal));
-                          $("#total").text(formatmoney(totalfinal));
+                $("#subtotal").text(formatmoney(subtotalglobal));
+                $("#impuestototal").text(formatmoney(impuestoglobal));
+                $("#total").text(formatmoney(totalfinal));
 
-                          tipo = 'servicio';
-                          $("#servicio").prop("checked", true);
-                          rechargeServicio();
+                $('input[name=servicio]').click();
 
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        $("#add").removeAttr("disabled");
-                          $("#add").css({
-                            "opacity": ("1")
-                          });
-
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }
-                        $("#add").removeAttr("disabled");
-                          $("#add").css({
-                            "opacity": ("1")
-                          });                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }                       
+              $(".procesando").removeClass('show');
+              $(".procesando").addClass('hidden');
+              $("#guardar").removeAttr("disabled");
+              $(".cancelar").removeAttr("disabled");
+              $("#add").removeAttr("disabled");
+                $("#add").css({
+                  "opacity": ("1")
                 });
 
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              if (typeof msj.responseJSON === "undefined") {
+                window.location = "{{url('/')}}/error";
+              }
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }
+              $("#add").removeAttr("disabled");
+                $("#add").css({
+                  "opacity": ("1")
+                });                        
+              $("#guardar").removeAttr("disabled");
+              $(".cancelar").removeAttr("disabled");
+              $(".procesando").removeClass('show');
+              $(".procesando").addClass('hidden');
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
     });
 
     //FUNCION ELIMINAR
@@ -1391,53 +1326,52 @@
     $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
     
       var id = $(this).closest('tr').attr('id');
-
       var token = $('input:hidden[name=_token]').val();
-            $.ajax({
-                 url: route_eliminar+"/"+id,
-                 headers: {'X-CSRF-TOKEN': token},
-                 type: 'POST',
-                 dataType: 'json',                
-                success: function (data) {
-                  if(data.status=='OK'){
 
-                      impuesto = data.impuesto;
-                      subtotalglobal = subtotalglobal - data.importe_neto + impuesto;
-                      impuestoglobal = impuestoglobal - impuesto;
-                      totalfinal = subtotalglobal + impuestoglobal;
+      $.ajax({
+           url: route_eliminar+"/"+id,
+           headers: {'X-CSRF-TOKEN': token},
+           type: 'POST',
+           dataType: 'json',                
+          success: function (data) {
+            if(data.status=='OK'){
 
-                      $("#subtotal").text(subtotalglobal.toFixed(2));
-                      $("#impuestototal").text(impuestoglobal.toFixed(2));
-                      $("#total").text(totalfinal.toFixed(2));
+                impuesto = data.impuesto;
+                subtotalglobal = subtotalglobal - data.importe_neto + impuesto;
+                impuestoglobal = impuestoglobal - impuesto;
+                totalfinal = subtotalglobal + impuestoglobal;
 
-                                       
-                  }else{
-                    swal(
-                      'Solicitud no procesada',
-                      'Ha ocurrido un error, intente nuevamente por favor',
-                      'error'
-                    );
-                  }
-                },
-                error:function (xhr, ajaxOptions, thrownError){
-                  swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-                }
-              })
-              t.row( $(this).parents('tr') )
-                .remove()
-                .draw();
-           });
-        
+                $("#subtotal").text(subtotalglobal.toFixed(2));
+                $("#impuestototal").text(impuestoglobal.toFixed(2));
+                $("#total").text(totalfinal.toFixed(2));
 
-      function limpiarMensaje(){
-        var campo = ["usuario_id", "combo", "cantidad", "linea"];
-        fLen = campo.length;
-        for (i = 0; i < fLen; i++) {
-            $("#error-"+campo[i]+"_mensaje").html('');
-        }
+                                 
+            }else{
+              swal(
+                'Solicitud no procesada',
+                'Ha ocurrido un error, intente nuevamente por favor',
+                'error'
+              );
+            }
+          },
+          error:function (xhr, ajaxOptions, thrownError){
+            swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+          }
+        })
+        t.row( $(this).parents('tr') )
+          .remove()
+          .draw();
+    });
+  
+    function limpiarMensaje(){
+      var campo = ["usuario_id", "combo", "cantidad", "linea"];
+      fLen = campo.length;
+      for (i = 0; i < fLen; i++) {
+          $("#error-"+campo[i]+"_mensaje").html('');
       }
+    }
 
-      function errores(merror){
+    function errores(merror){
       var campo = ["usuario_id", "combo", "cantidad", "linea"];
       var elemento="";
       var contador=0;
@@ -1447,79 +1381,79 @@
       }
       contador++;
 
-       $.each(this, function (name, value) {              
+      $.each(this, function (name, value) {              
           var error=value;
           $("#error-"+n+"_mensaje").html(error);             
-       });
-    });
+        });
+      });
 
       $('html,body').animate({
             scrollTop: $("#id-"+elemento).offset().top-90,
       }, 1000);          
 
-  }
+    }
 
-  function subir(){
-    $('modalAgregar').animate({scrollTop : 0}, 500);
-  }
+    function subir(){
+      $('modalAgregar').animate({scrollTop : 0}, 500);
+    }
 
-  $( "#cancelar" ).click(function() {
+    $( "#cancelar" ).click(function() {
 
-        var padre=$(this).parents('tr');
-        var token = $('input:hidden[name=_token]').val();
+      var padre=$(this).parents('tr');
+      var token = $('input:hidden[name=_token]').val();
 
-            $.ajax({
-                 url: route_cancelar,
-                 headers: {'X-CSRF-TOKEN': token},
-                 type: 'POST',
-                 dataType: 'json',                
-                success: function (data) {
-                  if(data.status=='OK'){
+      $.ajax({
+           url: route_cancelar,
+           headers: {'X-CSRF-TOKEN': token},
+           type: 'POST',
+           dataType: 'json',                
+          success: function (data) {
+            if(data.status=='OK'){
 
-                    $("#agregar_item")[0].reset();
-                    $('#usuario_id').val('');
-                    usuario_id = '';
-                    $('#usuario_id').selectpicker('render');
-                    limpiarMensaje();
-                    impuestoglobal = 0;
-                    subtotalglobal = 0;
-                    rechargeServicio();
+              $("#agregar_item")[0].reset();
+              $('#usuario_id').val('');
+              usuario_id = '';
+              $('#usuario_id').selectpicker('render');
+              limpiarMensaje();
+              impuestoglobal = 0;
+              subtotalglobal = 0;
+              $('input[name=servicio]').click();
 
-                    $("#subtotal").text(0);
-                    $("#impuestototal").text(0);
-                    $("#total").text(0);
+              $("#subtotal").text(0);
+              $("#impuestototal").text(0);
+              $("#total").text(0);
 
-                       t
-                        .clear()
-                        .draw();
-                                       
-                  }else{
-                    swal(
-                      'Solicitud no procesada',
-                      'Ha ocurrido un error, intente nuevamente por favor',
-                      'error'
-                    );
-                  }
-                },
-                error:function (xhr, ajaxOptions, thrownError){
-                  swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-                }
-              })
+                 t
+                  .clear()
+                  .draw();
+                                 
+            }else{
+              swal(
+                'Solicitud no procesada',
+                'Ha ocurrido un error, intente nuevamente por favor',
+                'error'
+              );
+            }
+          },
+          error:function (xhr, ajaxOptions, thrownError){
+            swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+          }
+        })
 
-        $('html,body').animate({
-        scrollTop: $("#id-usuario_id").offset().top-90,
-        }, 1000);
-      });
+      $('html,body').animate({
+      scrollTop: $("#id-usuario_id").offset().top-90,
+      }, 1000);
+    });
 
-  $("#usuario_id").change(function(){
+    $("#usuario_id").change(function(){
 
-    t
-      .clear()
-      .draw();
+      t
+        .clear()
+        .draw();
 
-    procesando();
+      procesando();
 
-    usuario_id = $("#usuario_id").val();
+      usuario_id = $("#usuario_id").val();
 
       if($("#usuario_id").val() != ""){
 
@@ -1556,16 +1490,6 @@
             var nAnimOut = "animated flipOutY"; 
             if(respuesta.status=="OK"){
 
-              // if(respuesta.items.length > 0){
-              //   window.location = route_alumno + alumno_id;
-              // }
-              // else{
-              //   finprocesado();
-              //   $('html,body').animate({
-              //     scrollTop: $("#id-producto-servicio").offset().top-90,
-              //   }, 1000);
-              // }
-              // 
               finprocesado();
               $('html,body').animate({
                 scrollTop: $("#id-producto-servicio").offset().top-90,
@@ -1588,10 +1512,7 @@
                 ] ).draw(false).node();
                 $( rowNode )
                 .attr('id',rowId)
-                // .attr('data-precio',precio_neto)
                 .addClass('seleccion');
-
-                // total = total + array[0].importe_neto;
            
               });
 
@@ -1632,11 +1553,11 @@
             var nAnimOut = "animated flipOutY";                       
             notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
           }, 1000);
-       }
-     });
-  });
+        }
+      });
+    });
 
-  $("#agregar").click(function(){
+    $("#agregar").click(function(){
 
       var route = route_agregar_cliente;
       var token = $('input:hidden[name=_token]').val();
@@ -1645,76 +1566,75 @@
       procesando();
 
       $.ajax({
-          url: route,
-              headers: {'X-CSRF-TOKEN': token},
-              type: 'POST',
-              dataType: 'json',
-              data:datos,
-          success:function(respuesta){
-            setTimeout(function(){ 
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY"; 
-              if(respuesta.status=="OK"){
-                var nType = 'success';
-                var nTitle="Ups! ";
-                var nMensaje=respuesta.mensaje;
+        url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            dataType: 'json',
+            data:datos,
+        success:function(respuesta){
+          setTimeout(function(){ 
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY"; 
+            if(respuesta.status=="OK"){
+              var nType = 'success';
+              var nTitle="Ups! ";
+              var nMensaje=respuesta.mensaje;
 
-                $('#usuario_id').prepend( new Option(respuesta.alumno.nombre + ' ' + respuesta.alumno.apellido + ' ' + respuesta.alumno.identificacion + ' - Debe: 0','1-'+respuesta.alumno.id));
-                $('#usuario_id').val(respuesta.alumno.id);
-                $('#usuario_id').selectpicker('render');
-                $('#usuario_id').selectpicker('refresh');
+              $('#usuario_id').prepend( new Option(respuesta.alumno.nombre + ' ' + respuesta.alumno.apellido + ' ' + respuesta.alumno.identificacion + ' - Debe: 0','1-'+respuesta.alumno.id));
+              $('#usuario_id').val(respuesta.alumno.id);
+              $('#usuario_id').selectpicker('render');
+              $('#usuario_id').selectpicker('refresh');
 
-                $('.modal').modal('hide');
+              $('.modal').modal('hide');
 
-                $("#add").removeAttr("disabled");
-                $("#add").css({
-                  "opacity": ("1")
-                });
-             
+              $("#add").removeAttr("disabled");
+              $("#add").css({
+                "opacity": ("1")
+              });
+           
 
-              }else{
-                var nTitle="Ups! ";
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                var nType = 'danger';
-              }                       
-
-              finprocesado();
-
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-            }, 1000);
-          },
-          error:function(msj){
-            setTimeout(function(){ 
-              if (typeof msj.responseJSON === "undefined") {
-                window.location = "{{url('/')}}/error";
-              }
-              if(msj.responseJSON.status=="ERROR"){
-                console.log(msj.responseJSON.errores);
-                errores(msj.responseJSON.errores);
-                var nTitle="    Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-              }else{
-                var nTitle="   Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              }                    
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
+            }else{
+              var nTitle="Ups! ";
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
               var nType = 'danger';
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY"; 
-              finprocesado();
-                      
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-            }, 1000);
-          }
-      });
+            }                       
 
+            finprocesado();
+
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+          }, 1000);
+        },
+        error:function(msj){
+          setTimeout(function(){ 
+            if (typeof msj.responseJSON === "undefined") {
+              window.location = "{{url('/')}}/error";
+            }
+            if(msj.responseJSON.status=="ERROR"){
+              console.log(msj.responseJSON.errores);
+              errores(msj.responseJSON.errores);
+              var nTitle="    Ups! "; 
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+            }else{
+              var nTitle="   Ups! "; 
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+            }                    
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'danger';
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY"; 
+            finprocesado();
+                    
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+          }, 1000);
+        }
+      });
     });
 
-</script> 
+  </script> 
 @stop
 
