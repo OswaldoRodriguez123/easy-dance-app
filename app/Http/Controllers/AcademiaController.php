@@ -122,16 +122,6 @@ class AcademiaController extends BaseController {
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         $usuario_id = Session::get('easydance_usuario_id');
 
-         $proformas = ItemsFacturaProforma::where('tipo',6)->get();
-
-        foreach($proformas as $proforma){
-            $acuerdo = ItemsAcuerdo::where('acuerdo_id',$proforma->item_id)->where('fecha_vencimiento',$proforma->fecha_vencimiento)->first();
-            if($acuerdo){
-                $proforma->item_id = $acuerdo->id;
-                $proforma->save();
-            }
-        }
-
         if($usuario_tipo){
 
             //ADMINISTRADOR
