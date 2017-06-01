@@ -367,7 +367,6 @@
 
                 $.each(respuesta.array, function (i, id) {
                   $.each(por_pagar, function (j, array) {
-                    console.log(array)
                     if(array){
                       if(array.id == id){
                         por_pagar.splice( $.inArray(array, por_pagar), 1 );
