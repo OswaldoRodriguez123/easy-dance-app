@@ -160,8 +160,6 @@
         route_eliminar="{{url('/')}}/administrativo/pagos/eliminardeuda/";
         route_eliminar_factura="{{url('/')}}/administrativo/pagos/eliminar-factura/";
 
-        tipo = 'pagadas';
-
         var proformas = <?php echo json_encode($proformas);?>;
         var facturas = <?php echo json_encode($facturas);?>;
 
@@ -213,7 +211,7 @@
 
         function previa(t){
 
-            if(tipo =='pagadas'){
+            if($('input[name=tipo]').val() == 'pagadas'){
 
                 var row = $(t).closest('tr').attr('id');
                 var route =route_detalle+"/"+row;
