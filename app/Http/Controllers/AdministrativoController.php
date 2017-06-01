@@ -831,7 +831,7 @@ class AdministrativoController extends BaseController {
         foreach($id_proforma as $id){
             $item_proforma = ItemsFacturaProforma::find($id);
             if($item_proforma){
-                $total_proforma += $items_proforma->importe_neto;
+                $total_proforma += $item_proforma->importe_neto;
             }
         }
 
@@ -1006,24 +1006,26 @@ class AdministrativoController extends BaseController {
                         }
                     }
 
-                    //CREAR EL DETALLE DE LA FACTURA Y ELIMINAR LA PROFORMA
-                    
-                    $item_factura = new ItemsFactura;
+                    //CREAR EL DETALLE DE LA FACTURA Y ELIMINAR LA PROFORMA, SI EL TOTAL ES MAYOR DE LO PAGADO, NO SE GENERAN LOS ITEMS, SINO QUE SALTA AL SIGUIENTE PROCESO
 
-                    $item_factura->factura_id = $factura->id;
-                    $item_factura->item_id = $item_proforma->item_id;
-                    $item_factura->nombre = $item_proforma->nombre;
-                    $item_factura->tipo = $item_proforma->tipo;
-                    $item_factura->cantidad = $item_proforma->cantidad;
-                    $item_factura->precio_neto = $item_proforma->precio_neto;
-                    $item_factura->impuesto = $item_proforma->impuesto;
-                    $item_factura->importe_neto = $item_proforma->importe_neto;
+                    if($total_proforma <= $total_pago){
 
-                    $item_factura->save();
+                        $item_factura = new ItemsFactura;
+
+                        $item_factura->factura_id = $factura->id;
+                        $item_factura->item_id = $item_proforma->item_id;
+                        $item_factura->nombre = $item_proforma->nombre;
+                        $item_factura->tipo = $item_proforma->tipo;
+                        $item_factura->cantidad = $item_proforma->cantidad;
+                        $item_factura->precio_neto = $item_proforma->precio_neto;
+                        $item_factura->impuesto = $item_proforma->impuesto;
+                        $item_factura->importe_neto = $item_proforma->importe_neto;
+
+                        $item_factura->save();
+                    }
+
                     $item_proforma->delete();
 
-                    $total_proforma += $item_proforma->importe_neto;
-                    
                 }
             }
 
