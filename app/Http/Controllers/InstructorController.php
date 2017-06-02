@@ -205,7 +205,7 @@ class InstructorController extends BaseController {
         $usuario = User::where('email',$correo)->first();
 
         if($usuario){
-            $tipos_usuario = explode(',',$usuario->usuario_tipo);
+            $tipos_usuario = UsuarioTipo::where('usuario_id',$usuario->id);
             foreach($tipos_usuario as $tipo){
 
                 if($tipo == 3){
@@ -300,35 +300,34 @@ class InstructorController extends BaseController {
                 $instructor->save();
 
             }
+            if($correo){
+                if(!$usuario){
 
-            $usuario = User::where('email',$correo)->first();
+                    $usuario = new User;
 
-            if(!$usuario){
+                    $usuario->academia_id = Auth::user()->academia_id;
+                    $usuario->nombre = $nombre;
+                    $usuario->apellido = $apellido;
+                    $usuario->telefono = $request->telefono;
+                    $usuario->celular = $request->celular;
+                    $usuario->sexo = $request->sexo;
+                    $usuario->email = $correo;
+                    $usuario->como_nos_conociste_id = 1;
+                    $usuario->direccion = $direccion;
+                    // $usuario->confirmation_token = str_random(40);
+                    $usuario->password = bcrypt(str_random(8));
+                    $usuario->usuario_id = $instructor->id;
+                    $usuario->usuario_tipo = 3;
 
-                $usuario = new User;
+                    $usuario->save();
 
-                $usuario->academia_id = Auth::user()->academia_id;
-                $usuario->nombre = $nombre;
-                $usuario->apellido = $apellido;
-                $usuario->telefono = $request->telefono;
-                $usuario->celular = $request->celular;
-                $usuario->sexo = $request->sexo;
-                $usuario->email = $correo;
-                $usuario->como_nos_conociste_id = 1;
-                $usuario->direccion = $direccion;
-                // $usuario->confirmation_token = str_random(40);
-                $usuario->password = bcrypt(str_random(8));
-                $usuario->usuario_id = $instructor->id;
-                $usuario->usuario_tipo = 3;
-
-                $usuario->save();
-
-                $usuario_tipo = new UsuarioTipo;
-                $usuario_tipo->usuario_id = $usuario->id;
-                $usuario_tipo->tipo = 3;
-                $usuario_tipo->tipo_id = $instructor->id;
-                $usuario_tipo->save();
-                
+                    $usuario_tipo = new UsuarioTipo;
+                    $usuario_tipo->usuario_id = $usuario->id;
+                    $usuario_tipo->tipo = 3;
+                    $usuario_tipo->tipo_id = $instructor->id;
+                    $usuario_tipo->save();
+                    
+                }
             }
 
             

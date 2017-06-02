@@ -137,7 +137,7 @@ class StaffController extends BaseController
             $usuario = User::where('email',$correo)->first();
 
             if($usuario){
-                $tipos_usuario = explode(',',$usuario->usuario_tipo);
+                $tipos_usuario = UsuarioTipo::where('usuario_id',$usuario->id);
                 foreach($tipos_usuario as $tipo){
 
                     if($tipo == 8){
