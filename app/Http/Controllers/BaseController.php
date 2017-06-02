@@ -23,51 +23,51 @@ class BaseController extends Controller {
 
     public function __construct(Request $request) {
 
-    if (Auth::check()) { 
+        if (Auth::check()) { 
 
-        $academia = Academia::find(Auth::user()->academia_id);
-        $datos = $this->getDatosUsuario();
+            $academia = Academia::find(Auth::user()->academia_id);
+            $datos = $this->getDatosUsuario();
 
-        $usuario_id = $datos[0]['usuario_id'];
-        $usuario_tipo = $datos[0]['usuario_tipo'];
+            $usuario_id = $datos[0]['usuario_id'];
+            $usuario_tipo = $datos[0]['usuario_tipo'];
 
-        if($academia->pais_id == 11){
+            if($academia->pais_id == 11){
 
-            $timezone = 'America/Bogota';
+                $timezone = 'America/Bogota';
 
-        }else{
+            }else{
 
-            $timezone = 'America/Caracas';
-        }
-
-        date_default_timezone_set($timezone);
-
-        $notificaciones = Notificacion::join('notificacion_usuario','notificacion_usuario.id_notificacion', '=','notificacion.id')
-            ->select('notificacion.*','notificacion_usuario.visto as visto')
-            ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
-            ->orderBy('notificacion_usuario.created_at','desc')
-            ->limit(10)
-        ->get();
-
-        $array = array();
-        $numero_de_notificaciones = 0;
-
-        foreach ($notificaciones as $notificacion) {
-
-            if($notificacion->visto == 0){
-                $numero_de_notificaciones++;
+                $timezone = 'America/Caracas';
             }
 
-            $collection=collect($notificacion);     
-            $notificacion_imagen_array = $collection->toArray();
+            date_default_timezone_set($timezone);
+
+            $notificaciones = Notificacion::join('notificacion_usuario','notificacion_usuario.id_notificacion', '=','notificacion.id')
+                ->select('notificacion.*','notificacion_usuario.visto as visto')
+                ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
+                ->orderBy('notificacion_usuario.created_at','desc')
+                ->limit(10)
+            ->get();
+
+            $array = array();
+            $numero_de_notificaciones = 0;
+
+            foreach ($notificaciones as $notificacion) {
+
+                if($notificacion->visto == 0){
+                    $numero_de_notificaciones++;
+                }
+
+                $collection=collect($notificacion);     
+                $notificacion_imagen_array = $collection->toArray();
 
                 if($notificacion->tipo_evento == 5)
                 {
                     if(Auth::user()->imagen){
                         $notificacion_imagen_array['imagen']= "/assets/uploads/usuario/".Auth::user()->imagen;
                     }else{
+                        
                         if(Auth::user()->sexo == 'F'){
-
                             $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/1.jpg";
                         }else{
                             $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/2.jpg";
@@ -77,7 +77,6 @@ class BaseController extends Controller {
 
                 }else if($notificacion->tipo_evento == 1){
 
-                    
                     $clase_grupal = ConfigClasesGrupales::join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
                         ->join('notificacion','clases_grupales.id','=','notificacion.evento_id')
                         ->select('config_clases_grupales.imagen')
@@ -87,8 +86,8 @@ class BaseController extends Controller {
                      if($clase_grupal->imagen){
                         $notificacion_imagen_array['imagen']= "/assets/uploads/clase_grupal/".$clase_grupal->imagen;
                     }else{
-                        if($academia->imagen)
-                        {
+                        
+                        if($academia->imagen){
                             $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$academia->imagen;
                         }else{
                             $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
@@ -98,15 +97,14 @@ class BaseController extends Controller {
 
                 }else{
 
-                    if($academia->imagen)
-                    {
+                    if($academia->imagen){
                         $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$academia->imagen;
                     }else{
                         $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
                     }
 
                 }
-            
+                
                 $array[$notificacion->id] = $notificacion_imagen_array;
             }
 

@@ -8,6 +8,7 @@ use App\User;
 use App\ConfigEspecialidades;
 use App\Paises;
 use App\Alumno;
+use App\AlumnoRemuneracion;
 use App\Instructor;
 use App\ComoNosConociste;
 use App\Academia;
@@ -863,8 +864,10 @@ class UsuarioController extends BaseController {
 
                         $total_credenciales = $total_credenciales + $credencial_alumno->cantidad;
                     }
+
+                    $puntos_referidos = AlumnoRemuneracion::where('alumno_id',$usuario_id)->sum('remuneracion');
                     
-                    return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $contador_clase, 'talleres' => $contador_taller , 'fiestas' =>  $contador_fiesta ,'contador_campana' => $contador_campana ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil, 'instructor_contador' => $instructor_contador, 'clase_personalizada_contador' => $clase_personalizada_contador, 'alumno_examenes' => $alumno_examenes, 'alumno' => $alumno, 'credenciales_alumno' => $array_credencial, 'total_credenciales' => $total_credenciales, 'campanas' => $campanas]);  
+                    return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $contador_clase, 'talleres' => $contador_taller , 'fiestas' =>  $contador_fiesta ,'contador_campana' => $contador_campana ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil, 'instructor_contador' => $instructor_contador, 'clase_personalizada_contador' => $clase_personalizada_contador, 'alumno_examenes' => $alumno_examenes, 'alumno' => $alumno, 'credenciales_alumno' => $array_credencial, 'total_credenciales' => $total_credenciales, 'campanas' => $campanas, 'puntos_referidos' => $puntos_referidos]);  
                     
                 }else{
                     return view('vista_alumno.condiciones')->with('academia', $academia);
