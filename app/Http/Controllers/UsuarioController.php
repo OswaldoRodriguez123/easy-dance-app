@@ -31,6 +31,7 @@ use App\Fiesta;
 use App\Campana;
 use App\ClasePersonalizada;
 use App\Regalo;
+use App\ItemsFacturaProforma;
 use Validator;
 use Mail;
 use Carbon\Carbon;
