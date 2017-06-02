@@ -389,7 +389,6 @@ class AlumnoController extends BaseController
             }
 
             if($correo){
-
                 if(!$usuario){
 
                     $password = str_random(8);
@@ -411,17 +410,13 @@ class AlumnoController extends BaseController
                     $usuario->usuario_tipo = 2; 
 
                     $usuario->save();
-
-                    $usuario_tipo = new UsuarioTipo;
-                    $usuario_tipo->usuario_id = $usuario->id;
-                    $usuario_tipo->tipo = 2;
-                    $usuario_tipo->tipo_id = $alumno->id;
-                    $usuario_tipo->save();
-
                 }
 
-               
-
+                $usuario_tipo = new UsuarioTipo;
+                $usuario_tipo->usuario_id = $usuario->id;
+                $usuario_tipo->tipo = 2;
+                $usuario_tipo->tipo_id = $alumno->id;
+                $usuario_tipo->save();
             }
             
             // if($request->correo){

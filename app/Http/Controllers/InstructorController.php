@@ -174,200 +174,197 @@ class InstructorController extends BaseController {
 
             if($request->video_testimonial){
 
-            $parts = parse_url($request->video_testimonial);
+                $parts = parse_url($request->video_testimonial);
 
-            if(isset($parts['host']))
-            {
-                if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+                if(isset($parts['host']))
+                {
+                    if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
 
-                
+                    
+                    }else{
+                        return response()->json(['errores' => ['video_testimonial' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                    }
                 }else{
-                    return response()->json(['errores' => ['video_testimonial' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
-                }
-            }else{
-                    return response()->json(['errores' => ['video_testimonial' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
-                }
-            
-            }
-
-        $edad = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->diff(Carbon::now())->format('%y');
-
-
-        if($edad < 1){
-            return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
-        }
-
-        $nombre = title_case($request->nombre);
-        $apellido = title_case($request->apellido);
-        $direccion = $request->direccion;
-        $correo = trim(strtolower($request->correo));
-
-        $usuario = User::where('email',$correo)->first();
-
-        if($usuario){
-            $tipos_usuario = UsuarioTipo::where('usuario_id',$usuario->id);
-            foreach($tipos_usuario as $tipo){
-
-                if($tipo == 3){
-
-                    return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
-                }
-            }
-        }
-
-        $instructor = new Instructor;
-
-        $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
-
-        $instructor->academia_id = Auth::user()->academia_id;
-        $instructor->identificacion = $request->identificacion;
-        $instructor->nombre = $nombre;
-        $instructor->apellido = $apellido;
-        $instructor->sexo = $request->sexo;
-        $instructor->fecha_nacimiento = $fecha_nacimiento;
-        $instructor->correo = $correo;
-        $instructor->telefono = $request->telefono;
-        $instructor->celular = $request->celular;
-        $instructor->direccion = $direccion;
-        $instructor->alergia = $request->alergia;
-        $instructor->asma = $request->asma;
-        $instructor->convulsiones = $request->convulsiones;
-        $instructor->cefalea = $request->cefalea;
-        $instructor->hipertension = $request->hipertension;
-        $instructor->lesiones = $request->lesiones;
-        $instructor->descripcion = $request->descripcion;
-        $instructor->video_promocional = $request->video_promocional;
-        $instructor->resumen_artistico = $request->resumen_artistico;
-        $instructor->video_testimonial = $request->video_testimonial;
-        $instructor->boolean_promocionar = $request->boolean_promocionar;
-        $instructor->boolean_disponibilidad = $request->boolean_disponibilidad;
-        $instructor->boolean_administrador = $request->boolean_administrador;
-
-        if($instructor->save()){
-
-            if($request->imageBase64){
-
-                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-                $path = storage_path();
-                $split = explode( ';', $request->imageBase64 );
-                $type =  explode( '/',  $split[0]);
-                $ext = $type[1];
+                        return response()->json(['errores' => ['video_testimonial' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                    }
                 
-                if($ext == 'jpeg' || 'jpg'){
-                    $extension = '.jpg';
-                }
-
-                if($ext == 'png'){
-                    $extension = '.png';
-                }
-
-                $nombre_img = "instructor-". $instructor->id . $extension;
-                $image = base64_decode($base64_string);
-
-                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
-                $img = Image::make($image)->resize(1440, 500);
-                $img->save('assets/uploads/instructor/'.$nombre_img);
-
-                $instructor->imagen_artistica = $nombre_img;
-                $instructor->save();
-
             }
 
-            if($request->imagePerfilBase64){
+            $edad = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->diff(Carbon::now())->format('%y');
 
-                $base64_string = substr($request->imagePerfilBase64, strpos($request->imagePerfilBase64, ",")+1);
-                $path = storage_path();
-                $split = explode( ';', $request->imagePerfilBase64 );
-                $type =  explode( '/',  $split[0]);
-                $ext = $type[1];
-                
-                if($ext == 'jpeg' || 'jpg'){
-                    $extension = '.jpg';
-                }
 
-                if($ext == 'png'){
-                    $extension = '.png';
-                }
-
-                $nombre_img = "instructorp-". $instructor->id . $extension;
-                $image = base64_decode($base64_string);
-
-                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
-                $img = Image::make($image)->resize(300, 300);
-                $img->save('assets/uploads/instructor/'.$nombre_img);
-
-                $instructor->imagen = $nombre_img;
-                $instructor->save();
-
+            if($edad < 1){
+                return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
             }
-            if($correo){
-                if(!$usuario){
 
-                    $usuario = new User;
+            $nombre = title_case($request->nombre);
+            $apellido = title_case($request->apellido);
+            $direccion = $request->direccion;
+            $correo = trim(strtolower($request->correo));
 
-                    $usuario->academia_id = Auth::user()->academia_id;
-                    $usuario->nombre = $nombre;
-                    $usuario->apellido = $apellido;
-                    $usuario->telefono = $request->telefono;
-                    $usuario->celular = $request->celular;
-                    $usuario->sexo = $request->sexo;
-                    $usuario->email = $correo;
-                    $usuario->como_nos_conociste_id = 1;
-                    $usuario->direccion = $direccion;
-                    // $usuario->confirmation_token = str_random(40);
-                    $usuario->password = bcrypt(str_random(8));
-                    $usuario->usuario_id = $instructor->id;
-                    $usuario->usuario_tipo = 3;
+            $usuario = User::where('email',$correo)->first();
 
-                    $usuario->save();
+            if($usuario){
+                $tipos_usuario = UsuarioTipo::where('usuario_id',$usuario->id);
+                foreach($tipos_usuario as $tipo){
+
+                    if($tipo == 3){
+                        return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
+                    }
+                }
+            }
+
+            $instructor = new Instructor;
+
+            $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
+
+            $instructor->academia_id = Auth::user()->academia_id;
+            $instructor->identificacion = $request->identificacion;
+            $instructor->nombre = $nombre;
+            $instructor->apellido = $apellido;
+            $instructor->sexo = $request->sexo;
+            $instructor->fecha_nacimiento = $fecha_nacimiento;
+            $instructor->correo = $correo;
+            $instructor->telefono = $request->telefono;
+            $instructor->celular = $request->celular;
+            $instructor->direccion = $direccion;
+            $instructor->alergia = $request->alergia;
+            $instructor->asma = $request->asma;
+            $instructor->convulsiones = $request->convulsiones;
+            $instructor->cefalea = $request->cefalea;
+            $instructor->hipertension = $request->hipertension;
+            $instructor->lesiones = $request->lesiones;
+            $instructor->descripcion = $request->descripcion;
+            $instructor->video_promocional = $request->video_promocional;
+            $instructor->resumen_artistico = $request->resumen_artistico;
+            $instructor->video_testimonial = $request->video_testimonial;
+            $instructor->boolean_promocionar = $request->boolean_promocionar;
+            $instructor->boolean_disponibilidad = $request->boolean_disponibilidad;
+            $instructor->boolean_administrador = $request->boolean_administrador;
+
+            if($instructor->save()){
+
+                if($request->imageBase64){
+
+                    $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imageBase64 );
+                    $type =  explode( '/',  $split[0]);
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "instructor-". $instructor->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    $img = Image::make($image)->resize(1440, 500);
+                    $img->save('assets/uploads/instructor/'.$nombre_img);
+
+                    $instructor->imagen_artistica = $nombre_img;
+                    $instructor->save();
+
+                }
+
+                if($request->imagePerfilBase64){
+
+                    $base64_string = substr($request->imagePerfilBase64, strpos($request->imagePerfilBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imagePerfilBase64 );
+                    $type =  explode( '/',  $split[0]);
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "instructorp-". $instructor->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    $img = Image::make($image)->resize(300, 300);
+                    $img->save('assets/uploads/instructor/'.$nombre_img);
+
+                    $instructor->imagen = $nombre_img;
+                    $instructor->save();
+
+                }
+
+                if($correo){
+                    if(!$usuario){
+
+                        $usuario = new User;
+
+                        $usuario->academia_id = Auth::user()->academia_id;
+                        $usuario->nombre = $nombre;
+                        $usuario->apellido = $apellido;
+                        $usuario->telefono = $request->telefono;
+                        $usuario->celular = $request->celular;
+                        $usuario->sexo = $request->sexo;
+                        $usuario->email = $correo;
+                        $usuario->como_nos_conociste_id = 1;
+                        $usuario->direccion = $direccion;
+                        $usuario->password = bcrypt(str_random(8));
+                        $usuario->usuario_id = $instructor->id;
+                        $usuario->usuario_tipo = 3;
+
+                        $usuario->save();
+                    }
 
                     $usuario_tipo = new UsuarioTipo;
                     $usuario_tipo->usuario_id = $usuario->id;
                     $usuario_tipo->tipo = 3;
                     $usuario_tipo->tipo_id = $instructor->id;
+
                     $usuario_tipo->save();
-                    
                 }
+
+                
+                if($request->imagePerfilBase64){
+
+                    $nombre_img = "usuario-". $usuario->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(300, 300);
+                    $img->save('assets/uploads/usuario/'.$nombre_img);
+
+                    $usuario->imagen = $nombre_img;
+                    $usuario->save();
+
+                }
+
+                // $academia = Academia::find(Auth::user()->academia_id);
+                // $contrasena = $usuario->password;
+                // $subj = $instructor->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
+
+                // $array = [
+                //    'nombre' => $request->nombre,
+                //    'academia' => $academia->nombre,
+                //    'usuario' => $request->correo,
+                //    'contrasena' => $contrasena,
+                //    'subj' => $subj
+                // ];
+
+                // Mail::send('correo.inscripcion', $array, function($msj) use ($array){
+                //         $msj->subject($array['subj']);
+                //         $msj->to($array['usuario']);
+                //     });
+
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+                
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-
-            
-            if($request->imagePerfilBase64){
-
-                $nombre_img = "usuario-". $usuario->id . $extension;
-                $image = base64_decode($base64_string);
-
-                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
-                $img = Image::make($image)->resize(300, 300);
-                $img->save('assets/uploads/usuario/'.$nombre_img);
-
-                $usuario->imagen = $nombre_img;
-                $usuario->save();
-
-            }
-
-            // $academia = Academia::find(Auth::user()->academia_id);
-            // $contrasena = $usuario->password;
-            // $subj = $instructor->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
-
-            // $array = [
-            //    'nombre' => $request->nombre,
-            //    'academia' => $academia->nombre,
-            //    'usuario' => $request->correo,
-            //    'contrasena' => $contrasena,
-            //    'subj' => $subj
-            // ];
-
-            // Mail::send('correo.inscripcion', $array, function($msj) use ($array){
-            //         $msj->subject($array['subj']);
-            //         $msj->to($array['usuario']);
-            //     });
-
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-            
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-    }
     }
 
     public function updateID(Request $request){

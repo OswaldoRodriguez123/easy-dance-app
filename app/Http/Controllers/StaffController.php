@@ -179,33 +179,33 @@ class StaffController extends BaseController
 
 	        if($staff->save()){
 
-                $usuario = User::where('email',$correo)->first();
+                if($correo){
 
-                if(!$usuario){
+                    if(!$usuario){
 
-                    $usuario = new User;
+                        $usuario = new User;
 
-                    $usuario->academia_id = Auth::user()->academia_id;
-                    $usuario->nombre = $nombre;
-                    $usuario->apellido = $apellido;
-                    $usuario->telefono = $request->telefono;
-                    $usuario->celular = $request->celular;
-                    $usuario->sexo = $request->sexo;
-                    $usuario->email = $correo;
-                    $usuario->como_nos_conociste_id = 1;
-                    $usuario->direccion = $direccion;
-                    $usuario->password = bcrypt(str_random(8));
-                    $usuario->usuario_id = $staff->id;
-                    $usuario->usuario_tipo = 8;
+                        $usuario->academia_id = Auth::user()->academia_id;
+                        $usuario->nombre = $nombre;
+                        $usuario->apellido = $apellido;
+                        $usuario->telefono = $request->telefono;
+                        $usuario->celular = $request->celular;
+                        $usuario->sexo = $request->sexo;
+                        $usuario->email = $correo;
+                        $usuario->como_nos_conociste_id = 1;
+                        $usuario->direccion = $direccion;
+                        $usuario->password = bcrypt(str_random(8));
+                        $usuario->usuario_id = $staff->id;
+                        $usuario->usuario_tipo = 8;
 
-                    $usuario->save();
+                        $usuario->save();
+                    }
 
                     $usuario_tipo = new UsuarioTipo;
                     $usuario_tipo->usuario_id = $usuario->id;
                     $usuario_tipo->tipo = 8;
                     $usuario_tipo->tipo_id = $staff->id;
                     $usuario_tipo->save();
-                    
                 }
 
                 $horarios = Session::get('horarios_staff');
