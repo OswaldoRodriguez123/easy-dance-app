@@ -788,6 +788,7 @@ class AlumnoController extends BaseController
         $in = array(2,4);
 
         $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->select('users.id','users.imagen')
             ->where('usuarios_tipo.tipo_id',$request->id)
             ->whereIn('usuarios_tipo.tipo',$in)
         ->first();
@@ -824,7 +825,6 @@ class AlumnoController extends BaseController
             
             $usuario->imagen = $nombre_img;
             $usuario->save(); 
-       
         }
 
         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'imagen' => $nombre_img, 200]);

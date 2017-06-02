@@ -1562,13 +1562,20 @@
         jpeg_quality: 90
       });
 
-      Webcam.attach( '#webcam' );
-
+      Webcam.attach('#webcam');
+      
     })
 
     $('#modalImagen-Alumno').on('hidden.bs.modal', function (event) {
       Webcam.reset();
     })
+
+    function take_snapshot() {
+      Webcam.snap(function(data_uri) {
+        $('#img_snapshot').attr('src',data_uri)
+        $("input:hidden[name=imageBase64]").val(data_uri);
+      });
+    }
 
     function limpiarMensaje(){
         var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "fecha_pago", "costo_mensualidad"];
@@ -2339,17 +2346,6 @@
     
     function formatmoney(n) {
       return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
-    }
-
-    function take_snapshot() {
-      // take snapshot and get image data
-      Webcam.snap( function(data_uri) {
-        // display results in page
-
-        $('#img_snapshot').attr('src',data_uri)
-        $("input:hidden[name=imageBase64]").val(data_uri);
-
-      } );
     }
 
     $(".reservar").click(function(){
