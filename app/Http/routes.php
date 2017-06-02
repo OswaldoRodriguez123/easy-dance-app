@@ -486,8 +486,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		//PRINCIPAL
 
-		Route::get('/', 'LoginController@menu');
-		Route::get('/listo', 'LoginController@listo');
+		Route::get('/', 'UsuarioController@menu');
+		Route::get('/listo', 'UsuarioController@listo');
 
 		//ALUMNO
 
