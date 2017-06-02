@@ -94,16 +94,12 @@ class BaseController extends Controller {
 	                        }
 	                    }
                 	}else{
-                		if($clase_grupal->imagen){
-	                        $notificacion_imagen_array['imagen']= "/assets/uploads/clase_grupal/".$clase_grupal->imagen;
-	                    }else{
-	                        
-	                        if($academia->imagen){
-	                            $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$academia->imagen;
-	                        }else{
-	                            $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
-	                        }
-	                    }
+                	
+                        if($academia->imagen){
+                            $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$academia->imagen;
+                        }else{
+                            $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
+                        }
                 	}
                 }else{
                     if($academia->imagen){
