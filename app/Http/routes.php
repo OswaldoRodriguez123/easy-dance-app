@@ -140,9 +140,10 @@ Route::get('blog/directorio', 'BlogController@directorio');
 Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	Route::get('/logout', 'LoginController@getLogout');
-	Route::get('/seleccionar-tipo', 'AcademiaController@seleccionar_tipo');
-	Route::post('/seleccionar-tipo/{id}', 'AcademiaController@postSeleccionar');
-	Route::post('/confirmar-vencimiento/{id}', 'AcademiaController@confirmarVencimiento');
+	Route::get('/seleccionar-tipo', 'LoginController@seleccionar_tipo');
+	Route::post('/seleccionar-tipo/{id}', 'LoginController@postSeleccionar');
+	Route::post('/confirmar-vencimiento/{id}', 'LoginController@confirmarVencimiento');
+	Route::get('/inicio', 'LoginController@index');
 
 	//NOTIFICACIONES
 	
@@ -157,10 +158,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	Route::get('blog/publicar', 'BlogController@publicar');
 	Route::post('blog/publicar', 'BlogController@store');
-
-	//
-
-	Route::get('/inicio', 'AcademiaController@index');
 
 	// DESDE AQUI NECESITAN ESTAR AUTENTICADO
 
@@ -489,8 +486,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		//PRINCIPAL
 
-		Route::get('/', 'AcademiaController@menu');
-		Route::get('/listo', 'AcademiaController@listo');
+		Route::get('/', 'LoginController@menu');
+		Route::get('/listo', 'LoginController@listo');
 
 		//ALUMNO
 
