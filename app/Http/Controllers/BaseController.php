@@ -7,6 +7,7 @@ use App\Alumno;
 use App\User;
 use App\Academia;
 use App\AlumnoRemuneracion;
+use App\ConfigClasesGrupales;
 use App\Instructor;
 use App\Notificacion;
 use Illuminate\Support\Facades\Auth;
