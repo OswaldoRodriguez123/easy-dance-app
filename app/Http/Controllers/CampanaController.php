@@ -1644,7 +1644,7 @@ class CampanaController extends BaseController {
 
         // 'datos' => $preference,
 
-        return view('especiales.campana.contribuir_recompensa')->with(['id' => $id, 'recompensas' => $recompensa, 'academia' => $academia,  'campana' => $campana, 'alumnos' => $alumnos, 'usuario_tipo' => $usuario_tipo, 'usuario_id' => $usuario_id, 'usuario_nombre' => $usuario_nombre, 'user_id' => $user_id]);
+        return view('especiales.campana.contribuir_recompensa')->with(['id' => $id, 'recompensa' => $recompensa, 'academia' => $academia,  'campana' => $campana, 'alumnos' => $alumnos, 'usuario_tipo' => $usuario_tipo, 'usuario_id' => $usuario_id, 'usuario_nombre' => $usuario_nombre, 'user_id' => $user_id]);
     }
 
     //VISTA PARA PAGOS DE CONTRIBUCION / DONACION PARTICIPANTES EXTERNOS
