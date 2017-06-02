@@ -121,10 +121,7 @@ class CampanaController extends BaseController {
                     
                     $collection=collect($campana);     
                     $campana_array = $collection->toArray();
-                    
                     $campana_array['total']=$recaudado;
-                    $campana_array['status']=$status;
-                    $campana_array['dias_restantes']=$dias_restantes;
                     $array[$campana->id] = $campana_array;
             
                 }

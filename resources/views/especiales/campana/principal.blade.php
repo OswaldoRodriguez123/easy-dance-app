@@ -62,11 +62,13 @@
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="fecha_inicio" data-order="desc">Fecha Inicio</th>
                                     <th class="text-center" data-column-id="fecha_final" data-order="desc">Fecha Final</th>
-                                    <th class="text-center" data-column-id="status" data-type="numeric">Status</th>
+                                    @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
+                                        <th class="text-center" data-column-id="status" data-type="numeric">Status</th>
+                                    @endif
                                     <th class="text-center" data-column-id="meta" data-order="desc">Meta</th>
                                     <th class="text-center" data-column-id="actual" data-order="desc">Actual</th>
                                     @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
-                                    <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
+                                        <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                     @endif
                                 </tr>
                             </thead>
@@ -79,10 +81,12 @@
                                     <td class="text-center previa">{{$campana['nombre']}}</td>
                                     <td class="text-center previa">{{$campana['fecha_inicio']}}</td>
                                     <td class="text-center previa">{{$campana['fecha_final']}}</td>
-                                    <td class="text-center previa">
-                                        <span class="{{ empty($campana['dias_restantes']) ? 'c-youtube' : '' }}">{{$campana['status']}}</span>
-                                        Restan {{$campana['dias_restantes']}} Días
-                                    </td>
+                                    @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
+                                        <td class="text-center previa">
+                                            <span class="{{ empty($campana['dias_restantes']) ? 'c-youtube' : '' }}">{{$campana['status']}}</span>
+                                            Restan {{$campana['dias_restantes']}} Días
+                                        </td>
+                                    @endif
                                     <td class="text-center previa">{{ number_format($campana['cantidad'], 2, '.' , '.') }} </td>
                                     <td class="text-center previa">{{ number_format($campana['total'], 2, '.' , '.') }}</td>
                                     @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
