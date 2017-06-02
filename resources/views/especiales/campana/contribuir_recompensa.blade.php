@@ -108,7 +108,7 @@
                       <p class="f-30">Muy bien <span class="f-700" id="mostrar">Nombre</span></p> 
                     @endif
               
-                        <span class="f-25 c-morado text-center">Gracias por tu Colaboración para "{{$recompensas->nombre}}"</span>
+                        <span class="f-25 c-morado text-center">Gracias por tu Colaboración para "{{$recompensa->nombre}}"</span>
                         <div class="clearfix p-b-15"></div>
                         @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                           <span class="f-16 c-morado">Selecciona el patrocinador</span>
@@ -387,9 +387,9 @@
 
         function procesar_mercadopago(response){
           
-            var recompensa_nombre = "{{$recompensas->nombre}}";
+            var recompensa_nombre = "{{$recompensa->nombre}}";
             var campana_id = "{{$campana->id}}";
-            var monto = "{{$recompensas->cantidad}}"
+            var monto = "{{$recompensa->cantidad}}"
             var route = route_mercadopago;
             var token = $('input:hidden[name=_token]').val();
             var nombre = $("input[name=nombre]").val();
