@@ -140,10 +140,10 @@ Route::get('blog/directorio', 'BlogController@directorio');
 Route::group(['middleware' => ['auth','verified'] ], function () {
 
 	Route::get('/logout', 'LoginController@getLogout');
-	Route::get('/seleccionar-tipo', 'LoginController@seleccionar_tipo');
-	Route::post('/seleccionar-tipo/{id}', 'LoginController@postSeleccionar');
-	Route::post('/confirmar-vencimiento/{id}', 'LoginController@confirmarVencimiento');
-	Route::get('/inicio', 'LoginController@index');
+	Route::get('/seleccionar-tipo', 'UsuarioController@seleccionar_tipo');
+	Route::post('/seleccionar-tipo/{id}', 'UsuarioController@postSeleccionar');
+	Route::post('/confirmar-vencimiento/{id}', 'UsuarioController@confirmarVencimiento');
+	Route::get('/inicio', 'UsuarioController@index');
 
 	//NOTIFICACIONES
 	
