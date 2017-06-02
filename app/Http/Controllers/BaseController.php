@@ -8,6 +8,7 @@ use App\User;
 use App\Academia;
 use App\AlumnoRemuneracion;
 use App\Instructor;
+use App\Notificacion;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use App\CentauroSMS\CentauroSMS;
@@ -24,10 +25,11 @@ class BaseController extends Controller {
 
     if (Auth::check()) { 
 
-        $usuario = User::find(Auth::user()->id);
-        $academia = Academia::find($usuario->academia_id);
-        $usuario_tipo = Session::get('easydance_usuario_tipo');
-        $usuario_id = Session::get('easydance_usuario_id');
+        $academia = Academia::find(Auth::user()->academia_id);
+        $datos = $this->getDatosUsuario();
+
+        $usuario_id = $datos[0]['usuario_id'];
+        $usuario_tipo = $datos[0]['usuario_tipo'];
 
         if($academia->pais_id == 11){
 
@@ -40,76 +42,54 @@ class BaseController extends Controller {
 
         date_default_timezone_set($timezone);
 
-        $notificaciones = DB::table('notificacion_usuario')
-            ->join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
-            ->join('users','notificacion_usuario.id_usuario','=','users.id')
+        $notificaciones = Notificacion::join('notificacion_usuario','notificacion_usuario.id_notificacion', '=','notificacion.id')
             ->select('notificacion.*','notificacion_usuario.visto as visto')
-            ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
-            ->orderBy('notificacion_usuario.created_at','desc')
-        ->get();
-
-        $numero_de_notificaciones = 0;
-
-        foreach( $notificaciones as $notificacion){
-            if($notificacion->visto == 0){
-                $numero_de_notificaciones++;
-            }
-        }
-
-        $notificaciones = DB::table('notificacion_usuario')
-            ->join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
-            ->join('users','notificacion_usuario.id_usuario','=','users.id')
-            ->join('academias','users.academia_id','=','academias.id')
-            ->select('notificacion.*','notificacion_usuario.visto as visto','academias.imagen as imagen')
             ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
             ->orderBy('notificacion_usuario.created_at','desc')
             ->limit(10)
         ->get();
 
         $array = array();
+        $numero_de_notificaciones = 0;
 
         foreach ($notificaciones as $notificacion) {
+
+            if($notificacion->visto == 0){
+                $numero_de_notificaciones++;
+            }
+
             $collection=collect($notificacion);     
             $notificacion_imagen_array = $collection->toArray();
 
                 if($notificacion->tipo_evento == 5)
                 {
-                    $usuario = User::join('sugerencias','users.id','=','sugerencias.usuario_id')
-                        ->select('users.imagen', 'users.sexo')
-                        ->where('sugerencias.id','=',$notificacion->evento_id)
-                    ->first();
+                    if(Auth::user()->imagen){
+                        $notificacion_imagen_array['imagen']= "/assets/uploads/usuario/".Auth::user()->imagen;
+                    }else{
+                        if(Auth::user()->sexo == 'F'){
 
-                    if($usuario){
-
-                        if($usuario->imagen){
-                            $notificacion_imagen_array['imagen']= "/assets/uploads/usuario/".$usuario->imagen;
+                            $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/1.jpg";
                         }else{
-                            if($usuario->sexo == 'F'){
-
-                                $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/1.jpg";
-                            }else{
-                                $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/2.jpg";
-                            }
+                            $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/2.jpg";
                         }
-
                     }
+
 
                 }else if($notificacion->tipo_evento == 1){
 
                     
-                    $imagen = DB::table('config_clases_grupales')
-                        ->join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
+                    $clase_grupal = ConfigClasesGrupales::join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
                         ->join('notificacion','clases_grupales.id','=','notificacion.evento_id')
                         ->select('config_clases_grupales.imagen')
                         ->where('notificacion.evento_id','=',$notificacion->evento_id)
                     ->first();
 
-                     if($imagen->imagen){
-                        $notificacion_imagen_array['imagen']= "/assets/uploads/clase_grupal/".$imagen->imagen;
+                     if($clase_grupal->imagen){
+                        $notificacion_imagen_array['imagen']= "/assets/uploads/clase_grupal/".$clase_grupal->imagen;
                     }else{
-                        if($notificacion->imagen)
+                        if($academia->imagen)
                         {
-                            $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$notificacion->imagen;
+                            $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$academia->imagen;
                         }else{
                             $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
                         }
@@ -118,9 +98,9 @@ class BaseController extends Controller {
 
                 }else{
 
-                    if($notificacion->imagen)
+                    if($academia->imagen)
                     {
-                        $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$notificacion->imagen;
+                        $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$academia->imagen;
                     }else{
                         $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
                     }
@@ -130,22 +110,9 @@ class BaseController extends Controller {
                 $array[$notificacion->id] = $notificacion_imagen_array;
             }
 
-            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $puntos_referidos = 0;
-            }else{
-                $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id', $usuario_id)->first();
-                if($alumno_remuneracion){
-                    $puntos_referidos = $alumno_remuneracion->remuneracion;
-                }else{
-                   $puntos_referidos = 0; 
-                }
-                
-                View::share ( 'puntos_referidos', $puntos_referidos);
-            }
-            
-            View::share ( 'notificaciones', $array);
-            View::share ( 'usuario_tipo', $usuario_tipo);
-            View::share ( 'sin_ver', $numero_de_notificaciones );
+            View::share ('notificaciones', $array);
+            View::share ('usuario_tipo', $usuario_tipo);
+            View::share ('sin_ver', $numero_de_notificaciones );
    		}
 
     }
@@ -250,6 +217,22 @@ class BaseController extends Controller {
         $sql = preg_replace('/\?/', $value, $sql, 1);
       }
       return $sql;
+    }
+
+    function getDatosUsuario(){
+
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+        $usuario_id = Session::get('easydance_usuario_id');
+
+        // if(!$usuario_tipo){
+        //     Session::put('easydance_usuario_tipo',Auth::user()->usuario_tipo);
+        //     Session::put('easydance_usuario_id',Auth::user()->usuario_id);
+        //     $usuario_tipo = Auth::user()->usuario_tipo;
+        //     $usuario_id = Auth::user()->usuario_id;
+        // }
+
+        return array(['usuario_tipo' => $usuario_tipo, 'usuario_id' => $usuario_id]);
+
     }
 
 }

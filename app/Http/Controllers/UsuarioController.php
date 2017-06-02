@@ -44,8 +44,11 @@ class UsuarioController extends BaseController {
 
     public function perfil()
     {   
-        $usuario_tipo = Session::get('easydance_usuario_tipo');
-        $usuario_id = Session::get('easydance_usuario_id');
+        $datos = $this->getDatosUsuario();
+
+        $usuario_id = $datos[0]['usuario_id'];
+        $usuario_tipo = $datos[0]['usuario_tipo'];
+
         if($usuario_tipo == 2 OR $usuario_tipo == 4){
             $alumno = Alumno::find($usuario_id);
             return view('usuario.planilla')->with('alumno',$alumno);
@@ -56,7 +59,10 @@ class UsuarioController extends BaseController {
 
     public function perfil_evaluativo()
     {   
-        $usuario_id = Session::get('easydance_usuario_id');
+        $datos = $this->getDatosUsuario();
+
+        $usuario_id = $datos[0]['usuario_id'];
+
         $perfil = PerfilEvaluativo::where('usuario_id', $usuario_id)->first();
 
         if(!$perfil){
@@ -151,8 +157,10 @@ class UsuarioController extends BaseController {
 
         if($usuario->save()){
 
-            $usuario_tipo = Session::get('easydance_usuario_tipo');
-            $usuario_id = Session::get('easydance_usuario_id');
+            $datos = $this->getDatosUsuario();
+
+            $usuario_id = $datos[0]['usuario_id'];
+            $usuario_tipo = $datos[0]['usuario_tipo'];
 
             if($usuario_tipo == 2){
 
@@ -187,8 +195,10 @@ class UsuarioController extends BaseController {
         // return redirect("alumno/edit/{$request->id}");
         if($usuario->save()){
 
-            $usuario_tipo = Session::get('easydance_usuario_tipo');
-            $usuario_id = Session::get('easydance_usuario_id');
+            $datos = $this->getDatosUsuario();
+
+            $usuario_id = $datos[0]['usuario_id'];
+            $usuario_tipo = $datos[0]['usuario_tipo'];
 
             if($usuario_tipo == 2){
 
@@ -250,8 +260,10 @@ class UsuarioController extends BaseController {
 
         if($usuario->save()){
 
-            $usuario_tipo = Session::get('easydance_usuario_tipo');
-            $usuario_id = Session::get('easydance_usuario_id');
+            $datos = $this->getDatosUsuario();
+
+            $usuario_id = $datos[0]['usuario_id'];
+            $usuario_tipo = $datos[0]['usuario_tipo'];
 
             if($usuario_tipo == 2){
 
@@ -286,8 +298,10 @@ class UsuarioController extends BaseController {
 
         if($usuario->save()){
 
-            $usuario_tipo = Session::get('easydance_usuario_tipo');
-            $usuario_id = Session::get('easydance_usuario_id');
+            $datos = $this->getDatosUsuario();
+
+            $usuario_id = $datos[0]['usuario_id'];
+            $usuario_tipo = $datos[0]['usuario_tipo'];
 
             if($usuario_tipo == 2){
 
@@ -323,8 +337,10 @@ class UsuarioController extends BaseController {
         
         if($usuario->save()){
 
-            $usuario_tipo = Session::get('easydance_usuario_tipo');
-            $usuario_id = Session::get('easydance_usuario_id');
+            $datos = $this->getDatosUsuario();
+
+            $usuario_id = $datos[0]['usuario_id'];
+            $usuario_tipo = $datos[0]['usuario_tipo'];
             
             if($usuario_tipo == 2){
 
@@ -446,7 +462,9 @@ class UsuarioController extends BaseController {
         $usuario->imagen = $nombre_img;
         $usuario->save();
 
-        $usuario_tipo = Session::get('easydance_usuario_tipo');
+        $datos = $this->getDatosUsuario();
+
+        $usuario_tipo = $datos[0]['usuario_tipo'];
 
         if($usuario_tipo == 3){
 
@@ -476,7 +494,9 @@ class UsuarioController extends BaseController {
     public function documentos(){
 
         $academia = Academia::find(Auth::user()->academia_id);
-        $usuario_id = Session::get('easydance_usuario_id');
+        $datos = $this->getDatosUsuario();
+
+        $usuario_id = $datos[0]['usuario_id'];
 
         $clase_grupal_join = DB::table('clases_grupales')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
@@ -561,8 +581,11 @@ class UsuarioController extends BaseController {
     public function index()
     {
         $academia = Academia::find(Auth::user()->academia_id);
-        $usuario_tipo = Session::get('easydance_usuario_tipo');
-        $usuario_id = Session::get('easydance_usuario_id');
+
+        $datos = $this->getDatosUsuario();
+
+        $usuario_id = $datos[0]['usuario_id'];
+        $usuario_tipo = $datos[0]['usuario_tipo'];
 
         if($usuario_tipo){
 
@@ -865,7 +888,9 @@ class UsuarioController extends BaseController {
 
     public function menu(){
 
-        $usuario_tipo = Session::get('easydance_usuario_tipo');
+        $datos = $this->getDatosUsuario();
+
+        $usuario_tipo = $datos[0]['usuario_tipo'];
 
         if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
             return view('menu.index');
@@ -1145,7 +1170,10 @@ class UsuarioController extends BaseController {
 
     public function inactividad(){
 
-        $id = Session::get('easydance_usuario_id');
+        $datos = $this->getDatosUsuario();
+
+        $id = $datos[0]['usuario_id'];
+
         $alumno = Alumno::find($id);
 
         if($alumno){
