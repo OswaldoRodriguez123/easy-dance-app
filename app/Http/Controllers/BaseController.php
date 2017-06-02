@@ -74,36 +74,43 @@ class BaseController extends Controller {
                             $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/2.jpg";
                         }
                     }
-
-
                 }else if($notificacion->tipo_evento == 1){
 
                     $clase_grupal = ConfigClasesGrupales::join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
-                        ->join('notificacion','clases_grupales.id','=','notificacion.evento_id')
                         ->select('config_clases_grupales.imagen')
-                        ->where('notificacion.evento_id','=',$notificacion->evento_id)
+                        ->where('clases_grupales.id',$notificacion->evento_id)
                     ->first();
 
-                     if($clase_grupal->imagen){
-                        $notificacion_imagen_array['imagen']= "/assets/uploads/clase_grupal/".$clase_grupal->imagen;
-                    }else{
-                        
-                        if($academia->imagen){
-                            $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$academia->imagen;
-                        }else{
-                            $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
-                        }
-                        
-                    }
+                    if($clase_grupal){
 
+	                    if($clase_grupal->imagen){
+	                        $notificacion_imagen_array['imagen']= "/assets/uploads/clase_grupal/".$clase_grupal->imagen;
+	                    }else{
+	                        
+	                        if($academia->imagen){
+	                            $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$academia->imagen;
+	                        }else{
+	                            $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
+	                        }
+	                    }
+                	}else{
+                		if($clase_grupal->imagen){
+	                        $notificacion_imagen_array['imagen']= "/assets/uploads/clase_grupal/".$clase_grupal->imagen;
+	                    }else{
+	                        
+	                        if($academia->imagen){
+	                            $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$academia->imagen;
+	                        }else{
+	                            $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
+	                        }
+	                    }
+                	}
                 }else{
-
                     if($academia->imagen){
                         $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$academia->imagen;
                     }else{
                         $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
                     }
-
                 }
                 
                 $array[$notificacion->id] = $notificacion_imagen_array;
