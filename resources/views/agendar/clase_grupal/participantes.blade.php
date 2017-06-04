@@ -1111,7 +1111,7 @@
 
                                  	$contenido = '<p class="c-negro">' .
 
-	                                  	$alumno['nombre'] . ' ' . $alumno['apellido']. '<br><br>' .
+	                                  	$alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img" src="'.$imagen.'" alt=""><br><br>' .
 
 	                                  	'Camiseta y Programación: ' . $camiseta_programacion . '<br>'.
 	                                  	'Talla: ' . $talla_franela . '<br>'.
