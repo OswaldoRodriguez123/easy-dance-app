@@ -71,7 +71,7 @@
                             @foreach ($staffs as $staff)
                                 <?php $id = $staff['id']; ?>
                                 <!-- can('view-alumnos', $alumno) -->
-                                <tr id="row_{{$id}}" class="seleccion" >
+                                <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$staff['identificacion']}}</td>
                                     <td class="text-center previa">
                                         @if($staff['sexo']=='F')
@@ -91,7 +91,32 @@
 
                                     <td class="text-center previa">{{$nombre_alumno}} {{$apellido_alumno}} </td>
                                     <td class="text-center previa">{{$staff['cargo']}}</td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> 
+                                        <ul class="top-menu">
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                                   <span class="f-15 f-700" style="color:black"> 
+                                                        <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                   </span>
+                                                </a>
+
+                                                  <div class="dropup" dropdown-append-to-body>
+                                                    <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
+                                                        
+                                                        <li class="hidden-xs">
+                                                            <a href="{{url('/')}}/incidencias/generar/{{$id}}"><i class="zmdi icon_f-incidencias f-20"></i>&nbsp;Incidencias</a>
+                                                        </li>
+                                                        
+                                                        <li class="hidden-xs">
+                                                            <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
+                                                        </li>
+
+
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </td>
                                 </tr>
                                 <!-- endcan -->
                             @endforeach 
@@ -122,6 +147,7 @@
 
         route_detalle="{{url('/')}}/configuracion/staff/detalle";
         route_operacion="{{url('/')}}/configuracion/staff/operaciones";
+        route_eliminar="{{url('/')}}/configuracion/staff/eliminar/";
 
         $(document).ready(function(){
 
@@ -179,11 +205,62 @@
             window.location=route;
         }
 
-         $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-         });
+         $(".eliminar").click(function(){
+            var id = $(this).closest('tr').attr('id');
+            swal({   
+                title: "Desea eliminar al staff?",   
+                text: "Confirmar eliminación!",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+                if (isConfirm) {
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nType = 'success';
+                    var nAnimIn = $(this).attr('data-animation-in');
+                    var nAnimOut = $(this).attr('data-animation-out')
+                    eliminar(id);
+                }
+            });
+        });
+        function eliminar(id){
+            var route = route_eliminar + id;
+            var token = '{{ csrf_token() }}';
+            procesando();
+                    
+            $.ajax({
+                url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'DELETE',
+                dataType: 'json',
+                data:id,
+                success:function(respuesta){
+                    finprocesado();
+                    swal("Exito!","Ha sido eliminado!","success");
+                    t.row($('#'+id))
+                      .remove()
+                      .draw();
 
+                },
+                error:function(msj){
+                    finprocesado();
+                    $("#msj-danger").fadeIn(); 
+                    var text="";
+                    console.log(msj);
+                    var merror=msj.responseJSON;
+                    text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                    $("#msj-error").html(text);
+                    setTimeout(function(){
+                             $("#msj-danger").fadeOut();
+                            }, 3000);
+                    }
+            });
+        }
 
         </script>
 
