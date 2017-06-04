@@ -2034,8 +2034,6 @@ a{
     padding:0 ; 
     height: 0;
     padding-bottom: 37%; 
-    background-repeat: no-repeat; background-size: cover; 
-    background-position: center;
 }
 
 #dropdown_principal>.dropdown-submenu {
