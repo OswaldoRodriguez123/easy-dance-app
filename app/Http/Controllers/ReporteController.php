@@ -619,28 +619,30 @@ class ReporteController extends BaseController
 
     public function Asistencias()
     {
-        $clase_grupal_join = DB::table('clases_grupales')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+        $clase_grupal_join = ClaseGrupal::join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.id as instructor_id','clases_grupales.id as clase_grupal_id' , 'clases_grupales.fecha_inicio as fecha_inicio', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
         ->get();
 
-        $horarios = DB::table('clases_grupales')
-            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+        $horarios = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('horario_clase_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.id as instructor_id','clases_grupales.id as clase_grupal_id' , 'horario_clase_grupales.fecha as fecha_inicio', 'horario_clase_grupales.id as horario_id','instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
-            ->where('horario_clase_grupales.deleted_at', '=', null)
+            ->where('clases_grupales.deleted_at', '=', null)
         ->get();
 
         $array = array();
 
         foreach($clase_grupal_join as $clase_grupal){
             $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-            $dia = $fecha_inicio->dayOfWeek;   
+            $dia = $fecha_inicio->dayOfWeek;
+
+            if($dia == 0){
+                $dia = 7;
+            }
 
             $collection=collect($clase_grupal);     
             $clase_array = $collection->toArray();
@@ -655,6 +657,10 @@ class ReporteController extends BaseController
         foreach($horarios as $clase_grupal){
             $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
             $dia = $fecha_inicio->dayOfWeek;   
+
+            if($dia == 0){
+                $dia = 7;
+            }
 
             $collection=collect($clase_grupal);     
             $clase_array = $collection->toArray();
