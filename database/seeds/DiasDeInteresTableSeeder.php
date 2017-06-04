@@ -12,7 +12,8 @@ class DiasDeInteresTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('dias_de_interes')->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('dias_de_interes')->truncate();
 
 	    DiasDeInteres::create(array(
 	      'nombre' => 'Dias de Semana',
@@ -25,6 +26,8 @@ class DiasDeInteresTableSeeder extends Seeder
 	    DiasDeInteres::create(array(
 	      'nombre' => 'Ambos',
 	    ));
+
+	    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
     }
 }

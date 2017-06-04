@@ -21,8 +21,7 @@
 @section('content')
 
 
-<div style="padding:0 ; background: url('{{url('/')}}/assets/uploads/fiesta/{{$fiesta->imagen}}');  height: 0;
-    padding-bottom: 35%; background-repeat: no-repeat; background-size: cover; background-position: center;" ></div>
+<div class="imagen_principal_progreso" style="background: url('{{url('/')}}/assets/uploads/fiesta/{{$fiesta->imagen}}');"></div>
 
     <div class="clearfix"></div>
 

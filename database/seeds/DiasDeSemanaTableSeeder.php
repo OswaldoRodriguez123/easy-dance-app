@@ -12,7 +12,8 @@ class DiasDeSemanaTableSeeder extends Seeder
      */
     public function run()
     {
-       DB::table('dias_de_semana')->delete();
+       	DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+       	DB::table('dias_de_semana')->truncate();
 
 	    DiasDeSemana::create(array(
 	      'nombre' => 'Lunes',
@@ -40,5 +41,7 @@ class DiasDeSemanaTableSeeder extends Seeder
 	    DiasDeSemana::create(array(
 	      'nombre' => 'Domingo',
 	    ));
+
+	    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

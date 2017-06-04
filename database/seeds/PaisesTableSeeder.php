@@ -12,7 +12,8 @@ class PaisesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('paises')->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('paises')->truncate();
 
 	    Paises::create(array(
 	      'nombre' => 'Venezuela',
@@ -91,5 +92,7 @@ class PaisesTableSeeder extends Seeder
 	      'nombre' => 'Panamá',
 
 	    ));
+
+	    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\ConfigTipoExamen;
 
-class ConfigTipoExamenesSeeder extends Seeder
+class ConfigTipoExamenesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,7 +12,8 @@ class ConfigTipoExamenesSeeder extends Seeder
      */
     public function run()
     {  
-        DB::table('config_tipo_examenes')->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('config_tipo_examenes')->truncate();
 
 	    ConfigTipoExamen::create(array(
 	      'nombre' => 'Evaluacion',
@@ -49,5 +50,7 @@ class ConfigTipoExamenesSeeder extends Seeder
 	      'academia_id' => null,
 
 	    ));
+
+	    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

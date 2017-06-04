@@ -4,7 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
-use App\Usuario;
+use App\UsuarioTipo;
 use App\Sucursal;
 use App\ConfigEspecialidades;
 use App\Paises;
@@ -161,6 +161,13 @@ class RegistroController extends Controller {
         }
 
         $user = $this->create($request->all());
+
+        $usuario_tipo = new UsuarioTipo;
+        $usuario_tipo->usuario_id = $user->id;
+        $usuario_tipo->tipo = 1;
+        $usuario_tipo->tipo_id = 0;
+        $usuario_tipo->save();
+
         // Auth::guard($this->getGuard())->login($this->create($request->all()));
 
         // return redirect($this->redirectPath());

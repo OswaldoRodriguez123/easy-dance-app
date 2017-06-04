@@ -12,7 +12,8 @@ class ImpuestoTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('impuesto')->delete();
+      DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+      DB::table('impuesto')->truncate();
 
 	    Impuesto::create(array(
 	      'pais_id' => 1,
@@ -108,5 +109,7 @@ class ImpuestoTableSeeder extends Seeder
           'pais_id' => 19,
           'impuesto' => 7,
         ));
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

@@ -12,7 +12,9 @@ class CategoriasBlogTableSeeder extends Seeder
      */
     public function run()
     {
-    	DB::table('categorias_blog')->delete();
+    	
+    	DB::statement('SET FOREIGN_KEY_CHECKS=0;'); 
+    	DB::table('categorias_blog')->truncate();
 
 		CategoriaBlog::create(array(
 	      'nombre' => 'Nuevas Aperturas',
@@ -43,6 +45,8 @@ class CategoriasBlogTableSeeder extends Seeder
 	      'nombre' => 'Nuestro Equipo de Trabajo',
 	      'academia_id' => null,
 	    ));
+
+	    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
     }
 }

@@ -1169,7 +1169,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["correo", "telefono", "celular", "direccion", "imagen", "facebook", "twitter", "instagram", "linkedin", "youtube", "pagina_web", "link_video" , "normativa", "manual", "programacion", "numero_factura", 'puntos_referencia', 'puntos_referidos'];
+    var campo = ["correo", "telefono", "celular", "direccion", "imagen", "facebook", "twitter", "instagram", "linkedin", "youtube", "pagina_web", "link_video", "numero_factura", 'puntos_referencia', 'puntos_referidos'];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;

@@ -12,7 +12,8 @@ class TiposEgresosTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('tipos_egresos')->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('tipos_egresos')->truncate();
 
   	    TipoEgreso::create(array(
   	      'nombre' => 'Academia',
@@ -29,5 +30,7 @@ class TiposEgresosTableSeeder extends Seeder
   	    TipoEgreso::create(array(
   	      'nombre' => 'Campañas',
   	    ));
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

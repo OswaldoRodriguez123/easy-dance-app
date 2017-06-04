@@ -24,7 +24,7 @@
 @section('content')
 
 
-<div class="imagen_principal_campana" style="background: url('{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}')"></div>
+<div class="imagen_principal_progreso" style="background: url('{{url('/')}}/assets/uploads/campana/{{$campana->imagen}}')"></div>
 
     <div class="clearfix"></div>
 

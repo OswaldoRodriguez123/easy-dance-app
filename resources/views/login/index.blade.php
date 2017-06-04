@@ -16,7 +16,7 @@
         <link href="{{url('/')}}/assets/css/app.min.1.css" rel="stylesheet">
         <link href="{{url('/')}}/assets/css/app.min.2.css" rel="stylesheet">
         <link href="{{url('/')}}/assets/css/flaticon.css" rel="stylesheet">
-        <link href="{{url('/')}}/assets/css/habana.css" rel="stylesheet">
+        <link href="{{url('/')}}/assets/css/easydance.css" rel="stylesheet">
         <link href="{{url('/')}}/assets/css/david.css" rel="stylesheet">
 
         <link rel='shortcut icon' type='image/x-icon' href='http://easydancelatino.com/img/easy-dance.ico' />

@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\FormasPago;
 
-class FormasPagoSeeder extends Seeder
+class FormasPagoTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,7 +12,8 @@ class FormasPagoSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('formas_pago')->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('formas_pago')->truncate();
 
 	    FormasPago::create(array(
 	      'nombre' => 'Efectivo',
@@ -37,6 +38,8 @@ class FormasPagoSeeder extends Seeder
 	    FormasPago::create(array(
 	      'nombre' => 'Otros',
 	    ));
+
+	    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
     }
 }
