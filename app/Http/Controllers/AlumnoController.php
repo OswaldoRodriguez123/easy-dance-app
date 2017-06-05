@@ -984,7 +984,7 @@ class AlumnoController extends BaseController
     public function updateCorreo(Request $request){
 
         $rules = [
-            'correo' => 'required|email|max:255|unique:users,email, '.$request->id.',usuario_id',
+            'correo' => 'required|email|max:255|unique:alumnos,correo,'.$request->id,
         ];
 
         $messages = [
