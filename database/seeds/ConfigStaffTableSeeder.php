@@ -12,7 +12,8 @@ class ConfigStaffTableSeeder extends Seeder
      */
     public function run()
     {
-    	DB::table('config_staff')->delete();
+    	DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+      DB::table('config_staff')->delete();
 
   	  ConfigStaff::create(array(
         'nombre' => 'Promotor',
@@ -59,5 +60,7 @@ class ConfigStaffTableSeeder extends Seeder
         'nombre' => 'Instructor',
         'academia_id' => null,
       ));
+
+      DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

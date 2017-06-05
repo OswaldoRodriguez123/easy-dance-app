@@ -12,6 +12,7 @@ class ConfigCoreografiasTableSeeder extends Seeder
      */
     public function run()
     {  
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('config_coreografias')->delete();
 
 	    ConfigCoreografias::create(array(
@@ -33,6 +34,8 @@ class ConfigCoreografiasTableSeeder extends Seeder
 	      'nombre' => 'Grupal',
 
 	    ));
+
+	    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
     }
 }

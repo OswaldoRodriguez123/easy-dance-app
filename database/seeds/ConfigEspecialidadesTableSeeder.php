@@ -13,6 +13,7 @@ class ConfigEspecialidadesTableSeeder extends Seeder
      */
     public function run()
     {
+    	DB::statement('SET FOREIGN_KEY_CHECKS=0;');
     	DB::table('config_especialidades')->delete();
 
 	    ConfigEspecialidades::create(array(
@@ -140,5 +141,7 @@ class ConfigEspecialidadesTableSeeder extends Seeder
 	      'nombre' => 'Otros',
 	      'descripcion' => '',
 	    ));
+
+	    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

@@ -12,6 +12,7 @@ class ConfigNivelesTableSeeder extends Seeder
      */
     public function run()
     {
+    	DB::statement('SET FOREIGN_KEY_CHECKS=0;');
     	DB::table('config_niveles_baile')->delete();
 
 		ConfigNiveles::create(array(
@@ -33,5 +34,7 @@ class ConfigNivelesTableSeeder extends Seeder
 	      'nombre' => 'Master',
 	      'academia_id' => null,
 	    ));
+
+	    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

@@ -12,6 +12,7 @@ class ConfigFacturasTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('config_facturas')->delete();
 
   	    ConfigFactura::create(array(
@@ -73,5 +74,7 @@ class ConfigFacturasTableSeeder extends Seeder
         ConfigFactura::create(array(
           'nombre' => 'Paquetes',
         ));
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

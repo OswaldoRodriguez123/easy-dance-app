@@ -12,6 +12,7 @@ class ConfigCitasTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('config_citas')->delete();
 
 	    ConfigCitas::create(array(
@@ -29,6 +30,8 @@ class ConfigCitasTableSeeder extends Seeder
 	    ConfigCitas::create(array(
 	      'nombre' => 'Diagnóstico Recurrente',
 	    ));
+
+	    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
     }
 }

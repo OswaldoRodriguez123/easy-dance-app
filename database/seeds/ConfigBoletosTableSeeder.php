@@ -12,6 +12,7 @@ class ConfigBoletosTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('config_boletos')->delete();
 
 	    ConfigBoletos::create(array(
@@ -43,6 +44,8 @@ class ConfigBoletosTableSeeder extends Seeder
 	      'nombre' => 'Cortesía',
 	      
 	    ));
+
+	    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
     }
 }

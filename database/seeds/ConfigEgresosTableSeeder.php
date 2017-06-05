@@ -12,6 +12,7 @@ class ConfigEgresosTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('config_egresos')->delete();
 
   	    ConfigEgreso::create(array(
@@ -33,5 +34,7 @@ class ConfigEgresosTableSeeder extends Seeder
         ConfigEgreso::create(array(
           'nombre' => 'Prestamos',
         ));
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

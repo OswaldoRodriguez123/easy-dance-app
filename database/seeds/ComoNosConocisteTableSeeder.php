@@ -12,6 +12,7 @@ class ComoNosConocisteTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('config_como_nos_conociste')->delete();
 
 	    ComoNosConociste::create(array(
@@ -40,6 +41,8 @@ class ComoNosConocisteTableSeeder extends Seeder
 	    ComoNosConociste::create(array(
 	      'nombre' => 'Otros',
 	    ));
+
+	    DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
     }
 }
