@@ -1266,8 +1266,8 @@ class CorreoController extends BaseController {
 
 	 			if($usuario){
 
-	 				if($usuario->confirmation_token != null)
-	 				{
+	 				// if($usuario->confirmation_token != null)
+	 				// {
 
 			 			$academia = Academia::find($usuario->academia_id);
 
@@ -1294,9 +1294,9 @@ class CorreoController extends BaseController {
 			            });
 
 			            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-		            }else{
-	            		return response()->json(['error_mensaje' => 'Ups! Esta cuenta ya esta activada'], 422);
-	           	 	}	
+		            // }else{
+	            	// 	return response()->json(['error_mensaje' => 'Ups! Esta cuenta ya esta activada'], 422);
+	           	 // 	}	
 	            }else{
 	            	return response()->json(['error_mensaje' => 'Ups! No Hemos encontrado la siguiente información del correo  asociada a tu cuenta'], 422);
 	            }
