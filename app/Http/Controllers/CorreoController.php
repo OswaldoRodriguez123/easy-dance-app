@@ -324,6 +324,7 @@ class CorreoController extends BaseController {
 
 					$in = array(2,4);
 					$sin_confirmar = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+						->select('users.id')
 			            ->where('usuarios_tipo.tipo_id', $id)
 			            ->where('users.confirmation_token', '!=', null)
 			            ->whereIn('usuarios_tipo.tipo',$in)
