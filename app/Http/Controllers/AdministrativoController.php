@@ -907,27 +907,40 @@ class AdministrativoController extends BaseController {
 
                             if($acuerdo){
 
-                                $fecha_vencimiento = Carbon::createFromFormat('Y-m-d', $item_acuerdo->fecha_vencimiento);
-                                $fecha_limite = $fecha_vencimiento->addDays($acuerdo->tiempo_tolerancia);
+                                if($item_acuerdo->fecha_vencimiento){
+                                    
+                                    $fecha_vencimiento = Carbon::createFromFormat('Y-m-d', $item_acuerdo->fecha_vencimiento);
+                                    $fecha_vencimiento->addDays($acuerdo->tiempo_tolerancia);
 
-                                if($fecha_limite < Carbon::now())
+                                }else{
+                                    $fecha_vencimiento = null;
+                                }
+
+
+                                if($fecha_vencimiento)
                                 {
-                                    $mora = ($item_acuerdo->importe_neto * $acuerdo->porcentaje_retraso)/100;
+                                    if($fecha_vencimiento < Carbon::now()){
 
-                                    $item_factura = new ItemsFacturaProforma;
-                                                                                
-                                    $item_factura->usuario_id = $request->usuario_id;
-                                    $item_factura->usuario_tipo = $request->usuario_tipo;
-                                    $item_factura->academia_id = Auth::user()->academia_id;
-                                    $item_factura->fecha = Carbon::now()->toDateString();
-                                    $item_factura->item_id = $item_proforma->item_id;
-                                    $item_factura->nombre = 'Mora por retraso de pago ' .  $item_proforma->nombre;
-                                    $item_factura->tipo = $acuerdo->tipo;
-                                    $item_factura->cantidad = 1;
-                                    $item_factura->importe_neto = $mora;
-                                    $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                                        $mora = ($item_acuerdo->importe_neto * $acuerdo->porcentaje_retraso)/100;
 
-                                    $item_factura->save();
+                                        if($mora > 0){
+
+                                            $item_factura = new ItemsFacturaProforma;
+                                                                                        
+                                            $item_factura->usuario_id = $request->usuario_id;
+                                            $item_factura->usuario_tipo = $request->usuario_tipo;
+                                            $item_factura->academia_id = Auth::user()->academia_id;
+                                            $item_factura->fecha = Carbon::now()->toDateString();
+                                            $item_factura->item_id = $item_proforma->item_id;
+                                            $item_factura->nombre = 'Mora por retraso de pago ' .  $item_proforma->nombre;
+                                            $item_factura->tipo = $acuerdo->tipo;
+                                            $item_factura->cantidad = 1;
+                                            $item_factura->importe_neto = $mora;
+                                            $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+
+                                            $item_factura->save();
+                                        }
+                                    }
                                 }
                             }
 
@@ -940,7 +953,7 @@ class AdministrativoController extends BaseController {
 
                         if($factura->usuario_tipo == 1){
 
-                            $inscripcion_clase_grupal = ClaseGrupal::withTrashed()->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+                            $inscripcion_clase_grupal = InscripcionClaseGrupal::withTrashed()->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                                 ->join('config_servicios', 'config_servicios.tipo_id', '=', 'config_clases_grupales.id')
                                 ->select('inscripcion_clase_grupal.instructor_id as staff_id', 'config_servicios.id as servicio_id', 'config_servicios.tipo as tipo_servicio')
@@ -997,14 +1010,20 @@ class AdministrativoController extends BaseController {
                         if($factura->usuario_tipo == 1){
 
                             $servicio = ConfigServicios::withTrashed()->find($item_proforma->item_id);
-                            $paquete = Paquete::withTrashed()->find($servicio->tipo_id);
 
-                            $credencial = new CredencialAlumno;
+                            if($servicio){
+                                
+                                $paquete = Paquete::withTrashed()->find($servicio->tipo_id);
 
-                            $credencial->cantidad = $paquete->cantidad_clases_grupales;
-                            $credencial->alumno_id = $request->usuario_id;
+                                if($paquete){
 
-                            $credencial->save();
+                                    $credencial = new CredencialAlumno;
+
+                                    $credencial->cantidad = $paquete->cantidad_clases_grupales;
+                                    $credencial->alumno_id = $request->usuario_id;
+                                    $credencial->save();
+                                }
+                            }
                         }
                     }
 
