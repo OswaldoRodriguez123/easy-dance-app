@@ -229,11 +229,13 @@ class AdministrativoController extends BaseController {
                 $usuario = Staff::withTrashed()->find($proforma->usuario_id);
             }
 
-            $collection=collect($proforma);     
-            $proforma_array = $collection->toArray();
-            
-            $proforma_array['usuario']= $usuario->nombre . ' '. $usuario->apellido;
-            $array_proforma[$proforma->id] = $proforma_array;
+            if($usuario){
+                $collection=collect($proforma);     
+                $proforma_array = $collection->toArray();
+                
+                $proforma_array['usuario']= $usuario->nombre . ' '. $usuario->apellido;
+                $array_proforma[$proforma->id] = $proforma_array;
+            }
 
         }
         
