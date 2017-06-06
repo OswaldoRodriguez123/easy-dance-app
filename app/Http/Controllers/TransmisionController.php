@@ -18,6 +18,8 @@ class TransmisionController extends BaseController {
     {
     	$transmisiones = Transmision::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
+    	$array = array();
+
     	foreach($transmisiones as $transmision){
 
             $fecha = Carbon::createFromFormat('Y-m-d', $transmision->fecha);
