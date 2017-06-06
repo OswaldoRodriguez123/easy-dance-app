@@ -1444,6 +1444,10 @@ class ReporteController extends BaseController
                 ->where('pagos_instructor.boolean_clase_pagada',1)
             ->sum('pagos_instructor.monto');
 
+            if(!$nomina){
+                $nomina = 0;
+            }
+
             $array_config_egreso[99] = ['nombre' => 'Nomina', 'cantidad' => $nomina];
 
             $comisiones = PagoStaff::join('staff','pagos_staff.staff_id','=','staff.id')
@@ -1452,6 +1456,10 @@ class ReporteController extends BaseController
                 ->whereBetween('pagos_staff.created_at', [$start,$end])
                 ->where('pagos_staff.boolean_pago',1)
             ->sum('pagos_staff.monto');
+
+            if(!$comisiones){
+                $comisiones = 0;
+            }
 
             $array_config_egreso[100] = ['nombre' => 'Comisiones', 'cantidad' => $comisiones];
 
