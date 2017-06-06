@@ -218,6 +218,20 @@
 
                         <div class="clearfix"></div>
 
+                        <div class="col-md-4 egresos">
+
+                            <table class="table display cell-border" id="table_egresos">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" data-column-id="nombre">Nombre</th>
+                                        <th class="text-center" data-column-id="cantidad">Cantidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
                         <div class="col-md-6 ingresos" style="display:none">
                             <h2>Informe de Ingresos</h2>
                             <hr>
@@ -225,7 +239,7 @@
                             <div id="flc-pie-ingresos" class="flc-pie hidden-xs"></div>
                         </div>
 
-                        <div class="col-md-6 egresos" style="display:none">
+                        <div class="col-md-6 col-sm-offset-2 egresos" style="display:none">
                             <h2>Informe de Egresos</h2>
                             <hr>
                             <div id="pie-chart-egresos" class="flot-chart-pie"></div>
@@ -510,6 +524,17 @@
                     }else if(tipo == 1 || tipo == 3){
 
                         $('#total_egreso').text('-'+formatmoney(parseFloat(respuesta.total_egreso)))
+                        h.clear().draw();
+
+                         $.each(respuesta.config_egresos, function (index, array) {
+
+                            var rowNode=h.row.add( [
+                            '&nbsp;&nbsp;'+array.nombre+'',
+                            ''+array.cantidad+'',
+                            ] ).draw(false).node();
+                            $( rowNode )
+                                .addClass('seleccion');
+                        });
 
                         var pieData2 = ''
                         pieData2 += '[';

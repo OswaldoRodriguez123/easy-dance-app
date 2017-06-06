@@ -1425,9 +1425,20 @@ class ReporteController extends BaseController
 
             }
 
+            $config_egreso = ConfigEgreso::all();
+
+            $array_config_egreso = array();
+
+            foreach($config_egreso as $egreso){
+                $array_config_egreso[$egreso->id] = ['nombre' => $egreso->nombre, 'cantidad' => 0];
+
+            }
+
             foreach($egresos as $egreso){
 
                 $array_egreso[$egreso->tipo]['cantidad']++;
+
+                $array_config_egreso[$egreso->config_tipo]['cantidad'] += $egreso->cantidad;
 
                 $collection=collect($egreso);     
                 $egreso_array = $collection->toArray();
@@ -1546,7 +1557,7 @@ class ReporteController extends BaseController
             }
         }
 
-        return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 'total_ingreso' => $total_ingreso,'total_egreso' => $total_egreso, 'total_proforma' => $total_proforma, 'array_ingreso' => $array_pago, 'array_egreso' => $array_egreso, 200]);
+        return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 'total_ingreso' => $total_ingreso,'total_egreso' => $total_egreso, 'total_proforma' => $total_proforma, 'array_ingreso' => $array_pago, 'array_egreso' => $array_egreso, 'config_egreso' => $array_config_egreso, 200]);
 
     }
 
