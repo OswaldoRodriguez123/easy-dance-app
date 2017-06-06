@@ -128,7 +128,19 @@
                           </div>
                         </div>
 
-              
+                        <div class="clearfix p-b-35"></div>
+
+                        <div class="col-sm-12">
+                         <div class="form-group fg-line">
+                            <label for="nit" id="id-nit">Nit</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nit de la factura" title="" data-original-title="Ayuda"></i>
+                            <input type="text" class="form-control input-sm" name="nit" id="nit" placeholder="Ej. Sillas">
+                         </div>
+                         <div class="has-error" id="error-nit">
+                              <span >
+                                  <small class="help-block error-span" id="error-nit_mensaje" ></small>                                
+                              </span>
+                          </div>
+                        </div>
 
                         <div class="clearfix"></div> 
 
@@ -202,6 +214,7 @@
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
                                     <th class="text-center" data-column-id="cantidad" data-order="desc">Cantidad</th>
                                     <th class="text-center" data-column-id="fecha" data-order="desc">Fecha</th>
+                                    <th class="text-center" data-column-id="fecha" data-order="desc">Nit</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
                             </thead>
@@ -216,6 +229,7 @@
                                     <td class="text-center previa">{{$egreso->concepto}}</td>
                                     <td class="text-center previa">{{ number_format($egreso->cantidad, 2, '.' , '.') }}</td>
                                     <td class="text-center previa">{{$egreso->fecha}}</td>
+                                    <td class="text-center previa">{{$egreso->nit}}</td>
                                     <td class="text-center disabled"> <i class="zmdi zmdi-delete pointer f-20 p-r-10"></i></td>
                                 </tr>
                             @endforeach  
@@ -332,6 +346,7 @@
                   ''+respuesta.array.concepto+'',
                   ''+formatmoney(parseFloat(respuesta.array.cantidad))+'',
                   ''+respuesta.fecha+'',
+                  ''+respuesta.array.nit+'',
                   '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                   ] ).draw(false).node();
                   $( rowNode )

@@ -149,6 +149,7 @@ class EgresoController extends BaseController {
             $egreso->concepto = $request->concepto;
             $egreso->cantidad = $request->cantidad;
             $egreso->fecha = $fecha;
+            $egreso->nit = $request->nit;
             $egreso->tipo = $request->tipo;
             $egreso->tipo_id = $request->tipo_id;
 
