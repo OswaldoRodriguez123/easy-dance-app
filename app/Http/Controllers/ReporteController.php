@@ -28,6 +28,7 @@ use App\ConfigServicios;
 use App\ComoNosConociste;
 use App\Egreso;
 use App\TipoEgreso;
+use App\ConfigEgreso;
 use App\Pago;
 use App\FormasPago;
 use App\Reservacion;
