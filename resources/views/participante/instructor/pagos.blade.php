@@ -350,98 +350,111 @@
 
       
     $("#pagar").click(function(){
+      swal({   
+        title: "Desea confirmar el pago?",   
+        text: "Confirmar pago!",   
+        type: "warning",   
+        showCancelButton: true,   
+        confirmButtonColor: "#DD6B55",   
+        confirmButtonText: "Re-Enviar!",  
+        cancelButtonText: "Cancelar",         
+        closeOnConfirm: true 
+        }, function(isConfirm){   
+          if (isConfirm) {
 
+            procesando();
 
-      // procesando();
+            var route = route_pagar;
+            var token = "{{ csrf_token() }}";
+            var datos = "&asistencias="+getChecked();
+            limpiarMensaje();
 
-      var route = route_pagar;
-      var token = "{{ csrf_token() }}";
-      var datos = "&asistencias="+getChecked();
-      limpiarMensaje();
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                    dataType: 'json',
+                    data:datos,
+                success:function(respuesta){
+                  setTimeout(function(){ 
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY"; 
+                    if(respuesta.status=="OK"){
+                      var nType = 'success';
+                      var nTitle="Ups! ";
+                      var nMensaje=respuesta.mensaje;
 
-      $.ajax({
-          url: route,
-              headers: {'X-CSRF-TOKEN': token},
-              type: 'POST',
-              dataType: 'json',
-              data:datos,
-          success:function(respuesta){
-            setTimeout(function(){ 
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY"; 
-              if(respuesta.status=="OK"){
-                var nType = 'success';
-                var nTitle="Ups! ";
-                var nMensaje=respuesta.mensaje;
+                      $.each(respuesta.array, function (i, id) {
+                        $.each(por_pagar, function (j, array) {
+                          if(array){
+                            if(array.id == id){
+                              por_pagar.splice( $.inArray(array, por_pagar), 1 );
 
-                $.each(respuesta.array, function (i, id) {
-                  $.each(por_pagar, function (j, array) {
-                    if(array){
-                      if(array.id == id){
-                        por_pagar.splice( $.inArray(array, por_pagar), 1 );
+                              t.row($('#'+id))
+                                .remove()
+                                .draw();
 
-                        t.row($('#'+id))
-                          .remove()
-                          .draw();
+                              pagadas.push(array);
 
-                        pagadas.push(array);
+                              total = total - array.monto;
+                              $('#total').text(formatmoney(parseFloat(total)));
+                            }
+                          }
+                        })
+                      });
 
-                        total = total - array.monto;
-                        $('#total').text(formatmoney(parseFloat(total)));
-                      }
+                      $('#clase_grupal_id').val('');
+                      $('#clase_grupal_id').selectpicker('refresh');
+                      
+
+                    }else{
+                      var nTitle="Ups! ";
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                      var nType = 'danger';
+                    }                       
+                    $("#add").removeAttr("disabled");
+                      $("#add").css({
+                        "opacity": ("1")
+                      });
+                    finprocesado()
+
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                  }, 1000);
+                },
+                error:function(msj){
+                  setTimeout(function(){ 
+                    // if (typeof msj.responseJSON === "undefined") {
+                    //   window.location = "{{url('/')}}/error";
+                    // }
+                    if(msj.responseJSON.status=="ERROR"){
+                      console.log(msj.responseJSON.errores);
+                      errores(msj.responseJSON.errores);
+                      var nTitle="    Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                    }else{
+                      var nTitle="   Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                     }
-                  })
-                });
-
-                $('#clase_grupal_id').val('');
-                $('#clase_grupal_id').selectpicker('refresh');
-                
-
-              }else{
-                var nTitle="Ups! ";
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                var nType = 'danger';
-              }                       
-              $("#add").removeAttr("disabled");
-                $("#add").css({
-                  "opacity": ("1")
-                });
-
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-            }, 1000);
-          },
-          error:function(msj){
-            setTimeout(function(){ 
-              // if (typeof msj.responseJSON === "undefined") {
-              //   window.location = "{{url('/')}}/error";
-              // }
-              if(msj.responseJSON.status=="ERROR"){
-                console.log(msj.responseJSON.errores);
-                errores(msj.responseJSON.errores);
-                var nTitle="    Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-              }else{
-                var nTitle="   Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              }
-              $("#add").removeAttr("disabled");
-                $("#add").css({
-                  "opacity": ("1")
-                });                        
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nType = 'danger';
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY";                       
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-            }, 1000);
+                    $("#add").removeAttr("disabled");
+                      $("#add").css({
+                        "opacity": ("1")
+                      });                        
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nType = 'danger';
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY"; 
+                    finprocesado()                      
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                  }, 1000);
+                }
+            });
           }
-      });
-
+        })
     });
 
     function limpiarMensaje(){
