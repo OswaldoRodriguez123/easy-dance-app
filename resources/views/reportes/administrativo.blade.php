@@ -561,7 +561,7 @@
                         $('#total_egreso').text('-'+formatmoney(parseFloat(respuesta.total_egreso)))
                         h.clear().draw();
 
-                         $.each(respuesta.config_egresos, function (index, array) {
+                        $.each(respuesta.config_egreso, function (index, array) {
 
                             var rowNode=h.row.add( [
                             '&nbsp;&nbsp;'+array.nombre+'',
