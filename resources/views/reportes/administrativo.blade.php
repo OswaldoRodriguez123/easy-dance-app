@@ -218,7 +218,7 @@
 
                         <div class="clearfix"></div>
 
-                        <div class="col-md-4 egresos">
+                        <div class="col-md-4 egresos" style="display: none">
 
                             <table class="table display cell-border" id="table_egresos">
                                 <thead>
@@ -565,7 +565,7 @@
 
                             var rowNode=h.row.add( [
                             '&nbsp;&nbsp;'+array.nombre+'',
-                            ''+array.cantidad+'',
+                            ''+formatmoney(parseFloat(array.cantidad))+'',
                             ] ).draw(false).node();
                             $( rowNode )
                                 .addClass('seleccion');

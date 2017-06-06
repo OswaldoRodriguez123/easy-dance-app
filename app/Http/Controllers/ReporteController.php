@@ -30,6 +30,8 @@ use App\Egreso;
 use App\TipoEgreso;
 use App\ConfigEgreso;
 use App\Pago;
+use App\PagoStaff;
+use App\PagoInstructor;
 use App\FormasPago;
 use App\Reservacion;
 use App\Participante;
@@ -1434,6 +1436,24 @@ class ReporteController extends BaseController
                 $array_config_egreso[$egreso->id] = ['nombre' => $egreso->nombre, 'cantidad' => 0];
 
             }
+
+            $nomina = PagoInstructor::join('instructores','pagos_instructor.instructor_id','=','instructores.id')
+                ->select('pagos_instructor.*')
+                ->where('instructores.academia_id',Auth::user()->academia_id)
+                ->whereBetween('pagos_instructor.created_at', [$start,$end])
+                ->where('pagos_instructor.boolean_clase_pagada',1)
+            ->sum('pagos_instructor.monto');
+
+            $array_config_egreso[99] = ['nombre' => 'Nomina', 'cantidad' => $nomina];
+
+            $comisiones = PagoStaff::join('staff','pagos_staff.staff_id','=','staff.id')
+                ->select('pagos_staff.*')
+                ->where('staff.academia_id',Auth::user()->academia_id)
+                ->whereBetween('pagos_staff.created_at', [$start,$end])
+                ->where('pagos_staff.boolean_pago',1)
+            ->sum('pagos_staff.monto');
+
+            $array_config_egreso[100] = ['nombre' => 'Comisiones', 'cantidad' => $comisiones];
 
             foreach($egresos as $egreso){
 
