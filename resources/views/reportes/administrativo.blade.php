@@ -573,7 +573,7 @@
 
                         var pieData2 = ''
                         pieData2 += '[';
-                        $.each( datos.array_egreso, function( i, item ) {
+                        $.each( datos.array_config_egreso, function( i, item ) {
                             var label = item.nombre;
                             var cant = item.cantidad;
                             pieData2 += '{"data":"'+cant+'","label":"'+label+'"},';

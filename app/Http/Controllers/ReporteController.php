@@ -1221,7 +1221,6 @@ class ReporteController extends BaseController
 
         $array = array();
         $array_pago = array();
-        $array_egreso = array();
         $array_config_egreso = array();
         $total = 0;
         $total_ingreso = 0;
@@ -1422,13 +1421,6 @@ class ReporteController extends BaseController
 
             $egresos = $query->get();
 
-            $tipos_egresos = TipoEgreso::all();
-
-            foreach($tipos_egresos as $tipo_egreso){
-                $array_egreso[$tipo_egreso->id] = ['nombre' => $tipo_egreso->nombre, 'cantidad' => 0];
-
-            }
-
             $config_egreso = ConfigEgreso::all();
 
             foreach($config_egreso as $egreso){
@@ -1464,8 +1456,6 @@ class ReporteController extends BaseController
             $array_config_egreso[7]['cantidad'] += $nomina;
 
             foreach($egresos as $egreso){
-
-                $array_egreso[$egreso->tipo]['cantidad']++;
 
                 $array_config_egreso[$egreso->config_tipo]['cantidad'] += $egreso->cantidad;
 
