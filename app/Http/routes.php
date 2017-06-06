@@ -354,8 +354,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		//EVENTOS LABORALES
 
-		Route::get('configuracion/eventos-laborales','EventoLaboralController@principal');
-		Route::get('configuracion/eventos-laborales/calendario','EventoLaboralController@calendario');
 		Route::get('configuracion/eventos-laborales/agregar','EventoLaboralController@create');
 		Route::post('configuracion/eventos-laborales/agregar','EventoLaboralController@store');
 		Route::delete('configuracion/eventos-laborales/eliminar/{id}', 'EventoLaboralController@destroy');
@@ -1201,6 +1199,11 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	});//END MIDDLEWARE ALUMNO
 
 	Route::group(['middleware' => ['instructor']], function() {
+
+		//CALENDARIO LABORAL 
+		
+		Route::get('configuracion/eventos-laborales','EventoLaboralController@principal');
+		Route::get('configuracion/eventos-laborales/calendario','EventoLaboralController@calendario');
 
 		//PERFIL Y PAGOS
 

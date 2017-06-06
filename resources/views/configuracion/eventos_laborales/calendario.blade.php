@@ -128,17 +128,49 @@
                         @endforeach
 
                         
-                    ],
+              
+
+                    @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
+
+                        ],
                                          
-                    //On Day Select
-                    select: function(start, end, allDay) {
+                        //On Day Select
+                        select: function(start, end, allDay) {
 
-                        var d = new Date();
-                        var timestamp = d.getTime(); 
+                            var d = new Date();
+                            var timestamp = d.getTime(); 
 
 
-                        if(end>timestamp){
+                            if(end>timestamp){
 
+                                var token = "{{ csrf_token() }}";
+
+                                $.ajax({
+                                    url: "{{url('/')}}/guardar-fecha",
+                                        headers: {'X-CSRF-TOKEN': token},
+                                        type: 'POST',
+                                    dataType: 'json',
+                                    data:"fecha_inicio="+end._d,
+                                    success:function(respuesta){
+
+                                        window.location = "{{url('/')}}/configuracion/eventos-laborales/agregar"
+
+                                    }
+                                });
+                            }else{
+                               //console.log('error');
+                               $('#modalFechaPasada').modal('show');                            
+                            }
+
+                            
+                        },
+                        eventClick: function(calEvent, jsEvent, view) {
+
+                            // console.log(calEvent.id);
+                            // //console.log(jsEvent);
+                            // //console.log(view);
+                            // 
+                            $('#fecha_inicio').val(calEvent.start);
                             var token = "{{ csrf_token() }}";
 
                             $.ajax({
@@ -146,43 +178,32 @@
                                     headers: {'X-CSRF-TOKEN': token},
                                     type: 'POST',
                                 dataType: 'json',
-                                data:"fecha_inicio="+end._d,
+                                data:"fecha_inicio="+$('#fecha_inicio').val(),
                                 success:function(respuesta){
 
-                                    window.location = "{{url('/')}}/configuracion/eventos-laborales/agregar"
+                                    window.location = calEvent.url
 
                                 }
                             });
-                        }else{
-                           //console.log('error');
-                           $('#modalFechaPasada').modal('show');                            
+
                         }
+                    });
 
-                        
-                    },
-                    eventClick: function(calEvent, jsEvent, view) {
+                    
+                    $('.agendar').on('click', function(e){
+                        e.preventDefault();
 
-                        // console.log(calEvent.id);
-                        // //console.log(jsEvent);
-                        // //console.log(view);
-                        // 
-                        $('#fecha_inicio').val(calEvent.start);
-                        var token = "{{ csrf_token() }}";
+                        $("#frm_agendar").submit();
+                         
+                    });
 
-                        $.ajax({
-                            url: "{{url('/')}}/guardar-fecha",
-                                headers: {'X-CSRF-TOKEN': token},
-                                type: 'POST',
-                            dataType: 'json',
-                            data:"fecha_inicio="+$('#fecha_inicio').val(),
-                            success:function(respuesta){
+                @else
+                    ]
+                    })
+                @endif
 
-                                window.location = calEvent.url
-
-                            }
-                        });
-
-                    }
+                $('.actividad').on('click', function(e){
+                    e.preventDefault();
                 });
 
                 //Create and ddd Action button with dropdown in Calendar header. 
@@ -245,7 +266,7 @@
                     else {
                         $('#eventName').closest('.form-group').addClass('has-error');
                     }
-                });   
+                }); 
 
                 //Calendar views
                 $('body').on('click', '#fc-actions [data-view]', function(e){
@@ -255,19 +276,6 @@
                     $('#fc-actions li').removeClass('active');
                     $(this).parent().addClass('active');
                     cId.fullCalendar('changeView', dataView);  
-                });
-
-
-                $('.agendar').on('click', function(e){
-                    e.preventDefault();
-
-                    $("#frm_agendar").submit();
-                     
-                });
-
-                $('.actividad').on('click', function(e){
-                    e.preventDefault();
-                     
                 });
 
                 $('.disabled').attr('data-trigger','hover');

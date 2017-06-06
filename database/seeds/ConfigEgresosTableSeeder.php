@@ -39,6 +39,10 @@ class ConfigEgresosTableSeeder extends Seeder
           'nombre' => 'Comisiones',
         ));
 
+        ConfigEgreso::create(array(
+          'nombre' => 'Nómina',
+        ));
+
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 }

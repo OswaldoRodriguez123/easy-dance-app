@@ -211,13 +211,17 @@
                             @endif
 
                             @if(Auth::check())
+                                @if($usuario_tipo == 3 || $usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
+                                    <li class="hidden-xs">
+                                        <a href="{{url('configuracion/eventos-laborales')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Calendario Laboral</a>
+                                    </li>
+                                @endif
+                            @endif
+
+                            @if(Auth::check())
                                 @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
                                     <li class="hidden-xs">
                                         <a href="{{url('configuracion/supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> Supervisiones</a>
-                                    </li>
-
-                                    <li class="hidden-xs">
-                                        <a href="{{url('configuracion/eventos-laborales')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Calendario Laboral</a>
                                     </li>
 
                                     <li class="hidden-xs">
