@@ -377,36 +377,23 @@
                 var nTitle="Ups! ";
                 var nMensaje=respuesta.mensaje;
 
-                $.each(respuesta.array, function (index, id) {
+                $.each(respuesta.array, function (i, id) {
+                  $.each(por_pagar, function (j, array) {
+                    if(array){
+                      if(array.id == id){
+                        por_pagar.splice( $.inArray(array, por_pagar), 1 );
 
-                  var pago = $.grep(por_pagar, function(e){ return e.id == id; });
+                        t.row($('#'+id))
+                          .remove()
+                          .draw();
 
-                  pagadas.push(pago[0]);
+                        pagadas.push(array);
 
-                  console.log(pagadas);
-
-                  indexes = $.map(por_pagar, function(obj, index) {
-                      if(obj.id == id){
-                          por_pagar.splice( $.inArray(por_pagar[index], por_pagar), 1 );
-
-                          t.row( $('#'+id) )
-                            .remove()
-                            .draw();
-
-                          total = total - obj.monto;
-
-                          $('#total').text(total);
-
-
+                        total = total - array.monto;
+                        $('#total').text(formatmoney(parseFloat(total)));
                       }
+                    }
                   })
-
-
-                  // value = 1
-                  // index = $.inArray value, array
-                  // if index > -1
-                  // array.splice(index, 1)
-
                 });
 
                 $('#clase_grupal_id').val('');
