@@ -1539,6 +1539,7 @@ class CampanaController extends BaseController {
 
                 $array = array(2,4);
                 $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->select('users.id','users.imagen')
                     ->where('usuarios_tipo.tipo_id',$patrocinador->usuario_id)
                     ->whereIn('usuarios_tipo.tipo',$array)
                 ->first();
