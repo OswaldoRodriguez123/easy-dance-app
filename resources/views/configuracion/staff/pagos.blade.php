@@ -340,12 +340,12 @@
     $("#pagar").click(function(){
 
       swal({   
-        title: "Desea confirmar el pago?",   
-        text: "Confirmar pago!",   
+        title: "Desea consignar el pago?",   
+        text: "Consignar pago!",   
         type: "warning",   
         showCancelButton: true,   
         confirmButtonColor: "#DD6B55",   
-        confirmButtonText: "Re-Enviar!",  
+        confirmButtonText: "Consignar!",  
         cancelButtonText: "Cancelar",         
         closeOnConfirm: true 
         }, function(isConfirm){   
