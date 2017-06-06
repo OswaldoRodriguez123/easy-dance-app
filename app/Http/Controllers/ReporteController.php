@@ -1576,7 +1576,7 @@ class ReporteController extends BaseController
             }
         }
 
-        return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 'total_ingreso' => $total_ingreso,'total_egreso' => $total_egreso, 'total_proforma' => $total_proforma, 'array_ingreso' => $array_pago, 'array_egreso' => $array_config_egreso, 200]);
+        return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 'total_ingreso' => $total_ingreso,'total_egreso' => $total_egreso, 'total_proforma' => $total_proforma, 'array_ingreso' => $array_pago, 'array_egreso' => $array_egreso, 'config_egreso' => $array_config_egreso, 200]);
 
     }
 
