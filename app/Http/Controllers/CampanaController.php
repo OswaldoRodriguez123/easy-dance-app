@@ -1551,6 +1551,8 @@ class CampanaController extends BaseController {
                     $imagen = '';
                   }
 
+                }else{
+                    $imagen = '';
                 }
 
                 $collection=collect($patrocinador);     
