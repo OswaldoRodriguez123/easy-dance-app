@@ -223,7 +223,6 @@
                             <hr>
                             <div id="pie-chart-ingresos" class="flot-chart-pie"></div>
                             <div id="flc-pie-ingresos" class="flc-pie hidden-xs"></div>
-
                         </div>
 
                         <div class="col-md-6 egresos" style="display:none">
@@ -231,7 +230,6 @@
                             <hr>
                             <div id="pie-chart-egresos" class="flot-chart-pie"></div>
                             <div id="flc-pie-egresos" class="flc-pie hidden-xs"></div>
-
                         </div>
 
                         <div class="clearfix"></div>
@@ -272,12 +270,12 @@
 
                                             <span class="f-15">Totales</span>
 
-                                            <div class="ingresos_egresos" style="display:none">
+                                            <div class="ingresos" style="display:none">
                                                 <br>
                                                 <span class="f-15" id = "total_ingreso">0</span>
                                             </div>
 
-                                            <div class="ingresos_egresos" style="display:none">
+                                            <div class="egresos" style="display:none">
                                                 <br>
                                                 <span class="f-15" id = "total_egreso">0</span>
                                             </div>
