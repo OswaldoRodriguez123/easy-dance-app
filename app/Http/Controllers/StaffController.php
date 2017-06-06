@@ -331,7 +331,7 @@ class StaffController extends BaseController
 
             return view('configuracion.staff.planilla')->with(['alumno' => $staff, 'id' => $id, 'horarios' => $horarios, 'dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff, 'pagos_staff' => $pagos,  'linea_servicio' => $linea_servicio]);
         }else{
-           return redirect("staff"); 
+           return redirect("/configuracion/staff"); 
         }
     }
 

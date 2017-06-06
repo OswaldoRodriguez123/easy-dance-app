@@ -145,7 +145,7 @@
             
         <script type="text/javascript">
 
-        route_detalle="{{url('/')}}/configuracion/staff/detalle";
+        route_detalle="{{url('/')}}/configuracion/staff/detalle/";
         route_operacion="{{url('/')}}/configuracion/staff/operaciones";
         route_eliminar="{{url('/')}}/configuracion/staff/eliminar/";
 
@@ -199,9 +199,8 @@
 
         function previa(t){
 
-            var row = $(t).closest('tr').attr('id');
-            var id_alumno = row.split('_');
-            var route =route_detalle+"/"+id_alumno[1];
+            var id = $(t).closest('tr').attr('id');
+            var route =route_detalle + id;
             window.location=route;
         }
 
