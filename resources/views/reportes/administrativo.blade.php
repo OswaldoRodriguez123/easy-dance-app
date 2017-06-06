@@ -437,6 +437,7 @@
                         ''+array.nombre+'',
                         ''+monto+''
                         ] ).draw(false).node();
+
                         $( rowNode )
                             .attr('id',array.id)
                             .data('tipo',array.tipo)
@@ -450,12 +451,11 @@
 
 
                     tipo = $('#tipo').val();
+                    datos = JSON.parse(JSON.stringify(respuesta));
 
                     if(tipo == 1 || tipo == 2){
 
                         $('#total_ingreso').text('+'+formatmoney(parseFloat(respuesta.total_ingreso)))
-
-                        datos = JSON.parse(JSON.stringify(respuesta));
 
                         $(".flot-chart").html('');
                         $(".flc-pie").html('');
