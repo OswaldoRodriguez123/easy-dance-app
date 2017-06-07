@@ -22,7 +22,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
                         
                     </div> 
                     
@@ -51,7 +51,6 @@
                             </div>                                                   
                         </div>
 
-                        @if($clase_grupal_join)
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
@@ -71,22 +70,6 @@
                         </table>
                          </div>
                         </div>
-
-                        @else
-
-                               <div class="col-sm-10 col-sm-offset-1 error_general" style="padding-bottom: 300px">
-
-
-                                  <div align="center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x c-morado"></i></div>
-                                  <div class="c-morado f-30 text-center"> Ups! lo sentimos, la academia <b>{{$academia->nombre}}</b> actualmente no ha registrado clases grupales. </div>
-
-
-                             </div>
-
-
-
-
-                            @endif
                         <div class="card-body p-b-20">
                             <div class="row">
                               <div class="container">
