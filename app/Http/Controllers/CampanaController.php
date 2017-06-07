@@ -224,7 +224,7 @@ class CampanaController extends BaseController {
 
                         $item_factura = new ItemsFacturaProforma;
                     
-                        $item_factura->alumno_id = $patrocinador->usuario_id;
+                        $item_factura->usuario_id = $patrocinador->usuario_id;
                         $item_factura->academia_id = Auth::user()->academia_id;
                         $item_factura->fecha = Carbon::now()->toDateString();
                         $item_factura->item_id = $patrocinador->item_id;
@@ -766,7 +766,7 @@ class CampanaController extends BaseController {
 
                 $item_factura = new ItemsFacturaProforma;
                 
-                $item_factura->alumno_id = $request->alumno_id;
+                $item_factura->usuario_id = $request->alumno_id;
                 $item_factura->academia_id = Auth::user()->academia_id;
                 $item_factura->fecha = Carbon::now()->toDateString();
                 $item_factura->item_id = $request->recompensa_id;
