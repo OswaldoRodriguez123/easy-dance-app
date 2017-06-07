@@ -509,17 +509,6 @@
       window.location = "{{url('/')}}/reportes"
     })
 
-    
-    $('#tablelistar tbody').on( 'mouseenter', 'i.zmdi-wrench', function () {
-
-        if($('.dropdown').hasClass('open')){
-
-        }else{
-            $( this ).click();
-        }
-
-    });
-
     $('.table-responsive').on('show.bs.dropdown', function () {
       $('.table-responsive').css( "overflow", "inherit" );
     });

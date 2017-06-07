@@ -239,51 +239,11 @@
 
         $(document).ready(function(){
 
-        $('#pop-operaciones').popover({
-            html: true,
-            trigger: 'manual'
-        }).on( "mouseenter", function(e) {
-
-            $(this).popover('show');
-            
-            e.preventDefault();
-        });
-
-        $('#restablecer').popover({
-            html: true,
-            trigger: 'manual'
-        }).on( "mouseenter", function(e) {
-
-            $(this).popover('show');
-            
-            e.preventDefault();
-        });
-
-        $('body').on('click', function (e) {
-            $('[data-toggle="popover"]').each(function () {
-                //the 'is' for buttons that trigger popups
-                //the 'has' for icons within a button that triggers a popup
-                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                    $(this).popover('hide');
-                }
-            });
-        });
-
-
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
         pageLength: 25,    
         order: [[4, 'asc']],
-        fnDrawCallback: function() {
-        if ("{{count($alumnos)}}" < 25) {
-              $('.dataTables_paginate').hide();
-              $('#tablelistar_length').hide();
-          }else{
-             $('.dataTables_paginate').show();
-          }
-        },
-        pageLength: 25,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
