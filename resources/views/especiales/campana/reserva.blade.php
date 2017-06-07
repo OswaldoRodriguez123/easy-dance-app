@@ -270,6 +270,21 @@
                   <p class="text-left f-30 opaco-0-8 f-700" id="offset_patrocinador" >Nuestros patrocinadores</p>
                   <hr class='linea-morada'>
 
+                  <div class="col-sm-6 text-left">
+                    <label class="c-morado f-15">Filtro</label>
+                    <div class="select">
+                      <select class="selectpicker" name="clase_grupal_id" id="clase_grupal_id" data-live-search="true">
+                          <option value = "0">Todas</option>
+                          @foreach ( $clases_grupales as $clase_grupal )
+                            <option value = "{{ $clase_grupal['id'] }}"> {{ $clase_grupal['nombre'] }} - {{ $clase_grupal['hora_inicio'] }}  / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['dia'] }} - {{ $clase_grupal['instructor_nombre'] }}  {{ $clase_grupal['instructor_apellido'] }} </option>
+
+                          @endforeach
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="clearfix"></div>
+
                   <div class="table-responsive row">
                     <div class="col-sm-12">
                       <table class="table table-striped table-bordered" id="tablelistar" >
@@ -290,6 +305,7 @@
                             <tr id="{{$id}}" class="p-10"">
                               <td>
                                 <div class="pull-left p-relative">
+                                  <span style="display:none">{{$patrocinador['clase_grupal_id']}}</span>
                                   @if($patrocinador['imagen'])
                                     <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$patrocinador['imagen']}}" alt="">
                                   @else
@@ -1360,6 +1376,23 @@
         $('#div_telefono').hide();
         $('#div_coordinador').hide();
       }
+
+    });
+
+    $('#clase_grupal_id').on('change', function(){
+
+        if($(this).val() == 0){
+            t
+            .columns(0)
+            .search('')
+            .draw(); 
+
+        }else{
+            t
+            .columns(0)
+            .search($(this).val())
+            .draw();
+        }
 
     });
 

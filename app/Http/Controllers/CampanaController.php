@@ -19,6 +19,7 @@ use App\PatrocinadorProforma;
 use App\DatosBancarios;
 use App\Egreso;
 use App\ConfigEgreso;
+use App\InscripcionClaseGrupal;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -1579,9 +1580,18 @@ class CampanaController extends BaseController {
                     $imagen = '';
                 }
 
+                $inscripcion_clase_grupal = InscripcionClaseGrupal::where('alumno_id',$patrocinador->usuario_id)->first();
+
+                if($inscripcion_clase_grupal){
+                    $clase_grupal_id = $inscripcion_clase_grupal->clase_grupal_id;
+                }else{
+                    $clase_grupal_id = 0;
+                }
+
                 $collection=collect($patrocinador);     
                 $patrocinador_array = $collection->toArray();
-                    
+                
+                $patrocinador_array['clase_grupal_id']=$clase_grupal_id; 
                 $patrocinador_array['imagen']=$imagen;
                 $array_patrocinador[$patrocinador->id] = $patrocinador_array;
               
@@ -1600,7 +1610,61 @@ class CampanaController extends BaseController {
                 $activa = 0;
             }
 
-            return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $array_patrocinador, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'academia' => $academia, 'fecha_de_realizacion' => $array_fecha_de_realizacion, 'datos' => $datos, 'activa' => $activa, 'tipo_evento' => "Campaña"]);
+            $clases_grupales= DB::table('clases_grupales')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id')
+                ->where('clases_grupales.deleted_at', '=', null)
+                ->where('clases_grupales.academia_id', '=' ,  $campaña->academia_id)
+                ->orderBy('clases_grupales.hora_inicio', 'asc')
+            ->get();   
+
+            $array_clase_grupal = array();
+
+            foreach($clases_grupales as $clase_grupal){
+
+                $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                $i = $fecha->dayOfWeek;
+
+                if($i == 1){
+
+                  $dia = 'Lunes';
+
+                }else if($i == 2){
+
+                  $dia = 'Martes';
+
+                }else if($i == 3){
+
+                  $dia = 'Miercoles';
+
+                }else if($i == 4){
+
+                  $dia = 'Jueves';
+
+                }else if($i == 5){
+
+                  $dia = 'Viernes';
+
+                }else if($i == 6){
+
+                  $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
+
+                }
+
+                $collection=collect($clase_grupal);     
+                $clase_grupal_array = $collection->toArray();
+
+                $clase_grupal_array['dia']=$dia;
+                $array_clase_grupal[$clase_grupal->id] = $clase_grupal_array;
+
+            }
+
+            return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $array_patrocinador, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'academia' => $academia, 'fecha_de_realizacion' => $array_fecha_de_realizacion, 'datos' => $datos, 'activa' => $activa, 'tipo_evento' => "Campaña", 'clases_grupales' => $array_clase_grupal]);
         }else{
             return redirect("especiales/campañas"); 
         }
