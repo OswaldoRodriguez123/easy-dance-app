@@ -125,52 +125,19 @@
                             className: '{{$actividad}}',
                             url: '{{$url}}',
                         },
-                        @endforeach
+                        @endforeach 
+            
+                    ],
+                                     
+                    //On Day Select
+                    select: function(start, end, allDay) {
 
-                        
-              
-
-                    @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
-
-                        ],
-                                         
-                        //On Day Select
-                        select: function(start, end, allDay) {
-
-                            var d = new Date();
-                            var timestamp = d.getTime(); 
+                        var d = new Date();
+                        var timestamp = d.getTime(); 
 
 
-                            if(end>timestamp){
+                        if(end>timestamp){
 
-                                var token = "{{ csrf_token() }}";
-
-                                $.ajax({
-                                    url: "{{url('/')}}/guardar-fecha",
-                                        headers: {'X-CSRF-TOKEN': token},
-                                        type: 'POST',
-                                    dataType: 'json',
-                                    data:"fecha_inicio="+end._d,
-                                    success:function(respuesta){
-
-                                        window.location = "{{url('/')}}/configuracion/eventos-laborales/agregar"
-
-                                    }
-                                });
-                            }else{
-                               //console.log('error');
-                               $('#modalFechaPasada').modal('show');                            
-                            }
-
-                            
-                        },
-                        eventClick: function(calEvent, jsEvent, view) {
-
-                            // console.log(calEvent.id);
-                            // //console.log(jsEvent);
-                            // //console.log(view);
-                            // 
-                            $('#fecha_inicio').val(calEvent.start);
                             var token = "{{ csrf_token() }}";
 
                             $.ajax({
@@ -178,29 +145,52 @@
                                     headers: {'X-CSRF-TOKEN': token},
                                     type: 'POST',
                                 dataType: 'json',
-                                data:"fecha_inicio="+$('#fecha_inicio').val(),
+                                data:"fecha_inicio="+end._d,
                                 success:function(respuesta){
 
-                                    window.location = calEvent.url
+                                    window.location = "{{url('/')}}/configuracion/eventos-laborales/agregar"
 
                                 }
                             });
-
+                        }else{
+                           //console.log('error');
+                           $('#modalFechaPasada').modal('show');                            
                         }
-                    });
 
-                    
-                    $('.agendar').on('click', function(e){
-                        e.preventDefault();
+                        
+                    },
+                    eventClick: function(calEvent, jsEvent, view) {
 
-                        $("#frm_agendar").submit();
-                         
-                    });
+                        // console.log(calEvent.id);
+                        // //console.log(jsEvent);
+                        // //console.log(view);
+                        // 
+                        $('#fecha_inicio').val(calEvent.start);
+                        var token = "{{ csrf_token() }}";
 
-                @else
-                    ]
-                    })
-                @endif
+                        $.ajax({
+                            url: "{{url('/')}}/guardar-fecha",
+                                headers: {'X-CSRF-TOKEN': token},
+                                type: 'POST',
+                            dataType: 'json',
+                            data:"fecha_inicio="+$('#fecha_inicio').val(),
+                            success:function(respuesta){
+
+                                window.location = calEvent.url
+
+                            }
+                        });
+
+                    }
+                });
+
+                
+                $('.agendar').on('click', function(e){
+                    e.preventDefault();
+
+                    $("#frm_agendar").submit();
+                     
+                });
 
                 $('.actividad').on('click', function(e){
                     e.preventDefault();

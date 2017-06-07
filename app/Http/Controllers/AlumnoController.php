@@ -568,8 +568,10 @@ class AlumnoController extends BaseController
             if($inscripcion_clase_grupal){
                 if($inscripcion_clase_grupal->tipo_pago == 1){
                     $tipo_pago = 'Contado';
-                }else{
+                }else if($inscripcion_clase_grupal->tipo_pago == 2){
                     $tipo_pago = 'Credito';
+                }else{
+                    $tipo_pago = 'Sin Confirmar';
                 }
 
             }else{

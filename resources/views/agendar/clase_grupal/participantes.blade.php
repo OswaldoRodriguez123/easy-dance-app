@@ -627,24 +627,24 @@
 
                                 <div class="col-sm-6">
 
-                                    <span for="alumno" class="c-morado f-22">Modalidad de Pago</span>
-                                    <hr>
-
-                                    <div class="form-group fg-line ">
-                                      <div class="p-t-10">
-                                      <label class="radio radio-inline m-r-20">
-                                          <input name="tipo_pago" id="contado" value="1" type="radio" checked >
-                                          <i class="input-helper"></i>  
-                                          Contado
-                                      </label>
-                                      <label class="radio radio-inline m-r-20">
-                                          <input name="tipo_pago" id="credito" value="2" type="radio">
-                                          <i class="input-helper"></i>  
-                                          Crédito
-                                      </label>
-                                      </div>
+                                  <span for="alumno" class="c-morado f-22">Modalidad de Pago</span>
+                                  <hr>
+                                  <div class="col-sm-6">
+                                    <div class="select">
+                                      <select class="selectpicker" name="tipo_pago" id="tipo_pago" data-live-search="true">
+                                        <option value = "1">Contado</option>
+                                        <option value = "2">Crédito</option>
+                                        <option value = "3">Sin Confirmar</option>
+                                      </select>
                                     </div>
+                                    <div class="has-error" id="error-tipo_pago">
+                                      <span >
+                                        <small class="help-block error-span" id="error-tipo_pago_mensaje" ></small>                
+                                      </span>
+                                    </div>
+                                  </div>
                                 </div>
+                                  
 
                                <div class="clearfix p-b-35"></div>
 

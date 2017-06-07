@@ -8,6 +8,7 @@
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+<link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -421,24 +422,27 @@
                         
                         $.each(respuesta.inscritos, function (index, array) {
 
+                            if(array.edad >= 18){
+                                if(array.sexo=='F'){
+                                    sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
+                                }else{
+                                    sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
+                                }
+                            }else{
+                                if(array.sexo=='F'){
+                                    sexo = '<i class="zmdi fa fa-child f-15 c-rosado"></i> </span>'
+                                }else{
+                                    sexo = '<i class="zmdi fa fa-child f-15 c-azul"></i> </span>'
+                                }
+                            }
+
                             contenido = ''
-                            if(array.sexo=='F')
-                              {
-                                sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
-                              }
-                              else
-                              {
-                                sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
-                              }
-
-
-
-                              contenido += 'Nombre: ' +array.curso+'<br>'
-                              contenido += 'Especialidad: ' +array.especialidad+'<br>'
-                              contenido += 'Nivel: ' +array.nivel+'<br>'
-                              contenido += 'Instructor: ' +array.instructor_nombre+' ' +array.instructor_apellido+'<br>'
-                              contenido += 'Horario: ' +array.hora_inicio+' - ' +array.hora_final+'<br>'
-                              contenido += 'Día: ' +array.dia
+                            contenido += 'Nombre: ' +array.curso+'<br>'
+                            contenido += 'Especialidad: ' +array.especialidad+'<br>'
+                            contenido += 'Nivel: ' +array.nivel+'<br>'
+                            contenido += 'Instructor: ' +array.instructor_nombre+' ' +array.instructor_apellido+'<br>'
+                            contenido += 'Horario: ' +array.hora_inicio+' - ' +array.hora_final+'<br>'
+                            contenido += 'Día: ' +array.dia
 
                             var rowNode=t.row.add( [
                             ''+array.fecha+'',

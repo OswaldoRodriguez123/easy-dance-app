@@ -289,14 +289,16 @@ class ReporteController extends BaseController
                 $hombres++;
             }
 
+            $edad = Carbon::createFromFormat('Y-m-d', $inscrito->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+            
             if($request->edad_inicio OR $request->edad_final)
             {
-                $edad = Carbon::createFromFormat('Y-m-d', $inscrito->fecha_nacimiento)->diff(Carbon::now())->format('%y');
-
+                
                 if($request->edad_inicio && $request->edad_final){
                     if($edad >= $request->edad_inicio && $edad <= $request->edad_final){
                         $collection=collect($inscrito);     
-                        $inscrito_array = $collection->toArray();   
+                        $inscrito_array = $collection->toArray(); 
+                        $inscrito_array['edad'] = $edad;  
                         $inscrito_array['dia'] = $dia;
                         $array[$inscrito->id] = $inscrito_array;
                     }
@@ -304,13 +306,15 @@ class ReporteController extends BaseController
                    if($edad >= $request->edad_inicio){
                         $collection=collect($inscrito);     
                         $inscrito_array = $collection->toArray();   
+                        $inscrito_array['edad'] = $edad;  
                         $inscrito_array['dia'] = $dia;
                         $array[$inscrito->id] = $inscrito_array;
                     } 
                 }else if($request->edad_final){
                     if($edad <= $request->edad_inicio){
                         $collection=collect($inscrito);     
-                        $inscrito_array = $collection->toArray();  
+                        $inscrito_array = $collection->toArray(); 
+                        $inscrito_array['edad'] = $edad;  
                         $inscrito_array['dia'] = $dia; 
                         $array[$inscrito->id] = $inscrito_array;
                     }
@@ -318,7 +322,8 @@ class ReporteController extends BaseController
 
             }else{
                 $collection=collect($inscrito);     
-                $inscrito_array = $collection->toArray();   
+                $inscrito_array = $collection->toArray();  
+                $inscrito_array['edad'] = $edad;  
                 $inscrito_array['dia'] = $dia;
                 $array[$inscrito->id] = $inscrito_array;
             }
