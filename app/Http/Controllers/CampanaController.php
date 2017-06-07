@@ -784,6 +784,27 @@ class CampanaController extends BaseController {
                     $patrocinador->item_id = $item_factura->id;
                     $patrocinador->save();
 
+                    $alumno = Alumno::find($request->alumno_id);
+
+                    if($alumno->celular){
+
+                        $celular = getLimpiarNumero($alumno->celular);
+                        $academia = Academia::find(Auth::user()->academia_id);
+                        if($academia->pais_id == 11 && strlen($celular) == 10){
+
+                            if($request->cantidad == 1){
+                                $boleta = 'Boleta';
+                            }else{
+                                $boleta = 'Boletas';
+                            }
+
+                            $mensaje = '¡Wow! '.$alumno->nombre.'. Que gran noticia saber que te has sumado al evento "Caminito". Tu aporte de '.$request->cantidad.' '.$boleta.' nos hace crecer y nos motiva a seguir mejorando nuestro servicio para ti. ¡Nos encanta verte bailar!.';
+
+                            $client = new Client(); //GuzzleHttp\Client
+                            $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
+                        }
+                    }
+
                     return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 200]);
                 }
                 else{
