@@ -27,6 +27,8 @@ use Session;
 use Image;
 use MP;
 use Mail;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class CampanaController extends BaseController {
 
