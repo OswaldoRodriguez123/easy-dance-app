@@ -273,7 +273,7 @@
                   <div class="col-sm-6 text-left">
                     <label class="c-morado f-15">Filtro</label>
                     <div class="select">
-                      <select class="selectpicker" name="clase_grupal_id" id="clase_grupal_id" data-live-search="true">
+                      <select class="selectpicker" name="clase_grupal_id" id="clase_grupal_id" data-live-search="true" data-container="body">
                           <option value = "0">Todas</option>
                           @foreach ( $clases_grupales as $clase_grupal )
                             <option value = "{{ $clase_grupal['id'] }}"> {{ $clase_grupal['nombre'] }} - {{ $clase_grupal['hora_inicio'] }}  / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['dia'] }} - {{ $clase_grupal['instructor_nombre'] }}  {{ $clase_grupal['instructor_apellido'] }} </option>
