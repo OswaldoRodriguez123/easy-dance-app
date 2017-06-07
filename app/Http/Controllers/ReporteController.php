@@ -1496,11 +1496,10 @@ class ReporteController extends BaseController
             $query->distinct('id');
 
             $alumnos = $query->get();
-            $in = array(2,4);
 
             foreach($alumnos as $alumno){
 
-                $query = ItemsFacturaProforma::where('usuario_id', $alumno->id)->whereIn('usuario_tipo',$in);
+                $query = ItemsFacturaProforma::where('usuario_id', $alumno->id)->where('usuario_tipo',1);
 
                 //LINEA DE SERVICIO
 
