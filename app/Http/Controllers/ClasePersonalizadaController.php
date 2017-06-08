@@ -881,169 +881,165 @@ class ClasePersonalizadaController extends BaseController {
     public function storeInscripcion(Request $request)
     {
 
-    $rules = [
+        $rules = [
 
-        'clase_personalizada_id' => 'required',
-        'alumno_id' => 'required',
-        'fecha' => 'required',
-        'hora_inicio' => 'required',
-        'hora_final' => 'required',
-        'especialidad_id' => 'required',
-        'instructor_id' => 'required',
-        'estudio_id' => 'required',
-        
-    ];
-
-    $messages = [
-        'clase_personalizada_id.required' => 'Ups! El Nombre es requerido',
-        'alumno_id.required' => 'Ups! El Alumno es requerido',
-        'fecha.required' => 'Ups! La fecha es requerida',
-        'instructor_id.required' => 'Ups! El instructor es requerido',
-        'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
-        'hora_final.required' => 'Ups! La hora final es requerida',
-        'especialidad_id.required' => 'Ups! La especialidad es requerida ',
-        'estudio_id.required' => 'Ups! El estudio o salón es requerido',
-    ];
-
-    $validator = Validator::make($request->all(), $rules, $messages);
-
-    if ($validator->fails()){
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-    }
-
-    else{
-
-        $hora_inicio = strtotime($request->hora_inicio);
-        $hora_final = strtotime($request->hora_final);
-        $fecha = explode(" - ", $request->fecha);
-
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
-        $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
-
-        if($hora_inicio > $hora_final)
-        {
-
-            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
-        }
-
-        if($fecha_inicio < Carbon::now()){
-
-            return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de la clase no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
-        }
-
-        $clasepersonalizada = new InscripcionClasePersonalizada;
-        
-        $clase_personalizada = ClasePersonalizada::Leftjoin('config_servicios', 'clases_personalizadas.id', '=', 'config_servicios.tipo_id')
-            ->select('clases_personalizadas.*', 'config_servicios.id as servicio_id')
-            ->where('clases_personalizadas.id', '=', $request->clase_personalizada_id)
-        ->first();
-
-        $fecha_inicio = $fecha_inicio->toDateString();
-        $fecha_final = $fecha_final->toDateString();
-
-        $clasepersonalizada->clase_personalizada_id =  $request->clase_personalizada_id;
-        $clasepersonalizada->fecha_inicio = $fecha_inicio;
-        $clasepersonalizada->fecha_final = $fecha_final;
-        $clasepersonalizada->instructor_id = $request->instructor_id;
-        $clasepersonalizada->hora_inicio = $request->hora_inicio;
-        $clasepersonalizada->hora_final = $request->hora_final;
-        $clasepersonalizada->alumno_id = $request->alumno_id;
-        $clasepersonalizada->especialidad_id = $request->especialidad_id;
-        $clasepersonalizada->estudio_id = $request->estudio_id;
-        $clasepersonalizada->promotor_id =  $request->promotor_id;
-        $clasepersonalizada->cantidad_horas =  $clase_personalizada->cantidad_horas;
-
-        // return redirect("/home");
-        if($clasepersonalizada->save()){
-
-            $visitante = Visitante::where('alumno_id', $request->alumno_id)->first();
-
-            if($visitante){
-                $visitante->cliente = 1;
-                $visitante->save();
-            }
+            'clase_personalizada_id' => 'required',
+            'alumno_id' => 'required',
+            'fecha' => 'required',
+            'hora_inicio' => 'required',
+            'hora_final' => 'required',
+            'especialidad_id' => 'required',
+            'instructor_id' => 'required',
+            'estudio_id' => 'required',
             
-            if($request->precio_id)
-            {
-                $precio_id = explode("-", $request->precio_id);
+        ];
 
-                if($precio_id[0] == '1'){
-                    $costo = $clase_personalizada->costo;
-                }else{
-                    $costo_clases_personalizadas = CostoClasePersonalizada::find($precio_id[1]);
-                    $costo = $costo_clases_personalizadas->precio;
-                }
-            }else{
-                $costo = $clase_personalizada->costo;
+        $messages = [
+            'clase_personalizada_id.required' => 'Ups! El Nombre es requerido',
+            'alumno_id.required' => 'Ups! El Alumno es requerido',
+            'fecha.required' => 'Ups! La fecha es requerida',
+            'instructor_id.required' => 'Ups! El instructor es requerido',
+            'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
+            'hora_final.required' => 'Ups! La hora final es requerida',
+            'especialidad_id.required' => 'Ups! La especialidad es requerida ',
+            'estudio_id.required' => 'Ups! El estudio o salón es requerido',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $hora_inicio = strtotime($request->hora_inicio);
+            $hora_final = strtotime($request->hora_final);
+            $fecha = explode(" - ", $request->fecha);
+
+            $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+            $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
+
+            if($hora_inicio > $hora_final){
+                return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
             }
 
-            $item_factura = new ItemsFacturaProforma;
-                    
-            $item_factura->alumno_id = $request->alumno_id;
-            $item_factura->academia_id = Auth::user()->academia_id;
-            $item_factura->fecha = Carbon::now()->toDateString();
-            $item_factura->item_id = $clase_personalizada->servicio_id;
-            $item_factura->nombre = $clase_personalizada->nombre;
-            $item_factura->tipo = 9;
-            $item_factura->cantidad = 1;
-            $item_factura->precio_neto = 0;
-            $item_factura->impuesto = 0;
-            $item_factura->importe_neto = $costo;
-            $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+            if($fecha_inicio < Carbon::now()){
+                return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de la clase no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+            }
 
-            $item_factura->save();
+            $inscripcion_clase_personalizada = new InscripcionClasePersonalizada;
+            
+            $clase_personalizada = ClasePersonalizada::Leftjoin('config_servicios', 'clases_personalizadas.id', '=', 'config_servicios.tipo_id')
+                ->select('clases_personalizadas.*', 'config_servicios.id as servicio_id')
+                ->where('clases_personalizadas.id', '=', $request->clase_personalizada_id)
+            ->first();
 
-            $academia = Academia::find(Auth::user()->academia_id);
-            $alumno = Alumno::find($request->alumno_id);
-            $instructor = Instructor::find($request->instructor_id);
+            $fecha_inicio = $fecha_inicio->toDateString();
+            $fecha_final = $fecha_final->toDateString();
 
-            $subj = 'Te han asignado una Clase Personalizada';
-            $subj2 = 'Has confirmado una Clase Personalizada';
+            $inscripcion_clase_personalizada->clase_personalizada_id =  $request->clase_personalizada_id;
+            $inscripcion_clase_personalizada->fecha_inicio = $fecha_inicio;
+            $inscripcion_clase_personalizada->fecha_final = $fecha_final;
+            $inscripcion_clase_personalizada->instructor_id = $request->instructor_id;
+            $inscripcion_clase_personalizada->hora_inicio = $request->hora_inicio;
+            $inscripcion_clase_personalizada->hora_final = $request->hora_final;
+            $inscripcion_clase_personalizada->alumno_id = $request->alumno_id;
+            $inscripcion_clase_personalizada->especialidad_id = $request->especialidad_id;
+            $inscripcion_clase_personalizada->estudio_id = $request->estudio_id;
+            $inscripcion_clase_personalizada->promotor_id =  $request->promotor_id;
+            $inscripcion_clase_personalizada->cantidad_horas =  $clase_personalizada->cantidad_horas;
 
-            $array = [
-               'nombre_instructor' => $instructor->nombre,
-               'correo' => $instructor->correo,
-               'academia' => $academia->nombre,
-               'nombre_alumno' => $alumno->nombre,
-               'apellido_alumno' => $alumno->apellido,
-               'hora_inicio' => $request->hora_inicio,
-               'hora_final' => $request->hora_final,
-               'fecha' => $fecha_inicio,
-               'subj' => $subj
-            ];
+            // return redirect("/home");
+            if($inscripcion_clase_personalizada->save()){
 
-            $array2 = [
-               'nombre_instructor' => $instructor->nombre,
-               'apellido_instructor' => $instructor->apellido,
-               'correo' => $alumno->correo,
-               'academia' => $academia->nombre,
-               'nombre_alumno' => $alumno->nombre,
-               'hora_inicio' => $request->hora_inicio,
-               'hora_final' => $request->hora_final,
-               'fecha' => $fecha_inicio,
-               'subj' => $subj2,
-               'id' => $clasepersonalizada->id
-            ];
+                $visitante = Visitante::where('alumno_id', $request->alumno_id)->first();
 
-            Mail::send('correo.clase_personalizada_instructor', $array, function($msj) use ($array){
-                $msj->subject($array['subj']);
-                $msj->to($array['correo']);
-            });
+                if($visitante){
+                    $visitante->cliente = 1;
+                    $visitante->save();
+                }
+                
+                if($request->precio_id){
+                    $precio_id = explode("-", $request->precio_id);
 
-            Mail::send('correo.clase_personalizada_alumno', $array2, function($msj) use ($array2){
-                $msj->subject($array2['subj']);
-                $msj->to($array2['correo']);
-            });
+                    if($precio_id[0] == '1'){
+                        $costo = $clase_personalizada->costo;
+                    }else{
+                        $costo_clase_personalizada = CostoClasePersonalizada::find($precio_id[1]);
+                        $costo = $costo_clase_personalizada->precio;
+                    }
+                }else{
+                    $costo = $clase_personalizada->costo;
+                }
 
-            Session::forget('id_alumno');
+                $item_factura = new ItemsFacturaProforma;
+                        
+                $item_factura->usuario_id = $request->alumno_id;
+                $item_factura->academia_id = Auth::user()->academia_id;
+                $item_factura->fecha = Carbon::now()->toDateString();
+                $item_factura->item_id = $clase_personalizada->servicio_id;
+                $item_factura->nombre = $clase_personalizada->nombre;
+                $item_factura->tipo = 9;
+                $item_factura->cantidad = 1;
+                $item_factura->precio_neto = 0;
+                $item_factura->impuesto = 0;
+                $item_factura->importe_neto = $costo;
+                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
 
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                $item_factura->save();
+
+                $academia = Academia::find(Auth::user()->academia_id);
+                $alumno = Alumno::find($request->alumno_id);
+                $instructor = Instructor::find($request->instructor_id);
+
+                $subj = 'Te han asignado una Clase Personalizada';
+                $subj2 = 'Has confirmado una Clase Personalizada';
+
+                $array = [
+                   'nombre_instructor' => $instructor->nombre,
+                   'correo' => $instructor->correo,
+                   'academia' => $academia->nombre,
+                   'nombre_alumno' => $alumno->nombre,
+                   'apellido_alumno' => $alumno->apellido,
+                   'hora_inicio' => $request->hora_inicio,
+                   'hora_final' => $request->hora_final,
+                   'fecha' => $fecha_inicio,
+                   'subj' => $subj
+                ];
+
+                $array2 = [
+                   'nombre_instructor' => $instructor->nombre,
+                   'apellido_instructor' => $instructor->apellido,
+                   'correo' => $alumno->correo,
+                   'academia' => $academia->nombre,
+                   'nombre_alumno' => $alumno->nombre,
+                   'hora_inicio' => $request->hora_inicio,
+                   'hora_final' => $request->hora_final,
+                   'fecha' => $fecha_inicio,
+                   'subj' => $subj2,
+                   'id' => $inscripcion_clase_personalizada->id
+                ];
+
+                Mail::send('correo.clase_personalizada_instructor', $array, function($msj) use ($array){
+                    $msj->subject($array['subj']);
+                    $msj->to($array['correo']);
+                });
+
+                Mail::send('correo.clase_personalizada_alumno', $array2, function($msj) use ($array2){
+                    $msj->subject($array2['subj']);
+                    $msj->to($array2['correo']);
+                });
+
+                Session::forget('id_alumno');
+
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
-    }
     }
 
     /**

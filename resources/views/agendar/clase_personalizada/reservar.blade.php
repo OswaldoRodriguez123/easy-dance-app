@@ -263,37 +263,31 @@
 
                               @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
-                               <div class="col-sm-12 paquete" style="display:none">
+                                <div class="col-sm-12 paquete" style="display:none">
                                  
-                                    <label for="nombre">Paquete</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el paquete" title="" data-original-title="Ayuda" data-html="true"></i>
+                                  <label for="nombre">Paquete</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el paquete" title="" data-original-title="Ayuda" data-html="true"></i>
                                     
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
-                                      <div class="fg-line">
-                                      <div class="select">
-                                        <select name="precio_id" id="precio_id">
-
-    
-                                        </select>
-                                      </div>
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
+                                    <div class="select">
+                                      <select name="precio_id" id="precio_id">
+                                      </select>
                                     </div>
-                                    </div>
-                                 <div class="has-error" id="error-precio_id">
+                                  </div>
+                                  <div class="has-error" id="error-precio_id">
                                       <span >
-                                          <small class="help-block error-span" id="error-precio_id_mensaje" ></small>                                
+                                        <small class="help-block error-span" id="error-precio_id_mensaje" ></small>
                                       </span>
                                   </div>
-
                                   <div class="clearfix p-b-35"></div>
-
-                               </div>
+                                </div>
 
                                @endif
 
                                
 
 
-                                     <div class="col-sm-12">
+                                <div class="col-sm-12">
                                  
                                       <label for="fecha" id="id-fecha">Fecha</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Define la fecha de inicio y final de la clase personalizada" title="" data-original-title="Ayuda"></i>
 
@@ -404,7 +398,7 @@
                                   </div>
                                </div>
 
-                               <div class="clearfix p-b-35"></div>
+                                <div class="clearfix p-b-35"></div>
 
                                 @endif
                                     
@@ -456,13 +450,8 @@
                               </div>
                             </div>
                             <div class="col-sm-12 text-left">                           
-
-                  <!--             <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >ENVIAR</button>
- -->
-                            <a class="btn btn-blanco m-r-10 f-18 reservar">Guardar</a>
-
+                              <a class="btn btn-blanco m-r-10 f-18 reservar">Guardar</a>
                               <button type="button" class="cancelar btn btn-default" id="cancelar">Cancelar</button>
-
                             </div>
                         </div></form>
                     </div>
@@ -570,14 +559,12 @@
 
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInDownBig';
-        //var cardImg = $(this).closest('#content').find('h1');
         if (animation === "hinge") {
         animationDuration = 3100;
         }
         else {
         animationDuration = 3200;
         }
-        //$("h1").removeAttr('class');
         $(".container").addClass('animated '+animation);
 
             setTimeout(function(){
@@ -615,7 +602,6 @@
 
     porcetaje=(cantidad/fLen)*100;
     porcetaje=porcetaje.toFixed(2);
-    //console.log(porcetaje);
     $("#text-progreso").text(porcetaje+"%");
     $("#barra-progreso").css({
       "width": (porcetaje + "%")
@@ -629,7 +615,6 @@
       $("#barra-progreso").removeClass('progress-bar-success');
       $("#barra-progreso").addClass('progress-bar-morado');
     }
-    //$("#barra-progreso").s
 
   }
 
@@ -678,11 +663,8 @@
         $(".reservar").click(function(){
 
           if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6 ){
-
                 $(".guardar").click();
-
               }else{
-                
                 $('#modalConfiguracion').modal('show');
               }
 
@@ -849,7 +831,8 @@
 
         var id = $(this).val();
         var costo = $(this).find(':selected').attr('data-precio')
-        if (id){
+
+        if(id){
 
           $('#precio_id').append( new Option("1 Participante - " + costo,'1-'+id));
 
@@ -861,12 +844,14 @@
           });
 
           $('#precio_id').selectpicker('refresh');
+          $('.paquete').show()    
 
-          $('.paquete').show()          
         }else{
+
           $('#precio_id').empty();
           $('#precio_id').selectpicker('refresh');
           $('.paquete').hide()
+
         }    
       });
 
@@ -914,8 +899,6 @@
                 }
             });
         });
-
-
-</script> 
+  </script> 
 @stop
 
