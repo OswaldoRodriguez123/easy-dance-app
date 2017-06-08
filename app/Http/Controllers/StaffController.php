@@ -1033,7 +1033,7 @@ class StaffController extends BaseController
                 ->select('pagos_staff.created_at as fecha', 'config_servicios.nombre as servicio', 'staff.nombre as nombre_staff', 'staff.apellido as apellido_staff', 'pagos_staff.monto', 'pagos_staff.tipo', 'pagos_staff.id')
                 ->where('staff.id', $id)
                 ->where('pagos_staff.boolean_pago', 1)
-                ->limit(150)
+                ->limit(50)
             ->get();
 
             $por_pagar = PagoStaff::join('config_servicios', 'pagos_staff.servicio_id', '=', 'config_servicios.id')

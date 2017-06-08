@@ -1122,6 +1122,7 @@ class InstructorController extends BaseController {
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('pagos_instructor.created_at as fecha', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'pagos_instructor.monto', 'pagos_instructor.tipo')
                 ->where('instructores.id', $usuario_id)
+                ->limit(50)
                 ->where('pagos_instructor.boolean_clase_pagada', 1)
             ->get();
 
