@@ -60,7 +60,6 @@
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="especialidad" data-order="desc">Especialidad</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Final]</th>
-                                    <th class="text-center operacion" data-column-id="operacion" data-order="desc">Operaciones</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
@@ -88,10 +87,15 @@
 
 @section('js') 
             
-        <script type="text/javascript">
+    <script type="text/javascript">
 
-        route_detalle="{{url('/')}}/agendar/clases-grupales/detalle";
-        route_operacion="{{url('/')}}/agendar/clases-grupales/operaciones";
+        @if($tipo == 1)
+            route_detalle="{{url('/')}}/agendar/clases-grupales/detalle";
+        @elseif($tipo == 2)
+            route_detalle="{{url('/')}}/agendar/clases-grupales/nivelaciones";
+        @else
+            route_detalle="{{url('/')}}/programacion";
+        @endif
 
         var i;
         var hoy;
@@ -118,15 +122,6 @@
         serverSide: false,
         pageLength: 25,   
         order: [[3, 'asc']],
-       fnDrawCallback: function() {
-        if ("{{count($clase_grupal_join)}}" < 25) {
-              $('.dataTables_paginate').hide();
-              $('#tablelistar_length').hide();
-          }else{
-             $('.dataTables_paginate').show();
-          }
-        },
-        pageLength: 25,
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
@@ -268,38 +263,35 @@
             });
 
             $.each(clase_grupal, function (index, array) {
-                    if(array.inicio == 0){
-                        inicio = '<i class="zmdi zmdi-star zmdi-hc-fw zmdi-hc-fw c-amarillo f-20" data-html="true" data-original-title="" data-content="Esta clase grupal no ha comenzado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
-                    }else{
-                        inicio = '';
-                    }
-
-                    operacion = '<i data-toggle="modal" name="operacion" id='+array.id+' class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>'
-       
-                    var rowNode=t.row.add( [
-                    ''+inicio+'',
-                    ''+array.clase_grupal_nombre+'',
-                    ''+array.especialidad_nombre+'',
-                    ''+array.hora_inicio+ ' '+array.hora_final+'',
-                    ''+operacion+''
-                    ] ).draw(false).node();
-                    $( rowNode )
-                        .attr('id',array.id)
-                        .addClass('seleccion');
-                });
+                if(array.inicio == 0){
+                    inicio = '<i class="zmdi zmdi-star zmdi-hc-fw zmdi-hc-fw c-amarillo f-20" data-html="true" data-original-title="" data-content="Esta clase grupal no ha comenzado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
+                }else{
+                    inicio = '';
+                }
+   
+                var rowNode=t.row.add( [
+                ''+inicio+'',
+                ''+array.clase_grupal_nombre+'',
+                ''+array.especialidad_nombre+'',
+                ''+array.hora_inicio+ ' '+array.hora_final+'',
+                ] ).draw(false).node();
+                $( rowNode )
+                    .attr('id',array.id)
+                    .addClass('seleccion');
+            });
         }
 
-    function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        var route =route_detalle+"/"+row;
-        
-        window.location=route;
-      }
+        function previa(t){
+            var id = $(t).closest('tr').attr('id');
+            var route =route_detalle+"/"+id;
+            
+            window.location=route;
+        }
 
-      $('#tablelistar tbody').on( 'click', 'i.zmdi-wrench', function () {
+        $('#tablelistar tbody').on( 'click', 'i.zmdi-wrench', function () {
             var route =route_operacion+"/"+this.id;
             window.location=route;
-         });
+        });
 
     </script>
 @stop

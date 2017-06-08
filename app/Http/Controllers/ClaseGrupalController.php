@@ -3190,7 +3190,7 @@ class ClaseGrupalController extends BaseController {
 
         $hoy = $actual->dayOfWeek;
 
-        return view('vista_instructor.nivelaciones')->with(['clase_grupal_join' => $array, 'hoy' => $hoy, 'academia' => $academia]);
+        return view('vista_instructor.clase_grupal')->with(['clase_grupal_join' => $array, 'hoy' => $hoy, 'academia' => $academia, 'tipo' => 2]);
 
         
     }
@@ -3305,7 +3305,7 @@ class ClaseGrupalController extends BaseController {
         
         $hoy = $actual->dayOfWeek;
 
-        return view('vista_instructor.clase_grupal')->with(['clase_grupal_join' => $array, 'hoy' => $hoy, 'academia' => $academia]);
+        return view('vista_instructor.clase_grupal')->with(['clase_grupal_join' => $array, 'hoy' => $hoy, 'academia' => $academia, 'tipo' => 1]);
 
         
     }

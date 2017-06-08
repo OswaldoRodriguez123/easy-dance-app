@@ -61,28 +61,120 @@ class ProgresoController extends BaseController {
                 ->OrderBy('clases_grupales.hora_inicio')
             ->get();
 
+            return view('progreso.principalprogramacion')->with(['clase_grupal_join' => $clase_grupal_join]);
+
         }else{
 
             $instructor = Instructor::find($usuario_id);
 
             if(!$instructor->boolean_administrador){
-                $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                    ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
+
+                $clase_grupal_join = DB::table('clases_grupales')
+                    ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+                    ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                    ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
+                    ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                    ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga')
                     ->where('clases_grupales.instructor_id','=', $usuario_id)
+                    ->where('clases_grupales.deleted_at', '=', null)
                     ->OrderBy('clases_grupales.hora_inicio')
                 ->get();
+
+                $horarios_clase_grupales = DB::table('horario_clase_grupales')
+                    ->join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
+                    ->join('config_estudios', 'horario_clase_grupales.estudio_id', '=', 'config_estudios.id')
+                    ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
+                    ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+                    ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                    ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'clases_grupales.id', 'horario_clase_grupales.fecha as fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga', 'horario_clase_grupales.id as horario_id')
+                    ->where('clases_grupales.instructor_id','=', $usuario_id)
+                    ->where('horario_clase_grupales.deleted_at', '=', null)
+                    ->OrderBy('horario_clase_grupales.hora_inicio')
+                ->get();
+
             }else{
 
-                $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                    ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
-                    ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+                $clase_grupal_join = DB::table('clases_grupales')
+                    ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+                    ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                    ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
+                    ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                    ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga')
+                    ->where('clases_grupales.deleted_at', '=', null)
                     ->OrderBy('clases_grupales.hora_inicio')
                 ->get();
+
+                $horarios_clase_grupales = DB::table('horario_clase_grupales')
+                    ->join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
+                    ->join('config_estudios', 'horario_clase_grupales.estudio_id', '=', 'config_estudios.id')
+                    ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
+                    ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+                    ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                    ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'clases_grupales.id', 'horario_clase_grupales.fecha as fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga', 'horario_clase_grupales.id as horario_id')
+                    ->where('horario_clase_grupales.deleted_at', '=', null)
+                    ->OrderBy('horario_clase_grupales.hora_inicio')
+                ->get();
+
             }
+
+            $array = array();
+
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            foreach($clase_grupal_join as $clase_grupal){
+                $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                $dia_de_semana = $fecha->dayOfWeek;
+
+                if($dia_de_semana == 0){
+                    $dia_de_semana = 7;
+                }
+
+                if($fecha > Carbon::now()){
+                    $inicio = 0;
+                }else{
+                    $inicio = 1;
+                }
+
+                $collection=collect($clase_grupal);     
+                $clase_grupal_array = $collection->toArray();
+                
+                $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+                $clase_grupal_array['inicio']=$inicio;
+                $array['1-'.$clase_grupal->id] = $clase_grupal_array;
+            }
+
+            foreach($horarios_clase_grupales as $clase_grupal){
+                $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                $dia_de_semana = $fecha->dayOfWeek;
+
+                if($dia_de_semana == 0){
+                    $dia_de_semana = 7;
+                } 
+
+                if($fecha > Carbon::now()){
+                    $inicio = 0;
+                }else{
+                    $inicio = 1;
+                }
+
+                $collection=collect($clase_grupal);     
+                $clase_grupal_array = $collection->toArray();
+                
+                $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+                $clase_grupal_array['inicio']=$inicio;
+                $array['2-'.$clase_grupal->horario_id] = $clase_grupal_array;
+            }
+
+            $actual = Carbon::now();
+            // $geoip = new GeoIP();
+            // $geoip->setIp($request->ip());
+            // $actual->tz = $geoip->getTimezone();
+
+            $hoy = $actual->dayOfWeek;
+
+            return view('vista_instructor.clase_grupal')->with(['clase_grupal_join' => $array, 'hoy' => $hoy, 'academia' => $academia, 'tipo' => 3]);
              
         }
-
-        return view('progreso.principalprogramacion')->with(['clase_grupal_join' => $clase_grupal_join]);
             
     }
 
