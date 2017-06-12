@@ -172,7 +172,7 @@ class AlumnoController extends BaseController
         $deuda = $grouped->toArray();
 
 
-        $alumno = InscripcionClaseGrupal::onlyTrashed()
+        $alumnos = InscripcionClaseGrupal::onlyTrashed()
             ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
@@ -182,7 +182,7 @@ class AlumnoController extends BaseController
         ->get();
 
 
-        return view('participante.alumno.inactivos')->with(['alumnos' => $alumno, 'deuda' => $deuda]);
+        return view('participante.alumno.inactivos')->with(['alumnos' => $alumnos, 'deuda' => $deuda]);
     }
 
     public function congelados()

@@ -1117,6 +1117,7 @@
 	                                  	'Talla: ' . $talla_franela . '<br>'.
 	                                  	'Cantidad que adeuda: ' . number_format($deuda, 2, '.' , '.')  . '<br>'.
                                       'Modalidad de pago: ' . $tipo_pago . '<br>'.
+                                      'Registro de llamada: ' . $alumno['llamadas'] . '<br>'.
 
 
 

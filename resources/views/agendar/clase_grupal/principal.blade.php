@@ -221,8 +221,8 @@
         pageLength: 25,   
         order: [[3, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -371,8 +371,8 @@
                     }
 
                     operacion += '<ul class="top-menu">'
-                    operacion += '<li class="dropdown">' 
-                    operacion += '<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">' 
+                    operacion += '<li id = dropdown_'+array.id+' class="dropdown">' 
+                    operacion += '<a id = dropdown_toggle_'+array.id+' href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">' 
                     operacion += '<span class="f-15 f-700" style="color:black">'
                     operacion += '<i class="zmdi zmdi-wrench f-20 mousedefault" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=""></i>'
                     operacion += '</span></a>'
@@ -592,18 +592,22 @@
 
 
 
-    $('#tablelistar tbody').on( 'mouseenter', 'i.zmdi-wrench', function () {
+    // $('.table-responsive').on('show.bs.dropdown', function () {
+    //   $('.table-responsive').css( "overflow", "inherit" );
+    // });
 
-      if($('.dropdown').hasClass('open')){
+    $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
 
-      }else{
-        $( this ).click();
-      }
+        var id = $(this).closest('tr').attr('id');
+        var dropdown = $('#dropdown_'+id)
+        var dropdown_toggle = $('#dropdown_toggle_'+id)
+
+        if(!dropdown.hasClass('open')){
+            dropdown.addClass('open')
+            dropdown_toggle.attr('aria-expanded','true')
+            $('.table-responsive').css( "overflow", "inherit" );
+        }
      
-    });
-
-    $('.table-responsive').on('show.bs.dropdown', function () {
-      $('.table-responsive').css( "overflow", "inherit" );
     });
 
     $('.table-responsive').on('hide.bs.dropdown', function () {

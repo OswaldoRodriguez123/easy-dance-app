@@ -42,6 +42,7 @@ use App\Staff;
 use App\Visitante;
 use App\User;
 use App\Promocion;
+use App\Llamada;
 use PulkitJalan\GeoIP\GeoIP;
 
 
@@ -689,6 +690,8 @@ class ClaseGrupalController extends BaseController {
                     $imagen = '';
                 }
 
+                $llamadas = Llamada::where('usuario_id',$alumno->id)->where('usuario_tipo',2)->count();
+
                 $collection=collect($alumno);     
                 $alumno_array = $collection->toArray();
 
@@ -699,6 +702,7 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['tipo'] = 1;
                 $alumno_array['cantidad'] = $cantidad;
                 $alumno_array['dias_vencimiento'] = $dias_vencimiento;
+                $alumno_array['llamadas'] = $llamadas;
 
                 $array[$alumno->id] = $alumno_array;
 
