@@ -988,6 +988,7 @@ class AdministrativoController extends BaseController {
                                             $pago->tipo=$config_pago->tipo;
                                             $pago->monto=$monto;
                                             $pago->servicio_id=$inscripcion_clase_grupal->servicio_id;
+                                            $pago->fecha = Carbon::now()->toDateString();
 
                                             $pago->save();
                                         }
@@ -1000,6 +1001,7 @@ class AdministrativoController extends BaseController {
                                         $pago->tipo=$config_pago->tipo;
                                         $pago->monto=$config_pago->monto;
                                         $pago->servicio_id=$inscripcion_clase_grupal->servicio_id;
+                                        $pago->fecha = Carbon::now()->toDateString();
 
                                         $pago->save();
                                         

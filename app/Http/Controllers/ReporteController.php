@@ -2766,6 +2766,88 @@ class ReporteController extends BaseController
 
     }
 
+    public function Comisiones()
+    {
+        $staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
+        $servicios = ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
+        return view('reportes.comisiones')->with(['staffs' => $staffs, 'servicios' => $servicios]);
+    }
+
+    public function ComisionesFiltros(Request $request)
+    {
+        
+        $query = PagoStaff::join('staff', 'pagos_staff.staff_id', '=', 'staff.id')
+            ->join('config_servicios', 'pagos_staff.servicio_id', '=', 'config_servicios.id')
+            ->select('pagos_staff.id', 'staff.nombre', 'staff.apellido', 'config_servicios.nombre as servicio', 'pagos_staff.monto', 'pagos_staff.fecha', 'pagos_staff.boolean_pago')
+            ->where('staff.academia_id','=',Auth::user()->academia_id);
+
+        if($request->boolean_fecha){
+            $fecha = explode(' - ', $request->fecha2);
+            $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+            $query->whereBetween('pagos_staff.fecha', [$start,$end]);
+        }else{
+
+            if($request->fecha){
+                if($request->fecha == 1){
+                    $start = Carbon::now()->toDateString();
+                    $end = Carbon::now()->toDateString();  
+                }else if($request->fecha == 2){
+                    $start = Carbon::now()->startOfMonth()->toDateString();
+                    $end = Carbon::now()->endOfMonth()->toDateString();  
+                }else if($request->fecha == 3){
+                    $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                    $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
+                }
+
+                $query->whereBetween('pagos_staff.fecha', [$start,$end]);
+            }
+        }
+
+        if($request->staff_id){
+            $query->where('staff.id',$request->staff_id);
+        }
+
+        if($request->staff_id){
+
+            $query->where('pagos_staff.servicio_id',$request->servicio_id);
+        }
+
+        $comisiones = $query->get();
+
+        $pagadas = 0;
+        $pendientes = 0;
+        $array_estatus = array();
+        $array = array();
+
+        foreach($comisiones as $comision){
+
+            if($comision->boolean_pago == 1){
+
+                if($request->tipo == 0 OR $request->tipo == 1){
+
+                    $array[] = $comision;
+                    $pagadas++;
+                }
+
+            }else{
+
+                if($request->tipo == 0 OR $request->tipo == 2){
+                    $array[] = $comision;
+                    $pendientes++;
+                }
+            }
+        }
+
+        $array_pagadas = array('Pagadas', $pagadas);
+        $array_pendientes = array('Pendientes por Pagar', $pendientes);
+
+        array_push($array_estatus, $array_pagadas);
+        array_push($array_estatus, $array_pendientes);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'estatus' => $array_estatus, 200]);
+
+    }
 
 }

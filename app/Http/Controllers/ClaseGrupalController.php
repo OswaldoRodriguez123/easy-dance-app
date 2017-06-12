@@ -573,6 +573,7 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['inscripcion_id'] = $reservacion->id;
                 $alumno_array['tiempo_vencimiento'] = $fecha_de_realizacion;
                 $alumno_array['fecha_vencimiento'] = $reservacion->fecha_vencimiento;
+                $alumno_array['llamadas'] = 0;
                 $array['2-'.$alumno->id] = $alumno_array;
             
             }
