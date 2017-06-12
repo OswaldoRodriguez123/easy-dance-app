@@ -343,7 +343,7 @@ class AdministrativoController extends BaseController {
             $array['2-'.$staff->id] = $staff_array;
         }
 
-        $promotores = Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get();
+        $promotores = Staff::where('academia_id', Auth::user()->academia_id)->get();
 
 		return view('administrativo.pagos.pagos')->with(['usuarios' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto, 'promotores' => $promotores]);
 	}
@@ -439,7 +439,9 @@ class AdministrativoController extends BaseController {
             $array['2-'.$staff->id] = $staff_array;
         }
 
-        return view('administrativo.pagos.pagos')->with(['usuarios' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto, 'id' => $id]);
+        $promotores = Staff::where('academia_id', Auth::user()->academia_id)->get();
+
+        return view('administrativo.pagos.pagos')->with(['usuarios' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto, 'id' => $id, 'promotores' => $promotores]);
     }
 
     public function gestion(Request $request)
