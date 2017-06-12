@@ -549,7 +549,9 @@ class UsuarioController extends BaseController {
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         
         if(!$usuario_tipo){
+
             $tipos = UsuarioTipo::where('usuario_id',Auth::user()->id)->get();
+            
             foreach($tipos as $tipo){
                 $usuario_tipo = $tipo->tipo;
                 $usuario_id = $tipo->tipo_id;

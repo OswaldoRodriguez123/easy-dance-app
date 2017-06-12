@@ -474,45 +474,47 @@
                                   </div>
                                </div>
                                    
-                               </div>
-                               <div class="clearfix p-b-35"></div>
+                              </div>
+
+                              <div class="clearfix p-b-35"></div>
                           
-                                    <div class="col-sm-12">
+                              <div class="col-sm-12">
                                     
                                  
-                                    <span class="f-30 text-center c-morado">Linea de Pago</span>
-                                    
+                                <span class="f-30 text-center c-morado">Linea de Pago</span>
+                                
 
 
-                                    <hr></hr>
-                                    
-                                    <div class="clearfix p-b-35"></div>
-                                    <form name="agregar_item" id="agregar_item"  >
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                    <span class="f-20 text-center" id="id-producto-servicio">Producto o Servicio</span><i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Se refiere a todos aquellos servicios y productos que ofreces en tu academia, algunos ejemplos de estos  son, clases personalizadas,  clases  grupales,  secciones de asesoría, , franelas, gorras, gomas de baile entre otros,  los productos y  servicios  que deseas podrán ser agregados en la sección de configuración general en el campo llamado productos  y servicios" title="" data-original-title="Ayuda"></i>
+                                <hr></hr>
+                                
+                                <div class="clearfix p-b-35"></div>
+                                <form name="agregar_item" id="agregar_item"  >
 
-                                    <!-- <hr></hr> -->
+                                  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                  <span class="f-20 text-center" id="id-producto-servicio">Producto o Servicio</span><i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Se refiere a todos aquellos servicios y productos que ofreces en tu academia, algunos ejemplos de estos  son, clases personalizadas,  clases  grupales,  secciones de asesoría, , franelas, gorras, gomas de baile entre otros,  los productos y  servicios  que deseas podrán ser agregados en la sección de configuración general en el campo llamado productos  y servicios" title="" data-original-title="Ayuda"></i>
 
-                                    <div class="clearfix p-b-35"></div>
 
-                                <div class="col-sm-12">
-                                 <div class="form-group fg-line ">
-                                    <div class="p-t-10">
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="servicio" value="servicio" type="radio" checked >
-                                        <i class="input-helper"></i>  
-                                        Servicio <i id="servicio2" class="icon_f-servicios c-verde f-20"></i>
-                                    </label>
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="producto" value="producto" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Producto <i id="producto2" class="icon_f-productos f-20"></i>
-                                    </label>
-                                    </div>
-                                    
-                                 </div>
-                                </div>                                
-                              <div class="clearfix p-b-35"></div>
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <div class="col-sm-12">
+                                     <div class="form-group fg-line ">
+                                        <div class="p-t-10">
+                                        <label class="radio radio-inline m-r-20">
+                                            <input name="tipo" id="servicio" value="servicio" type="radio" checked >
+                                            <i class="input-helper"></i>  
+                                            Servicio <i id="servicio2" class="icon_f-servicios c-verde f-20"></i>
+                                        </label>
+                                        <label class="radio radio-inline m-r-20">
+                                            <input name="tipo" id="producto" value="producto" type="radio">
+                                            <i class="input-helper"></i>  
+                                            Producto <i id="producto2" class="icon_f-productos f-20"></i>
+                                        </label>
+                                        </div>
+                                        
+                                     </div>
+                                  </div>
+                                                                  
+                                  <div class="clearfix p-b-35"></div>
 
                                   <div class="col-sm-2 text-center">
 
@@ -591,7 +593,7 @@
                                 <input type="text" class="form-control input-sm text-center" name="importe_neto" id="importe_neto" readonly="readonly" placeholder="Ej. 12" value="0">
                               </div>
 
-                              <div class="clearfix p-b-35"></div>
+                              <div class="clearfix p-b-10"></div>
                               
                               <div class="col-sm-2 text-center">
                                 <div class="has-error" id="error-combo">
@@ -609,26 +611,39 @@
                                   </div>
                               </div>
 
-                            <!-- <div class="card-header text-left text-success">
-                            <span class="f-16 p-t-0">Agregar Linea</span></div> -->
+                            <div class="clearfix"></div>
 
-                            <br><br><br>
+                            <div class="col-sm-3">
+                                <label class="c-morado f-15">Promotor</label>
+                                <div class="select">
+                                  <select class="form-control selectpicker" name="promotor_id" id="promotor_id"  data-live-search="true">
+                                    <option value="">Selecciona</option>
+                                    @foreach ( $promotores as $promotor )
+                     
+                                      <option value = "{{$promotor->id}}">{{$promotor->nombre}} {{$promotor->apellido}}</option>
 
-                              <div class="col-sm-2">
+                                    @endforeach
+                                  </select>
+                                </div>
+                              </div>
+
+                            <div class="clearfix m-b-30"></div>
+
+                            <div class="col-sm-2">
 
                               <button type="button" class="btn btn-blanco m-r-8 f-10 guardar" name= "add" id="add" > Agregar Linea <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
 
-                              </div>
+                            </div>
 
-                              <div class="col-sm-4">
-                                <div class="has-error" id="error-linea">
-                                      <span >
-                                        <small class="help-block error-span" id="error-linea_mensaje" ></small>                                           
-                                      </span>
-                                  </div>
+                          <div class="col-sm-4">
+                            <div class="has-error" id="error-linea">
+                                  <span >
+                                    <small class="help-block error-span" id="error-linea_mensaje" ></small>                                           
+                                  </span>
                               </div>
+                          </div>
 
-                              <div class="clearfix p-b-15"></div>
+                          <div class="clearfix p-b-15"></div>
 
                           <div class="table-responsive row">
                            <div class="col-md-12">
@@ -1289,9 +1304,9 @@
           },
           error:function(msj){
             setTimeout(function(){ 
-              if (typeof msj.responseJSON === "undefined") {
-                window.location = "{{url('/')}}/error";
-              }
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
               if(msj.responseJSON.status=="ERROR"){
                 console.log(msj.responseJSON.errores);
                 errores(msj.responseJSON.errores);

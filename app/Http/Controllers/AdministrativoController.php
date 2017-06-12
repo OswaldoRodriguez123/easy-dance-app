@@ -343,7 +343,9 @@ class AdministrativoController extends BaseController {
             $array['2-'.$staff->id] = $staff_array;
         }
 
-		return view('administrativo.pagos.pagos')->with(['usuarios' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto]);
+        $promotores = Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get();
+
+		return view('administrativo.pagos.pagos')->with(['usuarios' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto, 'promotores' => $promotores]);
 	}
 
     public function generarpagoscondeuda($id)
@@ -1025,6 +1027,48 @@ class AdministrativoController extends BaseController {
                                 }
                             }
                         }
+                    }else{
+
+                        if($item_proforma->promotor_id)
+                        {
+                            $config_pago = ConfigPagosStaff::where('servicio_id',$item_proforma->item_id)
+                                ->where('tipo_servicio',$item_proforma->tipo)
+                                ->where('staff_id',$item_proforma->promotor_id)
+                            ->first();
+
+                            if($config_pago){
+
+                                if($config_pago->tipo == 1){
+
+                                    $porcentaje = $config_pago->monto / 100;
+                                    $monto = $item_proforma->importe_neto * $porcentaje;
+
+                                    if($monto > 0 ){
+
+                                        $pago = new PagoStaff;
+
+                                        $pago->staff_id=$item_proforma->promotor_id;
+                                        $pago->tipo=$config_pago->tipo;
+                                        $pago->monto=$monto;
+                                        $pago->servicio_id=$item_proforma->item_id;
+
+                                        $pago->save();
+                                    }
+                                   
+                                }else{
+
+                                    $pago = new PagoStaff;
+
+                                    $pago->staff_id=$item_proforma->promotor_id;
+                                    $pago->tipo=$config_pago->tipo;
+                                    $pago->monto=$config_pago->monto;
+                                    $pago->servicio_id=$item_proforma->item_id;
+
+                                    $pago->save();
+                                    
+                                }
+                            }
+                        }
                     }
 
                     //CREAR EL DETALLE DE LA FACTURA Y ELIMINAR LA PROFORMA, SI EL TOTAL ES MAYOR DE LO PAGADO, NO SE GENERAN LOS ITEMS, SINO QUE SALTA AL SIGUIENTE PROCESO
@@ -1041,6 +1085,7 @@ class AdministrativoController extends BaseController {
                         $item_factura->precio_neto = $item_proforma->precio_neto;
                         $item_factura->impuesto = $item_proforma->impuesto;
                         $item_factura->importe_neto = $item_proforma->importe_neto;
+                        $item_factura->promotor_id = $item_proforma->promotor_id;
 
                         $item_factura->save();
                     }
@@ -1671,6 +1716,7 @@ class AdministrativoController extends BaseController {
             $item_factura->impuesto = $request->impuesto;
             $item_factura->importe_neto = $importe_neto;
             $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+            $item_factura->promotor_id = $request->promotor_id;
                         
             if($item_factura->save()){
 
