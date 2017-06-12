@@ -2806,10 +2806,10 @@ class ReporteController extends BaseController
         }
 
         if($request->staff_id){
-            $query->where('staff.id',$request->staff_id);
+            $query->where('pagos_staff.staff_id', $request->staff_id);
         }
 
-        if($request->staff_id){
+        if($request->servicio_id){
 
             $query->where('pagos_staff.servicio_id',$request->servicio_id);
         }
@@ -2823,23 +2823,30 @@ class ReporteController extends BaseController
 
         foreach($comisiones as $comision){
 
-            if($comision->boolean_pago == 1){
-
-                if($request->tipo == 0 OR $request->tipo == 1){
+            if($request->tipo){
+                if($request->tipo == 1 && $comision->boolean_pago){
 
                     $array[] = $comision;
                     $pagadas++;
-                }
 
-            }else{
+                }else if($request->tipo == 2 && !$comision->boolean_pago){
 
-                if($request->tipo == 0 OR $request->tipo == 2){
                     $array[] = $comision;
                     $pendientes++;
+
+                }
+            }else{
+
+                $array[] = $comision;
+
+                if($comision->boolean_pago){
+                    $pagadas++;
+                }else{
+                   $pendientes++; 
                 }
             }
         }
-
+           
         $array_pagadas = array('Pagadas', $pagadas);
         $array_pendientes = array('Pendientes por Pagar', $pendientes);
 

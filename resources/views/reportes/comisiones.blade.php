@@ -185,7 +185,7 @@
 
                            
                             <div class="col-md-6">
-                                <h2>Informe de Asistencias</h2>
+                                <h2>Informe de Comisiones</h2>
                                 <hr>
                                 <div id="pie-chart-procesos" class="flot-chart-pie"></div>
                                 <div class="flc-pie hidden-xs"></div>
@@ -365,7 +365,7 @@
                                 ''+array.nombre+ ' ' +array.apellido+'',
                                 ''+array.fecha+'',
                                 ''+array.servicio+'',
-                                ''+array.monto+'',
+                                ''+formatmoney(parseFloat(array.monto))+'',
                                 ''+tipo+'',
                             ] ).draw(false).node();
                             $( rowNode )
@@ -508,6 +508,10 @@
         $("#fecha").selectpicker('refresh');
         $("#boolean_fecha").val('0');
     })
+
+    function formatmoney(n) {
+        return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    } 
 
 </script>
 

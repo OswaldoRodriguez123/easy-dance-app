@@ -104,6 +104,10 @@
                       <a href="{{url('/')}}/reportes/contactos"><h2 data-type="mText" class="sti-item">Contactos</h2><span data-type="icon" class="sti-icon sti-icon-reportes12 sti-item"></span></a>
                   </li>
 
+                  <li data-hovercolor="#f44336">
+                      <a href="{{url('/')}}/reportes/comisiones"><h2 data-type="mText" class="sti-item">Comisiones</h2><span data-type="icon" class="sti-icon sti-icon-reportes13 sti-item"></span></a>
+                  </li>
+
                 </ul>
               </div>
             </div>
