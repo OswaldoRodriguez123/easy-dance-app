@@ -1333,8 +1333,8 @@
                               <span class="m-l-10 m-r-10"> <i class="icon_b-nombres f-22"></i> </span>
                               <span class="f-14"> Codigo para referir </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-codigo" data-valor="{{$alumno->codigo_referido}}">
-                              <span id="alumno-nombre" class="capitalize">{{$alumno->codigo_referido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" >
+                              <span id="alumno-codigo" data-valor="{{$alumno->codigo_referido}}">{{$alumno->codigo_referido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
                           </table>
                         </div>
