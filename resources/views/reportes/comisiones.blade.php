@@ -353,7 +353,7 @@
 
                         $.each(respuesta.array, function (index, array) {
 
-                            if(array.boolean_pago){
+                            if(array.boolean_pago == 1){
                                 tipo = 'Pagada';
                             }else{
                                 tipo = 'Pendiente por Pagar';

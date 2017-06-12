@@ -2842,7 +2842,7 @@ class ReporteController extends BaseController
                 if($comision->boolean_pago){
                     $pagadas++;
                 }else{
-                   $pendientes++; 
+                    $pendientes++; 
                 }
             }
         }
