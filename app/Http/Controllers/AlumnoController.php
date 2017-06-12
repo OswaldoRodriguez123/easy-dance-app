@@ -216,272 +216,250 @@ class AlumnoController extends BaseController
         
 		$request->merge(array('correo' => trim($request->correo)));
 
-    $rules = [
-        'identificacion' => 'required|min:7|numeric',
-        'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'fecha_nacimiento' => 'required',
-        'sexo' => 'required',
-        'correo' => 'email|max:255',
-    ];
+        $rules = [
+            'identificacion' => 'required|min:7|numeric',
+            'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+            'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+            'fecha_nacimiento' => 'required',
+            'sexo' => 'required',
+            'correo' => 'email|max:255',
+        ];
 
-    $messages = [
-        'identificacion.required' => 'Ups! El identificador es requerido',
-        'identificacion.min' => 'El mínimo de numeros permitidos son 5',
-        'identificacion.max' => 'El maximo de numeros permitidos son 20',
-        'identificacion.numeric' => 'Ups! El identificador es inválido , debe contener sólo números',
-        'identificacion.unique' => 'Ups! Ya este usuario ha sido registrado',
-        'nombre.required' => 'Ups! El Nombre  es requerido ',
-        'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre.max' => 'El máximo de caracteres permitidos son 20',
-        'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
-        'apellido.required' => 'Ups! El Apellido  es requerido ',
-        'apellido.min' => 'El mínimo de caracteres permitidos son 3',
-        'apellido.max' => 'El máximo de caracteres permitidos son 20',
-        'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
-        'sexo.required' => 'Ups! El Sexo  es requerido ',
-        'fecha_nacimiento.required' => 'Ups! La fecha de nacimiento es requerida',
-        'correo.email' => 'Ups! El correo tiene una dirección inválida',
-        'correo.max' => 'El máximo de caracteres permitidos son 255',
-        // 'correo.unique' => 'Ups! Ya este correo ha sido registrado',
-    ];
+        $messages = [
+            'identificacion.required' => 'Ups! El identificador es requerido',
+            'identificacion.min' => 'El mínimo de numeros permitidos son 5',
+            'identificacion.max' => 'El maximo de numeros permitidos son 20',
+            'identificacion.numeric' => 'Ups! El identificador es inválido , debe contener sólo números',
+            'identificacion.unique' => 'Ups! Ya este usuario ha sido registrado',
+            'nombre.required' => 'Ups! El Nombre  es requerido ',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+            'nombre.max' => 'El máximo de caracteres permitidos son 20',
+            'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
+            'apellido.required' => 'Ups! El Apellido  es requerido ',
+            'apellido.min' => 'El mínimo de caracteres permitidos son 3',
+            'apellido.max' => 'El máximo de caracteres permitidos son 20',
+            'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
+            'sexo.required' => 'Ups! El Sexo  es requerido ',
+            'fecha_nacimiento.required' => 'Ups! La fecha de nacimiento es requerida',
+            'correo.email' => 'Ups! El correo tiene una dirección inválida',
+            'correo.max' => 'El máximo de caracteres permitidos son 255',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        // return redirect("/home")
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-        // ->withErrors($validator)
-        // ->withInput();
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
-
-    }
-
-    else{
-
-        $edad = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->diff(Carbon::now())->format('%y');
-
-
-        if($edad < 1){
-            return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
         }
 
-        $nombre = title_case($request->nombre);
-        $apellido = title_case($request->apellido);
-        $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
+        else{
 
-        if($request->correo){
-            $correo = trim(strtolower($request->correo)); 
-            $usuario = User::where('email',$correo)->first();
+            if($request->correo){
+                $correo = trim(strtolower($request->correo)); 
+                $usuario = User::where('email',$correo)->first();
 
-            if($usuario){
-                $tipos_usuario = UsuarioTipo::where('usuario_id',$usuario->id);
-                foreach($tipos_usuario as $tipo){
+                if($usuario){
+                    $tipos_usuario = UsuarioTipo::where('usuario_id',$usuario->id);
+                    foreach($tipos_usuario as $tipo){
 
-                    if($tipo == 2){
+                        if($tipo == 2){
 
-                        return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
+                            return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
+                        }
                     }
                 }
-            }
-        }else{
-            $correo = '';
-        }
-       
-        if($request->telefono)
-        {
-            $telefono = $request->telefono;
-        }else{
-            $telefono = '';
-        }
-
-        if($request->direccion)
-        {
-            $direccion = $request->direccion;
-
-        }else{
-            $direccion = '';
-        }
-
-        // if($request->instructor_id){
-        //     $instructor_id = $request->instructor_id;
-        // }else{
-        //     $instructor_id = null;
-        // }
-
-        do{
-            $codigo_referido = str_random(8);
-            $find = Alumno::where('codigo_referido', $codigo_referido)->first();
-        }while ($find);
-
-        $alumno = new Alumno;
-
-        $alumno->academia_id = Auth::user()->academia_id;
-        $alumno->identificacion = $request->identificacion;
-        $alumno->nombre = $nombre;
-        $alumno->apellido = $apellido;
-        $alumno->sexo = $request->sexo;
-        $alumno->fecha_nacimiento = $fecha_nacimiento;
-        $alumno->correo = $correo;
-        $alumno->telefono = $telefono;
-        $alumno->celular = $request->celular;
-        $alumno->direccion = $direccion;
-        $alumno->alergia = $request->alergia;
-        $alumno->asma = $request->asma;
-        $alumno->convulsiones = $request->convulsiones;
-        $alumno->cefalea = $request->cefalea;
-        $alumno->hipertension = $request->hipertension;
-        $alumno->lesiones = $request->lesiones;
-        $alumno->codigo_referido = $codigo_referido;
-
-        if($alumno->save()){
-
-            if($request->visitante_id){
-                
-                $visitante = Visitante::find($request->visitante_id);
-                $visitante->alumno_id = $alumno->id;
-
-                $visitante->save();
+            }else{
+                $correo = '';
             }
 
-            if($request->codigo){
-                $referido=DB::table('alumnos')
-                    ->select('alumnos.*')
-                    ->where('alumnos.codigo_referido','=',$request->codigo)
-                    ->where('alumnos.academia_id','=',Auth::user()->academia_id)
-                ->first();
-                if($referido){
+            $edad = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->diff(Carbon::now())->format('%y');
 
-                    $alumno->referido_id = $referido->id;
-                    $alumno->save();
-
-                    $remuneracion = new AlumnoRemuneracion;
-                    $academia=Academia::where('id', Auth::user()->academia_id)->first();
-
-                    $remuneracion->alumno_id = $alumno->id;
-                    $remuneracion->remuneracion = $academia->puntos_referidos;
-                    $remuneracion->save();
-                    
-                    $remuneracion_codigo=AlumnoRemuneracion::where('alumno_id', $referido->id)->first();
-
-                    if($remuneracion_codigo){
-                        $suma = $remuneracion_codigo->remuneracion;
-                        $suma += $academia->puntos_referencia;
-                        $remuneracion_codigo->remuneracion = $suma;
-                        $remuneracion_codigo->save();
-                    }else{
-                        $remuneracion = new AlumnoRemuneracion;
-                        // do{
-                        //     $codigo_validacion = str_random(8);
-                        //     $find = Alumno::where('codigo_referido', $codigo_validacion)->first();
-                        // }while ($find);
-                        $remuneracion->alumno_id = $referido->id;
-                        $remuneracion->remuneracion = $academia->puntos_referencia;
-                        $remuneracion->save();
-                    }
-                }else{
-                    return response()->json(['errores' => ['codigo' => [0, 'Ups! Este código no pertenece a ningun estudiante']], 'status' => 'ERROR'],422);
-                }
+            if($edad < 1){
+                return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
             }
 
-            if($correo){
-                if(!$usuario){
-
-                    $password = str_random(8);
-                    
-                    $usuario = new User;
-
-                    $usuario->academia_id = Auth::user()->academia_id;
-                    $usuario->nombre = $nombre;
-                    $usuario->apellido = $apellido;
-                    $usuario->telefono = $request->telefono;
-                    $usuario->celular = $request->celular;
-                    $usuario->sexo = $request->sexo;
-                    $usuario->email = $correo;
-                    $usuario->como_nos_conociste_id = 1;
-                    $usuario->direccion = $direccion;
-                    $usuario->confirmation_token = str_random(40);
-                    $usuario->password = bcrypt($password);
-                    $usuario->usuario_id = $alumno->id;
-                    $usuario->usuario_tipo = 2; 
-
-                    $usuario->save();
-                }
-
-                $usuario_tipo = new UsuarioTipo;
-                $usuario_tipo->usuario_id = $usuario->id;
-                $usuario_tipo->tipo = 2;
-                $usuario_tipo->tipo_id = $alumno->id;
-                $usuario_tipo->save();
-            }
-            
-            // if($request->correo){
-
-            //     $academia = Academia::find(Auth::user()->academia_id);
-            //     $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
-            //     $link = route('confirmacion', ['token' => $usuario->confirmation_token]);
-
-            //     $array = [
-            //        'nombre' => $request->nombre,
-            //        'academia' => $academia->nombre,
-            //        'usuario' => $request->correo,
-            //        'contrasena' => $password,
-            //        'subj' => $subj,
-            //        'link' => $link
-            //     ];
-
-
-            //     Mail::send('correo.inscripcion', $array, function($msj) use ($array){
-            //             $msj->subject($array['subj']);
-            //             $msj->to($array['usuario']);
-            //         });
-            // }
-
-            //Envio de Sms
-
-            if($request->celular)
+            $nombre = title_case($request->nombre);
+            $apellido = title_case($request->apellido);
+            $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
+           
+            if($request->telefono)
             {
-
-                $celular = getLimpiarNumero($request->celular);
-                $academia = Academia::find(Auth::user()->academia_id);
-                if($academia->pais_id == 11 && strlen($celular) == 10){
-
-                    $mensaje = $request->nombre.'. Subiste a bordo a la tripulacion de "Tu Clase de Baile", gracias por unirte a nosotros. ¡Nos encanta verte bailar!.';
-
-                    $client = new Client(); //GuzzleHttp\Client
-                    $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
-
-                }
-
-                // $array_prefix = array('424', '414', '426', '416', '412');
-                // $prefix = substr($request->celular, 1, 3);
-
-                // if (in_array($prefix, $array_prefix)) {
-          
-                //     $data = collect([
-                //         'nombre' => $request->nombre,
-                //         'apellido' => $request->apellido,
-                //         'celular' => $request->celular
-                //     ]);
-                    
-                    
-                    // $sms = $this->sendAlumno($data, $msg);
-
-                // }
+                $telefono = $request->telefono;
+            }else{
+                $telefono = '';
             }
 
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 'alumno' => $alumno, 200]);
-            
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+            if($request->direccion)
+            {
+                $direccion = $request->direccion;
+
+            }else{
+                $direccion = '';
+            }
+
+            do{
+                $codigo_referido = $this->generarCodigoReferido(5);
+                $find = Alumno::where('codigo_referido', $codigo_referido)->first();
+            }while ($find);
+
+            $alumno = new Alumno;
+
+            $alumno->academia_id = Auth::user()->academia_id;
+            $alumno->identificacion = $request->identificacion;
+            $alumno->nombre = $nombre;
+            $alumno->apellido = $apellido;
+            $alumno->sexo = $request->sexo;
+            $alumno->fecha_nacimiento = $fecha_nacimiento;
+            $alumno->correo = $correo;
+            $alumno->telefono = $telefono;
+            $alumno->celular = $request->celular;
+            $alumno->direccion = $direccion;
+            $alumno->alergia = $request->alergia;
+            $alumno->asma = $request->asma;
+            $alumno->convulsiones = $request->convulsiones;
+            $alumno->cefalea = $request->cefalea;
+            $alumno->hipertension = $request->hipertension;
+            $alumno->lesiones = $request->lesiones;
+            $alumno->codigo_referido = $codigo_referido;
+
+            if($alumno->save()){
+
+                if($request->visitante_id){
+                    
+                    $visitante = Visitante::find($request->visitante_id);
+                    $visitante->alumno_id = $alumno->id;
+
+                    $visitante->save();
+                }
+
+                if($request->codigo){
+                    $referido = Alumno::where('alumnos.codigo_referido','=',$request->codigo)
+                        ->where('alumnos.academia_id','=',Auth::user()->academia_id)
+                    ->first();
+
+                    if($referido){
+
+                        $alumno->referido_id = $referido->id;
+                        $alumno->save();
+
+                        $remuneracion = new AlumnoRemuneracion;
+                        $academia=Academia::where('id', Auth::user()->academia_id)->first();
+
+                        $remuneracion->alumno_id = $alumno->id;
+                        $remuneracion->remuneracion = $academia->puntos_referidos;
+                        $remuneracion->save();
+                        
+                        $remuneracion_codigo=AlumnoRemuneracion::where('alumno_id', $referido->id)->first();
+
+                        if($remuneracion_codigo){
+                            $suma = $remuneracion_codigo->remuneracion;
+                            $suma += $academia->puntos_referencia;
+                            $remuneracion_codigo->remuneracion = $suma;
+                            $remuneracion_codigo->save();
+                        }else{
+                            $remuneracion = new AlumnoRemuneracion;
+                            $remuneracion->alumno_id = $referido->id;
+                            $remuneracion->remuneracion = $academia->puntos_referencia;
+                            $remuneracion->save();
+                        }
+                    }else{
+                        return response()->json(['errores' => ['codigo' => [0, 'Ups! Este código no pertenece a ningun estudiante']], 'status' => 'ERROR'],422);
+                    }
+                }
+
+                if($correo){
+                    if(!$usuario){
+
+                        $password = str_random(8);
+                        
+                        $usuario = new User;
+
+                        $usuario->academia_id = Auth::user()->academia_id;
+                        $usuario->nombre = $nombre;
+                        $usuario->apellido = $apellido;
+                        $usuario->telefono = $request->telefono;
+                        $usuario->celular = $request->celular;
+                        $usuario->sexo = $request->sexo;
+                        $usuario->email = $correo;
+                        $usuario->como_nos_conociste_id = 1;
+                        $usuario->direccion = $direccion;
+                        $usuario->confirmation_token = str_random(40);
+                        $usuario->password = bcrypt($password);
+                        $usuario->usuario_id = $alumno->id;
+                        $usuario->usuario_tipo = 2; 
+
+                        $usuario->save();
+                    }
+
+                    $usuario_tipo = new UsuarioTipo;
+                    $usuario_tipo->usuario_id = $usuario->id;
+                    $usuario_tipo->tipo = 2;
+                    $usuario_tipo->tipo_id = $alumno->id;
+                    $usuario_tipo->save();
+                }
+                
+                // if($request->correo){
+
+                //     $academia = Academia::find(Auth::user()->academia_id);
+                //     $subj = $alumno->nombre . ' , ' . $academia->nombre . ' te ha agregado a Easy Dance, por favor confirma tu correo electronico';
+                //     $link = route('confirmacion', ['token' => $usuario->confirmation_token]);
+
+                //     $array = [
+                //        'nombre' => $request->nombre,
+                //        'academia' => $academia->nombre,
+                //        'usuario' => $request->correo,
+                //        'contrasena' => $password,
+                //        'subj' => $subj,
+                //        'link' => $link
+                //     ];
+
+
+                //     Mail::send('correo.inscripcion', $array, function($msj) use ($array){
+                //             $msj->subject($array['subj']);
+                //             $msj->to($array['usuario']);
+                //         });
+                // }
+
+                //Envio de Sms
+
+                if($request->celular)
+                {
+
+                    $celular = getLimpiarNumero($request->celular);
+                    $academia = Academia::find(Auth::user()->academia_id);
+                    if($academia->pais_id == 11 && strlen($celular) == 10){
+
+                        $mensaje = $request->nombre.'. Subiste a bordo a la tripulacion de "Tu Clase de Baile", gracias por unirte a nosotros. ¡Nos encanta verte bailar!.';
+
+                        $client = new Client(); //GuzzleHttp\Client
+                        $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
+
+                    }
+
+                    // $array_prefix = array('424', '414', '426', '416', '412');
+                    // $prefix = substr($request->celular, 1, 3);
+
+                    // if (in_array($prefix, $array_prefix)) {
+              
+                    //     $data = collect([
+                    //         'nombre' => $request->nombre,
+                    //         'apellido' => $request->apellido,
+                    //         'celular' => $request->celular
+                    //     ]);
+                        
+                        
+                        // $sms = $this->sendAlumno($data, $msg);
+
+                    // }
+                }
+
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id'=>$alumno->id, 'alumno' => $alumno, 200]);
+                
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+            }
         }
-        // return redirect("/home");
-        //return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-    }
 
     }
 

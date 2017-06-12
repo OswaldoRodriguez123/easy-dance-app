@@ -237,4 +237,11 @@ class BaseController extends Controller {
 
     }
 
+    public static function generarCodigoReferido($length)
+    {
+        $pool = 'abcdefghijklmnopqrstuvwxyz';
+
+        return substr(str_shuffle(str_repeat($pool, 5)), 0, $length);
+    }
+
 }
