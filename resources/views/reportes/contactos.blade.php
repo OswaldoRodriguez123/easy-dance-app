@@ -21,7 +21,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menu Principal</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/reportes" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de Reportes</a>
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -39,7 +39,29 @@
                     </div> 
                     
                     <div class="card">
-                        <div class="card-header text-right">
+                        <div class="card-header">
+
+                            <div class="col-md-4">
+                                <label>Clase Grupal</label>
+
+                                <div class="select">
+                                    <select class="selectpicker" data-live-search="true" name="clase_grupal_id" id="clase_grupal_id">
+                                        <option value="">Todas</option>
+                                        @foreach ($clases_grupales as $clase)
+                                            <?php $id = $clase['id']; ?>
+                                            <option value="{{$id}}">                       
+                                                {{$clase['nombre']}} - {{$clase['dia']}} - 
+                                                {{$clase['hora_inicio']}}/ 
+                                                {{$clase['hora_final']}} -  {{$clase['instructor_nombre']}}
+                                                {{$clase['instructor_apellido']}}
+                                            </option>
+                                        @endforeach 
+                                    </select>
+                                </div>
+                     
+                            </div>
+
+                            <div class="clearfix"></div>
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_b-telefono f-25"></i> Informes de Guia de Contactos</p>
                             <hr class="linea-morada">
@@ -50,6 +72,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th class="text-center" data-column-id="inscripcion_id" data-order="desc"></th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
                                     <th class="text-center" data-column-id="correo" data-order="desc">Correo Electronico</th>
                                     <th class="text-center" data-column-id="telefono">Contacto Local</th>
@@ -58,13 +81,14 @@
                             </thead>
                             <tbody>
 
-                            @foreach ($alumnoscontacto as $alumno)
-                                <?php $id = $alumno->id; ?>
+                            @foreach ($alumnos as $alumno)
+                                <?php $id = $alumno['id']; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$alumno->nombre}} {{$alumno->apellido}} </td>
-                                    <td class="text-center previa">{{$alumno->correo}} </td>
-                                    <td class="text-center previa">{{$alumno->telefono}} </td>
-                                    <td class="text-center previa">{{$alumno->celular}} </td>
+                                    <td class="text-center previa"><span style="display:none">{{$alumno['clase_grupal_id']}}</span></td>
+                                    <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
+                                    <td class="text-center previa">{{$alumno['correo']}} </td>
+                                    <td class="text-center previa">{{$alumno['telefono']}} </td>
+                                    <td class="text-center previa">{{$alumno['celular']}} </td>
                                 </tr>
                             @endforeach 
                                                            
@@ -92,73 +116,54 @@
 
 @section('js') 
             
-        <script type="text/javascript">
+    <script type="text/javascript">
 
         $(document).ready(function(){
 
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 50, 
-        // paging:false, 
-        order: [[0, 'asc']],
-        fnDrawCallback: function() {
-          $('.dataTables_paginate').show();
-          /*if ($('#tablelistar tr').length < 25) {
-              $('.dataTables_paginate').hide();
-          }
-          else{
-             $('.dataTables_paginate').show();
-          }*/
-        },
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     " ",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
-        });
-    
-
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-            
+            t=$('#tablelistar').DataTable({
+                processing: true,
+                serverSide: false,
+                pageLength: 50, 
+                order: [[1, 'asc']],
+                fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+                },
+                language: {
+                                processing:     "Procesando ...",
+                                search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                                searchPlaceholder: "BUSCAR",
+                                lengthMenu:     " ",
+                                info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                                infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                                infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                                infoPostFix:    "",
+                                loadingRecords: "...",
+                                zeroRecords:    "No se encontraron registros coincidentes",
+                                emptyTable:     "No hay datos disponibles en la tabla",
+                                paginate: {
+                                    first:      "Primero",
+                                    previous:   "Anterior",
+                                    next:       "Siguiente",
+                                    last:       "Ultimo"
+                                },
+                                aria: {
+                                    sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                    sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                                }
+                            }
             });
+        });
 
-        </script>
+        $('#clase_grupal_id').on('change', function(){
+
+            t
+            .columns(0)
+            .search($(this).val())
+            .draw(); 
+
+        });
+
+    </script>
 
 @stop

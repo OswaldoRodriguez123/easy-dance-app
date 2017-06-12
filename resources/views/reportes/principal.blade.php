@@ -98,6 +98,12 @@
                       <a href="{{url('/')}}/reportes/asistencias-personal"><h2 data-type="mText" class="sti-item">Asistencias Personal</h2><span data-type="icon" class="sti-icon sti-icon-reportes5 sti-item"></span></a>
                   </li>
 
+                  <div class="clearfix"></div>
+
+                  <li data-hovercolor="#f44336">
+                      <a href="{{url('/')}}/reportes/contactos"><h2 data-type="mText" class="sti-item">Contactos</h2><span data-type="icon" class="sti-icon sti-icon-reportes12 sti-item"></span></a>
+                  </li>
+
                 </ul>
               </div>
             </div>

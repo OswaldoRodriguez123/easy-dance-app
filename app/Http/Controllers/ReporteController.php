@@ -617,12 +617,78 @@ class ReporteController extends BaseController
     */    
 	public function Contactos(){
 
-		$alumnos = DB::table('alumnos')
-            ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.correo',  'alumnos.telefono', 'alumnos.celular', 'alumnos.id')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-        ->get();
+		$alumnos = Alumno::where('alumnos.academia_id','=', Auth::user()->academia_id)->get();
+        $array_alumno = array();
+        $array_clase_grupal = array();
 
-        return view('reportes.contactos')->with('alumnoscontacto', $alumnos);
+        foreach($alumnos as $alumno){
+
+            $inscripcion_clase_grupal = InscripcionClaseGrupal::where('alumno_id',$alumno->id)->first();
+
+            if($inscripcion_clase_grupal){
+
+                $collection=collect($alumno);     
+                $alumno_array = $collection->toArray();
+                $alumno_array['clase_grupal_id'] = $inscripcion_clase_grupal->clase_grupal_id;
+                $array_alumno[$alumno->id] = $alumno_array;
+
+            }
+
+        }
+
+        $clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id')
+            ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+            ->orderBy('clases_grupales.hora_inicio', 'asc')
+        ->get();  
+
+        $array = array();
+
+        foreach($clases_grupales as $clase_grupal){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+            $i = $fecha->dayOfWeek;
+
+            if($i == 1){
+
+              $dia = 'Lunes';
+
+            }else if($i == 2){
+
+              $dia = 'Martes';
+
+            }else if($i == 3){
+
+              $dia = 'Miercoles';
+
+            }else if($i == 4){
+
+              $dia = 'Jueves';
+
+            }else if($i == 5){
+
+              $dia = 'Viernes';
+
+            }else if($i == 6){
+
+              $dia = 'Sabado';
+
+            }else if($i == 0){
+
+              $dia = 'Domingo';
+
+            }
+
+            $collection=collect($clase_grupal);     
+            $clase_grupal_array = $collection->toArray();
+
+            $clase_grupal_array['dia']=$dia;
+            $array_clase_grupal[$clase_grupal->id] = $clase_grupal_array;
+
+        }
+
+        return view('reportes.contactos')->with(['alumnos' => $array_alumno, 'clases_grupales' => $array_clase_grupal]);
 	}
 
     public function Asistencias()
@@ -1146,11 +1212,9 @@ class ReporteController extends BaseController
 
     public function Administrativo()
     {
-        $clases_grupales= DB::table('clases_grupales')
-            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+        $clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id')
-            ->where('clases_grupales.deleted_at', '=', null)
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
             ->orderBy('clases_grupales.hora_inicio', 'asc')
         ->get();  
