@@ -428,125 +428,135 @@
 
                     events: [
                         @foreach ($talleres as $taller)
-                        {
-                            <?php
-                            $fecha_start=explode('-',$taller['fecha_inicio']);
-                            $fecha_end=explode('-',$taller['fecha_final']);
-                            $hora_start=explode(':',$taller['hora_inicio']);
-                            $hora_end=explode(':',$taller['hora_final']);
-                            ?>
-                            id: 'taller-{{$taller['id']}}',
-                            title: '{{$taller['nombre']}}',
-                            start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
-                            end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
-                            allDay: false,
-                            backgroundColor:'{{$taller['etiqueta']}}',
-                            className: 'actividad',
-                            url: '{{url('/')}}{{$taller['url']}}',
-                            tipo: 4
+                            {
+                                <?php
+                                    $fecha_start=explode('-',$taller['fecha_inicio']);
+                                    $fecha_end=explode('-',$taller['fecha_final']);
+                                    $hora_start=explode(':',$taller['hora_inicio']);
+                                    $hora_end=explode(':',$taller['hora_final']);
+                                ?>
+                                id: 'taller-{{$taller['id']}}',
+                                title: '{{$taller['nombre']}}',
+                                start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
+                                end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
+                                allDay: false,
+                                backgroundColor:'{{$taller['etiqueta']}}',
+                                className: 'actividad',
+                                url: '{{url('/')}}{{$taller['url']}}',
+                                tipo: 'talleres'
                             },
                         @endforeach
 
                         @foreach ($clases_grupales as $clase)
                             {
 
-                            <?php
-                                $fecha_start=explode('-',$clase['fecha_inicio']);
-                                $fecha_end=explode('-',$clase['fecha_final']);
-                                $hora_start=explode(':',$clase['hora_inicio']);
-                                $hora_end=explode(':',$clase['hora_final']);
+                                <?php
+                                    $fecha_start=explode('-',$clase['fecha_inicio']);
+                                    $fecha_end=explode('-',$clase['fecha_final']);
+                                    $hora_start=explode(':',$clase['hora_inicio']);
+                                    $hora_end=explode(':',$clase['hora_final']);
 
+                                    if(!isset($clase['inicio'])){
+                                        $tipo = 'clases-grupales';
+                                        
+                                    }else{
+                                        if(\Carbon\Carbon::parse($clase['fecha_inicio']) >= \Carbon\Carbon::now()->subDay()){
+                                            $tipo = 'nueva-clase-grupal';
+                                        }else{
+                                            $tipo = 'clases-grupales';
+                                        }
+                                    }
 
-                                if(\Carbon\Carbon::parse($clase['fecha_inicio']) >= \Carbon\Carbon::now()->subDay()){
-                                    $etiqueta = $clase['etiqueta'];
-                                    $actividad = 'actividad';
-                                    $url = $clase['url'];
-                                }else{
-                                    $etiqueta = '#B8B8B8';
-                                    $actividad = 'disabled';
-                                    $url = '';
-                                }
-                            ?>
+                                    if(\Carbon\Carbon::parse($clase['fecha_inicio']) >= \Carbon\Carbon::now()->subDay()){
+                                        $etiqueta = $clase['etiqueta'];
+                                        $actividad = 'actividad';
+                                        $url = $clase['url'];
+                                    }else{
+                                        $etiqueta = '#B8B8B8';
+                                        $actividad = 'disabled';
+                                        $url = '';
+                                    }
+                                ?>
 
-                            id: 'clase-{{$clase['id']}}',
-                            title: '{{$clase['nombre']}}',
-                            start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
-                            end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
-                            allDay: false,
-                            backgroundColor:'{{$etiqueta}}',
-                            className: '{{$actividad}}',
-                            url: '{{$url}}',
-                            tipo: 1
+                                id: 'clase-{{$clase['id']}}',
+                                title: '{{$clase['nombre']}}',
+                                start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
+                                end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
+                                allDay: false,
+                                backgroundColor:'{{$etiqueta}}',
+                                className: '{{$actividad}}',
+                                url: '{{$url}}',
+                                tipo: '{{$tipo}}'
                             },
                         @endforeach
 
                         @foreach ($clases_personalizadas as $clasepersonalizada)
                             {
-                            <?php
-                            $fecha_start=explode('-',$clasepersonalizada['fecha_inicio']);
-                            $fecha_end=explode('-',$clasepersonalizada['fecha_final']);
-                            $hora_start=explode(':',$clasepersonalizada['hora_inicio']);
-                            $hora_end=explode(':',$clasepersonalizada['hora_final']);
-                            ?>
-                            id: 'clasepersonalizada-{{$clasepersonalizada['id']}}',
-                            title: '{{$clasepersonalizada['nombre']}}',
-                            start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
-                            end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
-                            allDay: false,
-                            backgroundColor:'{{$clasepersonalizada['etiqueta']}}',
-                            className: 'actividad',
-                            url: '{{url('/')}}{{$clasepersonalizada['url']}}',
-                            tipo: 2
+                                <?php
+                                    $fecha_start=explode('-',$clasepersonalizada['fecha_inicio']);
+                                    $fecha_end=explode('-',$clasepersonalizada['fecha_final']);
+                                    $hora_start=explode(':',$clasepersonalizada['hora_inicio']);
+                                    $hora_end=explode(':',$clasepersonalizada['hora_final']);
+                                ?>
+                                id: 'clasepersonalizada-{{$clasepersonalizada['id']}}',
+                                title: '{{$clasepersonalizada['nombre']}}',
+                                start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
+                                end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
+                                allDay: false,
+                                backgroundColor:'{{$clasepersonalizada['etiqueta']}}',
+                                className: 'actividad',
+                                url: '{{url('/')}}{{$clasepersonalizada['url']}}',
+                                tipo: 'clases-personalizadas'
                             },
                         @endforeach
 
-                         @foreach ($fiestas as $fiesta)
+                        @foreach ($fiestas as $fiesta)
                             {
-                            <?php
-                            $fecha_start=explode('-',$fiesta['fecha_inicio']);
-                            $fecha_end=explode('-',$fiesta['fecha_final']);
-                            $hora_start=explode(':',$fiesta['hora_inicio']);
-                            $hora_end=explode(':',$fiesta['hora_final']);
-                            ?>
-                            id: 'fiesta-{{$fiesta['id']}}',
-                            title: '{{$fiesta['nombre']}}',
-                            start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
-                            end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
-                            allDay: false,
-                            backgroundColor:'{{$fiesta['etiqueta']}}',
-                            className: 'actividad',
-                            url: '{{url('/')}}{{$fiesta['url']}}',
-                            tipo: 3
+                                <?php
+                                    $fecha_start=explode('-',$fiesta['fecha_inicio']);
+                                    $fecha_end=explode('-',$fiesta['fecha_final']);
+                                    $hora_start=explode(':',$fiesta['hora_inicio']);
+                                    $hora_end=explode(':',$fiesta['hora_final']);
+                                ?>
+                                id: 'fiesta-{{$fiesta['id']}}',
+                                title: '{{$fiesta['nombre']}}',
+                                start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
+                                end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
+                                allDay: false,
+                                backgroundColor:'{{$fiesta['etiqueta']}}',
+                                className: 'actividad',
+                                url: '{{url('/')}}{{$fiesta['url']}}',
+                                tipo: 'fiestas-eventos'
                             },
                         @endforeach
 
                         @foreach ($citas as $cita)
                             {
-                            <?php
-                            $fecha_start=explode('-',$cita['fecha_inicio']);
-                            $fecha_end=explode('-',$cita['fecha_final']);
-                            $hora_start=explode(':',$cita['hora_inicio']);
-                            $hora_end=explode(':',$cita['hora_final']);
-                            ?>
-                            id: 'cita-{{$cita['id']}}',
-                            title: '{{$cita['nombre']}}',
-                            start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
-                            end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
-                            allDay: false,
-                            backgroundColor:'{{$cita['etiqueta']}}',
-                            className: 'actividad',
-                            url: '{{url('/')}}{{$cita['url']}}',
-                            tipo: 5
+                                <?php
+                                    $fecha_start=explode('-',$cita['fecha_inicio']);
+                                    $fecha_end=explode('-',$cita['fecha_final']);
+                                    $hora_start=explode(':',$cita['hora_inicio']);
+                                    $hora_end=explode(':',$cita['hora_final']);
+                                ?>
+                                id: 'cita-{{$cita['id']}}',
+                                title: '{{$cita['nombre']}}',
+                                start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
+                                end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
+                                allDay: false,
+                                backgroundColor:'{{$cita['etiqueta']}}',
+                                className: 'actividad',
+                                url: '{{url('/')}}{{$cita['url']}}',
+                                tipo: 'citas'
                             },
                         @endforeach
 
                         @foreach ($transmisiones as $transmision)
                             {
                                 <?php
-                                $fecha_start=explode('-',$transmision['fecha']);
-                                $fecha_end=explode('-',$transmision['fecha']);
-                                $hora_start=explode(':',$transmision['hora']);
-                                $hora_end=explode(':',$transmision['hora']);
+                                    $fecha_start=explode('-',$transmision['fecha']);
+                                    $fecha_end=explode('-',$transmision['fecha']);
+                                    $hora_start=explode(':',$transmision['hora']);
+                                    $hora_end=explode(':',$transmision['hora']);
                                 ?>
                                 id: 'transmision-{{$transmision['id']}}',
                                 title: 'Transmisión',
@@ -556,7 +566,7 @@
                                 backgroundColor:'{{$transmision['etiqueta']}}',
                                 className: 'actividad',
                                 url: "{{url('/')}}{{$transmision['url']}}",
-                                tipo: 6
+                                tipo: 'transmisiones'
 
                             },
                         @endforeach
@@ -564,7 +574,6 @@
                      
                     //On Day Select
                     select: function(start, end, allDay) {
-                        //console.log(start + ' --- ' + end);
 
                         var d = new Date();
                         var timestamp = d.getTime(); 
@@ -580,24 +589,16 @@
                             }else{
 
                                 var agendar = 'clases-personalizadas';
-
                                 $('#agendar').val(agendar);
-
                                 $("#frm_agendar").submit();
                            }
-                           //console.log('bien');
                         }else{
-                           //console.log('error');
                            $('#modalFechaPasada').modal('show');                            
                         }
 
                         
                     },
                     eventClick: function(calEvent, jsEvent, view) {
-
-                        // console.log(calEvent.start);
-                        // 
-                        // 
 
                         if(!$(this).hasClass('disabled')){
 
@@ -610,8 +611,6 @@
 
                                 if("{{$usuario_tipo}}" != 2 && "{{$usuario_tipo}}" != 4)
                                 {
-
-
                                     $('#fecha_inicio').val(calEvent.start);
                                     var token = $('input:hidden[name=_token]').val();
 
@@ -627,7 +626,6 @@
 
                                         }
                                     });
-
                                 }else{
                                     if(calEvent.tipo != 5 && calEvent.tipo != 6){
 
@@ -677,8 +675,6 @@
                                 $("#modalCancelar" ).modal('show');
                             }
                         }
-                        //console.log(jsEvent);
-                        //console.log(view);
 
                     },
                     eventRender: function(event, eventElement) {
@@ -747,18 +743,17 @@
                                 var tmp = check.split("!");
 
                                 if(tmp[1]){
-                                     var contenido = tmp[1].substr(0, 50) + '...'
-                                 }else{
+                                    var contenido = tmp[1].substr(0, 50) + '...'
+                                }else{
                                     contenido = ''
-                                 }
+                                }
                 
-                               
-
                                 eventElement.find(".fc-title").append("  <i class='zmdi zmdi-close-circle f-15'></i>");
                             }
                             
                         }
                         else if (tipo[0] == 'clasepersonalizada'){
+
                             var tmp = id.split("!"); 
                     
                             var tmp2 = tmp[0].split('-')
@@ -835,10 +830,6 @@
                             eventElement.find(".fc-title").append("  <i class='zmdi zmdi-calendar-check'></i>");
                         }
 
-                        // $(eventElement).tooltip({
-                        //     title: 'asd'
-                        // })
-
                         $(eventElement).attr('data-trigger','hover');
                         $(eventElement).attr('data-toggle','popover');
                         $(eventElement).attr('data-placement','top');
@@ -849,6 +840,7 @@
                         $(eventElement).attr('title','');
 
                         tipo = $('#tipo').val();
+
                         if(tipo != 0){
                             return tipo.indexOf(event.tipo) >= 0
                         }
@@ -891,22 +883,25 @@
                                                 '<a class="pointer active" data-tipo="0">Todos</a>' +
                                             '</li>' +
                                             '<li>' +
-                                                '<a class="pointer" data-tipo="1">Clases Grupales</a>' +
+                                                '<a class="pointer" data-tipo="clases-grupales">Clases Grupales</a>' +
                                             '</li>' +
                                             '<li>' +
-                                                '<a class="pointer" data-tipo="2">Clases Personalizadas</a>' +
+                                                '<a class="pointer" data-tipo="clases-personalizadas">Clases Personalizadas</a>' +
                                             '</li>' +
                                             '<li>' +
-                                                '<a class="pointer" data-tipo="3">Fiestas y Eventos</a>' +
+                                                '<a class="pointer" data-tipo="fiestas-eventos">Fiestas y Eventos</a>' +
                                             '</li>' +
                                             '<li>' +
-                                                '<a class="pointer" data-tipo="4">Talleres</a>' +
+                                                '<a class="pointer" data-tipo="talleres">Talleres</a>' +
                                             '</li>' +
                                             '<li>' +
-                                                '<a class="pointer" data-tipo="5">Citas</a>' +
+                                                '<a class="pointer" data-tipo="citas">Citas</a>' +
                                             '</li>' +
                                             '<li>' +
-                                                '<a class="pointer" data-tipo="6">Transmisiones</a>' +
+                                                '<a class="pointer" data-tipo="transmisiones">Transmisiones</a>' +
+                                            '</li>' +
+                                            '<li>' +
+                                                '<a class="pointer" data-tipo="nueva-clase-grupal">Clases de Nuevo Inicio</a>' +
                                             '</li>' +
                                         '</ul>' +
                                     '</div>' +
@@ -972,13 +967,9 @@
 
                 $('.agendar').on('click', function(e){
                     e.preventDefault();
-                    // console.log("estoy aqui");
                     var agendar = $(this).data('agendar');
 
                     $('#agendar').val(agendar);
-
-                    console.log($(this));
-
                     $("#frm_agendar").submit();
                      
                 });

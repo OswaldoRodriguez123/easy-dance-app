@@ -101,8 +101,10 @@ class AgendarController extends BaseController
 
             if($dt <= Carbon::now()){
                 $nombre_principal = $clase->nombre;
+                $inicio = 1;
             }else{
                 $nombre_principal = $clase->nombre . ' ★'; 
+                $inicio = 0;
             }
 
     		$nombre=$nombre_principal;
@@ -138,7 +140,7 @@ class AgendarController extends BaseController
                 $url = "/agendar/clases-grupales/progreso/".$clase->id;
             }
 
-    		$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$fecha_inicio,"fecha_final"=>$fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
+    		$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$fecha_inicio,"fecha_final"=>$fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, 'inicio' => $inicio);
 			
 			while($dt->timestamp<$df->timestamp){
                 $nombre = $clase->nombre;
