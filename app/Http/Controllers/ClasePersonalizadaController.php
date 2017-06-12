@@ -107,8 +107,14 @@ class ClasePersonalizadaController extends BaseController {
             foreach($clases_personalizadas as $clase_personalizada){
                 $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_personalizada->fecha_inicio);
 
-                if($fecha_inicio >= Carbon::now() && $clase_personalizada->estatus != 0){
-                    $tipo = 'A';
+                if($fecha_inicio >= Carbon::now()->format('Y-m-d') && $clase_personalizada->estatus != 0){
+                    $hora_final = Carbon::createFromFormat('H:i:s', $clase_personalizada->hora_final);
+
+                    if($hora_final <= Carbon::now()->format('H:i:s')){
+                        $tipo = 'A';
+                    }else{
+                        $tipo = 'F';
+                    }
                 }else if($fecha_inicio <= Carbon::now() && $clase_personalizada->estatus != 0){
                     $tipo = 'F';
                 }else{
@@ -133,8 +139,14 @@ class ClasePersonalizadaController extends BaseController {
             foreach($horarios_clases_personalizadas as $clase_personalizada){
                 $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_personalizada->fecha_inicio);
 
-                if($fecha_inicio >= Carbon::now() && $clase_personalizada->estatus != 0){
-                    $tipo = 'A';
+                if($fecha_inicio >= Carbon::now()->format('Y-m-d') && $clase_personalizada->estatus != 0){
+                    $hora_final = Carbon::createFromFormat('H:i:s', $clase_personalizada->hora_final);
+
+                    if($hora_final <= Carbon::now()->format('H:i:s')){
+                        $tipo = 'A';
+                    }else{
+                        $tipo = 'F';
+                    }
                 }else if($fecha_inicio <= Carbon::now() && $clase_personalizada->estatus != 0){
                     $tipo = 'F';
                 }else{
