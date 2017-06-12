@@ -80,7 +80,7 @@
                                     <a href="{{url('incidencias')}}"><i class="zmdi icon_f-incidencias f-16"></i> Generar Incidencias</a>
                                 </li>
                                 <li class="hidden-xs">
-                                    <a href="{{url('agendar/citas')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Generar Citas</a>
+                                    <a href="{{url('agendar/citas')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Citas y Llamadas</a>
                                 </li>
                                 <li class="hidden-xs">
                                     <a href="{{url('agendar/transmisiones')}}"><i class="zmdi zmdi-camera-add f-16"></i> Generar Transmisiones</a>
