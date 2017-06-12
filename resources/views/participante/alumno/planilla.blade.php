@@ -29,26 +29,65 @@
                              <div class="row p-t-20 p-b-0">
 
                                <div class="col-sm-12">
-
-                                  <div id="snapshot" class="p-b-20">
-
-                                    @if($imagen)
-                                      <img id="img_snapshot" class="img-responsive" src="{{url('/')}}/assets/uploads/usuario/{{$imagen}}"> 
-                                    @else
-                                      <img id="img_snapshot" class="img-responsive">
-                                    @endif 
-
-                                  </div>
-
-                                  <div id="webcam">
-                                    
-                                  </div>
-
+                                  <div class="form-group">
+                                      <label for="p-t-10"></label>
+                                      <div class="p-t-10">
+                                        <label class="radio radio-inline m-r-20">
+                                            <input name="tipo_imagen" id="snapshot" value="1" type="radio" checked>
+                                            <i class="input-helper"></i>  
+                                            Tomar Foto 
+                                        </label>
+                                        <label class="radio radio-inline m-r-20 ">
+                                            <input name="tipo_imagen" id="upload" value="2" type="radio">
+                                            <i class="input-helper"></i>  
+                                            Subir Foto 
+                                        </label>
+                                      </div>
+                                   </div>
                                 </div>
-                                
-                                <input type="hidden" name="id" value="{{$alumno->id}}"></input>
-                                
-                                <div class="clearfix"></div> 
+
+                              <div class="col-sm-12 snapshot">
+                                <div class="p-b-20">
+                                  @if($imagen)
+                                    <img id="img_snapshot" class="img-responsive" src="{{url('/')}}/assets/uploads/usuario/{{$imagen}}"> 
+                                  @else
+                                    <img id="img_snapshot" class="img-responsive">
+                                  @endif 
+                                </div>
+                                <div id="webcam"></div>
+
+                                <a class="btn btn-info btn-file" href="#" onClick="take_snapshot()">Tomar Foto</a>
+                                @if($imagen)
+                                  <a id="delete_snapshot" href="#" class="btn btn-danger">Eliminar</a>
+                                @else
+                                  <a style="display:none" id="delete_snapshot" href="#" class="btn btn-danger">Eliminar</a>
+                                @endif
+
+                              </div>
+
+                              <div class="col-sm-12 upload" style="display: none">
+
+                                <label for="id">Cargar Imagen</label>
+                                <div class="clearfix p-b-15"></div>
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                  <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput">
+                                    @if($imagen)
+                                    <img src="{{url('/')}}/assets/uploads/usuario/{{$imagen}}" style="line-height: 150px;">
+                                    @endif
+                                  </div>
+
+                                  <span class="btn btn-info btn-file">
+                                      <span class="fileinput-new">Seleccionar Imagen</span>
+                                      <span class="fileinput-exists">Cambiar</span>
+                                      <input type="file" name="imagen" id="imagen" >
+                                  </span>
+                                  <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                </div>
+                              </div>
+                              
+                              <input type="hidden" name="id" value="{{$alumno->id}}"></input>
+                              
+                              <div class="clearfix"></div> 
                                 
                             </div>
                         </div>
@@ -64,13 +103,7 @@
                               </div>
                             </div>
 
-                            <div class="col-sm-6 text-left">   
-
-                              <a class="btn-blanco m-r-5 f-12" href="#" onClick="take_snapshot()">Tomar Foto</a>                         
-                                      
-                            </div>
-
-                            <div class="col-sm-6 text-right">                         
+                            <div class="col-sm-12 text-right">                         
                                       
                               <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_imagen_alumno" data-update="imagen" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
@@ -1057,12 +1090,12 @@
                             
                         <a href="" class="pull-right">
                           @if($imagen)
-                            <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/uploads/usuario/{{$imagen}}" alt="" width="70px" height="auto"> 
+                            <img id="imagen_perfil" class="img-circle" src="{{url('/')}}/assets/uploads/usuario/{{$imagen}}" alt="" width="70px" height="auto"> 
                           @else
                              @if($alumno->sexo=='F')
-                                <img class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="">        
+                                <img id="imagen_perfil" class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="">        
                              @else
-                                <img class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
+                                <img id="imagen_perfil" class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
                              @endif
                           @endif
                         </a>
@@ -1563,6 +1596,7 @@
       });
 
       Webcam.attach('#webcam');
+      $('#snapshot').prop('checked',true)
       
     })
 
@@ -1575,7 +1609,55 @@
         $('#img_snapshot').attr('src',data_uri)
         $("input:hidden[name=imageBase64]").val(data_uri);
       });
+      $('#delete_snapshot').show()
     }
+
+    $("#delete_snapshot").click(function(){
+      $('#img_snapshot').attr('src','')
+      $("input:hidden[name=imageBase64]").val('');
+      $('#delete_snapshot').hide()
+    });
+
+     $("input[name=tipo_imagen]").on('change', function(){
+      if ($(this).val() == 1){
+        Webcam.set({
+          width: 300,
+          height: 300,
+          image_format: 'jpeg',
+          jpeg_quality: 90
+        });
+
+        Webcam.attach('#webcam');
+        $('.snapshot').show()
+        $('.upload').hide()
+
+      }else{
+        Webcam.reset()
+        $('.snapshot').hide()
+        $('.upload').show()
+      }     
+    });
+
+    $("#imagen").bind("change", function() {
+            
+      setTimeout(function(){
+        var imagen = $("#imagena img").attr('src');
+        var canvas = document.createElement("canvas");
+
+        var context=canvas.getContext("2d");
+        var img = new Image();
+        img.src = imagen;
+        
+        canvas.width  = img.width;
+        canvas.height = img.height;
+
+        context.drawImage(img, 0, 0);
+ 
+        var newimage = canvas.toDataURL("image/jpeg", 0.8);
+        var image64 = $("input:hidden[name=imageBase64]").val(newimage);
+      },500);
+
+    });
 
     function limpiarMensaje(){
         var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "fecha_pago", "costo_mensualidad"];
@@ -1738,6 +1820,27 @@
             success: function (respuesta) {
               setTimeout(function() {
                 if(respuesta.status=='OK'){
+
+                  if(update == 'imagen'){
+                    if(respuesta.imagen != '')
+                    {
+                      $('#foto_perfil').attr('src', "{{url('/')}}/assets/uploads/usuario/"+respuesta.imagen+"?timestamp=" + new Date().getTime());
+                      $('#imagen_perfil').attr('src', "{{url('/')}}/assets/uploads/usuario/"+respuesta.imagen+"?timestamp=" + new Date().getTime());
+                    }            
+                    else
+                    {
+                        if('{{$alumno->sexo}}' =='F')
+                        {
+                          $('#foto_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/1.jpg" )
+                          $('#imagen_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/1.jpg" )
+                        }              
+                        else{
+                          $('#foto_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/2.jpg" )
+                          $('#imagen_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/2.jpg" )
+                        } 
+                    }
+                  }  
+
                   finprocesado(); 
                   campoValor(datos_array);            
                   var nType = 'success';
