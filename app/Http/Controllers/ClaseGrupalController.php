@@ -628,7 +628,7 @@ class ClaseGrupalController extends BaseController {
                     $fecha_a_comparar->addWeek();
                 }
                 
-                if($clases_completadas >= $asistencia_roja && $asistencia_roja != 0){
+                if($clases_completadas >= $asistencia_roja){
                     $estatus="c-youtube";
 
                     // if($asistencia_roja > 0)
@@ -638,7 +638,7 @@ class ClaseGrupalController extends BaseController {
                     // }
                     
                     // continue;
-                }else if($clases_completadas >= $asistencia_amarilla && $asistencia_amarilla != 0){
+                }else if($clases_completadas >= $asistencia_amarilla){
                     $estatus="c-amarillo";
                 }else{
                     $estatus="c-verde";
