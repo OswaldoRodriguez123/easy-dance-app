@@ -576,8 +576,8 @@ class ClaseGrupalController extends BaseController {
 
             //ALUMNOS
 
-            $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio)->format('Y-m-d');
-            $fecha_final = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_final)->format('Y-m-d');
+            $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio);
+            $fecha_final = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_final);
 
             $asistencia_roja = $clasegrupal->asistencia_rojo;
             $asistencia_amarilla = $clasegrupal->asistencia_amarilla;
