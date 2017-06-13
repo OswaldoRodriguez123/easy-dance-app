@@ -610,12 +610,12 @@ class ClaseGrupalController extends BaseController {
                 $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->whereIn('tipo_id',$tipo_id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
 
                 if($ultima_asistencia){
-                    $fecha = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
+                    $fecha_ultima_asistencia = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
                 }else{
-                    $fecha = $fecha_inicio;
+                    $fecha_ultima_asistencia = $fecha_inicio;
                 }
 
-                $fecha_a_comparar = $fecha;
+                $fecha_a_comparar = $fecha_ultima_asistencia;
 
                 if(Carbon::now() < $fecha_final){
                     $fecha_de_finalizacion = $fecha_final;
