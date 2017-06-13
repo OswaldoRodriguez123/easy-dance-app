@@ -611,11 +611,11 @@ class ClaseGrupalController extends BaseController {
 
                 if($ultima_asistencia){
                     $fecha_ultima_asistencia = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
+                    $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
                 }else{
                     $fecha_ultima_asistencia = $fecha_inicio;
+                    $fecha_a_comparar = $fecha_inicio;
                 }
-
-                $fecha_a_comparar = $fecha_ultima_asistencia;
 
                 if(Carbon::now() < $fecha_final){
                     $fecha_de_finalizacion = Carbon::now();
@@ -624,7 +624,7 @@ class ClaseGrupalController extends BaseController {
                 }
 
                 while($fecha_a_comparar <= $fecha_de_finalizacion){
-                    $clases_completadas = $clases_completadas + $cantidad_clases;
+                    $clases_completadas += $cantidad_clases;
                     $fecha_a_comparar->addWeek();
                 }
                 
