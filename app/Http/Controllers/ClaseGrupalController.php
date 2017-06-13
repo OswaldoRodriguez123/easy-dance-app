@@ -628,7 +628,7 @@ class ClaseGrupalController extends BaseController {
                     $fecha_a_comparar->addWeek();
                 }
                 
-                if($clases_completadas >= $asistencia_roja){
+                if($clases_completadas >= $asistencia_roja && $asistencia_roja != 0){
                     $estatus="c-youtube";
 
                     // if($asistencia_roja > 0)
@@ -638,7 +638,7 @@ class ClaseGrupalController extends BaseController {
                     // }
                     
                     // continue;
-                }else if($clases_completadas >= $asistencia_amarilla){
+                }else if($clases_completadas >= $asistencia_amarilla && $asistencia_amarilla != 0){
                     $estatus="c-amarillo";
                 }else{
                     $estatus="c-verde";
@@ -705,7 +705,7 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['dias_vencimiento'] = $dias_vencimiento;
                 $alumno_array['llamadas'] = $llamadas;
                 $alumno_array['fecha_ultima_asistencia'] = $fecha;
-                $alumno_array['cantidad_clases'] = $cantidad_clases;
+                $alumno_array['clases_completadas'] = $clases_completadas;
 
                 $array[$alumno->id] = $alumno_array;
 
