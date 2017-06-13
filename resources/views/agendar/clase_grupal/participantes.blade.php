@@ -1165,8 +1165,8 @@
                                       <td class="text-center"> 
 
                                           <ul class="top-menu">
-                                            <li class="dropdown">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                            <li class="dropdown" id="dropdown_{{$id}}">
+                                                <a id="dropdown_toggle_{{$id}}" href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
                                                    <span class="f-15 f-700" style="color:black"> 
                                                         <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
                                                    </span>
@@ -1314,8 +1314,8 @@
           paging: false,
           order: [[4, 'asc']],
           fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
-            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).addClass( "text-center" );
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).attr( "onclick","previa(this)" );
           },
           language: {
                           processing:     "Procesando ...",
@@ -2726,17 +2726,6 @@
 
     });
 
-
-    $( ".dropdown-toggle" ).hover(function() {
-
-      if($('.dropdown').hasClass('open')){
-
-      }else{
-        $( this ).click();
-      }
-     
-    });
-
     $("input[name=tipo_promocion]").on('change', function(){
 
       if ($("#promociones").is(":checked")){
@@ -2835,6 +2824,24 @@
         $('#promocion_id').selectpicker('refresh')
       }       
     });
+
+    $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+        var id = $(this).closest('tr').attr('id');
+        var dropdown = $('#dropdown_'+id)
+        var dropdown_toggle = $('#dropdown_toggle_'+id)
+
+        if(!dropdown.hasClass('open')){
+            dropdown.addClass('open')
+            dropdown_toggle.attr('aria-expanded','true')
+            $('.table-responsive').css( "overflow", "inherit" );
+        }
+     
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+      $('.table-responsive').css( "overflow", "auto" );
+    })
 
     
     </script>

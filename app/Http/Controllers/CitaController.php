@@ -24,8 +24,7 @@ class CitaController extends BaseController {
 
 	public function calendario(Request $request){
 
-        $citas = DB::table('citas')
-            ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
+        $citas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
             ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
             ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre', 'citas.color_etiqueta')
@@ -69,8 +68,7 @@ class CitaController extends BaseController {
         }
      
 
-        $activas = DB::table('citas')
-            ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
+        $activas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
             ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
             ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.sexo', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
@@ -78,8 +76,7 @@ class CitaController extends BaseController {
             ->where('citas.estatus', 1)
         ->get();
 
-        $finalizadas = DB::table('citas')
-            ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
+        $finalizadas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
             ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
             ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.sexo', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
@@ -87,8 +84,7 @@ class CitaController extends BaseController {
             ->where('citas.estatus', 2)
         ->get();
 
-        $canceladas = DB::table('citas')
-            ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
+        $canceladas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
             ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
             ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.sexo', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
@@ -102,15 +98,12 @@ class CitaController extends BaseController {
         $grouped = $collection->groupBy('tipo_id');     
         $asistencias = $grouped->toArray();
 
-
-
         return view('agendar.cita.principal')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'canceladas' => $canceladas, 'asistencias' => $asistencias]);
     }
 
     public function operar($id){
 
-        $cita = DB::table('citas')
-            ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
+        $cita = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
             ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
             ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre', 'citas.color_etiqueta')
@@ -192,6 +185,7 @@ class CitaController extends BaseController {
         $cita->hora_final = $request->hora_final;
         $cita->color_etiqueta = $request->color_etiqueta;
         $cita->boolean_mostrar = $boolean_mostrar;
+        $cita->cita_llamada = $request->cita_llamada;
 
         if($cita->save()){
 

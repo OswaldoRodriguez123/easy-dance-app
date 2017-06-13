@@ -165,7 +165,33 @@
 
                                 <div class="clearfix p-b-35"></div>
 
-                                       <div class="col-sm-12">
+                                <div class="col-sm-12">
+                                 
+                                    <label for="cita_llamada" id="id-cita_llamada">Tipo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona si es una cita o una llamada" title="" data-original-title="Ayuda"></i>
+
+                                     <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="cita_llamada" id="cita_llamada" data-live-search="true">
+                                          <option value="1">Cita</option>
+                                          <option value="2">Llamada</option>
+                                          
+
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-cita_llamada">
+                                      <span >
+                                        <small class="help-block error-span" id="error-cita_llamada_mensaje" ></small>                                           
+                                      </span>
+                                    </div>
+                                  </div>
+                               </div>
+
+                                <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
                                  
                                     <label for="tipo_id" id="id-tipo_id">Tipo de Cita</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de la cita" title="" data-original-title="Ayuda"></i>
 
