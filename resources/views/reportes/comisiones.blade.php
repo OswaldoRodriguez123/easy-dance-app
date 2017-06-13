@@ -184,7 +184,7 @@
                             </div>
 
                            
-                            <div class="col-md-6">
+                            <div class="col-md-6" id="flot-chart" style="display: none">
                                 <h2>Informe de Comisiones</h2>
                                 <hr>
                                 <div id="pie-chart-procesos" class="flot-chart-pie"></div>
@@ -350,6 +350,12 @@
                         var nType = 'success';
                         var nTitle="Ups! ";
                         var nMensaje=respuesta.mensaje;
+
+                        if($('#tipo').val() == 0){
+                            $('#flot-chart').show()
+                        }else{
+                            $('#flot-chart').hide()
+                        }
 
                         $.each(respuesta.array, function (index, array) {
 
