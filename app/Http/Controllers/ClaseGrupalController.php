@@ -617,11 +617,11 @@ class ClaseGrupalController extends BaseController {
 
                 $fecha_a_comparar = $fecha;
 
-                if(Carbon::now() < $fecha_final){
+                // if(Carbon::now() < $fecha_final){
                     $fecha_de_finalizacion = $fecha_final;
-                }else{
-                    $fecha_de_finalizacion = Carbon::now();
-                }
+                // }else{
+                //     $fecha_de_finalizacion = Carbon::now();
+                // }
 
                 while($fecha_a_comparar <= $fecha_de_finalizacion){
                     $clases_completadas = $clases_completadas + $cantidad_clases;
