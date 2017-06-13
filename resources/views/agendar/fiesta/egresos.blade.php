@@ -216,7 +216,8 @@
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
                                     <th class="text-center" data-column-id="cantidad" data-order="desc">Cantidad</th>
                                     <th class="text-center" data-column-id="fecha" data-order="desc">Fecha</th>
-                                    <th class="text-center" data-column-id="fecha" data-order="desc">Nit</th>
+                                    <th class="text-center" data-column-id="hora" data-order="desc">Hora</th>
+                                    <th class="text-center" data-column-id="nit" data-order="desc">Nit</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
                             </thead>
@@ -231,6 +232,7 @@
                                     <td class="text-center previa">{{$egreso->concepto}}</td>
                                     <td class="text-center previa">{{ number_format($egreso->cantidad, 2, '.' , '.') }}</td>
                                     <td class="text-center previa">{{$egreso->fecha}}</td>
+                                    <td class="text-center previa">{{$egreso->hora}}</td>
                                     <td class="text-center previa">{{$egreso->nit}}</td>
                                     <td class="text-center disabled"> <i class="zmdi zmdi-delete pointer f-20 p-r-10"></i></td>
                                 </tr>

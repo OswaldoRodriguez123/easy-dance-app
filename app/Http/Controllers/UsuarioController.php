@@ -33,7 +33,7 @@ use App\ClasePersonalizada;
 use App\Regalo;
 use App\ItemsFacturaProforma;
 use App\Acuerdo;
-use App\PagoStaff;
+use App\Egreso;
 use Validator;
 use Mail;
 use Carbon\Carbon;
@@ -587,11 +587,12 @@ class UsuarioController extends BaseController {
     public function index()
     {
         $academia = Academia::find(Auth::user()->academia_id);
-        $comisiones = PagoStaff::all();
+        $egresos = Egreso::all();
 
-        foreach($comisiones as $comision){
-            $comision->fecha = $comision->created_at;
-            $comision->save();
+        foreach($egresos as $egreso){
+            $egreso->fecha = $egreso->created_at;
+            $egreso->hora = $egreso->created_at;
+            $egreso->save();
         }
 
         $datos = $this->getDatosUsuario();
