@@ -81,7 +81,9 @@ class EgresoController extends BaseController {
             $recaudado = 0;
             $patrocinador_monto = 0;
 
-            $patrocinadores = Patrocinador::where('campana_id', '=' ,  $campana->id)->get();
+            $patrocinadores = Patrocinador::where('tipo_evento_id', '=' ,  $campana->id)
+                ->where('tipo_evento', '=', 1)
+            ->get();
 
             foreach($patrocinadores as $patrocinador){
 
