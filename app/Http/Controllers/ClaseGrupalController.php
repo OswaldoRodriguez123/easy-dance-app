@@ -610,38 +610,42 @@ class ClaseGrupalController extends BaseController {
                 $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->whereIn('tipo_id',$tipo_id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
 
                 if($ultima_asistencia){
+
                     $fecha_ultima_asistencia = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
                     $fecha_a_comparar = $fecha_ultima_asistencia;
+                
+                    if(Carbon::now() < $fecha_final){
+                        $fecha_de_finalizacion = Carbon::now();
+                    }else{
+                        $fecha_de_finalizacion = $fecha_final;
+                    }
+
+                    while($fecha_a_comparar <= $fecha_de_finalizacion){
+                        $clases_completadas += $cantidad_clases;
+                        $fecha_a_comparar->addWeek();
+                    }
+                    
+                    if($clases_completadas >= $asistencia_roja && $asistencia_roja != 0){
+                        $estatus="c-youtube";
+
+                        // if($asistencia_roja > 0)
+                        // {
+                        //     // $alumno->deleted_at = Carbon::now();
+                        //     // $alumno->save();
+                        // }
+                        
+                        // continue;
+                    }else if($clases_completadas >= $asistencia_amarilla && $asistencia_amarilla != 0){
+                        $estatus="c-amarillo";
+                    }else{
+                        $estatus="c-verde";
+                    }
                 }else{
+
+                    $estatus="c-youtube";
+                    
                     $fecha_ultima_asistencia = $fecha_inicio;
                     $fecha_a_comparar = $fecha_ultima_asistencia;
-                }
-
-                if(Carbon::now() < $fecha_final){
-                    $fecha_de_finalizacion = Carbon::now();
-                }else{
-                    $fecha_de_finalizacion = $fecha_final;
-                }
-
-                while($fecha_a_comparar <= $fecha_de_finalizacion){
-                    $clases_completadas += $cantidad_clases;
-                    $fecha_a_comparar->addWeek();
-                }
-                
-                if($clases_completadas >= $asistencia_roja && $asistencia_roja != 0){
-                    $estatus="c-youtube";
-
-                    // if($asistencia_roja > 0)
-                    // {
-                    //     // $alumno->deleted_at = Carbon::now();
-                    //     // $alumno->save();
-                    // }
-                    
-                    // continue;
-                }else if($clases_completadas >= $asistencia_amarilla && $asistencia_amarilla != 0){
-                    $estatus="c-amarillo";
-                }else{
-                    $estatus="c-verde";
                 }
 
                 // ----------
