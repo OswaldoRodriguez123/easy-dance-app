@@ -607,11 +607,7 @@ class ClaseGrupalController extends BaseController {
 
                 $clases_completadas = 0;
 
-                $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)
-                    ->whereIn('tipo_id',$tipo_id)
-                    ->where('alumno_id',$alumno->id)
-                    ->orderBy('created_at', 'desc')
-                ->first();
+                $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->whereIn('tipo_id',$tipo_id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
 
                 if($ultima_asistencia){
                     $fecha_ultima_asistencia = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
@@ -619,15 +615,17 @@ class ClaseGrupalController extends BaseController {
                     $fecha_ultima_asistencia = $fecha_inicio;
                 }
 
+                $fecha_a_comparar = $fecha_ultima_asistencia;
+
                 if(Carbon::now() < $fecha_final){
-                    $fecha_de_finalizacion = $fecha_final;
-                }else{
                     $fecha_de_finalizacion = Carbon::now();
+                }else{
+                    $fecha_de_finalizacion = $fecha_final;
                 }
 
-                while($fecha_ultima_asistencia <= $fecha_de_finalizacion){
-                    $clases_completadas += $cantidad_clases;
-                    $fecha_ultima_asistencia->addWeek();
+                while($fecha_a_comparar <= $fecha_de_finalizacion){
+                    $clases_completadas = $clases_completadas + $cantidad_clases;
+                    $fecha_a_comparar->addWeek();
                 }
                 
                 if($clases_completadas >= $asistencia_roja && $asistencia_roja != 0){
@@ -706,7 +704,6 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['cantidad'] = $cantidad;
                 $alumno_array['dias_vencimiento'] = $dias_vencimiento;
                 $alumno_array['llamadas'] = $llamadas;
-                $alumno_array['fecha_inicio_fecha_final'] = $fecha_ultima_asistencia . ' / ' . $fecha_de_finalizacion;
 
                 $array[$alumno->id] = $alumno_array;
 
