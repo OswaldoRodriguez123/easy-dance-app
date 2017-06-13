@@ -91,6 +91,7 @@
  
                                     <th style="width:7%;"><input style="margin-left:49%;" name="select_all" value="1" id="select_all" type="checkbox" /></th>
                                     <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
+                                    <th class="text-center" data-column-id="hora" data-order="asc">Hora</th>
                                     <th class="text-center" data-column-id="clase">Servicio</th>
                                     <th class="text-center" data-column-id="monto">Monto</th>
                                 </tr>
@@ -215,6 +216,7 @@
                 var rowNode=t.row.add( [
                   ''+ ' ' +'',
                   ''+array.fecha+'',
+                  ''+array.hora+'',
                   ''+array.servicio+'',
                   ''+formatmoney(parseFloat(array.monto))+'',
                 ] ).draw(false).node();
@@ -241,6 +243,7 @@
                 var rowNode=t.row.add( [
                   ''+checkbox+'', 
                   ''+array.fecha+'',
+                  ''+array.hora+'',
                   ''+array.servicio+'',
                   ''+formatmoney(parseFloat(array.monto))+'',
                 ] ).draw(false).node();
