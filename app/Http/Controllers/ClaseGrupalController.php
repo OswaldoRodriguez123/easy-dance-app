@@ -576,8 +576,8 @@ class ClaseGrupalController extends BaseController {
 
             //ALUMNOS
 
-            $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio);
-            $fecha_final = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_final);
+            $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio)->format('Y-m-d');
+            $fecha_final = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_final)->format('Y-m-d');
 
             $asistencia_roja = $clasegrupal->asistencia_rojo;
             $asistencia_amarilla = $clasegrupal->asistencia_amarilla;
@@ -618,9 +618,9 @@ class ClaseGrupalController extends BaseController {
                 $fecha_a_comparar = $fecha;
 
                 if(Carbon::now() < $fecha_final){
-                    $fecha_de_finalizacion = Carbon::now()->format('Y-m-d');
-                }else{
                     $fecha_de_finalizacion = $fecha_final;
+                }else{
+                    $fecha_de_finalizacion = Carbon::now()->format('Y-m-d');
                 }
 
                 while($fecha_a_comparar <= $fecha_de_finalizacion){
