@@ -618,7 +618,7 @@ class ClaseGrupalController extends BaseController {
                 }
 
                 if($alumno->id == 235){
-                    dd($ultima_asistencia);
+                    dd($fecha_inicio);
                 }
 
                 if(Carbon::now() < $fecha_final){
