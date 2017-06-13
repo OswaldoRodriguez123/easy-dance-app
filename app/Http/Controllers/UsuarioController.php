@@ -33,7 +33,6 @@ use App\ClasePersonalizada;
 use App\Regalo;
 use App\ItemsFacturaProforma;
 use App\Acuerdo;
-use App\Egreso;
 use Validator;
 use Mail;
 use Carbon\Carbon;
@@ -587,14 +586,7 @@ class UsuarioController extends BaseController {
     public function index()
     {
         $academia = Academia::find(Auth::user()->academia_id);
-        $egresos = Egreso::all();
-
-        foreach($egresos as $egreso){
-            $egreso->fecha = $egreso->created_at;
-            $egreso->hora = $egreso->created_at;
-            $egreso->save();
-        }
-
+        
         $datos = $this->getDatosUsuario();
 
         $usuario_id = $datos[0]['usuario_id'];
