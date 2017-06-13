@@ -620,7 +620,7 @@ class ClaseGrupalController extends BaseController {
                 if(Carbon::now() < $fecha_final){
                     $fecha_de_finalizacion = $fecha_final;
                 }else{
-                    $fecha_de_finalizacion = Carbon::now()->format('Y-m-d');
+                    $fecha_de_finalizacion = Carbon::now();
                 }
 
                 while($fecha_a_comparar <= $fecha_de_finalizacion){
