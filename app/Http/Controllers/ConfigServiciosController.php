@@ -349,26 +349,16 @@ class ConfigServiciosController extends BaseController {
         
         if($servicio->delete()){
 
+            $config_pago_staff = ConfigPagosStaff::where('servicio_id',$id)->delete();
+
             if($servicio->tipo == 5){
-                $delete = Taller::withTrashed()->find($servicio->tipo_id);
-                if($delete){
-                    $delete->delete();
-                }
+                $delete = Taller::withTrashed()->find($servicio->tipo_id)->delete();
             }else if($servicio->tipo == 9){
-                $delete = ClasePersonalizada::withTrashed()->find($servicio->tipo_id);
-                if($delete){
-                    $delete->delete();
-                }
+                $delete = ClasePersonalizada::withTrashed()->find($servicio->tipo_id)->delete();
             }else if($servicio->tipo == 3 OR $servicio->tipo == 4){
-                $delete = ConfigClasesGrupales::withTrashed()->find($servicio->tipo_id);
-                if($delete){
-                    $delete->delete();
-                }
+                $delete = ConfigClasesGrupales::withTrashed()->find($servicio->tipo_id)->delete();
             }else if($servicio->tipo == 15){
-                $delete = Paquete::withTrashed()->find($servicio->tipo_id);
-                if($delete){
-                    $delete->delete();
-                }
+                $delete = Paquete::withTrashed()->find($servicio->tipo_id)->delete();
             }
 
             return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
