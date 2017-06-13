@@ -29,31 +29,26 @@
                                   <div class="col-sm-12">
                                     <div class="clearfix p-b-35"></div>
 
-                                        <label for="clase_grupal_id" id="id-clase_grupal_id">Linea de Servicio</label>
+                                      <label for="clase_grupal_id" id="id-clase_grupal_id">Linea de Servicio</label>
 
-                                        <div class="input-group">
-                                          <span class="input-group-addon"><i class="icon_a icon_a-estudio-salon f-22"></i></span>
-                                          <div class="fg-line">
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_a icon_a-estudio-salon f-22"></i></span>
+                                        <div class="fg-line">
+                                            <div class="select">
                                               <div class="select">
-                                                <div class="select">
-                                                  <select class="selectpicker" data-live-search="true" name="tipo_servicio" id="tipo_servicio" data-live-search="true">
-                                                      <option value="0">Seleccione</option>
-                                                      <option value="99">Academia Recepción</option>
-                                                      <option value="14">Fiestas y Eventos</option>
-                                                      <option value="5">Talleres</option>
-                                                      <option value="11">Campañas</option>
-                                                  </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                         <div class="has-error" id="error-clase_grupal_id">
-                                              <span >
-                                                  <small class="help-block error-span" id="error-clase_grupal_id_mensaje" ></small>                               
-                                              </span>
+                                                <select class="selectpicker" data-live-search="true" name="tipo_servicio" id="tipo_servicio" data-live-search="true">
+                                                    <option value="0">Seleccione</option>
+                                                    <option value="99">Academia Recepción</option>
+                                                    <option value="14">Fiestas y Eventos</option>
+                                                    <option value="5">Talleres</option>
+                                                    <option value="11">Campañas</option>
+                                                </select>
+                                              </div>
                                           </div>
-                                        </div>
+                                      </div>
+                                    </div>
 
-                                      <div class="clearfix p-b-35"></div>
+                                    <div class="clearfix p-b-35"></div>
                                    
                                    
                                   <div class="col-sm-12">
@@ -67,6 +62,11 @@
                                             </a>
                                             <ul id="dropdown_principal" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                                             </ul>
+                                        </div>
+                                        <div class="has-error" id="error-servicio">
+                                            <span >
+                                                <small class="help-block error-span" id="error-servicio_mensaje" ></small>                               
+                                            </span>
                                         </div>
 
                                         <!-- <div class="input-group">
@@ -97,13 +97,6 @@
                                               </div>
                                           </div>
                                         </div> -->
-
-                                        <div class="has-error" id="error-servicio">
-                                              <span >
-                                                  <small class="help-block error-span" id="error-servicio_mensaje" ></small>                               
-                                              </span>
-                                        </div>
-
                                       </div>
 
 

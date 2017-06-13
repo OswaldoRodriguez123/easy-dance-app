@@ -154,11 +154,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::post('notificacion_eliminadas', 'NotificacionController@eliminarNotificaciones');
 	Route::post('notificacion_nueva', 'NotificacionController@nuevaNotificaion');
 
-	//BLOG
-
-	Route::get('blog/publicar', 'BlogController@publicar');
-	Route::post('blog/publicar', 'BlogController@store');
-
 	// DESDE AQUI NECESITAN ESTAR AUTENTICADO
 
 	/*------------------------------------------------------
@@ -180,6 +175,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::delete('blog/entrada/eliminar/{id}', 'BlogController@destroy');
 		Route::post('blog/entrada/enviar/{id}', 'BlogController@enviar');
 		Route::get('blog/entrada/visitas/{id}', 'BlogController@visitas');
+
+		Route::get('blog/publicar', 'BlogController@publicar');
+		Route::post('blog/publicar', 'BlogController@store');
 
 		//BLOGGERS
 

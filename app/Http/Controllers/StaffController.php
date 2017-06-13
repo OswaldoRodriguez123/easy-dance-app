@@ -829,6 +829,10 @@ class StaffController extends BaseController
 
             $array = array();
 
+            if($request->servicio == '0-0'){
+                return response()->json(['errores' => ['servicio' => [0, 'Ups! Debe seleccionar un servicio']], 'status' => 'ERROR'],422);
+            }
+
             $tmp = explode('-',$request->servicio);
             $servicio_id = $tmp[0];
             $tipo_servicio = $tmp[1];
