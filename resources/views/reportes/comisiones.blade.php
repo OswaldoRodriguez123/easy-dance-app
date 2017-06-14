@@ -218,9 +218,27 @@
                         </div>
                         <div class="card-body p-b-20">
                             <div class="row">
-                              <div class="container">
-                                
-                              </div>
+                                <div class="container">
+                                    <div class="clearfix m-b-10"></div>
+
+                                    <div class="col-sm-12  text-right" id="totales">
+
+                                        <span class="f-30 text-center c-morado">Totales</span>
+                                        
+                                        <hr></hr>
+                                     
+                                        <div class="col-sm-12">
+                                            <p class="pendientes" style="display: none">
+                                                <span class="f-15 c-morado">Pendientes por pagar</span>
+                                                <span class="f-15 c-morado" id="pendientes">0</span>
+                                            </p>
+                                            <p class="pagadas" style="display: none">
+                                                <span class="f-15 text-right c-morado">Pagadas</span>
+                                                <span class="f-15 c-morado" id="pagadas">0</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
@@ -347,14 +365,26 @@
                     var nAnimOut = "animated flipOutY"; 
                     if(respuesta.status=="OK"){
 
+                        $('#pendientes').text(formatmoney(parseFloat(respuesta.pendientes)))
+                        $('#pagadas').text(formatmoney(parseFloat(respuesta.pagadas)))
+
                         var nType = 'success';
                         var nTitle="Ups! ";
                         var nMensaje=respuesta.mensaje;
 
                         if($('#tipo').val() == 0){
                             $('#flot-chart').show()
+                            $('.pendientes').show();
+                            $('.pagadas').show();
                         }else{
                             $('#flot-chart').hide()
+                            if($('#tipo').val() == 1){
+                                $('.pagadas').show();
+                                $('.pendientes').hide();
+                            }else{
+                                $('.pendientes').show();
+                                $('.pagadas').hide();
+                            }
                         }
 
                         $.each(respuesta.array, function (index, array) {

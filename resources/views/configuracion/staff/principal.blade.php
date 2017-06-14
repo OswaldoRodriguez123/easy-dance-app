@@ -91,10 +91,10 @@
 
                                     <td class="text-center previa">{{$nombre_alumno}} {{$apellido_alumno}} </td>
                                     <td class="text-center previa">{{$staff['cargo']}}</td>
-                                    <td class="text-center disabled"> 
+                                    <td class="text-center"> 
                                         <ul class="top-menu">
-                                            <li class="dropdown">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                            <li class="dropdown" id="dropdown_{{$id}}">
+                                                <a href="#" id="dropdown_toggle_{{$id}}" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
                                                    <span class="f-15 f-700" style="color:black"> 
                                                         <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
                                                    </span>
@@ -105,6 +105,10 @@
                                                         
                                                         <li class="hidden-xs">
                                                             <a href="{{url('/')}}/incidencias/generar/{{$id}}"><i class="zmdi icon_f-incidencias f-20"></i>&nbsp;Incidencias</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
+                                                            <a href="{{url('/')}}/configuracion/staff/pagos/{{$id}}"><i class="zmdi zmdi-money f-20"></i>&nbsp;Pagos</a>
                                                         </li>
                                                         
                                                         <li class="hidden-xs">
@@ -252,6 +256,24 @@
             });
         }
 
-        </script>
+        $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+            var id = $(this).closest('tr').attr('id');
+            var dropdown = $('#dropdown_'+id)
+            var dropdown_toggle = $('#dropdown_toggle_'+id)
+
+            if(!dropdown.hasClass('open')){
+                dropdown.addClass('open')
+                dropdown_toggle.attr('aria-expanded','true')
+                $('.table-responsive').css( "overflow", "inherit" );
+            }
+         
+        });
+
+        $('.table-responsive').on('hide.bs.dropdown', function () {
+          $('.table-responsive').css( "overflow", "auto" );
+        })
+
+    </script>
 
 @stop

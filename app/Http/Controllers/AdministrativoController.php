@@ -1004,7 +1004,6 @@ class AdministrativoController extends BaseController {
                                         $pago->fecha = Carbon::now()->toDateString();
                                         $pago->hora = Carbon::now()->toTimeString();
 
-
                                         $pago->save();
                                         
                                     }

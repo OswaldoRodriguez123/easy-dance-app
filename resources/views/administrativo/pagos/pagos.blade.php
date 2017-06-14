@@ -670,25 +670,25 @@
                         <div class="clearfix p-b-15"></div>
 
 
-                                    <div class="col-sm-12">
+                        <div class="col-sm-12">
 
-                                 
-                                    <span id = "totales" class="f-30 text-center c-morado">Totales</span>
-                                    
-                                    
-                                    <hr></hr>
+                     
+                        <span id = "totales" class="f-30 text-center c-morado">Totales</span>
+                        
+                        
+                        <hr></hr>
 
-                                    <br>
-                                 
-                                    <div class="col-sm-12 text-right">
-                                    <p><span class="f-15 c-morado">Sub total</span>
-                                    <span class="f-15 c-morado" id = "subtotal">0</span>
-                                    </p>
-                                    <p><span class="f-15 text-right c-morado">Impuesto</span>
-                                    <span class="f-15 c-morado" id = "impuestototal">0</span></p>
-                                    <p><span class="f-15 text-right c-morado">Total</span>
-                                    <span class="f-15 c-morado" id = "total">0</span></p>
-                                    </div>
+                        <br>
+                     
+                        <div class="col-sm-12 text-right">
+                          <p><span class="f-15 c-morado">Sub total</span>
+                          <span class="f-15 c-morado" id = "subtotal">0</span>
+                          </p>
+                          <p><span class="f-15 text-right c-morado">Impuesto</span>
+                          <span class="f-15 c-morado" id = "impuestototal">0</span></p>
+                          <p><span class="f-15 text-right c-morado">Total</span>
+                          <span class="f-15 c-morado" id = "total">0</span></p>
+                        </div>
                                    
 
                          <br>

@@ -2818,6 +2818,7 @@ class ReporteController extends BaseController
 
         $pagadas = 0;
         $pendientes = 0;
+
         $array_estatus = array();
         $array = array();
 
@@ -2827,12 +2828,12 @@ class ReporteController extends BaseController
                 if($request->tipo == 1 && $comision->boolean_pago){
 
                     $array[] = $comision;
-                    $pagadas++;
+                    $pagadas += $comision->monto;
 
                 }else if($request->tipo == 2 && !$comision->boolean_pago){
 
                     $array[] = $comision;
-                    $pendientes++;
+                    $pendientes += $comision->monto;
 
                 }
             }else{
@@ -2840,9 +2841,9 @@ class ReporteController extends BaseController
                 $array[] = $comision;
 
                 if($comision->boolean_pago){
-                    $pagadas++;
+                    $pagadas += $comision->monto;
                 }else{
-                    $pendientes++; 
+                    $pendientes += $comision->monto; 
                 }
             }
         }
@@ -2853,7 +2854,7 @@ class ReporteController extends BaseController
         array_push($array_estatus, $array_pagadas);
         array_push($array_estatus, $array_pendientes);
 
-        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'estatus' => $array_estatus, 200]);
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'estatus' => $array_estatus, 'pagadas' => $pagadas, 'pendientes' => $pendientes, 200]);
 
     }
 
