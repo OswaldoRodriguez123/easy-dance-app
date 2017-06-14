@@ -204,6 +204,7 @@
                                 <tr>
                                     <th class="text-center" data-column-id="staff" data-order="desc">Staff</th>
                                     <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
+                                    <th class="text-center" data-column-id="hora" data-order="asc">Hora</th>
                                     <th class="text-center" data-column-id="servicio">Servicio</th>
                                     <th class="text-center" data-column-id="monto">Monto</th>
                                     <th class="text-center" data-column-id="tipo">Tipo</th>
@@ -304,7 +305,7 @@
             processing: true,
             serverSide: false,
             pageLength: 25, 
-            order: [[1, 'desc'], [3, 'desc']],
+            order: [[1, 'desc'], [2, 'desc']],
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
               $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
               $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "disabled" );
@@ -400,6 +401,7 @@
                             var rowNode=t.row.add( [
                                 ''+array.nombre+ ' ' +array.apellido+'',
                                 ''+array.fecha+'',
+                                ''+array.hora+'',
                                 ''+array.servicio+'',
                                 ''+formatmoney(parseFloat(array.monto))+'',
                                 ''+tipo+'',

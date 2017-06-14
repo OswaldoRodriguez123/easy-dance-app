@@ -2779,7 +2779,7 @@ class ReporteController extends BaseController
         
         $query = PagoStaff::join('staff', 'pagos_staff.staff_id', '=', 'staff.id')
             ->join('config_servicios', 'pagos_staff.servicio_id', '=', 'config_servicios.id')
-            ->select('pagos_staff.id', 'staff.nombre', 'staff.apellido', 'config_servicios.nombre as servicio', 'pagos_staff.monto', 'pagos_staff.fecha', 'pagos_staff.boolean_pago')
+            ->select('pagos_staff.id', 'staff.nombre', 'staff.apellido', 'config_servicios.nombre as servicio', 'pagos_staff.monto', 'pagos_staff.fecha', 'pagos_staff.hora', 'pagos_staff.boolean_pago')
             ->where('staff.academia_id','=',Auth::user()->academia_id);
 
         if($request->boolean_fecha){
