@@ -776,6 +776,7 @@ class AdministrativoController extends BaseController {
 
     public function storeFactura(Request $request)
     {
+
         //VERIFICAR SI HAY PAGOS GUARDADOS
 
         $pagos = Session::get('pagos');
@@ -951,7 +952,7 @@ class AdministrativoController extends BaseController {
                             $item_acuerdo->boolean_pagado = 1;
                             $item_acuerdo->save();
                         }
-                    }else if($item_proforma->tipo == 3 OR $item_proforma->tipo == 4){
+                    }else if($item_proforma->tipo == 3){
 
                         //INSCRIPCIONES Y MENSUALIDADES, PARA EL PAGO DE STAFF
 
@@ -959,17 +960,15 @@ class AdministrativoController extends BaseController {
 
                             $inscripcion_clase_grupal = InscripcionClaseGrupal::withTrashed()->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                                ->join('config_servicios', 'config_servicios.tipo_id', '=', 'config_clases_grupales.id')
-                                ->select('inscripcion_clase_grupal.instructor_id as staff_id', 'config_servicios.id as servicio_id', 'config_servicios.tipo as tipo_servicio')
+                                ->select('inscripcion_clase_grupal.instructor_id as staff_id', 'config_clases_grupales.servicio_id')
                                 ->where('inscripcion_clase_grupal.alumno_id', $request->usuario_id)
-                                ->where('config_servicios.tipo_id',$item_proforma->item_id)
-                                ->where('config_servicios.tipo',$item_proforma->tipo)
+                                ->where('config_clases_grupales.servicio_id',$item_proforma->item_id)
                             ->first();
 
                             if($inscripcion_clase_grupal){
 
                                 $config_pago = ConfigPagosStaff::where('servicio_id',$inscripcion_clase_grupal->servicio_id)
-                                    ->where('tipo_servicio',$inscripcion_clase_grupal->tipo_servicio)
+                                    ->where('tipo_servicio',3)
                                     ->where('staff_id',$inscripcion_clase_grupal->staff_id)
                                 ->first();
 
@@ -989,6 +988,7 @@ class AdministrativoController extends BaseController {
                                             $pago->monto=$monto;
                                             $pago->servicio_id=$inscripcion_clase_grupal->servicio_id;
                                             $pago->fecha = Carbon::now()->toDateString();
+                                            $pago->hora = Carbon::now()->toTimeString();
 
                                             $pago->save();
                                         }
@@ -1002,6 +1002,8 @@ class AdministrativoController extends BaseController {
                                         $pago->monto=$config_pago->monto;
                                         $pago->servicio_id=$inscripcion_clase_grupal->servicio_id;
                                         $pago->fecha = Carbon::now()->toDateString();
+                                        $pago->hora = Carbon::now()->toTimeString();
+
 
                                         $pago->save();
                                         

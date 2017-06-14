@@ -10,6 +10,7 @@ use App\Taller;
 use App\ConfigClasesGrupales;
 use App\Paquete;
 use App\Academia;
+use App\ConfigPagosStaff;
 use Validator;
 use Session;
 use Illuminate\Support\Facades\Auth;
@@ -344,7 +345,6 @@ class ConfigServiciosController extends BaseController {
     
     public function destroy($id)
     {
-
         $servicio = ConfigServicios::find($id);
         
         if($servicio->delete()){

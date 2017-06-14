@@ -146,6 +146,9 @@ class ConfigClasesGrupalesController extends BaseController {
 
             $servicio->save();
 
+            $clasegrupal->servicio_id = $servicio->id;
+            $clasegrupal->save();
+
             $servicio = new ConfigServicios;
             
             $servicio->academia_id = Auth::user()->academia_id;
