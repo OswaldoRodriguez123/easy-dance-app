@@ -1093,6 +1093,8 @@ class StaffController extends BaseController
 
                     $pago = PagoStaff::find($pago_staff);
                     $pago->boolean_pago = 1;
+                    $pago->fecha = Carbon::now()->toDateString();
+                    $pago->hora = Carbon::now()->toTimeString();
 
                     $pago->save();
 
