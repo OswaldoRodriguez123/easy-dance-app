@@ -1056,6 +1056,8 @@ class AdministrativoController extends BaseController {
                                         $pago->tipo=$config_pago->tipo;
                                         $pago->monto=$monto;
                                         $pago->servicio_id=$item_proforma->item_id;
+                                        $pago->fecha = Carbon::now()->toDateString();
+                                        $pago->hora = Carbon::now()->toTimeString();
 
                                         $pago->save();
                                     }
@@ -1066,8 +1068,10 @@ class AdministrativoController extends BaseController {
 
                                     $pago->staff_id=$item_proforma->promotor_id;
                                     $pago->tipo=$config_pago->tipo;
-                                    $pago->monto=$config_pago->monto;
+                                    $pago->monto = floatval($config_pago->monto * $item_proforma->cantidad);
                                     $pago->servicio_id=$item_proforma->item_id;
+                                    $pago->fecha = Carbon::now()->toDateString();
+                                    $pago->hora = Carbon::now()->toTimeString();
 
                                     $pago->save();
                                     
@@ -1154,21 +1158,22 @@ class AdministrativoController extends BaseController {
                     if($usuario->familia_id){
                         $es_representante = Familia::where('representante_id', $usuario->id)->first();
                         if($es_representante){
-                            $correo = $usuario->email;
+                            // $correo = $usuario->email;
                             $celular = getLimpiarNumero($usuario->celular);
                         }else{
                             $familia = Familia::find($usuario->familia_id);
                             $representante = User::find($familia->representante_id);
-                            $correo = $representante->email;
+                            // $correo = $representante->email;
                             $celular = getLimpiarNumero($representante->celular);
                         }
                     }else{
-                        $correo = $usuario->email;
+                        // $correo = $usuario->email;
                         $celular = getLimpiarNumero($usuario->celular);
                     }
 
                 }else{
-                    $correo = $usuario->correo;
+                    $alumno = Alumno::find($request->usuario_id);
+                    // $correo = $alumno->correo;
                     $celular = getLimpiarNumero($alumno->celular);
                 }
 
