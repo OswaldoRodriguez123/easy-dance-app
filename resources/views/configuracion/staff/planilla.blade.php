@@ -56,7 +56,7 @@
 
                                         <label for="tipo_id" id="id-tipo_id">Detalle</label><br>
 
-                                        <div class="dropdown">
+                                        <div class="dropdown" id="dropdown_boton">
                                             <a id="detalle_boton" role="button" data-toggle="dropdown" class="btn btn-blanco">
                                                 Pulsa Aqui <span class="caret"></span>
                                             </a>
@@ -828,9 +828,6 @@
           					        <div class="text-center p-t-30">       
           					          <div class="row p-b-15 ">
           					            <div class="col-md-12" data-src="/assets/img/ayuda-configuracion.jpg">
-          					              <!--<div class="text-center">
-          					                <img src="{{url('/')}}/assets/img/detalle_alumnos.jpg" class="img-responsive img-efecto text-center" alt="">
-          					              </div>-->
                                   <ul class="ca-menu-planilla">
                                     <li>
                                         <a href="#" class="mousehand disabled">
@@ -843,47 +840,23 @@
                                     </li>
                                   </ul>
 
-                                  <div class="col-sm-12 text-left"> 
-
-                                  <br></br>
-
-                                   <!-- <span class="f-16 f-700">Balance Económico <a href="{{url('/')}}/participante/alumno/deuda/{{$id}}"><i class="zmdi zmdi-money {{ empty($alumno->importe_neto) ? 'c-verde ' : 'c-youtube' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i></a></span> -->
-
-                                
-
-
-                                   <!-- <li class="dropdown" data-original-title="" data-content="Calendario" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
-                                  <a href="{{url('/')}}/participante/alumno/historial/{{$id}}">
-                                      <i class="tm-icon zmdi zmdi-money f-20"></i>
-                                      </a>
-                                  </li> -->
-
-                                  
-
-                                  </div>
-
                                   <div class="col-sm-12 text-center"> 
 
-                                  <br>
+                                    <br>
+                                    <span class="f-16 f-700">Acciones</span>
 
-                                  <span class="f-16 f-700">Acciones</span>
-
-                                  <hr></hr>
-                                  
-                                  <!-- <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a> -->
-                                  <a href="{{url('/')}}/configuracion/staff/pagos/{{$alumno->id}}"><i class="zmdi zmdi-money f-20 m-r-5 boton blue sa-warning" data-original-title="Pagos" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <a href="{{url('/')}}/incidencias/generar/{{$id}}"><i class="icon_f-incidencias f-20 m-r-5 boton blue sa-warning" data-original-title="Incidencia" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$alumno->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
-
-                                  <br></br>
+                                    <hr></hr>
                                     
-                                   
+      
+                                    <a href="{{url('/')}}/configuracion/staff/pagos/{{$alumno->id}}"><i class="zmdi zmdi-money f-20 m-r-5 boton blue sa-warning" data-original-title="Pagos" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                    <a href="{{url('/')}}/incidencias/generar/{{$id}}"><i class="icon_f-incidencias f-20 m-r-5 boton blue sa-warning" data-original-title="Incidencia" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                    <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$alumno->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+
+                                    <br></br>
                                 </div>
 
           					            </div>                
-          					          </div>
-          					          <!--<p class="text-justify">Desde esta área Easy Dance te brinda la oportunidad de actualizar los datos creados en tu planilla de registro.</p>-->
-          					                
+          					          </div> 
           					      </div>
 					           </div>
 
@@ -1987,6 +1960,9 @@
             servicio_id = $(this).data('servicio_id')
 
             $('#detalle_boton').text(nombre_servicio)
+
+            $('#dropdown_boton').removeClass('open')
+            $('#detalle_boton').attr('aria-expanded',false);
         });
 
    </script> 
