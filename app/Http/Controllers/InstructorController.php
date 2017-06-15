@@ -21,6 +21,10 @@ use App\ConfigPagosInstructor;
 use App\AsistenciaInstructor;
 use App\PagoInstructor;
 use App\CredencialInstructor;
+use App\ConfigServicios;
+use App\ConfigProductos;
+use App\Comision;
+use App\ConfigComision;
 
 class InstructorController extends BaseController {
 
@@ -936,9 +940,56 @@ class InstructorController extends BaseController {
                 $imagen = '';
             }
 
- 
-        //Devolver vista con datos del mapa
-           return view('participante.instructor.planilla')->with(['instructor' => $instructor, 'credencial' => $credencial, 'clases_grupales' => $array, 'pagos_instructor' => $pagos_instructor, 'imagen' => $imagen]);
+            $comisiones = ConfigComision::where('config_comisiones.usuario_id', $id)
+                ->where('config_comisiones.usuario_tipo',2)
+            ->get();
+
+            $tmp = array();
+            $tmp2 = array();
+
+            $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+            foreach($config_servicio as $item){
+
+                $tmp[]=array('id' => '1-'.$item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo'], 'costo' => $item['costo']);
+            }
+
+            $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+            foreach($config_producto as $item){
+
+                $tmp[]=array('id' => '2-'.$item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo'], 'costo' => $item['costo']);
+               
+            }
+
+            foreach($comisiones as $pago){
+               
+                if($pago->servicio_producto_tipo == 1){
+                    $servicio_producto = ConfigServicios::find($pago->servicio_producto_id);
+                }else{
+                    $servicio_producto = ConfigProductos::find($pago->servicio_producto_id);
+                }
+
+                if($servicio_producto){
+
+                    if($pago->tipo == 1){
+                        $porcentaje = $pago->monto / 100;
+                        $monto_porcentaje = $servicio_producto->costo * $porcentaje;
+                    }else{
+                        $monto_porcentaje = '';
+                    }
+
+                    $tmp2[]=array('id' => $pago->id, 'nombre' => $servicio_producto->nombre , 'tipo' => $pago->tipo, 'monto' => $pago->monto, 'monto_porcentaje' => floatval($monto_porcentaje), 'servicio_producto_id' => $pago->servicio_producto_id, 'servicio_producto_tipo' => $pago->servicio_producto_tipo);
+                }
+
+            }
+
+            $collection=collect($tmp);   
+            $linea_servicio = $collection->toArray();
+            $collection=collect($tmp2);   
+            $comisiones = $collection->toArray();
+
+            return view('participante.instructor.planilla')->with(['instructor' => $instructor, 'credencial' => $credencial, 'clases_grupales' => $array, 'pagos_instructor' => $pagos_instructor, 'imagen' => $imagen, 'comisiones' => $comisiones,  'linea_servicio' => $linea_servicio]);
         }else{
            return redirect("participante/instructor"); 
         }
@@ -1172,43 +1223,61 @@ class InstructorController extends BaseController {
         if($instructor)
         {
 
-            $pagadas = DB::table('pagos_instructor')
-                ->join('clases_grupales', 'pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+            $array = array();
+
+            $pagos_instructor = PagoInstructor::join('clases_grupales', 'pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('pagos_instructor.created_at as fecha', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'pagos_instructor.monto', 'pagos_instructor.tipo')
+                ->select('pagos_instructor.*', 'config_clases_grupales.nombre as servicio_producto', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor')
                 ->where('instructores.id', $id)
-                ->where('pagos_instructor.boolean_clase_pagada', 1)
-                ->limit(150)
+                ->limit(100)
             ->get();
 
+            $total_pagos = PagoInstructor::where('instructor_id', $id)
+                ->where('boolean_pago', 0)
+            ->sum('monto');
 
-            $por_pagar = DB::table('pagos_instructor')
-                ->join('clases_grupales', 'pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
-                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('pagos_instructor.created_at as fecha', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor',  'pagos_instructor.monto', 'pagos_instructor.id', 'pagos_instructor.tipo')
-                ->where('instructores.id', $id)
-                ->where('pagos_instructor.boolean_clase_pagada', 0)
-                ->where('pagos_instructor.monto', '>', 0)
+            foreach($pagos_instructor as $pago){
+
+                $collection=collect($pago);     
+                $pago_array = $collection->toArray();
+                $pago_array['id']='1-'.$pago->id;
+                $array['1-'.$pago->id] = $pago_array;
+                
+            }
+
+            $comisiones = Comision::join('staff', 'comisiones.usuario_id', '=', 'staff.id')
+                ->select('comisiones.*', 'comisiones.hora','staff.nombre as nombre_staff', 'staff.apellido as apellido_staff')
+                ->where('comisiones.usuario_id', $id)
+                ->where('comisiones.usuario_tipo',2)
+                ->limit(100)
             ->get();
+            foreach($comisiones as $comision){
 
-            $total = DB::table('pagos_instructor')
-                ->select('pagos_instructor.*')
-                ->where('pagos_instructor.instructor_id', $id)
-                ->where('pagos_instructor.boolean_clase_pagada', 0)
-            ->sum('pagos_instructor.monto');
+                if($comision->servicio_producto_tipo == 1){
+                    $servicio_producto = ConfigServicios::find($comision->servicio_producto_id);
+                }else{
+                    $servicio_producto = ConfigProductos::find($comision->servicio_producto_id);
+                }
+                if($servicio_producto){
 
-            $pagos_instructor = DB::table('configuracion_pagos_instructor')
-                ->join('clases_grupales', 'configuracion_pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
-                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('configuracion_pagos_instructor.id', 'configuracion_pagos_instructor.monto', 'config_clases_grupales.nombre as nombre', 'configuracion_pagos_instructor.clase_grupal_id as clase_grupal_id', 'configuracion_pagos_instructor.tipo as tipo')
-                ->where('instructores.id', $id)
-            ->get();
+                    $collection=collect($comision);     
+                    $comision_array = $collection->toArray();
+                    
+                    $comision_array['servicio_producto']=$servicio_producto->nombre;
+                    $comision_array['id']='2-'.$comision->id;
+                    $array['2-'.$comision->id] = $comision_array;
+                }
+            }
 
+            $total_comisiones = Comision::where('usuario_id', $id)
+                ->where('usuario_tipo',2)
+                ->where('boolean_pago', 0)
+            ->sum('monto');
 
-            return view('participante.instructor.pagos')->with(['pagadas'=> $pagadas, 'por_pagar' => $por_pagar, 'total' => $total, 'instructor' => $instructor, 'pagos_instructor' => $pagos_instructor, 'id' => $id ]);
+            $total = $total_pagos + $total_comisiones;
+
+            return view('participante.instructor.pagos')->with(['pagos_comisiones'=> $array, 'total' => $total, 'instructor' => $instructor, 'id' => $id ]);
         }else{ 
 
             return redirect("participante/instructor"); 
@@ -1345,18 +1414,17 @@ class InstructorController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno");
     }
 
-    public function pagar(Request $request)
-    {
+    public function pagar(Request $request){
+
         $rules = [
-            'asistencias' => 'required',
+            'pendientes' => 'required',
         ];
 
         $messages = [
 
-            'asistencias.required' => 'Ups! Debe seleccionar un pago',
+            'pendientes.required' => 'Ups! Debe seleccionar un pago',
             
         ];
 
@@ -1364,33 +1432,168 @@ class InstructorController extends BaseController {
 
         if ($validator->fails()){
 
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }else{
+        
+            $pendientes = explode(",", $request->pendientes);
+            $array = array();
+
+            foreach($pendientes as $pendiente)
+            {   
+                if($pendiente != ''){
+
+                    $explode = explode('-',$pendiente);
+                    $tipo = $explode[0];
+                    $id = $explode[1];
+
+                    if($tipo == 1){
+                        $pago = PagoInstructor::find($id);
+                    }else{
+                        $pago = Comision::find($id);
+                    }
+
+                    $pago->boolean_pago = 1;
+                    $pago->save();
+
+                    array_push($array,$pendiente);
+
+                }
+            }
+
+            return response()->json(['mensaje' => '¡Excelente! El pago ha sido realizado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
+
+        }
+    }
+
+    public function agregarcomisionfija(Request $request)
+    {
+        
+        $rules = [
+            'cantidad' => 'required|min:1',
+            'tipo_pago' => 'required',
+            'servicio_producto_id' => 'required',
+        ];
+
+        $messages = [
+
+            'cantidad.required' => 'Ups! El Monto es requerido',
+            'cantidad.numeric' => 'Ups! El Monto es invalido, solo se aceptan numeros',
+            'servicio_producto_id.required' => 'Ups! El Servicio es requerido',
+            
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
 
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
         }
 
         else{
-        
-            $asistencias = explode(",", $request->asistencias);
-            $array = array();
 
-            foreach($asistencias as $asistencia)
-            {
-                if($asistencia != ''){
-
-                    $pago = PagoInstructor::find($asistencia);
-                    $pago->boolean_clase_pagada = 1;
-
-                    $pago->save();
-
-                    array_push($array,$asistencia);
-
+            if($request->tipo_pago == 1){
+                if($request->cantidad > 100){
+                    return response()->json(['errores' => ['cantidad' => [0, 'Ups! El porcentaje no puede ser mayor a 100']], 'status' => 'ERROR'],422);
                 }
             }
 
+            $array = array();
 
-            return response()->json(['mensaje' => '¡Excelente! El pago ha sido realizado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
+            if($request->servicio_producto_id == '0-0' || !$request->servicio_producto_id){
+                return response()->json(['errores' => ['servicio_producto_id' => [0, 'Ups! Debe seleccionar un servicio']], 'status' => 'ERROR'],422);
+            }
 
+            $explode = explode('-',$request->servicio_producto_id);
+
+            $servicio_producto_tipo = $explode[0];
+            $servicio_producto_id = $explode[1];
+
+            $monto = floatval(str_replace(',', '', $request->cantidad));
+            if($servicio_producto_tipo == 1){
+                $servicio_producto = ConfigServicios::find($servicio_producto_id);
+            }else{
+                $servicio_producto = ConfigProductos::find($servicio_producto_id);
+            }
+            
+            if($monto  > $servicio_producto->costo){
+                return response()->json(['errores' => ['cantidad' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
+            }
+
+            $config_pagos = ConfigComision::where('usuario_id', $request->id)
+                ->where('usuario_tipo',2)
+                ->where('servicio_producto_id', $servicio_producto_id)
+                ->where('servicio_producto_tipo', $servicio_producto_tipo)
+            ->first();
+
+            if(!$config_pagos){
+
+                $config_pagos = new ConfigComision;
+
+                $config_pagos->servicio_producto_id = $servicio_producto_id;
+                $config_pagos->servicio_producto_tipo = $servicio_producto_tipo;
+                $config_pagos->usuario_id = $request->id;
+                $config_pagos->usuario_tipo = 2;
+                $config_pagos->tipo = $request->tipo_pago;
+                $config_pagos->monto = $monto;
+
+                $config_pagos->save();
+
+                if($config_pagos->tipo == 1){
+                    $porcentaje = $config_pagos->monto / 100;
+                    $monto_porcentaje = $servicio_producto->costo * $porcentaje;
+                }else{
+                    $monto_porcentaje = '';
+                }
+                
+                $config_pagos['monto_porcentaje'] = $monto_porcentaje;
+                $config_pagos['nombre'] = $servicio_producto->nombre;
+
+                array_push($array, $config_pagos);
+
+
+            }else{
+
+                $config_pagos->servicio_producto_id = $servicio_producto_id;
+                $config_pagos->servicio_producto_tipo = $servicio_producto_tipo;
+                $config_pagos->usuario_id = $request->id;
+                $config_pagos->usuario_tipo = 2;
+                $config_pagos->tipo = $request->tipo_pago;
+                $config_pagos->monto = $monto;
+
+                $config_pagos->save();
+
+                if($config_pagos->tipo == 1){
+                    $porcentaje = $config_pagos->monto / 100;
+                    $monto_porcentaje = $servicio_producto->costo * $porcentaje;
+                }else{
+                    $monto_porcentaje = '';
+                }
+                
+                $config_pagos['monto_porcentaje'] = $monto_porcentaje;
+                $config_pagos['nombre'] = $servicio_producto->nombre;
+
+                array_push($array, $config_pagos);
+            }
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);   
+        }
+    }
+
+    public function eliminarcomisionfija($id)
+    {
+
+        $comision_explode = explode('-',$id);
+        $comision_id = $comision_explode[0];
+
+        $comision = ConfigComision::find($comision_id);
+        
+        if($comision->delete()){
+
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
 }

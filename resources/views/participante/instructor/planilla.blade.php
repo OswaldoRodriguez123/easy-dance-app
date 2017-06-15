@@ -20,15 +20,33 @@
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
                             <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Pago<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="form_pago" id="form_pago"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <input type="hidden" name="id" value="{{ $instructor->id }}">
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                               
-                               
+                          <div class="modal-body">                           
+                            <div class="row p-t-20 p-b-0">
+
                               <div class="col-sm-12">
-                                <div class="clearfix p-b-35"></div>
+                                  <div class="form-group fg-line ">
+                                    <label for="sexo p-t-10">Tipo</label>
+                                    <div class="p-t-10">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="pagos_comisiones" id="pagos2" value="1" type="radio" checked>
+                                        <i class="input-helper"></i>  
+                                        Pagos
+                                    </label>
+                                    <label class="radio radio-inline m-r-20 ">
+                                        <input name="pagos_comisiones" id="comisiones2" value="2" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Comisiones
+                                    </label>
+                                    </div>
+                                    
+                                  </div>
+                                </div>
+                               
+                              <div class="col-sm-12" id="pagos">
+                                <form name="form_pago" id="form_pago"  >
+                                  <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                  <input type="hidden" name="id" value="{{ $instructor->id }}">
+                                  <div class="clearfix p-b-35"></div>
 
                                     <label for="clase_grupal_id" id="id-clase_grupal_id">Ingresa la clase</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="El título para esta recompensa es lo que aparecerá en tu página de la campaña de Easy Dance . Crear un título que describa bien el contenido de lo que ofrece esta recompensa" title="" data-original-title="Ayuda"></i>
 
@@ -156,7 +174,171 @@
 
                                 </div>
                               </div> <!-- TABLE RESPONSIVE -->
+                              </form>
                             </div><!--  COL-SM-12 -->
+
+                            <div class="col-sm-12" id="comisiones" style="display: none">
+                              <form name="form_comision" id="form_comision"  >
+                              <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                              <input type="hidden" name="id" value="{{ $instructor->id }}">
+                              <input type="hidden" id="servicio_producto_id" name="servicio_producto_id" value="">
+                              <div class="clearfix p-b-35"></div>
+
+                                <label for="clase_grupal_id" id="id-clase_grupal_id">Linea de Servicio</label>
+
+                                <div class="input-group">
+                                  <span class="input-group-addon"><i class="icon_a icon_a-estudio-salon f-22"></i></span>
+                                  <div class="fg-line">
+                                      <div class="select">
+                                        <div class="select">
+                                          <select class="selectpicker" data-live-search="true" name="tipo_servicio" id="tipo_servicio" data-live-search="true">
+                                              <option value="0">Seleccione</option>
+                                              <option value="99">Academia Recepción</option>
+                                              <option value="14">Fiestas y Eventos</option>
+                                              <option value="5">Talleres</option>
+                                              <option value="11">Campañas</option>
+                                          </select>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+
+                              <div class="clearfix p-b-35"></div>
+                             
+                             
+                            <div class="col-sm-12">
+                              <div class="clearfix p-b-35"></div>
+
+                                  <label for="tipo_id" id="id-tipo_id">Detalle</label><br>
+
+                                  <div class="dropdown" id="dropdown_boton">
+                                      <a id="detalle_boton" role="button" data-toggle="dropdown" class="btn btn-blanco">
+                                          Pulsa Aqui <span class="caret"></span>
+                                      </a>
+                                      <ul id="dropdown_principal" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                      </ul>
+                                  </div>
+                                  <div class="has-error" id="error-servicio_producto_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-servicio_producto_id_mensaje" ></small>                               
+                                      </span>
+                                  </div>              
+                                </div>
+
+
+                                <div class="clearfix p-b-35"></div>
+
+                             
+                                <label for="apellido" id="id-tipo">Tipo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de pago" title="" data-original-title="Ayuda"></i>
+
+                                <div class="form-group fg-line ">
+                                  <div class="p-t-10">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo_pago" id="porcentaje" value="1" type="radio" checked>
+                                        <i class="input-helper"></i>  
+                                        Porcentaje 
+                                    </label>
+                                    <label class="radio radio-inline m-r-20 ">
+                                        <input name="tipo_pago" id="tasa_fija" value="2" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Tasa Fija 
+                                    </label>
+                                </div>
+                                </div>
+                             <div class="has-error" id="error-tipo">
+                                  <span >
+                                      <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                
+                                  </span>
+                              </div>
+
+                             <div class="clearfix p-b-35"></div>
+
+                                  <div class="form-group">
+                                      <label for="cantidad" id="id-cantidad">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto a pagar por clase grupal" title="" data-original-title="Ayuda"></i>
+                                      
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="000,000,000,000" data-mask-reverse="true" placeholder="Ej. 5000">
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="has-error" id="error-cantidad">
+                                    <span >
+                                        <small id="error-cantidad_mensaje" class="help-block error-span" ></small>                                           
+                                    </span>
+                                  </div>
+
+                                <div class="clearfix p-b-35"></div>
+
+                               
+                            <div class="card-header text-left">
+                            <button type="button" class="btn btn-blanco m-r-10 f-10" id="addcomision" >Agregar Linea</button>
+                            </div>
+
+                            <br></br>
+
+                            <div class="table-responsive row">
+                               <div class="col-md-12">
+                                <table class="table table-striped table-bordered text-center " id="tablecomisiones" >
+                                  <thead>
+                                      <tr>
+                                          
+                                          <th class="text-center" data-column-id="servicio_producto">Servicio / Producto</th>
+                                          <th class="text-center" data-column-id="tipo" data-type="numeric">Tipo</th>
+                                          <th class="text-center" data-column-id="monto" data-type="numeric">Monto</th>
+                                          <th class="text-center" data-column-id="monto_porcentaje" data-type="numeric">Monto Porcentaje</th>
+                                          <th class="text-center" data-column-id="operaciones">Operaciones</th>
+
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+
+                                  @foreach ($comisiones as $comision)
+                                      <?php $id = $comision['id']; ?>
+                                      <tr id="{{$id}}" class="seleccion">
+                                          <td class="text-center">{{$comision['nombre']}}</td>
+                                          <td class="text-center">
+
+                                          @if($comision['tipo'] == 1)
+
+                                            Porcentaje
+                                          @else
+
+                                            Tasa Fija
+
+                                          @endif
+
+  
+                                          </td>
+                                          <td class="text-center">
+
+                                            @if($comision['tipo'] == 1)
+
+                                              {{$comision['monto']}}%
+                                            @else
+
+                                              {{ number_format($comision['monto'], 2, '.' , '.') }}
+
+                                            @endif
+
+                                            
+
+                                          </td>
+                                          <td class="text-center">{{ number_format($comision['monto_porcentaje'], 2, '.' , '.') }}</td>
+                                          <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                        </tr>
+                                  @endforeach 
+                                                                 
+                                  </tbody>
+                                </table>
+
+                              </div>
+                            </div> <!-- TABLE RESPONSIVE -->
+                            </form>
+                          </div><!--  COL-SM-12 -->
+
+
                           </div><!-- ROW -->
 
                         <div class="clearfix p-b-35"></div>
@@ -181,7 +363,7 @@
 
                             </div>
                         </div>
-                    </div></form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -373,7 +555,7 @@
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
-                                <div class="form-group fg-line ">
+                                  <div class="form-group fg-line ">
                                     <label for="sexo p-t-10">Sexo</label>
                                     <div class="p-t-10">
                                     <label class="radio radio-inline m-r-20">
@@ -388,13 +570,13 @@
                                     </label>
                                     </div>
                                     
-                                 </div>
-                                 <div class="has-error" id="error-sexo">
-                                      <span >
-                                          <small class="help-block error-span" id="error-sexo_mensaje" ></small>                                           
-                                      </span>
                                   </div>
-                               </div>
+                                  <div class="has-error" id="error-sexo">
+                                        <span >
+                                            <small class="help-block error-span" id="error-sexo_mensaje" ></small>                                           
+                                        </span>
+                                  </div>
+                                </div>
 
                                <input type="hidden" name="id" value="{{$instructor->id}}"></input>
                               
@@ -1584,10 +1766,16 @@
   route_agregar_pago="{{url('/')}}/participante/instructor/agregarpago";
   route_eliminar_pago="{{url('/')}}/participante/instructor/eliminarpago/";
 
-   $(document).ready(function(){
+  route_agregar_comision="{{url('/')}}/participante/instructor/agregarcomisionfija";
+  route_eliminar_comision="{{url('/')}}/participante/instructor/eliminarcomisionfija/";
+
+  var linea_servicio = <?php echo json_encode($linea_servicio);?>;
+
+  $(document).ready(function(){
 
     $('#clase_grupal_id').val('');
     $("#form_pago")[0].reset();
+    $("#form_comision")[0].reset();
     $('#clase_grupal_id').selectpicker('refresh');
 
     $("#imagen").bind("change", function() {
@@ -2331,49 +2519,450 @@
     });
 
     h=$('#tablepagos').DataTable({
-          processing: true,
-          serverSide: false,
-          pageLength: 50, 
-          order: [[0, 'desc']],
-          fnDrawCallback: function() {
-          if ("{{count($pagos_instructor)}}" < 50) {
-                $('.dataTables_paginate').hide();
-                $('#tablelistar_length').hide();
-            }
-          },
-          fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          },
-          language: {
-                          processing:     "Procesando ...",
-                          search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                          searchPlaceholder: "BUSCAR",
-                          lengthMenu:     " ",
-                          info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                          infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                          infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                          infoPostFix:    "",
-                          loadingRecords: "...",
-                          zeroRecords:    "No se encontraron registros coincidentes",
-                          emptyTable:     "No hay datos disponibles en la tabla",
-                          paginate: {
-                              first:      "Primero",
-                              previous:   "Anterior",
-                              next:       "Siguiente",
-                              last:       "Ultimo"
-                          },
-                          aria: {
-                              sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                              sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                          }
+      processing: true,
+      serverSide: false,
+      pageLength: 50, 
+      order: [[0, 'desc']],
+      fnDrawCallback: function() {
+      if ("{{count($pagos_instructor)}}" < 50) {
+            $('.dataTables_paginate').hide();
+            $('#tablelistar_length').hide();
+        }
+      },
+      fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+        $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+      },
+      language: {
+                      processing:     "Procesando ...",
+                      search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                      searchPlaceholder: "BUSCAR",
+                      lengthMenu:     " ",
+                      info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                      infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                      infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                      infoPostFix:    "",
+                      loadingRecords: "...",
+                      zeroRecords:    "No se encontraron registros coincidentes",
+                      emptyTable:     "No hay datos disponibles en la tabla",
+                      paginate: {
+                          first:      "Primero",
+                          previous:   "Anterior",
+                          next:       "Siguiente",
+                          last:       "Ultimo"
+                      },
+                      aria: {
+                          sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                          sortDescending: ": habilitado para ordenar la columna en orden descendente"
                       }
+                  }
 
-          });
+    });
+
+    var k=$('#tablecomisiones').DataTable({
+        processing: true,
+        serverSide: false,
+        pageLength: 25,
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        bInfo:false,
+        order: [[0, 'asc']],
+        fnDrawCallback: function() {
+          $('.dataTables_paginate').hide();
+        },
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
+
+    $('#tipo_servicio').on('change', function(){
+
+      $('#tipo_id').val('')
+      options = $('#tipo_id option');
+      id = $(this).val();
+      $('#detalle_boton').text('Pulsa Aqui')
+      $('#dropdown_principal').empty();
+
+      if(id != 0){
+        $.each(options, function (index, array) {  
+          tmp = array.value
+          tmp2 =  tmp.split('-')
+          value = tmp2[0]
+          tipo = tmp2[1]
+          option = $("#tipo_id option[value='"+array.value+"']")
+
+          if(id == 99){
+
+            not_in = [1,2,3,4,9,5,11,14]
+            if(!$.inArray(tipo, not_in)){
+                option.show();
+            }else{  
+                option.hide();
+            } 
+
+          }else{
+
+            if(id != 3){
 
 
+              if(tipo == id){
+                  option.show();
+              }else{  
+                  option.hide();
+              }  
+
+            }else{    
+
+              if(tipo == 3 || tipo == 4){
+                  option.show();
+              }else{  
+                  option.hide();
+              }  
+            }          
+          }
+        });
+      }else{
+        options.show();
+      }
+
+      if(id == 99){
+
+        contenido = '';
+
+        contenido += '<li class="dropdown-submenu pointer" data-tipo_dropdown="1" data-tipo_servicio="3" data-nombre_servicio="Clases Grupales" data-servicio_producto_id ="3">'
+        contenido += '<a>Clases Grupales</a>'
+        contenido += '<ul class="dropdown-menu">'
+
+        $.each(linea_servicio, function (index, array) {  
+            if(array.tipo == 3 || array.tipo == 4){
+                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
+            }                   
+        });
+
+        contenido += '</ul></li>'
+
+        $('#dropdown_principal').append(contenido);
+
+        contenido = '';
     
-   </script> 
+        contenido += '<li class="dropdown-submenu pointer" data-tipo_dropdown="1" data-tipo_servicio="9" data-nombre_servicio="Clases Personalizadas" data-servicio_producto_id ="9">'
+        contenido += '<a>Clases Personalizadas</a>'
+        contenido += '<ul class="dropdown-menu">'
 
-   <!--<script src="{{url('/')}}/assets/js/script/alumno-planilla.js"></script>-->        
-		
+        $.each(linea_servicio, function (index, array) {  
+            if(array.tipo == 9){
+                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
+            }                   
+        });
+
+        contenido += '</ul></li>'
+
+        $('#dropdown_principal').append(contenido);
+
+        contenido = '';
+
+        contenido += '<li class="dropdown-submenu pointer" data-tipo_dropdown="1" data-tipo_servicio="2" data-nombre_servicio="Productos" data-servicio_producto_id ="2">'
+        contenido += '<a>Productos</a>'
+        contenido += '<ul class="dropdown-menu">'
+
+        $.each(linea_servicio, function (index, array) {  
+            if(array.tipo == 2){
+                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
+            }                   
+        });
+
+        contenido += '</ul></li>'
+
+        $('#dropdown_principal').append(contenido);
+
+        contenido = '';
+
+        contenido += '<li class="dropdown-submenu pointer" data-tipo_dropdown="1" data-tipo_servicio="1" data-nombre_servicio="Servicios" data-servicio_producto_id ="1">'
+        contenido += '<a>Servicios</a>'
+        contenido += '<ul class="dropdown-menu">'
+
+        $.each(linea_servicio, function (index, array) {  
+            if(array.tipo == 1){
+                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
+            }                   
+        });
+
+        contenido += '</ul></li>'
+
+        $('#dropdown_principal').append(contenido);
+
+        contenido = '';
+    
+
+      }else if(id == 14){
+          
+        $.each(linea_servicio, function (index, array) {  
+
+            if(array.tipo == 14){
+
+                contenido = '';
+
+                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
+
+                $('#dropdown_principal').append(contenido);
+
+            }                   
+        });
+          
+      }else if(id == 5){
+
+        $.each(linea_servicio, function (index, array) {  
+
+            if(array.tipo == 5){
+
+                contenido = '';
+
+                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
+
+                $('#dropdown_principal').append(contenido);
+
+            }                   
+        });
+      }else if(id == 11){
+
+        $.each(linea_servicio, function (index, array) {  
+
+            if(array.tipo == 11){
+
+                contenido = '';
+
+                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
+
+                $('#dropdown_principal').append(contenido);
+
+            }                   
+        });
+      }
+
+      $('#tipo_id').selectpicker('refresh');
+    });
+
+    $('body').on('click','.servicio_detalle',function(e){
+        
+        $('#servicio_producto_id').val($(this).data('servicio_producto_id'))
+        nombre_servicio = $(this).data('nombre_servicio')
+        $('#detalle_boton').text(nombre_servicio)
+
+        $('#dropdown_boton').removeClass('open')
+        $('#detalle_boton').attr('aria-expanded',false);
+    });
+
+    $("#addcomision").click(function(){
+
+
+      $("#addcomision").attr("disabled","disabled");
+        $("#addcomision").css({
+          "opacity": ("0.2")
+        });
+
+      var route = route_agregar_comision;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $( "#form_comision" ).serialize(); 
+      limpiarMensaje();
+
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:datos,
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
+                $("#form_comision")[0].reset();
+
+                $.each(respuesta.array, function (index, array) {
+
+                  if(array.tipo == 1){
+                    tipo = 'Porcentaje'
+                    monto = array.monto+"%"
+                    monto_porcentaje = formatmoney(parseFloat(array.monto_porcentaje));
+                  }else{
+                    tipo = 'Tasa Fija'
+                    monto = formatmoney(parseFloat(array.monto))
+                    monto_porcentaje = 0
+                  }
+
+                  var rowId=array.id;
+                  var rowNode=k.row.add( [
+                  ''+array.nombre+'',
+                  ''+tipo+'',
+                  ''+monto+'',
+                  ''+monto_porcentaje+'',
+                  '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                  ] ).draw(false).node();
+                  $( rowNode )
+                  .attr('id',rowId)
+                  .attr('data-tipo_servicio',array.tipo_servicio)
+                  .addClass('seleccion');
+
+                });
+
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }                       
+              $("#addcomision").removeAttr("disabled");
+                $("#addcomision").css({
+                  "opacity": ("1")
+                });
+
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }
+              $("#addcomision").removeAttr("disabled");
+                $("#addcomision").css({
+                  "opacity": ("1")
+                });                        
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
+
+    });
+
+  $('#tablecomisiones tbody').on( 'click', 'i.zmdi-delete', function () {
+
+      var id = $(this).closest('tr').attr('id');
+      element = this;
+
+      swal({   
+          title: "Desea eliminar esta configuración?",   
+          text: "Confirmar eliminación!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Eliminar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+      if (isConfirm) {
+        var nFrom = $(this).attr('data-from');
+        var nAlign = $(this).attr('data-align');
+        var nIcons = $(this).attr('data-icon');
+        var nType = 'success';
+        var nAnimIn = $(this).attr('data-animation-in');
+        var nAnimOut = $(this).attr('data-animation-out')
+                    // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                    eliminar_comision(id, element);
+      }
+   });
+  });
+
+  function eliminar_comision(id, element){
+    var route = route_eliminar_comision + id;
+    var token = "{{ csrf_token() }}";
+    procesando();
+        
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'DELETE',
+          dataType: 'json',
+          data:id,
+          success:function(respuesta){
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
+
+                k.row( $(element).parents('tr') )
+                  .remove()
+                  .draw();
+
+                swal("Exito!","La configuración ha sido eliminada!","success");
+                finprocesado()
+              
+              }
+          },
+          error:function(msj){
+            $("#msj-danger").fadeIn(); 
+            var text="";
+            console.log(msj);
+            var merror=msj.responseJSON;
+            text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+            $("#msj-error").html(text);
+            setTimeout(function(){
+                     $("#msj-danger").fadeOut();
+                    }, 3000);
+            }
+      });
+    }
+
+    function formatmoney(n) {
+      return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    } 
+
+    $("input[name=pagos_comisiones]").on('change', function(){
+      if ($(this).val() == 1){
+        $("#pagos").show();
+        $("#comisiones").hide();
+      }else{
+        $("#comisiones").show();
+        $("#pagos").hide();
+      }    
+    });
+
+   </script> 
 @stop

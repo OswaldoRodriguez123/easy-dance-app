@@ -1905,24 +1905,19 @@
       $('#tipo_id').selectpicker('refresh');
     });
 
+    $('body').on('click','.servicio_detalle',function(e){
+        
+        $('#servicio_producto_id').val($(this).data('servicio_producto_id'))
+        nombre_servicio = $(this).data('nombre_servicio')
+        $('#detalle_boton').text(nombre_servicio)
+
+        $('#dropdown_boton').removeClass('open')
+        $('#detalle_boton').attr('aria-expanded',false);
+    });
+
     function formatmoney(n) {
       return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     } 
-
-    $('#tipo_servicio').on('change', function(){
-
-      
-        });
-
-        $('body').on('click','.servicio_detalle',function(e){
-            
-            $('#servicio_producto_id').val($(this).data('servicio_producto_id'))
-            nombre_servicio = $(this).data('nombre_servicio')
-            $('#detalle_boton').text(nombre_servicio)
-
-            $('#dropdown_boton').removeClass('open')
-            $('#detalle_boton').attr('aria-expanded',false);
-        });
 
    </script> 
 		

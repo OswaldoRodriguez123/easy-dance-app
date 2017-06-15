@@ -23,7 +23,7 @@
                 
                     <div class="block-header">
 
-                        <?php $url = "/participantes/instructores/detalle/$id" ?>
+                        <?php $url = "/participante/instructor/detalle/$id" ?>
                         <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
 
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
@@ -52,7 +52,7 @@
                         @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
 	                        <div class="col-md-offset-10">
-	                          <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "pagar" id="pagar" > Pagar <i class="icon_a-pagar"></i></button>
+	                          <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "pagar" id="pagar" style="opacity: 0.2" disabled> Pagar <i class="icon_a-pagar"></i></button>
 	                        </div>
 
                         @endif
@@ -61,19 +61,19 @@
                                  <div class="form-group fg-line ">
                                     <div class="p-t-10">
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="pendientes" value="pendientes" type="radio" checked>
+                                        <input name="tipo" id="pendientes" value="0" type="radio" checked>
                                         <i class="input-helper"></i>  
-                                        Pendientes por Pagar <i id="pendientes2" name="pendientes2" class="zmdi zmdi-forward zmdi-hc-fw f-20"></i>
+                                        Pendientes por Pagar <i id="pendientes2" name="pendientes2" class="zmdi zmdi-forward zmdi-hc-fw  c-verde f-20"></i>
                                     </label>
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="pagadas" value="pagadas" type="radio">
+                                        <input name="tipo" id="pagadas" value="1" type="radio">
                                         <i class="input-helper"></i>  
-                                        Pagadas <i id="pagadas2" name="pagadas2" class="zmdi zmdi-money-box zmdi-hc-fw c-verde f-20"></i>
+                                        Pagadas <i id="pagadas2" name="pagadas2" class="zmdi zmdi-money-box zmdi-hc-fw f-20"></i>
                                     </label>
                                     </div>
                                     
                                  </div>
-                                </div> 
+                                </div>  
 
                                 <div class="clearfix"></div>
                                 
@@ -91,11 +91,28 @@
  
                                     <th style="width:7%;"><input style="margin-left:49%;" name="select_all" value="1" id="select_all" type="checkbox" /></th>
                                     <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
-                                    <th class="text-center" data-column-id="clase">Clase</th>
+                                    <th class="text-center" data-column-id="hora" data-order="asc">Hora</th>
+                                    <th class="text-center" data-column-id="clase">Servicio / Producto</th>
                                     <th class="text-center" data-column-id="monto">Monto</th>
                                 </tr>
                             </thead>
                             <tbody>
+
+                              @foreach($pagos_comisiones as $comision)
+                                <tr id="{{$comision['id']}}" class="seleccion" data-monto="{{$comision['monto']}}" >
+                                
+                                    <td class="text-center previa">
+                                      <span id="boolean_pago_{{$comision['id']}}" style="display: none">{{$comision['boolean_pago']}}</span>
+                                      @if($comision['boolean_pago'] == 0)
+                                        <input name="select_check" id="select_check_{{$comision['id']}}" type="checkbox" />
+                                      @endif
+                                    </td>
+                                    <td class="text-center previa">{{$comision['fecha']}}</td>
+                                    <td class="text-center previa">{{$comision['hora']}}</td>
+                                    <td class="text-center previa">{{$comision['servicio_producto']}}</td>
+                                    <td class="text-center previa">{{ number_format($comision['monto'], 2, '.' , '.') }}</td>
+                                </tr>
+                              @endforeach
                                                            
                             </tbody>
                         </table>
@@ -123,26 +140,13 @@
 
         route_pagar="{{url('/')}}/participante/instructor/pagar";
 
-        tipo = 'pagadas';
-
         var total = "{{$total}}"
-
-        var por_pagar = <?php echo json_encode($por_pagar);?>;
-        var pagadas = <?php echo json_encode($pagadas);?>;
 
         function formatmoney(n) {
             return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
         } 
 
         $(document).ready(function(){
-
-          $("#pagar").attr("disabled","disabled");
-            
-          $("#pagar").css({
-              "opacity": ("0.2")
-          });
-
-          $("#pendientes").prop("checked", true);
 
           t=$('#tablelistar').DataTable({
           "columnDefs": [ {
@@ -153,14 +157,6 @@
           serverSide: false,
           pageLength: 50, 
           order: [[1, 'desc'], [3, 'desc']],
-          fnDrawCallback: function() {
-          if ("{{count($por_pagar)}}" < 50) {
-                $('.dataTables_paginate').hide();
-                $('#tablelistar_length').hide();
-            }else{
-             $('.dataTables_paginate').show();
-            }
-          },
           fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
             $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           },
@@ -191,86 +187,45 @@
           });
 
 
-          rechargeProforma();
+          t
+            .columns(0)
+            .search(0)
+            .draw();
 
         });
 
-         function clear(){
-
-            t.clear().draw();
-            // t.destroy();
-         }
 
          $('input[name="tipo"]').on('change', function(){
-            clear();
-            if ($(this).val()=='pagadas') {
-                  tipo = 'pagadas';
-                  rechargeFactura();
-                  $('#pagar').hide();
+
+
+            t
+            .columns(0)
+            .search($(this).val())
+            .draw();
+
+            if ($(this).val()=='1') {
+
+              $( "#pendientes2" ).removeClass( "c-verde" );
+              $( "#pagadas2" ).addClass( "c-verde" );
+
+              $('#monto').css('opacity', '0');
+              $('#select_all').hide();
+              $('#pagar').hide();
             } else  {
-                  tipo= 'proformas';
-                  rechargeProforma();
-                  $('#pagar').show();
+
+              $( "#pagadas2" ).removeClass( "c-verde" );
+              $( "#pendientes2" ).addClass( "c-verde" );
+
+              $('#monto').css('opacity', '1');
+
+              if("{{$usuario_tipo}}" != 3)
+              {
+                $('#select_all').show();
+              }
+
+              $('#pagar').show();
             }
          });
-
-        function rechargeFactura(){
-
-            $('#monto').css('opacity', '0');
-            $('#select_all').hide();
-
-            $.each(pagadas, function (index, array) {
-                var rowNode=t.row.add( [
-                ''+ ' ' +'',
-                ''+array.fecha+'',
-                ''+array.clase+'',
-                ''+array.monto+'',
-                // '<i data-toggle="modal" name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>'
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('seleccion');
-            });
-        }
-
-        function rechargeProforma(){
-            
-
-            $('#monto').css('opacity', '1');
-
-            if("{{$usuario_tipo}}" != 3)
-            {
-            	$('#select_all').show();
-            	checkbox = '<input name="select_check" id="select_check" type="checkbox" />'
-            }else{
-            	checkbox = ''
-            }
-
-            $.each(por_pagar, function (index, array) {
-                var rowNode=t.row.add( [
-
-
-                ''+checkbox+'', 
-                ''+array.fecha+'',
-                ''+array.clase+'',
-                ''+array.monto+'',
-                // '<i data-toggle="modal" name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i data-toggle="modal" name="eliminar" class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('text-center');
-            });
-        }
-
-        $("#pagadas").click(function(){
-            $( "#pendientes2" ).removeClass( "c-verde" );
-            $( "#pagadas2" ).addClass( "c-verde" );
-        });
-
-        $("#pendientes").click(function(){
-            $( "#pagadas2" ).removeClass( "c-verde" );
-            $( "#pendientes2" ).addClass( "c-verde" );
-        });
 
         $('#tablelistar tbody').on( 'click', 'i.icon_a-pagar', function () {
             var id = $(this).closest('tr').attr('id');
@@ -328,10 +283,6 @@
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
 
-                          // t.row( $(element).parents('tr') )
-                          //   .remove()
-                          //   .draw();
-                        
                         }
                     },
                     error:function(msj){
@@ -350,6 +301,7 @@
 
       
     $("#pagar").click(function(){
+
       swal({   
         title: "Desea consignar el pago?",   
         text: "Consignar pago!",   
@@ -361,100 +313,80 @@
         closeOnConfirm: true 
         }, function(isConfirm){   
           if (isConfirm) {
+            
+          procesando();
 
-            procesando();
+          var route = route_pagar;
+          var token = "{{ csrf_token() }}";
+          var datos = "&pendientes="+getChecked();
+          limpiarMensaje();
 
-            var route = route_pagar;
-            var token = "{{ csrf_token() }}";
-            var datos = "&asistencias="+getChecked();
-            limpiarMensaje();
+          $.ajax({
+              url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:datos,
+              success:function(respuesta){
+                setTimeout(function(){ 
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY"; 
+                  if(respuesta.status=="OK"){
+                    var nType = 'success';
+                    var nTitle="Ups! ";
+                    var nMensaje=respuesta.mensaje;
 
-            $.ajax({
-                url: route,
-                    headers: {'X-CSRF-TOKEN': token},
-                    type: 'POST',
-                    dataType: 'json',
-                    data:datos,
-                success:function(respuesta){
-                  setTimeout(function(){ 
-                    var nFrom = $(this).attr('data-from');
-                    var nAlign = $(this).attr('data-align');
-                    var nIcons = $(this).attr('data-icon');
-                    var nAnimIn = "animated flipInY";
-                    var nAnimOut = "animated flipOutY"; 
-                    if(respuesta.status=="OK"){
-                      var nType = 'success';
-                      var nTitle="Ups! ";
-                      var nMensaje=respuesta.mensaje;
-
-                      $.each(respuesta.array, function (i, id) {
-                        $.each(por_pagar, function (j, array) {
-                          if(array){
-                            if(array.id == id){
-                              por_pagar.splice( $.inArray(array, por_pagar), 1 );
-
-                              t.row($('#'+id))
-                                .remove()
-                                .draw();
-
-                              pagadas.push(array);
-
-                              total = total - array.monto;
-                              $('#total').text(formatmoney(parseFloat(total)));
-                            }
-                          }
-                        })
-                      });
-
-                      $('#clase_grupal_id').val('');
-                      $('#clase_grupal_id').selectpicker('refresh');
-                      
-
-                    }else{
-                      var nTitle="Ups! ";
-                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                      var nType = 'danger';
-                    }                       
-                    $("#add").removeAttr("disabled");
-                      $("#add").css({
-                        "opacity": ("1")
-                      });
-                    finprocesado()
-
-                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                  }, 1000);
-                },
-                error:function(msj){
-                  setTimeout(function(){ 
-                    // if (typeof msj.responseJSON === "undefined") {
-                    //   window.location = "{{url('/')}}/error";
-                    // }
-                    if(msj.responseJSON.status=="ERROR"){
-                      console.log(msj.responseJSON.errores);
-                      errores(msj.responseJSON.errores);
-                      var nTitle="    Ups! "; 
-                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                    }else{
-                      var nTitle="   Ups! "; 
-                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                    }
-                    $("#add").removeAttr("disabled");
-                      $("#add").css({
-                        "opacity": ("1")
-                      });                        
-                    var nFrom = $(this).attr('data-from');
-                    var nAlign = $(this).attr('data-align');
-                    var nIcons = $(this).attr('data-icon');
+                    $.each(respuesta.array, function (i, id) {
+                      monto = $('#'+id).data('monto')
+                      total = total - monto;
+                      $('#total').text(formatmoney(parseFloat(total)));
+                      boolean_pago = $('#boolean_pago_'+id);
+                      boolean_pago.text(1);
+                      select_check = $('#select_check_'+id);
+                      select_check.hide();
+                      UpdateTD = boolean_pago.parent('td');
+                      t.cell(UpdateTD).data(UpdateTD.html()).draw();
+                    });
+                    
+                  }else{
+                    var nTitle="Ups! ";
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                     var nType = 'danger';
-                    var nAnimIn = "animated flipInY";
-                    var nAnimOut = "animated flipOutY"; 
-                    finprocesado()                      
-                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                  }, 1000);
-                }
-            });
-          }
-        })
+                  }
+                  finprocesado();                  
+                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                }, 1000);
+              },
+              error:function(msj){
+                setTimeout(function(){ 
+                  if (typeof msj.responseJSON === "undefined") {
+                    window.location = "{{url('/')}}/error";
+                  }
+                  if(msj.responseJSON.status=="ERROR"){
+                    console.log(msj.responseJSON.errores);
+                    errores(msj.responseJSON.errores);
+                    var nTitle="    Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                  }else{
+                    var nTitle="   Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  }                       
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nType = 'danger';
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY";   
+                  finprocesado();
+                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                }, 1000);
+              }
+          });
+        }
+      });
     });
 
     function limpiarMensaje(){

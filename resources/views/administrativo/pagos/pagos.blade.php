@@ -15,7 +15,6 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<!--<script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.es.js"></script>-->
 <script src="{{url('/')}}/assets/vendors/farbtastic/farbtastic.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
@@ -26,124 +25,6 @@
 
 
 @section('content')
-
-<!-- <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro">Agregar <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="agregar_alumno" id="agregar_alumno"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-6">
-                                <div class="form-group">
-                                    <div class="form-group fg-line">
-                                        <label for="id">Id - Pasaporte</label>
-                                        <input type="text" class="form-control input-sm" name="identificacion" id="identificacion" placeholder="Ej. 16234987">
-                                    </div>
-                                    <div class="has-error" id="error-identificacion">
-                                      <span >
-                                          <small id="error-identificacion_mensaje" class="help-block error-span" ></small>                                           
-                                      </span>
-                                    </div>
-                                </div>
-                               </div>
-                               <div class="col-sm-6">
-                                 <div class="form-group fg-line">
-                                    <label for="nombre">Nombre</label>
-                                    <input type="text" class="form-control input-sm" name="nombre" id="nombre" placeholder="Ej. Valeria">
-                                 </div>
-                                 <div class="has-error" id="error-nombre">
-                                      <span >
-                                          <small class="help-block error-span" id="error-nombre_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix"></div> 
-
-
-                               <div class="col-sm-6">
-                                 <div class="form-group fg-line">
-                                    <label for="apellido">Apellido</label>
-                                    <input type="text" class="form-control input-sm" name="apellido" id="apellido" placeholder="Ej. Sánchez">
-                                 </div>
-                                 <div class="has-error" id="error-apellido">
-                                      <span >
-                                          <small class="help-block error-span" id="error-apellido_mensaje"  ></small>                                           
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <div class="col-sm-6">
-                                    <div class="form-group fg-line">
-                                    <label for="apellido">Fecha de Nacimiento</label>
-                                            <div class="dtp-container fg-line">
-                                            <input name="fecha_nacimiento" id="fecha_nacimiento" class="form-control date-picker" placeholder="Seleciona" type="text">
-                                        </div>
-                                    </div>
-                                    <div class="has-error" id="error-fecha_nacimiento">
-                                      <span >
-                                          <small class="help-block error-span" id="error-fecha_nacimiento_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                </div>
-
-                                 <div class="clearfix"></div> 
-           
-                                                               
-                               <div class="col-sm-6">
-                                 <div class="form-group fg-line ">
-                                    <label for="sexo p-t-10">Sexo</label>
-                                    <div class="p-t-10">
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="sexo" id="mujer" value="F" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Mujer <i class="zmdi zmdi-female p-l-5 f-20"></i>
-                                    </label>
-                                    <label class="radio radio-inline m-r-20 ">
-                                        <input name="sexo" id="hombre" value="M" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Hombre <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
-                                    </label>
-                                    </div>
-                                    
-                                 </div>
-                                 <div class="has-error" id="error-sexo">
-                                      <span >
-                                          <small class="help-block error-span" id="error-sexo_mensaje" ></small>                                           
-                                      </span>
-                                  </div>
-                               </div>
-                               
-                               <div class="clearfix"></div> 
-
-                               
-                               
-                           </div>
-                           
-                        </div>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-7 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-5">                            
-                              <a class="btn-blanco m-r-5 f-16 guardar" id="guardar" data-formulario="edit_id_alumno" data-update="identificacion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-                            </div>
-                        </div></form>
-                    </div>
-                </div>
-            </div>
- -->
 
           <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -353,37 +234,6 @@
                 </div>
             </div>
 
-          <div class="modal fade" id="modalConstruccion" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro">Información <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <div class="text-center">
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-                        <div align="center"><i class="zmdi zmdi-wrench zmdi-hc-fw f-60 c-morado"></i></div>
-
-                        <div class="clearfix p-b-15"></div>
-                        
-                        <div class="col-md-12">
-                         <span class="f-20 opaco-0-8">¡ Modulo en construcción. !</span>
-                         </div>
-
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-
-
-                        </div>
-                       
-                    </div>
-                </div>
-            </div>
-
             <section id="content">
                 <div class="container">
                 
@@ -400,7 +250,6 @@
                                            
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                         </ul>
-                      <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                       </div> 
                     
                       <div class="card">

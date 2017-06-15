@@ -570,6 +570,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::delete('participante/instructor/eliminarpago/{id}', 'InstructorController@eliminarpago');
 		Route::post('participante/instructor/pagar', 'InstructorController@pagar');
 
+		Route::post('participante/instructor/agregarcomisionfija', 'InstructorController@agregarcomisionfija');
+		Route::delete('participante/instructor/eliminarcomisionfija/{id}', 'InstructorController@eliminarcomisionfija');
+
 		//VISITANTE
 
 		Route::get('participante/visitante', 'VisitanteController@index');

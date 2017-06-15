@@ -1812,6 +1812,8 @@ class AsistenciaController extends BaseController
                     $pago->monto=$config_pago->monto;
                     $pago->clase_grupal_id=$clase_id[0];
                     $pago->asistencia_id=$asistencia->id;
+                    $pago->fecha = Carbon::now()->toDateString();
+                    $pago->hora = Carbon::now()->toTimeString();
 
                     $pago->save();
                   }
