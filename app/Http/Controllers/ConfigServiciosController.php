@@ -10,7 +10,7 @@ use App\Taller;
 use App\ConfigClasesGrupales;
 use App\Paquete;
 use App\Academia;
-use App\ConfigPagosStaff;
+use App\ConfigComision;
 use Validator;
 use Session;
 use Illuminate\Support\Facades\Auth;
@@ -349,17 +349,17 @@ class ConfigServiciosController extends BaseController {
         
         if($servicio->delete()){
 
-            $config_pago_staff = ConfigPagosStaff::where('servicio_id',$id)->delete();
+            $config_pago_staff = ConfigComision::where('servicio_producto_id',$id)->where('servicio_producto_tipo',1)->delete();
 
-            if($servicio->tipo == 5){
-                $delete = Taller::withTrashed()->find($servicio->tipo_id)->delete();
-            }else if($servicio->tipo == 9){
-                $delete = ClasePersonalizada::withTrashed()->find($servicio->tipo_id)->delete();
-            }else if($servicio->tipo == 3 OR $servicio->tipo == 4){
-                $delete = ConfigClasesGrupales::withTrashed()->find($servicio->tipo_id)->delete();
-            }else if($servicio->tipo == 15){
-                $delete = Paquete::withTrashed()->find($servicio->tipo_id)->delete();
-            }
+            // if($servicio->tipo == 5){
+            //     $delete = Taller::withTrashed()->find($servicio->tipo_id)->delete();
+            // }else if($servicio->tipo == 9){
+            //     $delete = ClasePersonalizada::withTrashed()->find($servicio->tipo_id)->delete();
+            // }else if($servicio->tipo == 3 OR $servicio->tipo == 4){
+            //     $delete = ConfigClasesGrupales::withTrashed()->find($servicio->tipo_id)->delete();
+            // }else if($servicio->tipo == 15){
+            //     $delete = Paquete::withTrashed()->find($servicio->tipo_id)->delete();
+            // }
 
             return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{

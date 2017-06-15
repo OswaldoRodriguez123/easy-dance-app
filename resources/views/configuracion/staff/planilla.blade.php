@@ -23,6 +23,7 @@
                             <form name="form_pago" id="form_pago"  >
                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                <input type="hidden" name="id" value="{{ $alumno->id }}">
+                               <input type="hidden" id="servicio_producto_id" name="servicio_producto_id" value="">
                                <div class="modal-body">                           
                                <div class="row p-t-20 p-b-0">
 
@@ -63,40 +64,11 @@
                                             <ul id="dropdown_principal" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                                             </ul>
                                         </div>
-                                        <div class="has-error" id="error-servicio">
+                                        <div class="has-error" id="error-servicio_producto_id">
                                             <span >
-                                                <small class="help-block error-span" id="error-servicio_mensaje" ></small>                               
+                                                <small class="help-block error-span" id="error-servicio_producto_id_mensaje" ></small>                               
                                             </span>
-                                        </div>
-
-                                        <!-- <div class="input-group">
-                                          <span class="input-group-addon"><i class="icon_a icon_f-servicios f-22"></i></span>
-                                          <div class="fg-line">
-                                              <div class="select">
-                                                <select class="selectpicker bs-select-hidden" id="tipo_id" name="tipo_id" multiple="" data-max-options="5" title="Todas">
-
-                                                @foreach ( $linea_servicio as $servicio )
-                                                    <?php $exist = false; 
-                                                      $tmp = explode('-',$servicio['id']);
-                                                      $servicio_id = $tmp[0]
-                                                    ?>
-                                                  @foreach ( $pagos_staff as $pagos)
-                                                    @if ($pagos['servicio_id']==$servicio_id )
-                                                      <?php $exist = true; ?>
-                                                    @endif
-                                                  @endforeach
-
-                                                  @if ($exist)
-                                                      <option value = "{{ $servicio['id'] }}" disabled="" data-icon="glyphicon-remove"> {{ $servicio['nombre'] }} - {{ number_format($servicio['costo'], 2, '.' , '.') }} </option>
-                                                  @else
-                                                      <option value = "{{ $servicio['id'] }}"> {{ $servicio['nombre'] }} - {{ number_format($servicio['costo'], 2, '.' , '.') }}</option>
-                                                  @endif
-
-                                                @endforeach
-                                                </select>
-                                              </div>
-                                          </div>
-                                        </div> -->
+                                        </div>              
                                       </div>
 
 
@@ -158,7 +130,7 @@
                                         <thead>
                                             <tr>
                                                 
-                                                <th class="text-center" data-column-id="servicio">Servicio</th>
+                                                <th class="text-center" data-column-id="servicio_producto">Servicio / Producto</th>
                                                 <th class="text-center" data-column-id="tipo" data-type="numeric">Tipo</th>
                                                 <th class="text-center" data-column-id="monto" data-type="numeric">Monto</th>
                                                 <th class="text-center" data-column-id="monto_porcentaje" data-type="numeric">Monto Porcentaje</th>
@@ -168,13 +140,13 @@
                                         </thead>
                                         <tbody>
 
-                                        @foreach ($pagos_staff as $pagos)
-                                            <?php $id = $pagos['id']; ?>
-                                            <tr id="{{$id}}" class="seleccion" data-tipo_servicio="{{$pagos['tipo_servicio']}}">
-                                                <td class="text-center">{{$pagos['nombre']}}</td>
+                                        @foreach ($comisiones as $comision)
+                                            <?php $id = $comision['id']; ?>
+                                            <tr id="{{$id}}" class="seleccion">
+                                                <td class="text-center">{{$comision['nombre']}}</td>
                                                 <td class="text-center">
 
-                                                @if($pagos['tipo'] == 1)
+                                                @if($comision['tipo'] == 1)
 
                                                   Porcentaje
                                                 @else
@@ -187,19 +159,19 @@
                                                 </td>
                                                 <td class="text-center">
 
-                                                  @if($pagos['tipo'] == 1)
+                                                  @if($comision['tipo'] == 1)
 
-                                                    {{$pagos['monto']}}%
+                                                    {{$comision['monto']}}%
                                                   @else
 
-                                                    {{ number_format($pagos['monto'], 2, '.' , '.') }}
+                                                    {{ number_format($comision['monto'], 2, '.' , '.') }}
 
                                                   @endif
 
                                                   
 
                                                 </td>
-                                                <td class="text-center">{{ number_format($pagos['monto_porcentaje'], 2, '.' , '.') }}</td>
+                                                <td class="text-center">{{ number_format($comision['monto_porcentaje'], 2, '.' , '.') }}</td>
                                                 <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
                                               </tr>
                                         @endforeach 
@@ -985,8 +957,6 @@
     route_eliminar_pago="{{url('/')}}/configuracion/staff/eliminarpagofijo/";
 
     var linea_servicio = <?php echo json_encode($linea_servicio);?>;
-    var servicio_id = 0;
-    var tipo_servicio = 0;
 
     $(document).ready(function(){
 
@@ -1592,7 +1562,7 @@
               headers: {'X-CSRF-TOKEN': token},
               type: 'POST',
               dataType: 'json',
-              data:datos+"&servicio="+servicio_id+'-'+tipo_servicio,
+              data:datos,
           success:function(respuesta){
             setTimeout(function(){ 
               var nFrom = $(this).attr('data-from');
@@ -1688,7 +1658,7 @@
 
   $('#tablepagos tbody').on( 'click', 'i.zmdi-delete', function () {
 
-                var id = $(this).closest('tr').attr('id') + '-' + $(this).closest('tr').data('tipo_servicio');
+                var id = $(this).closest('tr').attr('id');
                 element = this;
 
                 swal({   
@@ -1717,7 +1687,7 @@
         function eliminar_pago(id, element){
          var route = route_eliminar_pago + id;
          var token = "{{ csrf_token() }}";
-         procesando()
+         procesando();
                 
                 $.ajax({
                     url: route,
@@ -1732,16 +1702,14 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          // finprocesado();
                           var nType = 'success';
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
-                          console.log(respuesta.id)
 
-                          $("#tipo_id option[value='"+respuesta.id+"']").removeAttr("disabled");
-                          $("#tipo_id option[value='"+respuesta.id+"']").data("icon","");
+                          // $("#tipo_id option[value='"+respuesta.id+"']").removeAttr("disabled");
+                          // $("#tipo_id option[value='"+respuesta.id+"']").data("icon","");
 
-                          $('#tipo_id').selectpicker('refresh');
+                          // $('#tipo_id').selectpicker('refresh');
 
                           h.row( $(element).parents('tr') )
                             .remove()
@@ -1771,53 +1739,170 @@
     });
 
     $('#tipo_servicio').on('change', function(){
-        $('#tipo_id').val('')
-        options = $('#tipo_id option');
-        id = $(this).val();
 
-        if(id != 0){
-          $.each(options, function (index, array) {  
-            tmp = array.value
-            tmp2 =  tmp.split('-')
-            value = tmp2[0]
-            tipo = tmp2[1]
-            option = $("#tipo_id option[value='"+array.value+"']")
+      $('#tipo_id').val('')
+      options = $('#tipo_id option');
+      id = $(this).val();
+      $('#detalle_boton').text('Pulsa Aqui')
+      $('#dropdown_principal').empty();
 
-            if(id == 99){
+      if(id != 0){
+        $.each(options, function (index, array) {  
+          tmp = array.value
+          tmp2 =  tmp.split('-')
+          value = tmp2[0]
+          tipo = tmp2[1]
+          option = $("#tipo_id option[value='"+array.value+"']")
 
-              not_in = [1,2,3,4,9,5,11,14]
-              if(!$.inArray(tipo, not_in)){
+          if(id == 99){
+
+            not_in = [1,2,3,4,9,5,11,14]
+            if(!$.inArray(tipo, not_in)){
+                option.show();
+            }else{  
+                option.hide();
+            } 
+
+          }else{
+
+            if(id != 3){
+
+
+              if(tipo == id){
                   option.show();
               }else{  
                   option.hide();
-              } 
+              }  
 
-            }else{
+            }else{    
 
-              if(id != 3){
+              if(tipo == 3 || tipo == 4){
+                  option.show();
+              }else{  
+                  option.hide();
+              }  
+            }          
+          }
+        });
+      }else{
+        options.show();
+      }
 
+      if(id == 99){
 
-                if(tipo == id){
-                    option.show();
-                }else{  
-                    option.hide();
-                }  
+        contenido = '';
 
-              }else{    
+        contenido += '<li class="dropdown-submenu pointer" data-tipo_dropdown="1" data-tipo_servicio="3" data-nombre_servicio="Clases Grupales" data-servicio_producto_id ="3">'
+        contenido += '<a>Clases Grupales</a>'
+        contenido += '<ul class="dropdown-menu">'
 
-                if(tipo == 3 || tipo == 4){
-                    option.show();
-                }else{  
-                    option.hide();
-                }  
-              }          
-            }
-          });
-        }else{
-          options.show();
-        }
+        $.each(linea_servicio, function (index, array) {  
+            if(array.tipo == 3 || array.tipo == 4){
+                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
+            }                   
+        });
 
-        $('#tipo_id').selectpicker('refresh');
+        contenido += '</ul></li>'
+
+        $('#dropdown_principal').append(contenido);
+
+        contenido = '';
+    
+        contenido += '<li class="dropdown-submenu pointer" data-tipo_dropdown="1" data-tipo_servicio="9" data-nombre_servicio="Clases Personalizadas" data-servicio_producto_id ="9">'
+        contenido += '<a>Clases Personalizadas</a>'
+        contenido += '<ul class="dropdown-menu">'
+
+        $.each(linea_servicio, function (index, array) {  
+            if(array.tipo == 9){
+                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
+            }                   
+        });
+
+        contenido += '</ul></li>'
+
+        $('#dropdown_principal').append(contenido);
+
+        contenido = '';
+
+        contenido += '<li class="dropdown-submenu pointer" data-tipo_dropdown="1" data-tipo_servicio="2" data-nombre_servicio="Productos" data-servicio_producto_id ="2">'
+        contenido += '<a>Productos</a>'
+        contenido += '<ul class="dropdown-menu">'
+
+        $.each(linea_servicio, function (index, array) {  
+            if(array.tipo == 2){
+                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
+            }                   
+        });
+
+        contenido += '</ul></li>'
+
+        $('#dropdown_principal').append(contenido);
+
+        contenido = '';
+
+        contenido += '<li class="dropdown-submenu pointer" data-tipo_dropdown="1" data-tipo_servicio="1" data-nombre_servicio="Servicios" data-servicio_producto_id ="1">'
+        contenido += '<a>Servicios</a>'
+        contenido += '<ul class="dropdown-menu">'
+
+        $.each(linea_servicio, function (index, array) {  
+            if(array.tipo == 1){
+                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
+            }                   
+        });
+
+        contenido += '</ul></li>'
+
+        $('#dropdown_principal').append(contenido);
+
+        contenido = '';
+    
+
+      }else if(id == 14){
+          
+        $.each(linea_servicio, function (index, array) {  
+
+            if(array.tipo == 14){
+
+                contenido = '';
+
+                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
+
+                $('#dropdown_principal').append(contenido);
+
+            }                   
+        });
+          
+      }else if(id == 5){
+
+        $.each(linea_servicio, function (index, array) {  
+
+            if(array.tipo == 5){
+
+                contenido = '';
+
+                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
+
+                $('#dropdown_principal').append(contenido);
+
+            }                   
+        });
+      }else if(id == 11){
+
+        $.each(linea_servicio, function (index, array) {  
+
+            if(array.tipo == 11){
+
+                contenido = '';
+
+                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
+
+                $('#dropdown_principal').append(contenido);
+
+            }                   
+        });
+      }
+
+      $('#tipo_id').selectpicker('refresh');
     });
 
     function formatmoney(n) {
@@ -1826,139 +1911,13 @@
 
     $('#tipo_servicio').on('change', function(){
 
-      tipo_servicio = $(this).val();
-      nombre = '';
-      tipo_dropdown = ''
-      servicio_id = ''
-
-      $('#detalle_boton').text('Pulsa Aqui')
-
-      id = $(this).val();
-      $('#dropdown_principal').empty();
-
-      if(id == 99){
-
-          contenido = '';
-
-          contenido += '<li class="dropdown-submenu pointer" data-tipo_dropdown="1" data-tipo_servicio="3" data-nombre_servicio="Clases Grupales" data-servicio_id ="3">'
-          contenido += '<a>Clases Grupales</a>'
-          contenido += '<ul class="dropdown-menu">'
-
-          $.each(linea_servicio, function (index, array) {  
-              if(array.tipo == 3 || array.tipo == 4){
-                  contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
-              }                   
-          });
-
-          contenido += '</ul></li>'
-
-          $('#dropdown_principal').append(contenido);
-
-          contenido = '';
       
-          contenido += '<li class="dropdown-submenu pointer" data-tipo_dropdown="1" data-tipo_servicio="9" data-nombre_servicio="Clases Personalizadas" data-servicio_id ="9">'
-          contenido += '<a>Clases Personalizadas</a>'
-          contenido += '<ul class="dropdown-menu">'
-
-          $.each(linea_servicio, function (index, array) {  
-              if(array.tipo == 9){
-                  contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
-              }                   
-          });
-
-          contenido += '</ul></li>'
-
-          $('#dropdown_principal').append(contenido);
-
-          contenido = '';
-
-          contenido += '<li class="dropdown-submenu pointer" data-tipo_dropdown="1" data-tipo_servicio="2" data-nombre_servicio="Productos" data-servicio_id ="2">'
-          contenido += '<a>Productos</a>'
-          contenido += '<ul class="dropdown-menu">'
-
-          $.each(linea_servicio, function (index, array) {  
-              if(array.tipo == 2){
-                  contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
-              }                   
-          });
-
-          contenido += '</ul></li>'
-
-          $('#dropdown_principal').append(contenido);
-
-          contenido = '';
-
-          contenido += '<li class="dropdown-submenu pointer" data-tipo_dropdown="1" data-tipo_servicio="1" data-nombre_servicio="Servicios" data-servicio_id ="1">'
-          contenido += '<a>Servicios</a>'
-          contenido += '<ul class="dropdown-menu">'
-
-          $.each(linea_servicio, function (index, array) {  
-              if(array.tipo == 1){
-                  contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
-              }                   
-          });
-
-          contenido += '</ul></li>'
-
-          $('#dropdown_principal').append(contenido);
-
-          contenido = '';
-      
-
-          }else if(id == 14){
-              
-
-              $.each(linea_servicio, function (index, array) {  
-
-                  if(array.tipo == 14){
-
-                      contenido = '';
-
-                      contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
-
-                      $('#dropdown_principal').append(contenido);
-
-                  }                   
-              });
-              
-          }else if(id == 5){
-
-              $.each(linea_servicio, function (index, array) {  
-
-                  if(array.tipo == 5){
-
-                      contenido = '';
-
-                      contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
-
-                      $('#dropdown_principal').append(contenido);
-
-                  }                   
-              });
-          }else if(id == 11){
-
-              $.each(linea_servicio, function (index, array) {  
-
-                  if(array.tipo == 11){
-
-                      contenido = '';
-
-                      contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
-
-                      $('#dropdown_principal').append(contenido);
-
-                  }                   
-              });
-          }
         });
 
         $('body').on('click','.servicio_detalle',function(e){
             
-            tipo_dropdown = $(this).data('tipo_dropdown')
-            tipo_servicio = $(this).data('tipo_servicio')
+            $('#servicio_producto_id').val($(this).data('servicio_producto_id'))
             nombre_servicio = $(this).data('nombre_servicio')
-            servicio_id = $(this).data('servicio_id')
-
             $('#detalle_boton').text(nombre_servicio)
 
             $('#dropdown_boton').removeClass('open')
@@ -1966,7 +1925,5 @@
         });
 
    </script> 
-
-   <!--<script src="{{url('/')}}/assets/js/script/alumno-planilla.js"></script>-->        
 		
 @stop

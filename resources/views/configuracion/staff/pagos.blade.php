@@ -52,7 +52,7 @@
                         @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
 	                        <div class="col-md-offset-10">
-	                          <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "pagar" id="pagar" > Pagar <i class="icon_a-pagar"></i></button>
+	                          <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "pagar" id="pagar" style="opacity: 0.2" disabled> Pagar <i class="icon_a-pagar"></i></button>
 	                        </div>
 
                         @endif
@@ -61,14 +61,14 @@
                                  <div class="form-group fg-line ">
                                     <div class="p-t-10">
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="pendientes" value="pendientes" type="radio" checked>
+                                        <input name="tipo" id="pendientes" value="0" type="radio" checked>
                                         <i class="input-helper"></i>  
-                                        Pendientes por Pagar <i id="pendientes2" name="pendientes2" class="zmdi zmdi-forward zmdi-hc-fw f-20"></i>
+                                        Pendientes por Pagar <i id="pendientes2" name="pendientes2" class="zmdi zmdi-forward zmdi-hc-fw  c-verde f-20"></i>
                                     </label>
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="pagadas" value="pagadas" type="radio">
+                                        <input name="tipo" id="pagadas" value="1" type="radio">
                                         <i class="input-helper"></i>  
-                                        Pagadas <i id="pagadas2" name="pagadas2" class="zmdi zmdi-money-box zmdi-hc-fw c-verde f-20"></i>
+                                        Pagadas <i id="pagadas2" name="pagadas2" class="zmdi zmdi-money-box zmdi-hc-fw f-20"></i>
                                     </label>
                                     </div>
                                     
@@ -92,11 +92,26 @@
                                     <th style="width:7%;"><input style="margin-left:49%;" name="select_all" value="1" id="select_all" type="checkbox" /></th>
                                     <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
                                     <th class="text-center" data-column-id="hora" data-order="asc">Hora</th>
-                                    <th class="text-center" data-column-id="clase">Servicio</th>
+                                    <th class="text-center" data-column-id="clase">Servicio / Producto</th>
                                     <th class="text-center" data-column-id="monto">Monto</th>
                                 </tr>
                             </thead>
                             <tbody>
+                              @foreach($comisiones as $comision)
+                                <tr id="{{$comision['id']}}" class="seleccion" data-monto="{{$comision['monto']}}" >
+                                
+                                    <td class="text-center previa">
+                                      <span id="boolean_pago_{{$comision['id']}}" style="display: none">{{$comision['boolean_pago']}}</span>
+                                      @if($comision['boolean_pago'] == 0)
+                                        <input name="select_check" id="select_check_{{$comision['id']}}" type="checkbox" />
+                                      @endif
+                                    </td>
+                                    <td class="text-center previa">{{$comision['fecha']}}</td>
+                                    <td class="text-center previa">{{$comision['hora']}}</td>
+                                    <td class="text-center previa">{{$comision['servicio_producto']}}</td>
+                                    <td class="text-center previa">{{ number_format($comision['monto'], 2, '.' , '.') }}</td>
+                                </tr>
+                              @endforeach
                                                            
                             </tbody>
                         </table>
@@ -124,26 +139,13 @@
 
         route_pagar="{{url('/')}}/configuracion/staff/pagar";
 
-        tipo = 'pagadas';
-
         var total = "{{$total}}"
-
-        var por_pagar = <?php echo json_encode($por_pagar);?>;
-        var pagadas = <?php echo json_encode($pagadas);?>;
 
         function formatmoney(n) {
             return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
         } 
 
         $(document).ready(function(){
-
-          $("#pagar").attr("disabled","disabled");
-            
-          $("#pagar").css({
-              "opacity": ("0.2")
-          });
-
-          $("#pendientes").prop("checked", true);
 
           t=$('#tablelistar').DataTable({
           "columnDefs": [ {
@@ -183,85 +185,44 @@
 
           });
 
-
-          rechargeProforma();
+          t
+            .columns(0)
+            .search(0)
+            .draw();
 
         });
-
-         function clear(){
-
-            t.clear().draw();
-            // t.destroy();
-         }
 
          $('input[name="tipo"]').on('change', function(){
-            clear();
-            if ($(this).val()=='pagadas') {
-                  tipo = 'pagadas';
-                  rechargeFactura();
-                  $('#pagar').hide();
+
+
+            t
+            .columns(0)
+            .search($(this).val())
+            .draw();
+
+            if ($(this).val()=='1') {
+
+              $( "#pendientes2" ).removeClass( "c-verde" );
+              $( "#pagadas2" ).addClass( "c-verde" );
+
+              $('#monto').css('opacity', '0');
+              $('#select_all').hide();
+              $('#pagar').hide();
             } else  {
-                  tipo= 'proformas';
-                  rechargeProforma();
-                  $('#pagar').show();
+
+              $( "#pagadas2" ).removeClass( "c-verde" );
+              $( "#pendientes2" ).addClass( "c-verde" );
+
+              $('#monto').css('opacity', '1');
+
+              if("{{$usuario_tipo}}" != 3)
+              {
+                $('#select_all').show();
+              }
+
+              $('#pagar').show();
             }
          });
-
-        function rechargeFactura(){
-
-            $('#monto').css('opacity', '0');
-            $('#select_all').hide();
-
-            $.each(pagadas, function (index, array) {
-                var rowNode=t.row.add( [
-                  ''+ ' ' +'',
-                  ''+array.fecha+'',
-                  ''+array.hora+'',
-                  ''+array.servicio+'',
-                  ''+formatmoney(parseFloat(array.monto))+'',
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('seleccion');
-            });
-        }
-
-        function rechargeProforma(){
-            
-
-            $('#monto').css('opacity', '1');
-
-            if("{{$usuario_tipo}}" != 3)
-            {
-            	$('#select_all').show();
-            	checkbox = '<input name="select_check" id="select_check" type="checkbox" />'
-            }else{
-            	checkbox = ''
-            }
-
-            $.each(por_pagar, function (index, array) {
-                var rowNode=t.row.add( [
-                  ''+checkbox+'', 
-                  ''+array.fecha+'',
-                  ''+array.hora+'',
-                  ''+array.servicio+'',
-                  ''+formatmoney(parseFloat(array.monto))+'',
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('text-center');
-            });
-        }
-
-        $("#pagadas").click(function(){
-            $( "#pendientes2" ).removeClass( "c-verde" );
-            $( "#pagadas2" ).addClass( "c-verde" );
-        });
-
-        $("#pendientes").click(function(){
-            $( "#pagadas2" ).removeClass( "c-verde" );
-            $( "#pendientes2" ).addClass( "c-verde" );
-        });
 
         $('#tablelistar tbody').on( 'click', 'i.icon_a-pagar', function () {
             var id = $(this).closest('tr').attr('id');
@@ -380,22 +341,15 @@
                     var nMensaje=respuesta.mensaje;
 
                     $.each(respuesta.array, function (i, id) {
-                      $.each(por_pagar, function (j, array) {
-                        if(array){
-                          if(array.id == id){
-                            por_pagar.splice( $.inArray(array, por_pagar), 1 );
-
-                            t.row($('#'+id))
-                              .remove()
-                              .draw();
-
-                            pagadas.push(array);
-
-                            total = total - array.monto;
-                            $('#total').text(formatmoney(parseFloat(total)));
-                          }
-                        }
-                      })
+                      monto = $('#'+id).data('monto')
+                      total = total - monto;
+                      $('#total').text(formatmoney(parseFloat(total)));
+                      boolean_pago = $('#boolean_pago_'+id);
+                      boolean_pago.text(1);
+                      select_check = $('#select_check_'+id);
+                      select_check.hide();
+                      UpdateTD = boolean_pago.parent('td');
+                      t.cell(UpdateTD).data(UpdateTD.html()).draw();
                     });
 
                     $('#clase_grupal_id').val('');

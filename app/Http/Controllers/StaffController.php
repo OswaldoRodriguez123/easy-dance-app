@@ -9,10 +9,10 @@ use App\Http\Requests;
 use App\Staff;
 use App\HorarioStaff;
 use App\ConfigStaff;
-use App\ConfigPagosStaff;
+use App\ConfigComision;
 use App\ConfigServicios;
 use App\ConfigProductos;
-use App\PagoStaff;
+use App\Comision;
 use App\User;
 use App\UsuarioTipo;
 use App\DiasDeSemana;
@@ -45,7 +45,7 @@ class StaffController extends BaseController
         $config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
 
         Session::forget('horarios_staff');
-        Session::forget('pagos_staff');
+        Session::forget('comisiones');
 
         $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
@@ -225,28 +225,27 @@ class StaffController extends BaseController
                     }
                 }
 
-                $config_pagos = Session::get('pagos_staff');
+                $comisiones = Session::get('comisiones');
 
-                if($config_pagos){
 
-                    foreach ($config_pagos as $pagos_staff) {
+                foreach ($comisiones as $comision) {
 
-                        $config_pago = new ConfigPagosStaff;
+                    $config_pago = new ConfigComision;
 
-                        $config_pago->servicio_id = $pagos_staff['servicio_id'];
-                        $config_pago->staff_id = $staff->id;
-                        $config_pago->tipo = $pagos_staff['tipo'];
-                        $config_pago->monto = $pagos_staff['monto'];
-                        $config_pago->tipo_servicio = $pagos_staff['tipo_servicio'];
+                    $config_pago->servicio_producto_id = $comision['servicio_producto_id'];
+                    $config_pago->servicio_producto_tipo = $comision['servicio_producto_tipo'];
+                    $config_pago->usuario_id = $staff->id;
+                    $config_pago->usuario_tipo = 1;
+                    $config_pago->tipo = $comision['tipo'];
+                    $config_pago->monto = $comision['monto'];
 
-                        $config_pago->save();
-                        
-                        
-                    }
+                    $config_pago->save();
+                    
+                    
                 }
-
+         
                 Session::forget('horarios_staff');
-                Session::forget('pagos_staff');
+                Session::forget('comisiones');
 
 
 	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
@@ -287,10 +286,8 @@ class StaffController extends BaseController
                 ->where('staff.id' , $id)
             ->get();
 
-            $pagos_staff = ConfigPagosStaff::join('config_servicios', 'config_pagos_staff.servicio_id', '=', 'config_servicios.id')
-                ->join('staff', 'config_pagos_staff.staff_id', '=', 'staff.id')
-                ->select('config_pagos_staff.*', 'config_servicios.nombre as nombre', 'config_servicios.costo')
-                ->where('staff.id', $id)
+            $comisiones = ConfigComision::where('config_comisiones.usuario_id', $id)
+                ->where('config_comisiones.usuario_tipo',1)
             ->get();
 
             $tmp = array();
@@ -300,36 +297,45 @@ class StaffController extends BaseController
 
             foreach($config_servicio as $item){
 
-                $tmp[]=array('id' => $item['id'].'-'.$item['tipo'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo'], 'costo' => $item['costo']);
+                $tmp[]=array('id' => '1-'.$item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo'], 'costo' => $item['costo']);
             }
 
-            foreach($pagos_staff as $pago){
-                if($pago->tipo == 1){
-                    $porcentaje = $pago->monto / 100;
-                    $monto_porcentaje = $pago->costo * $porcentaje;
+            $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+            foreach($config_producto as $item){
+
+                $tmp[]=array('id' => '2-'.$item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo'], 'costo' => $item['costo']);
+               
+            }
+
+            foreach($comisiones as $pago){
+               
+                if($pago->servicio_producto_tipo == 1){
+                    $servicio_producto = ConfigServicios::find($pago->servicio_producto_id);
                 }else{
-                    $monto_porcentaje = '';
+                    $servicio_producto = ConfigProductos::find($pago->servicio_producto_id);
                 }
 
-                $tmp2[]=array('id' => $pago->id, 'nombre' => $pago->nombre , 'tipo' => $pago->tipo, 'monto' => $pago->monto, 'monto_porcentaje' => floatval($monto_porcentaje), 'tipo_servicio' => $pago->tipo_servicio, 'servicio_id' => $pago->servicio_id);
+                if($servicio_producto){
+
+                    if($pago->tipo == 1){
+                        $porcentaje = $pago->monto / 100;
+                        $monto_porcentaje = $servicio_producto->costo * $porcentaje;
+                    }else{
+                        $monto_porcentaje = '';
+                    }
+
+                    $tmp2[]=array('id' => $pago->id, 'nombre' => $servicio_producto->nombre , 'tipo' => $pago->tipo, 'monto' => $pago->monto, 'monto_porcentaje' => floatval($monto_porcentaje), 'servicio_producto_id' => $pago->servicio_producto_id, 'servicio_producto_tipo' => $pago->servicio_producto_tipo);
+                }
+
             }
-
-
-            //$config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-
-            //foreach($config_producto as $item){
-
-                //$tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo']);
-               
-            //}
 
             $collection=collect($tmp);   
             $linea_servicio = $collection->toArray();
-
             $collection=collect($tmp2);   
             $pagos = $collection->toArray();
 
-            return view('configuracion.staff.planilla')->with(['alumno' => $staff, 'id' => $id, 'horarios' => $horarios, 'dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff, 'pagos_staff' => $pagos,  'linea_servicio' => $linea_servicio]);
+            return view('configuracion.staff.planilla')->with(['alumno' => $staff, 'id' => $id, 'horarios' => $horarios, 'dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff, 'comisiones' => $pagos,  'linea_servicio' => $linea_servicio]);
         }else{
            return redirect("/configuracion/staff"); 
         }
@@ -717,23 +723,27 @@ class StaffController extends BaseController
 
             $array = array();
 
-            if($request->servicio_id != 'null'){
+            if($request->servicio_producto_id != 'null'){
 
-                $servicios = explode(",", $request->servicio_id);
+                $explode = explode(",", $request->servicio_producto_id);
 
-                foreach($servicios as $servicio){
+                foreach($explode as $id){
 
                     $tmp = explode('-',$servicio);
-                    $servicio_id = $tmp[0];
-                    $tipo_servicio = $tmp[1];
+                    $servicio_producto_id = $tmp[0];
+                    $servicio_producto_tipo = $tmp[1];
 
-                    $servicio = ConfigServicios::find($servicio);
+                    if($servicio_producto_tipo == 1){
+                        $servicio_producto = ConfigServicios::find($servicio_producto_id);
+                    }else{
+                        $servicio_producto = ConfigProductos::find($servicio_producto_id);
+                    }
 
-                    $config_pagos=array('servicio_id' => $servicio_id, 'tipo' => $request->tipo_pago, 'monto' => $request->cantidad , 'tipo_servicio' => $tipo_servicio, 'nombre' => $servicio->nombre);
+                    $config_pagos=array('servicio_producto_id' => $servicio_producto_id, 'tipo' => $request->tipo_pago, 'monto' => $request->cantidad , 'servicio_producto_tipo' => $servicio_producto_tipo, 'nombre' => $servicio_producto->nombre);
 
-                    Session::push('pagos_staff', $config_pagos);
+                    Session::push('comisiones', $config_pagos);
 
-                    $item = Session::get('pagos_staff');
+                    $item = Session::get('comisiones');
                     end( $item );
                     $contador = key( $item );
 
@@ -753,14 +763,31 @@ class StaffController extends BaseController
 
                 foreach($servicios as $servicio){
 
-                    $servicio = ConfigServicios::find($servicio);
+                    $config_pagos=array('servicio_producto_id' => $servicio->id, 'tipo' => $request->tipo_pago, 'monto' => $request->cantidad , 'servicio_producto_tipo' => $servicio->tipo, 'nombre' => $servicio->nombre);
+
+                    Session::push('comisiones', $config_pagos);
+
+                    $item = Session::get('comisiones');
+                    end( $item );
+                    $contador = key( $item );
+
+                    $config_pagos['id'] = $contador.'-'.$tipo_servicio;
+
+                    array_push($array, $config_pagos);
 
 
-                    $config_pagos=array('servicio_id' => $servicio_id, 'tipo' => $request->tipo_pago, 'monto' => $request->cantidad , 'tipo_servicio' => $tipo_servicio, 'nombre' => $servicio->nombre);
+                }
 
-                    Session::push('pagos_staff', $config_pagos);
+                $productos = ConfigProductos::where('academia_id', Auth::user()->academia_id)
+                    ->get();
 
-                    $item = Session::get('pagos_staff');
+                foreach($productos as $producto){
+
+                    $config_pagos=array('servicio_producto_id' => $producto->id, 'tipo' => $request->tipo_pago, 'monto' => $request->cantidad , 'servicio_producto_tipo' => $producto->tipo, 'nombre' => $producto->nombre);
+
+                    Session::push('comisiones', $config_pagos);
+
+                    $item = Session::get('comisiones');
                     end( $item );
                     $contador = key( $item );
 
@@ -779,16 +806,15 @@ class StaffController extends BaseController
 
     public function eliminarpago($id){
 
-        $arreglo = Session::get('pagos_staff');
+        $arreglo = Session::get('comisiones');
 
         $tmp = explode('-',$id);
-        $servicio_id = $tmp[0];
-        $id = $arreglo[$servicio_id]['servicio_id'].'-'.$arreglo[$servicio_id]['tipo_servicio'];
+        $servicio_producto_id = $tmp[0];
 
-        unset($arreglo[$servicio_id]);
-        Session::put('pagos_staff', $arreglo);
+        unset($arreglo[$servicio_producto_id]);
+        Session::put('comisiones', $arreglo);
 
-        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $id, 200]);
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
     }
 
@@ -800,14 +826,14 @@ class StaffController extends BaseController
         $rules = [
             'cantidad' => 'required|min:1',
             'tipo_pago' => 'required',
-            'servicio' => 'required',
+            'servicio_producto_id' => 'required',
         ];
 
         $messages = [
 
             'cantidad.required' => 'Ups! El Monto es requerido',
             'cantidad.numeric' => 'Ups! El Monto es invalido, solo se aceptan numeros',
-            'servicio.required' => 'Ups! El Servicio es requerido',
+            'servicio_producto_id.required' => 'Ups! El Servicio es requerido',
             
         ];
 
@@ -829,72 +855,78 @@ class StaffController extends BaseController
 
             $array = array();
 
-            if($request->servicio == '0-0'){
-                return response()->json(['errores' => ['servicio' => [0, 'Ups! Debe seleccionar un servicio']], 'status' => 'ERROR'],422);
+            if($request->servicio_producto_id == '0-0' || !$request->servicio_producto_id){
+                return response()->json(['errores' => ['servicio_producto_id' => [0, 'Ups! Debe seleccionar un servicio']], 'status' => 'ERROR'],422);
             }
 
-            $tmp = explode('-',$request->servicio);
-            $servicio_id = $tmp[0];
-            $tipo_servicio = $tmp[1];
+            $explode = explode('-',$request->servicio_producto_id);
 
+            $servicio_producto_tipo = $explode[0];
+            $servicio_producto_id = $explode[1];
 
             $monto = floatval(str_replace(',', '', $request->cantidad));
-            $servicio = ConfigServicios::find($servicio_id);
-
-            if($monto  > $servicio->costo){
+            if($servicio_producto_tipo == 1){
+                $servicio_producto = ConfigServicios::find($servicio_producto_id);
+            }else{
+                $servicio_producto = ConfigProductos::find($servicio_producto_id);
+            }
+            
+            if($monto  > $servicio_producto->costo){
                 return response()->json(['errores' => ['cantidad' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
             }
 
-
-            $config_pagos = ConfigPagosStaff::where('staff_id', $request->id)
-                ->where('servicio_id', $servicio_id)
+            $config_pagos = ConfigComision::where('usuario_id', $request->id)
+                ->where('usuario_tipo',1)
+                ->where('servicio_producto_id', $servicio_producto_id)
+                ->where('servicio_producto_tipo', $servicio_producto_tipo)
             ->first();
-
 
             if(!$config_pagos){
 
-                $config_pagos = new ConfigPagosStaff;
+                $config_pagos = new ConfigComision;
 
-                $config_pagos->servicio_id = $servicio_id;
-                $config_pagos->staff_id = $request->id;
+                $config_pagos->servicio_producto_id = $servicio_producto_id;
+                $config_pagos->servicio_producto_tipo = $servicio_producto_tipo;
+                $config_pagos->usuario_id = $request->id;
+                $config_pagos->usuario_tipo = 1;
                 $config_pagos->tipo = $request->tipo_pago;
                 $config_pagos->monto = $monto;
-                $config_pagos->tipo_servicio = $tipo_servicio;
 
                 $config_pagos->save();
 
                 if($config_pagos->tipo == 1){
                     $porcentaje = $config_pagos->monto / 100;
-                    $monto_porcentaje = $servicio->costo * $porcentaje;
+                    $monto_porcentaje = $servicio_producto->costo * $porcentaje;
                 }else{
                     $monto_porcentaje = '';
                 }
                 
                 $config_pagos['monto_porcentaje'] = $monto_porcentaje;
-                $config_pagos['nombre'] = $servicio->nombre;
+                $config_pagos['nombre'] = $servicio_producto->nombre;
 
                 array_push($array, $config_pagos);
 
 
             }else{
 
-                $config_pagos->servicio_id = $servicio_id;
-                $config_pagos->staff_id = $request->id;
+                $config_pagos->servicio_producto_id = $servicio_producto_id;
+                $config_pagos->servicio_producto_tipo = $servicio_producto_tipo;
+                $config_pagos->usuario_id = $request->id;
+                $config_pagos->usuario_tipo = 1;
                 $config_pagos->tipo = $request->tipo_pago;
                 $config_pagos->monto = $monto;
-                $config_pagos->tipo_servicio = $tipo_servicio;
 
                 $config_pagos->save();
 
                 if($config_pagos->tipo == 1){
                     $porcentaje = $config_pagos->monto / 100;
-                    $monto_porcentaje = $servicio->costo * $porcentaje;
+                    $monto_porcentaje = $servicio_producto->costo * $porcentaje;
                 }else{
                     $monto_porcentaje = '';
                 }
                 
                 $config_pagos['monto_porcentaje'] = $monto_porcentaje;
-                $config_pagos['nombre'] = $servicio->nombre;
+                $config_pagos['nombre'] = $servicio_producto->nombre;
 
                 array_push($array, $config_pagos);
             }
@@ -1009,15 +1041,14 @@ class StaffController extends BaseController
     public function eliminarpagofijo($id)
     {
 
-        $tmp = explode('-',$id);
-        $servicio_id = $tmp[0];
+        $comision_explode = explode('-',$id);
+        $comision_id = $comision_explode[0];
 
-        $pago = ConfigPagosStaff::find($servicio_id);
-        $id = $pago->servicio_id.'-'.$pago->tipo_servicio;
+        $comision = ConfigComision::find($comision_id);
         
-        if($pago->delete()){
+        if($comision->delete()){
 
-            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 'id' => $id, 200]);
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -1032,29 +1063,40 @@ class StaffController extends BaseController
         if($staff)
         {
 
-            $pagadas = PagoStaff::join('config_servicios', 'pagos_staff.servicio_id', '=', 'config_servicios.id')
-                ->join('staff', 'pagos_staff.staff_id', '=', 'staff.id')
-                ->select('pagos_staff.fecha', 'pagos_staff.hora', 'config_servicios.nombre as servicio', 'staff.nombre as nombre_staff', 'staff.apellido as apellido_staff', 'pagos_staff.monto', 'pagos_staff.tipo', 'pagos_staff.id')
-                ->where('staff.id', $id)
-                ->where('pagos_staff.boolean_pago', 1)
-                ->limit(50)
+            $comisiones = Comision::join('staff', 'comisiones.usuario_id', '=', 'staff.id')
+                ->select('comisiones.*', 'comisiones.hora','staff.nombre as nombre_staff', 'staff.apellido as apellido_staff')
+                ->where('comisiones.usuario_id', $id)
+                ->where('comisiones.usuario_tipo',1)
+                ->limit(100)
             ->get();
 
-            $por_pagar = PagoStaff::join('config_servicios', 'pagos_staff.servicio_id', '=', 'config_servicios.id')
-                ->join('staff', 'pagos_staff.staff_id', '=', 'staff.id')
-                ->select('pagos_staff.fecha', 'pagos_staff.hora', 'config_servicios.nombre as servicio', 'staff.nombre as nombre_staff', 'staff.apellido as apellido_staff', 'pagos_staff.monto', 'pagos_staff.tipo', 'pagos_staff.id')
-                ->where('staff.id', $id)
-                ->where('pagos_staff.boolean_pago', 0)
-                ->limit(150)
-            ->get();
+            $array = array();
 
-            $total = PagoStaff::where('staff_id', $id)
+            foreach($comisiones as $comision){
+
+                if($comision->servicio_producto_tipo == 1){
+                    $servicio_producto = ConfigServicios::find($comision->servicio_producto_id);
+                }else{
+                    $servicio_producto = ConfigProductos::find($comision->servicio_producto_id);
+                }
+                if($servicio_producto){
+
+                    $collection=collect($comision);     
+                    $comision_array = $collection->toArray();
+                    
+                    $comision_array['servicio_producto']=$servicio_producto->nombre;
+                    $array[$comision->id] = $comision_array;
+                }
+            }
+
+            $total = Comision::where('usuario_id', $id)
+                ->where('usuario_tipo',1)
                 ->where('boolean_pago', 0)
             ->sum('monto');
 
             $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-            return view('configuracion.staff.pagos')->with(['pagadas'=> $pagadas, 'por_pagar' => $por_pagar, 'total' => $total, 'staff' => $staff, 'id' => $id, 'usuario_tipo' => $usuario_tipo]);
+            return view('configuracion.staff.pagos')->with(['comisiones'=> $array, 'total' => $total, 'staff' => $staff, 'id' => $id, 'usuario_tipo' => $usuario_tipo]);
         }else{ 
 
             return redirect("configuracion/staff"); 
@@ -1091,7 +1133,7 @@ class StaffController extends BaseController
             {
                 if($pago_staff != ''){
 
-                    $pago = PagoStaff::find($pago_staff);
+                    $pago = Comision::find($pago_staff);
                     $pago->boolean_pago = 1;
                     $pago->fecha = Carbon::now()->toDateString();
                     $pago->hora = Carbon::now()->toTimeString();

@@ -30,7 +30,7 @@ use App\Egreso;
 use App\TipoEgreso;
 use App\ConfigEgreso;
 use App\Pago;
-use App\PagoStaff;
+use App\Comision;
 use App\PagoInstructor;
 use App\FormasPago;
 use App\Reservacion;
@@ -1498,12 +1498,12 @@ class ReporteController extends BaseController
             }
 
             
-            $comisiones = PagoStaff::join('staff','pagos_staff.staff_id','=','staff.id')
-                ->select('pagos_staff.*')
+            $comisiones = Comision::join('staff','comisiones.usuario_id','=','staff.id')
+                ->select('comisiones.*')
                 ->where('staff.academia_id',Auth::user()->academia_id)
-                ->whereBetween('pagos_staff.created_at', [$start,$end])
-                ->where('pagos_staff.boolean_pago',1)
-            ->sum('pagos_staff.monto');
+                ->whereBetween('comisiones.fecha', [$start,$end])
+                ->where('comisiones.boolean_pago',1)
+            ->sum('comisiones.monto');
 
             if(!$comisiones){
                 $comisiones = 0;
@@ -2777,16 +2777,16 @@ class ReporteController extends BaseController
     public function ComisionesFiltros(Request $request)
     {
         
-        $query = PagoStaff::join('staff', 'pagos_staff.staff_id', '=', 'staff.id')
-            ->join('config_servicios', 'pagos_staff.servicio_id', '=', 'config_servicios.id')
-            ->select('pagos_staff.id', 'staff.nombre', 'staff.apellido', 'config_servicios.nombre as servicio', 'pagos_staff.monto', 'pagos_staff.fecha', 'pagos_staff.hora', 'pagos_staff.boolean_pago')
+        $query = Comision::join('staff', 'comisiones.usuario_id', '=', 'staff.id')
+            ->join('config_servicios', 'comisiones.servicio_id', '=', 'config_servicios.id')
+            ->select('comisiones.id', 'staff.nombre', 'staff.apellido', 'config_servicios.nombre as servicio', 'comisiones.monto', 'comisiones.fecha', 'comisiones.hora', 'comisiones.boolean_pago')
             ->where('staff.academia_id','=',Auth::user()->academia_id);
 
         if($request->boolean_fecha){
             $fecha = explode(' - ', $request->fecha2);
             $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
             $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
-            $query->whereBetween('pagos_staff.fecha', [$start,$end]);
+            $query->whereBetween('comisiones.fecha', [$start,$end]);
         }else{
 
             if($request->fecha){
@@ -2801,17 +2801,17 @@ class ReporteController extends BaseController
                     $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
                 }
 
-                $query->whereBetween('pagos_staff.fecha', [$start,$end]);
+                $query->whereBetween('comisiones.fecha', [$start,$end]);
             }
         }
 
         if($request->staff_id){
-            $query->where('pagos_staff.staff_id', $request->staff_id);
+            $query->where('comisiones.usuario_id', $request->staff_id);
         }
 
         if($request->servicio_id){
 
-            $query->where('pagos_staff.servicio_id',$request->servicio_id);
+            $query->where('comisiones.servicio_id',$request->servicio_id);
         }
 
         $comisiones = $query->get();

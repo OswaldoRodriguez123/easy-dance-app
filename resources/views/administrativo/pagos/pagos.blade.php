@@ -618,11 +618,6 @@
                                 <div class="select">
                                   <select class="form-control selectpicker" name="promotor_id" id="promotor_id"  data-live-search="true">
                                     <option value="">Selecciona</option>
-                                    @foreach ( $promotores as $promotor )
-                     
-                                      <option value = "{{$promotor->id}}">{{$promotor->nombre}} {{$promotor->apellido}}</option>
-
-                                    @endforeach
                                   </select>
                                 </div>
                               </div>
@@ -758,6 +753,7 @@
     var itemlist = 0;
     var disponible = 0;
     var servicios_productos = '';
+    var promotores = <?php echo json_encode($promotores);?>;
 
     route_agregar="{{url('/')}}/administrativo/pagos/agregaritem";
     route_factura="{{url('/')}}/administrativo/pagos/gestion";
@@ -1133,12 +1129,17 @@
 
     $("#combo").change(function(){
 
+      $('#promotor_id').empty()
+      $('#promotor_id').append(new Option('Selecciona',''));
+
       var combo = $(this).val();
       var split = combo.split('-');  
       var incluye_iva = split[4];
       var disponibilidad = split[5];
       var costo = parseFloat(split[1]);
       var cantidad = 1
+      var tipo = split[3];
+      var id = split[0];
 
       if(incluye_iva == 0){
         $("#impuesto").val($('#impuesto option').first().val());
@@ -1154,6 +1155,26 @@
       $('input[name="cantidad"]').val(1)
       $('input[name="campo_disponibilidad"]').val(disponibilidad)
 
+      $.each(promotores, function (index, array) {
+        $.each(array.config_comisiones, function (i, comision) {
+          if(comision.servicio_producto_id == id && comision.servicio_producto_tipo == tipo){
+
+            explode = index.split('-')
+            tipo = explode[0]
+
+            if(tipo == 1){
+              icono = "<i class='icon_f-staff'></i>"
+            }else{
+              icono = "<i class='icon_a-instructor'></i>"
+            }
+
+            $('#promotor_id').append('<option value="'+array.id+'" data-content="'+ array.nombre + ' ' + array.apellido + ' ' + ' ' + icono +'"></option>');
+            return false;
+          }
+        });
+      });
+
+      $('#promotor_id').selectpicker('refresh');
     });
 
     $("#cantidad").change(function(){
@@ -1304,9 +1325,9 @@
           },
           error:function(msj){
             setTimeout(function(){ 
-              if (typeof msj.responseJSON === "undefined") {
-                window.location = "{{url('/')}}/error";
-              }
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
               if(msj.responseJSON.status=="ERROR"){
                 console.log(msj.responseJSON.errores);
                 errores(msj.responseJSON.errores);

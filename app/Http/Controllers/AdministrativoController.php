@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Alumno;
 use App\AlumnoRemuneracion;
 use App\Staff;
+use App\Instructor;
 use App\Acuerdo;
 use App\ItemsAcuerdo;
 use App\Pago;
@@ -41,8 +42,8 @@ use Redirect;
 use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
-use App\ConfigPagosStaff;
-use App\PagoStaff;
+use App\ConfigComision;
+use App\Comision;
 use App\Transferencia;
 use App\Sugerencia;
 use App\Notificacion;
@@ -318,7 +319,7 @@ class AdministrativoController extends BaseController {
             $array['1-'.$alumno->id] = $alumno_array;
         }
 
-        $staffs = Staff::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+        $staffs = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
         foreach($staffs as $staff)
         {
@@ -343,7 +344,35 @@ class AdministrativoController extends BaseController {
             $array['2-'.$staff->id] = $staff_array;
         }
 
-        $promotores = Staff::where('academia_id', Auth::user()->academia_id)->get();
+        $promotores = array();
+
+        foreach($staffs as $staff)
+        {
+            $collection=collect($staff);     
+            $promotor_array = $collection->toArray();
+
+            $config_comisiones = ConfigComision::where('usuario_id',$staff->id)->where('usuario_tipo',1)->get();
+
+            $promotor_array['config_comisiones']=$config_comisiones;
+            $promotor_array['tipo']=1;
+            $promotor_array['id']='1-'.$staff->id;
+            $promotores['1-'.$staff->id] = $promotor_array;
+        }
+
+        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($instructores as $instructor)
+        {
+            $collection=collect($instructor);     
+            $promotor_array = $collection->toArray();
+
+            $config_comisiones = ConfigComision::where('usuario_id',$instructor->id)->where('usuario_tipo',2)->get();
+
+            $promotor_array['config_comisiones']=$config_comisiones;
+            $promotor_array['tipo']=2;
+            $promotor_array['id']='2-'.$instructor->id;
+            $promotores['2-'.$instructor->id] = $promotor_array;
+        }
 
 		return view('administrativo.pagos.pagos')->with(['usuarios' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto, 'promotores' => $promotores]);
 	}
@@ -439,7 +468,27 @@ class AdministrativoController extends BaseController {
             $array['2-'.$staff->id] = $staff_array;
         }
 
-        $promotores = Staff::where('academia_id', Auth::user()->academia_id)->get();
+        $promotores = array();
+
+        foreach($staffs as $staff)
+        {
+            $collection=collect($staff);     
+            $promotor_array = $collection->toArray();
+
+            $promotor_array['tipo']=1;
+            $promotores['1-'.$staff->id] = $promotor_array;
+        }
+
+        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($instructores as $instructor)
+        {
+            $collection=collect($instructor);     
+            $promotor_array = $collection->toArray();
+
+            $promotor_array['tipo']=2;
+            $promotores['2-'.$instructor->id] = $promotor_array;
+        }
 
         return view('administrativo.pagos.pagos')->with(['usuarios' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto, 'id' => $id, 'promotores' => $promotores]);
     }
@@ -960,16 +1009,17 @@ class AdministrativoController extends BaseController {
 
                             $inscripcion_clase_grupal = InscripcionClaseGrupal::withTrashed()->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                                ->select('inscripcion_clase_grupal.instructor_id as staff_id', 'config_clases_grupales.servicio_id')
+                                ->select('inscripcion_clase_grupal.instructor_id as promotor_id', 'config_clases_grupales.servicio_id')
                                 ->where('inscripcion_clase_grupal.alumno_id', $request->usuario_id)
                                 ->where('config_clases_grupales.servicio_id',$item_proforma->item_id)
                             ->first();
 
                             if($inscripcion_clase_grupal){
 
-                                $config_pago = ConfigPagosStaff::where('servicio_id',$inscripcion_clase_grupal->servicio_id)
-                                    ->where('tipo_servicio',3)
-                                    ->where('staff_id',$inscripcion_clase_grupal->staff_id)
+                                $config_pago = ConfigComision::where('servicio_producto_id',$inscripcion_clase_grupal->servicio_id)
+                                    ->where('servicio_producto_tipo',1)
+                                    ->where('usuario_tipo',$item_proforma->tipo_promotor)
+                                    ->where('usuario_id',$inscripcion_clase_grupal->promotor_id)
                                 ->first();
 
                                 if($config_pago){
@@ -981,12 +1031,14 @@ class AdministrativoController extends BaseController {
 
                                         if($monto > 0 ){
 
-                                            $pago = new PagoStaff;
+                                            $pago = new Comision;
 
-                                            $pago->staff_id=$inscripcion_clase_grupal->staff_id;
+                                            $pago->usuario_id=$inscripcion_clase_grupal->promotor_id;
+                                            $pago->usuario_tipo=1;
                                             $pago->tipo=$config_pago->tipo;
                                             $pago->monto=$monto;
-                                            $pago->servicio_id=$inscripcion_clase_grupal->servicio_id;
+                                            $pago->servicio_producto_id=$inscripcion_clase_grupal->servicio_id;
+                                            $pago->servicio_producto_tipo=1;
                                             $pago->fecha = Carbon::now()->toDateString();
                                             $pago->hora = Carbon::now()->toTimeString();
 
@@ -995,12 +1047,14 @@ class AdministrativoController extends BaseController {
                                        
                                     }else{
 
-                                        $pago = new PagoStaff;
+                                        $pago = new Comision;
 
-                                        $pago->staff_id=$inscripcion_clase_grupal->staff_id;
+                                        $pago->usuario_id=$inscripcion_clase_grupal->promotor_id;
+                                        $pago->usuario_tipo=1;
                                         $pago->tipo=$config_pago->tipo;
                                         $pago->monto=$config_pago->monto;
-                                        $pago->servicio_id=$inscripcion_clase_grupal->servicio_id;
+                                        $pago->servicio_producto_id=$inscripcion_clase_grupal->servicio_id;
+                                        $pago->servicio_producto_tipo=1;
                                         $pago->fecha = Carbon::now()->toDateString();
                                         $pago->hora = Carbon::now()->toTimeString();
 
@@ -1036,9 +1090,10 @@ class AdministrativoController extends BaseController {
 
                         if($item_proforma->promotor_id)
                         {
-                            $config_pago = ConfigPagosStaff::where('servicio_id',$item_proforma->item_id)
-                                ->where('tipo_servicio',$item_proforma->tipo)
-                                ->where('staff_id',$item_proforma->promotor_id)
+                            $config_pago = ConfigComision::where('servicio_producto_id',$item_proforma->item_id)
+                                ->where('servicio_producto_tipo',$item_proforma->servicio_producto)
+                                ->where('usuario_tipo',$item_proforma->tipo_promotor)
+                                ->where('usuario_id',$item_proforma->promotor_id)
                             ->first();
 
                             if($config_pago){
@@ -1050,12 +1105,14 @@ class AdministrativoController extends BaseController {
 
                                     if($monto > 0 ){
 
-                                        $pago = new PagoStaff;
+                                        $pago = new Comision;
 
-                                        $pago->staff_id=$item_proforma->promotor_id;
+                                        $pago->usuario_id=$item_proforma->promotor_id;
+                                        $pago->usuario_tipo=$item_proforma->tipo_promotor;
                                         $pago->tipo=$config_pago->tipo;
                                         $pago->monto=$monto;
-                                        $pago->servicio_id=$item_proforma->item_id;
+                                        $pago->servicio_producto_id=$item_proforma->item_id;
+                                        $pago->servicio_producto_tipo=$item_proforma->servicio_producto;
                                         $pago->fecha = Carbon::now()->toDateString();
                                         $pago->hora = Carbon::now()->toTimeString();
 
@@ -1064,12 +1121,14 @@ class AdministrativoController extends BaseController {
                                    
                                 }else{
 
-                                    $pago = new PagoStaff;
+                                    $pago = new Comision;
 
-                                    $pago->staff_id=$item_proforma->promotor_id;
+                                    $pago->usuario_id=$item_proforma->promotor_id;
+                                    $pago->usuario_tipo=$item_proforma->tipo_promotor;
                                     $pago->tipo=$config_pago->tipo;
                                     $pago->monto = floatval($config_pago->monto * $item_proforma->cantidad);
-                                    $pago->servicio_id=$item_proforma->item_id;
+                                    $pago->servicio_producto_id=$item_proforma->item_id;
+                                    $pago->servicio_producto_tipo=$item_proforma->servicio_producto;
                                     $pago->fecha = Carbon::now()->toDateString();
                                     $pago->hora = Carbon::now()->toTimeString();
 
@@ -1095,6 +1154,8 @@ class AdministrativoController extends BaseController {
                         $item_factura->impuesto = $item_proforma->impuesto;
                         $item_factura->importe_neto = $item_proforma->importe_neto;
                         $item_factura->promotor_id = $item_proforma->promotor_id;
+                        $item_factura->tipo_promotor = $item_proforma->tipo_promotor;
+                        $item_factura->servicio_producto = $item_proforma->servicio_producto;
 
                         $item_factura->save();
                     }
@@ -1682,34 +1743,35 @@ class AdministrativoController extends BaseController {
             $explode = explode("-", $request->combo);
             $item_id = $explode[0];
             $tipo = $explode[2];
+            $servicio_producto = $explode[3];
 
             $explode = explode("-", $request->usuario_id);
             $usuario_tipo = $explode[0];
             $usuario_id = $explode[1];
 
-            if($request->tipo == "servicio"){
+            if($request->promotor_id){
+                $explode = explode("-", $request->promotor_id);
+                $tipo_promotor = $explode[0];
+                $promotor_id = $explode[1];
+            }else{
+                $tipo_promotor = '';
+                $promotor_id = '';
+            }
 
+
+            if($servicio_producto == 1){
                 $producto_servicio = ConfigServicios::find($item_id);
                 $importe_neto = $producto_servicio->costo * $request->cantidad;
-
-                if($request->impuesto == 0 and $producto_servicio->incluye_iva == 1){
-                    $academia = Academia::find(Auth::user()->academia_id);
-                    $iva = $importe_neto * ($academia->porcentaje_impuesto / 100);
-
-                    $importe_neto = $importe_neto - $iva;
-                }
-
             }else{
-
                 $producto_servicio = ConfigProductos::find($item_id);
                 $importe_neto = $producto_servicio->costo * $request->cantidad;
+            }
 
-                if($request->impuesto == 0 and $producto_servicio->incluye_iva == 1){
-                     $academia = Academia::find(Auth::user()->academia_id);
-                     $iva = $importe_neto * ($academia->porcentaje_impuesto / 100);
+            if($request->impuesto == 0 and $producto_servicio->incluye_iva == 1){
+                $academia = Academia::find(Auth::user()->academia_id);
+                $iva = $importe_neto * ($academia->porcentaje_impuesto / 100);
 
-                     $importe_neto = $importe_neto - $iva;
-                }
+                $importe_neto = $importe_neto - $iva;
             }
 
             $item_factura = new ItemsFacturaProforma;
@@ -1726,7 +1788,9 @@ class AdministrativoController extends BaseController {
             $item_factura->impuesto = $request->impuesto;
             $item_factura->importe_neto = $importe_neto;
             $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
-            $item_factura->promotor_id = $request->promotor_id;
+            $item_factura->promotor_id = $promotor_id;
+            $item_factura->tipo_promotor = $tipo_promotor;
+            $item_factura->servicio_producto = $servicio_producto;
                         
             if($item_factura->save()){
 
