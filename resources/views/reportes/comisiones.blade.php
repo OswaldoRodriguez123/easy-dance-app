@@ -450,7 +450,7 @@
                             },
                             tooltip: true,
                             tooltipOpts: {
-                                content: "%p.0%, %s", 
+                                content: "%n, %s", 
                                 shifts: {
                                     x: 20,
                                     y: 0
