@@ -1868,6 +1868,22 @@
         $('#dropdown_principal').append(contenido);
 
         contenido = '';
+
+        contenido += '<li class="dropdown-submenu pointer" data-tipo_dropdown="1" data-tipo_servicio="15" data-nombre_servicio="Paquetes" data-servicio_producto_id ="15">'
+        contenido += '<a>Paquetes</a>'
+        contenido += '<ul class="dropdown-menu">'
+
+        $.each(linea_servicio, function (index, array) {  
+            if(array.tipo == 15){
+                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
+            }                   
+        });
+
+        contenido += '</ul></li>'
+
+        $('#dropdown_principal').append(contenido);
+
+        contenido = '';
     
 
       }else if(id == 14){

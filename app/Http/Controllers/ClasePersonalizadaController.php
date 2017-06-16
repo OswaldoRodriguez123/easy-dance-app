@@ -942,9 +942,7 @@ class ClasePersonalizadaController extends BaseController {
                 return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de la clase no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
             }
 
-            $inscripcion_clase_personalizada = new InscripcionClasePersonalizada;
-            
-            $clase_personalizada = ClasePersonalizada::Leftjoin('config_servicios', 'clases_personalizadas.id', '=', 'config_servicios.tipo_id')
+            $clase_personalizada = ClasePersonalizada::join('config_servicios', 'clases_personalizadas.servicio_id', '=', 'config_servicios.id')
                 ->select('clases_personalizadas.*', 'config_servicios.id as servicio_id')
                 ->where('clases_personalizadas.id', '=', $request->clase_personalizada_id)
             ->first();
@@ -952,6 +950,8 @@ class ClasePersonalizadaController extends BaseController {
             $fecha_inicio = $fecha_inicio->toDateString();
             $fecha_final = $fecha_final->toDateString();
 
+            $inscripcion_clase_personalizada = new InscripcionClasePersonalizada;
+            
             $inscripcion_clase_personalizada->clase_personalizada_id =  $request->clase_personalizada_id;
             $inscripcion_clase_personalizada->fecha_inicio = $fecha_inicio;
             $inscripcion_clase_personalizada->fecha_final = $fecha_final;
@@ -961,8 +961,8 @@ class ClasePersonalizadaController extends BaseController {
             $inscripcion_clase_personalizada->alumno_id = $request->alumno_id;
             $inscripcion_clase_personalizada->especialidad_id = $request->especialidad_id;
             $inscripcion_clase_personalizada->estudio_id = $request->estudio_id;
-            $inscripcion_clase_personalizada->promotor_id =  $request->promotor_id;
-            $inscripcion_clase_personalizada->cantidad_horas =  $clase_personalizada->cantidad_horas;
+            $inscripcion_clase_personalizada->promotor_id = $request->promotor_id;
+            $inscripcion_clase_personalizada->cantidad_horas = $clase_personalizada->cantidad_horas;
 
             // return redirect("/home");
             if($inscripcion_clase_personalizada->save()){

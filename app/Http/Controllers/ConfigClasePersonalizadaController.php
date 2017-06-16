@@ -233,6 +233,9 @@ class ConfigClasePersonalizadaController extends BaseController {
 
             $servicio->save();
 
+            $clasepersonalizada->servicio_id = $servicio->id;
+            $clasepersonalizada->save();
+
             $precios = Session::get('precios');
 
             if(count($precios) > 0){
