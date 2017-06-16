@@ -92,6 +92,7 @@
                                     <th style="width:7%;"><input style="margin-left:49%;" name="select_all" value="1" id="select_all" type="checkbox" /></th>
                                     <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
                                     <th class="text-center" data-column-id="hora" data-order="asc">Hora</th>
+                                    <th class="text-center" data-column-id="hora" data-order="asc">Día</th>
                                     <th class="text-center" data-column-id="clase">Servicio / Producto</th>
                                     <th class="text-center" data-column-id="monto">Monto</th>
                                 </tr>
@@ -109,6 +110,7 @@
                                     </td>
                                     <td class="text-center previa">{{$comision['fecha']}}</td>
                                     <td class="text-center previa">{{$comision['hora']}}</td>
+                                    <td class="text-center previa">{{$comision['dia']}}</td>
                                     <td class="text-center previa">{{$comision['servicio_producto']}}</td>
                                     <td class="text-center previa">{{ number_format($comision['monto'], 2, '.' , '.') }}</td>
                                 </tr>
@@ -156,7 +158,7 @@
           processing: true,
           serverSide: false,
           pageLength: 50, 
-          order: [[1, 'desc'], [3, 'desc']],
+          order: [[1, 'desc'], [2, 'desc']],
           fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
             $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           },

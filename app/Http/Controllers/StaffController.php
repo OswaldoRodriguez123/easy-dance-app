@@ -1081,10 +1081,44 @@ class StaffController extends BaseController
                 }
                 if($servicio_producto){
 
+                    $fecha = Carbon::createFromFormat('Y-m-d', $comision->fecha);
+                    $i = $fecha->dayOfWeek;
+
+                    if($i == 1){
+
+                        $dia = 'Lunes';
+
+                    }else if($i == 2){
+
+                        $dia = 'Martes';
+
+                    }else if($i == 3){
+
+                        $dia = 'Miercoles';
+
+                    }else if($i == 4){
+
+                        $dia = 'Jueves';
+
+                    }else if($i == 5){
+
+                        $dia = 'Viernes';
+
+                    }else if($i == 6){
+
+                        $dia = 'Sabado';
+
+                    }else if($i == 0){
+
+                        $dia = 'Domingo';
+
+                    }
+
                     $collection=collect($comision);     
                     $comision_array = $collection->toArray();
                     
                     $comision_array['servicio_producto']=$servicio_producto->nombre;
+                    $comision_array['dia']=$dia;
                     $array[$comision->id] = $comision_array;
                 }
             }
