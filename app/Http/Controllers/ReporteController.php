@@ -1514,8 +1514,8 @@ class ReporteController extends BaseController
             $nomina = PagoInstructor::join('instructores','pagos_instructor.instructor_id','=','instructores.id')
                 ->select('pagos_instructor.*')
                 ->where('instructores.academia_id',Auth::user()->academia_id)
-                ->whereBetween('pagos_instructor.created_at', [$start,$end])
-                ->where('pagos_instructor.boolean_clase_pagada',1)
+                ->whereBetween('pagos_instructor.fecha', [$start,$end])
+                ->where('pagos_instructor.boolean_pago',1)
             ->sum('pagos_instructor.monto');
 
             if(!$nomina){
@@ -2769,24 +2769,76 @@ class ReporteController extends BaseController
     public function Comisiones()
     {
         $staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
-        $servicios = ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        return view('reportes.comisiones')->with(['staffs' => $staffs, 'servicios' => $servicios]);
+        $promotores = array();
+
+        foreach($staffs as $staff)
+        {
+            $collection=collect($staff);     
+            $promotor_array = $collection->toArray();
+
+            $promotor_array['tipo']=1;
+            $promotor_array['id']='1-'.$staff->id;
+            $promotor_array['icono']="<i class='icon_f-staff'></i>";
+            $promotores['1-'.$staff->id] = $promotor_array;
+        }
+
+        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($instructores as $instructor)
+        {
+            $collection=collect($instructor);     
+            $promotor_array = $collection->toArray();
+
+            $promotor_array['tipo']=2;
+            $promotor_array['id']='2-'.$instructor->id;
+            $promotor_array['icono']="<i class='icon_a-instructor'></i>";
+            $promotores['2-'.$instructor->id] = $promotor_array;
+        }
+
+        $servicios_productos = array();
+
+        $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre','asc')->get();
+
+        foreach($config_servicio as $servicio){;
+
+            $collection=collect($servicio);     
+            $servicio_producto_array = $collection->toArray();
+
+            $servicio_producto_array['tipo']=1;
+            $servicio_producto_array['id']='1-'.$servicio->id;
+            $servicio_producto_array['icono']="<i class='icon_f-servicios'></i>";
+            $servicios_productos['1-'.$servicio->id] = $servicio_producto_array;
+
+        }
+
+        $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre','asc')->get();
+
+        foreach($config_producto as $producto){
+
+            $collection=collect($producto);     
+            $servicio_producto_array = $collection->toArray();
+
+            $servicio_producto_array['tipo']=2;
+            $servicio_producto_array['id']='2-'.$producto->id;
+            $servicio_producto_array['icono']="<i class='icon_f-productos'></i>";
+            $servicios_productos['2-'.$producto->id] = $servicio_producto_array;
+
+        }
+
+        return view('reportes.comisiones')->with(['promotores' => $promotores, 'servicios_productos' => $servicios_productos]);
     }
 
     public function ComisionesFiltros(Request $request)
     {
         
-        $query = Comision::join('staff', 'comisiones.usuario_id', '=', 'staff.id')
-            ->join('config_servicios', 'comisiones.servicio_id', '=', 'config_servicios.id')
-            ->select('comisiones.id', 'staff.nombre', 'staff.apellido', 'config_servicios.nombre as servicio', 'comisiones.monto', 'comisiones.fecha', 'comisiones.hora', 'comisiones.boolean_pago')
-            ->where('staff.academia_id','=',Auth::user()->academia_id);
+        $query = Comision::where('comisiones.academia_id','=',Auth::user()->academia_id);
 
         if($request->boolean_fecha){
             $fecha = explode(' - ', $request->fecha2);
             $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
             $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
-            $query->whereBetween('comisiones.fecha', [$start,$end]);
+            $query->whereBetween('fecha', [$start,$end]);
         }else{
 
             if($request->fecha){
@@ -2801,17 +2853,20 @@ class ReporteController extends BaseController
                     $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
                 }
 
-                $query->whereBetween('comisiones.fecha', [$start,$end]);
+                $query->whereBetween('fecha', [$start,$end]);
             }
         }
 
-        if($request->staff_id){
-            $query->where('comisiones.usuario_id', $request->staff_id);
+        if($request->usuario){
+            $explode = explode('-', $request->usuario);
+            $query->where('usuario_tipo', $explode[0]);
+            $query->where('usuario_id', $explode[1]);
         }
 
-        if($request->servicio_id){
-
-            $query->where('comisiones.servicio_id',$request->servicio_id);
+        if($request->servicio_producto){
+            $explode = explode('-', $request->servicio_producto);
+            $query->where('servicio_producto_tipo', $explode[0]);
+            $query->where('servicio_producto_id', $explode[1]);
         }
 
         $comisiones = $query->get();
@@ -2827,18 +2882,68 @@ class ReporteController extends BaseController
             if($request->tipo){
                 if($request->tipo == 1 && $comision->boolean_pago){
 
-                    $array[] = $comision;
+                    if($comision->servicio_producto_tipo == 1){
+                        $servicio_producto = ConfigServicios::find($comision->servicio_producto_id);
+                    }else{
+                        $servicio_producto = ConfigProductos::find($comision->servicio_producto_id);
+                    }
+
+                    if($comision->usuario_tipo == 1){
+                        $usuario = Staff::find($comision->usuario_id);
+                    }else{
+                        $usuario = Instructor::find($comision->usuario_id);
+                    }
+
+                    $collection=collect($comision);     
+                    $comision_array = $collection->toArray();
+                    $comision_array['servicio_producto']=$servicio_producto->nombre;
+                    $comision_array['usuario']=$usuario->nombre . ' ' . $usuario->apellido;
+                    $array[$comision->id] = $comision_array;
+
                     $pagadas += $comision->monto;
 
                 }else if($request->tipo == 2 && !$comision->boolean_pago){
 
-                    $array[] = $comision;
+                    if($comision->servicio_producto_tipo == 1){
+                        $servicio_producto = ConfigServicios::find($comision->servicio_producto_id);
+                    }else{
+                        $servicio_producto = ConfigProductos::find($comision->servicio_producto_id);
+                    }
+
+                    if($comision->usuario_tipo == 1){
+                        $usuario = Staff::find($comision->usuario_id);
+                    }else{
+                        $usuario = Instructor::find($comision->usuario_id);
+                    }
+
+                    $collection=collect($comision);     
+                    $comision_array = $collection->toArray();
+                    $comision_array['servicio_producto']=$servicio_producto->nombre;
+                    $comision_array['usuario']=$usuario->nombre . ' ' . $usuario->apellido;
+                    $array[$comision->id] = $comision_array;
+
                     $pendientes += $comision->monto;
 
                 }
             }else{
 
-                $array[] = $comision;
+                if($comision->servicio_producto_tipo == 1){
+                    $servicio_producto = ConfigServicios::withTrashed()->find($comision->servicio_producto_id);
+                }else{
+                    $servicio_producto = ConfigProductos::withTrashed()->find($comision->servicio_producto_id);
+                }
+
+                if($comision->usuario_tipo == 1){
+                    $usuario = Staff::withTrashed()->find($comision->usuario_id);
+                }else{
+                    $usuario = Instructor::withTrashed()->find($comision->usuario_id);
+                }
+
+                $collection=collect($comision);     
+                $comision_array = $collection->toArray();
+                $comision_array['servicio_producto']=$servicio_producto->nombre;
+                $comision_array['usuario']=$usuario->nombre . ' ' . $usuario->apellido;
+                $array[$comision->id] = $comision_array;
 
                 if($comision->boolean_pago){
                     $pagadas += $comision->monto;

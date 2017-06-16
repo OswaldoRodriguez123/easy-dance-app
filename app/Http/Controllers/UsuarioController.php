@@ -33,6 +33,7 @@ use App\ClasePersonalizada;
 use App\Regalo;
 use App\ItemsFacturaProforma;
 use App\Acuerdo;
+use App\Comision;
 use Validator;
 use Mail;
 use Carbon\Carbon;
@@ -585,6 +586,16 @@ class UsuarioController extends BaseController {
 
     public function index()
     {
+        $comisiones = Comision::join('staff', 'comisiones.usuario_id', '=', 'staff.id')
+            ->select('comisiones.*')
+            ->where('staff.academia_id',Auth::user()->academia_id)
+        ->get();
+
+        foreach($comisiones as $comision){
+            $comision->academia_id = Auth::user()->academia_id;
+            $comision->save();
+        }
+
         $academia = Academia::find(Auth::user()->academia_id);
 
         $datos = $this->getDatosUsuario();

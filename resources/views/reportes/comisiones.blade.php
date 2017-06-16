@@ -67,18 +67,18 @@
                                 <input type="hidden" id="boolean_fecha" name="boolean_fecha" value="0">
 
                                 <div class="col-md-4">
-                                    <label>Staff</label>
+                                    <label>Promotor</label>
 
 
                                     <div class="fg-line">
                                       <div class="select">
-                                        <select class="selectpicker" id="staff_id" name="staff_id" data-live-search="true">
+                                        <select class="selectpicker" id="usuario" name="usuario" data-live-search="true">
 
                                             <option value="0">Todos</option>
 
-                                            @foreach ( $staffs as $staff )
+                                            @foreach ( $promotores as $promotor )
 
-                                                <option value = "{{ $staff->id }}">{{ $staff->nombre }} {{ $staff->apellido }}</option>
+                                                <option value = "{{ $promotor['id'] }}" data-content="{{ $promotor['nombre'] }} {{ $promotor['apellido'] }} {!!$promotor['icono']!!}"></option>
                                          
                                             @endforeach
                                         </select>
@@ -87,17 +87,17 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label>Servicio</label>
+                                    <label>Servicio / Producto</label>
 
 
                                     <div class="fg-line">
                                       <div class="select">
-                                        <select class="selectpicker" id="servicio_id" name="servicio_id" data-live-search="true">
+                                        <select class="selectpicker" id="servicio_producto" name="servicio_producto" data-live-search="true">
 
                                             <option value="0">Todos</option>
 
-                                            @foreach ( $servicios as $servicio )
-                                                <option value = "{{ $servicio->id }}">{{ $servicio->nombre }}</option>
+                                            @foreach ( $servicios_productos as $servicio_producto )
+                                                <option value = "{{ $servicio_producto['id'] }}" data-content="{{ $servicio_producto['nombre'] }} {!!$servicio_producto['icono']!!}"></option>
                                             @endforeach
 
                                         </select>
@@ -202,10 +202,10 @@
                             <table class="table display  cell-border text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="staff" data-order="desc">Staff</th>
+                                    <th class="text-center" data-column-id="promotor" data-order="desc">Promotor</th>
                                     <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
                                     <th class="text-center" data-column-id="hora" data-order="asc">Hora</th>
-                                    <th class="text-center" data-column-id="servicio">Servicio</th>
+                                    <th class="text-center" data-column-id="servicio_producto">Servicio / Producto</th>
                                     <th class="text-center" data-column-id="monto">Monto</th>
                                     <th class="text-center" data-column-id="tipo">Tipo</th>
                                 </tr>
@@ -399,10 +399,10 @@
                             var rowId=array.id;
 
                             var rowNode=t.row.add( [
-                                ''+array.nombre+ ' ' +array.apellido+'',
+                                ''+array.usuario+'',
                                 ''+array.fecha+'',
                                 ''+array.hora+'',
-                                ''+array.servicio+'',
+                                ''+array.servicio_producto+'',
                                 ''+formatmoney(parseFloat(array.monto))+'',
                                 ''+tipo+'',
                             ] ).draw(false).node();

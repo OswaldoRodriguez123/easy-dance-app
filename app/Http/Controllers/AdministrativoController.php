@@ -1041,6 +1041,7 @@ class AdministrativoController extends BaseController {
                                             $pago->servicio_producto_tipo=1;
                                             $pago->fecha = Carbon::now()->toDateString();
                                             $pago->hora = Carbon::now()->toTimeString();
+                                            $pago->academia_id = Auth::user()->academia_id;
 
                                             $pago->save();
                                         }
@@ -1057,6 +1058,7 @@ class AdministrativoController extends BaseController {
                                         $pago->servicio_producto_tipo=1;
                                         $pago->fecha = Carbon::now()->toDateString();
                                         $pago->hora = Carbon::now()->toTimeString();
+                                        $pago->academia_id = Auth::user()->academia_id;
 
                                         $pago->save();
                                         
@@ -1115,6 +1117,7 @@ class AdministrativoController extends BaseController {
                                         $pago->servicio_producto_tipo=$item_proforma->servicio_producto;
                                         $pago->fecha = Carbon::now()->toDateString();
                                         $pago->hora = Carbon::now()->toTimeString();
+                                        $pago->academia_id = Auth::user()->academia_id;
 
                                         $pago->save();
                                     }
@@ -1131,6 +1134,7 @@ class AdministrativoController extends BaseController {
                                     $pago->servicio_producto_tipo=$item_proforma->servicio_producto;
                                     $pago->fecha = Carbon::now()->toDateString();
                                     $pago->hora = Carbon::now()->toTimeString();
+                                    $pago->academia_id = Auth::user()->academia_id;
 
                                     $pago->save();
                                     

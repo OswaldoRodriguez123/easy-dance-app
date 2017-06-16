@@ -781,8 +781,8 @@
               searchPlaceholder: "Buscar"
         },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).addClass( "text-center" );
-          $('td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "disabled");
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
+          $('td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "disabled");
         },
         language: {
                       processing:     "Procesando ...",
@@ -1278,10 +1278,6 @@
 
     }
 
-    function subir(){
-      $('modalAgregar').animate({scrollTop : 0}, 500);
-    }
-
     $( "#cancelar" ).click(function() {
 
       var padre=$(this).parents('tr');
@@ -1383,7 +1379,6 @@
               total = 0;
 
               $.each(respuesta.items, function (index, array) {
-
 
                 var rowId=array[0].id;
                 var rowNode=t.row.add( [
