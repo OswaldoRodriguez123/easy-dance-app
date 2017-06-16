@@ -531,7 +531,7 @@
             var nType = 'success';
             var nAnimIn = $(this).attr('data-animation-in');
             var nAnimOut = $(this).attr('data-animation-out')
-                        swal("Exito!","La proforma ha sido eliminada!","success");
+                        
                         // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
                         eliminar(id, element);
           }
@@ -549,20 +549,12 @@
                     dataType: 'json',
                     data:id,
                     success:function(respuesta){
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          // finprocesado();
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
 
-                          t.row( $(element).parents('tr') )
-                            .remove()
-                            .draw();
+                            swal("Exito!","La proforma ha sido eliminada!","success");
+                            t.row($(element).parents('tr') )
+                                .remove()
+                                .draw();
                         
                         }
                     },

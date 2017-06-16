@@ -1211,41 +1211,62 @@
     $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
     
       var id = $(this).closest('tr').attr('id');
+      var element = $(this)
       var token = $('input:hidden[name=_token]').val();
 
-      $.ajax({
-           url: route_eliminar+"/"+id,
-           headers: {'X-CSRF-TOKEN': token},
-           type: 'POST',
-           dataType: 'json',                
-          success: function (data) {
-            if(data.status=='OK'){
+      swal({   
+          title: "Desea eliminar la proforma?",   
+          text: "Confirmar eliminación!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Eliminar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+        if (isConfirm) {
+          procesando();
+          $.ajax({
+             url: route_eliminar+"/"+id,
+             headers: {'X-CSRF-TOKEN': token},
+             type: 'POST',
+             dataType: 'json',                
+            success: function (data) {
+              if(data.status=='OK'){
 
-                impuesto = data.impuesto;
-                subtotalglobal = subtotalglobal - data.importe_neto + impuesto;
-                impuestoglobal = impuestoglobal - impuesto;
-                totalfinal = subtotalglobal + impuestoglobal;
 
-                $("#subtotal").text(subtotalglobal.toFixed(2));
-                $("#impuestototal").text(impuestoglobal.toFixed(2));
-                $("#total").text(totalfinal.toFixed(2));
+                  t.row(element.parents('tr'))
+                    .remove()
+                    .draw();
 
-                                 
-            }else{
-              swal(
-                'Solicitud no procesada',
-                'Ha ocurrido un error, intente nuevamente por favor',
-                'error'
-              );
+                  impuesto = data.impuesto;
+                  subtotalglobal = subtotalglobal - data.importe_neto + impuesto;
+                  impuestoglobal = impuestoglobal - impuesto;
+                  totalfinal = subtotalglobal + impuestoglobal;
+
+                  $("#subtotal").text(subtotalglobal.toFixed(2));
+                  $("#impuestototal").text(impuestoglobal.toFixed(2));
+                  $("#total").text(totalfinal.toFixed(2));
+                  finprocesado();
+                  swal("Exito!","La proforma ha sido eliminada!","success");
+
+                                   
+              }else{
+                finprocesado();
+                swal(
+                  'Solicitud no procesada',
+                  'Ha ocurrido un error, intente nuevamente por favor',
+                  'error'
+                );
+              }
+            },
+            error:function (xhr, ajaxOptions, thrownError){
+              finprocesado();
+              swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
             }
-          },
-          error:function (xhr, ajaxOptions, thrownError){
-            swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-          }
-        })
-        t.row( $(this).parents('tr') )
-          .remove()
-          .draw();
+          })
+        }
+      });
     });
   
     function limpiarMensaje(){
