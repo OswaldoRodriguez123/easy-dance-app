@@ -200,7 +200,7 @@
                                 </div>
                                 <div class="col-sm-12">                            
 
-                                  <a class="btn-blanco m-r-5 f-12 dismiss" href="#" data-formulario="edit_administrativo_academia" data-update="administrativo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                                  <a class="btn-blanco m-r-5 f-12 dismiss" href="#">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                                   <div class="clearfix p-b-35"></div>
 
@@ -1735,7 +1735,20 @@
            }
 
     $(".dismiss").click(function(){
-      $('.modal').modal('hide');
+      procesando();
+      setTimeout(function(){ 
+        var nFrom = $(this).attr('data-from');
+        var nAlign = $(this).attr('data-align');
+        var nIcons = $(this).attr('data-icon');
+        var nAnimIn = "animated flipInY";
+        var nAnimOut = "animated flipOutY"; 
+        var nType = 'success';
+        var nTitle="Ups! ";
+        var nMensaje="¡Excelente! Los campos se han guardado satisfactoriamente";
+        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+        finprocesado();
+        $('.modal').modal('hide');
+      }, 2000);
     });
 
     $('#tipo_servicio').on('change', function(){
