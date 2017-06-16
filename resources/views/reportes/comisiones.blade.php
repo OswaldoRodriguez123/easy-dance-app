@@ -22,7 +22,7 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/flot/jquery.flot.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/flot/jquery.flot.resize.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/flot/jquery.flot.pie.js"></script>
-<script src="{{url('/')}}/assets/vendors/bower_components/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+<script src="{{url('/')}}/assets/js/jquery.flot.tooltip.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/flot-orderBars/js/jquery.flot.orderBars.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/flot.curvedlines/curvedLines.js"></script>                         
 <script src="{{url('/')}}/assets/vendors/bower_components/flot-orderBars/js/jquery.flot.orderBars.js"></script>
