@@ -805,6 +805,7 @@
                             var imagen_instructor = tmp[2]
                             var sexo = tmp[3]
                             var hora = tmp[4]
+                            var tipo_pago = tmp[5]
 
                             if(imagen_instructor){
                                 imagen = '/assets/uploads/instructor/'+imagen_instructor
@@ -826,6 +827,7 @@
                             var contenido = sexo_instructor + ' ' + instructor + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
                             contenido += 'Tipo: ' + tipo + '<br>'
                             contenido += 'Hora: ' + hora + '<br>'
+                            contenido += 'Modalidad de Pago: ' + tipo_pago + '<br>'
 
                             eventElement.find(".fc-title").append("  <i class='zmdi zmdi-calendar-check'></i>");
                         }

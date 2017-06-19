@@ -32,7 +32,6 @@ use Illuminate\Support\Facades\Auth;
 class AgendarController extends BaseController
 {
 
-    
     public function index()
     {
         $arrayTalleres=array();
@@ -383,7 +382,7 @@ class AgendarController extends BaseController
         $query = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
             ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
-            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as nombre', 'citas.color_etiqueta', 'instructores.id as instructor_id', 'instructores.sexo')
+            ->select('citas.*','alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.id as alumno_id', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_citas.nombre as nombre', 'instructores.id as instructor_id', 'instructores.sexo')
             ->where('citas.academia_id','=', Auth::user()->academia_id)
             ->where('citas.estatus','=','1')
             
@@ -420,7 +419,24 @@ class AgendarController extends BaseController
                 $imagen = '';
             }
 
-            $id=$instructor."!".$descripcion."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
+
+            $inscripcion_clase_grupal = InscripcionClaseGrupal::where('alumno_id',$cita->alumno_id)->first();
+
+            if($inscripcion_clase_grupal){
+                if($inscripcion_clase_grupal->tipo_pago == 1){
+                    $tipo_pago = 'Contado';
+                }else if($inscripcion_clase_grupal->tipo_pago == 2){
+                    $tipo_pago = 'Credito';
+                }else{
+                    $tipo_pago = 'Sin Confirmar';
+                }
+
+            }else{
+                $tipo_pago = 'Contado';
+            }
+
+
+            $id=$instructor."!".$descripcion."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final."!".$tipo_pago;
 
             if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
                 $url = "/agendar/citas/operaciones/".$cita->id;
