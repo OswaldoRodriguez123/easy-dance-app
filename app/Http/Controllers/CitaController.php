@@ -10,6 +10,10 @@ use App\Academia;
 use App\Alumno;
 use App\Instructor;
 use App\Asistencia;
+use App\Llamada;
+use App\InscripcionClaseGrupal;
+use App\User;
+use App\ItemsFacturaProforma;
 use Carbon\Carbon;
 use Validator;
 use DB;
@@ -68,19 +72,62 @@ class CitaController extends BaseController {
         $citas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
             ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
-            ->select('citas.*','alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.sexo', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_citas.nombre as tipo_nombre', 'alumnos.fecha_nacimiento')
+            ->select('citas.*','alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.sexo', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_citas.nombre as tipo_nombre', 'alumnos.fecha_nacimiento', 'alumnos.id as alumno_id', 'alumnos.celular','alumnos.correo')
             ->where('citas.academia_id','=', Auth::user()->academia_id)
         ->get();
 
+        $in = array(2,4);
         $array = array();
 
         foreach($citas as $cita){
 
             $edad = Carbon::createFromFormat('Y-m-d', $cita->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+            $llamadas = Llamada::where('usuario_id',$cita->alumno_id)->where('usuario_tipo',2)->count();
+
+            $inscripcion_clase_grupal = InscripcionClaseGrupal::where('alumno_id',$cita->alumno_id)->first();
+
+            if($inscripcion_clase_grupal){
+                if($inscripcion_clase_grupal->tipo_pago == 1){
+                    $tipo_pago = 'Contado';
+                }else if($inscripcion_clase_grupal->tipo_pago == 2){
+                    $tipo_pago = 'Credito';
+                }else{
+                    $tipo_pago = 'Sin Confirmar';
+                }
+
+            }else{
+                $tipo_pago = 'Contado';
+            }
+
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$cita->alumno_id)
+                ->whereIn('usuarios_tipo.tipo',$in)
+            ->first();
+
+            if($usuario){
+
+                if($usuario->imagen){
+                    $imagen = $usuario->imagen;
+                }else{
+                    $imagen = '';
+                }
+
+            }else{
+                $imagen = '';
+            }
+
+            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                ->where('usuario_id','=',$cita->alumno_id)
+                ->where('usuario_tipo','=',1)
+            ->sum('importe_neto');
 
             $collection=collect($cita);     
             $cita_array = $collection->toArray();
             $cita_array['edad']=$edad;
+            $cita_array['llamadas']=$llamadas;
+            $cita_array['tipo_pago']=$tipo_pago;
+            $cita_array['imagen']=$imagen;
+            $cita_array['deuda']=$deuda;
             $array[$cita->id] = $cita_array;
         }
 

@@ -92,47 +92,82 @@
 
                                 @foreach($citas as $cita)
 
-                                    <tr id="{{$cita['id']}}" class="seleccion" data-estatus = "{{$cita['estatus']}}">
-                                
-                                        <td class="text-center previa">
-                                            <span style="display: none">{{$cita['estatus']}}</span>
-                                            @if($cita['estatus'] == 2)
-                                                @if(isset($asistencias[$cita['id']]))
-                                                    <i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>
-                                                @else
-                                                    <i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i>
-                                                @endif
-                                            @endif
-                                        </td>
-                                      
-                                        <td class="text-center previa">{{$cita['alumno_nombre']}} {{$cita['alumno_apellido']}}</td>
-                                        <td class="text-center previa">
-                                            @if($cita['edad'] >= 18)
-                                                @if($cita['sexo']=='F')
-                                                    <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
-                                                @else
-                                                    <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
-                                                @endif
-                                            @else
-                                                @if($cita['sexo']=='F')
-                                                    <span style="display: none">F</span><i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
-                                                @else
-                                                    <span style="display: none">M</span><i class="zmdi fa fa-child f-15 c-azul"></i> </span>
-                                                @endif
-                                            @endif
-                                        </td>
-                                        <td class="text-center previa">{{$cita['fecha']}}</td>
-                                        <td class="text-center previa">{{$cita['hora_inicio']}} - {{$cita['hora_final']}}</td>
-                                        <td class="text-center previa">{{$cita['tipo_nombre']}}</td>
-                                        <td class="text-center previa">{{$cita['instructor_nombre']}} {{$cita['instructor_apellido']}}</td>
-                                        <td class="text-center previa">
-                                            @if($cita['estatus'] == 1)
-                                                <i class="zmdi zmdi-delete eliminar f-20 p-r-10 pointer"></i>
-                                            @endif
-                                        </td>
-                                    </tr>
+                                    <?php $id = $cita['id']; 
 
-                                @endforeach
+                                    $contenido = '';
+
+                                    if($cita['imagen']){
+                                        $imagen = '/assets/uploads/usuario/'.$cita['imagen'];
+
+                                    }else{
+                                        if($cita['sexo'] == 'F'){
+                                            $imagen = '/assets/img/Mujer.jpg';
+                                        }else{
+                                            $imagen = '/assets/img/Hombre.jpg';
+                                        }
+                                    }
+
+                                    $contenido = '<p class="c-negro">' .
+
+                                    $cita['alumno_nombre'] . ' ' . $cita['alumno_apellido'] . ' ' . ' ' .  '<img class="lv-img" src="'.$imagen.'" alt=""><br><br>' .
+
+                                    'Cantidad que adeuda: ' . number_format($cita['deuda'], 2, '.' , '.')  . '<br>'.
+                                    'Número Móvil: ' . $cita['celular'] . '<br>'.
+                                    'Correo Electrónico: ' . $cita['correo'] . '<br>'.
+                                    'Edad: ' . $cita['edad'] . '<br>'.
+                                    'Modalidad de pago: ' . $cita['tipo_pago'] . '<br>'.
+                                    'Registro de llamada: ' . $cita['llamadas'] . '<br>'.
+
+
+
+                                    '</p>';
+                    
+                                    
+
+                                ?>
+
+
+                                <tr id="{{$cita['id']}}" class="seleccion" data-estatus = "{{$cita['estatus']}}"  data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "">
+                            
+                                    <td class="text-center previa">
+                                        <span style="display: none">{{$cita['estatus']}}</span>
+                                        @if($cita['estatus'] == 2)
+                                            @if(isset($asistencias[$cita['id']]))
+                                                <i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>
+                                            @else
+                                                <i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i>
+                                            @endif
+                                        @endif
+                                    </td>
+                                  
+                                    <td class="text-center previa">{{$cita['alumno_nombre']}} {{$cita['alumno_apellido']}}</td>
+                                    <td class="text-center previa">
+                                        @if($cita['edad'] >= 18)
+                                            @if($cita['sexo']=='F')
+                                                <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                            @else
+                                                <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                            @endif
+                                        @else
+                                            @if($cita['sexo']=='F')
+                                                <span style="display: none">F</span><i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
+                                            @else
+                                                <span style="display: none">M</span><i class="zmdi fa fa-child f-15 c-azul"></i> </span>
+                                            @endif
+                                        @endif
+                                    </td>
+                                    <td class="text-center previa">{{$cita['fecha']}}</td>
+                                    <td class="text-center previa">{{$cita['hora_inicio']}} - {{$cita['hora_final']}}</td>
+                                    <td class="text-center previa">{{$cita['tipo_nombre']}}</td>
+                                    <td class="text-center previa">{{$cita['instructor_nombre']}} {{$cita['instructor_apellido']}}</td>
+                                    <td class="text-center previa">
+                                        @if($cita['estatus'] == 1)
+                                            <i class="zmdi zmdi-delete eliminar f-20 p-r-10 pointer"></i>
+                                        @endif
+                                    </td>
+                                </tr>
+
+                            @endforeach
 
                         </table>
                          </div>
@@ -305,40 +340,24 @@
 
         $('input[name="tipo"]').on('change', function(){
 
-            if($(this).val() == 'A'){
-
+            if($(this).val() == '1'){
                 $( "#finalizadas2" ).removeClass( "c-verde" );
                 $( "#canceladas2" ).removeClass( "c-verde" );
                 $( "#activas2" ).addClass( "c-verde" );
-
-                t
-                .columns(0)
-                .search($(this).val())
-                .draw(); 
-
-            }else if($(this).val() == 'F'){
-
+            }else if($(this).val() == '2'){
                 $( "#finalizadas2" ).addClass( "c-verde" );
                 $( "#canceladas2" ).removeClass( "c-verde" );
                 $( "#activas2" ).removeClass( "c-verde" );
-
-                t
-                .columns(0)
-                .search($(this).val())
-                .draw();
-
             }else{
-
                 $( "#finalizadas2" ).removeClass( "c-verde" );
                 $( "#canceladas2" ).addClass( "c-verde" );
                 $( "#activas2" ).removeClass( "c-verde" );
-
-                t
-                .columns(0)
-                .search($(this).val())
-                .draw();
-
             }
+
+            t
+            .columns(0)
+            .search($(this).val())
+            .draw(); 
 
         });
 
