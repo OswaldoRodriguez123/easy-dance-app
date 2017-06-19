@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Taller;
 use App\HorarioClaseGrupal;
 use App\ClaseGrupal;
+use App\InscripcionClaseGrupal;
 use App\ClasePersonalizada;
 use App\InscripcionClasePersonalizada;
 use App\Cita;
