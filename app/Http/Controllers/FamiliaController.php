@@ -22,8 +22,7 @@ class FamiliaController extends BaseController {
 	public function principal()
 	{
 
-        $familias = DB::table('familias')
-            ->join('users', 'familias.representante_id', '=', 'users.id')
+        $familias = Familia::join('users', 'familias.representante_id', '=', 'users.id')
             ->select('familias.*', 'users.nombre as representante_nombre', 'users.apellido as representante_apellido')
             ->where('familias.academia_id' , '=' , Auth::user()->academia_id)
             ->where('familias.deleted_at', '=', null)
@@ -49,7 +48,7 @@ class FamiliaController extends BaseController {
 
         foreach($familias as $familia){
 
-            $total = Alumno::where('familia_id', '=' ,  $familia->id)->where('tipo', 1)->count();
+            $total = Alumno::where('familia_id', '=' ,  $familia->id)->count();
             $collection=collect($familia);     
             $familia_array = $collection->toArray();
             
