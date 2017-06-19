@@ -650,7 +650,7 @@ class FamiliaController extends BaseController {
             }else{
                 $es_representante = 0;
             }
-            $total = ItemsFacturaProforma::where('alumno_id', '=' ,  $alumno->id)->sum('importe_neto');
+            $total = ItemsFacturaProforma::where('usuario_id', '=' ,  $alumno->id)->where('usuario_tipo',1)->sum('importe_neto');
             $collection=collect($alumno);     
             $alumno_array = $collection->toArray();
             
@@ -663,9 +663,7 @@ class FamiliaController extends BaseController {
         }
 
         if($alumnos){
-
            return view('participante.familia.planilla')->with(['familia' => $array , 'id' => $id]);
-
         }else{
            return redirect("participante/familia"); 
         }

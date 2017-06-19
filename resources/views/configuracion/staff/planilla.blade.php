@@ -1559,10 +1559,10 @@
 
       $.ajax({
           url: route,
-              headers: {'X-CSRF-TOKEN': token},
-              type: 'POST',
-              dataType: 'json',
-              data:datos,
+          headers: {'X-CSRF-TOKEN': token},
+          type: 'POST',
+          dataType: 'json',
+          data:datos,
           success:function(respuesta){
             setTimeout(function(){ 
               var nFrom = $(this).attr('data-from');
@@ -1682,7 +1682,7 @@
                         eliminar_pago(id, element);
           }
                 });
-            });
+  });
       
         function eliminar_pago(id, element){
          var route = route_eliminar_pago + id;
@@ -1936,12 +1936,12 @@
 
     $('body').on('click','.servicio_detalle',function(e){
         
-        $('#servicio_producto_id').val($(this).data('servicio_producto_id'))
-        nombre_servicio = $(this).data('nombre_servicio')
-        $('#detalle_boton').text(nombre_servicio)
+      $('#servicio_producto_id').val($(this).data('servicio_producto_id'))
+      nombre_servicio = $(this).data('nombre_servicio')
+      $('#detalle_boton').text(nombre_servicio)
 
-        $('#dropdown_boton').removeClass('open')
-        $('#detalle_boton').attr('aria-expanded',false);
+      $('#dropdown_boton').removeClass('open')
+      $('#detalle_boton').attr('aria-expanded',false);
     });
 
     function formatmoney(n) {
