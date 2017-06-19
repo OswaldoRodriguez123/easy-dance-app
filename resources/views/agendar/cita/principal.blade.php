@@ -97,7 +97,7 @@
                                         <td class="text-center previa">
                                             <span style="display: none">{{$cita['estatus']}}</span>
                                             @if($cita['estatus'] == 2)
-                                                @if(isset($asistencias[$cita['id']])){
+                                                @if(isset($asistencias[$cita['id']]))
                                                     <i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>
                                                 @else
                                                     <i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i>
