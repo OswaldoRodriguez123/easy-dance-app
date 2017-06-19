@@ -1320,8 +1320,8 @@ class SupervisionController extends BaseController {
 
         }else{
 
-            $detalle_nota=explode(",",$request->nota_detalle);
-            $detalle_nombre=explode(",",$request->nombre_detalle);
+            $notas=explode(",",$request->nota_detalle);
+            $nombres=explode(",",$request->nombre_detalle);
 
             $evaluacion = new SupervisionEvaluacion;
 
@@ -1333,19 +1333,20 @@ class SupervisionController extends BaseController {
 
             if($evaluacion->save()){
 
-                for ($i=0; $i < count($detalle_nota)-1; $i++) {
+            	$i = 0;
 
-                	if(intval($detalle_nota[$i]) <= 0){
+            	foreach($nombres as $nombre){
 
-	                    $detalles = new DetalleSupervisionEvaluacion;
+                    $detalle = new DetalleSupervisionEvaluacion;
 
-	                    $detalles->nombre = $detalle_nombre[$i];
-	                    $detalles->nota = intval($detalle_nota[$i]);
-	                    $detalles->evaluacion_id = $evaluacion->id;
-	                    $detalles->save();
-                    }
+                    $detalle->nombre = $nombre;
+                    $detalle->nota = intval($notas[$i]);
+                    $detalle->evaluacion_id = $evaluacion->id;
+                    $detalle->save();
+
+                    $i++;
                 }
-      
+                
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
