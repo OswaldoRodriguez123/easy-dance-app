@@ -94,8 +94,6 @@ class AlumnoController extends BaseController
             ->first();
 
             $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
-            $collection=collect($alumno);     
-            $alumno_array = $collection->toArray();
 
             $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                 ->where('usuarios_tipo.tipo_id',$alumno->id)
@@ -120,6 +118,8 @@ class AlumnoController extends BaseController
                 $activacion = 0;
             }
             
+            $collection=collect($alumno);     
+            $alumno_array = $collection->toArray();
             $alumno_array['activacion']=$activacion;
             $alumno_array['deuda']=$deuda;
             $alumno_array['imagen']=$imagen;

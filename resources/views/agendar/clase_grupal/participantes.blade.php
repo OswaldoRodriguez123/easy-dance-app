@@ -29,6 +29,25 @@
                         </div>
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
+                              <form name="form_actualizar" id="form_actualizar">
+                                <input class ="id_participante" type="hidden" name="id_participante" id="id_participante" value=""></input>
+                                <div class="col-sm-6">
+                                  <label for="nombre" id="id-tipo_pago_participante">Modalidad de Pago</label>
+                                  <div class="select">
+                                    <select class="selectpicker" name="tipo_pago_participante" id="tipo_pago_participante" data-live-search="true">
+                                      <option value = "1">Contado</option>
+                                      <option value = "2">Crédito</option>
+                                      <option value = "3">Sin Confirmar</option>
+                                    </select>
+                                  </div>
+                                  <div class="has-error" id="error-tipo_pago_participante">
+                                    <span >
+                                      <small class="help-block error-span" id="error-tipo_pago_participante_mensaje" ></small>                
+                                    </span>
+                                  </div>
+                                </div>
+                             
+                               <div class="clearfix"></div>
 
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
@@ -115,13 +134,26 @@
                                       </div>
                                </div>
 
-                               <div class="clearfix"></div> 
-                               <br>
+                            </form>
+                          </div>
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12" href="#" id="actualizar_participante"> Actualizar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div>
-
-                            
                     </div>
                 </div>
             </div>
@@ -709,11 +741,6 @@
                                 </div>
 
                               </div>
-
-
-                              
-
-
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
                               <div class="procesando hidden">
@@ -1058,56 +1085,56 @@
                             <tbody>
 
                             @foreach ($alumnos_inscritos as $alumno)
-                                <?php 
+                              <?php 
                                 
-                                  $id = $alumno['inscripcion_id'];
-                                  $alumno_id = $alumno['id'];
+                                $contenido = '';
 
-                                  if($alumno['sexo'] == 'F'){
-                                      $imagen = '/assets/img/Mujer.jpg';
+                                $id = $alumno['inscripcion_id'];
+                                $alumno_id = $alumno['id'];
+
+                                if($alumno['sexo'] == 'F'){
+                                    $imagen = '/assets/img/Mujer.jpg';
+                                }else{
+                                    $imagen = '/assets/img/Hombre.jpg';
+                                }
+
+                                	if($alumno['tipo'] == 1){
+
+                                 	if($alumno['boolean_franela'] && $alumno['boolean_programacion']){
+
+	                                	$camiseta_programacion = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i>';
+	                                }else{
+	                                	if($alumno['boolean_franela'] == 0 && $alumno['boolean_programacion'] == 0){
+
+	                                      	$camiseta_programacion = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>';
+	                                    }else{
+
+	                                      	if($alumno['boolean_franela']){
+	                                        	$camiseta_programacion = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>';
+	                                      	}else{
+	                                        	$camiseta_programacion = '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>';
+	                                      	}
+
+	                                    }
+	                                }
+
+                                  if($alumno['tipo_pago'] == 1){
+                                    $tipo_pago = 'Contado';
+                                  }else if($alumno['tipo_pago'] == 2){
+                                    $tipo_pago = 'Crédito';
                                   }else{
-                                      $imagen = '/assets/img/Hombre.jpg';
+                                    $tipo_pago = 'Sin Confirmar';
                                   }
 
-                                  	if($alumno['tipo'] == 1){
+	                                $talla_franela = $alumno['talla_franela'];
+	                                $deuda = $alumno['deuda'];
 
-	                                 	if($alumno['boolean_franela'] && $alumno['boolean_programacion']){
-
-		                                	$camiseta_programacion = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i>';
-		                                }else{
-		                                	if($alumno['boolean_franela'] == 0 && $alumno['boolean_programacion'] == 0){
-
-		                                      	$camiseta_programacion = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>';
-		                                    }else{
-
-		                                      	if($alumno['boolean_franela']){
-		                                        	$camiseta_programacion = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>';
-		                                      	}else{
-		                                        	$camiseta_programacion = '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>';
-		                                      	}
-
-		                                    }
-		                                }
-
-                                    if($alumno['tipo_pago'] == 1){
-                                      $tipo_pago = 'Contado';
-                                    }else{
-                                      $tipo_pago = 'Crédito';
-                                    }
-
-		                                $talla_franela = $alumno['talla_franela'];
-		                                $deuda = $alumno['deuda'];
-
-                                  	}else{
-                                  		$camiseta_programacion = '';
-                                  		$talla_franela = '';
-                                  		$deuda = 0;
-                                      $tipo_pago = '';
-                                  	}
-
-                                  
-
-                                 	$contenido = '';
+                                	}else{
+                                		$camiseta_programacion = '';
+                                		$talla_franela = '';
+                                		$deuda = 0;
+                                    $tipo_pago = '';
+                                	}
 
                                  	$contenido = '<p class="c-negro">' .
 
@@ -1116,108 +1143,104 @@
 	                                  	'Camiseta y Programación: ' . $camiseta_programacion . '<br>'.
 	                                  	'Talla: ' . $talla_franela . '<br>'.
 	                                  	'Cantidad que adeuda: ' . number_format($deuda, 2, '.' , '.')  . '<br>'.
-                                      'Modalidad de pago: ' . $tipo_pago . '<br>'.
+                                      'Modalidad de pago: <span id="tipo_pago_'.$id.'">' . $tipo_pago . '</span><br>'.
                                       'Registro de llamada: ' . $alumno['llamadas'] . '<br>'.
-
-
 
                                   	'</p>';
 
                                 ;?>
 
                                 @if($alumno['tipo'] == 1)
-                                  <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo ="{{$alumno['tipo']}}" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-cantidad="{{$alumno['cantidad']}}" data-dias_vencimiento="{{$alumno['dias_vencimiento']}}" data-alumno_id="{{$alumno_id}}" data-fecha_nacimiento="{{$alumno['fecha_nacimiento']}}" data-celular="{{$alumno['celular']}}" data-telefono="{{$alumno['telefono']}}" data-identificacion="{{$alumno['identificacion']}}">
+                                  <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo ="{{$alumno['tipo']}}" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-cantidad="{{$alumno['cantidad']}}" data-dias_vencimiento="{{$alumno['dias_vencimiento']}}" data-alumno_id="{{$alumno_id}}" data-fecha_nacimiento="{{$alumno['fecha_nacimiento']}}" data-celular="{{$alumno['celular']}}" data-telefono="{{$alumno['telefono']}}" data-identificacion="{{$alumno['identificacion']}}" data-tipo_pago="{{$alumno['tipo_pago']}}">
 
                                       
-                                      <td class="text-center previa"> 
+                                    <td class="text-center previa"> 
                                       <span style="display: none">1</span>
-                                        @if($alumno['activacion']) 
-                                          <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
+                                      @if($alumno['activacion']) 
+                                        <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
 
-                                        @endif
-                                      </td>
-                                      <td class="text-center previa">
-                                        @if($alumno['imagen'])
-                                          <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
-                                        @else
-                                            @if($alumno['sexo'] == 'M')
-                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
-                                            @else
-                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
-                                            @endif
-                                        @endif
-                                      </td>
-                                      <td class="text-center previa">{{$alumno['identificacion']}}</td>
-                                      <td class="text-center previa">
-                                      @if($alumno['sexo']=='F')
-                                        <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> 
-                                      @else
-                                        <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i>
                                       @endif
-                                      </td>
-                                      <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
-                                      <td class="text-center previa">
-                                        <span style="display: none">{{$alumno['estatus']}}</span><i class="zmdi zmdi-label-alt-outline f-20 p-r-3 {{$alumno['estatus']}}"></i>
-                                      </td>
-                                      <td class="text-center previa">
-                                        <span style="display: none">{{$alumno['deuda']}}</span><i class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
-                                      </td>
-                                      <td class="text-center"> 
+                                    </td>
+                                    <td class="text-center previa">
+                                      @if($alumno['imagen'])
+                                        <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
+                                      @else
+                                          @if($alumno['sexo'] == 'M')
+                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                          @else
+                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                          @endif
+                                      @endif
+                                    </td>
+                                    <td class="text-center previa">{{$alumno['identificacion']}}</td>
+                                    <td class="text-center previa">
+                                    @if($alumno['sexo']=='F')
+                                      <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> 
+                                    @else
+                                      <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i>
+                                    @endif
+                                    </td>
+                                    <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
+                                    <td class="text-center previa">
+                                      <span style="display: none">{{$alumno['estatus']}}</span><i class="zmdi zmdi-label-alt-outline f-20 p-r-3 {{$alumno['estatus']}}"></i>
+                                    </td>
+                                    <td class="text-center previa">
+                                      <span style="display: none">{{$alumno['deuda']}}</span><i class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
+                                    </td>
+                                    <td class="text-center"> 
 
-                                          <ul class="top-menu">
-                                            <li class="dropdown" id="dropdown_{{$id}}">
-                                                <a id="dropdown_toggle_{{$id}}" href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
-                                                   <span class="f-15 f-700" style="color:black"> 
-                                                        <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
-                                                   </span>
-                                                </a>
+                                        <ul class="top-menu">
+                                          <li class="dropdown" id="dropdown_{{$id}}">
+                                              <a id="dropdown_toggle_{{$id}}" href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                                 <span class="f-15 f-700" style="color:black"> 
+                                                      <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                 </span>
+                                              </a>
 
-                                                  <div class="dropup" dropdown-append-to-body>
-                                                    <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
+                                                <div class="dropup" dropdown-append-to-body>
+                                                  <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
+                                                      <li class="hidden-xs">
+                                                          <a class="congelar_alumno"><i class="zmdi zmdi-close-circle-o f-20"></i>&nbsp;Congelar Alumno</a>
+                                                      </li>
+
+                                                      @if($alumno['activacion']) 
+                                                      
                                                         <li class="hidden-xs">
-                                                            <a class="congelar_alumno"><i class="zmdi zmdi-close-circle-o f-20"></i>&nbsp;Congelar Alumno</a>
+                                                          <a class="activar"><i class="zmdi zmdi-alert-circle-o f-20"></i> Activar Cuenta</a>
                                                         </li>
 
-                                                        @if($alumno['activacion']) 
-                                                        
-                                                          <li class="hidden-xs">
-                                                            <a class="activar"><i class="zmdi zmdi-alert-circle-o f-20"></i> Activar Cuenta</a>
-                                                          </li>
+                                                      @endif
 
-                                                        @endif
+                                                      <li class="hidden-xs">
+                                                          <a class="modal_transferir"><i class="zmdi zmdi-trending-up f-20 p-r-10"></i> Transferir</a>
+                                                      </li>
 
-                                                        <li class="hidden-xs">
-                                                            <a class="modal_transferir"><i class="zmdi zmdi-trending-up f-20 p-r-10"></i> Transferir</a>
-                                                        </li>
+                                                      <!-- <li class="hidden-xs">
+                                                          <a class="credencial"><i class="zmdi icon_a-pagar f-20 p-r-10"></i> Credenciales</a>
+                                                      </li> -->
 
-                                                        <!-- <li class="hidden-xs">
-                                                            <a class="credencial"><i class="zmdi icon_a-pagar f-20 p-r-10"></i> Credenciales</a>
-                                                        </li> -->
+                                                      <li class="hidden-xs">
+                                                          <a class="valorar"><i class="zmdi icon_a-examen f-20"></i> Valorar</a>
+                                                      </li>
 
-                                                        <li class="hidden-xs">
-                                                            <a class="valorar"><i class="zmdi icon_a-examen f-20"></i> Valorar</a>
-                                                        </li>
+                                                      <li class="hidden-xs">
+                                                          <a href="{{url('/')}}/agendar/clases-grupales/participantes/historial/{{$id}}"><i class="zmdi zmdi-shield-check f-20"></i> Asistencia</a>
+                                                      </li>
 
-                                                        <li class="hidden-xs">
-                                                            <a href="{{url('/')}}/agendar/clases-grupales/participantes/historial/{{$id}}"><i class="zmdi zmdi-shield-check f-20"></i> Asistencia</a>
-                                                        </li>
+                                                      <li class="hidden-xs">
+                                                          <a href="{{url('/')}}/participante/alumno/llamadas/{{$alumno_id}}"><i class="zmdi zmdi-phone f-20"></i> Llamadas</a>
+                                                      </li>
 
-                                                        <li class="hidden-xs">
-                                                            <a href="{{url('/')}}/participante/alumno/llamadas/{{$alumno_id}}"><i class="zmdi zmdi-phone f-20"></i> Llamadas</a>
-                                                        </li>
-
-                                                        <li class="hidden-xs">
-                                                            <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
-                                                        </li>
+                                                      <li class="hidden-xs">
+                                                          <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
+                                                      </li>
 
 
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul>
-
-
-                                      </td>
+                                                  </ul>
+                                              </div>
+                                          </li>
+                                      </ul>
+                                    </td>
                                   </tr>
                                 @else
                                   <tr data-tipo ="{{$alumno['tipo']}}" data-sexo="{{$alumno['sexo']}}" id="{{$alumno['inscripcion_id']}}" class="seleccion seleccion_deleted">
@@ -1269,7 +1292,7 @@
 
 @section('js') 
             
-        <script type="text/javascript">
+      <script type="text/javascript">
 
         route_agregar="{{url('/')}}/agendar/clases-grupales/inscribir";
         route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminarinscripcion/";
@@ -1278,6 +1301,7 @@
         route_update="{{url('/')}}/agendar/clases-grupales/update";
         route_enhorabuena="{{url('/')}}/agendar/clases-grupales/enhorabuena/";
         route_editar="{{url('/')}}/agendar/clases-grupales/editarinscripcion";
+        route_actualizar="{{url('/')}}/agendar/clases-grupales/actualizar_participante";
         route_credencial="{{url('/')}}/agendar/clases-grupales/editarcredencial";
         route_detalle="{{url('/')}}/participante/alumno/detalle";
         route_valorar="{{url('/')}}/especiales/examenes/evaluar";
@@ -1300,7 +1324,7 @@
         
           if(id_alumno){
 
-            $('#alumno_id > option[value="{{ Session::get('id_alumno') }}"]').attr('selected', 'selected');
+            $('#alumno_id > option[value="'+id_alumno+'"]').attr('selected', 'selected');
 
             setTimeout(function(){ 
                 $('#modalAgregar').modal('show');
@@ -1378,14 +1402,12 @@
             }
         });
 
-        $("#promociones").attr("checked", false); //VALOR POR DEFECTO
+        $("#promociones").attr("checked", false); 
         $("#ambas").attr("checked", true);
-
-        $("#boolean_franela").val('1');  //VALOR POR DEFECTO
-        $("#franela").attr("checked", true); //VALOR POR DEFECTO
-
-        $("#boolean_programacion").val('1');  //VALOR POR DEFECTO
-        $("#programacion").attr("checked", true); //VALOR POR DEFECTO
+        $("#boolean_franela").val('1'); 
+        $("#franela").attr("checked", true);
+        $("#boolean_programacion").val('1');
+        $("#programacion").attr("checked", true);
 
         $("#franela").on('change', function(){
           if ($("#franela").is(":checked")){
@@ -1411,9 +1433,7 @@
           }
 
           if($("#franela").is(":checked") && $("#programacion").is(":checked")){
-
             $('#textarea_entrega').hide();
-
           }else{
             $('#textarea_entrega').show();
           }    
@@ -1477,18 +1497,13 @@
 
                 procesando();
                 var route = route_agregar;
-                var token = $('input:hidden[name=_token]').val();
-                // var clase_grupal_id = "{{$id}}";
-                // var alumno_id = $('#alumno_id').val();
-                // var instructor_id = $('#instructor_id').val();      
+                var token = $('input:hidden[name=_token]').val();    
                 var costo_inscripcion = $("#clasegrupal-costo_inscripcion").text();
                 var costo_mensualidad = $("#clasegrupal-costo_mensualidad").text();
                 var fecha_pago = $("#clasegrupal-fecha_inicio_preferencial").text();
-                var tipo_pago = $('input:checked[name=tipo_pago]').val();     
+                var datos = $("#agregar_inscripcion").serialize();      
                 limpiarMensaje();
-                var datos = $("#agregar_inscripcion").serialize(); 
-                // var datos = {clase_grupal_id: clase_grupal_id, alumno_id: alumno_id, instructor_id: instructor_id, "costo_inscripcion": costo_inscripcion, "costo_mensualidad": costo_mensualidad, "fecha_pago": fecha_pago, "permitir": permitir, 'boolean_franela': $('#boolean_franela').val(), 'boolean_programacion': $('#boolean_programacion').val(),'razon_entrega': $('#razon_entrega').val(),'talla_franela': $('#talla_franela').val(), tipo_pago: tipo_pago};
-
+                
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
@@ -1508,18 +1523,16 @@
                           // if(respuesta.array){
                             finprocesado();
                             var nType = 'success';
-                            // $("#agregar_inscripcion")[0].reset();
                             var nTitle="Ups! ";
                             var nMensaje=respuesta.mensaje;
 
                             $("#modalAgregar").modal("hide");
 
-                            array = respuesta.array;
+                            alumno = respuesta.alumno;
+                            inscripcion = respuesta.inscripcion
 
                             // $.each(respuesta.array, function (index, array) {
                       
-
-                            inscripcion = respuesta.inscripcion
 
                             if(inscripcion.boolean_franela == 1 && inscripcion.boolean_programacion == 1){
 
@@ -1539,10 +1552,13 @@
                               }
                             }
 
-                              var identificacion = array.identificacion;
+                              var identificacion = alumno.identificacion;    
+                              var nombre = alumno.nombre;
+                              var apellido = alumno.apellido;
+
                               var talla_franela = inscripcion.talla_franela;
                               
-                              if(array.sexo=='F')
+                              if(alumno.sexo=='F')
                               {
                                 imagen = '<img class="lv-img-sm" src="/assets/img/profile-pics/5.jpg" alt="">'
                                 valor = $('#span_mujeres').html()
@@ -1559,9 +1575,7 @@
                                 sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
                               }
                              
-                              var nombre = array.nombre;
-                              var apellido = array.apellido;
-
+                          
                               if(respuesta.deuda > 0){
                                 deuda = '<i class="zmdi zmdi-money f-20 p-r-3 c-youtube"></i>'
                               }else{
@@ -1582,9 +1596,8 @@
                               $( rowNode )
                               .attr('id',rowId)
                               .data('tipo',1)
+                              .data('tipo_pago',inscripcion.tipo_pago)
                               .addClass('seleccion');
-
-                              // <i class="zmdi zmdi-delete eliminar f-20 p-r-10"></i>
 
                               $('#razon_entrega').val('')
                               $('#talla_franela').val('')
@@ -1636,9 +1649,7 @@
                           }, function(isConfirm){   
                           if (isConfirm) {
                             permitir = 1;
-                            $('#agregar').click();
-                                        
-                                    
+                            $('#agregar').click();  
                             }
                           });
                         }                        
@@ -1949,7 +1960,7 @@
                 procesando();
                 var route = route_editar;
                 var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#edicion_alumno" ).serialize();         
+                var datos = $( "#edicion_alumno").serialize();         
                 limpiarMensaje();
                 $.ajax({
                     url: route,
@@ -2008,6 +2019,82 @@
                         finprocesado();
                         $(".procesando").removeClass('show');
                         $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+
+            });
+
+        $("#actualizar_participante").click(function(){
+
+                procesando();
+                var route = route_actualizar;
+                var token = $('input:hidden[name=_token]').val();
+                var datos = $( "#form_actualizar").serialize();         
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+                          var row = "#"+respuesta.id;
+                          $(row).data('tipo_pago', respuesta.tipo_pago)
+
+                          if(respuesta.tipo_pago == 1){
+                            tipo_pago = 'Contado';
+                          }else if(respuesta.tipo_pago == 2){
+                            tipo_pago = 'Crédito';
+                          }else{
+                            tipo_pago = 'Sin Confirmar';
+                          }
+
+                          $('#tipo_pago_'+respuesta.id).text(tipo_pago)
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        finprocesado();
+                        $('#modalAlumno').modal('hide');
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        finprocesado();
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');
                         var nIcons = $(this).attr('data-icon');
@@ -2229,6 +2316,8 @@
 
         function previa(t){
 
+            var id = $(t).closest('tr').attr('id');
+
             var identificacion = $(t).closest('tr').data('identificacion');
             var nombre_apellido = $(t).closest('tr').data('nombre');
             var apellido_nombre = nombre_apellido.split(" ")
@@ -2237,16 +2326,16 @@
             var sexo = $(t).closest('tr').data('sexo');
             var telefono = $(t).closest('tr').data('telefono');
             var celular = $(t).closest('tr').data('celular');
+            var tipo_pago = $(t).closest('tr').data('tipo_pago');
 
             if(sexo=="M"){
               $("#hombre").prop("checked", true);
             }else{
               $("#mujer").prop("checked", true);
             }
-
-            console.log(identificacion)
             
             $('.span_alumno').text(nombre_apellido)
+            $('#id_participante').val(id);
             $('#identificacion_participante').text(identificacion);
             $('#nombre_participante').val(apellido_nombre[0]);
             $('#apellido_participante').val(apellido_nombre[1]);
@@ -2254,6 +2343,9 @@
             $('#fecha_nacimiento_participante').val(fecha_nacimiento);
             $('#telefono_participante').val(telefono);
             $('#celular_participante').val(celular);
+            $('#tipo_pago_participante').val(tipo_pago);
+
+            $('#tipo_pago_participante').selectpicker('refresh');
             
             $('#modalAlumno').modal('show');
         }

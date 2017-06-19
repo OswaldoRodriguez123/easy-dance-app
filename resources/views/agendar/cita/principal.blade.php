@@ -6,6 +6,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+<link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -51,17 +52,17 @@
                                  <div class="form-group fg-line ">
                                     <div class="p-t-10">
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="activas" value="activas" type="radio">
+                                        <input name="tipo" id="activas" value="1" type="radio">
                                         <i class="input-helper"></i>  
                                         Activas <i id="activas2" name="activas2" class="zmdi zmdi-label-alt-outline zmdi-hc-fw c-verde f-20"></i>
                                     </label>
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="finalizadas" value="finalizadas" type="radio" checked >
+                                        <input name="tipo" id="finalizadas" value="2" type="radio" checked >
                                         <i class="input-helper"></i>  
                                         Finalizadas <i id="finalizadas2" name="finalizadas2" class="zmdi zmdi-check zmdi-hc-fw f-20"></i>
                                     </label>
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="canceladas" value="canceladas" type="radio" checked >
+                                        <input name="tipo" id="canceladas" value="0" type="radio" checked >
                                         <i class="input-helper"></i>  
                                         Canceladas <i id="canceladas2" name="canceladas2" class="zmdi zmdi-close zmdi-hc-fw f-20"></i>
                                     </label>
@@ -89,8 +90,50 @@
                             </thead>
                             <tbody class="text-center" >
 
-                                                           
-                            </tbody>
+                                @foreach($citas as $cita)
+
+                                    <tr id="{{$cita['id']}}" class="seleccion" data-estatus = "{{$cita['estatus']}}">
+                                
+                                        <td class="text-center previa">
+                                            <span style="display: none">{{$cita['estatus']}}</span>
+                                            @if($cita['estatus'] == 2)
+                                                @if(isset($asistencias[$cita['id']])){
+                                                    <i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>
+                                                @else
+                                                    <i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i>
+                                                @endif
+                                            @endif
+                                        </td>
+                                      
+                                        <td class="text-center previa">{{$cita['alumno_nombre']}} {{$cita['alumno_apellido']}}</td>
+                                        <td class="text-center previa">
+                                            @if($cita['edad'] >= 18)
+                                                @if($cita['sexo']=='F')
+                                                    <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                                @else
+                                                    <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                                @endif
+                                            @else
+                                                @if($cita['sexo']=='F')
+                                                    <span style="display: none">F</span><i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
+                                                @else
+                                                    <span style="display: none">M</span><i class="zmdi fa fa-child f-15 c-azul"></i> </span>
+                                                @endif
+                                            @endif
+                                        </td>
+                                        <td class="text-center previa">{{$cita['fecha']}}</td>
+                                        <td class="text-center previa">{{$cita['hora_inicio']}} - {{$cita['hora_final']}}</td>
+                                        <td class="text-center previa">{{$cita['tipo_nombre']}}</td>
+                                        <td class="text-center previa">{{$cita['instructor_nombre']}} {{$cita['instructor_apellido']}}</td>
+                                        <td class="text-center previa">
+                                            @if($cita['estatus'] == 1)
+                                                <i class="zmdi zmdi-delete eliminar f-20 p-r-10 pointer"></i>
+                                            @endif
+                                        </td>
+                                    </tr>
+
+                                @endforeach
+
                         </table>
                          </div>
                         </div>
@@ -114,18 +157,11 @@
 
 <script type="text/javascript">
 
-        route_detalle="{{url('/')}}/agendar/citas/detalle";
-        route_operacion="{{url('/')}}/agendar/citas/operaciones";
-        route_eliminar="{{url('/')}}/agendar/citas/eliminar/";
+    route_detalle="{{url('/')}}/agendar/citas/detalle";
+    route_operacion="{{url('/')}}/agendar/citas/operaciones";
+    route_eliminar="{{url('/')}}/agendar/citas/eliminar/";
 
-        var finalizadas = <?php echo json_encode($finalizadas);?>;
-        var activas = <?php echo json_encode($activas);?>;
-        var canceladas = <?php echo json_encode($canceladas);?>;
-        var asistencias = <?php echo json_encode($asistencias);?>;
-
-        tipo = 'activas';
-
-        $(document).ready(function(){
+    $(document).ready(function(){
 
         $("#activas").prop("checked", true);
 
@@ -133,7 +169,7 @@
         processing: true,
         serverSide: false,
         pageLength: 25,   
-        order: [[0, 'asc']],
+        order: [[1, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
@@ -162,37 +198,38 @@
                         }
                     }
         });
-    
 
-        rechargeActivas();
-
+         t
+          .columns(0)
+          .search('1')
+          .draw(); 
 
     });
 
     function previa(t){
-            var row = $(t).closest('tr');
 
-            if(tipo == 'activas')
-            {
+        var row = $(t).closest('tr');
 
-              var id = $(row).attr('id');
-              var route =route_detalle+"/"+id;
-              window.location=route;
+        if(row.data('estatus') == 1){
+
+          var id = $(row).attr('id');
+          var route =route_detalle+"/"+id;
+          window.location=route;
 
 
-            }else if(tipo == 'canceladas'){
+        }else if(row.data('estatus') == 0){
 
-              var fecha = $(row).find('td').eq(4).html();
-              var hora = $(row).find('td').eq(5).html();
-              var instructor = $(row).find('td').eq(3).html();
-              var cancelacion = row.data('cancelacion');
-              $('.span_fecha').text(fecha)
-              $('.span_hora').text(hora)
-              $('.span_instructor').text(instructor)
-              $('#razon_cancelacion').text(cancelacion)
-              $("#modalCancelar" ).modal('show');
+          var fecha = $(row).find('td').eq(4).html();
+          var hora = $(row).find('td').eq(5).html();
+          var instructor = $(row).find('td').eq(3).html();
+          var cancelacion = row.data('cancelacion');
+          $('.span_fecha').text(fecha)
+          $('.span_hora').text(hora)
+          $('.span_instructor').text(instructor)
+          $('#razon_cancelacion').text(cancelacion)
+          $("#modalCancelar" ).modal('show');
 
-            }
+        }
       }
 
       $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
@@ -264,163 +301,46 @@
                                         }, 3000);
                                 }
                 });
-
-        $("#activas").click(function(){
-            $( "#finalizadas2" ).removeClass( "c-verde" );
-            $( "#canceladas2" ).removeClass( "c-verde" );
-            $( "#activas2" ).addClass( "c-verde" );
-        });
-
-        $("#finalizadas").click(function(){
-            $( "#finalizadas2" ).addClass( "c-verde" );
-            $( "#canceladas2" ).removeClass( "c-verde" );
-            $( "#activas2" ).removeClass( "c-verde" );
-        });
-
-        $("#canceladas").click(function(){
-            $( "#finalizadas2" ).removeClass( "c-verde" );
-            $( "#canceladas2" ).addClass( "c-verde" );
-            $( "#activas2" ).removeClass( "c-verde" );
-        });
-      }
-
-
-        function clear(){
-
-            t.clear().draw();
-        }
+            }
 
         $('input[name="tipo"]').on('change', function(){
-            clear();
-            if ($(this).val()=='activas') {
-                tipo = 'activas';
-                rechargeActivas();
-            } else if($(this).val()=='finalizadas')  {
-                tipo= 'finalizadas';
-                rechargeFinalizadas();
+
+            if($(this).val() == 'A'){
+
+                $( "#finalizadas2" ).removeClass( "c-verde" );
+                $( "#canceladas2" ).removeClass( "c-verde" );
+                $( "#activas2" ).addClass( "c-verde" );
+
+                t
+                .columns(0)
+                .search($(this).val())
+                .draw(); 
+
+            }else if($(this).val() == 'F'){
+
+                $( "#finalizadas2" ).addClass( "c-verde" );
+                $( "#canceladas2" ).removeClass( "c-verde" );
+                $( "#activas2" ).removeClass( "c-verde" );
+
+                t
+                .columns(0)
+                .search($(this).val())
+                .draw();
+
             }else{
-                tipo= 'canceladas';
-                rechargeCanceladas();
-            }
-         });
 
-        function rechargeActivas(){
+                $( "#finalizadas2" ).removeClass( "c-verde" );
+                $( "#canceladas2" ).addClass( "c-verde" );
+                $( "#activas2" ).removeClass( "c-verde" );
 
-            if(activas.length > 25){
-                $('.dataTables_paginate').show();
-                $('.dataTables_length').show();
-            }else{
-                $('.dataTables_paginate').hide();
-                $('.dataTables_length').hide();
-            }
+                t
+                .columns(0)
+                .search($(this).val())
+                .draw();
 
-            $.each(activas, function (index, array) {
-
-                if(array.sexo=='F')
-                {
-                    sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
-                }
-                else
-                {
-                    sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
-                }
-
-                var rowNode=t.row.add( [
-                '',
-                ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
-                ''+sexo+'',
-                ''+array.fecha+'',
-                ''+array.hora_inicio+' - '+array.hora_final+'' ,
-                ''+array.tipo_nombre+'',
-                ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
-                '<i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10">'
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('seleccion');
-            });
-        }
-
-        function rechargeFinalizadas(){
-
-            if(finalizadas.length > 25){
-                $('.dataTables_paginate').show();
-                $('.dataTables_length').show();
-            }else{
-                $('.dataTables_paginate').hide();
-                $('.dataTables_length').hide();
             }
 
-            $.each(finalizadas, function (index, array) {
-
-                if(asistencias[array.id]){
-                    acepto = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-20"></i>'
-                }else{
-                    acepto = '<i class="zmdi c-youtube zmdi-close zmdi-hc-fw f-20"></i>';
-                }
-
-                if(array.sexo=='F')
-                {
-                    sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
-                }
-                else
-                {
-                    sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
-                }
-
-                var rowNode=t.row.add( [
-                ''+acepto+'' ,
-                ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
-                ''+sexo+'',
-                ''+array.fecha+'',
-                ''+array.hora_inicio+' - '+array.hora_final+'' ,
-                ''+array.tipo_nombre+'',
-                ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
-                ''
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .addClass('seleccion');
-            });
-        }
-
-        function rechargeCanceladas(){
-
-            if(canceladas.length > 25){
-                $('.dataTables_paginate').show();
-                $('.dataTables_length').show();
-            }else{
-                $('.dataTables_paginate').hide();
-                $('.dataTables_length').hide();
-            }
-    
-            $.each(canceladas, function (index, array) {
-
-                if(array.sexo=='F')
-                {
-                    sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
-                }
-                else
-                {
-                    sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
-                }
-
-                var rowNode=t.row.add( [
-                '' ,
-                ''+array.alumno_nombre+' '+array.alumno_apellido+'' ,
-                ''+sexo+'',
-                ''+array.fecha+'',
-                ''+array.hora_inicio+' - '+array.hora_final+'' ,
-                ''+array.tipo_nombre+'',
-                ''+array.instructor_nombre+' '+array.instructor_apellido+'' ,
-                ''
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('id',array.id)
-                    .attr('data-cancelacion',array.razon_cancelacion)
-                    .addClass('seleccion');
-            });
-        }
+        });
 
     </script>
 @stop

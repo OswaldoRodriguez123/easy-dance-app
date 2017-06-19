@@ -671,6 +671,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('agendar/clases-grupales/eliminarinscripcion/{id}', 'ClaseGrupalController@eliminarinscripcion');
 		Route::post('agendar/clases-grupales/eliminar_reserva/{id}', 'ClaseGrupalController@eliminar_reserva');
 		Route::post('agendar/clases-grupales/editarinscripcion', 'ClaseGrupalController@editarinscripcion');
+		Route::post('agendar/clases-grupales/actualizar_participante', 'ClaseGrupalController@actualizar_participante');
 
 		Route::post('agendar/clases-grupales/congelar-alumno', 'ClaseGrupalController@congelarInscripcion');
 		Route::post('agendar/clases-grupales/trasladar', 'ClaseGrupalController@Trasladar');

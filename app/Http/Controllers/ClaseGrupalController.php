@@ -1556,7 +1556,7 @@ class ClaseGrupalController extends BaseController {
 
             // return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 'id' => $alumno->id, 'array' => $alumno, 'inscripcion' => $inscripcion, 'deuda' => $deuda, 200]);
 
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 'inscripcion' => $inscripcion, 'deuda' => $deuda, 'array' => $alumno, 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->alumno_id, 'inscripcion' => $inscripcion, 'deuda' => $deuda, 'alumno' => $alumno, 200]);
         }
 
             // if(count($alumnos) > 2)
@@ -1698,6 +1698,22 @@ class ClaseGrupalController extends BaseController {
             }
 
         }
+    }
+
+    public function actualizar_participante(Request $request)
+    {
+
+        $inscripcion = InscripcionClaseGrupal::find($request->id_participante);
+        $inscripcion->tipo_pago = $request->tipo_pago_participante;
+
+        if($inscripcion->save())
+        {
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'tipo_pago' => $request->tipo_pago_participante, 'id' => $request->id_participante, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
+        
     }
 
     public function editarcredencial(Request $request)

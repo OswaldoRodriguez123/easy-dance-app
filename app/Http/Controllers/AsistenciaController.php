@@ -1642,78 +1642,78 @@ class AsistenciaController extends BaseController
 
             $clase_id=explode('-', $clase);
 
-                $actual = Carbon::now();
-                // $geoip = new GeoIP();
-                // $geoip->setIp($request->ip());
-                // $actual->tz = $geoip->getTimezone();
-                
-                $fecha_actual=$actual->toDateString();
-                $hora_actual=$actual->toTimeString();
+            $actual = Carbon::now();
+            // $geoip = new GeoIP();
+            // $geoip->setIp($request->ip());
+            // $actual->tz = $geoip->getTimezone();
+            
+            $fecha_actual=$actual->toDateString();
+            $hora_actual=$actual->toTimeString();
 
-                $asistencia = new Asistencia;
-                $asistencia->fecha=$fecha_actual;
-                $asistencia->hora=$hora_actual;
-                $asistencia->clase_grupal_id=$clase_id[0];
-                $asistencia->alumno_id=$alumno_id;
-                $asistencia->academia_id=Auth::user()->academia_id;
-                $asistencia->tipo = $clase_id[2];
-                $asistencia->tipo_id = $clase_id[3];
+            $asistencia = new Asistencia;
+            $asistencia->fecha=$fecha_actual;
+            $asistencia->hora=$hora_actual;
+            $asistencia->clase_grupal_id=$clase_id[0];
+            $asistencia->alumno_id=$alumno_id;
+            $asistencia->academia_id=Auth::user()->academia_id;
+            $asistencia->tipo = $clase_id[2];
+            $asistencia->tipo_id = $clase_id[3];
 
-                if($asistencia->save()){
+            if($asistencia->save()){
 
-                  if($clase_id[2] == '3'){
+              if($clase_id[2] == '3'){
 
-                    $clase_personalizada = InscripcionClasePersonalizada::find($clase_id[3]);
+                $clase_personalizada = InscripcionClasePersonalizada::find($clase_id[3]);
 
-                    if($clase_personalizada){
+                if($clase_personalizada){
 
-                      $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_personalizada->fecha_inicio)->toDateString();
+                  $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_personalizada->fecha_inicio)->toDateString();
 
-                      if($fecha_inicio != Carbon::now()->toDateString()){
+                  if($fecha_inicio != Carbon::now()->toDateString()){
 
-                        $horario = HorarioClasePersonalizada::where('clase_personalizada_id', $clase_personalizada->id)->where('fecha', Carbon::now()->toDateString())->first();
+                    $horario = HorarioClasePersonalizada::where('clase_personalizada_id', $clase_personalizada->id)->where('fecha', Carbon::now()->toDateString())->first();
 
-                        if($horario){
+                    if($horario){
 
-                          $hie = explode(':',$horario->hora_inicio);
-                          $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
+                      $hie = explode(':',$horario->hora_inicio);
+                      $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
 
-                          $hfe = explode(':',$horario->hora_final);
-                          $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
+                      $hfe = explode(':',$horario->hora_final);
+                      $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
 
-                          $resta_horas = $hora_inicio->diffInHours($hora_final);
+                      $resta_horas = $hora_inicio->diffInHours($hora_final);
 
-                        }else{
-                          $resta_horas = 0;
-                        }
-
-                      }else{
-                        $hie = explode(':',$clase_personalizada->hora_inicio);
-                        $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
-
-                        $hfe = explode(':',$clase_personalizada->hora_final);
-                        $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
-
-                        $resta_horas = $hora_inicio->diffInHours($hora_final); 
-                      }
-
-                      $cantidad_horas = $clase_personalizada->cantidad_horas - $resta_horas;
-
-                      $clase_personalizada->cantidad_horas = $cantidad_horas;
-                      $clase_personalizada->save();
+                    }else{
+                      $resta_horas = 0;
                     }
-                    
-                  }else if($clase_id[2] == '4'){
-                    $clase_personalizada = Cita::find($clase_id[3]);
-                    $clase_personalizada->estatus = '2';
-                    $clase_personalizada->save();
+
+                  }else{
+                    $hie = explode(':',$clase_personalizada->hora_inicio);
+                    $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], $hie[2]);
+
+                    $hfe = explode(':',$clase_personalizada->hora_final);
+                    $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], $hfe[2]);
+
+                    $resta_horas = $hora_inicio->diffInHours($hora_final); 
                   }
 
-                  return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);
+                  $cantidad_horas = $clase_personalizada->cantidad_horas - $resta_horas;
 
-                }else{
-                    return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+                  $clase_personalizada->cantidad_horas = $cantidad_horas;
+                  $clase_personalizada->save();
                 }
+                
+              }else if($clase_id[2] == '4'){
+                $clase_personalizada = Cita::find($clase_id[3]);
+                $clase_personalizada->estatus = '2';
+                $clase_personalizada->save();
+              }
+
+              return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);
+
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+            }
               
        }
 

@@ -50,47 +50,39 @@ class CitaController extends BaseController {
             if($fecha_inicio <= $fechaActual->format('Y-m-d')){
 
                 if($fecha_inicio < $fechaActual->format('Y-m-d')){
-                    $cita = Cita::find($activa->id);
-                    $cita->estatus = 2;
-                    $cita->save();
+                    $activa->estatus = 2;
+                    $activa->save();
                 }else{
 
-                    // $hora_final = Carbon::createFromFormat('H:i:s', $activa->hora_final);
+                    $hora_final = Carbon::createFromFormat('H:i:s', $activa->hora_final);
 
-                    // if($hora_final <= $fechaActual->format('H:i:s')){
-                    //     $cita = Cita::find($activa->id);
-                    //     $cita->estatus = 2;
-                    //     $cita->save();
-                    // }
+                    if($hora_final <= $fechaActual->format('H:i:s')){
+                        $activa->estatus = 2;
+                        $activa->save();
+                    }
 
                 }
             }
         }
-     
 
-        $activas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
+        $citas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
             ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
-            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.sexo', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
+            ->select('citas.*','alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.sexo', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_citas.nombre as tipo_nombre', 'alumnos.fecha_nacimiento')
             ->where('citas.academia_id','=', Auth::user()->academia_id)
-            ->where('citas.estatus', 1)
         ->get();
 
-        $finalizadas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
-            ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
-            ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
-            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.sexo', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
-            ->where('citas.academia_id','=', Auth::user()->academia_id)
-            ->where('citas.estatus', 2)
-        ->get();
+        $array = array();
 
-        $canceladas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
-            ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
-            ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
-            ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.sexo', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre')
-            ->where('citas.academia_id','=', Auth::user()->academia_id)
-            ->where('citas.estatus', 0)
-        ->get();
+        foreach($citas as $cita){
+
+            $edad = Carbon::createFromFormat('Y-m-d', $cita->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+
+            $collection=collect($cita);     
+            $cita_array = $collection->toArray();
+            $cita_array['edad']=$edad;
+            $array[$cita->id] = $cita_array;
+        }
 
         $asistencias = Asistencia::where('tipo', '4')->where('academia_id', Auth::user()->academia_id)->get();
 
@@ -98,7 +90,7 @@ class CitaController extends BaseController {
         $grouped = $collection->groupBy('tipo_id');     
         $asistencias = $grouped->toArray();
 
-        return view('agendar.cita.principal')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'canceladas' => $canceladas, 'asistencias' => $asistencias]);
+        return view('agendar.cita.principal')->with(['citas' => $array, 'asistencias' => $asistencias]);
     }
 
     public function operar($id){
