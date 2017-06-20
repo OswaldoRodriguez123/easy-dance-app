@@ -541,19 +541,12 @@ class AlumnoController extends BaseController
                 $imagen = '';
             }
 
-            $inscripcion_clase_grupal = InscripcionClaseGrupal::where('alumno_id',$id)->first();
-
-            if($inscripcion_clase_grupal){
-                if($inscripcion_clase_grupal->tipo_pago == 1){
-                    $tipo_pago = 'Contado';
-                }else if($inscripcion_clase_grupal->tipo_pago == 2){
-                    $tipo_pago = 'Credito';
-                }else{
-                    $tipo_pago = 'Sin Confirmar';
-                }
-
-            }else{
+            if($alumno->tipo_pago == 1){
                 $tipo_pago = 'Contado';
+            }else if($alumno->tipo_pago == 2){
+                $tipo_pago = 'Credito';
+            }else{
+                $tipo_pago = 'Sin Confirmar';
             }
 
             return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $total, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'edad' => $edad, 'tipo_pago' => $tipo_pago, 'credenciales' => $credenciales, 'usuario' => $usuario]);
@@ -808,6 +801,17 @@ class AlumnoController extends BaseController
         }
 
         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'imagen' => $nombre_img, 200]);
+    }
+
+    public function updateTipoPago(Request $request){
+        $alumno = Alumno::find($request->id);
+        $alumno->tipo_pago = $request->tipo_pago;
+
+        if($alumno->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
     public function updatePromotor(Request $request){

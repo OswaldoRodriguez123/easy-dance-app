@@ -9,7 +9,7 @@ use App\Http\Requests;
 use App\Taller;
 use App\HorarioClaseGrupal;
 use App\ClaseGrupal;
-use App\InscripcionClaseGrupal;
+use App\Alumno;
 use App\ClasePersonalizada;
 use App\InscripcionClasePersonalizada;
 use App\Cita;
@@ -421,21 +421,15 @@ class AgendarController extends BaseController
             }
 
 
-            $inscripcion_clase_grupal = InscripcionClaseGrupal::where('alumno_id',$cita->alumno_id)->first();
+            $alumno = Alumno::find($cita->alumno_id);
 
-            if($inscripcion_clase_grupal){
-                if($inscripcion_clase_grupal->tipo_pago == 1){
-                    $tipo_pago = 'Contado';
-                }else if($inscripcion_clase_grupal->tipo_pago == 2){
-                    $tipo_pago = 'Credito';
-                }else{
-                    $tipo_pago = 'Sin Confirmar';
-                }
-
-            }else{
+            if($alumno->tipo_pago == 1){
                 $tipo_pago = 'Contado';
+            }else if($alumno->tipo_pago == 2){
+                $tipo_pago = 'Credito';
+            }else{
+                $tipo_pago = 'Sin Confirmar';
             }
-
 
             $id=$instructor."!".$descripcion."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final."!".$tipo_pago;
 

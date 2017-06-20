@@ -508,6 +508,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('participante/alumno/deuda/{id}', 'AlumnoController@deuda');
 		Route::get('participante/alumno/historial/{id}', 'AlumnoController@historial');
 		Route::post('participante/alumno/sesion/{id}', 'AlumnoController@sesion');
+		Route::put('participante/alumno/update/tipo_pago','AlumnoController@updateTipoPago');
 		Route::put('participante/alumno/update/promotor','AlumnoController@updatePromotor');
 		Route::put('participante/alumno/update/identificacion','AlumnoController@updateID');
 		Route::put('participante/alumno/update/nombre','AlumnoController@updateNombre');

@@ -583,7 +583,7 @@ class ClaseGrupalController extends BaseController {
             $asistencia_amarilla = $clasegrupal->asistencia_amarilla;
 
             $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela', 'inscripcion_clase_grupal.tipo_pago')
+                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela', 'alumnos.tipo_pago')
                 ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
                 ->where('inscripcion_clase_grupal.deleted_at', '=', null)
             ->get();
@@ -1541,6 +1541,13 @@ class ClaseGrupalController extends BaseController {
 
                 }
 
+                $alumno = Alumno::find($request->alumno_id);
+
+                if($alumno){
+                    $alumno->tipo_pago = $request->tipo_pago;
+                    $alumno->save();
+                }
+
                 $deuda = DB::table('alumnos')
                     ->join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
                     ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
@@ -1708,6 +1715,13 @@ class ClaseGrupalController extends BaseController {
 
         if($inscripcion->save())
         {
+            $alumno = Alumno::find($inscripcion->alumno_id);
+
+            if($alumno){
+                $alumno->tipo_pago = $inscripcion->tipo_pago;
+                $alumno->save();
+            }
+            
             return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'tipo_pago' => $request->tipo_pago_participante, 'id' => $request->id_participante, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
