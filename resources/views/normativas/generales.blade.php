@@ -181,14 +181,13 @@
 
                           <p>Todo integrante para ascender de nivel deberá ser valorado por el instructor de diagnóstico en la sección de <b>Valoración recurrente</b>, en caso que el alumno no asista a la clase del festejo (en el que se realiza su valoración) deberá realizar un diagnóstico en calidad de <b>cita exclusiva</b> y de esta forma ser valorado por el instructor, para así continuar con su proceso de aprendizaje en la clase que le corresponde.</p>
 
-                          <div class="f-18 f-700">33. Derecho de imagen</div><br>
-
-                          <p>El alumno autoriza a la academia a ceder los derechos de explotación sobre las fotografías, imágenes o videos  a que indistintamente puedan utilizar todo el material visual y gráfico para fines publicitarios de proyección e imagen.</p>
-
-                          <div class="f-18 f-700">34. Transferencia</div><br>
+                          <div class="f-18 f-700">33. Transferencia</div><br>
 
                           <p>En caso que un alumno desee realizar una transferencia de un curso a otro, después de haber iniciado sus clases recurrentes, la academia buscará la posibilidad de aplicar dicha transferencia siempre y cuando cuente con los horarios y cupos de disponibilidad como a su vez que cuente con un grupo que maneje la misma nivelación o alguna inferior, en caso que la academia no posea dichas características y el alumno no pueda o no desee continuar en los horarios en el que está inscrito, la academia no se obliga a devolver el monto o parte del plan de inscripción o mensualidad que el alumno haya realizado.</p>
 
+                          <div class="f-18 f-700">34. Plan referidos</div><br>
+
+                          <p>Cada integrante al momento de realizar su proceso de inscripción, tendrá la posibilidad de contar con el plan referidos, que consta de obtener puntos canjeables a través de las invitaciones generadas a amigos o familiares para participar en la academia. El alumno recibirá la cantidad de 25.000$(COP), dichos pesos podrán ser canjeados por las diversas líneas de servicios de la academia, sobre el valor de los servicios que estén en vigor, tales como, clases grupales, inscripción a eventos, talleres, clases personalizadas entre otros, dichos puntos sólo tendrán validez a partir de la activación del sistema en la cita de diagnóstico, siempre y cuando el alumno permanezca activo en la academia, en ninguno de los términos dichos puntos son transferibles y perderán toda validez en el momento que el alumno de por vencida su inscripción o se retire de la academia.</p>
 
                           <div class="f-18 f-700">35. Consulta</div><br>
 
