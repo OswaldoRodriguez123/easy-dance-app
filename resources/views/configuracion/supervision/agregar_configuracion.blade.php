@@ -105,7 +105,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_f-staff f-25" id="id-supervision"></i> Agregar Supervisión</span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_f-staff f-25" id="id-supervision"></i> Agregar Configuración</span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -116,9 +116,9 @@
                             <div class="clearfix p-b-15"></div>
                                   <div class="col-sm-12">
 
-                                    <label for="id">Procedimientos</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de los distintos procedimientos que posees en tu academia" title="" data-original-title="Ayuda"></i>
+           <!--                          <label for="id">Procedimientos</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de los distintos procedimientos que posees en tu academia" title="" data-original-title="Ayuda"></i>
 
-                                    <div class="clearfix p-b-35"></div>
+                                    <div class="clearfix p-b-35"></div> -->
 
                                    <div class="form-group">
                                         <label for="id">Cargo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el cargo de los distintos procedimientos que posees en tu academia" title="" data-original-title="Ayuda"></i>
@@ -126,11 +126,10 @@
                                         <div class="input-group">
                                           <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
                                           <div class="select">
-                                            
+
+                                            <select class="selectpicker" name="cargo_supervision" id="cargo_supervision" data-live-search="true">
 
                                               @if(!isset($id))
-
-                                              <select class="selectpicker" name="cargo_supervision" id="cargo_supervision" data-live-search="true">
 
                                                 <option value="">Selecciona</option>
                                                 @foreach ( $cargos as $cargo )
@@ -138,15 +137,13 @@
                                                 @endforeach
 
                                               @else
-                                                <input type="hidden" name="cargo_supervision" value="{{$id}}">
-                                                <select disabled class="selectpicker" name="cargo" id="cargo" data-live-search="true">
-                                                  <option value = "{{ $cargo->id }}">{{ $cargo->nombre }}</option>
+                                                <option value = "{{ $cargo->id }}">{{ $cargo->nombre }}</option>
                                               @endif
 
                                             
                                             </select>
                                         </div>
-                                        </div>
+                                    </div>
                                      <div class="has-error" id="error-cargo_supervision">
                                           <span >
                                               <small class="help-block error-span" id="error-cargo_supervision_mensaje" ></small>                               
@@ -154,9 +151,26 @@
                                       </div>
                                    </div>
 
+                                   <div class="clearfix p-b-35"></div>
+
+                                      <label for="nombre" id="id-descripcion">Descripción</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la descripción del cargo" title="" data-original-title="Ayuda"></i>
+
+                                      <br></br>
+
+                                      <div class="fg-line">
+                                        <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="2000 Caracteres" maxlength="2000" onkeyup="countChar(this)"></textarea>
+                                      </div>
+                                      <div class="opaco-0-8 text-right">Resta <span id="charNum">2000</span> Caracteres</div>
+                                   <div class="has-error" id="error-descripcion">
+                                        <span >
+                                            <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                
+                                        </span>
+                                    </div>
+                            
+
                                    <div class="clearfix p-b-15"></div>
 
-                                   <div class="form-group fg-line">
+                                   <!-- <div class="form-group fg-line">
                                 
                                     <label for="nombre_nivel" id="id-nombre_procedimiento">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del procedimiento que deseas agregar" title="" data-original-title="Ayuda"></i>
 
@@ -180,12 +194,12 @@
 
                               <button type="button" class="btn btn-blanco m-r-10 f-10" name= "agregarprocedimiento" id="agregarprocedimiento" > Agregar Linea</button>
 
-                              </div>
+                              </div> -->
 
 
                         <div class="clearfix p-b-35"></div>
 
-                        <div class="table-responsive row">
+                        <!-- <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
@@ -210,7 +224,7 @@
                             </tbody>
                         </table>
                          </div>
-                        </div>
+                        </div> -->
 
                         <div class="clearfix p-b-35"></div>
   
@@ -645,6 +659,15 @@
       window.location = route_detalle_procedimiento+id;
       
     });
+
+    function countChar(val) {
+      var len = val.value.length;
+      if (len >= 2000) {
+        val.value = val.value.substring(0, 2000);
+      } else {
+        $('#charNum').text(2000 - len);
+      }
+    };
 
 </script> 
 @stop

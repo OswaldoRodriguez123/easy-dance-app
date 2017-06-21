@@ -54,18 +54,32 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Cargo</th>
+                                    <th class="text-center" data-column-id="nombre" data-order="desc">Descripción</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Procedimientos a Evaluar</th>
                                     <th class="text-center" data-column-id="acciones" data-order="desc">Operaciones</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($cargos as $cargo)
+                            @foreach ($config_supervision as $supervision)
 
-                                <?php $id = $cargo['id']; ?>
-                                <tr id="{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$cargo['nombre']}}</td>
-                                    <td class="text-center previa">{{$cargo['items']}}</td>
+                                <?php $id = $supervision['id']; 
+
+                                    $contenido = '';
+
+                                    $contenido = 
+                                    '<p class="c-negro">' .
+                                        'Cargo: ' . $supervision['nombre'] . '<br>'.
+                                        'Descripción: ' . $supervision['descripcion'] . '<br>'.
+                                    '</p>';
+                    
+                                    
+
+                                ?>
+                                 <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion">
+                                    <td class="text-center previa">{{$supervision['nombre']}}</td>
+                                    <td class="text-center previa">{{$supervision['descripcion']}}</td>
+                                    <td class="text-center previa">{{$supervision['items']}}</td>
                                     <td class="text-center disabled"> <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 
@@ -107,7 +121,7 @@
         order: [[0, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1)', nRow).attr( "onclick","previa(this)" );
+          // $('td:eq(0),td:eq(1)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",

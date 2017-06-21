@@ -12,6 +12,7 @@ use Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Supervision;
+use App\ConfiguracionSupervision;
 use App\ConfigSupervision;
 use App\HorarioSupervision;
 use App\DetalleSupervisionEvaluacion;
@@ -26,27 +27,25 @@ class ConfigSupervisionController extends BaseController {
 
 	public function configuracion(){
 
-    	$cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
+    	$config_supervision = ConfiguracionSupervision::join('config_staff', 'configuracion_supervisiones.cargo_id', '=', 'config_staff.id')
+            ->select('configuracion_supervisiones.*','config_staff.nombre')
+            ->where('configuracion_supervisiones.academia_id', Auth::user()->academia_id)
+        ->get();
 
     	$array = array();
 
-    	foreach($cargos as $cargo){
+    	foreach($config_supervision as $supervision){
 
-    		$items = ConfigSupervision::where('cargo_id',$cargo->id)->count();
+    		$items = ConfigSupervision::where('config_supervision_id',$supervision->id)->count();
+    		$collection=collect($supervision);   
 
-    		if($items > 0){
-
-	    		$collection=collect($cargo);   
-
-	            $cargo_array = $collection->toArray();
-	            $cargo_array['items']=$items;
-	            $array[$cargo->id] = $cargo_array;
-            }
+            $supervision_array = $collection->toArray();
+            $supervision_array['items']=$items;
+            $array[$supervision->id] = $supervision_array;
 
     	}
-
-        return view('configuracion.supervision.principal')->with(['cargos' => $array]);
-
+        
+        return view('configuracion.supervision.principal')->with(['config_supervision' => $array]);
     }
 
 
@@ -71,22 +70,22 @@ class ConfigSupervisionController extends BaseController {
 
     }
 
-    public function editar_configuracion($id){
+    // public function editar_configuracion($id){
 
-    	Session::forget('supervisiones');
+    // 	Session::forget('supervisiones');
 
-    	$cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
-    	$cargo = ConfigStaff::find($id);
+    // 	$cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
+    // 	$cargo = ConfigStaff::find($id);
 
-    	$config_supervision = ConfigSupervision::join('config_staff', 'config_supervision.cargo_id', '=', 'config_staff.id')
-    		->select('config_supervision.*', 'config_staff.nombre as cargo')
-    		->where('config_supervision.cargo_id', $id)
-	    	->where('config_supervision.academia_id', Auth::user()->academia_id)
-    	->get();
+    // 	$config_supervision = ConfigSupervision::join('config_staff', 'config_supervision.cargo_id', '=', 'config_staff.id')
+    // 		->select('config_supervision.*', 'config_staff.nombre as cargo')
+    // 		->where('config_supervision.cargo_id', $id)
+	   //  	->where('config_supervision.academia_id', Auth::user()->academia_id)
+    // 	->get();
     	
-        return view('configuracion.supervision.agregar_configuracion')->with(['cargos' => $cargos, 'config_supervision' => $config_supervision, 'id' => $id, 'cargo' => $cargo, 'cargos_usados' => '']);
+    //     return view('configuracion.supervision.agregar_configuracion')->with(['cargos' => $cargos, 'config_supervision' => $config_supervision, 'id' => $id, 'cargo' => $cargo, 'cargos_usados' => '']);
 
-    }
+    // }
 
 
     Public function agregar_supervision_fija(Request $request){
@@ -149,10 +148,12 @@ class ConfigSupervisionController extends BaseController {
     {   
     	$rules = [
 		    'cargo_supervision' => 'required',
+            'descripcion' => 'required',
 	    ];
 
 	    $messages = [
 	        'cargo_supervision.required' => 'Ups! El Cargo es requerido',
+            'descripcion.required' => 'Ups! La descripción es requerida',
 	    ];
 
 	    $validator = Validator::make($request->all(), $rules, $messages);
@@ -163,27 +164,39 @@ class ConfigSupervisionController extends BaseController {
 
 	    }else{
 
-        	$supervisiones = Session::get('supervisiones');
+            $config_supervision = new ConfiguracionSupervision();
 
-        	if (count($supervisiones) > 0){
-	            foreach($supervisiones as $tmp){
-	                foreach($tmp as $supervision){
+            $config_supervision->academia_id = Auth::user()->academia_id;
+            $config_supervision->cargo_id=$request->cargo_supervision;
+            $config_supervision->descripcion=$request->descripcion;
 
-	                    $config_supervision = new ConfigSupervision();
+            if($config_supervision->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
 
-	                    $config_supervision->academia_id = Auth::user()->academia_id;
-	                    $config_supervision->cargo_id=$request->cargo_supervision;
-	                    $config_supervision->nombre=$supervision['nombre'];
+        	// $supervisiones = Session::get('supervisiones');
 
-	                    $config_supervision->save();
+        	// if (count($supervisiones) > 0){
+	        //     foreach($supervisiones as $tmp){
+	        //         foreach($tmp as $supervision){
+
+	        //             $config_supervision = new ConfigSupervision();
+
+	        //             $config_supervision->academia_id = Auth::user()->academia_id;
+	        //             $config_supervision->cargo_id=$request->cargo_supervision;
+	        //             $config_supervision->nombre=$supervision['nombre'];
+
+	        //             $config_supervision->save();
 	 
-	                }
-	            }
+	        //         }
+	        //     }
 
-            	return response()->json(['mensaje' => '¡Excelente! Los campos se han eliminado satisfactoriamente', 'status' => 'OK', 200]);
-	        }else{
-	            return response()->json(['errores' => ['linea' => [0, 'Ups! ha ocurrido un error, debes agregar un procedimiento']], 'status' => 'ERROR'],422);
-	        }
+         //    	return response()->json(['mensaje' => '¡Excelente! Los campos se han eliminado satisfactoriamente', 'status' => 'OK', 200]);
+	        // }else{
+	        //     return response()->json(['errores' => ['linea' => [0, 'Ups! ha ocurrido un error, debes agregar un procedimiento']], 'status' => 'ERROR'],422);
+	        // }
     	}
     }
 
