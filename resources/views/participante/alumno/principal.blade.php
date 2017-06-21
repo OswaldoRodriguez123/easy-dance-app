@@ -124,9 +124,8 @@
 
                                     $contenido = '';
 
-                                    if($alumno['imagen']){
+                                    if(isset($alumno['imagen'])){
                                         $imagen = '/assets/uploads/usuario/'.$alumno['imagen'];
-
                                     }else{
                                         if($alumno['sexo'] == 'F'){
                                             $imagen = '/assets/img/Mujer.jpg';
@@ -136,23 +135,19 @@
                                     }
 
 
-                                    $contenido = '<p class="c-negro">' .
+                                    $contenido = 
+                                    '<p class="c-negro">' .
+                                        $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .
 
-                                    $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .
-
-                                    'Cantidad que adeuda: ' . number_format($alumno['deuda'], 2, '.' , '.')  . '<br>'.
-                                    'Número Móvil: ' . $alumno['celular'] . '<br>'.
-                                    'Correo Electrónico: ' . $alumno['correo'] . '<br>'.
-                                    'Edad: ' . $alumno['edad'] . '<br>'.
-
-
-
+                                        'Cantidad que adeuda: ' . number_format($alumno['deuda'], 2, '.' , '.')  . '<br>'.
+                                        'Número Móvil: ' . $alumno['celular'] . '<br>'.
+                                        'Correo Electrónico: ' . $alumno['correo'] . '<br>'.
+                                        'Edad: ' . $alumno['edad'] . '<br>'.
                                     '</p>';
                     
                                     
 
                                 ?>
-                                <!-- can('view-alumnos', $alumno) -->
                                 @if($alumno['deleted_at'] == null)
                                     <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="row_{{$id}}" class="seleccion" data-tipo = "1">
                                 @else
