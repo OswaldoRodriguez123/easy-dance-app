@@ -1159,7 +1159,7 @@
                                     </td>
                                     <td class="text-center previa">
                                       @if($alumno['imagen'])
-                                        <img class="lv-img-lg" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
+                                        <img class="lv-img" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
                                       @else
                                           @if($alumno['sexo'] == 'M')
                                             <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
