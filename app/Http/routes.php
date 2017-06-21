@@ -1039,38 +1039,53 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		//SUPERVISIONES
 
-		Route::get('configuracion/supervisiones', 'SupervisionController@principal');
-		Route::get('configuracion/supervisiones/agregar', 'SupervisionController@create');
-		Route::post('configuracion/supervisiones/agregar', 'SupervisionController@store');
-		Route::delete('configuracion/supervisiones/eliminar/{id}', 'SupervisionController@destroy');
-		Route::get('configuracion/supervisiones/detalle/{id}', 'SupervisionController@edit');
-		Route::get('configuracion/supervisiones/evaluar/{id}', 'SupervisionController@evaluar');
-		Route::get('configuracion/supervisiones/agenda/{id}', 'SupervisionController@agenda');
-		Route::post('configuracion/supervisiones/evaluar', 'SupervisionController@storeEvaluacion');
-		Route::get('configuracion/supervisiones/evaluaciones', 'SupervisionController@evaluaciones');
-		Route::get('configuracion/supervisiones/evaluaciones/{id}', 'SupervisionController@evaluaciones_por_supervision');
-		Route::get('configuracion/supervisiones/evaluaciones/detalle/{id}', 'SupervisionController@getDetalle');
-		Route::put('configuracion/supervisiones/update/supervisor','SupervisionController@updateSupervisor');
-		Route::put('configuracion/supervisiones/update/cargo','SupervisionController@updateCargo');
-		Route::put('configuracion/supervisiones/update/staff','SupervisionController@updateStaff');
-		Route::put('configuracion/supervisiones/update/fecha','SupervisionController@updateFecha');
-		Route::put('configuracion/supervisiones/update/items','SupervisionController@updateItems');
-		Route::get('configuracion/supervisiones/eliminadas', 'SupervisionController@eliminadas');
-		Route::post('configuracion/supervisiones/configuracion/agregarsupervision','SupervisionController@agregar_supervision_session');
-		Route::post('configuracion/supervisiones/restablecer/{id}','SupervisionController@restore');
-		Route::delete('configuracion/supervisiones/eliminar_permanentemente/{id}','SupervisionController@eliminar_permanentemente');
+		Route::get('supervisiones', 'SupervisionController@principal');
+		Route::get('supervisiones/agregar', 'SupervisionController@create');
+		Route::post('supervisiones/agregar', 'SupervisionController@store');
+		Route::delete('supervisiones/eliminar/{id}', 'SupervisionController@destroy');
+		Route::get('supervisiones/detalle/{id}', 'SupervisionController@edit');
+		Route::get('supervisiones/evaluar/{id}', 'SupervisionController@evaluar');
+		Route::get('supervisiones/agenda/{id}', 'SupervisionController@agenda');
+		Route::post('supervisiones/evaluar', 'SupervisionController@storeEvaluacion');
+		Route::get('supervisiones/evaluaciones', 'SupervisionController@evaluaciones');
+		Route::get('supervisiones/evaluaciones/{id}', 'SupervisionController@evaluaciones_por_supervision');
+		Route::get('supervisiones/evaluaciones/detalle/{id}', 'SupervisionController@getDetalle');
+		Route::put('supervisiones/update/supervisor','SupervisionController@updateSupervisor');
+		Route::put('supervisiones/update/cargo','SupervisionController@updateCargo');
+		Route::put('supervisiones/update/staff','SupervisionController@updateStaff');
+		Route::put('supervisiones/update/fecha','SupervisionController@updateFecha');
+		Route::put('supervisiones/update/items','SupervisionController@updateItems');
+		Route::get('supervisiones/eliminadas', 'SupervisionController@eliminadas');
+		Route::post('supervisiones/configuracion/agregarsupervision','SupervisionController@agregar_supervision_session');
+		Route::post('supervisiones/restablecer/{id}','SupervisionController@restore');
+		Route::delete('supervisiones/eliminar_permanentemente/{id}','SupervisionController@eliminar_permanentemente');
 
-		Route::get('configuracion/supervisiones/configuracion', 'SupervisionController@configuracion');
-		Route::get('configuracion/supervisiones/configuracion/agregar', 'SupervisionController@agregar_configuracion');
-		Route::post('configuracion/supervisiones/configuracion/agregar', 'SupervisionController@GuardarConfiguracion');
-		Route::post('configuracion/supervisiones/configuracion/cancelar', 'SupervisionController@cancelar_supervision');
-		Route::delete('configuracion/supervisiones/configuracion/eliminar/{id}', 'SupervisionController@eliminar_configuracion');
-		Route::post('configuracion/supervisiones/configuracion/agregarsupervision','SupervisionController@agregar_supervision_session');
-		Route::post('configuracion/supervisiones/configuracion/eliminarsupervision/{id}','SupervisionController@eliminar_supervision_session');
-		Route::post('configuracion/supervisiones/configuracion/agregarsupervisionfija','SupervisionController@agregar_supervision_fija');
-		Route::post('configuracion/supervisiones/configuracion/eliminarsupervisionfija/{id}','SupervisionController@eliminar_supervision_fija');
-		Route::get('configuracion/supervisiones/configuracion/detalle/{id}', 'SupervisionController@editar_configuracion');
-		Route::post('configuracion/supervisiones/configuracion/update','SupervisionController@updateConfiguracion');
+		//CONFIG SUPERVISIONES
+
+		Route::get('configuracion/supervisiones/', 'ConfigSupervisionController@configuracion');
+		Route::get('configuracion/supervisiones/agregar', 'ConfigSupervisionController@agregar_configuracion');
+		Route::post('configuracion/supervisiones/agregar', 'ConfigSupervisionController@GuardarConfiguracion');
+		Route::post('configuracion/supervisiones/cancelar', 'ConfigSupervisionController@cancelar_supervision');
+		Route::delete('configuracion/supervisiones/eliminar/{id}', 'ConfigSupervisionController@eliminar_configuracion');
+		Route::post('configuracion/supervisiones/agregarsupervision','ConfigSupervisionController@agregar_supervision_session');
+		Route::post('configuracion/supervisiones/eliminarsupervision/{id}','ConfigSupervisionController@eliminar_supervision_session');
+		Route::post('configuracion/supervisiones/agregarsupervisionfija','ConfigSupervisionController@agregar_supervision_fija');
+		Route::post('configuracion/supervisiones/eliminarsupervisionfija/{id}','ConfigSupervisionController@eliminar_supervision_fija');
+		Route::get('configuracion/supervisiones/detalle/{id}', 'ConfigSupervisionController@editar_configuracion');
+		Route::post('configuracion/supervisiones/update','ConfigSupervisionController@updateConfiguracion');
+
+		//PROCEDIMIENTOS 
+
+		Route::get('configuracion/supervisiones/procedimientos/{id}', 'ProcedimientoController@principal_procedimientos');
+		Route::get('configuracion/supervisiones/procedimientos/agregar/{id}', 'ProcedimientoController@agregar_procedimiento');
+		Route::get('configuracion/supervisiones/procedimientos/detalle/{id}', 'ProcedimientoController@editar_procedimiento');
+		Route::post('guardar_procedimiento', 'ProcedimientoController@GuardarProcedimiento');
+		Route::post('cancelar_procedimiento', 'ProcedimientoController@cancelar_procedimiento');
+		Route::post('agregar_procedimiento','ProcedimientoController@agregar_procedimiento_session');
+
+		Route::post('eliminar_procedimiento/{id}','ProcedimientoController@eliminar_procedimiento_session');
+		Route::post('agregar_procedimiento_fijo','ProcedimientoController@agregar_procedimiento_fijo');
+		Route::post('eliminar_procedimiento_fijo/{id}','ProcedimientoController@eliminar_procedimiento_fijo');
 
 		//INCIDENCIAS
 

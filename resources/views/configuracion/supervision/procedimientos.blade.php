@@ -17,13 +17,13 @@
 @stop
 @section('content')
 
-<a href="{{url('/')}}/configuracion/supervisiones/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
+<a href="{{url('/')}}/configuracion/supervisiones/procedimientos/agregar/{{$id}}" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
 
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/herramientas" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -43,9 +43,9 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <span class="f-16 p-t-0 text-success">Agregar una Configuración <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
+                            <span class="f-16 p-t-0 text-success">Agregar una Supervision <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-staff f-25"></i> Sección de Configuración</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-staff f-25"></i> Sección de Supervisiones</p>
                             <hr class="linea-morada">                                                         
                         </div>
                         <div class="table-responsive row">
@@ -53,19 +53,19 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Cargo</th>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Procedimientos a Evaluar</th>
+                                    <th class="text-center" data-column-id="nombre" data-order="desc">Procedimiento</th>
+                                    <th class="text-center" data-column-id="nombre" data-order="desc">Items a Evaluar</th>
                                     <th class="text-center" data-column-id="acciones" data-order="desc">Operaciones</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($cargos as $cargo)
+                            @foreach ($config_supervisiones as $configuracion)
 
-                                <?php $id = $cargo['id']; ?>
+                                <?php $id = $configuracion['id']; ?>
                                 <tr id="{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$cargo['nombre']}}</td>
-                                    <td class="text-center previa">{{$cargo['items']}}</td>
+                                    <td class="text-center previa">{{$configuracion['nombre']}}</td>
+                                    <td class="text-center previa">{{$configuracion['items']}}</td>
                                     <td class="text-center disabled"> <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 
@@ -94,8 +94,8 @@
             
         <script type="text/javascript">
 
-        route_eliminar="{{url('/')}}/configuracion/supervisiones/eliminar/";
-        route_detalle="{{url('/')}}/configuracion/supervisiones/detalle";
+        route_eliminar="{{url('/')}}/configuracion/supervisiones/procedimientos/eliminar/";
+        route_detalle="{{url('/')}}/configuracion/supervisiones/procedimientos/detalle";
 
         $(document).ready(function(){
 

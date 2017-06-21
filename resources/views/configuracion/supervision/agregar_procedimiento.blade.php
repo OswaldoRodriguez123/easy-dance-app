@@ -78,15 +78,11 @@
                 </div>
             </div>
 
-            @if(isset($id))
-              <a href="{{url('/')}}/configuracion/supervisiones/procedimientos/agregar/{{$id}}" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
-            @endif
-
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Configuración</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
@@ -109,47 +105,47 @@
                         </div>
                         
                         <div class="card-body p-b-20">
-                          <form name="agregar_supervision" id="agregar_supervision"  >
+                          <form name="agregar_procedimiento" id="agregar_procedimiento"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
                                   <div class="col-sm-12">
 
-                                    <label for="id">Procedimientos</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de los distintos procedimientos que posees en tu academia" title="" data-original-title="Ayuda"></i>
+                                    <label for="id">Supervisión</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de los distintos items de supervisión que posees en tu academia" title="" data-original-title="Ayuda"></i>
 
                                     <div class="clearfix p-b-35"></div>
 
                                    <div class="form-group">
-                                        <label for="id">Cargo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el cargo de los distintos procedimientos que posees en tu academia" title="" data-original-title="Ayuda"></i>
+                                        <label for="id">Procedimiento</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el procedimiento de los distintos items de supervisión que posees en tu academia" title="" data-original-title="Ayuda"></i>
 
                                         <div class="input-group">
                                           <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
                                           <div class="select">
                                             
 
-                                              @if(!isset($id))
+                                              @if(!isset($config_supervision_id))
 
-                                              <select class="selectpicker" name="cargo_supervision" id="cargo_supervision" data-live-search="true">
+                                              <select class="selectpicker" name="config_supervision_id" id="config_supervision_id" data-live-search="true">
 
                                                 <option value="">Selecciona</option>
-                                                @foreach ( $cargos as $cargo )
-                                                  <option value = "{{ $cargo['id'] }}">{{ $cargo['nombre'] }}</option>
+                                                @foreach ( $procedimientos as $configuracion )
+                                                  <option value = "{{ $configuracion['id'] }}">{{ $configuracion['nombre'] }}</option>
                                                 @endforeach
 
                                               @else
-                                                <input type="hidden" name="cargo_supervision" value="{{$id}}">
-                                                <select disabled class="selectpicker" name="cargo" id="cargo" data-live-search="true">
-                                                  <option value = "{{ $cargo->id }}">{{ $cargo->nombre }}</option>
+                                                <input type="hidden" name="config_supervision_id" value="{{$config_supervision_id}}">
+                                                <select disabled class="selectpicker" name="config_supervision_id" id="config_supervision_id" data-live-search="true">
+                                                  <option value = "{{ $config_supervision->id }}">{{ $config_supervision->nombre }}</option>
                                               @endif
 
                                             
                                             </select>
                                         </div>
                                         </div>
-                                     <div class="has-error" id="error-cargo_supervision">
+                                     <div class="has-error" id="error-config_supervision_id">
                                           <span >
-                                              <small class="help-block error-span" id="error-cargo_supervision_mensaje" ></small>                               
+                                              <small class="help-block error-span" id="error-config_supervision_id_mensaje" ></small>                               
                                           </span>
                                       </div>
                                    </div>
@@ -158,17 +154,17 @@
 
                                    <div class="form-group fg-line">
                                 
-                                    <label for="nombre_nivel" id="id-nombre_procedimiento">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del procedimiento que deseas agregar" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre_nivel" id="id-nombre_supervision">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del item de supervision que deseas agregar" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
                                       <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="nombre_procedimiento" id="nombre_procedimiento" placeholder="Ej. Cierre de Caja" maxlength="150">
+                                      <input type="text" class="form-control input-sm proceso" name="nombre_supervision" id="nombre_supervision" placeholder="Ej. Asistencia" maxlength="150">
                                       </div>
                                     </div>
-                                 <div class="has-error" id="error-nombre_procedimiento">
+                                 <div class="has-error" id="error-nombre_supervision">
                                       <span >
-                                          <small class="help-block error-span" id="error-nombre_procedimiento_mensaje" ></small>                               
+                                          <small class="help-block error-span" id="error-nombre_supervision_mensaje" ></small>                               
                                       </span>
                                   </div>
                                </div>
@@ -178,7 +174,7 @@
 
                               <div class="card-header text-left">
 
-                              <button type="button" class="btn btn-blanco m-r-10 f-10" name= "agregarprocedimiento" id="agregarprocedimiento" > Agregar Linea</button>
+                              <button type="button" class="btn btn-blanco m-r-10 f-10" name= "agregarsupervision" id="agregarsupervision" > Agregar Linea</button>
 
                               </div>
 
@@ -196,13 +192,13 @@
                             </thead>
                             <tbody class="text-center" >
 
-                              @if(isset($id))
-                                @foreach ($config_supervision as $supervision)
+                              @if(isset($config_supervision_id))
+                                @foreach ($procedimientos as $procedimiento)
 
-                                    <?php $id = $supervision->id; ?>
-                                    <tr id="{{$id}}" class="seleccion" data-nombre="{{$supervision->nombre}}" >
-                                        <td class="text-center previa">{{$supervision->nombre}}</td>
-                                        <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i> <i id={{$id}} class="zmdi zmdi-edit f-20 p-r-10 pointer acciones"></i></td>
+                                    <?php $id = $procedimiento->id; ?>
+                                    <tr id="{{$id}}" class="seleccion" data-nombre="{{$procedimiento->nombre}}" >
+                                        <td class="text-center previa">{{$procedimiento->nombre}}</td>
+                                        <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                       </tr>
                                 @endforeach 
                               @endif
@@ -230,7 +226,7 @@
 
                               <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
                               
-                              @if(!isset($id))
+                              @if(!isset($config_supervision_id))
                                 <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
                               @endif
 
@@ -252,43 +248,35 @@
 @section('js') 
 <script type="text/javascript">
 
-  if("{{!isset($id)}}"){
-      route_agregar_supervision = "{{url('/')}}/configuracion/supervisiones/agregarsupervision";
-      route_eliminar_supervision = "{{url('/')}}/configuracion/supervisiones/eliminarsupervision/";
+  if("{{!isset($config_supervision_id)}}"){
+      route_agregar_procedimiento = "{{url('/')}}/agregar_procedimiento";
+      route_eliminar_procedimiento = "{{url('/')}}/eliminar_procedimiento/";
 
   }else{
-      route_agregar_supervision = "{{url('/')}}/configuracion/supervisiones/agregarsupervisionfija";
-      route_eliminar_supervision = "{{url('/')}}/configuracion/supervisiones/eliminarsupervisionfija/";
+      route_agregar_procedimiento = "{{url('/')}}/agregar_procedimiento_fijo";
+      route_eliminar_procedimiento = "{{url('/')}}/eliminar_procedimiento_fijo/";
   }
 
-  route_agregar="{{url('/')}}/configuracion/supervisiones/agregar";
-  route_editar="{{url('/')}}/configuracion/supervisiones/update";
-  route_principal="{{url('/')}}/configuracion/supervisiones";
-  route_cancelar = "{{url('/')}}/configuracion/supervisiones/cancelar";
-  route_detalle_procedimiento="{{url('/')}}/configuracion/supervisiones/procedimientos/detalle/";
+  route_agregar="{{url('/')}}/guardar_procedimiento";
+  route_principal="{{url('/')}}/configuracion/supervisiones/procedimientos/{{$id}}";
+  route_cancelar = "{{url('/')}}/cancelar_procedimiento";
 
-  var cargos = <?php echo json_encode($cargos);?>;
-  var cargos_usados = <?php echo json_encode($cargos_usados);?>;
+  var procedimientos = <?php echo json_encode($procedimientos);?>;
+  var procedimientos_usados = <?php echo json_encode($procedimientos_usados);?>;
 
   $(document).ready(function(){
 
-      if("{{isset($id)}}"){
-        clase = 'previa'
-      }else{
-        clase = 'disabled'
-      }
+      $.each(procedimientos, function (index, supervision) {
 
-      $.each(cargos, function (index, cargo) {
+        if(!$.inArray(procedimientos_usados, supervision.id)){
 
-        if(!$.inArray(cargos_usados, cargo.id)){
-
-            $("#cargo option[value='"+cargo.id+"']").attr("disabled","disabled");
-            $("#cargo option[value='"+cargo.id+"']").data("icon","glyphicon-remove");
+            $("#config_supervision_id option[value='"+supervision.id+"']").attr("disabled","disabled");
+            $("#config_supervision_id option[value='"+supervision.id+"']").data("icon","glyphicon-remove");
         }
 
       });
 
-      $('#cargo').selectpicker('refresh')
+      $('#config_supervision_id').selectpicker('refresh')
 
       t=$('#tablelistar').DataTable({
         processing: true,
@@ -300,7 +288,7 @@
       order: [[1, 'asc']],
       fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
         $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-        $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass(clase);
+        $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass("disabled");
       },
       language: {
                       processing:     "Procesando ...",
@@ -332,11 +320,11 @@
 
     });
 
-    $("#agregarprocedimiento").click(function(){
+    $("#agregarsupervision").click(function(){
 
-      var datos = $( "#agregar_supervision" ).serialize(); 
+      var datos = $( "#agregar_procedimiento" ).serialize(); 
       procesando();
-      var route = route_agregar_supervision
+      var route = route_agregar_procedimiento
       var token = $('input:hidden[name=_token]').val();
       limpiarMensaje();
       $.ajax({
@@ -369,7 +357,7 @@
                 .attr('id',rowId)
                 .addClass('seleccion');
 
-                $('#nombre_procedimiento').val('')
+                $('#nombre_supervision').val('')
 
               }else{
                 var nTitle="Ups! ";
@@ -422,7 +410,7 @@
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
       $.ajax({
-           url: route_eliminar_supervision+id,
+           url: route_eliminar_procedimiento+id,
            headers: {'X-CSRF-TOKEN': token},
            type: 'POST',
            dataType: 'json',                
@@ -448,106 +436,23 @@
           .draw();
     });
 
-
-    $('#tablelistar tbody').on( 'click', 'i.zmdi-edit', function () {
-      var token = $('input:hidden[name=_token]').val();
-      var id = $(this).closest('tr').attr('id');
-      var nombre = $(this).closest('tr').data('nombre');
-      $('#supervision_id').val(id)
-      $('#nombre').val(nombre)
-      $('#modalEditar').modal('show')
-    })
-
     function limpiarMensaje(){
-      var campo = ["cargo"];
+      var campo = ["config_supervision_id"];
       fLen = campo.length;
       for (i = 0; i < fLen; i++) {
           $("#error-"+campo[i]+"_mensaje").html('');
       }
     }
 
-    $("#guardar_edicion").click(function(){
-
-      procesando();
-
-      var route = route_editar;
-      var token = $('input:hidden[name=_token]').val();
-      var datos = $( "#form_edit" ).serialize(); 
-
-      limpiarMensaje();
-      $.ajax({
-          url: route,
-              headers: {'X-CSRF-TOKEN': token},
-              type: 'POST',
-              dataType: 'json',
-              data:datos,
-          success:function(respuesta){
-            setTimeout(function(){ 
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY"; 
-              if(respuesta.status=="OK"){
-
-                
-                row = $('#'+respuesta.id);
-                $(row).data('nombre', respuesta.nombre);
-                $(row).find("td").eq(0).html(respuesta.nombre);
-                
-                var nTitle="Ups! ";
-                var nMensaje=respuesta.mensaje;
-                var nType = 'success';
-                $('.modal').modal('hide')
-
-              }else{
-                var nTitle="Ups! ";
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                var nType = 'danger';
-
-              }  
-              finprocesado();
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                     
-              
-            }, 1000);
-          },
-          error:function(msj){
-            setTimeout(function(){ 
-              // if (typeof msj.responseJSON === "undefined") {
-              //   window.location = "{{url('/')}}/error";
-              // }
-              if(msj.responseJSON.status=="ERROR"){
-                console.log(msj.responseJSON.errores);
-                errores(msj.responseJSON.errores);
-                var nTitle="    Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-              }else{
-                var nTitle="   Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              }                        
-              finprocesado();
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nType = 'danger';
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY";                       
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-            }, 1000);
-          }
-      });
-      
-    });
-
     $("#guardar").click(function(){
 
       procesando();
 
-      if("{{!isset($id)}}"){
+      if("{{!isset($config_supervision_id)}}"){
 
         var route = route_agregar;
         var token = $('input:hidden[name=_token]').val();
-        var datos = $( "#agregar_supervision" ).serialize(); 
+        var datos = $( "#agregar_procedimiento" ).serialize(); 
 
         limpiarMensaje();
         $.ajax({
@@ -614,7 +519,7 @@
 
     $("#cancelar").click(function(){
 
-      $('#nombre_procedimiento').val('')
+      $('#nombre_supervision').val('')
 
         $.ajax({
             url: route_cancelar,
@@ -638,12 +543,6 @@
             }
 
         });
-    });
-
-    $(".previa").click(function(){
-      var id = $(this).closest('tr').attr('id');
-      window.location = route_detalle_procedimiento+id;
-      
     });
 
 </script> 

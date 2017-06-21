@@ -221,7 +221,7 @@
                             @if(Auth::check())
                                 @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
                                     <li class="hidden-xs">
-                                        <a href="{{url('configuracion/supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> Supervisiones</a>
+                                        <a href="{{url('supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> Supervisiones</a>
                                     </li>
 
                                     <li class="hidden-xs">

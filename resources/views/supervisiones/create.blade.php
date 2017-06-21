@@ -28,7 +28,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Supervisión</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/supervisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Supervisión</a>
                         <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
@@ -184,7 +184,7 @@
 
                                                 <span class="p-r-10 f-700 f-16">No</span>
 
-                                                <input class="supervision" id="switch2_{{$supervision->id}}" data-name="{{$supervision->nombre}}" type="checkbox" hidden="hidden">
+                                                <input class="supervision" data-id ="{{$supervision->id}}" id="switch2_{{$supervision->id}}" data-name="{{$supervision->nombre}}" type="checkbox" hidden="hidden">
 
                                                 <label for="switch2_{{$supervision->id}}" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                             </div>
@@ -317,8 +317,8 @@
 @section('js') 
 <script type="text/javascript">
 
-  route_agregar="{{url('/')}}/configuracion/supervisiones/agregar";
-  route_principal="{{url('/')}}/configuracion/supervisiones";
+  route_agregar="{{url('/')}}/supervisiones/agregar";
+  route_principal="{{url('/')}}/supervisiones";
 
   var staffs = <?php echo json_encode($staffs);?>;
   var staffs_instructores = <?php echo json_encode($staffs_instructores);?>;
@@ -483,7 +483,7 @@
 
                 $.each(inputs, function (index, array) {
                   if(array.checked){
-                    items_a_evaluar.push(array.dataset.name);
+                    items_a_evaluar.push(array.dataset.id);
                   }
                 });
 
@@ -691,13 +691,12 @@
 
       $('.supervision').on('change', function(){
 
-        nombre = $(this).data('name');
         check = $(this).attr('id');
         explode = check.split('_')
         id = explode[1];
 
         if ($(this).is(":checked")){
-          $('#supervision_'+id).val(nombre);
+          $('#supervision_'+id).val(id);
         }else{
           $('#supervision_'+id).val('');
         }  

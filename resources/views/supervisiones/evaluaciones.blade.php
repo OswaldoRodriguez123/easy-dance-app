@@ -25,14 +25,14 @@
 
                         @if(isset($id_evaluacion))
 
-                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones/evaluar/{{$id_evaluacion}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/supervisiones/evaluar/{{$id_evaluacion}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
 
                         @elseif(isset($id))
 
-                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/supervisiones/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                         @else
 
-                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/supervisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
 
                         @endif
                         
@@ -157,7 +157,7 @@
 
 <script type="text/javascript">
 
-        route_detalle="{{url('/')}}/configuracion/supervisiones/evaluaciones/detalle/";
+        route_detalle="{{url('/')}}/supervisiones/evaluaciones/detalle/";
 
         $(document).ready(function(){
 

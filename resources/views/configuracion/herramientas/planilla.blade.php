@@ -1963,7 +1963,7 @@
 
         procesando();
 
-        window.location = "{{url('/')}}/configuracion/supervisiones/configuracion"
+        window.location = "{{url('/')}}/configuracion/supervisiones"
 
       });
 

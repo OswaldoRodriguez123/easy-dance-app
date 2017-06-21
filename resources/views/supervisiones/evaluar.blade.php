@@ -188,7 +188,7 @@
 	                        <div class="col-sm-12 text-center">
 	                         
 	                          <!-- <i class="zmdi zmdi-cloud zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Guardar" data-toggle="tooltip" data-placement="bottom" title=""></i> -->
-	                          <a href="{{url('/')}}/configuracion/supervisiones/evaluaciones"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
+	                          <a href="{{url('/')}}/supervisiones/evaluaciones"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
 	                          <br>
 	                          <span class="f-700 opaco-0-8 f-16">Sección Pruebas</span>
 		                    </div>						
@@ -227,8 +227,8 @@
 
 	<script>
 
-		route_agregar="{{url('/')}}/configuracion/supervisiones/evaluar";
-		route_principal="{{url('/')}}/configuracion/supervisiones/evaluaciones";
+		route_agregar="{{url('/')}}/supervisiones/evaluar";
+		route_principal="{{url('/')}}/supervisiones/evaluaciones";
 
 		var arrayNotas = new Array();
 		var items_a_evaluar = <?php echo json_encode($items_a_evaluar);?>;

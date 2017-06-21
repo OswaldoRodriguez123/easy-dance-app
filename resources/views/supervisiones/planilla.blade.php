@@ -263,7 +263,7 @@
 
                                         <span class="p-r-10 f-700 f-15">No</span>
 
-                                        <input class="supervision" id="switch2_{{$supervision->id}}" data-name="{{$supervision->nombre}}" type="checkbox" hidden="hidden">
+                                        <input class="supervision" id="switch2_{{$supervision->id}}" data-id = "{{$supervision->id}}" data-name="{{$supervision->nombre}}" type="checkbox" hidden="hidden">
                                       
                                         <label for="switch2_{{$supervision->id}}" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                                     </div>
@@ -408,7 +408,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de Supervisiones</a>
+                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/supervisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de Supervisiones</a>
                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
@@ -458,9 +458,9 @@
                                   <hr></hr>
                                   
                  
-                                  <a class="" href="{{url('/')}}/configuracion/supervisiones/agenda/{{$id}}"><i class="zmdi zmdi-eye f-20 m-r-10 boton red sa-warning" name="Ver Agenda" data-original-title="Ver Agenda" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <a class="" href="{{url('/')}}/configuracion/supervisiones/evaluar/{{$id}}"><i class="icon_a icon_a-examen f-20 m-r-10 boton red sa-warning" name="Evaluar" data-original-title="Evaluar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <a class="" href="{{url('/')}}/configuracion/supervisiones/evaluaciones/{{$id}}"><i class="zmdi zmdi-hourglass-alt f-20 m-r-10 boton red sa-warning" name="Historial" data-original-title="Historial" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a class="" href="{{url('/')}}/supervisiones/agenda/{{$id}}"><i class="zmdi zmdi-eye f-20 m-r-10 boton red sa-warning" name="Ver Agenda" data-original-title="Ver Agenda" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a class="" href="{{url('/')}}/supervisiones/evaluar/{{$id}}"><i class="icon_a icon_a-examen f-20 m-r-10 boton red sa-warning" name="Evaluar" data-original-title="Evaluar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a class="" href="{{url('/')}}/supervisiones/evaluaciones/{{$id}}"><i class="zmdi zmdi-hourglass-alt f-20 m-r-10 boton red sa-warning" name="Historial" data-original-title="Historial" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
@@ -551,9 +551,9 @@
 @section('js') 
    <script type="text/javascript">
 
-    route_update="{{url('/')}}/configuracion/supervisiones/update";
-    route_eliminar="{{url('/')}}/configuracion/supervisiones/eliminar/";
-    route_principal="{{url('/')}}/configuracion/supervisiones";
+    route_update="{{url('/')}}/supervisiones/update";
+    route_eliminar="{{url('/')}}/supervisiones/eliminar/";
+    route_principal="{{url('/')}}/supervisiones";
 
     var checkbox;
     var items = <?php echo json_encode($items_a_evaluar);?>;
@@ -564,12 +564,8 @@
 
       $.each(config_supervision, function (index, supervision) {
         $.each(items, function (index2, item) {
-        // if($.inArray(items, supervision.nombre)){
-        //     $('#supervision_'+supervision.id).val(supervision.nombre);
-        //     $('#switch2_'+supervision.id).prop('checked',true)
-        // }
-          if(item.trim() == supervision.nombre.trim()){
-              $('#supervision_'+supervision.id).val(supervision.nombre);
+          if(item == supervision.id){
+              $('#supervision_'+supervision.id).val(supervision.id);
               $('#switch2_'+supervision.id).prop('checked',true)
           }
         });
@@ -943,13 +939,12 @@
 
       $('.supervision').on('change', function(){
 
-        nombre = $(this).data('name');
         check = $(this).attr('id');
         explode = check.split('_')
         id = explode[1];
 
         if ($(this).is(":checked")){
-          $('#supervision_'+id).val(nombre);
+          $('#supervision_'+id).val(id);
         }else{
           $('#supervision_'+id).val('');
         }  
@@ -958,7 +953,7 @@
 
         $.each(inputs, function (index, array) {
           if(array.checked){
-            items_a_evaluar.push(array.dataset.name);
+            items_a_evaluar.push(array.dataset.id);
           }
         });
 
