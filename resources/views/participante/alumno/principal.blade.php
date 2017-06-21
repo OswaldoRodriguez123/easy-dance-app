@@ -164,9 +164,9 @@
                                           <img class="lv-img-lg" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
                                         @else
                                             @if($alumno['sexo'] == 'M')
-                                              <img class="lv-img-lg" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                              <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
                                             @else
-                                              <img class="lv-img-lg" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                              <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
                                         @endif
                                       @endif
                                     </td>
