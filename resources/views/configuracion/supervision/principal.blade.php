@@ -55,7 +55,6 @@
                                 <tr>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Cargo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Descripción</th>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Procedimientos a Evaluar</th>
                                     <th class="text-center" data-column-id="acciones" data-order="desc">Operaciones</th>
                                 </tr>
                             </thead>
@@ -79,7 +78,6 @@
                                  <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion">
                                     <td class="text-center previa">{{$supervision['nombre']}}</td>
                                     <td class="text-center previa">{{$supervision['descripcion']}}</td>
-                                    <td class="text-center previa">{{$supervision['items']}}</td>
                                     <td class="text-center disabled"> <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 

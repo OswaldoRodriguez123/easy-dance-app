@@ -31,21 +31,8 @@ class ConfigSupervisionController extends BaseController {
             ->select('configuracion_supervisiones.*','config_staff.nombre')
             ->where('configuracion_supervisiones.academia_id', Auth::user()->academia_id)
         ->get();
-
-    	$array = array();
-
-    	foreach($config_supervision as $supervision){
-
-    		$items = ConfigSupervision::where('config_supervision_id',$supervision->id)->count();
-    		$collection=collect($supervision);   
-
-            $supervision_array = $collection->toArray();
-            $supervision_array['items']=$items;
-            $array[$supervision->id] = $supervision_array;
-
-    	}
         
-        return view('configuracion.supervision.principal')->with(['config_supervision' => $array]);
+        return view('configuracion.supervision.principal')->with(['config_supervision' => $config_supervision]);
     }
 
 
