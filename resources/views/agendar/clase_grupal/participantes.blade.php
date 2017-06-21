@@ -1088,13 +1088,17 @@
                                 $id = $alumno['inscripcion_id'];
                                 $alumno_id = $alumno['id'];
 
-                                if($alumno['sexo'] == 'F'){
-                                    $imagen = '/assets/img/Mujer.jpg';
+                                if($alumno['imagen']){
+                                    $imagen = '/assets/uploads/usuario/'.$alumno['imagen'];
                                 }else{
-                                    $imagen = '/assets/img/Hombre.jpg';
+                                    if($alumno['sexo'] == 'F'){
+                                        $imagen = '/assets/img/Mujer.jpg';
+                                    }else{
+                                        $imagen = '/assets/img/Hombre.jpg';
+                                    }
                                 }
 
-                                	if($alumno['tipo'] == 1){
+                                if($alumno['tipo'] == 1){
 
                                  	if($alumno['boolean_franela'] && $alumno['boolean_programacion']){
 
@@ -1125,26 +1129,26 @@
 	                                $talla_franela = $alumno['talla_franela'];
 	                                $deuda = $alumno['deuda'];
 
-                                	}else{
-                                		$camiseta_programacion = '';
-                                		$talla_franela = '';
-                                		$deuda = 0;
-                                    $tipo_pago = '';
-                                	}
+                                }else{
+                              		$camiseta_programacion = '';
+                              		$talla_franela = '';
+                              		$deuda = 0;
+                                  $tipo_pago = '';
+                                }
 
-                                 	$contenido = '<p class="c-negro">' .
+                                $contenido = 
 
-	                                  	$alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .
+                                '<p class="c-negro">' .
+                                	$alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .
 
-	                                  	'Camiseta y Programación: ' . $camiseta_programacion . '<br>'.
-	                                  	'Talla: ' . $talla_franela . '<br>'.
-	                                  	'Cantidad que adeuda: ' . number_format($deuda, 2, '.' , '.')  . '<br>'.
-                                      'Modalidad de pago: <span id="tipo_pago_'.$id.'">' . $tipo_pago . '</span><br>'.
-                                      'Registro de llamada: ' . $alumno['llamadas'] . '<br>'.
+                                	'Camiseta y Programación: ' . $camiseta_programacion . '<br>'.
+                                	'Talla: ' . $talla_franela . '<br>'.
+                                	'Cantidad que adeuda: ' . number_format($deuda, 2, '.' , '.')  . '<br>'.
+                                  'Modalidad de pago: <span id="tipo_pago_'.$id.'">' . $tipo_pago . '</span><br>'.
+                                  'Registro de llamada: ' . $alumno['llamadas'] . '<br>'.
+                                '</p>';
 
-                                  	'</p>';
-
-                                ;?>
+                              ;?>
 
                                 @if($alumno['tipo'] == 1)
                                   <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo ="{{$alumno['tipo']}}" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-cantidad="{{$alumno['cantidad']}}" data-dias_vencimiento="{{$alumno['dias_vencimiento']}}" data-alumno_id="{{$alumno_id}}" data-fecha_nacimiento="{{$alumno['fecha_nacimiento']}}" data-celular="{{$alumno['celular']}}" data-telefono="{{$alumno['telefono']}}" data-identificacion="{{$alumno['identificacion']}}" data-tipo_pago="{{$alumno['tipo_pago']}}">
