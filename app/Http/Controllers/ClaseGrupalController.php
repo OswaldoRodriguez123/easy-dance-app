@@ -583,7 +583,7 @@ class ClaseGrupalController extends BaseController {
             $asistencia_amarilla = $clasegrupal->asistencia_amarilla;
 
             $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela', 'alumnos.tipo_pago')
+                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela', 'alumnos.tipo_pago', 'inscripcion_clase_grupal.fecha_inscripcion')
                 ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
                 ->where('inscripcion_clase_grupal.deleted_at', '=', null)
             ->get();
@@ -608,46 +608,42 @@ class ClaseGrupalController extends BaseController {
                 $clases_completadas = 0;
 
                 $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->whereIn('tipo_id',$tipo_id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
-
+                
                 if($ultima_asistencia){
-
                     $fecha_ultima_asistencia = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
                     $fecha_a_comparar = $fecha_ultima_asistencia;
-                
-                    if(Carbon::now() < $fecha_final){
-                        $fecha_de_finalizacion = Carbon::now();
-                    }else{
-                        $fecha_de_finalizacion = $fecha_final;
-                    }
-
-                    while($fecha_a_comparar <= $fecha_de_finalizacion){
-                        $clases_completadas += $cantidad_clases;
-                        $fecha_a_comparar->addWeek();
-                    }
-                    
-                    if($clases_completadas >= $asistencia_roja && $asistencia_roja != 0){
-                        $estatus="c-youtube";
-
-                        // if($asistencia_roja > 0)
-                        // {
-                        //     // $alumno->deleted_at = Carbon::now();
-                        //     // $alumno->save();
-                        // }
-                        
-                        // continue;
-                    }else if($clases_completadas >= $asistencia_amarilla && $asistencia_amarilla != 0){
-                        $estatus="c-amarillo";
-                    }else{
-                        $estatus="c-verde";
-                    }
                 }else{
-
-                    $estatus="c-youtube";
-
-                    $fecha_ultima_asistencia = $fecha_inicio;
+                    $fecha_ultima_asistencia = Carbon::createFromFormat('Y-m-d',$alumno->fecha_inscripcion);
                     $fecha_a_comparar = $fecha_ultima_asistencia;
                 }
+                           
+                if(Carbon::now() < $fecha_final){
+                    $fecha_de_finalizacion = Carbon::now();
+                }else{
+                    $fecha_de_finalizacion = $fecha_final;
+                }
 
+                while($fecha_a_comparar <= $fecha_de_finalizacion){
+                    $clases_completadas += $cantidad_clases;
+                    $fecha_a_comparar->addWeek();
+                }
+                
+                if($clases_completadas >= $asistencia_roja && $asistencia_roja != 0){
+                    $estatus="c-youtube";
+
+                    // if($asistencia_roja > 0)
+                    // {
+                    //     // $alumno->deleted_at = Carbon::now();
+                    //     // $alumno->save();
+                    // }
+                    
+                    // continue;
+                }else if($clases_completadas >= $asistencia_amarilla && $asistencia_amarilla != 0){
+                    $estatus="c-amarillo";
+                }else{
+                    $estatus="c-verde";
+                }
+                
                 // ----------
 
                 $credencial = CredencialAlumno::where('alumno_id',$alumno->id)->where('instructor_id',$clasegrupal->instructor_id)->first();
