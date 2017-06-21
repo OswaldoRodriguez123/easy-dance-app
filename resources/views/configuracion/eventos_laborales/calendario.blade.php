@@ -108,7 +108,7 @@
                                 if(\Carbon\Carbon::parse($evento->fecha) >= \Carbon\Carbon::now()->subDay()){
                                     $etiqueta = $evento->color_etiqueta;
                                     $actividad = 'actividad';
-                                    $url = "configuracion/eventos-laborales/detalle/{$evento->id}";
+                                    $url = "detalle/{$evento->id}";
                                 }else{
                                     $etiqueta = '#B8B8B8';
                                     $actividad = 'disabled';
