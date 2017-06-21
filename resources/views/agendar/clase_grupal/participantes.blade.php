@@ -1134,7 +1134,7 @@
 
                                  	$contenido = '<p class="c-negro">' .
 
-	                                  	$alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img" src="'.$imagen.'" alt=""><br><br>' .
+	                                  	$alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .
 
 	                                  	'Camiseta y Programación: ' . $camiseta_programacion . '<br>'.
 	                                  	'Talla: ' . $talla_franela . '<br>'.
@@ -1159,12 +1159,12 @@
                                     </td>
                                     <td class="text-center previa">
                                       @if($alumno['imagen'])
-                                        <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
+                                        <img class="lv-img-lg" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
                                       @else
                                           @if($alumno['sexo'] == 'M')
-                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                            <img class="lv-img-lg" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
                                           @else
-                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                            <img class="lv-img-lg" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
                                           @endif
                                       @endif
                                     </td>
@@ -1244,9 +1244,9 @@
                                       <td class="text-center previa">
 
                                         @if($alumno['sexo'] == 'M')
-                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                          <img class="lv-img-lg" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
                                         @else
-                                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                          <img class="lv-img-lg" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
                                         @endif
 
                                       </td>

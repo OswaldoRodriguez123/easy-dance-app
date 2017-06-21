@@ -11252,6 +11252,11 @@ body:not(.sw-toggled) #sidebar {
   height: 35px;
 }
 
+.lv-img-lg {
+  width: 70px;
+  height: 70px;
+}
+
 .lv-header {
   text-align: center;
   padding: 15px 10px 13px;
