@@ -79,7 +79,7 @@
 
                                     <div class="select">
                                         <select class="selectpicker" data-live-search="true" name="tipo_servicio" id="tipo_servicio" data-live-search="true">
-                                            <option value="0">Seleccione</option>
+                                            <option value="0">Todo</option>
                                             <option value="99">Academia Recepción</option>
                                             <option value="14">Fiestas y Eventos</option>
                                             <option value="5">Talleres</option>

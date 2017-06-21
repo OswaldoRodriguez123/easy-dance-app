@@ -105,7 +105,7 @@
                                           <div class="input-group">
                                             <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
                                             <div class="fg-line">
-                                            <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="000,000,000,000" data-mask-reverse="true" placeholder="Ej. 5000">
+                                            <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" placeholder="Ej. 10" maxlength="2" size="2">
                                             </div>
                                           </div>
                                         </div>
@@ -1947,6 +1947,16 @@
     function formatmoney(n) {
       return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     } 
+
+    $('input[name=tipo_pago]').on('change', function(){
+      if($(this).val() == 1){
+        $('#cantidad').mask('00', {reverse: true});
+        $('#cantidad').attr("placeholder", "Ej. 10");
+      }else{
+        $('#cantidad').mask('000,000,000,000', {reverse: true});
+        $('#cantidad').attr("placeholder", "Ej. 5000");
+      }
+    });
 
    </script> 
 		

@@ -108,7 +108,7 @@
                                 if(\Carbon\Carbon::parse($evento->fecha) >= \Carbon\Carbon::now()->subDay()){
                                     $etiqueta = $evento->color_etiqueta;
                                     $actividad = 'actividad';
-                                    $url = "{{url('/')}}/configuracion/eventos-laborales/detalle/{{$evento->id}}";
+                                    $url = "configuracion/eventos-laborales/detalle/{$evento->id}";
                                 }else{
                                     $etiqueta = '#B8B8B8';
                                     $actividad = 'disabled';
@@ -190,10 +190,6 @@
 
                     $("#frm_agendar").submit();
                      
-                });
-
-                $('.actividad').on('click', function(e){
-                    e.preventDefault();
                 });
 
                 //Create and ddd Action button with dropdown in Calendar header. 
