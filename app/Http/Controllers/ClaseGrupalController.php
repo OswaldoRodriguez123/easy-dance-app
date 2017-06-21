@@ -797,7 +797,35 @@ class ClaseGrupalController extends BaseController {
 
             $promociones = Promocion::where('academia_id', Auth::user()->academia_id)->where('fecha_inicio', '<=', $hoy)->where('fecha_final', '>=', $hoy)->get();
 
-            return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'examen' => $examen, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'promociones' => $promociones, 'usuario_tipo' => $usuario_tipo]);
+            $promotores = array();
+
+            $staffs = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+            foreach($staffs as $staff)
+            {
+                $collection=collect($staff);     
+                $promotor_array = $collection->toArray();
+
+                $promotor_array['tipo']=1;
+                $promotor_array['id']='1-'.$staff->id;
+                $promotor_array['icono']="<i class='icon_f-staff'></i>";
+                $promotores['1-'.$staff->id] = $promotor_array;
+            }
+
+            $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+            foreach($instructores as $instructor)
+            {
+                $collection=collect($instructor);     
+                $promotor_array = $collection->toArray();
+
+                $promotor_array['tipo']=2;
+                $promotor_array['id']='2-'.$instructor->id;
+                $promotor_array['icono']="<i class='icon_a-instructor'></i>";
+                $promotores['2-'.$instructor->id] = $promotor_array;
+            }
+
+            return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'examen' => $examen, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal, 'promotores' => $promotores, 'promociones' => $promociones, 'usuario_tipo' => $usuario_tipo]);
 
         }else{
             return redirect("agendar/clases-grupales"); 
@@ -1374,7 +1402,7 @@ class ClaseGrupalController extends BaseController {
     {
 
     $rules = [
-        'instructor_id' => 'required',
+        'promotores' => 'required',
         'clase_grupal_id' => 'required',
         'alumno_id' => 'required',
         'costo_inscripcion' => 'required|numeric',
@@ -1383,7 +1411,7 @@ class ClaseGrupalController extends BaseController {
     ];
 
     $messages = [
-        'instructor_id.required' => 'Ups! El Promotor  es requerido',
+        'promotores.required' => 'Ups! El Promotor es requerido',
         'clase_grupal_id.required' => 'Ups! El Nombre  es requerido',
         'alumno_id.required' => 'Ups! El Alumno es requerido',
         'costo_inscripcion.required' => 'Ups! El costo de la inscripción es requerido',
@@ -1472,7 +1500,6 @@ class ClaseGrupalController extends BaseController {
         // {
             $inscripcion = new InscripcionClaseGrupal;
 
-            $inscripcion->instructor_id = $request->instructor_id;
             $inscripcion->clase_grupal_id = $request->clase_grupal_id;
             $inscripcion->alumno_id = $request->alumno_id;
             $inscripcion->fecha_pago = $proxima_fecha;
@@ -1497,6 +1524,24 @@ class ClaseGrupalController extends BaseController {
                     $visitante->save();
                 }
 
+                $explode = $request->promotores;
+                $promotores = explode(',',$explode);
+                $tipo_promotor = '';
+                $promotor_id = '';
+
+                foreach($promotores as $promotor){
+                    if($promotor){
+                        $explode = explode('-',$promotor);
+                        if($tipo_promotor){
+                            $coma = ',';
+                        }else{
+                            $coma = '';
+                        }
+                        $tipo_promotor = $tipo_promotor .$coma.$explode[0];
+                        $promotor_id = $promotor_id .$coma.$explode[1];
+                    }
+                }
+
                 if($request->costo_inscripcion != 0)
                 {
 
@@ -1514,6 +1559,8 @@ class ClaseGrupalController extends BaseController {
                     $item_factura->impuesto = 0;
                     $item_factura->importe_neto = $request->costo_inscripcion;
                     $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
+                    $item_factura->tipo_promotor = $tipo_promotor;
+                    $item_factura->promotor_id = $promotor_id;
                         
                     $item_factura->save();
 
@@ -1536,6 +1583,8 @@ class ClaseGrupalController extends BaseController {
                     $item_factura->impuesto = 0;
                     $item_factura->importe_neto = $request->costo_mensualidad;
                     $item_factura->fecha_vencimiento = $clasegrupal->fecha_inicio;
+                    $item_factura->tipo_promotor = $tipo_promotor;
+                    $item_factura->promotor_id = $promotor_id;
                         
                     $item_factura->save();
 

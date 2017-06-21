@@ -455,29 +455,25 @@
                            <input type="hidden" name="clase_grupal_id" value="{{ $id }}">
 
                             <div class="row p-l-10 p-r-10">
-                            <div class="clearfix p-b-15"></div>
-                            <div class="clearfix p-b-15"></div>
+                              <div class="clearfix p-b-15"></div>
+                              <div class="clearfix p-b-15"></div>
 
-
-                             <div class="col-sm-12">
+                              <div class="col-sm-12">
                                  
-                                    <label for="instructor_id" class="c-morado f-22" id="id-instructor_id">Promotor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el promotor" title="" data-original-title="Ayuda"></i>
+                                    <label for="promotor" class="c-morado f-22" id="id-promotor">Promotor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el promotor" title="" data-original-title="Ayuda"></i>
 
-                                     <div class="input-group">
+                                    <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
-                                    <div class="fg-line">
                                       <div class="select">
-                                        <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
-                                          <!-- <option value="">Selecciona</option> -->
-                                          @foreach ( $instructores as $instructor )
-                                            <option value = "{{ $instructor['id'] }}">{{ $instructor['nombre'] }} {{ $instructor['apellido'] }}</option>
+                                        <select class="selectpicker bs-select-hidden" multiple="" data-max-options="5" name="promotor" id="promotor" data-live-search="true" title="Selecciona">
+                                          @foreach ( $promotores as $promotor )
+                                            <option value = "{{ $promotor['id'] }}" data-content="{{ $promotor['nombre'] }} {{ $promotor['apellido'] }} {!!$promotor['icono']!!}"></option>
                                           @endforeach
                                         </select>
                                       </div>
-                                    </div>
-                                    <div class="has-error" id="error-instructor_id">
+                                      <div class="has-error" id="error-promotor">
                                       <span >
-                                        <small class="help-block error-span" id="error-instructor_id_mensaje" ></small>                                           
+                                        <small class="help-block error-span" id="error-promotor_mensaje" ></small>                                           
                                       </span>
                                     </div>
                                   </div>
@@ -1317,8 +1313,8 @@
 
         $(document).ready(function(){
 
-          $('#instructor_id').val(7)
-          $('#instructor_id').selectpicker('refresh')
+          $('#promotor').val('1-7')
+          $('#promotor').selectpicker('refresh')
 
           id_alumno = "{{Session::get('id_alumno')}}";
         
@@ -1483,17 +1479,15 @@
 
         $("#agregar").click(function(){
 
-                // var values = $('#alumno_id').val();
-
-                // if(values){
+                var values = $('#promotor').val();
                 
-                // var alumno = '';
+                var promotores = '';
                 
-                // for(var i = 0; i < values.length; i += 1) {
+                for(var i = 0; i < values.length; i += 1) {
 
-                // alumno = alumno + '-' + values[i];
+                  promotores = promotores + ',' + values[i];
 
-                // }
+                }
 
                 procesando();
                 var route = route_agregar;
@@ -1508,8 +1502,7 @@
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
-                        dataType: 'json',
-                        data: datos+"&costo_inscripcion="+costo_inscripcion+"&costo_mensualidad="+costo_mensualidad+"&fecha_pago="+fecha_pago+"&permitir="+permitir,
+                        data: datos+"&costo_inscripcion="+costo_inscripcion+"&costo_mensualidad="+costo_mensualidad+"&fecha_pago="+fecha_pago+"&permitir="+permitir+"&promotores="+promotores,
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
@@ -2533,45 +2526,24 @@
       $("#fecha_pago").val($.trim(fecha));
     })
 
-    // $('#alumno_id').change(function(){
+    // $('#alumno_id').change(function () {
 
-    //     var values = $('#alumno_id').val();
-    //     var valor = '';
-    //     for(var i = 0; i < values.length; i += 1) {
-
-    //     valor = valor + ' ' + values[i];
-    //     }
-
-    //     console.log(valor);
-
+    //   var last = $("option:selected:last",this);
+    //   if($(last).hasClass( "inscrito" )){
+    //     $(this).attr('disabled', false);
+    //     $('#alumno_id').selectpicker('deselectAll');
+    //     $('#alumno_id').selectpicker('render');
+    //     swal({   
+    //       title: "ERROR",   
+    //       text: "Ya este alumno esta inscrito",   
+    //       type: "warning",   
+    //       confirmButtonColor: "#ec6c62",   
+    //       confirmButtonText: "Aceptar",  
+    //       cancelButtonText: "Cancelar",         
+    //       closeOnConfirm: true 
+    //     });
+    //   }
     // });
-
-    $('#alumno_id').change(function () {
-
-
-    // var selectedOptionValue = $(this).find("option:selected").text();
-
-    var last = $("option:selected:last",this);
-
-
-    if($(last).hasClass( "inscrito" )){
-        // $(this).removeAttr("selected");
-        $(this).attr('disabled', false);
-        // .trigger("liszt:updated");
-        $('#alumno_id').selectpicker('deselectAll');
-        $('#alumno_id').selectpicker('render');
-        swal({   
-                    title: "ERROR",   
-                    text: "Ya este alumno esta inscrito",   
-                    type: "warning",   
-                    confirmButtonColor: "#ec6c62",   
-                    confirmButtonText: "Aceptar",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true 
-        });
-    }
-
-    });
 
     $(".activar").click(function(){
 

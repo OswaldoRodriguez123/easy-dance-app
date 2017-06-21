@@ -1002,133 +1002,6 @@ class AdministrativoController extends BaseController {
                             $item_acuerdo->boolean_pagado = 1;
                             $item_acuerdo->save();
                         }
-                    }else if($item_proforma->tipo == 3){
-
-                        //INSCRIPCIONES Y MENSUALIDADES, PARA EL PAGO DE STAFF
-
-                        if($factura->usuario_tipo == 1){
-
-                            $inscripcion_clase_grupal = InscripcionClaseGrupal::withTrashed()->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
-                                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                                ->select('inscripcion_clase_grupal.instructor_id as promotor_id', 'config_clases_grupales.servicio_id')
-                                ->where('inscripcion_clase_grupal.alumno_id', $request->usuario_id)
-                                ->where('config_clases_grupales.servicio_id',$item_proforma->item_id)
-                            ->first();
-
-                            if($inscripcion_clase_grupal){
-
-                                $config_pago = ConfigComision::where('servicio_producto_id',$inscripcion_clase_grupal->servicio_id)
-                                    ->where('servicio_producto_tipo',1)
-                                    ->where('usuario_tipo',$item_proforma->tipo_promotor)
-                                    ->where('usuario_id',$inscripcion_clase_grupal->promotor_id)
-                                ->first();
-
-                                if($config_pago){
-
-                                    if($config_pago->tipo == 1){
-
-                                        $porcentaje = $config_pago->monto / 100;
-                                        $monto = $item_proforma->importe_neto * $porcentaje;
-
-                                        if($monto > 0 ){
-
-                                            $pago = new Comision;
-
-                                            $pago->usuario_id=$inscripcion_clase_grupal->promotor_id;
-                                            $pago->usuario_tipo=1;
-                                            $pago->tipo=$config_pago->tipo;
-                                            $pago->monto=$monto;
-                                            $pago->servicio_producto_id=$inscripcion_clase_grupal->servicio_id;
-                                            $pago->servicio_producto_tipo=1;
-                                            $pago->fecha = Carbon::now()->toDateString();
-                                            $pago->hora = Carbon::now()->toTimeString();
-                                            $pago->academia_id = Auth::user()->academia_id;
-
-                                            $pago->save();
-                                        }
-                                       
-                                    }else{
-
-                                        $pago = new Comision;
-
-                                        $pago->usuario_id=$inscripcion_clase_grupal->promotor_id;
-                                        $pago->usuario_tipo=1;
-                                        $pago->tipo=$config_pago->tipo;
-                                        $pago->monto=$config_pago->monto;
-                                        $pago->servicio_producto_id=$inscripcion_clase_grupal->servicio_id;
-                                        $pago->servicio_producto_tipo=1;
-                                        $pago->fecha = Carbon::now()->toDateString();
-                                        $pago->hora = Carbon::now()->toTimeString();
-                                        $pago->academia_id = Auth::user()->academia_id;
-
-                                        $pago->save();
-                                        
-                                    }
-                                }
-                            }
-                        }   
-                    }else if($item_proforma->tipo == 9){
-
-                        if($factura->usuario_tipo == 1){
-
-                            $inscripcion_clase_personalizada = InscripcionClasePersonalizada::withTrashed()->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
-                                ->select('inscripcion_clase_personalizada.promotor_id', 'clases_personalizadas.servicio_id')
-                                ->where('inscripcion_clase_personalizada.alumno_id', $request->usuario_id)
-                                ->where('clases_personalizadas.servicio_id',$item_proforma->item_id)
-                            ->first();
-
-                            if($inscripcion_clase_personalizada){
-
-                                $config_pago = ConfigComision::where('servicio_producto_id',$inscripcion_clase_personalizada->servicio_id)
-                                    ->where('servicio_producto_tipo',1)
-                                    ->where('usuario_tipo',$item_proforma->tipo_promotor)
-                                    ->where('usuario_id',$inscripcion_clase_personalizada->promotor_id)
-                                ->first();
-
-                                if($config_pago){
-
-                                    if($config_pago->tipo == 1){
-
-                                        $porcentaje = $config_pago->monto / 100;
-                                        $monto = $item_proforma->importe_neto * $porcentaje;
-
-                                        if($monto > 0 ){
-
-                                            $pago = new Comision;
-
-                                            $pago->usuario_id=$inscripcion_clase_personalizada->promotor_id;
-                                            $pago->usuario_tipo=1;
-                                            $pago->tipo=$config_pago->tipo;
-                                            $pago->monto=$monto;
-                                            $pago->servicio_producto_id=$inscripcion_clase_personalizada->servicio_id;
-                                            $pago->servicio_producto_tipo=1;
-                                            $pago->fecha = Carbon::now()->toDateString();
-                                            $pago->hora = Carbon::now()->toTimeString();
-                                            $pago->academia_id = Auth::user()->academia_id;
-
-                                            $pago->save();
-                                        }
-                                       
-                                    }else{
-
-                                        $pago = new Comision;
-
-                                        $pago->usuario_id=$inscripcion_clase_personalizada->promotor_id;
-                                        $pago->usuario_tipo=1;
-                                        $pago->tipo=$config_pago->tipo;
-                                        $pago->monto=$config_pago->monto;
-                                        $pago->servicio_producto_id=$inscripcion_clase_personalizada->servicio_id;
-                                        $pago->servicio_producto_tipo=1;
-                                        $pago->fecha = Carbon::now()->toDateString();
-                                        $pago->hora = Carbon::now()->toTimeString();
-                                        $pago->academia_id = Auth::user()->academia_id;
-
-                                        $pago->save();
-                                        
-                                    }
-                                }
-                            }
-                        }
                     }else if ($item_proforma->tipo == 15) {
 
                         // CREDENCIALES
@@ -1155,27 +1028,49 @@ class AdministrativoController extends BaseController {
 
                     if($item_proforma->promotor_id)
                     {
-                        $config_pago = ConfigComision::where('servicio_producto_id',$item_proforma->item_id)
-                            ->where('servicio_producto_tipo',$item_proforma->servicio_producto)
-                            ->where('usuario_tipo',$item_proforma->tipo_promotor)
-                            ->where('usuario_id',$item_proforma->promotor_id)
-                        ->first();
+                        $promotor_id = explode(',',$item_proforma->promotor_id);
+                        $tipo_promotor = explode(',',$item_proforma->tipo_promotor);
 
-                        if($config_pago){
+                        for($i = 0; $i < count($promotor_id) ; $i++){
 
-                            if($config_pago->tipo == 1){
+                            $config_pago = ConfigComision::where('servicio_producto_id',$item_proforma->item_id)
+                                ->where('servicio_producto_tipo',$item_proforma->servicio_producto)
+                                ->where('usuario_tipo',$tipo_promotor[$i])
+                                ->where('usuario_id',$promotor_id[$i])
+                            ->first();
 
-                                $porcentaje = $config_pago->monto / 100;
-                                $monto = $item_proforma->importe_neto * $porcentaje;
+                            if($config_pago){
 
-                                if($monto > 0 ){
+                                if($config_pago->tipo == 1){
+
+                                    $porcentaje = $config_pago->monto / 100;
+                                    $monto = $item_proforma->importe_neto * $porcentaje;
+
+                                    if($monto > 0 ){
+
+                                        $pago = new Comision;
+
+                                        $pago->usuario_id=$promotor_id[$i];
+                                        $pago->usuario_tipo=$tipo_promotor[$i];
+                                        $pago->tipo=$config_pago->tipo;
+                                        $pago->monto=$monto;
+                                        $pago->servicio_producto_id=$item_proforma->item_id;
+                                        $pago->servicio_producto_tipo=$item_proforma->servicio_producto;
+                                        $pago->fecha = Carbon::now()->toDateString();
+                                        $pago->hora = Carbon::now()->toTimeString();
+                                        $pago->academia_id = Auth::user()->academia_id;
+
+                                        $pago->save();
+                                    }
+                                   
+                                }else{
 
                                     $pago = new Comision;
 
-                                    $pago->usuario_id=$item_proforma->promotor_id;
-                                    $pago->usuario_tipo=$item_proforma->tipo_promotor;
+                                    $pago->usuario_id=$promotor_id[$i];
+                                    $pago->usuario_tipo=$tipo_promotor[$i];
                                     $pago->tipo=$config_pago->tipo;
-                                    $pago->monto=$monto;
+                                    $pago->monto = floatval($config_pago->monto * $item_proforma->cantidad);
                                     $pago->servicio_producto_id=$item_proforma->item_id;
                                     $pago->servicio_producto_tipo=$item_proforma->servicio_producto;
                                     $pago->fecha = Carbon::now()->toDateString();
@@ -1183,29 +1078,12 @@ class AdministrativoController extends BaseController {
                                     $pago->academia_id = Auth::user()->academia_id;
 
                                     $pago->save();
+                                    
                                 }
-                               
-                            }else{
-
-                                $pago = new Comision;
-
-                                $pago->usuario_id=$item_proforma->promotor_id;
-                                $pago->usuario_tipo=$item_proforma->tipo_promotor;
-                                $pago->tipo=$config_pago->tipo;
-                                $pago->monto = floatval($config_pago->monto * $item_proforma->cantidad);
-                                $pago->servicio_producto_id=$item_proforma->item_id;
-                                $pago->servicio_producto_tipo=$item_proforma->servicio_producto;
-                                $pago->fecha = Carbon::now()->toDateString();
-                                $pago->hora = Carbon::now()->toTimeString();
-                                $pago->academia_id = Auth::user()->academia_id;
-
-                                $pago->save();
-                                
                             }
                         }
                     }
                
-
                     //CREAR EL DETALLE DE LA FACTURA Y ELIMINAR LA PROFORMA, SI EL TOTAL ES MAYOR DE LO PAGADO, NO SE GENERAN LOS ITEMS, SINO QUE SALTA AL SIGUIENTE PROCESO
 
                     if($total_proforma <= $total_pago){
@@ -1816,15 +1694,27 @@ class AdministrativoController extends BaseController {
             $usuario_tipo = $explode[0];
             $usuario_id = $explode[1];
 
-            if($request->promotor_id){
-                $explode = explode("-", $request->promotor_id);
-                $tipo_promotor = $explode[0];
-                $promotor_id = $explode[1];
-            }else{
-                $tipo_promotor = '';
-                $promotor_id = '';
-            }
+            $tipo_promotor = '';
+            $promotor_id = '';
 
+            if($request->promotores){
+
+                $explode = $request->promotores;
+                $promotores = explode(',',$explode);
+
+                foreach($promotores as $promotor){
+                    if($promotor){
+                        $explode = explode('-',$promotor);
+                        if($tipo_promotor){
+                            $coma = ',';
+                        }else{
+                            $coma = '';
+                        }
+                        $tipo_promotor = $tipo_promotor .$coma.$explode[0];
+                        $promotor_id = $promotor_id .$coma.$explode[1];
+                    }
+                }
+            }
 
             if($servicio_producto == 1){
                 $producto_servicio = ConfigServicios::find($item_id);

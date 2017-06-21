@@ -161,31 +161,25 @@
                             @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
                             <div class="col-sm-12">
-                                 
-                                    <label for="instructor" id="id-promotor_id">Promotor</label> <span class="c-morado f-700 f-16">*</span> 
+                           
+                              <label for="instructor" id="id-promotor">Promotor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un promotor" title="" data-original-title="Ayuda"></i>
 
-
-                                    <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un promotor" title="" data-original-title="Ayuda"></i>
-
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="promotor_id" id="promotor_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $promotores as $promotor )
-                                          <option value = "{{ $promotor['id'] }}">{{ $promotor['nombre'] }} {{ $promotor['apellido'] }}</option>
-                                          @endforeach
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="has-error" id="error-promotor_id">
-                                      <span >
-                                        <small class="help-block error-span" id="error-promotor_id_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
+                              <div class="input-group">
+                                <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
+                                <div class="select">
+                                  <select class="selectpicker bs-select-hidden" multiple="" data-max-options="5" name="promotor" id="promotor" data-live-search="true" title="Selecciona">
+                                    @foreach ( $promotores as $promotor )
+                                      <option value = "{{ $promotor['id'] }}" data-content="{{ $promotor['nombre'] }} {{ $promotor['apellido'] }} {!!$promotor['icono']!!}"></option>
+                                    @endforeach
+                                  </select>
+                                </div>
+                                <div class="has-error" id="error-promotor">
+                                  <span >
+                                    <small class="help-block error-span" id="error-promotor_mensaje" ></small>                                           
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
 
 
 
@@ -670,104 +664,106 @@
 
         });
 
-  $("#guardar").click(function(){
+        $("#guardar").click(function(){
 
-                var id = $("#alumno_id").val();
-                if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6 ){
-                  var route = route_inscribir;
-                }else{
-                  var route = route_agregar;
-                }
-                var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_clasepersonalizada" ).serialize(); 
-                $("#guardar").attr("disabled","disabled");
-                procesando();
-                $("#guardar").css({
-                  "opacity": ("0.2")
-                });
-                $(".cancelar").attr("disabled","disabled");
-                $(".procesando").removeClass('hidden');
-                $(".procesando").addClass('show');         
-                limpiarMensaje();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:datos,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          // finprocesado();
-                          // var nType = 'success';
-                          // $("#agregar_alumno")[0].reset();
-                          // var nTitle="Ups! ";
-                          // var nMensaje=respuesta.mensaje;
-                          if(respuesta.id){
-                            window.location = route_enhorabuena + respuesta.id;
-                          }
-                          else{
-                            window.location = route_completado;
-                          }
-                          
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
+          var id = $("#alumno_id").val();
+          var values = $('#promotor').val();
+          var promotores = '';
+          
+          for(var i = 0; i < values.length; i += 1) {
 
-                          $(".procesando").removeClass('show');
-                          $(".procesando").addClass('hidden');
-                          $("#guardar").removeAttr("disabled");
-                          finprocesado();
-                          $("#guardar").css({
-                            "opacity": ("1")
-                          });
-                          $(".cancelar").removeAttr("disabled");
+            promotores = promotores + ',' + values[i];
 
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                        }                       
-                        
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
-                        if(msj.responseJSON.status=="ERROR"){
-                          $(".modal").modal('hide');
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        finprocesado();
-                        $("#guardar").css({
-                          "opacity": ("1")
-                        });
-                        $(".cancelar").removeAttr("disabled");
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
+          }
+          
+          if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6 ){
+            var route = route_inscribir;
+          }else{
+            var route = route_agregar;
+          }
+          var token = $('input:hidden[name=_token]').val();
+          var datos = $( "#agregar_clasepersonalizada" ).serialize(); 
+          procesando();       
+          limpiarMensaje();
+          $.ajax({
+              url: route,
+                  headers: {'X-CSRF-TOKEN': token},
+                  type: 'POST',
+                  dataType: 'json',
+                  data:datos+"&promotores="+promotores,
+              success:function(respuesta){
+                setTimeout(function(){ 
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY"; 
+                  if(respuesta.status=="OK"){
+                    // finprocesado();
+                    // var nType = 'success';
+                    // $("#agregar_alumno")[0].reset();
+                    // var nTitle="Ups! ";
+                    // var nMensaje=respuesta.mensaje;
+                    if(respuesta.id){
+                      window.location = route_enhorabuena + respuesta.id;
                     }
-                });
-            });
+                    else{
+                      window.location = route_completado;
+                    }
+                    
+                  }else{
+                    var nTitle="Ups! ";
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    var nType = 'danger';
+
+                    $(".procesando").removeClass('show');
+                    $(".procesando").addClass('hidden');
+                    $("#guardar").removeAttr("disabled");
+                    finprocesado();
+                    $("#guardar").css({
+                      "opacity": ("1")
+                    });
+                    $(".cancelar").removeAttr("disabled");
+
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                  }                       
+                  
+                }, 1000);
+              },
+              error:function(msj){
+                setTimeout(function(){ 
+                  if (typeof msj.responseJSON === "undefined") {
+                    window.location = "{{url('/')}}/error";
+                  }
+                  if(msj.responseJSON.status=="ERROR"){
+                    $(".modal").modal('hide');
+                    console.log(msj.responseJSON.errores);
+                    errores(msj.responseJSON.errores);
+                    var nTitle="    Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                  }else{
+                    var nTitle="   Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  }                        
+                  $("#guardar").removeAttr("disabled");
+                  finprocesado();
+                  $("#guardar").css({
+                    "opacity": ("1")
+                  });
+                  $(".cancelar").removeAttr("disabled");
+                  $(".procesando").removeClass('show');
+                  $(".procesando").addClass('hidden');
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nType = 'danger';
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY";                       
+                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                }, 1000);
+              }
+          });
+      });
 
       function limpiarMensaje(){
         var campo = ["fecha", "especialidad_id", "instructor_id", "hora_inicio", "hora_final", "estudio_id", "clase_personalizada_id", "alumno_id"];

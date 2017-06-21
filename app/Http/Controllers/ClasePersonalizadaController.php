@@ -254,7 +254,35 @@ class ClasePersonalizadaController extends BaseController {
         $alumno_id = Session::get('id_alumno');
         $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-        return view('agendar.clase_personalizada.reservar')->with(['alumnos' => $alumnos, 'especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'precios' => $precios, 'alumno_id' => $alumno_id, 'promotores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'usuario_tipo' => $usuario_tipo]);
+        $promotores = array();
+
+        $staffs = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($staffs as $staff)
+        {
+            $collection=collect($staff);     
+            $promotor_array = $collection->toArray();
+
+            $promotor_array['tipo']=1;
+            $promotor_array['id']='1-'.$staff->id;
+            $promotor_array['icono']="<i class='icon_f-staff'></i>";
+            $promotores['1-'.$staff->id] = $promotor_array;
+        }
+
+        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($instructores as $instructor)
+        {
+            $collection=collect($instructor);     
+            $promotor_array = $collection->toArray();
+
+            $promotor_array['tipo']=2;
+            $promotor_array['id']='2-'.$instructor->id;
+            $promotor_array['icono']="<i class='icon_a-instructor'></i>";
+            $promotores['2-'.$instructor->id] = $promotor_array;
+        }
+
+        return view('agendar.clase_personalizada.reservar')->with(['alumnos' => $alumnos, 'especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'precios' => $precios, 'alumno_id' => $alumno_id, 'promotores' => $promotores, 'usuario_tipo' => $usuario_tipo]);
         
     }
 
@@ -961,7 +989,6 @@ class ClasePersonalizadaController extends BaseController {
             $inscripcion_clase_personalizada->alumno_id = $request->alumno_id;
             $inscripcion_clase_personalizada->especialidad_id = $request->especialidad_id;
             $inscripcion_clase_personalizada->estudio_id = $request->estudio_id;
-            $inscripcion_clase_personalizada->promotor_id = $request->promotor_id;
             $inscripcion_clase_personalizada->cantidad_horas = $clase_personalizada->cantidad_horas;
 
             // return redirect("/home");
@@ -987,6 +1014,28 @@ class ClasePersonalizadaController extends BaseController {
                     $costo = $clase_personalizada->costo;
                 }
 
+                $tipo_promotor = '';
+                $promotor_id = '';
+
+                if($request->promotores){
+
+                    $explode = $request->promotores;
+                    $promotores = explode(',',$explode);
+
+                    foreach($promotores as $promotor){
+                        if($promotor){
+                            $explode = explode('-',$promotor);
+                            if($tipo_promotor){
+                                $coma = ',';
+                            }else{
+                                $coma = '';
+                            }
+                            $tipo_promotor = $tipo_promotor .$coma.$explode[0];
+                            $promotor_id = $promotor_id .$coma.$explode[1];
+                        }
+                    }
+                }
+
                 $item_factura = new ItemsFacturaProforma;
                         
                 $item_factura->usuario_id = $request->alumno_id;
@@ -1000,6 +1049,8 @@ class ClasePersonalizadaController extends BaseController {
                 $item_factura->impuesto = 0;
                 $item_factura->importe_neto = $costo;
                 $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                $item_factura->tipo_promotor = $tipo_promotor;
+                $item_factura->promotor_id = $promotor_id;
 
                 $item_factura->save();
 

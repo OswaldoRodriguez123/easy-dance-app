@@ -465,8 +465,7 @@
                             <div class="col-sm-3">
                                 <label class="c-morado f-15">Promotor</label>
                                 <div class="select">
-                                  <select class="form-control selectpicker" name="promotor_id" id="promotor_id"  data-live-search="true">
-                                    <option value="">Selecciona</option>
+                                  <select class="selectpicker bs-select-hidden" multiple="" data-max-options="5" name="promotor_id" id="promotor_id"  data-live-search="true" title="Selecciona">
                                   </select>
                                 </div>
                               </div>
@@ -979,7 +978,6 @@
     $("#combo").change(function(){
 
       $('#promotor_id').empty()
-      $('#promotor_id').append(new Option('Selecciona',''));
 
       var combo = $(this).val();
       var split = combo.split('-');  
@@ -1091,9 +1089,9 @@
       $('#disponibilidad_productos_campo').hide();
 
       $("#add").attr("disabled","disabled");
-        $("#add").css({
-          "opacity": ("0.2")
-        });
+      $("#add").css({
+        "opacity": ("0.2")
+      });
 
       var route = route_agregar;
       var token = $('input:hidden[name=_token]').val();
@@ -1101,13 +1099,20 @@
       limpiarMensaje();
 
       usuario_id = $("#usuario_id").val();
+      var values = $('#promotor_id').val();
+      var promotores = '';
+      
+      for(var i = 0; i < values.length; i += 1) {
+        promotores = promotores + ',' + values[i];
+      }
+
 
       $.ajax({
           url: route,
               headers: {'X-CSRF-TOKEN': token},
               type: 'POST',
               dataType: 'json',
-              data:datos + "&impuestoglobal="+impuestoglobal + "&usuario_id="+usuario_id,
+              data:datos + "&impuestoglobal="+impuestoglobal+"&usuario_id="+usuario_id+"&promotores="+promotores,
           success:function(respuesta){
             setTimeout(function(){ 
               var nFrom = $(this).attr('data-from');
