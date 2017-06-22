@@ -41,19 +41,8 @@ class ConfigSupervisionController extends BaseController {
     	Session::forget('supervisiones');
 
     	$cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
-    	$array = array();
 
-    	foreach($cargos as $cargo){
-
-	    	$items = ConfigSupervision::where('cargo_id',$cargo->id)->count();
-
-			if($items > 0){
-
-	    		$array[] = $cargo->id;
-	        }
-        }
-
-        return view('configuracion.supervision.agregar_configuracion')->with(['cargos' => $cargos, 'cargos_usados' => $array]);
+        return view('configuracion.supervision.agregar_configuracion')->with(['cargos' => $cargos]);
 
     }
 

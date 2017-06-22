@@ -282,7 +282,6 @@
   route_detalle_procedimiento="{{url('/')}}/configuracion/supervisiones/procedimientos/detalle/";
 
   var cargos = <?php echo json_encode($cargos);?>;
-  var cargos_usados = <?php echo json_encode($cargos_usados);?>;
 
   $(document).ready(function(){
 
@@ -291,16 +290,6 @@
       }else{
         clase = 'disabled'
       }
-
-      $.each(cargos, function (index, cargo) {
-
-        if(!$.inArray(cargos_usados, cargo.id)){
-
-            $("#cargo option[value='"+cargo.id+"']").attr("disabled","disabled");
-            $("#cargo option[value='"+cargo.id+"']").data("icon","glyphicon-remove");
-        }
-
-      });
 
       $('#cargo').selectpicker('refresh')
 
