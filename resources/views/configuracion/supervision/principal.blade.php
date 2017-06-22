@@ -78,7 +78,32 @@
                                  <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion">
                                     <td class="text-center previa">{{$supervision['nombre']}}</td>
                                     <td class="text-center previa">{{ str_limit($supervision['descripcion'], $limit = 30, $end = '...') }}</td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center"> 
+                                        <ul class="top-menu">
+                                            <li class="dropdown" id="dropdown_{{$id}}">
+                                                <a href="#" class="dropdown-toggle" id="dropdown_toggle_{{$id}}" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                                   <span class="f-15 f-700" style="color:black"> 
+                                                        <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                   </span>
+                                                </a>
+
+                                                  <div class="dropup" dropdown-append-to-body>
+                                                    <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
+
+                                                        <li class="hidden-xs">
+                                                            <a href="{{url('/')}}/configuracion/supervisiones/procedimientos/{{$id}}"><i class="zmdi zmdi-plus f-20"></i> Agregar</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
+                                                            <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
+                                                        </li>
+
+
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </td>
                                 </tr>
                             @endforeach 
                                                            
@@ -108,6 +133,7 @@
 
         route_detalle="{{url('/')}}/configuracion/supervisiones/detalle";
         route_operacion="{{url('/')}}/configuracion/supervisiones/operaciones";
+        route_eliminar="{{url('/')}}/configuracion/supervisiones/eliminar/";
 
         $(document).ready(function(){
 
@@ -151,7 +177,7 @@
 
         });
 
-        $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+        $('#tablelistar tbody').on( 'click', '.eliminar', function () {
 
                 var id = $(this).closest('tr').attr('id');
                 element = this;
@@ -238,6 +264,24 @@
             var route =route_operacion+"/"+this.id;
             window.location=route;
          });
+
+        $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+            var id = $(this).closest('tr').attr('id');
+            var dropdown = $('#dropdown_'+id)
+            var dropdown_toggle = $('#dropdown_toggle_'+id)
+
+            if(!dropdown.hasClass('open')){
+                dropdown.addClass('open')
+                dropdown_toggle.attr('aria-expanded','true')
+                $('.table-responsive').css( "overflow", "inherit" );
+            }
+         
+        });
+
+        $('.table-responsive').on('hide.bs.dropdown', function () {
+          $('.table-responsive').css( "overflow", "auto" );
+        })
 
         </script>
 @stop

@@ -253,9 +253,14 @@ class ConfigSupervisionController extends BaseController {
         	$supervision->forceDelete();
         }
 
-        $procedimientos = SupervisionProcedimiento::where('config_supervision_id',$id)->delete();
+        $config_supervision = ConfigSupervision::where('config_supervision_id',$id)->get();
 
-        $config_supervision = ConfigSupervision::where('config_supervision_id',$id)->forceDelete();
+        foreach($config_supervision as $supervision){
+
+            $procedimientos = SupervisionProcedimiento::where('config_supervision_id',$supervision->id)->delete();
+            $supervision->forceDelete();
+        }
+
         $config_supervision = ConfiguracionSupervision::find($id)->forceDelete();
 
 		return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
