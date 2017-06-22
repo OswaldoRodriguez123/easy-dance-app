@@ -1088,7 +1088,7 @@
                                 $id = $alumno['inscripcion_id'];
                                 $alumno_id = $alumno['id'];
 
-                                if($alumno['imagen']){
+                                if(isset($alumno['imagen'])){
                                     $imagen = '/assets/uploads/usuario/'.$alumno['imagen'];
                                 }else{
                                     if($alumno['sexo'] == 'F'){
