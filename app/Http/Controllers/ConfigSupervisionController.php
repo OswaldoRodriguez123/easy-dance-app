@@ -31,7 +31,7 @@ class ConfigSupervisionController extends BaseController {
             ->select('configuracion_supervisiones.*','config_staff.nombre')
             ->where('configuracion_supervisiones.academia_id', Auth::user()->academia_id)
         ->get();
-        
+
         return view('configuracion.supervision.principal')->with(['config_supervision' => $config_supervision]);
     }
 
@@ -55,6 +55,47 @@ class ConfigSupervisionController extends BaseController {
 
         return view('configuracion.supervision.agregar_configuracion')->with(['cargos' => $cargos, 'cargos_usados' => $array]);
 
+    }
+
+    public function planilla($id){
+
+        $config_supervision = ConfiguracionSupervision::join('config_staff', 'configuracion_supervisiones.cargo_id', '=', 'config_staff.id')
+             ->select('configuracion_supervisiones.*', 'config_staff.nombre as cargo')
+             ->where('configuracion_supervisiones.id', $id)
+        ->first();
+
+        if($config_supervision){
+            $cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
+            return view('configuracion.supervision.planilla')->with(['config_supervision' => $config_supervision, 'id' => $id, 'cargos' => $cargos]);
+
+        }else{
+            return redirect("configuracion/supervisiones");
+        }
+    }
+
+    public function updateCargo(Request $request){
+
+        $config_supervision = ConfiguracionSupervision::find($request->id);
+        $config_supervision->cargo_id = $request->cargo_id;
+
+        if($config_supervision->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+
+    public function updateDescripcion(Request $request){
+
+        $config_supervision = ConfiguracionSupervision::find($request->id);
+        $config_supervision->descripcion = $request->descripcion;
+
+        if($config_supervision->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
     // public function editar_configuracion($id){
@@ -211,9 +252,8 @@ class ConfigSupervisionController extends BaseController {
 
         $procedimientos = SupervisionProcedimiento::where('config_supervision_id',$id)->delete();
 
-        $config_supervision = ConfigSupervision::where('cargo_id',$id)
-        	->where('academia_id',Auth::user()->academia_id)
-        ->forceDelete();
+        $config_supervision = ConfigSupervision::where('config_supervision_id',$id)->forceDelete();
+        $config_supervision = ConfiguracionSupervision::find($id)->forceDelete();
 
 		return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
