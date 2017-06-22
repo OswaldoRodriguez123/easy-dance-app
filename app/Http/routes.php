@@ -1082,6 +1082,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('configuracion/supervisiones/procedimientos/agregar/{id}', 'ProcedimientoController@agregar_procedimiento');
 		Route::get('configuracion/supervisiones/procedimientos/detalle/{id}', 'ProcedimientoController@editar_procedimiento');
 		Route::post('guardar_procedimiento', 'ProcedimientoController@GuardarProcedimiento');
+		Route::post('actualizar_procedimiento', 'ProcedimientoController@updateProcedimiento');
 		Route::post('cancelar_procedimiento', 'ProcedimientoController@cancelar_procedimiento');
 
 		Route::post('agregar_procedimiento_session','ProcedimientoController@agregar_procedimiento_session');

@@ -298,40 +298,6 @@ class ConfigSupervisionController extends BaseController {
 
     }
 
-    public function updateConfiguracion(Request $request){
-
-	    $rules = [
-
-	        'nombre' => 'required|min:3|max:150',
-	    ];
-
-	    $messages = [
-
-	        'nombre.required' => 'Ups! El Nombre es requerido',
-	        'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-	        'nombre.max' => 'El máximo de caracteres permitidos son 50',
-	    ];
-
-	    $validator = Validator::make($request->all(), $rules, $messages);
-
-	    if ($validator->fails()){
-
-	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-	    }
-
-        $supervision = ConfigSupervision::find($request->supervision_id);
-        $supervision->nombre = $request->nombre;
-
-
-        if($supervision->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'id' => $supervision->id, 'nombre' =>  $supervision->nombre, 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-
-    }
-
     public function eliminar_supervision_session($id){
 
         // $horario=HorarioClaseGrupal::find($id);

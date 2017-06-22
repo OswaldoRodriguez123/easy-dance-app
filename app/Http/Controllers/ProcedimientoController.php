@@ -287,4 +287,37 @@ class ProcedimientoController extends BaseController {
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
     }
+
+    public function updateProcedimiento(Request $request){
+
+        $rules = [
+
+            'procedimiento_fijo' => 'required|min:3|max:150',
+        ];
+
+        $messages = [
+
+            'procedimiento_fijo.required' => 'Ups! El Nombre es requerido',
+            'procedimiento_fijo.min' => 'El mínimo de caracteres permitidos son 3',
+            'procedimiento_fijo.max' => 'El máximo de caracteres permitidos son 50',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        $supervision = ConfigSupervision::find($request->procedimiento_id);
+        $supervision->nombre = $request->procedimiento_fijo;
+
+        if($supervision->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'id' => $supervision->id, 'nombre' =>  $supervision->nombre, 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
+    }
 }

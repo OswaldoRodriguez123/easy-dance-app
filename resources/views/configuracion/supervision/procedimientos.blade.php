@@ -130,7 +130,7 @@
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
                                     <div class="fg-line">
-                                        <input type="text" class="form-control input-sm proceso" name="procedimiento_fijo" id="procedimiento_fijo" placeholder="Ej. Cierre de Caja" disabled>
+                                        <input type="text" class="form-control input-sm proceso" name="procedimiento_fijo" id="procedimiento_fijo" placeholder="Ej. Cierre de Caja">
                                     </div>
                                 </div>
                                 <div class="has-error" id="error-procedimiento_fijo">
@@ -199,7 +199,7 @@
                     </div>
                     <div class="col-sm-12">                            
 
-                          <a class="btn-blanco m-r-5 f-12 pointer" id="dismiss">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                          <a class="btn-blanco m-r-5 f-12 pointer" id="save_fijo">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                     </div>
                 </div>
@@ -294,6 +294,7 @@
         route_eliminar_fijo = "{{url('/')}}/eliminar_procedimiento_fijo/";
 
         route_agregar="{{url('/')}}/guardar_procedimiento";
+        route_update="{{url('/')}}/actualizar_procedimiento";
         route_consultar_items = "{{url('/')}}/consultar_items_procedimientos/";
  
         $(document).ready(function(){
@@ -516,7 +517,7 @@
                             ] ).draw(false).node();
 
                             $( rowNode )
-                                .attr('id',rowId)
+                                .attr('id','fijo_'+rowId)
                                 .addClass('seleccion');
                         });
                     });
@@ -586,7 +587,7 @@
                             ] ).draw(false).node();
 
                             $( rowNode )
-                                .attr('id',rowId)
+                                .attr('id','session_'+rowId)
                                 .addClass('seleccion');
 
                             $('#item_session').val('')
@@ -638,7 +639,9 @@
         $('#tablesession tbody').on( 'click', 'i.zmdi-delete', function () {
             var padre=$(this).parents('tr');
             var token = $('input:hidden[name=_token]').val();
-            var id = $(this).closest('tr').attr('id');
+            var row = $(this).closest('tr').attr('id');
+            var explode = row.split('_');
+            var id = explode[1]
             swal({   
                 title: "Desea eliminar este item?",   
                 text: "Confirmar eliminación!",   
@@ -711,6 +714,10 @@
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
 
+                            var nType = 'success';
+                            var nTitle="Ups! ";
+                            var nMensaje="¡Excelente! El registro se ha guardado satisfactoriamente";
+
                             $("#form_session")[0].reset();
 
                             s
@@ -730,6 +737,7 @@
                             finprocesado();
                             
                             $('.modal').modal('hide')
+                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
 
                         }else{
                             var nTitle="Ups! ";
@@ -807,14 +815,15 @@
                             ] ).draw(false).node();
 
                             $( rowNode )
-                                .attr('id',rowId)
+                                .attr('id','fijo_'+rowId)
                                 .addClass('seleccion');
 
                             $('#item_fijo').val('')
 
-                            var cantidad = $("#"+respuesta.array.config_supervision_id).closest('tr').find('td:eq(1)').text();
+                            var column = $("#"+respuesta.array.config_supervision_id).closest('tr').find('td:eq(1)')
+                            var cantidad = column.text();
                             cantidad_nueva = parseInt(cantidad) + 1;
-                            $("#"+respuesta.array.config_supervision_id).closest('tr').find('td:eq(1)').text(cantidad_nueva);
+                            column.text(cantidad_nueva);
 
                         }else{
                             var nTitle="Ups! ";
@@ -863,7 +872,9 @@
         $('#tablefijo tbody').on( 'click', 'i.zmdi-delete', function () {
             var padre=$(this).parents('tr');
             var token = $('input:hidden[name=_token]').val();
-            var id = $(this).closest('tr').attr('id');
+            var row = $(this).closest('tr').attr('id');
+            var explode = row.split('_');
+            var id = explode[1]
             swal({   
                 title: "Desea eliminar la configuracion?",   
                 text: "Confirmar eliminación!",   
@@ -900,9 +911,10 @@
                                     .remove()
                                     .draw();    
 
-                                var cantidad = $("#"+procedimiento_id).closest('tr').find('td:eq(1)').text();
-                                cantidad_nueva = parseInt(cantidad) - 1; 
-                                $("#"+procedimiento_id).closest('tr').find('td:eq(1)').text(cantidad_nueva);    
+                                var column = $("#"+procedimiento_id).closest('tr').find('td:eq(1)')
+                                var cantidad = column.text();
+                                cantidad_nueva = parseInt(cantidad) - 1;
+                                column.text(cantidad_nueva);   
                                 finprocesado();   
 
                             }else{
@@ -938,21 +950,85 @@
             });
         }
 
-        $("#dismiss").click(function(){
-          procesando();
-          setTimeout(function(){ 
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nAnimIn = "animated flipInY";
-            var nAnimOut = "animated flipOutY"; 
-            var nType = 'success';
-            var nTitle="Ups! ";
-            var nMensaje="¡Excelente! Los campos se han guardado satisfactoriamente";
-            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-            finprocesado();
-            $('.modal').modal('hide');
-          }, 2000);
+        $("#save_fijo").click(function(){
+
+            procesando();
+
+            var route = route_update;
+            var token = $('input:hidden[name=_token]').val();
+            var datos = $( "#form_fijo" ).serialize(); 
+
+            limpiarMensaje();
+
+            $.ajax({
+                url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                data:datos,
+                success:function(respuesta){
+                    setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                            var nType = 'success';
+                            var nTitle="Ups! ";
+                            var nMensaje="¡Excelente! El registro se ha actualizado satisfactoriamente";
+
+                            $("#form_fijo")[0].reset();
+
+                            f
+                            .clear()
+                            .draw();
+
+                            $("#"+respuesta.id).closest('tr').find('td:eq(0)').text(respuesta.nombre);
+      
+                            finprocesado();
+                            
+                            $('.modal').modal('hide')
+                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
+                        }else{
+                            var nTitle="Ups! ";
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                            var nType = 'danger';
+
+                            finprocesado();
+
+                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                        }                       
+                    
+                    }, 1000);
+                },
+                error:function(msj){
+                    setTimeout(function(){ 
+                    // if (typeof msj.responseJSON === "undefined") {
+                    //   window.location = "{{url('/')}}/error";
+                    // }
+                        if(msj.responseJSON.status=="ERROR"){
+                            console.log(msj.responseJSON.errores);
+                            errores(msj.responseJSON.errores);
+                            var nTitle="    Ups! "; 
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                            var nTitle="   Ups! "; 
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        finprocesado();
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                    }, 1000);
+                }
+            });
         });
 
     </script>
