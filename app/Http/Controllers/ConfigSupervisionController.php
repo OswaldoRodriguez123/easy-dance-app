@@ -73,6 +73,21 @@ class ConfigSupervisionController extends BaseController {
         }
     }
 
+    public function operar($id){
+
+        $config_supervision = ConfiguracionSupervision::join('config_staff', 'configuracion_supervisiones.cargo_id', '=', 'config_staff.id')
+             ->select('configuracion_supervisiones.*', 'config_staff.nombre as cargo')
+             ->where('configuracion_supervisiones.id', $id)
+        ->first();
+
+        if($config_supervision){;
+            return view('configuracion.supervision.operacion')->with(['config_supervision' => $config_supervision, 'id' => $id]);
+
+        }else{
+            return redirect("configuracion/supervisiones");
+        }
+    }
+
     public function updateCargo(Request $request){
 
         $config_supervision = ConfiguracionSupervision::find($request->id);

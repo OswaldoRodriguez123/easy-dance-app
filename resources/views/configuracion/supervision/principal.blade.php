@@ -78,7 +78,7 @@
                                  <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion">
                                     <td class="text-center previa">{{$supervision['nombre']}}</td>
                                     <td class="text-center previa">{{ str_limit($supervision['descripcion'], $limit = 30, $end = '...') }}</td>
-                                    <td class="text-center disabled"> <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 
                                                            
@@ -106,8 +106,8 @@
             
         <script type="text/javascript">
 
-        route_eliminar="{{url('/')}}/configuracion/supervisiones/eliminar/";
         route_detalle="{{url('/')}}/configuracion/supervisiones/detalle";
+        route_operacion="{{url('/')}}/configuracion/supervisiones/operaciones";
 
         $(document).ready(function(){
 
@@ -233,6 +233,11 @@
             var route =route_detalle+"/"+id;
             window.location=route;
         }
+
+        $("i[name=operacion").click(function(){
+            var route =route_operacion+"/"+this.id;
+            window.location=route;
+         });
 
         </script>
 @stop

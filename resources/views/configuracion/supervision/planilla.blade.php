@@ -200,7 +200,7 @@
 
                                   <hr></hr>
 
-                                
+                                  <a href="{{url('/')}}/configuracion/supervisiones/procedimientos/{{$id}}"><i class="zmdi zmdi-plus f-20 m-r-10 boton red sa-warning"  data-original-title="Agregar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$config_supervision->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
                                   
                                   <br></br>
