@@ -65,7 +65,7 @@
                                     <th class="text-center" data-column-id="supervisor">Supervisor</th>
                                     <th class="text-center" data-column-id="cargo">Cargo a Supervisar</th>
                                     <th class="text-center" data-column-id="staff">Staff a Supervisar</th>
-                                    <th class="text-center" data-column-id="fecha">Rango de Fecha</th>
+<!--                                     <th class="text-center" data-column-id="fecha">Rango de Fecha</th> -->
                                     <th class="text-center" data-column-id="operaciones">Operaciones</th>
 
                                 </tr>
@@ -87,7 +87,7 @@
                                     <td class="text-center previa">{{$supervision['supervisor']}}</td>
                                     <td class="text-center previa">{{$supervision['cargo']}}</td>
                                     <td class="text-center previa">{{$nombre_alumno}} {{$apellido_alumno}} </td>
-                                    <td class="text-center previa">{{$supervision['fecha_inicio']}} / {{$supervision['fecha_final']}}</td>
+              <!--                       <td class="text-center previa">{{$supervision['fecha_inicio']}} / {{$supervision['fecha_final']}}</td> -->
                                     <td class="text-center disabled"> 
                                         <ul class="top-menu">
                                             <li class="dropdown">
