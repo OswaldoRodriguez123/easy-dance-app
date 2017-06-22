@@ -1070,7 +1070,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('configuracion/supervisiones/agregarsupervision','ConfigSupervisionController@agregar_supervision_session');
 		Route::post('configuracion/supervisiones/eliminarsupervision/{id}','ConfigSupervisionController@eliminar_supervision_session');
 		Route::post('configuracion/supervisiones/agregarsupervisionfija','ConfigSupervisionController@agregar_supervision_fija');
-		Route::post('configuracion/supervisiones/eliminarsupervisionfija/{id}','ConfigSupervisionController@eliminar_supervision_fija');
+
 		Route::get('configuracion/supervisiones/detalle/{id}', 'ConfigSupervisionController@planilla');
 		Route::get('configuracion/supervisiones/operaciones/{id}', 'ConfigSupervisionController@operar');
 		Route::put('configuracion/supervisiones/update/cargo','ConfigSupervisionController@updateCargo');
@@ -1083,11 +1083,13 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('configuracion/supervisiones/procedimientos/detalle/{id}', 'ProcedimientoController@editar_procedimiento');
 		Route::post('guardar_procedimiento', 'ProcedimientoController@GuardarProcedimiento');
 		Route::post('cancelar_procedimiento', 'ProcedimientoController@cancelar_procedimiento');
-		Route::post('agregar_procedimiento','ProcedimientoController@agregar_procedimiento_session');
 
-		Route::post('eliminar_procedimiento/{id}','ProcedimientoController@eliminar_procedimiento_session');
+		Route::post('agregar_procedimiento_session','ProcedimientoController@agregar_procedimiento_session');
+		Route::post('eliminar_procedimiento_session/{id}','ProcedimientoController@eliminar_procedimiento_session');
 		Route::post('agregar_procedimiento_fijo','ProcedimientoController@agregar_procedimiento_fijo');
 		Route::post('eliminar_procedimiento_fijo/{id}','ProcedimientoController@eliminar_procedimiento_fijo');
+		Route::post('consultar_items_procedimientos/{id}','ProcedimientoController@consultar_items_procedimientos');
+		Route::delete('eliminar_procedimiento/{id}','ProcedimientoController@eliminar_procedimiento');
 
 		//INCIDENCIAS
 

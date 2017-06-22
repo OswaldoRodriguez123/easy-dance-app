@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Supervision;
 use App\ConfigSupervision;
+use App\ConfiguracionSupervision;
 use App\HorarioSupervision;
 use App\DetalleSupervisionEvaluacion;
 use App\SupervisionEvaluacion;
@@ -59,7 +60,12 @@ class SupervisionController extends BaseController {
         $dias_de_semana = DiasDeSemana::all();
 
         $config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
-        $config_supervision = ConfigSupervision::where('academia_id', Auth::user()->academia_id)->get();
+
+        $config_supervision = ConfiguracionSupervision::join('config_supervision', 'config_supervision.config_supervision_id', '=', 'configuracion_supervisiones.id')
+        	->select('config_supervision.*', 'configuracion_supervisiones.cargo_id')
+        	->where('configuracion_supervisiones.academia_id', Auth::user()->academia_id)
+        ->get();
+
         $staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
         $instructores = Instructor::where('academia_id', Auth::user()->academia_id)->get();
 
@@ -1225,7 +1231,10 @@ class SupervisionController extends BaseController {
         	$staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
         	$config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
         	$dias_de_semana = DiasDeSemana::all();
-        	$config_supervision = ConfigSupervision::where('academia_id', Auth::user()->academia_id)->get();
+	        $config_supervision = ConfiguracionSupervision::join('config_supervision', 'config_supervision.config_supervision_id', '=', 'configuracion_supervisiones.id')
+	        	->select('config_supervision.*', 'configuracion_supervisiones.cargo_id')
+	        	->where('configuracion_supervisiones.academia_id', Auth::user()->academia_id)
+	        ->get();
 
         	$fecha_inicio = Carbon::createFromFormat('Y-m-d H:i:s', $supervision->fecha_inicio . ' 00:00:00')->format('d/m/Y');
         	$fecha_final = Carbon::createFromFormat('Y-m-d H:i:s', $supervision->fecha_final . ' 00:00:00')->format('d/m/Y');

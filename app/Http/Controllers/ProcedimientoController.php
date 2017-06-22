@@ -26,11 +26,11 @@ class ProcedimientoController extends BaseController {
 	
 	public function principal_procedimientos($id){
 
-    	$config_supervisiones = ConfigSupervision::join('config_staff', 'config_supervision.cargo_id', '=', 'config_staff.id')
+        Session::forget('procedimientos');
+
+    	$config_supervisiones = ConfigSupervision::join('configuracion_supervisiones', 'config_supervision.config_supervision_id', '=', 'configuracion_supervisiones.id')
     		->select('config_supervision.*')
-    		->where('config_supervision.academia_id', Auth::user()->academia_id)
-    		->where('config_staff.id', $id)
-    		->orWhere('config_supervision.academia_id', null)
+    		->where('configuracion_supervisiones.id', $id)
     	->get();
 
     	$array = array();
@@ -39,14 +39,12 @@ class ProcedimientoController extends BaseController {
 
     		$items = SupervisionProcedimiento::where('config_supervision_id',$configuracion->id)->count();
 
-    		if($items > 0){
+    		$collection=collect($configuracion);   
 
-	    		$collection=collect($configuracion);   
-
-	            $configuracion_array = $collection->toArray();
-	            $configuracion_array['items']=$items;
-	            $array[$configuracion->id] = $configuracion_array;
-            }
+            $configuracion_array = $collection->toArray();
+            $configuracion_array['items']=$items;
+            $array[$configuracion->id] = $configuracion_array;
+            
 
     	}
 
@@ -85,14 +83,14 @@ class ProcedimientoController extends BaseController {
 
     	$rules = [
 
-	        'nombre_supervision' => 'required|min:3|max:150',
+	        'item_session' => 'required|min:3|max:150',
 	    ];
 
 	    $messages = [
 
-	        'nombre_supervision.required' => 'Ups! El Nombre es requerido',
-	        'nombre_supervision.min' => 'El mínimo de caracteres permitidos son 3',
-	        'nombre_supervision.max' => 'El máximo de caracteres permitidos son 50',
+	        'item_session.required' => 'Ups! El Nombre es requerido',
+	        'item_session.min' => 'El mínimo de caracteres permitidos son 3',
+	        'item_session.max' => 'El máximo de caracteres permitidos son 50',
 	    ];
 
 	    $validator = Validator::make($request->all(), $rules, $messages);
@@ -103,7 +101,7 @@ class ProcedimientoController extends BaseController {
 
 	    }
 
-    	$array = array(['nombre' => $request->nombre_supervision]);
+    	$array = array(['nombre' => $request->item_session]);
 
 
         Session::push('procedimientos', $array);
@@ -113,7 +111,7 @@ class ProcedimientoController extends BaseController {
         $contador = key( $items );
 
         $array=array(
-            'nombre' => $request->nombre_supervision,
+            'nombre' => $request->item_session,
             'id'=>$contador
         );
 
@@ -147,11 +145,11 @@ class ProcedimientoController extends BaseController {
     public function GuardarProcedimiento(Request $request)
     {   
     	$rules = [
-		    'config_supervision_id' => 'required',
+		    'procedimiento_session' => 'required',
 	    ];
 
 	    $messages = [
-	        'config_supervision_id.required' => 'Ups! El Procedimiento es requerido',
+	        'procedimiento_session.required' => 'Ups! El Procedimiento es requerido',
 	    ];
 
 	    $validator = Validator::make($request->all(), $rules, $messages);
@@ -162,23 +160,41 @@ class ProcedimientoController extends BaseController {
 
 	    }else{
 
-	        $procedimientos = Session::get('procedimientos');
+            $procedimientos = Session::get('procedimientos');
 
-	        if (count($procedimientos) > 0){
-	            foreach($procedimientos as $tmp){
-	                foreach($tmp as $supervision){
+            if (count($procedimientos) > 0){
 
-	                    $procedimiento = new SupervisionProcedimiento();
+                $config_supervision = new ConfigSupervision;
+                $config_supervision->nombre = $request->procedimiento_session;
+                $config_supervision->config_supervision_id = $request->id;
 
-	                    $procedimiento->config_supervision_id=$request->config_supervision_id;
-	                    $procedimiento->nombre=$supervision['nombre'];
+                if($config_supervision->save()){
 
-	                    $procedimiento->save();
-	 
-	                }
-	            }
+                    $cantidad = 0;
+                    $items = array();
 
-	            return response()->json(['mensaje' => '¡Excelente! Los campos se han eliminado satisfactoriamente', 'status' => 'OK', 200]);
+    	            foreach($procedimientos as $tmp){
+    	                foreach($tmp as $supervision){
+
+    	                    $procedimiento = new SupervisionProcedimiento();
+
+    	                    $procedimiento->config_supervision_id=$config_supervision->id;
+    	                    $procedimiento->nombre=$supervision['nombre'];
+
+    	                    $procedimiento->save();
+
+                            $items[] = $procedimiento;
+                            $cantidad++;
+    	 
+    	                }
+    	            }
+
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han eliminado satisfactoriamente', 'status' => 'OK', 'nombre' => $request->procedimiento_session, 'cantidad' => $cantidad, 'items' => $items, 200]);
+
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+
 	        }else{
 	            return response()->json(['errores' => ['linea' => [0, 'Ups! ha ocurrido un error, debes agregar un item']], 'status' => 'ERROR'],422);
 	        }
@@ -205,16 +221,16 @@ class ProcedimientoController extends BaseController {
         
     $rules = [
 
-        'nombre_supervision' => 'required|min:3|max:150',
-        'config_supervision_id' => 'required',
+        'item_fijo' => 'required|min:3|max:150',
+        'procedimiento_id' => 'required',
     ];
 
     $messages = [
 
-        'nombre_supervision.required' => 'Ups! El Nombre es requerido',
-        'nombre_supervision.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre_supervision.max' => 'El máximo de caracteres permitidos son 50',
-        'config_supervision_id.required' => 'Ups! El Procedimiento es requerido',
+        'item_fijo.required' => 'Ups! El Nombre es requerido',
+        'item_fijo.min' => 'El mínimo de caracteres permitidos son 3',
+        'item_fijo.max' => 'El máximo de caracteres permitidos son 50',
+        'procedimiento_id.required' => 'Ups! El Procedimiento es requerido',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -227,12 +243,12 @@ class ProcedimientoController extends BaseController {
 
     else{
 
-        $nombre = title_case($request->nombre_supervision);
+        $nombre = title_case($request->item_fijo);
 
         $supervision = new SupervisionProcedimiento;
                                         
         $supervision->nombre = $nombre;
-        $supervision->config_supervision_id = $request->config_supervision_id;
+        $supervision->config_supervision_id = $request->procedimiento_id;
 
         $supervision->save();
 
@@ -244,6 +260,27 @@ class ProcedimientoController extends BaseController {
     public function eliminar_procedimiento_fijo($id){
 
         $supervision = SupervisionProcedimiento::find($id);
+
+        $supervision->delete();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+    }
+
+    public function consultar_items_procedimientos($id){
+
+        $items = SupervisionProcedimiento::where('config_supervision_id',$id)->get();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $items, 200]);
+
+    }
+
+
+    public function eliminar_procedimiento($id){
+
+        $procedimientos = SupervisionProcedimiento::where('config_supervision_id',$id)->delete();
+
+        $supervision = ConfigSupervision::find($id);
 
         $supervision->delete();
 

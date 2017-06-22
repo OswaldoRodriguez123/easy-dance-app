@@ -175,18 +175,6 @@ class ConfigSupervisionController extends BaseController {
         }
     }
 
-    public function eliminar_supervision_fija($id){
-
-    	$procedimientos = SupervisionProcedimiento::where('config_supervision_id',$id)->delete();
-
-        $supervision = ConfigSupervision::find($id);
-
-        $supervision->delete();
-
-        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-
-    }
-
     public function GuardarConfiguracion(Request $request)
     {   
     	$rules = [
