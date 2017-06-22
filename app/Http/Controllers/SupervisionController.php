@@ -93,8 +93,8 @@ class SupervisionController extends BaseController {
 	        'supervisor_id' => 'required',
 	        'cargo' => 'required',
 	        'staff_id' => 'required',
-	        'fecha' => 'required',
-	        'frecuencia' => 'required',
+	        // 'fecha' => 'required',
+	        // 'frecuencia' => 'required',
 	    ];
 
 	    $messages = [
@@ -102,8 +102,8 @@ class SupervisionController extends BaseController {
 	        'supervisor_id.required' => 'Ups! El Supervisor es requerido',
 	       	'cargo.required' => 'Ups! El Cargo es requerido',
 	        'staff_id.required' => 'Ups! El Staff  es requerido ',
-	        'fecha.required' => 'Ups! El rango de fecha es requerido',
-	        'frecuencia.required' => 'Ups! La frecuencia es requerida',
+	        // 'fecha.required' => 'Ups! El rango de fecha es requerido',
+	        // 'frecuencia.required' => 'Ups! La frecuencia es requerida',
 	    ];
 
 	    $validator = Validator::make($request->all(), $rules, $messages);
@@ -116,13 +116,13 @@ class SupervisionController extends BaseController {
 
 	    else{
 
-	    	$fecha = explode(" - ", $request->fecha);	
+	    	// $fecha = explode(" - ", $request->fecha);	
 	    	$staff = explode("-", $request->staff_id);
 
-	    	$frecuencia = $request->frecuencia;
-	        $fecha_inicio = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[0] . ' 00:00:00');
-	        $fecha_inicio_original = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[0] . ' 00:00:00');
-	        $fecha_final = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[1] . ' 00:00:00');
+	    	// $frecuencia = $request->frecuencia;
+	     //    $fecha_inicio = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[0] . ' 00:00:00');
+	     //    $fecha_inicio_original = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[0] . ' 00:00:00');
+	     //    $fecha_final = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[1] . ' 00:00:00');
 	        
 	        $supervision = new Supervision;
 
@@ -130,463 +130,463 @@ class SupervisionController extends BaseController {
 	        $supervision->staff_id = $staff[0];
 	        $supervision->tipo_staff = $staff[1];
 	        $supervision->cargo = $request->cargo;
-	        $supervision->fecha_inicio = $fecha_inicio_original;
-	        $supervision->fecha_final = $fecha_final;
+	        // $supervision->fecha_inicio = $fecha_inicio_original;
+	        // $supervision->fecha_final = $fecha_final;
 	        $supervision->items_a_evaluar = $request->items_a_evaluar;
 
 	        if($supervision->save()){
 
-	        	$array = array();
-		        $dia = $fecha_inicio->dayOfWeek;
-		       	$status = false;
-		       	$entro = false;
-		       	$i = 0;
+	   //      	$array = array();
+		  //       $dia = $fecha_inicio->dayOfWeek;
+		  //      	$status = false;
+		  //      	$entro = false;
+		  //      	$i = 0;
 
-		        while($fecha_inicio <= $fecha_final){
+		  //       while($fecha_inicio <= $fecha_final){
 
-		        	$status = false;
-		        	$entro = false;
+		  //       	$status = false;
+		  //       	$entro = false;
 
-		        	//DOMINGO
+		  //       	//DOMINGO
 
-		        	if($request->dia_7){
+		  //       	if($request->dia_7){
 
-		        		if($dia == 0){
+		  //       		if($dia == 0){
 
-		        			if($fecha_inicio <= $fecha_final){
-		        				$fecha = $fecha_inicio->toDateString();
-		        				$array[$fecha] = '';
-		        			}
+		  //       			if($fecha_inicio <= $fecha_final){
+		  //       				$fecha = $fecha_inicio->toDateString();
+		  //       				$array[$fecha] = '';
+		  //       			}
 
-		        		}else{
+		  //       		}else{
 
-		        			while($status == false){
+		  //       			while($status == false){
 
-		        				if($fecha_inicio > $fecha_inicio_original){
+		  //       				if($fecha_inicio > $fecha_inicio_original){
 
-		        					$tipo = 1;
+		  //       					$tipo = 1;
 
-		        				}else{
-		        					$tipo = 2;
+		  //       				}else{
+		  //       					$tipo = 2;
 		        					
-		        				}
+		  //       				}
 
-		        				$dia = $fecha_inicio->dayOfWeek;
+		  //       				$dia = $fecha_inicio->dayOfWeek;
 
-		        				while($dia != 0){
+		  //       				while($dia != 0){
 
-			        				if($entro){
-		        						$fecha_inicio->addDay();
-		        					}else{
+			 //        				if($entro){
+		  //       						$fecha_inicio->addDay();
+		  //       					}else{
 
-				        				if($tipo == 1){
-				        					$fecha_inicio->subDay();
-				        				}else{
-				        					$fecha_inicio->addDay();
-				        				}
-			        				}
+				//         				if($tipo == 1){
+				//         					$fecha_inicio->subDay();
+				//         				}else{
+				//         					$fecha_inicio->addDay();
+				//         				}
+			 //        				}
 
-			        				$dia = $fecha_inicio->dayOfWeek;
+			 //        				$dia = $fecha_inicio->dayOfWeek;
 
-		        				}
+		  //       				}
 
-			        			if($fecha_inicio <= $fecha_final){
-			        				$fecha = $fecha_inicio->toDateString();
-			        				$array[$fecha] = '';
-			        				$status = true;
-			        			}else{
-			        				$status = true;
-			        			}
+			 //        			if($fecha_inicio <= $fecha_final){
+			 //        				$fecha = $fecha_inicio->toDateString();
+			 //        				$array[$fecha] = '';
+			 //        				$status = true;
+			 //        			}else{
+			 //        				$status = true;
+			 //        			}
 			        			
-		        			}
+		  //       			}
 		
-		        		}
+		  //       		}
 
-		        		$entro = true;
-		        	}
+		  //       		$entro = true;
+		  //       	}
 
-		        	//LUNES
+		  //       	//LUNES
 
-		        	$status = false;
+		  //       	$status = false;
 
-		        	if($request->dia_1){
+		  //       	if($request->dia_1){
 
-		        		if($dia == 1){
+		  //       		if($dia == 1){
 
-		        			if($fecha_inicio <= $fecha_final){
-		        				$fecha = $fecha_inicio->toDateString();
-		        				$array[$fecha] = '';
-		        			}
+		  //       			if($fecha_inicio <= $fecha_final){
+		  //       				$fecha = $fecha_inicio->toDateString();
+		  //       				$array[$fecha] = '';
+		  //       			}
 
-		        		}else{
+		  //       		}else{
 
-		        			while($status == false){
+		  //       			while($status == false){
 
-		        				if($fecha_inicio > $fecha_inicio_original){
+		  //       				if($fecha_inicio > $fecha_inicio_original){
 
-		        					$tipo = 1;
+		  //       					$tipo = 1;
 
-		        				}else{
-		        					$tipo = 2;
+		  //       				}else{
+		  //       					$tipo = 2;
 		        					
-		        				}
+		  //       				}
 
-		        				$dia = $fecha_inicio->dayOfWeek;
+		  //       				$dia = $fecha_inicio->dayOfWeek;
 
-		        				while($dia != 1){
+		  //       				while($dia != 1){
 
-			        				if($entro){
-		        						$fecha_inicio->addDay();
-		        					}else{
+			 //        				if($entro){
+		  //       						$fecha_inicio->addDay();
+		  //       					}else{
 
-				        				if($tipo == 1){
-				        					$fecha_inicio->subDay();
-				        				}else{
-				        					$fecha_inicio->addDay();
-				        				}
-			        				}
+				//         				if($tipo == 1){
+				//         					$fecha_inicio->subDay();
+				//         				}else{
+				//         					$fecha_inicio->addDay();
+				//         				}
+			 //        				}
 
-			        				$dia = $fecha_inicio->dayOfWeek;
+			 //        				$dia = $fecha_inicio->dayOfWeek;
 
-		        				}
+		  //       				}
 
-			        			if($fecha_inicio <= $fecha_final){
-			        				$fecha = $fecha_inicio->toDateString();
-			        				$array[$fecha] = '';
-			        				$status = true;
-			        			}else{
-			        				$status = true;
-			        			}
+			 //        			if($fecha_inicio <= $fecha_final){
+			 //        				$fecha = $fecha_inicio->toDateString();
+			 //        				$array[$fecha] = '';
+			 //        				$status = true;
+			 //        			}else{
+			 //        				$status = true;
+			 //        			}
 			        			
-		        			}
+		  //       			}
 		
-		        		}
+		  //       		}
 
-		        		$entro = true;
-		        	}
+		  //       		$entro = true;
+		  //       	}
 
-		        	//MARTES
+		  //       	//MARTES
 
-		        	$status = false;
+		  //       	$status = false;
 
-		        	if($request->dia_2){
+		  //       	if($request->dia_2){
 
-		        		if($dia == 2){
+		  //       		if($dia == 2){
 
-		        			if($fecha_inicio <= $fecha_final){
-		        				$fecha = $fecha_inicio->toDateString();
-		        				$array[$fecha] = '';
-		        			}
+		  //       			if($fecha_inicio <= $fecha_final){
+		  //       				$fecha = $fecha_inicio->toDateString();
+		  //       				$array[$fecha] = '';
+		  //       			}
 
-		        		}else{
+		  //       		}else{
 
-		        			while($status == false){
+		  //       			while($status == false){
 
-		        				if($fecha_inicio > $fecha_inicio_original){
+		  //       				if($fecha_inicio > $fecha_inicio_original){
 
-		        					$tipo = 1;
+		  //       					$tipo = 1;
 
-		        				}else{
-		        					$tipo = 2;
+		  //       				}else{
+		  //       					$tipo = 2;
 		        					
-		        				}
+		  //       				}
 
-		        				$dia = $fecha_inicio->dayOfWeek;
+		  //       				$dia = $fecha_inicio->dayOfWeek;
 
-		        				while($dia != 2){
+		  //       				while($dia != 2){
 
-			        				if($entro){
-		        						$fecha_inicio->addDay();
-		        					}else{
+			 //        				if($entro){
+		  //       						$fecha_inicio->addDay();
+		  //       					}else{
 
-				        				if($tipo == 1){
-				        					$fecha_inicio->subDay();
-				        				}else{
-				        					$fecha_inicio->addDay();
-				        				}
-			        				}
+				//         				if($tipo == 1){
+				//         					$fecha_inicio->subDay();
+				//         				}else{
+				//         					$fecha_inicio->addDay();
+				//         				}
+			 //        				}
 
-			        				$dia = $fecha_inicio->dayOfWeek;
+			 //        				$dia = $fecha_inicio->dayOfWeek;
 
-		        				}
+		  //       				}
 
-			        			if($fecha_inicio <= $fecha_final){
-			        				$fecha = $fecha_inicio->toDateString();
-			        				$array[$fecha] = '';
-			        				$status = true;
-			        			}else{
-			        				$status = true;
-			        			}
+			 //        			if($fecha_inicio <= $fecha_final){
+			 //        				$fecha = $fecha_inicio->toDateString();
+			 //        				$array[$fecha] = '';
+			 //        				$status = true;
+			 //        			}else{
+			 //        				$status = true;
+			 //        			}
 			        			
-		        			}
+		  //       			}
 		
-		        		}
+		  //       		}
 
-		        		$entro = true;
-		        	}
+		  //       		$entro = true;
+		  //       	}
 
-		        	//MIERCOLES
+		  //       	//MIERCOLES
 
-		        	$status = false;
+		  //       	$status = false;
 
-		        	if($request->dia_3){
+		  //       	if($request->dia_3){
 
-		        		if($dia == 3){
+		  //       		if($dia == 3){
 
-		        			if($fecha_inicio <= $fecha_final){
-		        				$fecha = $fecha_inicio->toDateString();
-		        				$array[$fecha] = '';
-		        			}
+		  //       			if($fecha_inicio <= $fecha_final){
+		  //       				$fecha = $fecha_inicio->toDateString();
+		  //       				$array[$fecha] = '';
+		  //       			}
 
-		        		}else{
+		  //       		}else{
 
-		        			while($status == false){
+		  //       			while($status == false){
 
-		        				if($fecha_inicio > $fecha_inicio_original){
+		  //       				if($fecha_inicio > $fecha_inicio_original){
 
-		        					$tipo = 1;
+		  //       					$tipo = 1;
 
-		        				}else{
-		        					$tipo = 2;
+		  //       				}else{
+		  //       					$tipo = 2;
 		        					
-		        				}
+		  //       				}
 
-		        				$dia = $fecha_inicio->dayOfWeek;
+		  //       				$dia = $fecha_inicio->dayOfWeek;
 
-		        				while($dia != 3){
+		  //       				while($dia != 3){
 
-			        				if($entro){
-		        						$fecha_inicio->addDay();
-		        					}else{
+			 //        				if($entro){
+		  //       						$fecha_inicio->addDay();
+		  //       					}else{
 
-				        				if($tipo == 1){
-				        					$fecha_inicio->subDay();
-				        				}else{
-				        					$fecha_inicio->addDay();
-				        				}
-			        				}
+				//         				if($tipo == 1){
+				//         					$fecha_inicio->subDay();
+				//         				}else{
+				//         					$fecha_inicio->addDay();
+				//         				}
+			 //        				}
 
-			        				$dia = $fecha_inicio->dayOfWeek;
+			 //        				$dia = $fecha_inicio->dayOfWeek;
 
-		        				}
+		  //       				}
 
-			        			if($fecha_inicio <= $fecha_final){
-			        				$fecha = $fecha_inicio->toDateString();
-			        				$array[$fecha] = '';
-			        				$status = true;
-			        			}else{
-			        				$status = true;
-			        			}
+			 //        			if($fecha_inicio <= $fecha_final){
+			 //        				$fecha = $fecha_inicio->toDateString();
+			 //        				$array[$fecha] = '';
+			 //        				$status = true;
+			 //        			}else{
+			 //        				$status = true;
+			 //        			}
 			        			
-		        			}
+		  //       			}
 		
-		        		}
+		  //       		}
 
-		        		$entro = true;
-		        	}
+		  //       		$entro = true;
+		  //       	}
 
-		        	//JUEVES
+		  //       	//JUEVES
 
-		        	$status = false;
+		  //       	$status = false;
 
-		        	if($request->dia_4){
+		  //       	if($request->dia_4){
 
-		        		if($dia == 4){
+		  //       		if($dia == 4){
 
-		        			if($fecha_inicio <= $fecha_final){
-		        				$fecha = $fecha_inicio->toDateString();
-		        				$array[$fecha] = '';
-		        			}
+		  //       			if($fecha_inicio <= $fecha_final){
+		  //       				$fecha = $fecha_inicio->toDateString();
+		  //       				$array[$fecha] = '';
+		  //       			}
 
-		        		}else{
+		  //       		}else{
 
-		        			while($status == false){
+		  //       			while($status == false){
 
-		        				if($fecha_inicio > $fecha_inicio_original){
+		  //       				if($fecha_inicio > $fecha_inicio_original){
 
-		        					$tipo = 1;
+		  //       					$tipo = 1;
 
-		        				}else{
-		        					$tipo = 2;
+		  //       				}else{
+		  //       					$tipo = 2;
 		        					
-		        				}
+		  //       				}
 
-		        				$dia = $fecha_inicio->dayOfWeek;
+		  //       				$dia = $fecha_inicio->dayOfWeek;
 
-		        				while($dia != 4){
+		  //       				while($dia != 4){
 
-			        				if($entro){
-		        						$fecha_inicio->addDay();
-		        					}else{
+			 //        				if($entro){
+		  //       						$fecha_inicio->addDay();
+		  //       					}else{
 
-				        				if($tipo == 1){
-				        					$fecha_inicio->subDay();
-				        				}else{
-				        					$fecha_inicio->addDay();
-				        				}
-			        				}
+				//         				if($tipo == 1){
+				//         					$fecha_inicio->subDay();
+				//         				}else{
+				//         					$fecha_inicio->addDay();
+				//         				}
+			 //        				}
 
-			        				$dia = $fecha_inicio->dayOfWeek;
+			 //        				$dia = $fecha_inicio->dayOfWeek;
 
-		        				}
+		  //       				}
 
-			        			if($fecha_inicio <= $fecha_final){
-			        				$fecha = $fecha_inicio->toDateString();
-			        				$array[$fecha] = '';
-			        				$status = true;
-			        			}else{
-			        				$status = true;
-			        			}
+			 //        			if($fecha_inicio <= $fecha_final){
+			 //        				$fecha = $fecha_inicio->toDateString();
+			 //        				$array[$fecha] = '';
+			 //        				$status = true;
+			 //        			}else{
+			 //        				$status = true;
+			 //        			}
 			        			
-		        			}
+		  //       			}
 		
-		        		}
+		  //       		}
 
-		        		$entro = true;
-		        	}
+		  //       		$entro = true;
+		  //       	}
 
-		        	//VIERNES
+		  //       	//VIERNES
 
-		        	$status = false;
+		  //       	$status = false;
 
-		        	if($request->dia_5){
+		  //       	if($request->dia_5){
 
-		        		if($dia == 5){
+		  //       		if($dia == 5){
 
-		        			if($fecha_inicio <= $fecha_final){
-		        				$fecha = $fecha_inicio->toDateString();
-		        				$array[$fecha] = '';
-		        			}
+		  //       			if($fecha_inicio <= $fecha_final){
+		  //       				$fecha = $fecha_inicio->toDateString();
+		  //       				$array[$fecha] = '';
+		  //       			}
 
-		        		}else{
+		  //       		}else{
 
-		        			while($status == false){
+		  //       			while($status == false){
 
-		        				if($fecha_inicio > $fecha_inicio_original){
+		  //       				if($fecha_inicio > $fecha_inicio_original){
 
-		        					$tipo = 1;
+		  //       					$tipo = 1;
 
-		        				}else{
-		        					$tipo = 2;
+		  //       				}else{
+		  //       					$tipo = 2;
 		        					
-		        				}
+		  //       				}
 
-		        				$dia = $fecha_inicio->dayOfWeek;
+		  //       				$dia = $fecha_inicio->dayOfWeek;
 
-		        				while($dia != 5){
+		  //       				while($dia != 5){
 
-			        				if($entro){
-		        						$fecha_inicio->addDay();
-		        					}else{
+			 //        				if($entro){
+		  //       						$fecha_inicio->addDay();
+		  //       					}else{
 
-				        				if($tipo == 1){
-				        					$fecha_inicio->subDay();
-				        				}else{
-				        					$fecha_inicio->addDay();
-				        				}
-			        				}
+				//         				if($tipo == 1){
+				//         					$fecha_inicio->subDay();
+				//         				}else{
+				//         					$fecha_inicio->addDay();
+				//         				}
+			 //        				}
 
-			        				$dia = $fecha_inicio->dayOfWeek;
+			 //        				$dia = $fecha_inicio->dayOfWeek;
 
-		        				}
+		  //       				}
 
-			        			if($fecha_inicio <= $fecha_final){
-			        				$fecha = $fecha_inicio->toDateString();
-			        				$array[$fecha] = '';
-			        				$status = true;
-			        			}else{
-			        				$status = true;
-			        			}
+			 //        			if($fecha_inicio <= $fecha_final){
+			 //        				$fecha = $fecha_inicio->toDateString();
+			 //        				$array[$fecha] = '';
+			 //        				$status = true;
+			 //        			}else{
+			 //        				$status = true;
+			 //        			}
 			        			
-		        			}
+		  //       			}
 		
-		        		}
+		  //       		}
 
-		        		$entro = true;
-		        	}
+		  //       		$entro = true;
+		  //       	}
 
-		        	//SABADO
+		  //       	//SABADO
 
-		        	$status = false;
+		  //       	$status = false;
 
-		        	if($request->dia_6){
+		  //       	if($request->dia_6){
 
-		        		if($dia == 6){
+		  //       		if($dia == 6){
 
-		        			if($fecha_inicio <= $fecha_final){
-		        				$fecha = $fecha_inicio->toDateString();
-		        				$array[$fecha] = '';
-		        			}
+		  //       			if($fecha_inicio <= $fecha_final){
+		  //       				$fecha = $fecha_inicio->toDateString();
+		  //       				$array[$fecha] = '';
+		  //       			}
 
-		        		}else{
+		  //       		}else{
 
-		        			while($status == false){
+		  //       			while($status == false){
 
-		        				if($fecha_inicio > $fecha_inicio_original){
+		  //       				if($fecha_inicio > $fecha_inicio_original){
 
-		        					$tipo = 1;
+		  //       					$tipo = 1;
 
-		        				}else{
-		        					$tipo = 2;
+		  //       				}else{
+		  //       					$tipo = 2;
 		        					
-		        				}
+		  //       				}
 
-		        				$dia = $fecha_inicio->dayOfWeek;
+		  //       				$dia = $fecha_inicio->dayOfWeek;
 
-		        				while($dia != 6){
+		  //       				while($dia != 6){
 
-			        				if($entro){
-		        						$fecha_inicio->addDay();
-		        					}else{
+			 //        				if($entro){
+		  //       						$fecha_inicio->addDay();
+		  //       					}else{
 
-				        				if($tipo == 1){
-				        					$fecha_inicio->subDay();
-				        				}else{
-				        					$fecha_inicio->addDay();
-				        				}
-			        				}
+				//         				if($tipo == 1){
+				//         					$fecha_inicio->subDay();
+				//         				}else{
+				//         					$fecha_inicio->addDay();
+				//         				}
+			 //        				}
 
-			        				$dia = $fecha_inicio->dayOfWeek;
+			 //        				$dia = $fecha_inicio->dayOfWeek;
 
-		        				}
+		  //       				}
 
-			        			if($fecha_inicio <= $fecha_final){
-			        				$fecha = $fecha_inicio->toDateString();
-			        				$array[$fecha] = '';
-			        				$status = true;
-			        			}else{
-			        				$status = true;
-			        			}
+			 //        			if($fecha_inicio <= $fecha_final){
+			 //        				$fecha = $fecha_inicio->toDateString();
+			 //        				$array[$fecha] = '';
+			 //        				$status = true;
+			 //        			}else{
+			 //        				$status = true;
+			 //        			}
 			        			
-		        			}
+		  //       			}
 		
-		        		}
+		  //       		}
 
-		        		$entro = true;
-		        	}
+		  //       		$entro = true;
+		  //       	}
 
-		        	if($frecuencia=='1'){
-	                   	$fecha_inicio->addWeek(); 
-	               	}elseif($frecuencia=="3"){
-	                   	$fecha_inicio->addMonth(); 
-	               	}else{
-	                   	$fecha_inicio->addDays(15); 
-	               	}
+		  //       	if($frecuencia=='1'){
+	   //                 	$fecha_inicio->addWeek(); 
+	   //             	}elseif($frecuencia=="3"){
+	   //                 	$fecha_inicio->addMonth(); 
+	   //             	}else{
+	   //                 	$fecha_inicio->addDays(15); 
+	   //             	}
 
-	               	$i++;
+	   //             	$i++;
 
-		        }	
+		  //       }	
 
-	        	foreach($array as $key=>$value) {
+	   //      	foreach($array as $key=>$value) {
 
-				    $horario = new HorarioSupervision;
+				//     $horario = new HorarioSupervision;
 
-			        $horario->supervision_id = $supervision->id;
-			        $horario->fecha = $key;
-			        $horario->supervisor_id = $request->supervisor_id;
+			 //        $horario->supervision_id = $supervision->id;
+			 //        $horario->fecha = $key;
+			 //        $horario->supervisor_id = $request->supervisor_id;
 
-			        $horario->save();
-				}
+			 //        $horario->save();
+				// }
 
 	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 	           

@@ -127,7 +127,7 @@
                                   </div>
                                </div>
 
-                               <div class="clearfix p-b-35"></div>
+     <!--                           <div class="clearfix p-b-35"></div>
 
                               <div class="col-sm-12">
                                 <label for="fecha" id="id-fecha">Rango de Fecha</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Define el rango de fecha" title="" data-original-title="Ayuda"></i>
@@ -262,7 +262,7 @@
 
                               @endforeach
 
-
+ -->
                         <div class="clearfix p-b-35"></div>
 
                     
