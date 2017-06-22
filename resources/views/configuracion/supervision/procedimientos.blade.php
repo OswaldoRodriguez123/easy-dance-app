@@ -301,6 +301,8 @@
                 processing: true,
                 serverSide: false,
                 pageLength: 25,  
+                bInfo: false,
+                bLengthChange: false,
                 order: [[0, 'asc']],
                 fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                   $('td:eq(0),td:eq(1),td:eq(2)', nRow).addClass( "text-center" );
@@ -335,6 +337,8 @@
                 processing: true,
                 serverSide: false,
                 pageLength: 25,  
+                bInfo: false,
+                bLengthChange: false,
                 order: [[0, 'asc']],
                 fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                     $('td:eq(0),td:eq(1),td:eq(2)', nRow).addClass( "text-center" );
@@ -369,6 +373,8 @@
                 processing: true,
                 serverSide: false,
                 pageLength: 25,  
+                bInfo: false,
+                bLengthChange: false,
                 order: [[0, 'asc']],
                 fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                     $('td:eq(0),td:eq(1),td:eq(2)', nRow).addClass( "text-center" );
@@ -546,7 +552,10 @@
         $("#add_session").click(function(){
 
             var datos = $( "#form_session" ).serialize(); 
-            procesando();
+            $("#add_session").attr("disabled","disabled");
+            $("#add_session").css({
+                "opacity": ("0.2")
+            });
             var route = route_agregar_session
             var token = $('input:hidden[name=_token]').val();
             limpiarMensaje();
@@ -588,7 +597,10 @@
                             var nType = 'danger';
                         }                       
 
-                        finprocesado();
+                        $("#add_session").removeAttr("disabled");
+                        $("#add_session").css({
+                            "opacity": ("1")
+                        });
 
 
                         notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
@@ -607,7 +619,10 @@
                             var nTitle="   Ups! "; 
                             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                         }                        
-                        finprocesado();
+                        $("#add_session").removeAttr("disabled");
+                        $("#add_session").css({
+                            "opacity": ("1")
+                        });
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');
                         var nIcons = $(this).attr('data-icon');
@@ -624,38 +639,51 @@
             var padre=$(this).parents('tr');
             var token = $('input:hidden[name=_token]').val();
             var id = $(this).closest('tr').attr('id');
-            $.ajax({
-                url: route_eliminar_session+id,
-                headers: {'X-CSRF-TOKEN': token},
-                type: 'POST',
-                dataType: 'json',                
-                success: function (data) {
-                    if(data.status=='OK'){
+            swal({   
+                title: "Desea eliminar este item?",   
+                text: "Confirmar eliminación!",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+                if (isConfirm) {
+                    $.ajax({
+                        url: route_eliminar_session+id,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',                
+                        success: function (data) {
+                            if(data.status=='OK'){
 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        var nType = 'success';
-                        var nTitle="Ups! ";
-                        var nMensaje="¡Excelente! Los campos se han eliminado satisfactoriamente";
+                                var nFrom = $(this).attr('data-from');
+                                var nAlign = $(this).attr('data-align');
+                                var nIcons = $(this).attr('data-icon');
+                                var nAnimIn = "animated flipInY";
+                                var nAnimOut = "animated flipOutY"; 
+                                var nType = 'success';
+                                var nTitle="Ups! ";
+                                var nMensaje="¡Excelente! Los campos se han eliminado satisfactoriamente";
 
-                        s.row(padre)
-                            .remove()
-                            .draw();              
-                    }else{
-                      swal(
-                        'Solicitud no procesada',
-                        'Ha ocurrido un error, intente nuevamente por favor',
-                        'error'
-                      );
-                    }
-                  },
-                error:function (xhr, ajaxOptions, thrownError){
-                    swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                                s.row(padre)
+                                    .remove()
+                                    .draw();              
+                            }else{
+                              swal(
+                                'Solicitud no procesada',
+                                'Ha ocurrido un error, intente nuevamente por favor',
+                                'error'
+                              );
+                            }
+                          },
+                        error:function (xhr, ajaxOptions, thrownError){
+                            swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                        }
+                    })
                 }
-            })
+            });
         });
 
         $("#save_session").click(function(){
@@ -745,7 +773,10 @@
         $("#add_fijo").click(function(){
 
             var datos = $( "#form_fijo" ).serialize(); 
-            procesando();
+            $("#add_fijo").attr("disabled","disabled");
+            $("#add_fijo").css({
+                "opacity": ("0.2")
+            });
             var route = route_agregar_fijo
             var token = $('input:hidden[name=_token]').val();
             limpiarMensaje();
@@ -791,7 +822,10 @@
                             var nType = 'danger';
                         }                       
 
-                        finprocesado();
+                        $("#add_fijo").removeAttr("disabled");
+                        $("#add_fijo").css({
+                            "opacity": ("1")
+                        });
 
 
                         notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
@@ -810,7 +844,10 @@
                             var nTitle="   Ups! "; 
                             var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                         }                        
-                        finprocesado();
+                        $("#add_fijo").removeAttr("disabled");
+                        $("#add_fijo").css({
+                            "opacity": ("1")
+                        });
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');
                         var nIcons = $(this).attr('data-icon');
@@ -827,48 +864,61 @@
             var padre=$(this).parents('tr');
             var token = $('input:hidden[name=_token]').val();
             var id = $(this).closest('tr').attr('id');
-            procesando();
-            $.ajax({
-                url: route_eliminar_fijo+id,
-                headers: {'X-CSRF-TOKEN': token},
-                type: 'POST',
-                dataType: 'json',                
-                success: function (data) {
-                    if(data.status=='OK'){
+            swal({   
+                title: "Desea eliminar la configuracion?",   
+                text: "Confirmar eliminación!",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+                if (isConfirm) {
+                    procesando();
+                    $.ajax({
+                        url: route_eliminar_fijo+id,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',                
+                        success: function (data) {
+                            if(data.status=='OK'){
 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        var nType = 'success';
-                        var nTitle="Ups! ";
-                        var nMensaje="¡Excelente! Los campos se han eliminado satisfactoriamente";
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                                var nFrom = $(this).attr('data-from');
+                                var nAlign = $(this).attr('data-align');
+                                var nIcons = $(this).attr('data-icon');
+                                var nAnimIn = "animated flipInY";
+                                var nAnimOut = "animated flipOutY"; 
+                                var nType = 'success';
+                                var nTitle="Ups! ";
+                                var nMensaje="¡Excelente! Los campos se han eliminado satisfactoriamente";
+                                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
 
-                        procedimiento_id = $('#procedimiento_id').val();
+                                procedimiento_id = $('#procedimiento_id').val();
 
-                        f.row(padre)
-                            .remove()
-                            .draw();    
+                                f.row(padre)
+                                    .remove()
+                                    .draw();    
 
-                        var cantidad = $("#"+procedimiento_id).closest('tr').find('td:eq(1)').text();
-                        cantidad_nueva = parseInt(cantidad) - 1; 
-                        $("#"+procedimiento_id).closest('tr').find('td:eq(1)').text(cantidad_nueva);    
-                        finprocesado();   
+                                var cantidad = $("#"+procedimiento_id).closest('tr').find('td:eq(1)').text();
+                                cantidad_nueva = parseInt(cantidad) - 1; 
+                                $("#"+procedimiento_id).closest('tr').find('td:eq(1)').text(cantidad_nueva);    
+                                finprocesado();   
 
-                    }else{
-                      swal(
-                        'Solicitud no procesada',
-                        'Ha ocurrido un error, intente nuevamente por favor',
-                        'error'
-                      );
-                    }
-                  },
-                error:function (xhr, ajaxOptions, thrownError){
-                    swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                            }else{
+                              swal(
+                                'Solicitud no procesada',
+                                'Ha ocurrido un error, intente nuevamente por favor',
+                                'error'
+                              );
+                            }
+                          },
+                        error:function (xhr, ajaxOptions, thrownError){
+                            swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                        }
+                    })
                 }
-            })
+            });
         });
 
         function limpiarMensaje(){

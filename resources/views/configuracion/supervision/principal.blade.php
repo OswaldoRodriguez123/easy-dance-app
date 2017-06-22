@@ -141,6 +141,8 @@
         processing: true,
         serverSide: false,
         pageLength: 25,
+        bInfo: false,
+        bLengthChange: false,
         //bPaginate: false,    
         order: [[0, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {

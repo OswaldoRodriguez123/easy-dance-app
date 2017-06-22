@@ -189,7 +189,7 @@ class ProcedimientoController extends BaseController {
     	                }
     	            }
 
-                    return response()->json(['mensaje' => '¡Excelente! Los campos se han eliminado satisfactoriamente', 'status' => 'OK', 'nombre' => $request->procedimiento_session, 'cantidad' => $cantidad, 'items' => $items, 200]);
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han eliminado satisfactoriamente', 'status' => 'OK', 'id' => $config_supervision->id, 'nombre' => $request->procedimiento_session, 'cantidad' => $cantidad, 'items' => $items, 200]);
 
                 }else{
                     return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
