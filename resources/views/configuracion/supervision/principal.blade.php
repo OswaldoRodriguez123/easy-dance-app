@@ -77,7 +77,7 @@
                                 ?>
                                  <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion">
                                     <td class="text-center previa">{{$supervision['nombre']}}</td>
-                                    <td class="text-center previa">{{$supervision['descripcion']}}</td>
+                                    <td class="text-center previa">{{ str_limit($supervision['descripcion'], $limit = 30, $end = '...') }}</td>
                                     <td class="text-center disabled"> <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 
