@@ -43,7 +43,40 @@
 
                         <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-money f-25"></i> Historial Administrativo</p>
                         <hr class="linea-morada">
-                                                              
+
+                        @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+
+                            <div class="col-md-offset-10">
+                              <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "pagar" id="pagar" style="opacity: 0.2" disabled> Pagar <i class="icon_a-pagar"></i></button>
+                            </div>
+
+                        @endif
+
+                        <div class="col-sm-5">
+                             <div class="form-group fg-line ">
+                                <div class="p-t-10">
+                                <label class="radio radio-inline m-r-20">
+                                    <input name="tipo" id="pendientes" value="0" type="radio" checked>
+                                    <i class="input-helper"></i>  
+                                    Pendientes por Pagar <i id="pendientes2" name="pendientes2" class="zmdi zmdi-forward zmdi-hc-fw  c-verde f-20"></i>
+                                </label>
+                                <label class="radio radio-inline m-r-20">
+                                    <input name="tipo" id="pagadas" value="1" type="radio">
+                                    <i class="input-helper"></i>  
+                                    Pagadas <i id="pagadas2" name="pagadas2" class="zmdi zmdi-money-box zmdi-hc-fw f-20"></i>
+                                </label>
+                                </div>
+                                
+                             </div>
+                            </div>  
+
+                            <div class="clearfix"></div>
+                            
+                            <div class="col-md-12">
+                              <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por cobrar : <span id="total">{{ number_format($total, 2) }}</span></span>
+                            </div>
+                            <br><br>
+                                                          
                         </div>
 
                         <div class="clearfix p-b-15"></div>
