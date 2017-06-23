@@ -86,7 +86,7 @@
                                     <td class="text-center previa">{{$supervision['supervisor']}}</td>
                                     <td class="text-center previa">{{$supervision['cargo']}}</td>
                                     <td class="text-center previa">{{$nombre_alumno}} {{$apellido_alumno}} </td>
-                                    <td class="text-center disabled"> 
+                                    <td class="text-center"> 
                                         <ul class="top-menu">
                                             <li class="dropdown" id="dropdown_{{$id}}">
                                                 <a href="#" id="dropdown_toggle_{{$id}}" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
@@ -101,18 +101,6 @@
                                                         <li class="hidden-xs">
                                                             <a href="{{url('/')}}/supervisiones/conceptos/{{$id}}"><i class="zmdi zmdi-plus f-20"></i> Conceptos a Evaluar</a>
                                                         </li>
-
-                                                        <!-- <li class="hidden-xs">
-                                                            <a href="{{url('/')}}/supervisiones/agenda/{{$id}}"><i class="zmdi zmdi-eye f-20"></i> Ver Agenda</a>
-                                                        </li>
-
-                                                        <li class="hidden-xs">
-                                                            <a href="{{url('/')}}/supervisiones/evaluar/{{$id}}"><i class="zmdi icon_a-examen f-20"></i> Evaluar</a>
-                                                        </li>
-
-                                                        <li class="hidden-xs">
-                                                            <a href="{{url('/')}}/supervisiones/evaluaciones/{{$id}}"><i class="zmdi zmdi-hourglass-alt f-20"></i> Historial</a>
-                                                        </li> -->
 
                                                         <li class="hidden-xs">
                                                             <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
@@ -154,6 +142,7 @@
 
         route_detalle="{{url('/')}}/supervisiones/detalle";
         route_operacion="{{url('/')}}/supervisiones/operaciones";
+        route_eliminar="{{url('/')}}/supervisiones/eliminar/";
 
         $(document).ready(function(){
 
@@ -223,6 +212,61 @@
         $('.table-responsive').on('hide.bs.dropdown', function () {
           $('.table-responsive').css( "overflow", "auto" );
         })
+
+         $('#tablelistar tbody').on('click', '.eliminar', function () {
+            var id = $(this).closest('tr').attr('id');
+            var element = this
+            swal({   
+                title: "Desea eliminar la supervisión",   
+                text: "Confirmar eliminación!",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+      if (isConfirm) {
+
+                    eliminar(id,element);
+      }
+            });
+        });
+      function eliminar(id,element){
+         var route = route_eliminar + id;
+         var token = "{{ csrf_token() }}"
+         procesando();
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'DELETE',
+                    dataType: 'json',
+                    success:function(respuesta){ 
+                        if(respuesta.status=="OK"){
+                            swal("Exito!","La supervisión ha sido eliminada!","success");
+
+                            t.row($(element).parents('tr') )
+                            .remove()
+                            .draw(); 
+                            finprocesado();
+                        }
+
+                    },
+                    error:function(msj){
+                                $("#msj-danger").fadeIn(); 
+                                var text="";
+                                console.log(msj);
+                                var merror=msj.responseJSON;
+                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                $("#msj-error").html(text);
+                                setTimeout(function(){
+                                         $("#msj-danger").fadeOut();
+                                        }, 3000);
+                                finprocesado();
+                                }
+                });
+      }
 
 
 
