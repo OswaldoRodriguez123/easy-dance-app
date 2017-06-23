@@ -109,6 +109,7 @@
                       </div>
                     </div>
                     <div class="col-sm-5">  
+
                       <input type="hidden" id="asistencia_id_alumno" name="asistencia_id_alumno" ></input>                          
                       <button type="button" class="btn-blanco btn m-r-10 f-16" id="permitir" name="permitir" > Permitir <i class="zmdi zmdi-check"></i></button>
                       <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -435,6 +436,7 @@
       route_agregar_asistencia_otros="{{url('/')}}/asistencia/agregar/otros";
       route_agregar_asistencia_instructor="{{url('/')}}/asistencia/agregar/instructor";
       route_agregar_asistencia_staff="{{url('/')}}/asistencia/agregar/staff";
+      route_historial = "{{url('/')}}/participante/alumno/historial/";
 
       var estatus = <?php echo json_encode($estatus);?>;
 
@@ -449,18 +451,6 @@
             serverSide: false,
             pageLength: 25,  
             order: [[2, 'asc']],
-            fnDrawCallback: function() {
-            if ("{{count($alumnosacademia)}}" < 25) {
-                  $('.dataTables_paginate').hide();
-                  $('#tablelistar_length').hide();
-              }else{
-                 $('.dataTables_paginate').show();
-              }
-            },
-            pageLength: 25,
-            language: {
-                  searchPlaceholder: "Buscar"
-            },
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
               $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
               $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","buscar(this)" );
@@ -1196,6 +1186,14 @@ $("#permitir_staff").on('click',function(){
 
   }
 
-    </script>
+  $(".historial").click(function(){
+      alumno_id = $('#asistencia_id_alumno').val();
+      if(alumno_id){
+        window.location = route_historial + alumno_id;
+      }
+      
+  }); 
+
+  </script>
 
 @stop

@@ -499,6 +499,7 @@
                                     <th class="text-center" data-column-id="precio_neto" data-order="desc">Precio (Neto)</th>
                                     <th class="text-center" data-column-id="impuesto" data-order="desc">Impuesto</th>
                                     <th class="text-center" data-column-id="importe_neto" data-order="desc">Importe (Neto)</th>
+                                    <th class="text-center" data-column-id="estatus" data-order="desc">Estatus</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc">Acciones</th>
                                 </tr>
                             </thead>
@@ -1102,10 +1103,11 @@
       var values = $('#promotor_id').val();
       var promotores = '';
       
-      for(var i = 0; i < values.length; i += 1) {
-        promotores = promotores + ',' + values[i];
+      if(values){
+        for(var i = 0; i < values.length; i += 1) {
+          promotores = promotores + ',' + values[i];
+        }
       }
-
 
       $.ajax({
           url: route,
@@ -1134,6 +1136,7 @@
                 ''+formatmoney(parseFloat(respuesta.array[0].precio_neto))+'',
                 ''+respuesta.array[0].impuesto+'',
                 ''+formatmoney(parseFloat(respuesta.array[0].importe_neto))+'',
+                ''+'<span class="c-youtube">Vencida</span>'+'',
                 '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
@@ -1406,6 +1409,12 @@
 
               $.each(respuesta.items, function (index, array) {
 
+                if(array[0].estatus == 0){
+                  estatus = '<span class="c-youtube">Vencida</span>'
+                }else{
+                  estatus = '<span>Por Cobrar</span>'
+                }
+
                 var rowId=array[0].id;
                 var rowNode=t.row.add( [
                 ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',  
@@ -1414,6 +1423,7 @@
                 ''+formatmoney(parseFloat(array[0].precio_neto))+'',
                 ''+array[0].impuesto+'',
                 ''+formatmoney(parseFloat(array[0].importe_neto))+'',
+                ''+estatus+'',
                 ''+'<i class="zmdi zmdi-delete f-20 p-r-10"></i>'+''
                 ] ).draw(false).node();
                 $( rowNode )
@@ -1495,11 +1505,6 @@
               $('#usuario_id').selectpicker('refresh');
 
               $('.modal').modal('hide');
-
-              $("#add").removeAttr("disabled");
-              $("#add").css({
-                "opacity": ("1")
-              });
            
 
             }else{

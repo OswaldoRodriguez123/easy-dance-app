@@ -55,6 +55,10 @@
                             @else
                                 <img class="i-logo" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
                             @endif
+
+                            <div class="clearfix m-b-20"></div>
+
+                            <span class="c-gray">Fecha: {{ \Carbon\Carbon::createFromFormat('Y-m-d',$factura->fecha)->format('d-m-Y')}}</span>
                         </div>
                         
                         <div class="card-body card-padding">
@@ -102,7 +106,7 @@
                                 <div class="col-xs-3">
                                     <div class="bgm-amber brd-2 p-15">
                                         <div class="c-white m-b-5">Número de Factura</div>
-                                        <h4 class="m-0 c-white f-300">{!! str_pad($facturas->numero_factura, 10, "0", STR_PAD_LEFT) !!}</h4>
+                                        <h4 class="m-0 c-white f-300">{!! str_pad($factura->numero_factura, 10, "0", STR_PAD_LEFT) !!}</h4>
                                     </div>
                                 </div>
                                 

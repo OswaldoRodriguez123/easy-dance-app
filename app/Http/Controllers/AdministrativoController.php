@@ -2320,7 +2320,7 @@ class AdministrativoController extends BaseController {
         $total = $subtotal + $impuesto;
 
         return view('administrativo.factura')->with([
-                'facturas'          => $factura, 
+                'factura'          => $factura, 
                 'usuario'           => $usuario, 
                 'academia'          => $academia, 
                 'subtotal'          => $subtotal, 
@@ -2506,9 +2506,18 @@ class AdministrativoController extends BaseController {
         $total = 0;
         $i = 0;
         $array = array();
+
         foreach($items_factura as $item_factura){
 
-            $array[] = array(['id' => $item_factura->id, 'item_id' => $item_factura->item_id , 'nombre' => $item_factura->nombre , 'tipo' => $item_factura->tipo, 'cantidad' => $item_factura->cantidad, 'precio_neto' => $item_factura->precio_neto, 'impuesto' => intval($item_factura->impuesto), 'importe_neto' => $item_factura->importe_neto]);
+            $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$item_factura->fecha_vencimiento);
+
+            if($fecha_vencimiento < Carbon::now()){
+                $estatus = 0;
+            }else{
+                $estatus = 1;
+            }
+
+            $array[] = array(['id' => $item_factura->id, 'item_id' => $item_factura->item_id , 'nombre' => $item_factura->nombre , 'tipo' => $item_factura->tipo, 'cantidad' => $item_factura->cantidad, 'precio_neto' => $item_factura->precio_neto, 'impuesto' => intval($item_factura->impuesto), 'importe_neto' => $item_factura->importe_neto, 'estatus' =>$estatus]);
 
             $total = $total + $item_factura['importe_neto'];
             $i = $i + 1;

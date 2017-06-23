@@ -53,8 +53,10 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="factura" data-type="numeric" data-order="asc">#</th>
-                                    <th class="text-center" data-column-id="fecha">Fecha</th>
+                                    <th id="factura" class="text-center" data-column-id="factura" data-order="asc">Factura</th>
+                                    <th class="text-center" data-column-id="cliente">Tipo de Pago</th>
+                                    <th class="text-center" data-column-id="concepto">Concepto</th>
+                                    <th class="text-center" data-column-id="fecha" id="fecha">Fecha de Vencimiento</th>
                                     <th class="text-center" data-column-id="total">Total</th>
                                     <th class="text-center" data-column-id="operacion">Acciones</th>
                                 </tr>
@@ -65,8 +67,11 @@
                                 <?php $id = $factura['id']; ?>
                                 <tr id="row_{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{str_pad($factura['numero_factura'], 10, "0", STR_PAD_LEFT)}}</td>
+                                    <td class="text-center previa">{{$factura['tipo_pago']}}</td>
+                                    <td class="text-center previa">{{ str_limit($factura['concepto'], $limit = 50, $end = '...') }}
+                                    </td>
                                     <td class="text-center previa">{{$factura['fecha']}}</td>
-                                    <td class="text-center previa">{{$factura['total']}}</td>
+                                    <td class="text-center previa">{{ number_format($factura['total'], 2, '.' , '.') }}</td>
                                     <td class="text-center"> <i data-toggle="modal" name="correo" id={{$id}} class="zmdi zmdi-email f-20 p-r-10"></i></td>
                                 </tr>
 

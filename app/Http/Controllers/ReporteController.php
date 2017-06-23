@@ -830,15 +830,17 @@ class ReporteController extends BaseController
                 }
 
                 if($deuda){
-                    $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
+                    $estatus = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
                 }else{
-                    $deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
+                    $estatus = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
+                    $deuda = 0;
                 }
 
                 $collection=collect($asistencia);     
                 $asistencia_array = $collection->toArray();
                 $asistencia_array['pertenece']=$pertenece;
                 $asistencia_array['deuda']=$deuda;
+                $asistencia_array['estatus']=$estatus;
                 $array[$asistencia->id] = $asistencia_array;
 
                 if($asistencia->sexo == 'F'){
@@ -846,8 +848,6 @@ class ReporteController extends BaseController
                 }else{
                     $hombres = $hombres + 1;
                 }
-
-                
             }
 
             $array_hombres = array('M', $hombres);
@@ -876,15 +876,17 @@ class ReporteController extends BaseController
                     ->first();
 
                     if($deuda){
-                        $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
+                        $estatus = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
                     }else{
-                        $deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
+                        $estatus = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
+                        $deuda = 0;
                     }
 
                     $collection=collect($inscripcion);     
                     $inasistencias_array = $collection->toArray();
                     $inasistencias_array['pertenece']=$pertenece;
                     $inasistencias_array['deuda']=$deuda;
+                    $inasistencias_array['estatus']=$estatus;
                     $inasistencias[$inscripcion->id] = $inasistencias_array;
 
                     if($inscripcion->sexo == 'F'){
@@ -939,17 +941,18 @@ class ReporteController extends BaseController
                     ->where('usuario_id', $inscripcion->alumno_id)
                 ->first();
 
-
                 if($deuda){
-                    $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
+                    $estatus = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
                 }else{
-                    $deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
+                    $estatus = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
+                    $deuda = 0;
                 }
 
                 $collection=collect($inscripcion);     
                 $asistencia_array = $collection->toArray();
                 $asistencia_array['pertenece']=$pertenece;
                 $asistencia_array['deuda']=$deuda;
+                $asistencia_array['estatus']=$estatus;
                 $asistencia_array['fecha']=$fecha;
                 $asistencia_array['hora']=$hora;
                 $array[$inscripcion->id] = $asistencia_array;
@@ -970,7 +973,6 @@ class ReporteController extends BaseController
                     $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
                         ->where('usuario_id', $asistencia->alumno_id)
                     ->first();
-
   
                     if($asistencia->sexo == 'M'){
                         $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
@@ -981,15 +983,17 @@ class ReporteController extends BaseController
                     }
                         
                     if($deuda){
-                        $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
+                        $estatus = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
                     }else{
-                        $deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
+                        $estatus = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
+                        $deuda = 0;
                     }
 
                     $collection=collect($asistencia);     
                     $asistencia_array = $collection->toArray();
                     $asistencia_array['pertenece']=$pertenece;
                     $asistencia_array['deuda']=$deuda;
+                    $asistencia_array['estatus']=$estatus;
                     $array['2-'.$asistencia->id] = $asistencia_array;
 
                 }

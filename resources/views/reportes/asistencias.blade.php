@@ -412,7 +412,7 @@
                         ''+array.nombre+ ' '+array.apellido+ '',
                         ''+array.identificacion+'',
                         ''+array.fecha_nacimiento+'',
-                        ''+array.deuda+'',
+                        ''+array.estatus+ ' ' + formatmoney(parseFloat(array.deuda))+'',
                         ''+array.clase_grupal_nombre+'',
                         ''+sexo+'',
                         ''+fecha+'',
@@ -570,6 +570,10 @@
         var route =route_detalle+"/"+id;
         window.location=route;
     }
+
+    function formatmoney(n) {
+        return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    } 
 
 </script>
 

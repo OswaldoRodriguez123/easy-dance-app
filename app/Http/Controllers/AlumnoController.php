@@ -724,19 +724,37 @@ class AlumnoController extends BaseController
         if($alumno){
 
 
-            $facturas = Factura::join('alumnos', 'facturas.usuario_id', '=', 'alumnos.id')
-                ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura', 'facturas.fecha as fecha', 'facturas.id')
-                ->where('alumnos.id', '=', $id)
-            ->get();
+            $facturas = Factura::where('usuario_id',$id)->where('usuario_tipo',1)->get();
 
             $array=array();
 
             foreach($facturas as $factura){
 
+                $tipos_pago = Pago::join('formas_pago', 'pagos.forma_pago', '=', 'formas_pago.id')
+                    ->where('factura_id', $factura->id)
+                ->get();
+
+                $pago = '';
+
+                if($tipos_pago){
+
+                    foreach($tipos_pago as $tipo_pago){
+
+                        if(!$pago){
+                            $pago = $tipo_pago->nombre;
+                        }
+                        
+                    }
+
+                }else{
+                    $pago = 'Efectivo';
+                }
+
                 $total = ItemsFactura::where('factura_id',$factura->id)->sum('importe_neto');
 
                 $collection=collect($factura);     
                 $factura_array = $collection->toArray();
+                $factura_array['tipo_pago']=$pago;
                 $factura_array['total']=$total;
                 $array[$factura->id] = $factura_array;
             }
