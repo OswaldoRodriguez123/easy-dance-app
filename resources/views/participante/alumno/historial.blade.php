@@ -88,9 +88,10 @@
                                 <tr>
                                     <th><input name="select_all" value="1" id="select_all" type="checkbox" /></th>
                                     <th id="factura" class="text-center" data-column-id="factura" data-order="asc">Factura</th>
-                                    <th class="text-center" data-column-id="cliente">Tipo de Pago</th>
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
-                                    <th class="text-center" data-column-id="fecha" id="fecha">Fecha de Vencimiento</th>
+                                    <th class="text-center" data-column-id="fecha">Fecha</th>
+                                    <th class="text-center" data-column-id="fecha_vencimiento">Fecha De Vencimiento</th>
+                                    <th class="text-center" data-column-id="estatus">Estatus</th>
                                     <th class="text-center" data-column-id="total">Total</th>
                                     <th class="text-center" data-column-id="operacion">Acciones</th>
                                 </tr>
@@ -99,7 +100,7 @@
 
                             @foreach ($facturas as $factura)
                                 <?php $id = $factura['id']; ?>
-                                <tr id="{{$id}}" class="seleccion" >
+                                <tr id="{{$id}}" class="seleccion" data-tipo="{{$factura['tipo']}}">
                                     <td class="text-center previa">
                                         <span id="tipo_{{$factura['id']}}" style="display: none">{{$factura['tipo']}}</span>
                                         @if($factura['tipo'] == 0)
@@ -107,12 +108,27 @@
                                         @endif
                                     </td>
                                     <td class="text-center previa">{{str_pad($factura['numero_factura'], 10, "0", STR_PAD_LEFT)}}</td>
-                                    <td class="text-center previa">{{$factura['tipo_pago']}}</td>
                                     <td class="text-center previa">{{ str_limit($factura['concepto'], $limit = 50, $end = '...') }}
                                     </td>
                                     <td class="text-center previa">{{$factura['fecha']}}</td>
+                                    <td class="text-center previa">{{$factura['fecha_vencimiento']}}</td>
+                                    <td class="text-center previa">
+                                        @if($factura['tipo'] == 0)
+                                            @if($factura['estatus'] == 0)
+                                                <span class="c-youtube">Vencida</span>
+                                            @else
+                                                <span>Por Pagar</span>
+                                            @endif
+                                        @else
+                                            <span>Pagada</span>
+                                        @endif
+                                    </td>
                                     <td class="text-center previa">{{ number_format($factura['total'], 2, '.' , '.') }}</td>
-                                    <td class="text-center"> <i data-toggle="modal" name="correo" id={{$id}} class="zmdi zmdi-email f-20 p-r-10"></i></td>
+                                    <td class="text-center"> 
+                                        @if($factura['tipo'] == 1)
+                                            <i id={{$id}} class="zmdi zmdi-email f-20 p-r-10"></i>
+                                        @endif
+                                    </td>
                                 </tr>
 
                             @endforeach 
@@ -154,6 +170,9 @@
                 processing: true,
                 serverSide: false,
                 pageLength: 25,
+                bLengthChange:false, 
+                bSort:false, 
+                bInfo:false, 
                 order: [[1, 'desc']],
                 language: {
                       searchPlaceholder: "Buscar"
@@ -189,9 +208,8 @@
             });
 
             $("#pendientes").prop("checked", true);
-            
-            document.getElementById('fecha').innerHTML = 'Fecha';
-            document.getElementById('factura').innerHTML = '#'; 
+            t.column(1).visible(false)
+            t.column(7).visible(false)
 
             t
             .columns(0)
@@ -209,34 +227,49 @@
 
             if ($(this).val()=='1') {
 
-              $( "#pendientes2" ).removeClass( "c-verde" );
-              $( "#pagadas2" ).addClass( "c-verde" );
+                t.column(1).visible(true)
+                t.column(4).visible(false)
+                t.column(5).visible(false)
+                t.column(7).visible(true)
 
-              $('#monto').css('opacity', '0');
-              $('#select_all').hide();
-              $('#pagar').hide();
-            } else  {
+                $( "#pendientes2" ).removeClass( "c-verde" );
+                $( "#pagadas2" ).addClass( "c-verde" );
 
-              $( "#pagadas2" ).removeClass( "c-verde" );
-              $( "#pendientes2" ).addClass( "c-verde" );
+                $('#monto').css('opacity', '0');
+                $('#select_all').hide();
+                $('#pagar').hide();
 
-              $('#monto').css('opacity', '1');
+            } else{
 
-              if("{{$usuario_tipo}}" != 2 || "{{$usuario_tipo}}" != 4)
-              {
-                $('#select_all').show();
-              }
+                t.column(1).visible(false)
+                t.column(4).visible(true)
+                t.column(5).visible(true)
+                t.column(7).visible(false)
 
-              $('#pagar').show();
+                $( "#pagadas2" ).removeClass( "c-verde" );
+                $( "#pendientes2" ).addClass( "c-verde" );
+
+                $('#monto').css('opacity', '1');
+
+                if("{{$usuario_tipo}}" != 2 || "{{$usuario_tipo}}" != 4){
+                    $('#select_all').show();
+                }
+
+                $('#pagar').show();
             }
         });
 
 
         function previa(t){
+            var row = $(t).closest('tr')
+            var tipo = row.data('tipo')
 
-            var id = $(t).closest('tr').attr('id');
-            var route =route_detalle+"/"+id;
-            window.location=route;
+            if(tipo == 1){
+                procesando();
+                var id = row.attr('id');
+                var route =route_detalle+"/"+id;
+                window.location=route;
+            }
         }
 
         function getChecked(){

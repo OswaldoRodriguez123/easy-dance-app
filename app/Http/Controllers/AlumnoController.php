@@ -756,13 +756,21 @@ class AlumnoController extends BaseController
                 $factura_array['tipo_pago']=$pago;
                 $factura_array['total']=$total;
                 $factura_array['tipo']=1;
-                $factura_array['estatus']=3;
+                $factura_array['fecha_vencimiento']='';
                 $array['1-'.$factura->id] = $factura_array;
             }
 
             $facturas = ItemsFacturaProforma::where('usuario_id',$id)->where('usuario_tipo',1)->get();
 
             foreach($facturas as $factura){
+
+                $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$factura->fecha_vencimiento);
+
+                if($fecha_vencimiento < Carbon::now()){
+                    $estatus = 0;
+                }else{
+                    $estatus = 1;
+                }
 
                 $total = $factura->importe_neto;
 
@@ -773,6 +781,7 @@ class AlumnoController extends BaseController
                 $factura_array['concepto']=$factura->nombre;
                 $factura_array['numero_factura']=$factura->id;
                 $factura_array['tipo']=0;
+                $factura_array['estatus']=$estatus;
                 $array['2-'.$factura->id] = $factura_array;
             }
 
