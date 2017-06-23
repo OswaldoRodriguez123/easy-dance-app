@@ -1059,6 +1059,8 @@ class AdministrativoController extends BaseController {
                                         $pago->fecha = Carbon::now()->toDateString();
                                         $pago->hora = Carbon::now()->toTimeString();
                                         $pago->academia_id = Auth::user()->academia_id;
+                                        $pago->cliente_id = $request->usuario_id;
+                                        $pago->cliente_tipo = $request->usuario_tipo;
 
                                         $pago->save();
                                     }
@@ -1076,6 +1078,8 @@ class AdministrativoController extends BaseController {
                                     $pago->fecha = Carbon::now()->toDateString();
                                     $pago->hora = Carbon::now()->toTimeString();
                                     $pago->academia_id = Auth::user()->academia_id;
+                                    $pago->cliente_id = $request->usuario_id;
+                                    $pago->cliente_tipo = $request->usuario_tipo;
 
                                     $pago->save();
                                     

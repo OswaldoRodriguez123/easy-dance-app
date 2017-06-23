@@ -16,6 +16,7 @@ use App\Comision;
 use App\User;
 use App\UsuarioTipo;
 use App\DiasDeSemana;
+use App\Alumno;
 use Mail;
 use DB;
 use Validator;
@@ -1079,7 +1080,20 @@ class StaffController extends BaseController
                 }else{
                     $servicio_producto = ConfigProductos::find($comision->servicio_producto_id);
                 }
+
                 if($servicio_producto){
+
+                    if($comision->cliente_tipo == 1){
+                        $usuario = Alumno::find($comision->cliente_id);
+                    }else{
+                        $usuario = Staff::find($comision->cliente_id);
+                    }
+
+                    if($usuario){
+                        $cliente = $usuario->nombre . ' ' . $usuario->apellido;
+                    }else{
+                        $cliente = '';
+                    }
 
                     $fecha = Carbon::createFromFormat('Y-m-d', $comision->fecha);
                     $i = $fecha->dayOfWeek;
@@ -1119,6 +1133,7 @@ class StaffController extends BaseController
                     
                     $comision_array['servicio_producto']=$servicio_producto->nombre;
                     $comision_array['dia']=$dia;
+                    $comision_array['cliente']=$cliente;
                     $array[$comision->id] = $comision_array;
                 }
             }
