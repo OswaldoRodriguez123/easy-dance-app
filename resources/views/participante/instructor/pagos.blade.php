@@ -229,79 +229,6 @@
             }
          });
 
-        $('#tablelistar tbody').on( 'click', 'i.icon_a-pagar', function () {
-            var id = $(this).closest('tr').attr('id');
-            window.location = route_gestion + id;
-        });
-
-        $('#tablelistar tbody').on( 'click', 'i.zmdi-email', function () {
-
-                var id = $(this).closest('tr').attr('id');
-                element = this;
-
-                swal({   
-                    title: "Desea re-enviar la factura por correo electrónico?",   
-                    text: "Confirmar re-envio!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Re-Enviar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true 
-                }, function(isConfirm){   
-          if (isConfirm) {
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-                        swal("Exito!","El correo ha sido enviado!","success");
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        enviar(id, element);
-          }
-                });
-            });
-      
-        function enviar(id, element){
-         var route = route_enviar + id;
-         var token = "{{ csrf_token() }}";
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    data:id,
-                    success:function(respuesta){
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          // finprocesado();
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
-
-                        }
-                    },
-                    error:function(msj){
-                                $("#msj-danger").fadeIn(); 
-                                var text="";
-                                console.log(msj);
-                                var merror=msj.responseJSON;
-                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                $("#msj-error").html(text);
-                                setTimeout(function(){
-                                         $("#msj-danger").fadeOut();
-                                        }, 3000);
-                                }
-                });
-      }
-
-      
     $("#pagar").click(function(){
 
       swal({   
@@ -390,31 +317,6 @@
         }
       });
     });
-
-    function limpiarMensaje(){
-      var campo = ["monto"];
-        fLen = campo.length;
-        for (i = 0; i < fLen; i++) {
-            $("#error-"+campo[i]+"_mensaje").html('');
-        }
-      }
-
-      function errores(merror){
-      var elemento="";
-      var contador=0;
-      $.each(merror, function (n, c) {
-      if(contador==0){
-      elemento=n;
-      }
-      contador++;
-
-       $.each(this, function (name, value) {              
-          var error=value;
-          $("#error-"+n+"_mensaje").html(error);             
-       });
-    });    
-
-  }
 
   function getChecked(){
       var checked = [];

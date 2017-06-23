@@ -723,10 +723,9 @@ class AlumnoController extends BaseController
 
         if($alumno){
 
+            $array=array();
 
             $facturas = Factura::where('usuario_id',$id)->where('usuario_tipo',1)->get();
-
-            $array=array();
 
             foreach($facturas as $factura){
 
@@ -756,10 +755,30 @@ class AlumnoController extends BaseController
                 $factura_array = $collection->toArray();
                 $factura_array['tipo_pago']=$pago;
                 $factura_array['total']=$total;
-                $array[$factura->id] = $factura_array;
+                $factura_array['tipo']=1;
+                $factura_array['estatus']=3;
+                $array['1-'.$factura->id] = $factura_array;
             }
 
-            return view('participante.alumno.historial')->with(['facturas' => $array, 'alumno' => $alumno]);
+            $facturas = ItemsFacturaProforma::where('usuario_id',$id)->where('usuario_tipo',1)->get();
+
+            foreach($facturas as $factura){
+
+                $total = $factura->importe_neto;
+
+                $collection=collect($factura);     
+                $factura_array = $collection->toArray();
+                $factura_array['tipo_pago']='';
+                $factura_array['total']=$total;
+                $factura_array['concepto']=$factura->nombre;
+                $factura_array['numero_factura']=$factura->id;
+                $factura_array['tipo']=0;
+                $array['2-'.$factura->id] = $factura_array;
+            }
+
+            $total = ItemsFacturaProforma::where('usuario_id',$id)->where('usuario_tipo',1)->sum('importe_neto');
+
+            return view('participante.alumno.historial')->with(['facturas' => $array, 'alumno' => $alumno, 'total' => $total]);
 
         }else{
             return redirect("participante/alumno"); 

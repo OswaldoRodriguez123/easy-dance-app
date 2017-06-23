@@ -73,7 +73,7 @@
                             <div class="clearfix"></div>
                             
                             <div class="col-md-12">
-                              <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por cobrar : <span id="total">{{ number_format($total, 2) }}</span></span>
+                              <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por pagar : <span id="total">{{ number_format($total, 2) }}</span></span>
                             </div>
                             <br><br>
                                                           
@@ -86,6 +86,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th><input name="select_all" value="1" id="select_all" type="checkbox" /></th>
                                     <th id="factura" class="text-center" data-column-id="factura" data-order="asc">Factura</th>
                                     <th class="text-center" data-column-id="cliente">Tipo de Pago</th>
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
@@ -98,7 +99,13 @@
 
                             @foreach ($facturas as $factura)
                                 <?php $id = $factura['id']; ?>
-                                <tr id="row_{{$id}}" class="seleccion" >
+                                <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">
+                                        <span id="tipo_{{$factura['id']}}" style="display: none">{{$factura['tipo']}}</span>
+                                        @if($factura['tipo'] == 0)
+                                            <input name="select_check" id="select_check_{{$factura['id']}}" type="checkbox" />
+                                        @endif
+                                    </td>
                                     <td class="text-center previa">{{str_pad($factura['numero_factura'], 10, "0", STR_PAD_LEFT)}}</td>
                                     <td class="text-center previa">{{$factura['tipo_pago']}}</td>
                                     <td class="text-center previa">{{ str_limit($factura['concepto'], $limit = 50, $end = '...') }}
@@ -132,97 +139,214 @@
 
 @section('js') 
             
-        <script type="text/javascript">
-            route_detalle="{{url('/')}}/administrativo/factura";
-            route_gestion="{{url('/')}}/administrativo/pagos/gestion/";
+    <script type="text/javascript">
+
+        route_detalle="{{url('/')}}/administrativo/factura";
+        route_gestion="{{url('/')}}/administrativo/pagos/gestion/";
 
         $(document).ready(function(){
 
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25,
-        order: [[0, 'desc']],
-        fnDrawCallback: function() {
-          $('.dataTables_paginate').show();
-          /*if ($('#tablelistar tr').length < 25) {
-              $('.dataTables_paginate').hide();
-          }
-          else{
-             $('.dataTables_paginate').show();
-          }*/
-        },
-        pageLength: 25,
-        paging: false,
-        language: {
-              searchPlaceholder: "Buscar"
-        },
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
-
-        });
-    
-
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
+            t=$('#tablelistar').DataTable({
+                "columnDefs": [ {
+                    "targets": [ 0 ],
+                    "orderable": false
+                } ],
+                processing: true,
+                serverSide: false,
+                pageLength: 25,
+                order: [[1, 'desc']],
+                language: {
+                      searchPlaceholder: "Buscar"
+                },
+                fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+                },
+                language: {
+                                processing:     "Procesando ...",
+                                search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                                searchPlaceholder: "BUSCAR",
+                                lengthMenu:     "Mostrar _MENU_ Registros",
+                                info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                                infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                                infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                                infoPostFix:    "",
+                                loadingRecords: "...",
+                                zeroRecords:    "No se encontraron registros coincidentes",
+                                emptyTable:     "No hay datos disponibles en la tabla",
+                                paginate: {
+                                    first:      "Primero",
+                                    previous:   "Anterior",
+                                    next:       "Siguiente",
+                                    last:       "Ultimo"
+                                },
+                                aria: {
+                                    sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                    sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                                }
+                            }
 
             });
 
+            $("#pendientes").prop("checked", true);
+            
+            document.getElementById('fecha').innerHTML = 'Fecha';
+            document.getElementById('factura').innerHTML = '#'; 
+
+            t
+            .columns(0)
+            .search(0)
+            .draw();
+        });
+
+        $('input[name="tipo"]').on('change', function(){
+
+
+            t
+            .columns(0)
+            .search($(this).val())
+            .draw();
+
+            if ($(this).val()=='1') {
+
+              $( "#pendientes2" ).removeClass( "c-verde" );
+              $( "#pagadas2" ).addClass( "c-verde" );
+
+              $('#monto').css('opacity', '0');
+              $('#select_all').hide();
+              $('#pagar').hide();
+            } else  {
+
+              $( "#pagadas2" ).removeClass( "c-verde" );
+              $( "#pendientes2" ).addClass( "c-verde" );
+
+              $('#monto').css('opacity', '1');
+
+              if("{{$usuario_tipo}}" != 2 || "{{$usuario_tipo}}" != 4)
+              {
+                $('#select_all').show();
+              }
+
+              $('#pagar').show();
+            }
+        });
+
+
         function previa(t){
 
-            var row = $(t).closest('tr').attr('id');
-            var id_alumno = row.split('_');
-            var route =route_detalle+"/"+id_alumno[1];
+            var id = $(t).closest('tr').attr('id');
+            var route =route_detalle+"/"+id;
             window.location=route;
         }
 
-         $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-         });
+        function getChecked(){
+          var checked = [];
+          $('#tablelistar tr').each(function (i, row) {
+              var actualrow = $(row);
+              checkbox = actualrow.find('input:checked').val();
+              if(checkbox == 'on')
+              {
+                var row = $(actualrow).attr('id');
+                var temp = row.split('_');
+                var id = temp[1];
+                checked[i] = id;
+              }
+          });
 
-        $('#tablelistar tbody').on( 'click', 'i.icon_a-pagar', function () {
-            var id = $(this).closest('tr').attr('id');
-            window.location = route_gestion + id;
-        });
+          return checked;
+        }
+
+        $("#pagar").click(function(){
+
+                var route = route_gestion;
+                var token = "{{ csrf_token() }}";
+                procesando();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data:"&items_factura="+getChecked()+"&usuario_id=1-{{$alumno->id}}",
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          
+                            window.location = route_gestion;
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        // finprocesado();
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
+
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        finprocesado();
+                        $(".cancelar").removeAttr("disabled");
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+            });
+
+        $('#select_all').on('click', function(){
+          // Check/uncheck all checkboxes in the table
+          var rows = t.rows({ 'search': 'applied' }).nodes();
+          $('input[type="checkbox"]', rows).prop('checked', this.checked);
+
+          values = getChecked();
+
+          if(values.length > 0){
+
+            $("#pagar").removeAttr("disabled");
+            $("#pagar").css({
+              "opacity": ("1")
+            });
+
+          }else{
+            $("#pagar").attr("disabled","disabled");
+            $("#pagar").css({
+              "opacity": ("0.2")
+            });
+          }
+
+       });
 
         </script>
 

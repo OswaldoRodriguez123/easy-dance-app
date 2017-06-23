@@ -766,16 +766,6 @@ class SupervisionController extends BaseController {
         	
         	$staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
         	$config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
-        	$dias_de_semana = DiasDeSemana::all();
-	        $config_supervision = ConfiguracionSupervision::join('config_supervision', 'config_supervision.config_supervision_id', '=', 'configuracion_supervisiones.id')
-	        	->select('config_supervision.*', 'configuracion_supervisiones.cargo_id')
-	        	->where('configuracion_supervisiones.academia_id', Auth::user()->academia_id)
-	        ->get();
-
-        	$fecha_inicio = Carbon::createFromFormat('Y-m-d H:i:s', $supervision->fecha_inicio . ' 00:00:00')->format('d/m/Y');
-        	$fecha_final = Carbon::createFromFormat('Y-m-d H:i:s', $supervision->fecha_final . ' 00:00:00')->format('d/m/Y');
-
-        	$items_a_evaluar = explode(',', $supervision->items_a_evaluar);
 
         	$instructores = Instructor::where('academia_id', Auth::user()->academia_id)->get();
 
@@ -793,7 +783,7 @@ class SupervisionController extends BaseController {
 
 	        }
 
-            return view('supervisiones.planilla')->with(['staffs' => $staffs, 'supervision' => $supervision, 'supervisor' => $supervisor, 'config_staff' => $config_staff, 'id' => $id, 'dias_de_semana' => $dias_de_semana, 'config_supervision' => $config_supervision, 'fecha_inicio' => $fecha_inicio, 'fecha_final' => $fecha_final, 'cargo_a_supervisar' => $cargo_a_supervisar, 'staff_a_supervisar' => $staff_a_supervisar, 'items_a_evaluar' => $items_a_evaluar, 'cargo_id' => $cargo_id, 'staffs_instructores' => $array]);
+            return view('supervisiones.planilla')->with(['staffs' => $staffs, 'supervision' => $supervision, 'supervisor' => $supervisor, 'config_staff' => $config_staff, 'id' => $id, 'cargo_a_supervisar' => $cargo_a_supervisar, 'staff_a_supervisar' => $staff_a_supervisar, 'cargo_id' => $cargo_id, 'staffs_instructores' => $array]);
 
         }else{
            return redirect("supervisiones");

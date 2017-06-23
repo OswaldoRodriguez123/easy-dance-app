@@ -224,185 +224,6 @@
                 </div>
             </div>
             <!-- END -->  
-            
-
-            <div class="modal fade" id="modalItems-Supervision" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title bg-gris-oscuro">Editar Supervisión<button type="button" data-dismiss="modal" class="close c-blanco f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="edit_items_supervision" id="edit_items_supervision"  >
-                          <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                          <input type="hidden" id="items_a_evaluar" name="items_a_evaluar" value="{{$supervision->items_a_evaluar}}">
-                          <input type="hidden" name="id" id="id" value="{{$supervision->id}}"></input>
-                        <div class="modal-body">
-                          <div class="row p-l-10 p-r-10">
-                            <div class="panel-body">
-
-                              @foreach($config_supervision as $supervision)
-
-                                <div class="cargo_{{$supervision->cargo_id}} supervisiones col-sm-6 m-b-20" style="display:none">
-
-                                    <span class="f-15 f-700">
-
-                                      @if(strlen($supervision->nombre) <= 20)
-
-                                        {{$supervision->nombre}}
-
-                                      @else
-                                        {{ str_limit($supervision->nombre, $limit = 20, $end = '') }} <span class="mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{$supervision->nombre}}" title="" data-original-title="Ayuda">... <span class="c-azul">Ver mas</span>
-                                      @endif
-   
-
-                                    </span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i>
-
-                                    <input type="text" id="supervision_{{$supervision->id}}" name="supervision_{{$supervision->id}}" value="" hidden="hidden">
-
-                                    <div class="toggle-switch m-l-10" data-ts-color="purple">
-
-                                        <span class="p-r-10 f-700 f-15">No</span>
-
-                                        <input class="supervision" id="switch2_{{$supervision->id}}" data-id = "{{$supervision->id}}" data-name="{{$supervision->nombre}}" type="checkbox" hidden="hidden">
-                                      
-                                        <label for="switch2_{{$supervision->id}}" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                    </div>
-
-                                </div>
-
-                              @endforeach
-
-
-                              <div class="clearfix p-b-35"></div>
-
-
-                            </div>
-                            <div class="modal-footer p-b-20 m-b-20">
-                              <div class="col-sm-12 text-left">
-                                <div class="procesando hidden">
-                                <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                                <div class="preloader pls-purple">
-                                    <svg class="pl-circular" viewBox="25 25 50 50">
-                                        <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                    </svg>
-                                </div>
-                                </div>
-                              </div>
-                              <div class="col-sm-12">                            
-
-                                <a class="btn-blanco m-r-5 f-16 guardar" id="guardar" href="#" data-formulario="edit_items_supervision" data-update="items" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-                              </div>
-                            </div>
-
-                          </div>
-                      </div></form>
-                    </div>
-                  </div>
-              </div>
-
-                <div class="modal fade" id="modalFecha-Supervision" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Supervisión<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="edit_fecha_supervision" id="edit_fecha_supervision"  >
-                          <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                          <input type="hidden" name="id" id="id" value="{{$supervision->id}}"></input>
-
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-12">
-                                <div class="form-group">
-                                    <div class="form-group fg-line">
-                                    <label for="fecha_inicio">Rango de Fecha</label>
-                                    <div class="fg-line">
-                                        <input type="text" id="fecha" name="fecha" class="form-control pointer" placeholder="Selecciona la fecha">
-                                    </div>
-                                 </div>
-                                    <div class="has-error" id="error-fecha">
-                                      <span >
-                                          <small id="error-fecha_mensaje" class="help-block error-span" ></small>                                           
-                                      </span>
-                                    </div>
-                                </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-                     
-                                    
-                              <div class="col-sm-6">
-                   
-                                <label for="cargo" id="id-frecuencia">Frecuencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda" data-trigger="hover" data-toggle="popover" data-placement="bottom" data-content="Indícale al sistema la frecuencia de de las supervisiones" title="" data-original-title="Ayuda"></i>
-
-
-                                <div class="fg-line">
-                                  <div class="select">
-                                    <select class="selectpicker bs-select-hidden" name="frecuencia" id="frecuencia" data-live-search="true" disabled>
-                                      <option value="">Selecciona</option>
-                                      <option value="1">Semanal</option>
-                                      <option value="2">Quincenal</option>
-                                      <option value="3">Mensual</option>  
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="has-error" id="error-frecuencia">
-                                  <span >
-                                    <small class="help-block error-span" id="error-frecuencia_mensaje" ></small>                                           
-                                  </span>
-                                </div>
-                              </div>
-                            
-                             <div class="clearfix p-b-35"></div>
-
-                              @foreach( $dias_de_semana as $dia)
-                                <div class="col-sm-3">
-                                  <input type="text" id="dia_{{$dia->id}}" name="dia_{{$dia->id}}" value="" hidden="hidden">
-
-                                  <span class="f-20 f-700 p-r-10">{{$dia->nombre}}</span>
-                                </div>
-
-                                <div class="col-sm-9">
-                                  <div class="toggle-switch" data-ts-color="purple">
-                                    <span class="p-r-10 f-700 f-16">No</span>
-
-                                    <input class="frecuencia" id="switch_{{$dia->id}}" data-name="switch_{{$dia->id}}" type="checkbox" hidden="hidden">
-
-                                    <label for="switch_{{$dia->id}}" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-
-                                  </div>
-                                </div>
-
-                                <div class="clearfix p-b-15"></div>
-
-                              @endforeach
-                              
-
-                               <div class="clearfix"></div> 
-                               
-                           </div>
-                           
-                        </div>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-12 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-12">                            
-
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_fecha_supervision" data-update="fecha" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                            </div>
-                        </div></form>
-                    </div>
-                </div>
-            </div>
 
             <section id="content">
                 <div class="container">
@@ -458,9 +279,7 @@
                                   <hr></hr>
                                   
                  
-                                  <a class="" href="{{url('/')}}/supervisiones/agenda/{{$id}}"><i class="zmdi zmdi-eye f-20 m-r-10 boton red sa-warning" name="Ver Agenda" data-original-title="Ver Agenda" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <a class="" href="{{url('/')}}/supervisiones/evaluar/{{$id}}"><i class="icon_a icon_a-examen f-20 m-r-10 boton red sa-warning" name="Evaluar" data-original-title="Evaluar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <a class="" href="{{url('/')}}/supervisiones/evaluaciones/{{$id}}"><i class="zmdi zmdi-hourglass-alt f-20 m-r-10 boton red sa-warning" name="Historial" data-original-title="Historial" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a class="" href="{{url('/')}}/supervisiones/conceptos/{{$id}}"><i class="zmdi zmdi-plus f-20 m-r-10 boton red sa-warning" name="conceptos" data-original-title="Conceptos a Evaluar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
@@ -478,7 +297,7 @@
 					           	<div class="col-sm-9">
 
                          <div class="col-sm-12">
-                              <p class="text-center opaco-0-8 f-22">Datos de la Valoración</p>
+                              <p class="text-center opaco-0-8 f-22">Datos de la Supervisión</p>
                           </div>
 
                           <div class="col-sm-12">
@@ -486,7 +305,7 @@
                             <tr class="detalle" data-toggle="modal" href="#modalSupervisor-Supervision">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-supervisor_id" class="zmdi {{ empty($supervisor) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_a-examen f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_f-staff f-22"></i> </span>
                                <span class="f-14">Supervisor</span>
                              </td>
                              <td class="f-14 m-l-15"><span id="supervision-supervisor_id">{{$supervisor}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
@@ -494,7 +313,7 @@
                             <tr class="detalle" data-toggle="modal" href="#modalCargo-Supervision">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cargo" class="zmdi {{ empty($cargo_a_supervisar) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_a-examen f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_f-staff f-22"></i> </span>
                                <span class="f-14">Cargo a Supervisar</span>
                              </td>
                              <td class="f-14 m-l-15"><span id="supervision-cargo">{{$cargo_a_supervisar}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
@@ -502,31 +321,12 @@
                             <tr class="detalle" data-toggle="modal" href="#modalStaff-Supervision">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-staff_id" class="zmdi {{ empty($staff_a_supervisar) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_a-examen f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_f-staff f-22"></i> </span>
                                <span class="f-14">Staff a Supervisar</span>
                              </td>
                              <td class="f-14 m-l-15"><span id="supervision-staff_id">{{$staff_a_supervisar}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalFecha-Supervision">
-
-                             <td width="50%"> 
-                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha" class="zmdi  {{ empty($fecha_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                              
-                              <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
-                              <span class="f-14">Rango de Fecha</span>
-                             </td>
-                             <td class="f-14 m-l-15"><span id="supervision-fecha">{{$fecha_inicio}} - {{$fecha_final}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalItems-Supervision">
-
-                             <td width="50%"> 
-                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-items" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>                              
-                              <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
-                              <span class="f-14">Ítems a evaluar</span>
-                             </td>
-                             <td class="f-14 m-l-15"> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
-                             
-                            
+                    
                            </table>
 
                           
@@ -556,8 +356,8 @@
     route_principal="{{url('/')}}/supervisiones";
 
     var checkbox;
-    var items = <?php echo json_encode($items_a_evaluar);?>;
-    var config_supervision = <?php echo json_encode($config_supervision);?>;
+    // var items = <php echo json_encode($items_a_evaluar);>;
+    // var config_supervision = <php echo json_encode($config_supervision);>;
     var inputs = $('.supervision');
 
     $(document).ready(function(){
