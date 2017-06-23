@@ -816,7 +816,7 @@ class ReporteController extends BaseController
 
                 $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
                     ->where('usuario_id', $asistencia->alumno_id)
-                ->first();
+                ->sum('importe_neto');
 
                 if($pertenece){
                     $pertenece = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
@@ -873,7 +873,7 @@ class ReporteController extends BaseController
 
                     $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
                         ->where('usuario_id', $inscripcion->alumno_id)
-                    ->first();
+                    ->sum('importe_neto');
 
                     if($deuda){
                         $estatus = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
@@ -939,7 +939,7 @@ class ReporteController extends BaseController
 
                 $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
                     ->where('usuario_id', $inscripcion->alumno_id)
-                ->first();
+                ->sum('importe_neto');
 
                 if($deuda){
                     $estatus = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
@@ -972,7 +972,7 @@ class ReporteController extends BaseController
 
                     $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
                         ->where('usuario_id', $asistencia->alumno_id)
-                    ->first();
+                    ->sum('importe_neto');
   
                     if($asistencia->sexo == 'M'){
                         $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
@@ -1937,7 +1937,7 @@ class ReporteController extends BaseController
 
             $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
                 ->where('usuario_id', $asistencia->alumno_id)
-            ->first();
+            ->sum('importe_neto');
 
             if($deuda){
                 $deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
