@@ -73,7 +73,7 @@
                             <div class="clearfix"></div>
                             
                             <div class="col-md-12">
-                              <span id="monto" class ="f-700 f-16 opaco-0-8">Pendiente por pagar : <span id="total">{{ number_format($total, 2) }}</span></span>
+                              <span class ="f-700 f-16 opaco-0-8"><span id="tipo_pago">Pendiente por pagar</span> : <span id="total">{{ number_format($total_deuda, 2) }}</span></span>
                             </div>
                             <br><br>
                                                           
@@ -217,6 +217,11 @@
             .draw();
         });
 
+
+        function formatmoney(n) {
+            return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+        } 
+
         $('input[name="tipo"]').on('change', function(){
 
 
@@ -227,6 +232,10 @@
 
             if ($(this).val()=='1') {
 
+                $('#tipo_pago').text('Pagado')
+
+                $('#total').text(formatmoney(parseFloat("{{$total_pago}}")))
+
                 t.column(1).visible(true)
                 t.column(4).visible(false)
                 t.column(5).visible(false)
@@ -235,11 +244,14 @@
                 $( "#pendientes2" ).removeClass( "c-verde" );
                 $( "#pagadas2" ).addClass( "c-verde" );
 
-                $('#monto').css('opacity', '0');
                 $('#select_all').hide();
                 $('#pagar').hide();
 
             } else{
+
+                $('#tipo_pago').text('Pendiente por pagar')
+
+                $('#total').text(formatmoney(parseFloat("{{$total_deuda}}")))
 
                 t.column(1).visible(false)
                 t.column(4).visible(true)
@@ -248,8 +260,6 @@
 
                 $( "#pagadas2" ).removeClass( "c-verde" );
                 $( "#pendientes2" ).addClass( "c-verde" );
-
-                $('#monto').css('opacity', '1');
 
                 if("{{$usuario_tipo}}" != 2 || "{{$usuario_tipo}}" != 4){
                     $('#select_all').show();
