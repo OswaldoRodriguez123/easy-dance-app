@@ -16,6 +16,7 @@ use App\ConfigSupervision;
 use App\ConfiguracionSupervision;
 use App\HorarioSupervision;
 use App\DetalleSupervisionEvaluacion;
+use App\ConfigSupervisionEvaluacion;
 use App\SupervisionEvaluacion;
 use App\SupervisionProcedimiento;
 use App\Academia;
@@ -30,7 +31,7 @@ class SupervisionController extends BaseController {
 
         $supervisiones = Supervision::join('staff', 'staff.id', '=', 'supervisiones.staff_id')
         	->join('config_staff', 'supervisiones.cargo', '=', 'config_staff.id')
-            ->select('staff.*', 'supervisiones.supervisor_id', 'supervisiones.fecha_inicio', 'supervisiones.fecha_final', 'config_staff.nombre as cargo', 'supervisiones.id')
+            ->select('staff.*', 'supervisiones.supervisor_id', 'config_staff.nombre as cargo', 'supervisiones.id')
             ->where('staff.academia_id', Auth::user()->academia_id)
         ->get();
 
@@ -1268,7 +1269,10 @@ class SupervisionController extends BaseController {
     {   
     	Session::put('id_supervision_evaluacion', $id);
 
-        $supervision = Supervision::find($id);
+        $supervision = ConfigSupervisionEvaluacion::join('supervisiones', 'config_supervisiones_evaluaciones.supervision_id', '=', 'supervisiones.id')
+        	->select('config_supervisiones_evaluaciones.*', 'supervisiones.tipo_staff', 'supervisiones.supervisor_id', 'supervisiones.staff_id')
+        	->where('config_supervisiones_evaluaciones.id',$id)
+        ->first();
 
         if($supervision){
         	
@@ -1293,19 +1297,15 @@ class SupervisionController extends BaseController {
 	    		$supervisor = '';
 	    	}
 
-	    	$procedimientos = explode(',', $supervision->items_a_evaluar);
 	    	$array = array();
 	    	$numero_de_items = 0;
 
-	    	foreach($procedimientos as $procedimiento){
-	    		$items_a_evaluar = SupervisionProcedimiento::where('config_supervision_id',$procedimiento)->get();
-	    		if($items_a_evaluar){
-	    			foreach($items_a_evaluar as $item){
-	    				$array[] = $item->nombre;
-	    				$numero_de_items++;
-	    			}
-	    		}
-	    	}
+    		$items_a_evaluar = SupervisionProcedimiento::where('config_supervision_id',$supervision->procedimiento_id)->get();
+
+			foreach($items_a_evaluar as $item){
+				$array[] = $item->nombre;
+				$numero_de_items++;
+			}
 
             $hoy = Carbon::now()->format('d-m-Y');
             $academia = Academia::find(Auth::user()->academia_id);
@@ -1380,7 +1380,8 @@ class SupervisionController extends BaseController {
     {
         $id_evaluacion = Session::get('id_supervision_evaluacion');
 
-        $evaluaciones= SupervisionEvaluacion::join('supervisiones', 'supervision_evaluacion.supervision_id', '=', 'supervisiones.id')
+        $evaluaciones= SupervisionEvaluacion::join('config_supervisiones_evaluaciones', 'supervision_evaluacion.supervision_id', '=', 'config_supervisiones_evaluaciones.id')
+        	->join('supervisiones', 'config_supervisiones_evaluaciones.supervision_id', '=', 'supervisiones.id')
             ->join('staff', 'supervisiones.staff_id', '=', 'staff.id')
             ->select('supervision_evaluacion.*','staff.nombre', 'staff.apellido')
             ->where('staff.academia_id', '=' ,  Auth::user()->academia_id)
@@ -1411,10 +1412,11 @@ class SupervisionController extends BaseController {
     public function evaluaciones_por_supervision($id)
     {
 
-        $evaluaciones= SupervisionEvaluacion::join('supervisiones', 'supervision_evaluacion.supervision_id', '=', 'supervisiones.id')
+        $evaluaciones= SupervisionEvaluacion::join('config_supervisiones_evaluaciones', 'supervision_evaluacion.supervision_id', '=', 'config_supervisiones_evaluaciones.id')
+        	->join('supervisiones', 'config_supervisiones_evaluaciones.supervision_id', '=', 'supervisiones.id')
             ->join('staff', 'supervisiones.staff_id', '=', 'staff.id')
             ->select('supervision_evaluacion.*','staff.nombre', 'staff.apellido')
-            ->where('supervisiones.id', '=' ,  $id)
+            ->where('config_supervisiones_evaluaciones.id', '=' ,  $id)
         ->get();
 
         $array = array();
@@ -1456,20 +1458,23 @@ class SupervisionController extends BaseController {
 
         //DATOS DE ENCABEZADO
         
-        $evaluacion = SupervisionEvaluacion::join('supervisiones', 'supervision_evaluacion.supervision_id','=','supervisiones.id')
+        $evaluacion = SupervisionEvaluacion::join('config_supervisiones_evaluaciones', 'supervision_evaluacion.supervision_id', '=', 'config_supervisiones_evaluaciones.id')
+        	->join('supervisiones', 'config_supervisiones_evaluaciones.supervision_id', '=', 'supervisiones.id')
     		->join('staff', 'supervisiones.supervisor_id','=','staff.id')
 	        ->join('config_staff', 'supervisiones.cargo','=','config_staff.id')
 	        ->select('supervisiones.*', 'config_staff.nombre as cargo', 'staff.nombre', 'staff.apellido', 'supervision_evaluacion.total', 'supervision_evaluacion.porcentaje')
 	        ->where('supervision_evaluacion.id', $id)
         ->first();
         
-        $staff = SupervisionEvaluacion::join('supervisiones', 'supervision_evaluacion.supervision_id','=','supervisiones.id')
+        $staff = SupervisionEvaluacion::join('config_supervisiones_evaluaciones', 'supervision_evaluacion.supervision_id', '=', 'config_supervisiones_evaluaciones.id')
+        	->join('supervisiones', 'config_supervisiones_evaluaciones.supervision_id', '=', 'supervisiones.id')
     		->join('staff', 'supervisiones.staff_id','=','staff.id')
             ->select('staff.*')
             ->where('supervision_evaluacion.id','=',$id)
         ->first();
 
-        $academia = SupervisionEvaluacion::join('supervisiones', 'supervision_evaluacion.supervision_id','=','supervisiones.id')
+        $academia = SupervisionEvaluacion::join('config_supervisiones_evaluaciones', 'supervision_evaluacion.supervision_id', '=', 'config_supervisiones_evaluaciones.id')
+        	->join('supervisiones', 'config_supervisiones_evaluaciones.supervision_id', '=', 'supervisiones.id')
 			->join('staff', 'supervisiones.staff_id','=','staff.id')
 			->join('academias', 'staff.academia_id','=','academias.id')
             ->select('academias.*')
@@ -1491,9 +1496,14 @@ class SupervisionController extends BaseController {
     }
 
     public function destroy($id)
-    {
+    {	
+    	$config_supervisiones = ConfigSupervisionEvaluacion::where('supervision_id',$id)->get();
 
-    	$horarios = HorarioSupervision::where('supervision_id',$id)->delete();
+    	foreach($config_supervisiones as $configuracion){
+    		$horarios = HorarioSupervision::where('supervision_id',$configuracion->id)->delete();
+    		$configuracion->delete();
+    	}
+    	
         $supervision = Supervision::find($id);
         
         if($supervision->delete()){
@@ -1503,28 +1513,48 @@ class SupervisionController extends BaseController {
         }
     }
 
+    public function deleteConcepto($id)
+    {
+
+    	$config_supervisiones = ConfigSupervisionEvaluacion::find($id);
+    	$horarios = HorarioSupervision::where('supervision_id',$id)->delete();
+ 
+        if($config_supervisiones->delete()){
+            return response()->json(['mensaje' => '¡Excelente! La supervision se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
     public function agenda($id){
 
-    	$activas = array();
-    	$finalizadas = array();
+    	$supervision = ConfigSupervisionEvaluacion::find($id);
 
-    	$horarios = HorarioSupervision::join('staff', 'staff.id', '=', 'horarios_supervision.supervisor_id')
-    		->select('horarios_supervision.*', 'staff.nombre', 'staff.apellido')
-    		->where('supervision_id',$id)
-    	->get();
+    	if($supervision){
 
-    	foreach($horarios as $horario){
+	    	$activas = array();
+	    	$finalizadas = array();
 
-    		$fecha = Carbon::createFromFormat('Y-m-d',$horario->fecha);
+	    	$horarios = HorarioSupervision::join('staff', 'staff.id', '=', 'horarios_supervision.supervisor_id')
+	    		->select('horarios_supervision.*', 'staff.nombre', 'staff.apellido')
+	    		->where('supervision_id',$id)
+	    	->get();
 
-	    	if($fecha >= Carbon::now()){
-	            $activas[]=array("id" => $horario->id,"fecha"=>$fecha->toDateString(), "supervisor" => $horario->nombre . ' ' . $horario->apellido);
-	        }else{
-	            $finalizadas[]=array("id" => $horario->id,"fecha"=>$fecha->toDateString(), "supervisor" => $horario->nombre . ' ' . $horario->apellido);
+	    	foreach($horarios as $horario){
+
+	    		$fecha = Carbon::createFromFormat('Y-m-d',$horario->fecha);
+
+		    	if($fecha >= Carbon::now()){
+		            $activas[]=array("id" => $horario->id,"fecha"=>$fecha->toDateString(), "supervisor" => $horario->nombre . ' ' . $horario->apellido);
+		        }else{
+		            $finalizadas[]=array("id" => $horario->id,"fecha"=>$fecha->toDateString(), "supervisor" => $horario->nombre . ' ' . $horario->apellido);
+		        }
 	        }
-        }
 
-        return view('supervisiones.agenda')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'id'=>$id]);
+	        return view('supervisiones.agenda')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'id'=> $supervision->supervision_id]);
+        }else{
+        	return redirect("supervisiones");
+        }
     }
 
     public function eliminadas()
@@ -1600,6 +1630,550 @@ class SupervisionController extends BaseController {
 	        
     	}
 
+    }
+
+    public function conceptos($id)
+	{
+		$supervision = Supervision::find($id);
+
+		if($supervision){
+
+			$dias_de_semana = DiasDeSemana::all();
+
+	        $procedimientos = ConfigSupervision::join('configuracion_supervisiones', 'configuracion_supervisiones.id', '=', 'config_supervision.config_supervision_id')
+	        	->select('config_supervision.*')
+	        	->where('configuracion_supervisiones.cargo_id',$supervision->cargo)
+	        ->get();
+
+	        $config_supervisiones = ConfigSupervisionEvaluacion::join('config_supervision', 'config_supervisiones_evaluaciones.procedimiento_id', '=', 'config_supervision.id')
+	        	->select('config_supervisiones_evaluaciones.*', 'config_supervision.nombre')
+	        	->where('config_supervisiones_evaluaciones.supervision_id',$id)
+	        ->get();
+
+	        $array = array();
+
+	        foreach($config_supervisiones as $configuracion){
+
+	        	$items_a_evaluar = SupervisionProcedimiento::where('config_supervision_id',$configuracion->procedimiento_id)->count();
+
+	        	$collection=collect($configuracion);   
+
+	            $configuracion_array = $collection->toArray();
+	            $configuracion_array['items']=$items_a_evaluar;
+	            $array[$configuracion->id] = $configuracion_array;
+	        }
+
+			return view('supervisiones.conceptos')->with(['config_supervisiones' => $array, 'procedimientos' => $procedimientos, 'dias_de_semana' => $dias_de_semana, 'id' => $id]);
+		}else{
+			return redirect("supervisiones");
+		}
+	}
+
+	public function storeConcepto(Request $request)
+	{
+
+	    $rules = [
+	        'procedimiento_id' => 'required',
+	        'fecha' => 'required',
+	        'frecuencia' => 'required',
+	    ];
+
+	    $messages = [
+
+	        'procedimiento_id.required' => 'Ups! El Concepto a Evaluar es requerido',
+	        'fecha.required' => 'Ups! El rango de fecha es requerido',
+	        'frecuencia.required' => 'Ups! La frecuencia es requerida',
+	    ];
+
+	    $validator = Validator::make($request->all(), $rules, $messages);
+
+	    if ($validator->fails()){
+
+	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+	    }
+
+	    else{
+
+	    	$fecha = explode(" - ", $request->fecha);	
+
+	    	$frecuencia = $request->frecuencia;
+	        $fecha_inicio = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[0] . ' 00:00:00');
+	        $fecha_inicio_original = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[0] . ' 00:00:00');
+	        $fecha_final = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[1] . ' 00:00:00');
+	        
+	        $supervision = new ConfigSupervisionEvaluacion;
+
+	        $supervision->supervision_id = $request->id;
+	        $supervision->procedimiento_id = $request->procedimiento_id;
+	        $supervision->fecha_inicio = $fecha_inicio_original;
+	        $supervision->fecha_final = $fecha_final;
+
+	        if($supervision->save()){
+
+	        	$array = array();
+		        $dia = $fecha_inicio->dayOfWeek;
+		       	$status = false;
+		       	$entro = false;
+		       	$i = 0;
+
+		        while($fecha_inicio <= $fecha_final){
+
+		        	$status = false;
+		        	$entro = false;
+
+		        	//DOMINGO
+
+		        	if($request->dia_7){
+
+		        		if($dia == 0){
+
+		        			if($fecha_inicio <= $fecha_final){
+		        				$fecha = $fecha_inicio->toDateString();
+		        				$array[$fecha] = '';
+		        			}
+
+		        		}else{
+
+		        			while($status == false){
+
+		        				if($fecha_inicio > $fecha_inicio_original){
+
+		        					$tipo = 1;
+
+		        				}else{
+		        					$tipo = 2;
+		        					
+		        				}
+
+		        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				while($dia != 0){
+
+			        				if($entro){
+		        						$fecha_inicio->addDay();
+		        					}else{
+
+				        				if($tipo == 1){
+				        					$fecha_inicio->subDay();
+				        				}else{
+				        					$fecha_inicio->addDay();
+				        				}
+			        				}
+
+			        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				}
+
+			        			if($fecha_inicio <= $fecha_final){
+			        				$fecha = $fecha_inicio->toDateString();
+			        				$array[$fecha] = '';
+			        				$status = true;
+			        			}else{
+			        				$status = true;
+			        			}
+			        			
+		        			}
+		
+		        		}
+
+		        		$entro = true;
+		        	}
+
+		        	//LUNES
+
+		        	$status = false;
+
+		        	if($request->dia_1){
+
+		        		if($dia == 1){
+
+		        			if($fecha_inicio <= $fecha_final){
+		        				$fecha = $fecha_inicio->toDateString();
+		        				$array[$fecha] = '';
+		        			}
+
+		        		}else{
+
+		        			while($status == false){
+
+		        				if($fecha_inicio > $fecha_inicio_original){
+
+		        					$tipo = 1;
+
+		        				}else{
+		        					$tipo = 2;
+		        					
+		        				}
+
+		        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				while($dia != 1){
+
+			        				if($entro){
+		        						$fecha_inicio->addDay();
+		        					}else{
+
+				        				if($tipo == 1){
+				        					$fecha_inicio->subDay();
+				        				}else{
+				        					$fecha_inicio->addDay();
+				        				}
+			        				}
+
+			        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				}
+
+			        			if($fecha_inicio <= $fecha_final){
+			        				$fecha = $fecha_inicio->toDateString();
+			        				$array[$fecha] = '';
+			        				$status = true;
+			        			}else{
+			        				$status = true;
+			        			}
+			        			
+		        			}
+		
+		        		}
+
+		        		$entro = true;
+		        	}
+
+		        	//MARTES
+
+		        	$status = false;
+
+		        	if($request->dia_2){
+
+		        		if($dia == 2){
+
+		        			if($fecha_inicio <= $fecha_final){
+		        				$fecha = $fecha_inicio->toDateString();
+		        				$array[$fecha] = '';
+		        			}
+
+		        		}else{
+
+		        			while($status == false){
+
+		        				if($fecha_inicio > $fecha_inicio_original){
+
+		        					$tipo = 1;
+
+		        				}else{
+		        					$tipo = 2;
+		        					
+		        				}
+
+		        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				while($dia != 2){
+
+			        				if($entro){
+		        						$fecha_inicio->addDay();
+		        					}else{
+
+				        				if($tipo == 1){
+				        					$fecha_inicio->subDay();
+				        				}else{
+				        					$fecha_inicio->addDay();
+				        				}
+			        				}
+
+			        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				}
+
+			        			if($fecha_inicio <= $fecha_final){
+			        				$fecha = $fecha_inicio->toDateString();
+			        				$array[$fecha] = '';
+			        				$status = true;
+			        			}else{
+			        				$status = true;
+			        			}
+			        			
+		        			}
+		
+		        		}
+
+		        		$entro = true;
+		        	}
+
+		        	//MIERCOLES
+
+		        	$status = false;
+
+		        	if($request->dia_3){
+
+		        		if($dia == 3){
+
+		        			if($fecha_inicio <= $fecha_final){
+		        				$fecha = $fecha_inicio->toDateString();
+		        				$array[$fecha] = '';
+		        			}
+
+		        		}else{
+
+		        			while($status == false){
+
+		        				if($fecha_inicio > $fecha_inicio_original){
+
+		        					$tipo = 1;
+
+		        				}else{
+		        					$tipo = 2;
+		        					
+		        				}
+
+		        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				while($dia != 3){
+
+			        				if($entro){
+		        						$fecha_inicio->addDay();
+		        					}else{
+
+				        				if($tipo == 1){
+				        					$fecha_inicio->subDay();
+				        				}else{
+				        					$fecha_inicio->addDay();
+				        				}
+			        				}
+
+			        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				}
+
+			        			if($fecha_inicio <= $fecha_final){
+			        				$fecha = $fecha_inicio->toDateString();
+			        				$array[$fecha] = '';
+			        				$status = true;
+			        			}else{
+			        				$status = true;
+			        			}
+			        			
+		        			}
+		
+		        		}
+
+		        		$entro = true;
+		        	}
+
+		        	//JUEVES
+
+		        	$status = false;
+
+		        	if($request->dia_4){
+
+		        		if($dia == 4){
+
+		        			if($fecha_inicio <= $fecha_final){
+		        				$fecha = $fecha_inicio->toDateString();
+		        				$array[$fecha] = '';
+		        			}
+
+		        		}else{
+
+		        			while($status == false){
+
+		        				if($fecha_inicio > $fecha_inicio_original){
+
+		        					$tipo = 1;
+
+		        				}else{
+		        					$tipo = 2;
+		        					
+		        				}
+
+		        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				while($dia != 4){
+
+			        				if($entro){
+		        						$fecha_inicio->addDay();
+		        					}else{
+
+				        				if($tipo == 1){
+				        					$fecha_inicio->subDay();
+				        				}else{
+				        					$fecha_inicio->addDay();
+				        				}
+			        				}
+
+			        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				}
+
+			        			if($fecha_inicio <= $fecha_final){
+			        				$fecha = $fecha_inicio->toDateString();
+			        				$array[$fecha] = '';
+			        				$status = true;
+			        			}else{
+			        				$status = true;
+			        			}
+			        			
+		        			}
+		
+		        		}
+
+		        		$entro = true;
+		        	}
+
+		        	//VIERNES
+
+		        	$status = false;
+
+		        	if($request->dia_5){
+
+		        		if($dia == 5){
+
+		        			if($fecha_inicio <= $fecha_final){
+		        				$fecha = $fecha_inicio->toDateString();
+		        				$array[$fecha] = '';
+		        			}
+
+		        		}else{
+
+		        			while($status == false){
+
+		        				if($fecha_inicio > $fecha_inicio_original){
+
+		        					$tipo = 1;
+
+		        				}else{
+		        					$tipo = 2;
+		        					
+		        				}
+
+		        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				while($dia != 5){
+
+			        				if($entro){
+		        						$fecha_inicio->addDay();
+		        					}else{
+
+				        				if($tipo == 1){
+				        					$fecha_inicio->subDay();
+				        				}else{
+				        					$fecha_inicio->addDay();
+				        				}
+			        				}
+
+			        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				}
+
+			        			if($fecha_inicio <= $fecha_final){
+			        				$fecha = $fecha_inicio->toDateString();
+			        				$array[$fecha] = '';
+			        				$status = true;
+			        			}else{
+			        				$status = true;
+			        			}
+			        			
+		        			}
+		
+		        		}
+
+		        		$entro = true;
+		        	}
+
+		        	//SABADO
+
+		        	$status = false;
+
+		        	if($request->dia_6){
+
+		        		if($dia == 6){
+
+		        			if($fecha_inicio <= $fecha_final){
+		        				$fecha = $fecha_inicio->toDateString();
+		        				$array[$fecha] = '';
+		        			}
+
+		        		}else{
+
+		        			while($status == false){
+
+		        				if($fecha_inicio > $fecha_inicio_original){
+
+		        					$tipo = 1;
+
+		        				}else{
+		        					$tipo = 2;
+		        					
+		        				}
+
+		        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				while($dia != 6){
+
+			        				if($entro){
+		        						$fecha_inicio->addDay();
+		        					}else{
+
+				        				if($tipo == 1){
+				        					$fecha_inicio->subDay();
+				        				}else{
+				        					$fecha_inicio->addDay();
+				        				}
+			        				}
+
+			        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				}
+
+			        			if($fecha_inicio <= $fecha_final){
+			        				$fecha = $fecha_inicio->toDateString();
+			        				$array[$fecha] = '';
+			        				$status = true;
+			        			}else{
+			        				$status = true;
+			        			}
+			        			
+		        			}
+		
+		        		}
+
+		        		$entro = true;
+		        	}
+
+		        	if($frecuencia=='1'){
+	                   	$fecha_inicio->addWeek(); 
+	               	}elseif($frecuencia=="3"){
+	                   	$fecha_inicio->addMonth(); 
+	               	}else{
+	                   	$fecha_inicio->addDays(15); 
+	               	}
+
+	               	$i++;
+
+		        }	
+
+		        $tmp_supervision = Supervision::find($request->id);
+
+	        	foreach($array as $key=>$value) {
+
+				    $horario = new HorarioSupervision;
+
+			        $horario->supervision_id = $supervision->id;
+			        $horario->fecha = $key;
+			        $horario->supervisor_id = $tmp_supervision->supervisor_id;
+
+			        $horario->save();
+				}
+
+				$procedimiento = ConfigSupervision::find($request->procedimiento_id);
+				$cantidad = SupervisionProcedimiento::where('config_supervision_id',$procedimiento->id)->count();
+
+	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'id' => $supervision->id, 'nombre' => $procedimiento->nombre, 'cantidad' => $cantidad, 'fecha' => $request->fecha, 'status' => 'OK', 200]);
+	           
+	        }else{
+	            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+	        }
+	    }
     }
     
 }

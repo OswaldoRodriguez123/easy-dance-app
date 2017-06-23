@@ -1059,6 +1059,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('supervisiones/configuracion/agregarsupervision','SupervisionController@agregar_supervision_session');
 		Route::post('supervisiones/restablecer/{id}','SupervisionController@restore');
 		Route::delete('supervisiones/eliminar_permanentemente/{id}','SupervisionController@eliminar_permanentemente');
+		Route::get('supervisiones/conceptos/{id}', 'SupervisionController@conceptos');
+		Route::post('supervisiones/conceptos/agregar', 'SupervisionController@storeConcepto');
+		Route::delete('supervisiones/conceptos/eliminar/{id}', 'SupervisionController@deleteConcepto');
 
 		//CONFIG SUPERVISIONES
 
