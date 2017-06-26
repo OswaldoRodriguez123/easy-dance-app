@@ -13,6 +13,7 @@ class AlterRenameConfigSupervisionIdToProcedimientoIdItemsProcedimientosTable ex
     public function up()
     {
         Schema::table('items_procedimientos', function (Blueprint $table) {
+            $table->dropForeign('supervisiones_procedimientos_config_supervision_id_foreign');
             $table->renameColumn('config_supervision_id', 'procedimiento_id');
         });
 

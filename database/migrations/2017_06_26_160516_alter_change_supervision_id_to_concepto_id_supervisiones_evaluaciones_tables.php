@@ -13,6 +13,7 @@ class AlterChangeSupervisionIdToConceptoIdSupervisionesEvaluacionesTables extend
     public function up()
     {
         Schema::table('supervisiones_evaluaciones', function (Blueprint $table) {
+            $table->dropForeign('supervision_evaluacion_supervision_id_foreign');
             $table->renameColumn('supervision_id', 'concepto_id');
         });
 

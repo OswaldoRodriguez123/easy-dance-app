@@ -13,6 +13,7 @@ class AlterChangeSupervisionIdToConceptoIdHorariosSupervisionesTable extends Mig
     public function up()
     {
         Schema::table('horarios_supervision', function (Blueprint $table) {
+            $table->dropForeign('horarios_supervision_supervision_id_foreign');
             $table->renameColumn('supervision_id', 'concepto_id');
         });
 
