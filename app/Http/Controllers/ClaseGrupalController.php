@@ -3981,10 +3981,10 @@ class ClaseGrupalController extends BaseController {
             if($clase_grupal)
             {
 
-                $horario = HorarioClaseGrupal::where('clase_grupal_id',$clase_grupal->clase_grupal_id)->get();
+                $horario = HorarioClaseGrupal::where('clase_grupal_id',$clase_grupal->clase_grupal_id)->first();
                 $fecha_clase = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
 
-                if($horarios){
+                if($horario){
 
                     $fecha_horario = Carbon::createFromFormat('Y-m-d', $horario->fecha);
                     $dia_clase = $fecha_clase->dayOfWeek;

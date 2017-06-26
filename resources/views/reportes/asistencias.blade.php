@@ -128,45 +128,18 @@
 
                            
                             <div class="col-md-6">
-                                <h2>Informe de Asistencias</h2>
-                                <hr>
-                                <!-- <ul class="actions">
-                                    <li class="dropdown action-show">
-                                        <a href="#" data-toggle="dropdown">
-                                            <i class="zmdi zmdi-more-vert"></i>
-                                        </a>
-                        
-                                        <div class="dropdown-menu pull-right">
-                                            <p class="p-20">
-                                                You can put anything here
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ul> -->
-                                <div id="pie-chart-procesos" class="flot-chart-pie"></div>
-                                <div class="flc-pie hidden-xs"></div>
-
+                                <div id="estatus" style="display: none">
+                                    <h2>Informe de Asistencias</h2>
+                                    <hr>
+                                    <div id="pie-chart-procesos" class="flot-chart-pie"></div>
+                                    <div class="flc-pie hidden-xs"></div>
+                                </div>
                             </div><!-- COL-MD-6 -->
 
 
                             <div class="col-md-6">
                                 <h2>Información</h2>
                                 <hr>
-
-
-                                <!-- <ul class="actions">
-                                    <li class="dropdown action-show">
-                                        <a href="#" data-toggle="dropdown">
-                                            <i class="zmdi zmdi-more-vert"></i>
-                                        </a>
-                        
-                                        <div class="dropdown-menu pull-right">
-                                            <p class="p-20">
-                                                You can put anything here
-                                            </p>
-                                        </div>
-                                    </li>
-                                </ul> -->
                                 
                                 <div class="col-md-3">    
                                     <i class="m-l-25 zmdi zmdi-male-alt zmdi-hc-5x c-azul"></i>
@@ -200,13 +173,10 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="pertenece" data-order="desc"></th>
+                                    <th class="text-center" data-column-id="sexo">Sexo</th>
+                                    <th class="text-center" data-column-id="imagen">Imagen</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
-                                    <th class="text-center" data-column-id="cedula" data-order="desc">Identificación</th>
-                                    <th class="text-center" data-column-id="fecha_nacimiento" data-order="desc"><span class="ocultar">Fecha Nacimiento</span></th>
-                                    <th class="text-center" data-column-id="estatus_e"><span class="ocultar">Estatus E</span></th>
-                                    <th class="text-center" data-column-id="clase_grupal"><span class="ocultar">Clase Grupal</span></th>
-                                    <th class="text-center" data-column-id="sexo"><span class="ocultar">Sexo</span></th>
-                                    <th class="text-center" data-column-id="fecha"><span class="ocultar">Fecha</span></th>
+                                    <th class="text-center" data-column-id="estatus_e"><span class="ocultar">Balance E</span></th>
                                     <th class="text-center" data-column-id="hora"><span class="ocultar">Hora</span></th>                                                                                                            
                                 </tr>
                             </thead>
@@ -242,75 +212,72 @@
         var clases_grupales = <?php echo json_encode($clases_grupales);?>;
         var clase_grupal_array = [];
         var sortable = [];
+        var pagina = document.location.origin
 
         route_filtrar="{{url('/')}}/reportes/asistencias";
-        route_detalle="{{url('/')}}/participante/alumno/detalle";
+        route_detalle="{{url('/')}}/participante/alumno/historial-asistencias";
 
         $(document).ready(function(){
 
-        var hoy = moment().format('DD/MM/YYYY');
+            var hoy = moment().format('DD/MM/YYYY');
 
-        $.each(clases_grupales, function (index, array) {
-            sortable.push(array);
-        });
+            $.each(clases_grupales, function (index, array) {
+                sortable.push(array);
+            });
 
-        sortable.sort(function(a, b) {
+            sortable.sort(function(a, b) {
+                var c = new Date(hoy + ' ' + a.hora_inicio)
+                var d = new Date(hoy + ' ' + b.hora_inicio)
+                if (c.getTime() > d.getTime()) {
+                    retorno = 1;
+                } else if (c.getTime() > d.getTime()) {
+                    retorno = -1;
+                }
+                else {
+                    retorno =  0;
+                }
+                return retorno
+            })
 
-            var c = new Date(hoy + ' ' + a.hora_inicio)
-            var d = new Date(hoy + ' ' + b.hora_inicio)
+            $("#formFiltro")[0].reset();
+            $('#clase_grupal_id').empty();
+            $('#instructor_id').empty();
 
-            if (c.getTime() > d.getTime()) {
-                retorno = 1;
-            } else if (c.getTime() > d.getTime()) {
-                retorno = -1;
-            }
-            else {
-                retorno =  0;
-            }
-
-            return retorno
-        })
-
-        $("#formFiltro")[0].reset();
-        $('#clase_grupal_id').empty();
-        $('#instructor_id').empty();
-
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25, 
-        order: [[7, 'desc'], [8, 'desc']],
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     " ",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
+            t=$('#tablelistar').DataTable({
+                processing: true,
+                serverSide: false,
+                pageLength: 25, 
+                order: [[2, 'desc']],
+                fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
+                },
+                language: {
+                    processing:     "Procesando ...",
+                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                    searchPlaceholder: "BUSCAR",
+                    lengthMenu:     " ",
+                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                    infoPostFix:    "",
+                    loadingRecords: "...",
+                    zeroRecords:    "No se encontraron registros coincidentes",
+                    emptyTable:     "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first:      "Primero",
+                        previous:   "Anterior",
+                        next:       "Siguiente",
+                        last:       "Ultimo"
+                    },
+                    aria: {
+                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
                     }
-        });
+                }
+            });
     
-
-            rechargeClase()
+            rechargeClase();
         });
 
         function rechargeClase(){
@@ -389,6 +356,7 @@
                         
                     $.each(respuesta.array, function (index, array) {
 
+
                         if(array.sexo=='F'){
                             sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i>'
                         }
@@ -396,116 +364,121 @@
                             sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i>'
                         }
 
-
-                        if (typeof array.fecha === "undefined") {
-                            fecha = '';
+                        if (typeof array.hora === "undefined") {
                             hora = '';
                         }else{
-                            fecha = array.fecha;
                             hora = array.hora;
                         }
 
-                        if($('#tipo').val() == 1){
-                        var rowId=array.alumno_id;
-                        var rowNode=t.row.add( [
-                        ''+array.pertenece+'',
-                        ''+array.nombre+ ' '+array.apellido+ '',
-                        ''+array.identificacion+'',
-                        ''+array.fecha_nacimiento+'',
-                        ''+array.estatus+ ' ' + formatmoney(parseFloat(array.deuda))+'',
-                        ''+array.clase_grupal_nombre+'',
-                        ''+sexo+'',
-                        ''+fecha+'',
-                        ''+hora+'',
-                        ] ).draw(false).node();
-                        $( rowNode )
-                          .attr('id',rowId)
-                          .addClass('seleccion');
-             
+                        if(array.imagen){
+                            imagen = pagina+'/assets/uploads/usuario/'+array.imagen;
                         }else{
-                            var rowId=array.alumno_id;
+                            if(array.sexo == 'M'){
+                                imagen = pagina+"/assets/img/Hombre.jpg"
+                            }else{
+                                imagen = pagina+"/assets/img/Mujer.jpg"
+                            }
+                        }
+
+                        contenido = ''
+                        contenido += '<p class="c-negro">' 
+                        contenido += array.nombre + ' ' + array.apellido + ' ' + ' <img class="lv-img-lg" src="'+imagen+'" alt=""><br><br>';
+                        contenido += 'Clase Grupal: ' + array.clase_grupal_nombre + '<br>';
+                        contenido += 'Cantidad que adeuda: ' + formatmoney(parseFloat(array.deuda)) + '<br></p>';
+
+                        var rowId=array.alumno_id;
+
+                        if($('#tipo').val() == 1){
                             var rowNode=t.row.add( [
                             ''+array.pertenece+'',
+                            ''+sexo+'',
+                            ''+'<img class="lv-img" src="'+imagen+'" alt="">'+'',
                             ''+array.nombre+ ' '+array.apellido+ '',
-                            ''+array.identificacion+'',
-                            '',
-                            '',
-                            '',
-                            '',
+                            ''+array.estatus+ ' ' + formatmoney(parseFloat(array.deuda))+'',
+                            ''+hora+'',
+                            ] ).draw(false).node();
+                        }else{
+                            var rowNode=t.row.add( [
+                            ''+array.pertenece+'',
+                            ''+sexo+'',
+                            ''+imagen+'',
+                            ''+array.nombre+ ' '+array.apellido+ '',
                             '',
                             '',
                             ] ).draw(false).node();
-                            $( rowNode )
-                              .attr('id',rowId)
-                              .addClass('seleccion');
-                  
                         }
+
+                        $( rowNode )
+                            .attr('id',rowId)
+                            .attr('data-trigger','hover')
+                            .attr('data-toggle','popover')
+                            .attr('data-placement','top')
+                            .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;&nbsp;')
+                            .attr('data-html','true')
+                            .attr('data-container','body')
+                            .attr('title','')
+                            .attr('data-content',contenido)
+                            .addClass('seleccion');
                     });
+
+                    $('[data-toggle="popover"]').popover(); 
 
                     datos = JSON.parse(JSON.stringify(respuesta));
 
                     $("#mujeres").text(datos.mujeres);
                     $("#hombres").text(datos.hombres);
 
-                    sexos = respuesta.sexos
+                    if(respuesta.tipo == 0){
 
-                    if(sexos[1]){
-                        if(sexos[1][0] == 'F'){
-                            color1 = "#2196f3"
-                            color2 = "#FF4081"
-                        }else{
-                            color2 = "#2196f3"
-                            color1 = "#FF4081"
-                        }
-                    }
+                        $('#estatus').show();
 
-                    var data1 = ''
-                    data1 += '[';
-                    $.each( datos.sexos, function( i, item ) {
-                        var edad = item[0];
-                        var cant = item[1];
-                        data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
-                    });
+                        var data1 = ''
+                        data1 += '[';
+                        $.each( datos.estatus, function(i, item) {
+                            var label = item[0];
+                            var cant = item[1];
+                            data1 += '{"data":"'+cant+'","label":"'+label+'"},';
+                        });
 
-                    data1 = data1.substring(0, data1.length -1);
-                    data1 += ']';
-        
-                        $("#pie-chart-procesos").html('');
-                        $(".flc-pie").html('');
-                        $.plot('#pie-chart-procesos', $.parseJSON(data1), {
-                            series: {
-                                pie: {
-                                    show: true,
-                                    stroke: { 
-                                        width: 2,
+                        data1 = data1.substring(0, data1.length -1);
+                        data1 += ']';
+            
+                            $("#pie-chart-procesos").html('');
+                            $(".flc-pie").html('');
+                            $.plot('#pie-chart-procesos', $.parseJSON(data1), {
+                                series: {
+                                    pie: {
+                                        show: true,
+                                        stroke: { 
+                                            width: 2,
+                                        },
                                     },
                                 },
-                            },
-                            legend: {
-                                container: '.flc-pie',
-                                backgroundOpacity: 0.5,
-                                noColumns: 0,
-                                backgroundColor: "white",
-                                lineWidth: 0
-                            },
-                            grid: {
-                                hoverable: true,
-                                clickable: true
-                            },
-                            tooltip: true,
-                            tooltipOpts: {
-                                content: "%p.0%, %s", 
-                                shifts: {
-                                    x: 20,
-                                    y: 0
+                                legend: {
+                                    container: '.flc-pie',
+                                    backgroundOpacity: 0.5,
+                                    noColumns: 0,
+                                    backgroundColor: "white",
+                                    lineWidth: 0
                                 },
-                                defaultTheme: false,
-                                cssClass: 'flot-tooltip'
-                            },
-                            colors: [color1, color2],
-
-                            
-                        });
+                                grid: {
+                                    hoverable: true,
+                                    clickable: true
+                                },
+                                tooltip: true,
+                                tooltipOpts: {
+                                    content: "%p.0%, %s", 
+                                    shifts: {
+                                        x: 20,
+                                        y: 0
+                                    },
+                                    defaultTheme: false,
+                                    cssClass: 'flot-tooltip'
+                                },
+                            });
+                        }else{
+                            $('#estatus').hide()
+                        }
                 
                     }else{
                       var nTitle="Ups! ";
@@ -520,9 +493,9 @@
                 },
                 error:function(msj){
                   setTimeout(function(){ 
-                    if (typeof msj.responseJSON === "undefined") {
-                      window.location = "{{url('/')}}/error";
-                    }
+                    // if (typeof msj.responseJSON === "undefined") {
+                    //   window.location = "{{url('/')}}/error";
+                    // }
                     if(msj.responseJSON.status=="ERROR"){
                       errores(msj.responseJSON.errores);
                       var nTitle="    Ups! "; 

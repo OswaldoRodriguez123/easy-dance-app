@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use App\User;
 use App\Alumno;
 use App\Factura;
 use App\ClaseGrupal;
@@ -798,11 +799,12 @@ class ReporteController extends BaseController
 
         $asistencias = $query->get();
         $inscripciones = $query2->get();
+        $in = array(2,4);
 
         $mujeres = 0;
         $hombres = 0;
         $total = 0;
-        $array_sexo = array();
+        $array_estatus = array();
 
         if($request->participante_id == 1){
 
@@ -836,8 +838,26 @@ class ReporteController extends BaseController
                     $deuda = 0;
                 }
 
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id',$asistencia->alumno_id)
+                    ->whereIn('usuarios_tipo.tipo',$in)
+                ->first();
+
+                if($usuario){
+
+                    if($usuario->imagen){
+                        $imagen = $usuario->imagen;
+                    }else{
+                        $imagen = '';
+                    }
+
+                }else{
+                    $imagen = '';
+                }
+
                 $collection=collect($asistencia);     
                 $asistencia_array = $collection->toArray();
+                $asistencia_array['imagen']=$imagen;
                 $asistencia_array['pertenece']=$pertenece;
                 $asistencia_array['deuda']=$deuda;
                 $asistencia_array['estatus']=$estatus;
@@ -850,13 +870,7 @@ class ReporteController extends BaseController
                 }
             }
 
-            $array_hombres = array('M', $hombres);
-            $array_mujeres = array('F', $mujeres);
-
-            array_push($array_sexo, $array_hombres);
-            array_push($array_sexo, $array_mujeres);
-
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'tipo' => $request->participante_id, 'sexos' => $array_sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'tipo' => $request->participante_id, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
 
         }else if($request->participante_id == 2){
 
@@ -882,8 +896,26 @@ class ReporteController extends BaseController
                         $deuda = 0;
                     }
 
+                    $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                        ->where('usuarios_tipo.tipo_id',$inscripcion->alumno_id)
+                        ->whereIn('usuarios_tipo.tipo',$in)
+                    ->first();
+
+                    if($usuario){
+
+                        if($usuario->imagen){
+                            $imagen = $usuario->imagen;
+                        }else{
+                            $imagen = '';
+                        }
+
+                    }else{
+                        $imagen = '';
+                    }
+
                     $collection=collect($inscripcion);     
                     $inasistencias_array = $collection->toArray();
+                    $inasistencias_array['imagen']=$imagen;
                     $inasistencias_array['pertenece']=$pertenece;
                     $inasistencias_array['deuda']=$deuda;
                     $inasistencias_array['estatus']=$estatus;
@@ -898,17 +930,13 @@ class ReporteController extends BaseController
                 }               
             }
 
-            $array_hombres = array('M', $hombres);
-            $array_mujeres = array('F', $mujeres);
-
-            array_push($array_sexo, $array_hombres);
-            array_push($array_sexo, $array_mujeres);
-
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $inasistencias, 'tipo' => $request->participante_id, 'sexos' => $array_sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $inasistencias, 'tipo' => $request->participante_id, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
         }else{
 
             $array = array();
             $array_inscripcion = array();
+            $total_asistencias = 0;
+            $total_inasistencias = 0;
 
             foreach($inscripciones as $inscripcion){
 
@@ -919,10 +947,12 @@ class ReporteController extends BaseController
                         $asistio = 1;
                         $fecha = $asistencia->fecha;
                         $hora = $asistencia->hora;
+                        break;
                     }
                 }
 
                 if($asistio){
+                    $total_asistencias++;
                     $pertenece = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
 
                     if($inscripcion->sexo == 'F'){
@@ -932,6 +962,7 @@ class ReporteController extends BaseController
                     }
 
                 }else{
+                    $total_inasistencias++;
                     $pertenece = '<i class="zmdi c-amarillo zmdi-dot-circle zmdi-hc-fw"></i>';
                     $fecha = '';
                     $hora = '';
@@ -948,8 +979,26 @@ class ReporteController extends BaseController
                     $deuda = 0;
                 }
 
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id',$inscripcion->alumno_id)
+                    ->whereIn('usuarios_tipo.tipo',$in)
+                ->first();
+
+                if($usuario){
+
+                    if($usuario->imagen){
+                        $imagen = $usuario->imagen;
+                    }else{
+                        $imagen = '';
+                    }
+
+                }else{
+                    $imagen = '';
+                }
+
                 $collection=collect($inscripcion);     
                 $asistencia_array = $collection->toArray();
+                $asistencia_array['imagen']=$imagen;
                 $asistencia_array['pertenece']=$pertenece;
                 $asistencia_array['deuda']=$deuda;
                 $asistencia_array['estatus']=$estatus;
@@ -970,6 +1019,8 @@ class ReporteController extends BaseController
 
                 if($existe == false){
 
+                    $total_asistencias++;
+
                     $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
                         ->where('usuario_id', $asistencia->alumno_id)
                     ->sum('importe_neto');
@@ -989,8 +1040,26 @@ class ReporteController extends BaseController
                         $deuda = 0;
                     }
 
+                    $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                        ->where('usuarios_tipo.tipo_id',$asistencia->alumno_id)
+                        ->whereIn('usuarios_tipo.tipo',$in)
+                    ->first();
+
+                    if($usuario){
+
+                        if($usuario->imagen){
+                            $imagen = $usuario->imagen;
+                        }else{
+                            $imagen = '';
+                        }
+
+                    }else{
+                        $imagen = '';
+                    }
+
                     $collection=collect($asistencia);     
                     $asistencia_array = $collection->toArray();
+                    $asistencia_array['imagen']=$imagen;
                     $asistencia_array['pertenece']=$pertenece;
                     $asistencia_array['deuda']=$deuda;
                     $asistencia_array['estatus']=$estatus;
@@ -999,13 +1068,13 @@ class ReporteController extends BaseController
                 }
             }
 
-            $array_hombres = array('M', $hombres);
-            $array_mujeres = array('F', $mujeres);
+            $array_asistencias = array('Asistencias', $total_asistencias);
+            $array_inasistencias = array('Inasistencias', $total_inasistencias);
 
-            array_push($array_sexo, $array_hombres);
-            array_push($array_sexo, $array_mujeres);
+            array_push($array_estatus, $array_asistencias);
+            array_push($array_estatus, $array_inasistencias);
 
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'tipo' => $request->participante_id, 'sexos' => $array_sexo, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'tipo' => $request->participante_id, 'estatus' => $array_estatus, 'mujeres' => $mujeres, 'hombres' => $hombres, 200]);
             
         }
     }
