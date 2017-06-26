@@ -585,6 +585,7 @@ class ClaseGrupalController extends BaseController {
             $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                 ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela', 'alumnos.tipo_pago', 'inscripcion_clase_grupal.fecha_inscripcion')
                 ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
+                ->where('inscripcion_clase_grupal.boolean_congelacion',1)
                 ->where('inscripcion_clase_grupal.deleted_at', '=', null)
             ->get();
 
