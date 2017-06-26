@@ -788,24 +788,24 @@ class SupervisionController extends BaseController {
     {   
     	Session::put('id_supervision_evaluacion', $id);
 
-        $supervision = ConceptoSupervision::join('supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
+        $concepto = ConceptoSupervision::join('supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
         	->select('conceptos_supervisiones.*', 'supervisiones.tipo_staff', 'supervisiones.supervisor_id', 'supervisiones.staff_id')
         	->where('conceptos_supervisiones.id',$id)
         ->first();
 
-        if($supervision){
+        if($concepto){
         	
-        	$staff = Staff::find($supervision->supervisor_id);
+        	$staff = Staff::find($concepto->supervisor_id);
 
-        	if($supervision->tipo_staff == 1){
-        		$staffs = Staff::where('academia_id', Auth::user()->academia_id)->where('id', '!=', $supervision->staff_id)->get();
-        		$staff = Staff::find($supervision->staff_id);
+        	if($concepto->tipo_staff == 1){
+        		$staffs = Staff::where('academia_id', Auth::user()->academia_id)->where('id', '!=', $concepto->staff_id)->get();
+        		$staff = Staff::find($concepto->staff_id);
         		$nombre = $staff->nombre . ' ' . $staff->apellido;
         		$cargo = ConfigStaff::find($staff->cargo);
         		$cargo = $cargo->nombre;
         	}else{
         		$staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
-        		$instructor = Instructor::find($supervision->staff_id);
+        		$instructor = Instructor::find($concepto->staff_id);
         		$nombre = $instructor->nombre . ' ' . $instructor->apellido;
         		$cargo = 'Instructor';
         	}
@@ -819,7 +819,7 @@ class SupervisionController extends BaseController {
 	    	$array = array();
 	    	$numero_de_items = 0;
 
-    		$items_a_evaluar = ItemProcedimiento::where('procedimiento_id',$supervision->procedimiento_id)->get();
+    		$items_a_evaluar = ItemProcedimiento::where('procedimiento_id',$concepto->procedimiento_id)->get();
 
 			foreach($items_a_evaluar as $item){
 				$array[] = $item->nombre;
@@ -830,7 +830,7 @@ class SupervisionController extends BaseController {
             $academia = Academia::find(Auth::user()->academia_id);
 
             return view('supervisiones.evaluar')
-                   ->with(['staffs' => $staffs, 'supervision' => $supervision, 'fecha' => $hoy, 'items_a_evaluar' => $array, 'id' => $id, 'numero_de_items'=>$numero_de_items, 'academia' => $academia, 'nombre' => $nombre, 'cargo' => $cargo]);
+                   ->with(['staffs' => $staffs, 'concepto' => $concepto, 'fecha' => $hoy, 'items_a_evaluar' => $array, 'id' => $id, 'numero_de_items'=>$numero_de_items, 'academia' => $academia, 'nombre' => $nombre, 'cargo' => $cargo, 'supervision_id'=> $concepto->supervision_id]);
         }else{
            return redirect("supervisiones"); 
         }
@@ -1070,7 +1070,7 @@ class SupervisionController extends BaseController {
 		        }
 	        }
 
-	        return view('supervisiones.agenda')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'id'=> $supervision->supervision_id]);
+	        return view('supervisiones.agenda')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'id'=> $concepto->supervision_id]);
         }else{
         	return redirect("supervisiones");
         }
@@ -1687,7 +1687,7 @@ class SupervisionController extends BaseController {
 				$procedimiento = Procedimiento::find($request->procedimiento_id);
 				$cantidad = ItemProcedimiento::where('procedimiento_id',$procedimiento->id)->count();
 
-	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'id' => $supervision->id, 'nombre' => $procedimiento->nombre, 'cantidad' => $cantidad, 'fecha' => $request->fecha, 'status' => 'OK', 200]);
+	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'id' => $concepto->id, 'nombre' => $procedimiento->nombre, 'cantidad' => $cantidad, 'fecha' => $request->fecha, 'status' => 'OK', 200]);
 	           
 	        }else{
 	            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);

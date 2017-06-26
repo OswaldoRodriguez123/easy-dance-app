@@ -25,7 +25,8 @@
 	<section id="content">
 		<div class="container">
 			<div class="block-header">
-		        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes/detalle/{{$id}}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+
+		        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/supervisiones/conceptos/{{$supervision_id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
 
 		        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 		            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -242,7 +243,7 @@
 
 			$("#agregar_evaluacion")[0].reset();
 
-		  	$("#supervisor_id").val("{{$supervision->supervisor_id}}")
+		  	$("#supervisor_id").val("{{$concepto->supervisor_id}}")
 		  	$("#supervisor_id").selectpicker('render');
 
 		  	$.each(sliders, function(index,id){
@@ -433,7 +434,7 @@
 				$("#agregar_evaluacion")[0].reset();
 			});
 
-	        $("#supervisor_id").val("{{$supervision->supervisor_id}}")
+	        $("#supervisor_id").val("{{$concepto->supervisor_id}}")
 	        $("#supervisor_id").selectpicker('render');
 
 			$('html,body').animate({scrollTop: $("#id-supervisor_id").

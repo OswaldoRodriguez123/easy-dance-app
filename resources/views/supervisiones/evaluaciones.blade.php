@@ -17,7 +17,6 @@
 @stop
 @section('content')
 
-<!--<a href="{{url('/')}}/especiales/examenes/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>-->
             <section id="content">
                 <div class="container">
                 

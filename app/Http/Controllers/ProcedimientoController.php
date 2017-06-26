@@ -162,6 +162,8 @@ class ProcedimientoController extends BaseController {
     	                }
     	            }
 
+                    Session::forget('procedimientos');
+
                     return response()->json(['mensaje' => '¡Excelente! Los campos se han eliminado satisfactoriamente', 'status' => 'OK', 'id' => $procedimiento->id, 'nombre' => $request->procedimiento_session, 'cantidad' => $cantidad, 'items' => $items, 200]);
 
                 }else{
@@ -169,7 +171,7 @@ class ProcedimientoController extends BaseController {
                 }
 
 	        }else{
-	            return response()->json(['errores' => ['linea' => [0, 'Ups! ha ocurrido un error, debes agregar un item']], 'status' => 'ERROR'],422);
+	            return response()->json(['errores' => ['item_session' => [0, 'Ups! ha ocurrido un error, debes agregar un item']], 'status' => 'ERROR'],422);
 	        }
     	}
     }
