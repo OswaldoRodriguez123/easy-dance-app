@@ -234,9 +234,9 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <span class="f-16 p-t-0 text-success">Agregar una Supervision <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
+                            <span class="f-16 p-t-0 text-success">Agregar un Procedimiento <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-staff f-25"></i> Sección de Supervisiones</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-staff f-25"></i> Sección de Procedimientos</p>
                             <hr class="linea-morada">                                                         
                         </div>
                         <div class="table-responsive row">
@@ -251,12 +251,12 @@
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($config_supervisiones as $configuracion)
+                            @foreach ($procedimientos as $procedimiento)
 
-                                <?php $id = $configuracion['id']; ?>
+                                <?php $id = $procedimiento['id']; ?>
                                 <tr id="{{$id}}" class="seleccion">
-                                    <td class="text-center previa">{{$configuracion['nombre']}}</td>
-                                    <td class="text-center previa">{{$configuracion['items']}}</td>
+                                    <td class="text-center previa">{{$procedimiento['nombre']}}</td>
+                                    <td class="text-center previa">{{$procedimiento['items']}}</td>
                                     <td class="text-center disabled"> <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 
@@ -820,7 +820,7 @@
 
                             $('#item_fijo').val('')
 
-                            var column = $("#"+respuesta.array.config_supervision_id).closest('tr').find('td:eq(1)')
+                            var column = $("#"+respuesta.array.procedimiento_id).closest('tr').find('td:eq(1)')
                             var cantidad = column.text();
                             cantidad_nueva = parseInt(cantidad) + 1;
                             column.text(cantidad_nueva);

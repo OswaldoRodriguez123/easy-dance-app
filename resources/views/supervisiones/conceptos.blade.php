@@ -166,9 +166,9 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <span class="f-16 p-t-0 text-success">Agregar una Supervision <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
+                            <span class="f-16 p-t-0 text-success">Agregar un Concepto <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-staff f-25"></i> Sección de Supervisiones</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-staff f-25"></i> Sección de Conceptos</p>
                             <hr class="linea-morada">                                                         
                         </div>
                         <div class="table-responsive row">
@@ -184,13 +184,13 @@
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($config_supervisiones as $configuracion)
+                            @foreach ($conceptos as $concepto)
 
-                                <?php $id = $configuracion['id']; ?>
+                                <?php $id = $concepto['id']; ?>
                                 <tr id="{{$id}}" class="seleccion">
-                                    <td class="text-center previa">{{$configuracion['nombre']}}</td>
-                                    <td class="text-center previa">{{$configuracion['items']}}</td>
-                                    <td class="text-center previa">{{$configuracion['fecha_inicio']}} / {{$configuracion['fecha_final']}}</td>
+                                    <td class="text-center previa">{{$concepto['nombre']}}</td>
+                                    <td class="text-center previa">{{$concepto['items']}}</td>
+                                    <td class="text-center previa">{{$concepto['fecha_inicio']}} / {{$concepto['fecha_final']}}</td>
                                     <td class="text-center">
                                         <ul class="top-menu">
                                             <li class="dropdown" id="dropdown_{{$id}}">

@@ -3,10 +3,10 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ConfigSupervisionEvaluacion extends Model {
+class ConceptoSupervision extends Model {
 
 	use SoftDeletes;
 
-	protected $table = 'config_supervisiones_evaluaciones';
+	protected $table = 'conceptos_supervisiones';
 
 }

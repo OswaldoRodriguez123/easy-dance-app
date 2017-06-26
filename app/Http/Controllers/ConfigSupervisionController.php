@@ -11,13 +11,14 @@ use Validator;
 use Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use App\Supervision;
-use App\ConfiguracionSupervision;
 use App\ConfigSupervision;
+use App\Procedimiento;
+use App\ItemProcedimiento;
 use App\HorarioSupervision;
-use App\DetalleSupervisionEvaluacion;
+use App\Supervision;
+use App\ConceptoSupervision;
 use App\SupervisionEvaluacion;
-use App\SupervisionProcedimiento;
+use App\DetalleSupervisionEvaluacion;
 use App\Academia;
 use App\Instructor;
 use DB;
@@ -25,32 +26,32 @@ use Session;
 
 class ConfigSupervisionController extends BaseController {
 
-	public function configuracion(){
+	public function principal(){
 
-    	$config_supervision = ConfiguracionSupervision::join('config_staff', 'configuracion_supervisiones.cargo_id', '=', 'config_staff.id')
-            ->select('configuracion_supervisiones.*','config_staff.nombre')
-            ->where('configuracion_supervisiones.academia_id', Auth::user()->academia_id)
+    	$config_supervision = ConfigSupervision::join('config_staff', 'config_supervisiones.cargo_id', '=', 'config_staff.id')
+            ->select('config_supervisiones.*','config_staff.nombre')
+            ->where('config_supervisiones.academia_id', Auth::user()->academia_id)
         ->get();
 
         return view('configuracion.supervision.principal')->with(['config_supervision' => $config_supervision]);
     }
 
 
-    public function agregar_configuracion(){
+    public function create(){
 
     	Session::forget('supervisiones');
 
     	$cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
 
-        return view('configuracion.supervision.agregar_configuracion')->with(['cargos' => $cargos]);
+        return view('configuracion.supervision.create')->with(['cargos' => $cargos]);
 
     }
 
     public function planilla($id){
 
-        $config_supervision = ConfiguracionSupervision::join('config_staff', 'configuracion_supervisiones.cargo_id', '=', 'config_staff.id')
-             ->select('configuracion_supervisiones.*', 'config_staff.nombre as cargo')
-             ->where('configuracion_supervisiones.id', $id)
+        $config_supervision = ConfigSupervision::join('config_staff', 'config_supervisiones.cargo_id', '=', 'config_staff.id')
+             ->select('config_supervisiones.*', 'config_staff.nombre as cargo')
+             ->where('config_supervisiones.id', $id)
         ->first();
 
         if($config_supervision){
@@ -64,9 +65,9 @@ class ConfigSupervisionController extends BaseController {
 
     public function operar($id){
 
-        $config_supervision = ConfiguracionSupervision::join('config_staff', 'configuracion_supervisiones.cargo_id', '=', 'config_staff.id')
-             ->select('configuracion_supervisiones.*', 'config_staff.nombre as cargo')
-             ->where('configuracion_supervisiones.id', $id)
+        $config_supervision = ConfigSupervision::join('config_staff', 'config_supervisiones.cargo_id', '=', 'config_staff.id')
+             ->select('config_supervisiones.*', 'config_staff.nombre as cargo')
+             ->where('config_supervisiones.id', $id)
         ->first();
 
         if($config_supervision){;
@@ -79,7 +80,7 @@ class ConfigSupervisionController extends BaseController {
 
     public function updateCargo(Request $request){
 
-        $config_supervision = ConfiguracionSupervision::find($request->id);
+        $config_supervision = ConfigSupervision::find($request->id);
         $config_supervision->cargo_id = $request->cargo_id;
 
         if($config_supervision->save()){
@@ -92,75 +93,13 @@ class ConfigSupervisionController extends BaseController {
 
     public function updateDescripcion(Request $request){
 
-        $config_supervision = ConfiguracionSupervision::find($request->id);
+        $config_supervision = ConfigSupervision::find($request->id);
         $config_supervision->descripcion = $request->descripcion;
 
         if($config_supervision->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-    }
-
-    // public function editar_configuracion($id){
-
-    // 	Session::forget('supervisiones');
-
-    // 	$cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
-    // 	$cargo = ConfigStaff::find($id);
-
-    // 	$config_supervision = ConfigSupervision::join('config_staff', 'config_supervision.cargo_id', '=', 'config_staff.id')
-    // 		->select('config_supervision.*', 'config_staff.nombre as cargo')
-    // 		->where('config_supervision.cargo_id', $id)
-	   //  	->where('config_supervision.academia_id', Auth::user()->academia_id)
-    // 	->get();
-    	
-    //     return view('configuracion.supervision.agregar_configuracion')->with(['cargos' => $cargos, 'config_supervision' => $config_supervision, 'id' => $id, 'cargo' => $cargo, 'cargos_usados' => '']);
-
-    // }
-
-
-    Public function agregar_supervision_fija(Request $request){
-        
-    $rules = [
-
-        'nombre_procedimiento' => 'required|min:3|max:150',
-        'cargo_supervision' => 'required',
-    ];
-
-    $messages = [
-
-        'nombre_procedimiento.required' => 'Ups! El Nombre es requerido',
-        'nombre_procedimiento.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre_procedimiento.max' => 'El máximo de caracteres permitidos son 50',
-        'cargo_supervision.required' => 'Ups! El Cargo es requerido',
-    ];
-
-    $validator = Validator::make($request->all(), $rules, $messages);
-
-    if ($validator->fails()){
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-    }
-
-    else{
-
-        $nombre = title_case($request->nombre_procedimiento);
-
-        $supervision = new ConfigSupervision;
-                                        
-        $supervision->academia_id = Auth::user()->academia_id;
-        $supervision->nombre = $nombre;
-        $supervision->cargo_id = $request->cargo_supervision;
-
-        $supervision->save();
-
-        $config_staff = ConfigStaff::find($request->cargo_supervision);
-        $cargo = $config_staff->nombre;
-
-        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $supervision, 'id' => $supervision->id, 'cargo' => $cargo, 200]);
-
         }
     }
 
@@ -184,7 +123,7 @@ class ConfigSupervisionController extends BaseController {
 
 	    }else{
 
-            $config_supervision = new ConfiguracionSupervision();
+            $config_supervision = new ConfigSupervision();
 
             $config_supervision->academia_id = Auth::user()->academia_id;
             $config_supervision->cargo_id=$request->cargo_supervision;
@@ -195,62 +134,46 @@ class ConfigSupervisionController extends BaseController {
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-
-        	// $supervisiones = Session::get('supervisiones');
-
-        	// if (count($supervisiones) > 0){
-	        //     foreach($supervisiones as $tmp){
-	        //         foreach($tmp as $supervision){
-
-	        //             $config_supervision = new ConfigSupervision();
-
-	        //             $config_supervision->academia_id = Auth::user()->academia_id;
-	        //             $config_supervision->cargo_id=$request->cargo_supervision;
-	        //             $config_supervision->nombre=$supervision['nombre'];
-
-	        //             $config_supervision->save();
-	 
-	        //         }
-	        //     }
-
-         //    	return response()->json(['mensaje' => '¡Excelente! Los campos se han eliminado satisfactoriamente', 'status' => 'OK', 200]);
-	        // }else{
-	        //     return response()->json(['errores' => ['linea' => [0, 'Ups! ha ocurrido un error, debes agregar un procedimiento']], 'status' => 'ERROR'],422);
-	        // }
     	}
     }
 
     public function eliminar_configuracion($id){
 
+        $config_supervision = ConfigSupervision::find($id);
+
     	$supervisiones = Supervision::withTrashed()
-    		->join('staff', 'supervisiones.staff_id','=','staff.id')
-    		->select('supervisiones.id')
-	        ->where('staff.academia_id',Auth::user()->academia_id)
-	        ->where('supervisiones.cargo',$id)
+	        ->where('supervisiones.cargo',$config_supervision->cargo_id)
         ->get();
         
         foreach($supervisiones as $supervision){
 
-        	$evaluaciones = SupervisionEvaluacion::withTrashed()->where('supervision_id',$supervision->id)->get();
+            $conceptos = ConceptoSupervision::withTrashed()->where('supervision_id',$supervision->id)->get();
 
-        	foreach($evaluaciones as $evaluacion){
-        		$detalles_evaluacion = DetalleSupervisionEvaluacion::where('evaluacion_id',$evaluacion->id)->delete();
-        		$evaluacion->forceDelete();
-        	}
+            foreach($conceptos as $concepto){
 
-        	$horarios_supervision = HorarioSupervision::where('supervision_id',$supervision->id)->delete();
+                $evaluaciones = SupervisionEvaluacion::withTrashed()->where('concepto_id',$concepto->id)->get();
+
+                foreach($evaluaciones as $evaluacion){
+                    $detalles_evaluacion = DetalleSupervisionEvaluacion::where('evaluacion_id',$evaluacion->id)->delete();
+                    $evaluacion->forceDelete();
+                }
+
+                $horarios_supervision = HorarioSupervision::where('concepto_id',$concepto->id)->delete();
+                $concepto->forceDelete();
+            }
+
         	$supervision->forceDelete();
         }
 
-        $config_supervision = ConfigSupervision::where('config_supervision_id',$id)->get();
+        $procedimientos = Procedimiento::where('config_supervision_id',$id)->get();
 
-        foreach($config_supervision as $supervision){
+        foreach($procedimientos as $procedimiento){
 
-            $procedimientos = SupervisionProcedimiento::where('config_supervision_id',$supervision->id)->delete();
-            $supervision->forceDelete();
+            $items_procedimientos = ItemProcedimiento::where('procedimiento_id',$procedimiento->id)->delete();
+            $procedimiento->forceDelete();
         }
 
-        $config_supervision = ConfiguracionSupervision::find($id)->forceDelete();
+        $config_supervision->forceDelete();
 
 		return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 

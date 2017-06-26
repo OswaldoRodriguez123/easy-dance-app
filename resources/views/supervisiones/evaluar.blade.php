@@ -54,7 +54,7 @@
 		
 				<div class="card-body card-padding">
 					<form name="agregar_evaluacion" id="agregar_evaluacion">
-			            <input type="hidden" name="supervision_id" value="{{$id}}">
+			            <input type="hidden" name="concepto_id" value="{{$id}}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 			            <div class="row m-b-25">

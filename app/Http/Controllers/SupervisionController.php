@@ -13,12 +13,12 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Supervision;
 use App\ConfigSupervision;
-use App\ConfiguracionSupervision;
+use App\Procedimiento;
 use App\HorarioSupervision;
 use App\DetalleSupervisionEvaluacion;
-use App\ConfigSupervisionEvaluacion;
+use App\ConceptoSupervision;
 use App\SupervisionEvaluacion;
-use App\SupervisionProcedimiento;
+use App\ItemProcedimiento;
 use App\Academia;
 use App\Instructor;
 use DB;
@@ -58,14 +58,8 @@ class SupervisionController extends BaseController {
 
 	public function create()
     {
-        $dias_de_semana = DiasDeSemana::all();
 
         $config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
-
-        $config_supervision = ConfiguracionSupervision::join('config_supervision', 'config_supervision.config_supervision_id', '=', 'configuracion_supervisiones.id')
-        	->select('config_supervision.*', 'configuracion_supervisiones.cargo_id')
-        	->where('configuracion_supervisiones.academia_id', Auth::user()->academia_id)
-        ->get();
 
         $staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
         $instructores = Instructor::where('academia_id', Auth::user()->academia_id)->get();
@@ -84,7 +78,7 @@ class SupervisionController extends BaseController {
 
         }
 
-        return view('supervisiones.create')->with(['dias_de_semana' => $dias_de_semana, 'config_staff' => $config_staff, 'staffs' => $staffs, 'staffs_instructores' => $array, 'config_supervision' => $config_supervision]);
+        return view('supervisiones.create')->with(['config_staff' => $config_staff, 'staffs' => $staffs, 'staffs_instructores' => $array]);
     }
 
     public function store(Request $request)
@@ -794,9 +788,9 @@ class SupervisionController extends BaseController {
     {   
     	Session::put('id_supervision_evaluacion', $id);
 
-        $supervision = ConfigSupervisionEvaluacion::join('supervisiones', 'config_supervisiones_evaluaciones.supervision_id', '=', 'supervisiones.id')
-        	->select('config_supervisiones_evaluaciones.*', 'supervisiones.tipo_staff', 'supervisiones.supervisor_id', 'supervisiones.staff_id')
-        	->where('config_supervisiones_evaluaciones.id',$id)
+        $supervision = ConceptoSupervision::join('supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
+        	->select('conceptos_supervisiones.*', 'supervisiones.tipo_staff', 'supervisiones.supervisor_id', 'supervisiones.staff_id')
+        	->where('conceptos_supervisiones.id',$id)
         ->first();
 
         if($supervision){
@@ -825,7 +819,7 @@ class SupervisionController extends BaseController {
 	    	$array = array();
 	    	$numero_de_items = 0;
 
-    		$items_a_evaluar = SupervisionProcedimiento::where('config_supervision_id',$supervision->procedimiento_id)->get();
+    		$items_a_evaluar = ItemProcedimiento::where('procedimiento_id',$supervision->procedimiento_id)->get();
 
 			foreach($items_a_evaluar as $item){
 				$array[] = $item->nombre;
@@ -873,7 +867,7 @@ class SupervisionController extends BaseController {
             $evaluacion = new SupervisionEvaluacion;
 
             $evaluacion->supervisor_id = $request->supervisor_id;
-            $evaluacion->supervision_id = $request->supervision_id;
+            $evaluacion->concepto_id = $request->concepto_id;
             $evaluacion->total = $request->total_nota;
             $evaluacion->observacion = $request->observacion;
             $evaluacion->porcentaje = $request->barra_de_progreso;
@@ -905,10 +899,10 @@ class SupervisionController extends BaseController {
     {
         $id_evaluacion = Session::get('id_supervision_evaluacion');
 
-        $evaluaciones= SupervisionEvaluacion::join('config_supervisiones_evaluaciones', 'supervision_evaluacion.supervision_id', '=', 'config_supervisiones_evaluaciones.id')
-        	->join('supervisiones', 'config_supervisiones_evaluaciones.supervision_id', '=', 'supervisiones.id')
+        $evaluaciones = SupervisionEvaluacion::join('conceptos_supervisiones', 'supervisiones_evaluaciones.concepto_id', '=', 'conceptos_supervisiones.id')
+        	->join('supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
             ->join('staff', 'supervisiones.staff_id', '=', 'staff.id')
-            ->select('supervision_evaluacion.*','staff.nombre', 'staff.apellido')
+            ->select('supervisiones_evaluaciones.*','staff.nombre', 'staff.apellido')
             ->where('staff.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
@@ -937,11 +931,11 @@ class SupervisionController extends BaseController {
     public function evaluaciones_por_supervision($id)
     {
 
-        $evaluaciones= SupervisionEvaluacion::join('config_supervisiones_evaluaciones', 'supervision_evaluacion.supervision_id', '=', 'config_supervisiones_evaluaciones.id')
-        	->join('supervisiones', 'config_supervisiones_evaluaciones.supervision_id', '=', 'supervisiones.id')
+        $evaluaciones = SupervisionEvaluacion::join('conceptos_supervisiones', 'supervisiones_evaluaciones.concepto_id', '=', 'conceptos_supervisiones.id')
+        	->join('supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
             ->join('staff', 'supervisiones.staff_id', '=', 'staff.id')
-            ->select('supervision_evaluacion.*','staff.nombre', 'staff.apellido')
-            ->where('config_supervisiones_evaluaciones.id', '=' ,  $id)
+            ->select('supervisiones_evaluaciones.*','staff.nombre', 'staff.apellido')
+            ->where('conceptos_supervisiones.id', '=' ,  $id)
         ->get();
 
         $array = array();
@@ -983,27 +977,27 @@ class SupervisionController extends BaseController {
 
         //DATOS DE ENCABEZADO
         
-        $evaluacion = SupervisionEvaluacion::join('config_supervisiones_evaluaciones', 'supervision_evaluacion.supervision_id', '=', 'config_supervisiones_evaluaciones.id')
-        	->join('supervisiones', 'config_supervisiones_evaluaciones.supervision_id', '=', 'supervisiones.id')
+        $evaluacion = SupervisionEvaluacion::join('conceptos_supervisiones', 'supervisiones_evaluaciones.concepto_id', '=', 'conceptos_supervisiones.id')
+        	->join('supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
     		->join('staff', 'supervisiones.supervisor_id','=','staff.id')
 	        ->join('config_staff', 'supervisiones.cargo','=','config_staff.id')
-	        ->select('supervisiones.*', 'config_staff.nombre as cargo', 'staff.nombre', 'staff.apellido', 'supervision_evaluacion.total', 'supervision_evaluacion.porcentaje')
-	        ->where('supervision_evaluacion.id', $id)
+	        ->select('supervisiones.*', 'config_staff.nombre as cargo', 'staff.nombre', 'staff.apellido', 'supervisiones_evaluaciones.total', 'supervisiones_evaluaciones.porcentaje')
+	        ->where('supervisiones_evaluaciones.id', $id)
         ->first();
         
-        $staff = SupervisionEvaluacion::join('config_supervisiones_evaluaciones', 'supervision_evaluacion.supervision_id', '=', 'config_supervisiones_evaluaciones.id')
-        	->join('supervisiones', 'config_supervisiones_evaluaciones.supervision_id', '=', 'supervisiones.id')
+        $staff = SupervisionEvaluacion::join('conceptos_supervisiones', 'supervisiones_evaluaciones.concepto_id', '=', 'conceptos_supervisiones.id')
+        	->join('supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
     		->join('staff', 'supervisiones.staff_id','=','staff.id')
             ->select('staff.*')
-            ->where('supervision_evaluacion.id','=',$id)
+            ->where('supervisiones_evaluaciones.id','=',$id)
         ->first();
 
-        $academia = SupervisionEvaluacion::join('config_supervisiones_evaluaciones', 'supervision_evaluacion.supervision_id', '=', 'config_supervisiones_evaluaciones.id')
-        	->join('supervisiones', 'config_supervisiones_evaluaciones.supervision_id', '=', 'supervisiones.id')
+        $academia = SupervisionEvaluacion::join('conceptos_supervisiones', 'supervisiones_evaluaciones.concepto_id', '=', 'conceptos_supervisiones.id')
+        	->join('supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
 			->join('staff', 'supervisiones.staff_id','=','staff.id')
 			->join('academias', 'staff.academia_id','=','academias.id')
             ->select('academias.*')
-            ->where('supervision_evaluacion.id','=',$id)
+            ->where('supervisiones_evaluaciones.id','=',$id)
         ->first();
             
         //DATOS DE DETALLE
@@ -1022,7 +1016,7 @@ class SupervisionController extends BaseController {
 
     public function destroy($id)
     {	
-    	$config_supervisiones = ConfigSupervisionEvaluacion::where('supervision_id',$id)->get();
+    	$config_supervisiones = ConceptoSupervision::where('supervision_id',$id)->get();
 
     	foreach($config_supervisiones as $configuracion){
     		$horarios = HorarioSupervision::where('supervision_id',$configuracion->id)->delete();
@@ -1041,10 +1035,10 @@ class SupervisionController extends BaseController {
     public function deleteConcepto($id)
     {
 
-    	$config_supervisiones = ConfigSupervisionEvaluacion::find($id);
-    	$horarios = HorarioSupervision::where('supervision_id',$id)->delete();
+    	$concepto = ConceptoSupervision::find($id);
+    	$horarios = HorarioSupervision::where('concepto_id',$id)->delete();
  
-        if($config_supervisiones->delete()){
+        if($concepto->delete()){
             return response()->json(['mensaje' => '¡Excelente! La supervision se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -1053,16 +1047,16 @@ class SupervisionController extends BaseController {
 
     public function agenda($id){
 
-    	$supervision = ConfigSupervisionEvaluacion::find($id);
+    	$concepto = ConceptoSupervision::find($id);
 
-    	if($supervision){
+    	if($concepto){
 
 	    	$activas = array();
 	    	$finalizadas = array();
 
 	    	$horarios = HorarioSupervision::join('staff', 'staff.id', '=', 'horarios_supervision.supervisor_id')
 	    		->select('horarios_supervision.*', 'staff.nombre', 'staff.apellido')
-	    		->where('supervision_id',$id)
+	    		->where('concepto_id',$id)
 	    	->get();
 
 	    	foreach($horarios as $horario){
@@ -1165,30 +1159,30 @@ class SupervisionController extends BaseController {
 
 			$dias_de_semana = DiasDeSemana::all();
 
-	        $procedimientos = ConfigSupervision::join('configuracion_supervisiones', 'configuracion_supervisiones.id', '=', 'config_supervision.config_supervision_id')
-	        	->select('config_supervision.*')
-	        	->where('configuracion_supervisiones.cargo_id',$supervision->cargo)
+	        $procedimientos = Procedimiento::join('config_supervisiones', 'config_supervisiones.id', '=', 'procedimientos.config_supervision_id')
+	        	->select('procedimientos.*')
+	        	->where('config_supervisiones.cargo_id',$supervision->cargo)
 	        ->get();
 
-	        $config_supervisiones = ConfigSupervisionEvaluacion::join('config_supervision', 'config_supervisiones_evaluaciones.procedimiento_id', '=', 'config_supervision.id')
-	        	->select('config_supervisiones_evaluaciones.*', 'config_supervision.nombre')
-	        	->where('config_supervisiones_evaluaciones.supervision_id',$id)
+	        $conceptos = ConceptoSupervision::join('procedimientos', 'conceptos_supervisiones.procedimiento_id', '=', 'procedimientos.id')
+	        	->select('conceptos_supervisiones.*', 'procedimientos.nombre')
+	        	->where('conceptos_supervisiones.supervision_id',$id)
 	        ->get();
 
 	        $array = array();
 
-	        foreach($config_supervisiones as $configuracion){
+	        foreach($conceptos as $concepto){
 
-	        	$items_a_evaluar = SupervisionProcedimiento::where('config_supervision_id',$configuracion->procedimiento_id)->count();
+	        	$items_a_evaluar = ItemProcedimiento::where('procedimiento_id',$concepto->procedimiento_id)->count();
 
-	        	$collection=collect($configuracion);   
+	        	$collection=collect($concepto);   
 
-	            $configuracion_array = $collection->toArray();
-	            $configuracion_array['items']=$items_a_evaluar;
-	            $array[$configuracion->id] = $configuracion_array;
+	            $concepto_array = $collection->toArray();
+	            $concepto_array['items']=$items_a_evaluar;
+	            $array[$concepto->id] = $concepto_array;
 	        }
 
-			return view('supervisiones.conceptos')->with(['config_supervisiones' => $array, 'procedimientos' => $procedimientos, 'dias_de_semana' => $dias_de_semana, 'id' => $id]);
+			return view('supervisiones.conceptos')->with(['conceptos' => $array, 'procedimientos' => $procedimientos, 'dias_de_semana' => $dias_de_semana, 'id' => $id]);
 		}else{
 			return redirect("supervisiones");
 		}
@@ -1227,14 +1221,14 @@ class SupervisionController extends BaseController {
 	        $fecha_inicio_original = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[0] . ' 00:00:00');
 	        $fecha_final = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[1] . ' 00:00:00');
 	        
-	        $supervision = new ConfigSupervisionEvaluacion;
+	        $concepto = new ConceptoSupervision;
 
-	        $supervision->supervision_id = $request->id;
-	        $supervision->procedimiento_id = $request->procedimiento_id;
-	        $supervision->fecha_inicio = $fecha_inicio_original;
-	        $supervision->fecha_final = $fecha_final;
+	        $concepto->supervision_id = $request->id;
+	        $concepto->procedimiento_id = $request->procedimiento_id;
+	        $concepto->fecha_inicio = $fecha_inicio_original;
+	        $concepto->fecha_final = $fecha_final;
 
-	        if($supervision->save()){
+	        if($concepto->save()){
 
 	        	$array = array();
 		        $dia = $fecha_inicio->dayOfWeek;
@@ -1677,21 +1671,21 @@ class SupervisionController extends BaseController {
 
 		        }	
 
-		        $tmp_supervision = Supervision::find($request->id);
+		        $supervision = Supervision::find($request->id);
 
 	        	foreach($array as $key=>$value) {
 
 				    $horario = new HorarioSupervision;
 
-			        $horario->supervision_id = $supervision->id;
+			        $horario->concepto_id = $concepto->id;
 			        $horario->fecha = $key;
-			        $horario->supervisor_id = $tmp_supervision->supervisor_id;
+			        $horario->supervisor_id = $supervision->supervisor_id;
 
 			        $horario->save();
 				}
 
-				$procedimiento = ConfigSupervision::find($request->procedimiento_id);
-				$cantidad = SupervisionProcedimiento::where('config_supervision_id',$procedimiento->id)->count();
+				$procedimiento = Procedimiento::find($request->procedimiento_id);
+				$cantidad = ItemProcedimiento::where('procedimiento_id',$procedimiento->id)->count();
 
 	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'id' => $supervision->id, 'nombre' => $procedimiento->nombre, 'cantidad' => $cantidad, 'fecha' => $request->fecha, 'status' => 'OK', 200]);
 	           

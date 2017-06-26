@@ -29,7 +29,6 @@
                 
                     <div class="block-header">
                         <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/supervisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Supervisión</a>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -62,7 +61,7 @@
                                     <label for="cargo" id="id-supervisor_id">Supervisor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el supervisor" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
+                                      <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
                                       <div class="select">
                                         <select class="selectpicker bs-select-hidden" name="supervisor_id" id="supervisor_id" data-live-search="true">
                                           <option value="">Selecciona</option>
@@ -86,7 +85,7 @@
                                     <label for="cargo" id="id-cargo">Cargo a Supervisar</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el cargo a supervisar" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
+                                      <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
                                       <div class="select">
                                         <select class="selectpicker" name="cargo" id="cargo" data-live-search="true">
                                           <option value="">Selecciona</option>
@@ -110,7 +109,7 @@
                                     <label for="cargo" id="id-staff_id">Staff a Supervisar</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el supervisor" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
+                                      <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
                                       <div class="select">
                                         <select class="selectpicker" name="staff_id" id="staff_id" data-live-search="true">
                                           <option value="">Selecciona</option>
@@ -127,142 +126,6 @@
                                   </div>
                                </div>
 
-     <!--                           <div class="clearfix p-b-35"></div>
-
-                              <div class="col-sm-12">
-                                <label for="fecha" id="id-fecha">Rango de Fecha</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Define el rango de fecha" title="" data-original-title="Ayuda"></i>
-
-                                  <div class="input-group">
-                                  <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
-                                  <div class="fg-line">
-                                          <input type="text" id="fecha" name="fecha" class="form-control pointer" placeholder="Selecciona la fecha">
-                                  </div>
-                                </div>
-                                <div class="has-error" id="error-fecha">
-                                  <span >
-                                      <small class="help-block error-span" id="error-fecha_mensaje" ></small>                                
-                                  </span>
-                                </div>
-                              </div>    
-
-
-
-                              <div class="clearfix p-b-35"></div>
-
-                              <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="nombre" id="id-ficha">Ítems a evaluar</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa los datos o estado de salud del instructor" title="" data-original-title="Ayuda"></i>
-                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
-                                    <div class="panel panel-collapse">
-                                    <div class="panel-heading" role="tab" id="headingTwo">
-                                        <h4 class="panel-title">
-                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                      <div class="panel-body">
-                                      
-                                      @foreach($config_supervision as $supervision)
-
-                                        <div class="cargo_{{$supervision->cargo_id}} supervisiones" style="display:none">
-                                          
-                                          <div class="clearfix p-b-35"></div>
-
-                                          <div class="col-sm-3 text-left">
-
-                                            <span class="f-20 f-700">{{$supervision->nombre}}</span> <i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i>
-
-                                          </div>
-                                          
-                                          <div class="col-sm-3 text-left">
-                                          
-                                            <input type="text" id="supervision_{{$supervision->id}}" name="supervision_{{$supervision->id}}" value="" hidden="hidden">
-
-                                            <div class="toggle-switch" data-ts-color="purple">
-
-                                                <span class="p-r-10 f-700 f-16">No</span>
-
-                                                <input class="supervision" data-id ="{{$supervision->id}}" id="switch2_{{$supervision->id}}" data-name="{{$supervision->nombre}}" type="checkbox" hidden="hidden">
-
-                                                <label for="switch2_{{$supervision->id}}" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                          </div>
-
-                                        </div>
-
-                                      @endforeach
-
-
-
-                                      <div class="clearfix p-b-35"></div>
-                                      <div class="clearfix p-b-35"></div>
-                                      
-                                      <div class="clearfix p-b-35"></div>
-
-                                      <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>
-
-                                      <div class="clearfix p-b-35"></div>
-                                      <hr></hr>
-
-
-
-                                        </div>
-                                    </div>
-                                    </div>
-                                    </div>
-                                 </div>
-                               </div>
-                              
-                              <div class="clearfix p-b-35"></div>
-                     
-                                    
-                              <div class="col-sm-6">
-                   
-                                <label for="cargo" id="id-frecuencia">Frecuencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda" data-trigger="hover" data-toggle="popover" data-placement="bottom" data-content="Indícale al sistema la frecuencia de de las supervisiones" title="" data-original-title="Ayuda"></i>
-
-
-                                  <div class="select">
-                                    <select class="selectpicker bs-select-hidden" name="frecuencia" id="frecuencia" data-live-search="true" disabled>
-                                      <option value="">Selecciona</option>
-                                      <option value="1">Semanal</option>
-                                      <option value="2">Quincenal</option>
-                                      <option value="3">Mensual</option>  
-                                    </select>
-                                  </div>
-                                <div class="has-error" id="error-frecuencia">
-                                  <span >
-                                    <small class="help-block error-span" id="error-frecuencia_mensaje" ></small>                                           
-                                  </span>
-                                </div>
-                              </div>
-                            
-                             <div class="clearfix p-b-35"></div>
-
-                              @foreach( $dias_de_semana as $dia)
-                                <div class="col-sm-2">
-                                  <input type="text" id="dia_{{$dia->id}}" name="dia_{{$dia->id}}" value="" hidden="hidden">
-
-                                  <span class="f-20 f-700 p-r-10">{{$dia->nombre}}</span>
-                                </div>
-
-                                <div class="col-sm-10">
-                                  <div class="toggle-switch" data-ts-color="purple">
-                                    <span class="p-r-10 f-700 f-16">No</span>
-
-                                    <input class="frecuencia" id="switch_{{$dia->id}}" data-name="switch_{{$dia->id}}" type="checkbox" hidden="hidden">
-
-                                    <label for="switch_{{$dia->id}}" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-
-                                  </div>
-                                </div>
-
-                                <div class="clearfix p-b-15"></div>
-
-                              @endforeach
-
- -->
                         <div class="clearfix p-b-35"></div>
 
                     
@@ -280,8 +143,6 @@
                               </div>
                             </div>
                             <div class="col-sm-12 text-left">                           
-
-                              <!-- <a class="btn-blanco m-r-10 f-18 guardar" href="#" id="guardar">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a> -->
 
                               <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
 
@@ -386,7 +247,7 @@
   setInterval(porcentaje, 1000);
 
    function porcentaje(){
-    var campo = ["staff_id", "supervisor_id", "fecha", "cargo"];
+    var campo = ["staff_id", "supervisor_id", "cargo"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -547,7 +408,7 @@
             });
 
       function limpiarMensaje(){
-      var campo = ["staff_id", "supervisor_id", "fecha", "cargo"];
+      var campo = ["staff_id", "supervisor_id", "cargo"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -713,7 +574,6 @@
         $('#supervisor_id').selectpicker('refresh')
         $('#cargo').selectpicker('refresh')
         $('#staff_id').selectpicker('refresh')
-        $('#frecuencia').selectpicker('refresh')
         limpiarMensaje();
       });
 

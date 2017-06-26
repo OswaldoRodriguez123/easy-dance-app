@@ -12,11 +12,11 @@ use Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Supervision;
-use App\ConfigSupervision;
+use App\Procedimiento;
 use App\HorarioSupervision;
 use App\DetalleSupervisionEvaluacion;
 use App\SupervisionEvaluacion;
-use App\SupervisionProcedimiento;
+use App\ItemProcedimiento;
 use App\Academia;
 use App\Instructor;
 use DB;
@@ -28,54 +28,27 @@ class ProcedimientoController extends BaseController {
 
         Session::forget('procedimientos');
 
-    	$config_supervisiones = ConfigSupervision::join('configuracion_supervisiones', 'config_supervision.config_supervision_id', '=', 'configuracion_supervisiones.id')
-    		->select('config_supervision.*')
-    		->where('configuracion_supervisiones.id', $id)
+    	$procedimientos = Procedimiento::join('config_supervisiones', 'procedimientos.config_supervision_id', '=', 'config_supervisiones.id')
+    		->select('procedimientos.*')
+    		->where('config_supervisiones.id', $id)
     	->get();
 
     	$array = array();
 
-    	foreach($config_supervisiones as $configuracion){
+    	foreach($procedimientos as $procedimiento){
 
-    		$items = SupervisionProcedimiento::where('config_supervision_id',$configuracion->id)->count();
+    		$items = ItemProcedimiento::where('procedimiento_id',$procedimiento->id)->count();
 
-    		$collection=collect($configuracion);   
+    		$collection=collect($procedimiento);   
 
-            $configuracion_array = $collection->toArray();
-            $configuracion_array['items']=$items;
-            $array[$configuracion->id] = $configuracion_array;
+            $procedimiento_array = $collection->toArray();
+            $procedimiento_array['items']=$items;
+            $array[$procedimiento->id] = $procedimiento_array;
             
 
     	}
 
-        return view('configuracion.supervision.procedimientos')->with(['config_supervisiones' => $array, 'id' => $id]);
-
-    }
-
-    public function agregar_procedimiento($id){
-
-    	Session::forget('procedimientos');
-
-    	$procedimientos = ConfigSupervision::join('config_staff', 'config_supervision.cargo_id', '=', 'config_staff.id')
-    		->select('config_supervision.*')
-    		->where('config_supervision.academia_id', Auth::user()->academia_id)
-    		->where('config_staff.id', $id)
-    		->orWhere('config_supervision.academia_id', null)
-    	->get();
-
-    	$array = array();
-
-    	foreach($procedimientos as $configuracion){
-
-	    	$items = SupervisionProcedimiento::where('config_supervision_id',$configuracion->id)->count();
-
-			if($items > 0){
-
-	    		$array[] = $configuracion->id;
-	        }
-        }
-    	
-        return view('configuracion.supervision.agregar_procedimiento')->with(['procedimientos' => $procedimientos, 'procedimientos_usados' => $array, 'id' => $id]);
+        return view('configuracion.supervision.procedimientos')->with(['procedimientos' => $array, 'id' => $id]);
 
     }
 
@@ -164,32 +137,32 @@ class ProcedimientoController extends BaseController {
 
             if (count($procedimientos) > 0){
 
-                $config_supervision = new ConfigSupervision;
-                $config_supervision->nombre = $request->procedimiento_session;
-                $config_supervision->config_supervision_id = $request->id;
+                $procedimiento = new Procedimiento;
+                $procedimiento->nombre = $request->procedimiento_session;
+                $procedimiento->config_supervision_id = $request->id;
 
-                if($config_supervision->save()){
+                if($procedimiento->save()){
 
                     $cantidad = 0;
                     $items = array();
 
     	            foreach($procedimientos as $tmp){
-    	                foreach($tmp as $supervision){
+    	                foreach($tmp as $tmp_procedimiento){
 
-    	                    $procedimiento = new SupervisionProcedimiento();
+    	                    $item_procedimiento = new ItemProcedimiento();
 
-    	                    $procedimiento->config_supervision_id=$config_supervision->id;
-    	                    $procedimiento->nombre=$supervision['nombre'];
+    	                    $item_procedimiento->procedimiento_id=$procedimiento->id;
+    	                    $item_procedimiento->nombre=$tmp_procedimiento['nombre'];
 
-    	                    $procedimiento->save();
+    	                    $item_procedimiento->save();
 
-                            $items[] = $procedimiento;
+                            $items[] = $item_procedimiento;
                             $cantidad++;
     	 
     	                }
     	            }
 
-                    return response()->json(['mensaje' => '¡Excelente! Los campos se han eliminado satisfactoriamente', 'status' => 'OK', 'id' => $config_supervision->id, 'nombre' => $request->procedimiento_session, 'cantidad' => $cantidad, 'items' => $items, 200]);
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han eliminado satisfactoriamente', 'status' => 'OK', 'id' => $procedimiento->id, 'nombre' => $request->procedimiento_session, 'cantidad' => $cantidad, 'items' => $items, 200]);
 
                 }else{
                     return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -199,22 +172,6 @@ class ProcedimientoController extends BaseController {
 	            return response()->json(['errores' => ['linea' => [0, 'Ups! ha ocurrido un error, debes agregar un item']], 'status' => 'ERROR'],422);
 	        }
     	}
-    }
-
-    public function editar_procedimiento($id){
-
-    	Session::forget('procedimientos');
-
-    	$config_supervision = ConfigSupervision::find($id);
-
-    	$procedimientos = ConfigSupervision::join('supervisiones_procedimientos', 'supervisiones_procedimientos.config_supervision_id', '=', 'config_supervision.id')
-    		->select('supervisiones_procedimientos.*', 'config_supervision.nombre as supervision')
-    		->where('supervisiones_procedimientos.config_supervision_id', $id)
-	    	->where('config_supervision.academia_id', Auth::user()->academia_id)
-    	->get();
-    	
-        return view('configuracion.supervision.agregar_procedimiento')->with(['procedimientos' => '', 'config_supervision' => $config_supervision, 'config_supervision_id' => $id, 'procedimientos' => $procedimientos, 'procedimientos_usados' => '','id' => $config_supervision->cargo_id]);
-
     }
 
     Public function agregar_procedimiento_fijo(Request $request){
@@ -245,23 +202,22 @@ class ProcedimientoController extends BaseController {
 
         $nombre = title_case($request->item_fijo);
 
-        $supervision = new SupervisionProcedimiento;
+        $item_procedimiento = new ItemProcedimiento;
                                         
-        $supervision->nombre = $nombre;
-        $supervision->config_supervision_id = $request->procedimiento_id;
+        $item_procedimiento->nombre = $nombre;
+        $item_procedimiento->procedimiento_id = $request->procedimiento_id;
 
-        $supervision->save();
+        $item_procedimiento->save();
 
-        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $supervision, 'id' => $supervision->id, 200]);
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $item_procedimiento, 'id' => $item_procedimiento->id, 200]);
 
         }
     }
 
     public function eliminar_procedimiento_fijo($id){
 
-        $supervision = SupervisionProcedimiento::find($id);
-
-        $supervision->delete();
+        $item_procedimiento = ItemProcedimiento::find($id);
+        $item_procedimiento->delete();
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
@@ -269,7 +225,7 @@ class ProcedimientoController extends BaseController {
 
     public function consultar_items_procedimientos($id){
 
-        $items = SupervisionProcedimiento::where('config_supervision_id',$id)->get();
+        $items = ItemProcedimiento::where('procedimiento_id',$id)->get();
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $items, 200]);
 
@@ -278,11 +234,9 @@ class ProcedimientoController extends BaseController {
 
     public function eliminar_procedimiento($id){
 
-        $procedimientos = SupervisionProcedimiento::where('config_supervision_id',$id)->delete();
-
-        $supervision = ConfigSupervision::find($id);
-
-        $supervision->delete();
+        $items_procedimientos = ItemProcedimiento::where('procedimiento_id',$id)->delete();
+        $procedimiento = Procedimiento::find($id);
+        $procedimiento->delete();
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
@@ -310,11 +264,11 @@ class ProcedimientoController extends BaseController {
 
         }
 
-        $supervision = ConfigSupervision::find($request->procedimiento_id);
-        $supervision->nombre = $request->procedimiento_fijo;
+        $procedimiento = Procedimiento::find($request->procedimiento_id);
+        $procedimiento->nombre = $request->procedimiento_fijo;
 
-        if($supervision->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'id' => $supervision->id, 'nombre' =>  $supervision->nombre, 'status' => 'OK', 200]);
+        if($procedimiento->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'id' => $procedimiento->id, 'nombre' =>  $procedimiento->nombre, 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

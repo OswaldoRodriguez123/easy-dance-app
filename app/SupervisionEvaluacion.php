@@ -7,6 +7,6 @@ class SupervisionEvaluacion extends Model {
 
 	use SoftDeletes;
 
-	protected $table = 'supervision_evaluacion';
+	protected $table = 'supervisiones_evaluaciones';
 
 }

@@ -4,6 +4,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ConfigSupervision extends Model {
 
-	protected $table = 'config_supervision';
+	protected $table = 'config_supervisiones';
 
 }
