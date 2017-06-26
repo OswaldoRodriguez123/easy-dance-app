@@ -1061,6 +1061,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::delete('supervisiones/eliminar_permanentemente/{id}','SupervisionController@eliminar_permanentemente');
 		Route::get('supervisiones/conceptos/{id}', 'SupervisionController@conceptos');
 		Route::post('supervisiones/conceptos/agregar', 'SupervisionController@storeConcepto');
+		Route::post('supervisiones/conceptos/actualizar', 'SupervisionController@updateConcepto');
 		Route::delete('supervisiones/conceptos/eliminar/{id}', 'SupervisionController@deleteConcepto');
 
 		//CONFIG SUPERVISIONES

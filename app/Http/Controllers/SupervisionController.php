@@ -1691,8 +1691,524 @@ class SupervisionController extends BaseController {
 
 				$procedimiento = Procedimiento::find($request->procedimiento_id);
 				$cantidad = ItemProcedimiento::where('procedimiento_id',$procedimiento->id)->count();
+				$fecha = $concepto->fecha_inicio . ' / ' . $concepto->fecha_final;
 
-	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'id' => $concepto->id, 'nombre' => $procedimiento->nombre, 'cantidad' => $cantidad, 'fecha' => $request->fecha, 'procedimiento_id' => $concepto->procedimiento_id, 'status' => 'OK', 200]);
+	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'id' => $concepto->id, 'nombre' => $procedimiento->nombre, 'cantidad' => $cantidad, 'fecha' => $fecha, 'procedimiento_id' => $concepto->procedimiento_id, 'status' => 'OK', 200]);
+	           
+	        }else{
+	            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+	        }
+	    }
+    }
+
+    public function updateConcepto(Request $request)
+	{
+
+	    $rules = [
+	        'procedimiento_id' => 'required',
+	        'fecha' => 'required',
+	        'frecuencia' => 'required',
+	    ];
+
+	    $messages = [
+
+	        'procedimiento_id.required' => 'Ups! El Concepto a Evaluar es requerido',
+	        'fecha.required' => 'Ups! El rango de fecha es requerido',
+	        'frecuencia.required' => 'Ups! La frecuencia es requerida',
+	    ];
+
+	    $validator = Validator::make($request->all(), $rules, $messages);
+
+	    if ($validator->fails()){
+
+	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+	    }
+
+	    else{
+
+	    	$fecha = explode(" - ", $request->fecha);	
+
+	    	$frecuencia = $request->frecuencia;
+	        $fecha_inicio = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[0] . ' 00:00:00');
+	        $fecha_inicio_original = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[0] . ' 00:00:00');
+	        $fecha_final = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[1] . ' 00:00:00');
+	        
+	        $concepto = ConceptoSupervision::find($request->concepto_id);
+
+	        $procedimiento_id = $concepto->procedimiento_id;
+
+	        $concepto->procedimiento_id = $request->procedimiento_id;
+	        $concepto->fecha_inicio = $fecha_inicio_original;
+	        $concepto->fecha_final = $fecha_final;
+
+	        if($concepto->save()){
+
+	        	$array = array();
+		        $dia = $fecha_inicio->dayOfWeek;
+		       	$status = false;
+		       	$entro = false;
+		       	$i = 0;
+
+		        while($fecha_inicio <= $fecha_final){
+
+		        	$status = false;
+		        	$entro = false;
+
+		        	//DOMINGO
+
+		        	if($request->dia_7){
+
+		        		if($dia == 0){
+
+		        			if($fecha_inicio <= $fecha_final){
+		        				$fecha = $fecha_inicio->toDateString();
+		        				$array[$fecha] = '';
+		        			}
+
+		        		}else{
+
+		        			while($status == false){
+
+		        				if($fecha_inicio > $fecha_inicio_original){
+
+		        					$tipo = 1;
+
+		        				}else{
+		        					$tipo = 2;
+		        					
+		        				}
+
+		        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				while($dia != 0){
+
+			        				if($entro){
+		        						$fecha_inicio->addDay();
+		        					}else{
+
+				        				if($tipo == 1){
+				        					$fecha_inicio->subDay();
+				        				}else{
+				        					$fecha_inicio->addDay();
+				        				}
+			        				}
+
+			        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				}
+
+			        			if($fecha_inicio <= $fecha_final){
+			        				$fecha = $fecha_inicio->toDateString();
+			        				$array[$fecha] = '';
+			        				$status = true;
+			        			}else{
+			        				$status = true;
+			        			}
+			        			
+		        			}
+		
+		        		}
+
+		        		$entro = true;
+		        	}
+
+		        	//LUNES
+
+		        	$status = false;
+
+		        	if($request->dia_1){
+
+		        		if($dia == 1){
+
+		        			if($fecha_inicio <= $fecha_final){
+		        				$fecha = $fecha_inicio->toDateString();
+		        				$array[$fecha] = '';
+		        			}
+
+		        		}else{
+
+		        			while($status == false){
+
+		        				if($fecha_inicio > $fecha_inicio_original){
+
+		        					$tipo = 1;
+
+		        				}else{
+		        					$tipo = 2;
+		        					
+		        				}
+
+		        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				while($dia != 1){
+
+			        				if($entro){
+		        						$fecha_inicio->addDay();
+		        					}else{
+
+				        				if($tipo == 1){
+				        					$fecha_inicio->subDay();
+				        				}else{
+				        					$fecha_inicio->addDay();
+				        				}
+			        				}
+
+			        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				}
+
+			        			if($fecha_inicio <= $fecha_final){
+			        				$fecha = $fecha_inicio->toDateString();
+			        				$array[$fecha] = '';
+			        				$status = true;
+			        			}else{
+			        				$status = true;
+			        			}
+			        			
+		        			}
+		
+		        		}
+
+		        		$entro = true;
+		        	}
+
+		        	//MARTES
+
+		        	$status = false;
+
+		        	if($request->dia_2){
+
+		        		if($dia == 2){
+
+		        			if($fecha_inicio <= $fecha_final){
+		        				$fecha = $fecha_inicio->toDateString();
+		        				$array[$fecha] = '';
+		        			}
+
+		        		}else{
+
+		        			while($status == false){
+
+		        				if($fecha_inicio > $fecha_inicio_original){
+
+		        					$tipo = 1;
+
+		        				}else{
+		        					$tipo = 2;
+		        					
+		        				}
+
+		        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				while($dia != 2){
+
+			        				if($entro){
+		        						$fecha_inicio->addDay();
+		        					}else{
+
+				        				if($tipo == 1){
+				        					$fecha_inicio->subDay();
+				        				}else{
+				        					$fecha_inicio->addDay();
+				        				}
+			        				}
+
+			        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				}
+
+			        			if($fecha_inicio <= $fecha_final){
+			        				$fecha = $fecha_inicio->toDateString();
+			        				$array[$fecha] = '';
+			        				$status = true;
+			        			}else{
+			        				$status = true;
+			        			}
+			        			
+		        			}
+		
+		        		}
+
+		        		$entro = true;
+		        	}
+
+		        	//MIERCOLES
+
+		        	$status = false;
+
+		        	if($request->dia_3){
+
+		        		if($dia == 3){
+
+		        			if($fecha_inicio <= $fecha_final){
+		        				$fecha = $fecha_inicio->toDateString();
+		        				$array[$fecha] = '';
+		        			}
+
+		        		}else{
+
+		        			while($status == false){
+
+		        				if($fecha_inicio > $fecha_inicio_original){
+
+		        					$tipo = 1;
+
+		        				}else{
+		        					$tipo = 2;
+		        					
+		        				}
+
+		        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				while($dia != 3){
+
+			        				if($entro){
+		        						$fecha_inicio->addDay();
+		        					}else{
+
+				        				if($tipo == 1){
+				        					$fecha_inicio->subDay();
+				        				}else{
+				        					$fecha_inicio->addDay();
+				        				}
+			        				}
+
+			        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				}
+
+			        			if($fecha_inicio <= $fecha_final){
+			        				$fecha = $fecha_inicio->toDateString();
+			        				$array[$fecha] = '';
+			        				$status = true;
+			        			}else{
+			        				$status = true;
+			        			}
+			        			
+		        			}
+		
+		        		}
+
+		        		$entro = true;
+		        	}
+
+		        	//JUEVES
+
+		        	$status = false;
+
+		        	if($request->dia_4){
+
+		        		if($dia == 4){
+
+		        			if($fecha_inicio <= $fecha_final){
+		        				$fecha = $fecha_inicio->toDateString();
+		        				$array[$fecha] = '';
+		        			}
+
+		        		}else{
+
+		        			while($status == false){
+
+		        				if($fecha_inicio > $fecha_inicio_original){
+
+		        					$tipo = 1;
+
+		        				}else{
+		        					$tipo = 2;
+		        					
+		        				}
+
+		        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				while($dia != 4){
+
+			        				if($entro){
+		        						$fecha_inicio->addDay();
+		        					}else{
+
+				        				if($tipo == 1){
+				        					$fecha_inicio->subDay();
+				        				}else{
+				        					$fecha_inicio->addDay();
+				        				}
+			        				}
+
+			        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				}
+
+			        			if($fecha_inicio <= $fecha_final){
+			        				$fecha = $fecha_inicio->toDateString();
+			        				$array[$fecha] = '';
+			        				$status = true;
+			        			}else{
+			        				$status = true;
+			        			}
+			        			
+		        			}
+		
+		        		}
+
+		        		$entro = true;
+		        	}
+
+		        	//VIERNES
+
+		        	$status = false;
+
+		        	if($request->dia_5){
+
+		        		if($dia == 5){
+
+		        			if($fecha_inicio <= $fecha_final){
+		        				$fecha = $fecha_inicio->toDateString();
+		        				$array[$fecha] = '';
+		        			}
+
+		        		}else{
+
+		        			while($status == false){
+
+		        				if($fecha_inicio > $fecha_inicio_original){
+
+		        					$tipo = 1;
+
+		        				}else{
+		        					$tipo = 2;
+		        					
+		        				}
+
+		        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				while($dia != 5){
+
+			        				if($entro){
+		        						$fecha_inicio->addDay();
+		        					}else{
+
+				        				if($tipo == 1){
+				        					$fecha_inicio->subDay();
+				        				}else{
+				        					$fecha_inicio->addDay();
+				        				}
+			        				}
+
+			        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				}
+
+			        			if($fecha_inicio <= $fecha_final){
+			        				$fecha = $fecha_inicio->toDateString();
+			        				$array[$fecha] = '';
+			        				$status = true;
+			        			}else{
+			        				$status = true;
+			        			}
+			        			
+		        			}
+		
+		        		}
+
+		        		$entro = true;
+		        	}
+
+		        	//SABADO
+
+		        	$status = false;
+
+		        	if($request->dia_6){
+
+		        		if($dia == 6){
+
+		        			if($fecha_inicio <= $fecha_final){
+		        				$fecha = $fecha_inicio->toDateString();
+		        				$array[$fecha] = '';
+		        			}
+
+		        		}else{
+
+		        			while($status == false){
+
+		        				if($fecha_inicio > $fecha_inicio_original){
+
+		        					$tipo = 1;
+
+		        				}else{
+		        					$tipo = 2;
+		        					
+		        				}
+
+		        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				while($dia != 6){
+
+			        				if($entro){
+		        						$fecha_inicio->addDay();
+		        					}else{
+
+				        				if($tipo == 1){
+				        					$fecha_inicio->subDay();
+				        				}else{
+				        					$fecha_inicio->addDay();
+				        				}
+			        				}
+
+			        				$dia = $fecha_inicio->dayOfWeek;
+
+		        				}
+
+			        			if($fecha_inicio <= $fecha_final){
+			        				$fecha = $fecha_inicio->toDateString();
+			        				$array[$fecha] = '';
+			        				$status = true;
+			        			}else{
+			        				$status = true;
+			        			}
+			        			
+		        			}
+		
+		        		}
+
+		        		$entro = true;
+		        	}
+
+		        	if($frecuencia=='1'){
+	                   	$fecha_inicio->addWeek(); 
+	               	}elseif($frecuencia=="3"){
+	                   	$fecha_inicio->addMonth(); 
+	               	}else{
+	                   	$fecha_inicio->addDays(15); 
+	               	}
+
+	               	$i++;
+
+		        }	
+
+		        $horarios = HorarioSupervision::where('concepto_id',$concepto->id)->delete();
+		        $supervision = Supervision::find($concepto->supervision_id);
+
+	        	foreach($array as $key=>$value) {
+
+				    $horario = new HorarioSupervision;
+
+			        $horario->concepto_id = $concepto->id;
+			        $horario->fecha = $key;
+			        $horario->supervisor_id = $supervision->supervisor_id;
+
+			        $horario->save();
+				}
+
+				$fecha = explode(" - ", $request->fecha);
+				$fecha_inicio = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[0] . ' 00:00:00')->format('Y-m-d');
+	        	$fecha_final = Carbon::createFromFormat('d/m/Y H:i:s', $fecha[1] . ' 00:00:00')->format('Y-m-d');
+
+				$fecha = $fecha_inicio . ' / ' . $fecha_final;
+
+				$procedimiento = Procedimiento::find($request->procedimiento_id);
+				$cantidad = ItemProcedimiento::where('procedimiento_id',$procedimiento->id)->count();
+
+	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'id' => $concepto->id, 'nombre' => $procedimiento->nombre, 'cantidad' => $cantidad, 'fecha' => $fecha, 'procedimiento_id' => $procedimiento->id, 'procedimiento_id_anterior' => $procedimiento_id, 'status' => 'OK', 200]);
 	           
 	        }else{
 	            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);

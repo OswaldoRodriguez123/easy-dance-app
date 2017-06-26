@@ -16,6 +16,8 @@
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 <script src="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="{{url('/')}}/assets/vendors/bower_components/moment/min/moment.min.js"></script>
+
 @stop
 @section('content')
 
@@ -23,13 +25,15 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                    <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Procedimiento<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                    <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> <span id="span_agregar"> Agregar</span> Concepto<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                 </div>
                 <div class="modal-body">                           
                     <div class="row p-t-20 p-b-0">
                         <form name="form_agregar" id="form_agregar"  >
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">   
-                            <input type="hidden" name="id" id="id" value="{{$id}}">           
+                            <input type="hidden" name="id" id="id" value="{{$id}}">
+                            <input type="hidden" name="concepto_id" id="concepto_id">
+
                             <div class="col-sm-12">
                                 
                                 <label for="cargo" id="id-procedimiento_id">Concepto a Evaluar</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el concepto a evaluar" title="" data-original-title="Ayuda"></i>
@@ -129,9 +133,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-12">                            
+                    <div class="col-sm-12">                                    
 
-                          <a class="btn-blanco m-r-5 f-12 pointer" id="guardar">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                            <a class="btn-blanco m-r-5 f-12 pointer" id="guardar">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            <a style="display:none" class="btn-blanco m-r-5 f-12 pointer" id="actualizar">  Actualizar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                     </div>
                 </div>
@@ -187,7 +193,7 @@
                             @foreach ($conceptos as $concepto)
 
                                 <?php $id = $concepto['id']; ?>
-                                <tr id="{{$id}}" class="seleccion">
+                                <tr id="{{$id}}" class="seleccion" data-procedimiento_id="{{$concepto['procedimiento_id']}}">
                                     <td class="text-center previa">{{$concepto['nombre']}}</td>
                                     <td class="text-center previa">{{$concepto['items']}}</td>
                                     <td class="text-center previa">{{$concepto['fecha_inicio']}} / {{$concepto['fecha_final']}}</td>
@@ -254,6 +260,7 @@
 
         route_eliminar="{{url('/')}}/supervisiones/conceptos/eliminar/";
         route_agregar="{{url('/')}}/supervisiones/conceptos/agregar";
+        route_actualizar="{{url('/')}}/supervisiones/conceptos/actualizar";
 
         frecuencias = $('input[type="checkbox"].frecuencia');
         var pagina = document.location.origin
@@ -317,7 +324,7 @@
                 order: [[0, 'asc']],
                 fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                   $('td:eq(0),td:eq(1),td:eq(2)', nRow).addClass( "text-center" );
-                  $('td:eq(0),td:eq(1)', nRow).attr( "onclick","previa(this)" );
+                  $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
                 },
                 language: {
                     processing:     "Procesando ...",
@@ -510,6 +517,7 @@
 
                             $( rowNode )
                                 .attr('id',rowId)
+                                .data('procedimiento_id',respuesta.procedimiento_id)
                                 .addClass('seleccion');
       
                             finprocesado();
@@ -599,5 +607,128 @@
           $('.table-responsive').css( "overflow", "auto" );
         })
 
+
+        function previa(t){
+
+            var row = $(t).closest('tr');
+            var concepto_id = row.attr('id');
+            var procedimiento_id = row.data('procedimiento_id');
+            var fecha = row.find('td:eq(2)').text();
+            fecha = fecha.trim();
+            var fecha_explode = fecha.split('/')
+            fecha_inicio = moment(fecha_explode[0]).format('DD/MM/YYYY');
+            fecha_final = moment(fecha_explode[1]).format('DD/MM/YYYY');
+
+            fecha = fecha_inicio + ' - ' + fecha_final;
+
+
+            $('#fecha').val(fecha)
+            $('#concepto_id').val(concepto_id)
+            $('#procedimiento_id').val(procedimiento_id)
+            $('.selectpicker').selectpicker('refresh')
+
+            $('#guardar').hide()
+            $('#actualizar').show()
+            $('#span_agregar').text('Actualizar')
+            $('#modalAgregar').modal('show')
+
+        }
+
+        $('#modalAgregar').on('hidden.bs.modal', function () {
+            $('#span_agregar').text('Agregar')
+            $('#actualizar').hide()
+            $('#guardar').show()
+        })
+
+        $("#actualizar").click(function(){
+
+            procesando();
+
+            var route = route_actualizar;
+            var token = $('input:hidden[name=_token]').val();
+            var datos = $( "#form_agregar" ).serialize(); 
+
+            limpiarMensaje();
+
+            $.ajax({
+                url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                data:datos,
+                success:function(respuesta){
+                    setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                            var row = $('#'+respuesta.id).closest('tr');
+
+                            $("#procedimiento_id option[value='"+respuesta.procedimiento_id_anterior+"']").removeAttr("disabled");
+                            $("#procedimiento_id option[value='"+respuesta.procedimiento_id_anterior+"']").data("icon","");
+
+                            $("#procedimiento_id option[value='"+respuesta.procedimiento_id+"']").attr("disabled","disabled");
+                            $("#procedimiento_id option[value='"+respuesta.procedimiento_id+"']").data("icon","glyphicon-remove");
+
+                            row.find('td:eq(0)').text(respuesta.nombre);
+                            row.find('td:eq(1)').text(respuesta.cantidad);
+                            row.find('td:eq(2)').text(respuesta.fecha);
+                            row.data('procedimiento_id',respuesta.procedimiento_id);
+
+                            var nType = 'success';
+                            var nTitle="Ups! ";
+                            var nMensaje="¡Excelente! El registro se ha actualizado satisfactoriamente";
+
+                            $("#form_agregar")[0].reset();
+                            $('.selectpicker').selectpicker('refresh')
+      
+                            finprocesado();
+                            
+                            $('.modal').modal('hide')
+                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
+                        }else{
+                            var nTitle="Ups! ";
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                            var nType = 'danger';
+
+                            finprocesado();
+
+                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                        }                       
+                    
+                    }, 1000);
+                },
+                error:function(msj){
+                    setTimeout(function(){ 
+                    // if (typeof msj.responseJSON === "undefined") {
+                    //   window.location = "{{url('/')}}/error";
+                    // }
+                        if(msj.responseJSON.status=="ERROR"){
+                            console.log(msj.responseJSON.errores);
+                            errores(msj.responseJSON.errores);
+                            var nTitle="    Ups! "; 
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                            var nTitle="   Ups! "; 
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        finprocesado();
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                    }, 1000);
+                }
+            });
+        });
+
+            
     </script>
 @stop
