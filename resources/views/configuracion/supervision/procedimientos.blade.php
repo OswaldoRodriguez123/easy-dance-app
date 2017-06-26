@@ -296,8 +296,9 @@
         route_agregar="{{url('/')}}/guardar_procedimiento";
         route_update="{{url('/')}}/actualizar_procedimiento";
         route_consultar_items = "{{url('/')}}/consultar_items_procedimientos/";
- 
+
         $(document).ready(function(){
+
             t=$('#tablelistar').DataTable({
                 processing: true,
                 serverSide: false,

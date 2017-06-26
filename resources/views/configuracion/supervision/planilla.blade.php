@@ -97,13 +97,13 @@
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
-                                 <div class="form-group fg-line">
+                                 <div class="form-group">
                                     <label for="nombre">Cargo</label>
 
                                       <div class="select">
-                                          <select class="form-control text-capitalize" id="cargo_id" name="cargo_id">
+                                          <select class="selectpicker" id="cargo_id" name="cargo_id">
                                           @foreach ( $cargos as $cargo )
-                                            <option class="text-capitalize" value = "{{ $cargo['id'] }}">{{ $cargo['nombre'] }}</option>
+                                            <option value = "{{ $cargo['id'] }}">{{ $cargo['nombre'] }}</option>
                                           @endforeach 
                                           </select>
                                       </div> 
@@ -260,10 +260,13 @@
 
 
 @section('js') 
-   <script type="text/javascript">
+  <script type="text/javascript">
     route_update="{{url('/')}}/configuracion/supervisiones/update";
     route_eliminar="{{url('/')}}/configuracion/supervisiones/eliminar/";
     route_principal="{{url('/')}}/configuracion/supervisiones";
+
+    var cargos = <?php echo json_encode($cargos);?>;
+    var cargos_usados = <?php echo json_encode($cargos_usados);?>;
 
     function formatmoney(n) {
       return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
@@ -271,39 +274,16 @@
 
     $(document).ready(function(){
 
-      $('#fecha').daterangepicker({
-            "autoApply" : false,
-            "opens": "left",
-            "applyClass": "bgm-morado waves-effect",
-            locale : {
-                format: 'DD/MM/YYYY',
-                applyLabel : 'Aplicar',
-                cancelLabel : 'Cancelar',
-                daysOfWeek : [
-                    "Dom",
-                    "Lun",
-                    "Mar",
-                    "Mie",
-                    "Jue",
-                    "Vie",
-                    "Sab"
-                ],
-                monthNames: [
-                    "Enero",
-                    "Febrero",
-                    "Marzo",
-                    "Abril",
-                    "Mayo",
-                    "Junio",
-                    "Julio",
-                    "Agosto",
-                    "Septiembre",
-                    "Octubre",
-                    "Noviembre",
-                    "Diciembre"
-                ],        
-            }
+      $.each(cargos, function (i, cargo) {
+        $.each(cargos_usados, function (j, id) {
+          if(cargo.id == id){
+            $("#cargo_id option[value='"+cargo.id+"']").attr("disabled","disabled");
+            $("#cargo_id option[value='"+cargo.id+"']").data("icon","glyphicon-remove");
+          }
         });
+      });
+
+      $('.selectpicker').selectpicker('refresh');
 
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInLeftBig';

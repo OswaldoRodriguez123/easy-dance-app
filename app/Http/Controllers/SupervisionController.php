@@ -1083,7 +1083,7 @@ class SupervisionController extends BaseController {
 
         $supervisiones = Supervision::onlyTrashed()->join('staff', 'staff.id', '=', 'supervisiones.staff_id')
         	->join('config_staff', 'staff.cargo', '=', 'config_staff.id')
-            ->select('staff.*', 'supervisiones.supervisor_id', 'supervisiones.fecha_inicio', 'supervisiones.fecha_final', 'config_staff.nombre as cargo', 'supervisiones.id')
+            ->select('staff.*', 'supervisiones.supervisor_id', 'config_staff.nombre as cargo', 'supervisiones.id')
             ->where('staff.academia_id', Auth::user()->academia_id)
         ->get();
 

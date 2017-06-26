@@ -39,11 +39,20 @@ class ConfigSupervisionController extends BaseController {
 
     public function create(){
 
-    	Session::forget('supervisiones');
+        $config_supervision = ConfigSupervision::join('config_staff', 'config_supervisiones.cargo_id', '=', 'config_staff.id')
+            ->select('config_supervisiones.*','config_staff.nombre')
+            ->where('config_supervisiones.academia_id', Auth::user()->academia_id)
+        ->get();
+
+        $cargos_usados = array();
+
+        foreach($config_supervision as $configuracion){
+            $cargos_usados[] = $configuracion->cargo_id;
+        }
 
     	$cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
 
-        return view('configuracion.supervision.create')->with(['cargos' => $cargos]);
+        return view('configuracion.supervision.create')->with(['cargos' => $cargos, 'cargos_usados' => $cargos_usados]);
 
     }
 
@@ -55,8 +64,21 @@ class ConfigSupervisionController extends BaseController {
         ->first();
 
         if($config_supervision){
+
+            $configuraciones = ConfigSupervision::join('config_staff', 'config_supervisiones.cargo_id', '=', 'config_staff.id')
+                ->select('config_supervisiones.*','config_staff.nombre')
+                ->where('config_supervisiones.academia_id', Auth::user()->academia_id)
+            ->get();
+
+            $cargos_usados = array();
+
+            foreach($configuraciones as $configuracion){
+                $cargos_usados[] = $configuracion->cargo_id;
+            }
+
             $cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
-            return view('configuracion.supervision.planilla')->with(['config_supervision' => $config_supervision, 'id' => $id, 'cargos' => $cargos]);
+            
+            return view('configuracion.supervision.planilla')->with(['config_supervision' => $config_supervision, 'id' => $id, 'cargos' => $cargos, 'cargos_usados' => $cargos_usados]);
 
         }else{
             return redirect("configuracion/supervisiones");

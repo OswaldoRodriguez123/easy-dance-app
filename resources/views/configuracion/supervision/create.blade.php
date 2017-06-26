@@ -65,18 +65,11 @@
 
                                             <select class="selectpicker" name="cargo_supervision" id="cargo_supervision" data-live-search="true">
 
-                                              @if(!isset($id))
+                                              <option value="">Selecciona</option>
+                                              @foreach ( $cargos as $cargo )
+                                                <option value = "{{ $cargo['id'] }}">{{ $cargo['nombre'] }}</option>
+                                              @endforeach
 
-                                                <option value="">Selecciona</option>
-                                                @foreach ( $cargos as $cargo )
-                                                  <option value = "{{ $cargo['id'] }}">{{ $cargo['nombre'] }}</option>
-                                                @endforeach
-
-                                              @else
-                                                <option value = "{{ $cargo->id }}">{{ $cargo->nombre }}</option>
-                                              @endif
-
-                                            
                                             </select>
                                         </div>
                                     </div>
@@ -146,8 +139,22 @@
   route_principal="{{url('/')}}/configuracion/supervisiones";
   route_cancelar = "{{url('/')}}/configuracion/supervisiones/cancelar";
 
-  var cargos = <?php echo json_encode($cargos);?>;
+    var cargos = <?php echo json_encode($cargos);?>;
+    var cargos_usados = <?php echo json_encode($cargos_usados);?>;
 
+    $(document).ready(function(){
+      $.each(cargos, function (i, cargo) {
+        $.each(cargos_usados, function (j, id) {
+          if(cargo.id == id){
+            $("#cargo_supervision option[value='"+cargo.id+"']").attr("disabled","disabled");
+            $("#cargo_supervision option[value='"+cargo.id+"']").data("icon","glyphicon-remove");
+          }
+        });
+      });
+
+      $('.selectpicker').selectpicker('refresh')
+
+    });
 
     $("#guardar").click(function(){
 

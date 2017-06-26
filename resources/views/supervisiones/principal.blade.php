@@ -40,11 +40,10 @@
                     
                     <div class="card">
                         <div class="card-header">
-                            <div class ="col-md-6 text-left">  
-                                <a class="email" href="{{url('/')}}/supervisiones/eliminadas"><i class="zmdi zmdi-wrench f-20 m-r-5 boton blue sa-warning" data-original-title="Bandeja Eliminados" data-toggle="tooltip" data-placement="top" title=""></i></a>
-                            </div>
 
-                        
+       <!--                      <div class ="col-md-6 text-left">  
+                                <a class="email" href="{{url('/')}}/supervisiones/eliminadas"><i class="zmdi zmdi-wrench f-20 m-r-5 boton blue sa-warning" data-original-title="Bandeja Eliminados" data-toggle="tooltip" data-placement="top" title=""></i></a>
+                            </div> -->
 
                             <div class ="col-md-12 text-right">                                
  
