@@ -28,7 +28,7 @@
 
                         @elseif(isset($id))
 
-                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/supervisiones/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/supervisiones/conceptos/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                         @else
 
                             <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/supervisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>

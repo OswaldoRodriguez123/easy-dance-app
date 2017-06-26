@@ -925,7 +925,7 @@ class SupervisionController extends BaseController {
             $array[$evaluacion->id] = $supervision_array;
         }
 
-        return view('supervisiones.evaluaciones')->with(['evaluaciones' => $array,'id_evaluacion'=>$id_evaluacion]);
+        return view('supervisiones.evaluaciones')->with(['evaluaciones' => $array, 'id_evaluacion' => $id_evaluacion]);
     }
 
     public function evaluaciones_por_supervision($id)
@@ -969,7 +969,9 @@ class SupervisionController extends BaseController {
         	$porcentaje = 0;
         }
 
-        return view('supervisiones.evaluaciones')->with(['evaluaciones' => $array, 'id'=>$id, 'porcentaje' => $porcentaje]);
+        $concepto = ConceptoSupervision::find($id);
+
+        return view('supervisiones.evaluaciones')->with(['evaluaciones' => $array, 'id' => $concepto->supervision_id, 'porcentaje' => $porcentaje]);
     }
 
 
@@ -1039,7 +1041,7 @@ class SupervisionController extends BaseController {
     	$horarios = HorarioSupervision::where('concepto_id',$id)->delete();
  
         if($concepto->delete()){
-            return response()->json(['mensaje' => '¡Excelente! La supervision se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! La supervision se ha eliminado satisfactoriamente', 'procedimiento_id' => $concepto->procedimiento_id, 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -1170,6 +1172,7 @@ class SupervisionController extends BaseController {
 	        ->get();
 
 	        $array = array();
+	        $procedimientos_usados = array();
 
 	        foreach($conceptos as $concepto){
 
@@ -1180,9 +1183,11 @@ class SupervisionController extends BaseController {
 	            $concepto_array = $collection->toArray();
 	            $concepto_array['items']=$items_a_evaluar;
 	            $array[$concepto->id] = $concepto_array;
+
+	            $procedimientos_usados[] = $concepto->procedimiento_id;
 	        }
 
-			return view('supervisiones.conceptos')->with(['conceptos' => $array, 'procedimientos' => $procedimientos, 'dias_de_semana' => $dias_de_semana, 'id' => $id]);
+			return view('supervisiones.conceptos')->with(['conceptos' => $array, 'procedimientos' => $procedimientos, 'procedimientos_usados' => $procedimientos_usados, 'dias_de_semana' => $dias_de_semana, 'id' => $id]);
 		}else{
 			return redirect("supervisiones");
 		}
@@ -1687,7 +1692,7 @@ class SupervisionController extends BaseController {
 				$procedimiento = Procedimiento::find($request->procedimiento_id);
 				$cantidad = ItemProcedimiento::where('procedimiento_id',$procedimiento->id)->count();
 
-	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'id' => $concepto->id, 'nombre' => $procedimiento->nombre, 'cantidad' => $cantidad, 'fecha' => $request->fecha, 'status' => 'OK', 200]);
+	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'id' => $concepto->id, 'nombre' => $procedimiento->nombre, 'cantidad' => $cantidad, 'fecha' => $request->fecha, 'procedimiento_id' => $concepto->procedimiento_id, 'status' => 'OK', 200]);
 	           
 	        }else{
 	            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);

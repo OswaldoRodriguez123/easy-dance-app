@@ -257,8 +257,22 @@
 
         frecuencias = $('input[type="checkbox"].frecuencia');
         var pagina = document.location.origin
- 
+
+        var procedimientos = <?php echo json_encode($procedimientos);?>;
+        var procedimientos_usados = <?php echo json_encode($procedimientos_usados);?>;
+
         $(document).ready(function(){
+
+            $.each(procedimientos, function (i, procedimiento) {
+                $.each(procedimientos_usados, function (j, id) {
+                    if(procedimiento.id == id){
+                        $("#procedimiento_id option[value='"+procedimiento.id+"']").attr("disabled","disabled");
+                        $("#procedimiento_id option[value='"+procedimiento.id+"']").data("icon","glyphicon-remove");
+                    }
+                });
+            });
+
+            $('#procedimiento_id').selectpicker('refresh')
 
             $('#fecha').daterangepicker({
                 "autoApply" : false,
@@ -378,16 +392,21 @@
                     var nAnimIn = "animated flipInY";
                     var nAnimOut = "animated flipOutY"; 
                     if(respuesta.status=="OK"){
-                      var nType = 'success';
-                      var nTitle="Ups! ";
-                      var nMensaje=respuesta.mensaje;
+                        var nType = 'success';
+                        var nTitle="Ups! ";
+                        var nMensaje=respuesta.mensaje;
 
-                      t.row($(element).parents('tr') )
-                        .remove()
-                        .draw();
 
-                    swal("Exito!","La configuración ha sido eliminada!","success");
-                    finprocesado();
+                        t.row($(element).parents('tr') )
+                            .remove()
+                            .draw();
+
+                        $("#procedimiento_id option[value='"+respuesta.procedimiento_id+"']").removeAttr("disabled");
+                        $("#procedimiento_id option[value='"+respuesta.procedimiento_id+"']").data("icon","");
+                        $('.selectpicker').selectpicker('refresh')
+
+                        swal("Exito!","La configuración ha sido eliminada!","success");
+                        finprocesado();
                     
                     }
                 },
@@ -439,6 +458,10 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
+
+                            $("#procedimiento_id option[value='"+respuesta.procedimiento_id+"']").attr("disabled","disabled");
+                            $("#procedimiento_id option[value='"+respuesta.procedimiento_id+"']").data("icon","glyphicon-remove");
+                            $('.selectpicker').selectpicker('refresh')
 
                             var nType = 'success';
                             var nTitle="Ups! ";
