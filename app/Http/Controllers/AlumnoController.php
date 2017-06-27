@@ -1345,11 +1345,15 @@ class AlumnoController extends BaseController
 
     public function restore($id)
     {
-            
         $alumno = Alumno::withTrashed()->find($id);
         
         if($alumno->restore()){
-            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            $alumno->deleted_at_usuario_id = '';
+            if($alumno->save()){
+                return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

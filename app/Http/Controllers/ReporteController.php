@@ -3109,7 +3109,7 @@ class ReporteController extends BaseController
         {
             $query->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                 ->where('inscripcion_clase_grupal.clase_grupal_id','=', $request->clase_grupal_id)
-                ->unique('alumnos.id');
+                ->distinct('alumnos.id');
         }
 
         if($request->boolean_fecha){
