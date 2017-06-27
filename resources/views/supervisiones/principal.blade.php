@@ -64,6 +64,7 @@
                                     <th class="text-center" data-column-id="supervisor">Supervisor</th>
                                     <th class="text-center" data-column-id="cargo">Cargo a Supervisar</th>
                                     <th class="text-center" data-column-id="staff">Staff a Supervisar</th>
+                                    <th class="text-center" data-column-id="conceptos">Conceptos a Supervisar</th>
                                     <th class="text-center" data-column-id="operaciones">Operaciones</th>
 
                                 </tr>
@@ -75,16 +76,17 @@
                                 <!-- can('view-alumnos', $alumno) -->
                                 <tr id="{{$id}}" class="seleccion" >
                                     
-                                    <?php $tmp = explode(" ", $supervision['nombre']);
-                                    $nombre_alumno = $tmp[0];
+                                    <?php 
+                                        $tmp = explode(" ", $supervision['nombre']);
+                                        $nombre = $tmp[0];
 
-                                    $tmp = explode(" ", $supervision['apellido']);
-                                    $apellido_alumno = $tmp[0];
-
+                                        $tmp = explode(" ", $supervision['apellido']);
+                                        $apellido = $tmp[0];
                                     ?>
                                     <td class="text-center previa">{{$supervision['supervisor']}}</td>
                                     <td class="text-center previa">{{$supervision['cargo']}}</td>
-                                    <td class="text-center previa">{{$nombre_alumno}} {{$apellido_alumno}} </td>
+                                    <td class="text-center previa">{{$nombre}} {{$apellido}}</td>
+                                    <td class="text-center previa">{{$supervision['conceptos']}}</td>
                                     <td class="text-center"> 
                                         <ul class="top-menu">
                                             <li class="dropdown" id="dropdown_{{$id}}">

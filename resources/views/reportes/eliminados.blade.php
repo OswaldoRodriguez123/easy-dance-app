@@ -36,7 +36,6 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <!-- <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/asistencia" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de Asistencias</a> -->
 
                         <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/reportes" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección de Reportes</a>
 
@@ -56,7 +55,7 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-accounts f-25"></i> Reporte de Reservaciones</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-delete f-25"></i> Reporte de Eliminados</p>
                             <hr class="linea-morada">
                                                          
                         </div>
@@ -65,17 +64,6 @@
                             <form name="formFiltro" id="formFiltro">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="hidden" id="boolean_fecha" name="boolean_fecha" value="0">
-
-                                <div class="col-md-4">
-                                    <label>Tipo</label>
-                                    <div class="select">
-                                        <select class="selectpicker" data-live-search="true" name="tipo" id="tipo">
-                                            <option value="1">Activas</option>
-                                            <option value="2">Finalizadas</option>
-                                            <option value="0">Todas</option>
-                                        </select>
-                                    </div>
-                                </div>
 
                                 <div class="col-md-4">
                                     <label>Fecha</label> &nbsp; &nbsp; &nbsp;
@@ -107,8 +95,6 @@
                                     </div>
                          
                                 </div>
-
-                                <div class="clearfix m-b-20"></div>
 
                                 <div class="col-sm-4">
                                     <div class="form-group fg-line">
@@ -149,15 +135,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-
-
-
-                                 <!-- <div class="clearfix m-b-10"></div> -->
-
-                                 
-
-                                 <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="guardar" >Filtrar</button>
+                    
+                                <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="guardar" >Filtrar</button>
 
                                 <div class ="clearfix m-b-10"></div>
                                 <div class ="clearfix m-b-10"></div>
@@ -167,104 +146,16 @@
 
                         <div class="clearfix"></div>
 
-                        <div class="col-md-6 col-md-offset-6">
-
-                            <div class="text-center">
-                                <div class="text-center f-700" >Porcentaje de Efectividad</div>
-                                <hr class="linea-morada opaco-0-8">
-
-                                <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43">
-                                    <div class="progress-bar progress-bar-morado" id="barra_progreso" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-                                </div>
-                                <span class="f-700"><span class="progreso">0</span>% de Efectividad con <span class="total_confirmaciones">0</span> inscritos</span>
-
-                                 <div class="rating-list text-center">
-
-                                      <br>
-                                      <div class="rl-star">
-
-                                        <i id="estrella_1" class="zmdi zmdi-star"></i>
-                                        <i id="estrella_2" class="zmdi zmdi-star"></i>
-                                        <i id="estrella_3" class="zmdi zmdi-star"></i>
-                                        <i id="estrella_4" class="zmdi zmdi-star"></i>
-                                        <i id="estrella_5" class="zmdi zmdi-star"></i>
-                                          
-                                      </div>
-                                  </div>
-                            </div>
-                        </div>
-
-                        <div class="clearfix"></div>
-
-                        <div class="col-md-4" style="margin-top: 11%">
-
-
-                            <table class="table display cell-border" id="mujeres_hombres">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center" data-column-id="mujeres_hombres">Sexo</th>
-                                        <th class="text-center" data-column-id="cantidad"></th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-
-
-                                    <tr>
-                                        <td>
-                                            <span style="padding-left: 3%"><i class="zmdi zmdi-female c-rosado f-25" style="padding-right: 2%"></i></span>
-                                        </td>
-
-                                        <td>
-                                            <span style="padding-left: 3%" id="mujeres">0</span>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <span style="padding-left: 3%"><i class="zmdi zmdi-male-alt c-azul f-25" style="padding-right: 2%"></i></span>
-                                        </td>
-
-                                        <td>
-                                            <span style="padding-left: 3%" id="hombres">0</span>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>
-                                            <span style="padding-left: 3%">Total</span>
-                                        </td>
-
-                                        <td>
-                                            <span style="padding-left: 3%" class="total" id="total">0</span>
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="col-md-6 col-md-offset-2">
-                         
-                            <h2 class="text-center">Informe de Reservaciones</h2>
-                            <hr>
-                            <div id="pie-chart-reservacion" class="flot-chart"></div>
-                            <div id="flc-pie-reservacion" class="flc-pie hidden-xs"></div>
-                        </div>
-
-                        <div class ="clearfix"></div>
-
                         <div class="table-responsive row">
                             <div class="col-md-12">
                                 <table class="table table-striped table-bordered text-center " id="tablelistar" >
                                     <thead>
                                         <tr>
-                                            <th class="text-center" data-column-id="confirmacion"></th>
-                                            <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
-                                            <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
-                                            <th class="text-center" data-column-id="sexo" data-order="desc">Sexo</th>
-                                            <th class="text-center" data-column-id="celular">Contacto Móvil</th>
-                                            <th class="text-center" data-column-id="clase">Clase Reservada</th>
+                                            <th class="text-center" data-column-id="fecha">Fecha de Eliminacion</th>
+                                            <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
+                                            <th class="text-center" data-column-id="sexo">Sexo</th>
+                                            <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
+                                            <th class="text-center" data-column-id="administrador">Eliminado por</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -281,8 +172,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    
                 </div>
             </section>
 
@@ -291,9 +180,9 @@
 
 @section('js') 
             
-        <script type="text/javascript">
+    <script type="text/javascript">
 
-        route_filtrar="{{url('/')}}/reportes/reservaciones";
+        route_filtrar="{{url('/')}}/reportes/eliminados";
 
         $(document).ready(function(){
 
@@ -335,72 +224,36 @@
             });
 
             t=$('#tablelistar').DataTable({
-            processing: true,
-            serverSide: false,
-            pageLength: 25, 
-            order: [[1, 'desc']],
-            fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center, disabled" );
-              // $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
-            },
-            language: {
-                            processing:     "Procesando ...",
-                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                            searchPlaceholder: "BUSCAR",
-                            lengthMenu:     " ",
-                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                            infoPostFix:    "",
-                            loadingRecords: "...",
-                            zeroRecords:    "No se encontraron registros coincidentes",
-                            emptyTable:     "No hay datos disponibles en la tabla",
-                            paginate: {
-                                first:      "Primero",
-                                previous:   "Anterior",
-                                next:       "Siguiente",
-                                last:       "Ultimo"
-                            },
-                            aria: {
-                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                            }
-                        }
-
-
-            });
-
-            i=$('#mujeres_hombres').DataTable({
                 processing: true,
                 serverSide: false,
                 pageLength: 25, 
-                bPaginate: false,
-                bInfo: false,
-                bFilter:false, 
-                bSort:false, 
+                order: [[1, 'desc']],
+                fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center, disabled" );
+                },
                 language: {
-                    processing:     "Procesando ...",
-                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                    searchPlaceholder: "BUSCAR",
-                    lengthMenu:     " ",
-                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                    infoPostFix:    "",
-                    loadingRecords: "...",
-                    zeroRecords:    "No se encontraron registros coincidentes",
-                    emptyTable:     "No hay datos disponibles en la tabla",
-                    paginate: {
-                        first:      "Primero",
-                        previous:   "Anterior",
-                        next:       "Siguiente",
-                        last:       "Ultimo"
-                    },
-                    aria: {
-                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                    }
-                }
+                                processing:     "Procesando ...",
+                                search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                                searchPlaceholder: "BUSCAR",
+                                lengthMenu:     " ",
+                                info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                                infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                                infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                                infoPostFix:    "",
+                                loadingRecords: "...",
+                                zeroRecords:    "No se encontraron registros coincidentes",
+                                emptyTable:     "No hay datos disponibles en la tabla",
+                                paginate: {
+                                    first:      "Primero",
+                                    previous:   "Anterior",
+                                    next:       "Siguiente",
+                                    last:       "Ultimo"
+                                },
+                                aria: {
+                                    sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                    sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                                }
+                            }
 
 
             });
@@ -436,7 +289,7 @@
 
                             t.clear().draw();
 
-                            $.each(respuesta.reservaciones, function (index, array) {
+                            $.each(respuesta.eliminados, function (index, array) {
 
                                 if(array.sexo=='F')
                                 {
@@ -448,138 +301,16 @@
                                 }
 
                                 var rowNode=t.row.add( [
-                                    ''+array.boolean_confirmacion+'',
-                                    ''+array.nombre+'',
-                                    ''+array.apellido+'',
+                                    ''+array.deleted_at+'',
+                                    ''+array.identificacion+'',
                                     ''+sexo+'',
-                                    ''+array.celular+'',
-                                    ''+array.clase+'',
-                                    ] ).draw(false).node();
-                                    $( rowNode )
-                                        .attr('id',array.id)
-                                        .addClass('seleccion');
-                            });
+                                    ''+array.nombre+ ' ' +array.apellido+'',
+                                    ''+array.administrador_nombre+ ' ' +array.administrador_apellido+'',
+                                ] ).draw(false).node();
 
-                            porcentaje = (respuesta.total_confirmaciones/respuesta.total)*100
-                            porcentaje = parseInt(porcentaje)
-
-                            if(isNaN(porcentaje)){
-                                porcentaje = 0
-                            }
-
-                            if(porcentaje >= 100){
-                                $("#barra_progreso").removeClass('progress-bar-morado');
-                                $("#barra_progreso").addClass('progress-bar-success');
-                            }else{
-                                $("#barra_progreso").removeClass('progress-bar-success');
-                                $("#barra_progreso").addClass('progress-bar-morado');
-                            }
-
-                            if(porcentaje >= 10){
-                                $('#estrella_1').addClass('active')
-                            }else{
-                                $('#estrella_1').removeClass('active')
-                            }
-
-                            if(porcentaje >= 20){
-                                $('#estrella_2').addClass('active')
-                            }else{
-                                $('#estrella_2').removeClass('active')
-                            }
-
-                            if(porcentaje >= 30){
-                                $('#estrella_3').addClass('active')
-                            }else{
-                                $('#estrella_3').removeClass('active')
-                            }
-
-                            if(porcentaje >= 40){
-                                $('#estrella_4').addClass('active')
-                            }else{
-                                $('#estrella_4').removeClass('active')
-                            }
-
-                            if(porcentaje >= 50){
-                                $('#estrella_5').addClass('active')
-                            }else{
-                                $('#estrella_5').removeClass('active')
-                            }
-                            
-                    
-                            $('.progreso').text(porcentaje)
-                            $('#barra_progreso').css('width',porcentaje+'%')
-        
-                            $("#text-progreso").text(porcentaje+"%");
-                            $("#barra-progreso").css({
-                              "width": (porcentaje + "%")
-                            });        
-                            
-                            if(porcentaje<="10"){
-                              $("#barra-progreso").css("background-color","red");
-                              $("#msj_porcentaje").html("Debe mejorar");
-                            }else if(porcentaje<="20"){
-                              $("#barra-progreso").css("background-color","orange");
-                              $("#msj_porcentaje").html("Bueno");
-                            }else if(porcentaje<="30"){
-                              $("#barra-progreso").css("background-color","gold");
-                              $("#msj_porcentaje").html("Muy bueno");
-                            }else{
-                              $("#barra-progreso").css("background-color","green");
-                              $("#msj_porcentaje").html("Excelente");
-                            }
-    
-
-                            datos = JSON.parse(JSON.stringify(respuesta));
-
-                            $("#mujeres").text(datos.mujeres);
-                            $("#hombres").text(datos.hombres);
-                            $(".total").text(datos.total);
-                            $(".total_confirmaciones").text(datos.total_confirmaciones);
-
-                            $(".flot-chart").html('');
-                            $(".flc-pie").html('');
-
-                            var pieData1 = ''
-                            pieData1 += '[';
-                            $.each( datos.tipos, function( i, item ) {
-                                var label = item[0];
-                                var cant = item[1];
-                                pieData1 += '{"data":"'+cant+'","label":"'+label+'"},';
-                            });
-                            pieData1 = pieData1.substring(0, pieData1.length -1);
-                            pieData1 += ']';
-
-                            $.plot('#pie-chart-reservacion', $.parseJSON(pieData1), {
-                                series: {
-                                    pie: {
-                                        show: true,
-                                        stroke: { 
-                                            width: 2,
-                                        },
-                                    },
-                                },
-                                legend: {
-                                    container: '#flc-pie-reservacion',
-                                    backgroundOpacity: 0.5,
-                                    noColumns: 0,
-                                    backgroundColor: "white",
-                                    lineWidth: 0
-                                },
-                                grid: {
-                                    hoverable: true,
-                                    clickable: true
-                                },
-                                tooltip: true,
-                                tooltipOpts: {
-                                    content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                                    shifts: {
-                                        x: 20,
-                                        y: 0
-                                    },
-                                    defaultTheme: false,
-                                    cssClass: 'flot-tooltip'
-                                },
-                                
+                                $( rowNode )
+                                    .attr('id',array.id)
+                                    .addClass('disabled');
                             });
 
                             finprocesado();
@@ -628,12 +359,6 @@
         });       
 
     }
-
-     function previa(t){
-        var id = $(t).closest('tr').attr('id');
-        var route =route_detalle+"/"+id;
-        window.location=route;
-      }
 
     function collapse_minus(collaps){
         $('#'+collaps).collapse('hide');

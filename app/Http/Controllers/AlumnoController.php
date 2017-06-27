@@ -136,23 +136,20 @@ class AlumnoController extends BaseController
 
     public function eliminados()
     {
-        $alumnod = DB::table('alumnos')
-            ->join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
+        $alumnod = Alumno::onlyTrashed()->join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
             ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
             ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-            ->where('deleted_at', '!=' ,  NULL)
         ->get();
 
         $collection=collect($alumnod);
         $grouped = $collection->groupBy('id');     
         $deuda = $grouped->toArray();
 
-        $alumno = Alumno::onlyTrashed()
-            ->where('academia_id', Auth::user()->academia_id)
-            ->whereNotNull('deleted_at')
+        $alumno = Alumno::onlyTrashed()->join('users', 'alumnos.deleted_at_usuario_id', '=', 'users.id')
+            ->select('alumnos.*', 'users.nombre as administrador_nombre', 'users.apellido as administrador_apellido')
+            ->where('alumnos.academia_id', Auth::user()->academia_id)
         ->get();
-
 
         return view('participante.alumno.eliminados')->with(['alumnos' => $alumno, 'deuda' => $deuda]);
     }
@@ -1331,9 +1328,15 @@ class AlumnoController extends BaseController
     {
         
         $alumno = Alumno::find($id);
-        
-        if($alumno->delete()){
-            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        $alumno->deleted_at_usuario_id = Auth::user()->id;
+
+        if($alumno->save()){
+
+            if($alumno->delete()){
+                return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

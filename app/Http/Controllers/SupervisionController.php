@@ -46,10 +46,13 @@ class SupervisionController extends BaseController {
         		$supervisor = '';
         	}
 
+        	$conceptos = ConceptoSupervision::where('supervision_id',$supervision->id)->count();
+
         	$collection=collect($supervision);   
 
             $supervision_array = $collection->toArray();
             $supervision_array['supervisor']=$supervisor;
+            $supervision_array['conceptos']=$conceptos;
             $array[$supervision->id] = $supervision_array;
         }
 
