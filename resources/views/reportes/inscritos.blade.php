@@ -466,17 +466,17 @@
 
                         $('[data-toggle="popover"]').popover(); 
 
-                        sexos = respuesta.sexos
+                        // sexos = respuesta.sexos
 
-                        if(sexos[1]){
-                            if(sexos[1][0] == 'F'){
-                                color1 = "#2196f3"
-                                color2 = "#FF4081"
-                            }else{
-                                color2 = "#2196f3"
-                                color1 = "#FF4081"
-                            }
-                        }
+                        // if(sexos[1]){
+                        //     if(sexos[1][0] == 'F'){
+                        //         color1 = "#2196f3"
+                        //         color2 = "#FF4081"
+                        //     }else{
+                        //         color2 = "#2196f3"
+                        //         color1 = "#FF4081"
+                        //     }
+                        // }
 
 
                         datos = JSON.parse(JSON.stringify(respuesta));
@@ -491,10 +491,10 @@
 
                         var data1 = ''
                         data1 += '[';
-                        $.each( datos.sexos, function( i, item ) {
-                            var edad = item[0];
+                        $.each( datos.horas, function( i, item ) {
+                            var label = item[0];
                             var cant = item[1];
-                            data1 += '{"data":"'+cant+'","label":"'+edad+'"},';
+                            data1 += '{"data":"'+cant+'","label":"'+label+'"},';
                         });
                         data1 = data1.substring(0, data1.length -1);
                         data1 += ']';
@@ -531,7 +531,7 @@
                                 defaultTheme: false,
                                 cssClass: 'flot-tooltip'
                             },
-                            colors: [color1, color2],
+                            // colors: [color1, color2],
                             
                         });
                 

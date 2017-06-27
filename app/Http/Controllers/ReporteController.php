@@ -240,6 +240,9 @@ class ReporteController extends BaseController
         $credito = 0;
         $contado = 0;
         $total_inscritos = 0;
+        $manana = 0;
+        $tarde = 0;
+        $noche = 0;
 
         foreach($inscritos as $inscrito){
 
@@ -291,10 +294,20 @@ class ReporteController extends BaseController
             }
 
             $edad = Carbon::createFromFormat('Y-m-d', $inscrito->fecha_nacimiento)->diff(Carbon::now())->format('%y');
-            
+
+            $hora_inicio = strtotime($inscrito->hora_inicio);
+            $hora_final = strtotime($inscrito->hora_final);
+                
             if($request->edad_inicio OR $request->edad_final)
             {
-                
+                if($hora_inicio >= strtotime("07:00:00") && $hora_final <= strtotime("12:00:00")){
+                    $manana++;
+                }else if($hora_inicio >= strtotime("12:01:00") && $hora_final <= strtotime("17:00:00")){
+                    $tarde++;
+                }else if($hora_inicio >= strtotime("17:01:00") && $hora_final <= strtotime("22:00:00")){
+                    $noche++;
+                }
+
                 if($request->edad_inicio && $request->edad_final){
                     if($edad >= $request->edad_inicio && $edad <= $request->edad_final){
                         $collection=collect($inscrito);     
@@ -322,6 +335,15 @@ class ReporteController extends BaseController
                 }
 
             }else{
+
+                if($hora_inicio >= strtotime("07:00:00") && $hora_final <= strtotime("12:00:00")){
+                    $manana++;
+                }else if($hora_inicio >= strtotime("12:01:00") && $hora_final <= strtotime("17:00:00")){
+                    $tarde++;
+                }else if($hora_inicio >= strtotime("17:01:00") && $hora_final <= strtotime("22:00:00")){
+                    $noche++;
+                }
+
                 $collection=collect($inscrito);     
                 $inscrito_array = $collection->toArray();  
                 $inscrito_array['edad'] = $edad;  
@@ -339,6 +361,16 @@ class ReporteController extends BaseController
         array_push($array_sexo, $array_hombres);
         array_push($array_sexo, $array_mujeres);   
 
+        $array_hora = array();
+
+        $array_manana = array('Mañana', $manana);
+        $array_tarde = array('Tarde', $tarde);
+        $array_noche = array('Noche', $noche);
+
+        array_push($array_hora, $array_manana);
+        array_push($array_hora, $array_tarde);
+        array_push($array_hora, $array_noche);
+
         return response()->json(
             [
                 'inscritos'         => $array,
@@ -346,6 +378,7 @@ class ReporteController extends BaseController
                 'hombres'           => $hombres,
                 'total'             => $total,
                 'sexos'             => $array_sexo,
+                'horas'             => $array_hora,
                 'contado'           => $contado,
                 'credito'           => $credito,
                 'total_inscritos'   => $total_inscritos,
