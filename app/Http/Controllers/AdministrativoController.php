@@ -1046,7 +1046,7 @@ class AdministrativoController extends BaseController {
                                     $porcentaje = $config_pago->monto / 100;
                                     $monto = $item_proforma->importe_neto * $porcentaje;
 
-                                    if($monto > 0 ){
+                                    if($monto > 0 && $config_pago->monto_minimo <= $total_pago){
 
                                         $pago = new Comision;
 
@@ -1067,21 +1067,24 @@ class AdministrativoController extends BaseController {
                                    
                                 }else{
 
-                                    $pago = new Comision;
+                                    if($config_pago->monto_minimo <= $total_pago){
 
-                                    $pago->usuario_id=$promotor_id[$i];
-                                    $pago->usuario_tipo=$tipo_promotor[$i];
-                                    $pago->tipo=$config_pago->tipo;
-                                    $pago->monto = floatval($config_pago->monto * $item_proforma->cantidad);
-                                    $pago->servicio_producto_id=$item_proforma->item_id;
-                                    $pago->servicio_producto_tipo=$item_proforma->servicio_producto;
-                                    $pago->fecha = Carbon::now()->toDateString();
-                                    $pago->hora = Carbon::now()->toTimeString();
-                                    $pago->academia_id = Auth::user()->academia_id;
-                                    $pago->cliente_id = $request->usuario_id;
-                                    $pago->cliente_tipo = $request->usuario_tipo;
+                                        $pago = new Comision;
 
-                                    $pago->save();
+                                        $pago->usuario_id=$promotor_id[$i];
+                                        $pago->usuario_tipo=$tipo_promotor[$i];
+                                        $pago->tipo=$config_pago->tipo;
+                                        $pago->monto = floatval($config_pago->monto * $item_proforma->cantidad);
+                                        $pago->servicio_producto_id=$item_proforma->item_id;
+                                        $pago->servicio_producto_tipo=$item_proforma->servicio_producto;
+                                        $pago->fecha = Carbon::now()->toDateString();
+                                        $pago->hora = Carbon::now()->toTimeString();
+                                        $pago->academia_id = Auth::user()->academia_id;
+                                        $pago->cliente_id = $request->usuario_id;
+                                        $pago->cliente_tipo = $request->usuario_tipo;
+
+                                        $pago->save();
+                                    }
                                     
                                 }
                             }

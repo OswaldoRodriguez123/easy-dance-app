@@ -100,22 +100,40 @@
                                    <div class="clearfix p-b-35"></div>
 
                                         <div class="form-group">
-                                            <label for="cantidad" id="id-cantidad">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto a pagar por clase grupal" title="" data-original-title="Ayuda"></i>
+                                            <label for="monto" id="id-monto">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto a pagar por comisión" title="" data-original-title="Ayuda"></i>
                                             
                                           <div class="input-group">
                                             <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
                                             <div class="fg-line">
-                                            <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" placeholder="Ej. 10" maxlength="2" size="2">
+                                            <input type="text" class="form-control input-sm input-mask" name="monto" id="monto" placeholder="Ej. 10" maxlength="2" size="2">
                                             </div>
                                           </div>
                                         </div>
-                                        <div class="has-error" id="error-cantidad">
+                                        <div class="has-error" id="error-monto">
                                           <span >
-                                              <small id="error-cantidad_mensaje" class="help-block error-span" ></small>                                           
+                                              <small id="error-monto_mensaje" class="help-block error-span" ></small>                                           
                                           </span>
                                         </div>
 
                                       <div class="clearfix p-b-35"></div>
+
+                                      <div class="form-group">
+                                            <label for="monto_minimo" id="id-monto_minimo">Monto Mínimo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto mínimo que debe pagar para que la comisión se realice" title="" data-original-title="Ayuda"></i>
+                                            
+                                          <div class="input-group">
+                                            <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
+                                            <div class="fg-line">
+                                            <input type="text" class="form-control input-sm" name="monto_minimo" id="monto_minimo" placeholder="Ej. 2500">
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="has-error" id="error-monto_minimo">
+                                          <span >
+                                              <small id="error-monto_minimo_mensaje" class="help-block error-span" ></small>                                           
+                                          </span>
+                                        </div>
+
+                                        <div class="clearfix p-b-35"></div>
 
                                      
                                   <div class="card-header text-left">
@@ -134,6 +152,7 @@
                                                 <th class="text-center" data-column-id="tipo" data-type="numeric">Tipo</th>
                                                 <th class="text-center" data-column-id="monto" data-type="numeric">Monto</th>
                                                 <th class="text-center" data-column-id="monto_porcentaje" data-type="numeric">Monto Porcentaje</th>
+                                                <th class="text-center" data-column-id="monto_porcentaje" data-type="numeric">Monto Mínimo</th>
                                                 <th class="text-center" data-column-id="operaciones">Operaciones</th>
 
                                             </tr>
@@ -172,6 +191,7 @@
 
                                                 </td>
                                                 <td class="text-center">{{ number_format($comision['monto_porcentaje'], 2, '.' , '.') }}</td>
+                                                <td class="text-center">{{ number_format($comision['monto_minimo'], 2, '.' , '.') }}</td>
                                                 <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
                                               </tr>
                                         @endforeach 
@@ -980,6 +1000,8 @@
 
       });
 
+      $('#monto_minimo').mask('000,000,000,000', {reverse: true});
+
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInLeftBig';
         //var cardImg = $(this).closest('#content').find('h1');
@@ -1050,7 +1072,7 @@
     })
 
     function limpiarMensaje(){
-        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "cargo", "hora_inicio", "hora_final", "cantidad"];
+        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "cargo", "hora_inicio", "hora_final", "monto", "monto_minimo"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -1578,6 +1600,8 @@
 
                 $.each(respuesta.array, function (index, array) {
 
+                  monto_minimo = formatmoney(parseFloat(array.monto_minimo));
+
                   if(array.tipo == 1){
                     tipo = 'Porcentaje'
                     monto = array.monto+"%"
@@ -1594,6 +1618,7 @@
                   ''+tipo+'',
                   ''+monto+'',
                   ''+monto_porcentaje+'',
+                  ''+monto_minimo+'',
                   '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                   ] ).draw(false).node();
                   $( rowNode )
@@ -1950,11 +1975,11 @@
 
     $('input[name=tipo_pago]').on('change', function(){
       if($(this).val() == 1){
-        $('#cantidad').mask('00', {reverse: true});
-        $('#cantidad').attr("placeholder", "Ej. 10");
+        $('#monto').mask('00', {reverse: true});
+        $('#monto').attr("placeholder", "Ej. 10");
       }else{
-        $('#cantidad').mask('000,000,000,000', {reverse: true});
-        $('#cantidad').attr("placeholder", "Ej. 5000");
+        $('#monto').mask('000,000,000,000', {reverse: true});
+        $('#monto').attr("placeholder", "Ej. 5000");
       }
     });
 
