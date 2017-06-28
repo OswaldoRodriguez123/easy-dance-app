@@ -599,6 +599,12 @@ class ClaseGrupalController extends BaseController {
                 $array_organizador = array();
                 $i = 0;
                 $tipo_id = array($id);
+                $array_dias_clases_inscripcion = array();
+
+                //COMPROBAR CUANTOS MULTIHORARIOS HAY PARA CONSTRUIR EL ADDDAYS
+
+                $array_dias_clases_inscripcion[] = $fecha_inicio->dayOfWeek;
+
 
                 foreach($horarios_clases_grupales as $horario){
 
@@ -609,6 +615,8 @@ class ClaseGrupalController extends BaseController {
                     $array_organizador[$i]['fecha'] = $fecha;
                     $array_organizador[$i]['id'] = $horario->id;
                     $i++;
+
+                    $array_dias_clases_inscripcion[] = $dia;
 
                 }
 
@@ -658,6 +666,7 @@ class ClaseGrupalController extends BaseController {
                 if(Carbon::now() > $fecha_inicio){
 
                     $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->whereIn('tipo_id',$tipo_id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
+
                     
                     if($ultima_asistencia){
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
@@ -666,37 +675,44 @@ class ClaseGrupalController extends BaseController {
 
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$alumno->fecha_inscripcion);
                         $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
-
-                        while($dia_inicio != $dia_inscripcion){
+                        
+                        while(!in_array($dia_inscripcion,$array_dias_clases_inscripcion)){
 
                             $fecha_a_comparar->addDay();
                             $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
                         }
                         
+
+                        $index_inicial = array_search($dia_inscripcion, $array_dias_clases_inscripcion);
                         $boolean_inscripcion = true;
+                    }
+
+                    if($index_inicial == 0){
+                        $j = 0;
+                    }else{
+                        $j = 1;
                     }
 
                     $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
 
-                    $j = 0;
-                               
                     while($fecha_a_comparar < $fecha_de_finalizacion){
-                        foreach($array_dias as $dia_a_añadir){
-                            if($j != 0 OR $boolean_inscripcion){
+                        for($k = $index_inicial; $k < count($array_dias); $k++){
+                            if($j != 0 && $boolean_inscripcion){
                                 $j++;
                                 if($fecha_a_comparar <= Carbon::now()){
                                     $inasistencias++;
-                                    $fecha_a_comparar->addDays($dia_a_añadir);
+                                    $fecha_a_comparar->addDays($array_dias[$k]);
                                 }else{
                                     break;
                                 }
                             }else{
-                                $fecha_a_comparar->addDays($dia_a_añadir);
+                                $fecha_a_comparar->addDays($array_dias[$k]);
                                 $j++;
                             }
                         }
+                        $index_inicial = 0;
                     }
-                    
+                   
                     if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
                         $estatus="c-youtube";
 
@@ -3583,7 +3599,8 @@ class ClaseGrupalController extends BaseController {
 
                 }
 
-                $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('clase_grupal_id',$clase_grupal_id)->where('fecha',$fecha_a_comparar)->first();
+
+                $asistencia = Asistencia::where('tipo',1)->where('tipo_id',$clase_grupal_id)->where('alumno_id',$alumno_id)->where('fecha',$fecha_a_comparar)->first();
 
                 if($asistencia){
 
@@ -3615,8 +3632,10 @@ class ClaseGrupalController extends BaseController {
 
             $fecha_horario = Carbon::createFromFormat('Y-m-d',$horario->fecha);
             $i = $fecha_horario->dayOfWeek;
+            $fecha_inscripcion = Carbon::createFromFormat('Y-m-d', $inscripcion_clase_grupal->fecha_inscripcion);
 
             if($fecha_inscripcion >= $fecha_horario){
+
                 $dia_inscripcion = $fecha_inscripcion->dayOfWeek;
 
                 while($i != $dia_inscripcion){
@@ -3624,7 +3643,6 @@ class ClaseGrupalController extends BaseController {
                     $fecha_inscripcion->addDay();
                     $dia_inscripcion = $fecha_inscripcion->dayOfWeek;
                 }
-
                 $fecha = $fecha_inscripcion;
             }else{
                 $fecha = $fecha_horario;
