@@ -623,14 +623,24 @@ class ClaseGrupalController extends BaseController {
                 if(!$array_organizador){
                     $array_dias[] = 7;
                 }else if(count($array_organizador) == 1){
-                    $dias = abs($fecha_inicio->dayOfWeek - $array_organizador[0]['dia']);
 
-         
-                    dd($dias);
-                    
+                    $dia_inicio_clase = $fecha_inicio->dayOfWeek;
+                    $dia_inicio_horario = $array_organizador[0]['dia'];
+                    $cantidad_dias = 0;
+
+                    if($dia_inicio_clase > $dia_inicio_horario){
+                        while ($dia_inicio_clase != 7){
+                            $dia_inicio_clase++;
+                            $cantidad_dias++;
+                        }
+                    }
+
+                    $dias = abs($dia_inicio_clase - ($dia_inicio_horario + 1));
+                    $dias = $dias + $cantidad_dias;
                     $array_dias[] = $dias;
                     $dia_principal = 7 - $dias;
                     $array_dias[] = $dia_principal;
+
                 }else{
 
                     foreach($array_organizador as $index => $organizador){
