@@ -1100,7 +1100,7 @@
 
                                       @foreach($arrayHorario as $horario)
                                       
-                                        <tr id="{{$horario['id']}}" class="odd seleccion text-center" role="row">
+                                        <tr id="{{$horario['id']}}" data-fecha="{{$horario['fecha']}}" class="odd seleccion text-center" role="row">
                                           <td onclick="previa(this)" class="text-center">
                                             {{$horario['instructor']}}
                                           </td>

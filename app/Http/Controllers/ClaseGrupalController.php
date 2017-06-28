@@ -2699,53 +2699,43 @@ class ClaseGrupalController extends BaseController {
 
                 if($dia_curso=="SUNDAY")
                 {
-                    $dia="6";
                     $dia_de_semana="Domingo";
                 }
                 elseif($dia_curso=="MONDAY")
                 {
-                    $dia="0";
                     $dia_de_semana="Lunes";
                 }
                 elseif($dia_curso=="TUESDAY")
                 {
-                    $dia="1";
                     $dia_de_semana="Martes";
-
                 }
                 elseif($dia_curso=="WEDNESDAY")
                 {
-                    $dia="2";
                     $dia_de_semana="Míercoles";                
                 }
                 elseif($dia_curso=="THURSDAY")
                 {
-                    $dia="3";
                     $dia_de_semana="Jueves";                
                 }
                 elseif($dia_curso=="FRIDAY")
                 {
-                    $dia="4";
                     $dia_de_semana="Viernes";
                 }
                 elseif($dia_curso=="SATURDAY")
                 {
-                    $dia="5";
                     $dia_de_semana="Sábado";
                 }
 
                 $arrayHorario[$id_horario] = array(
-                        'instructor' => $instructor,
-                        'dia_de_semana' => $dia_de_semana,
-                        'new_dia_de_semama'=>$dia_curso,
-                        'especialidad' => $especialidad,
-                        'estudio' => $estudio,
-                        'hora_inicio' => $hora_inicio,
-                        'new_hora_inicio' => $hora_inicio,
-                        'hora_final' => $hora_final,
-                        'new_hora_final' => $hora_final,
-                        'fecha'=> $fecha,
-                        'id'=>$id_horario
+                    'instructor' => $instructor,
+                    'dia_de_semana' => $dia_de_semana,
+                    'new_dia_de_semama'=>$dia_curso,
+                    'especialidad' => $especialidad,
+                    'estudio' => $estudio,
+                    'hora_inicio' => $hora_inicio,
+                    'hora_final' => $hora_final,
+                    'fecha'=> $fecha,
+                    'id'=>$id_horario
                 );
             }
 
