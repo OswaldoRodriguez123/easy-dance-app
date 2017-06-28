@@ -605,7 +605,6 @@ class ClaseGrupalController extends BaseController {
 
                 $array_dias_clases_inscripcion[] = $fecha_inicio->dayOfWeek;
 
-
                 foreach($horarios_clases_grupales as $horario){
 
                     $fecha = Carbon::createFromFormat('Y-m-d', $horario->fecha);
@@ -670,7 +669,7 @@ class ClaseGrupalController extends BaseController {
                     
                     if($ultima_asistencia){
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
-                        $boolean_inscripcion = false;
+                        $j = 1;
                     }else{
 
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$alumno->fecha_inscripcion);
@@ -682,24 +681,17 @@ class ClaseGrupalController extends BaseController {
                             $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
                         }
                         
-
-                        $index_inicial = array_search($dia_inscripcion, $array_dias_clases_inscripcion);
-                        $boolean_inscripcion = true;
-                    }
-
-                    if($index_inicial == 0){
                         $j = 0;
-                    }else{
-                        $j = 1;
+                        $index_inicial = array_search($dia_inscripcion, $array_dias_clases_inscripcion);
                     }
 
                     $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
 
                     while($fecha_a_comparar < $fecha_de_finalizacion){
                         for($k = $index_inicial; $k < count($array_dias); $k++){
-                            if($j != 0 && $boolean_inscripcion){
+                            if($j != 0){
                                 $j++;
-                                if($fecha_a_comparar <= Carbon::now()){
+                                if($fecha_a_comparar < Carbon::now()){
                                     $inasistencias++;
                                     $fecha_a_comparar->addDays($array_dias[$k]);
                                 }else{
@@ -710,9 +702,10 @@ class ClaseGrupalController extends BaseController {
                                 $j++;
                             }
                         }
+
                         $index_inicial = 0;
                     }
-                   
+
                     if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
                         $estatus="c-youtube";
 
