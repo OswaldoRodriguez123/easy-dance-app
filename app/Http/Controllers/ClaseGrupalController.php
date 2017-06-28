@@ -648,12 +648,12 @@ class ClaseGrupalController extends BaseController {
                     $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->whereIn('tipo_id',$tipo_id)->where('alumno_id',$alumno->id)->orderBy('created_at', 'desc')->first();
                     
                     if($ultima_asistencia){
-                        $fecha_ultima_asistencia = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
+                        $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
                     }else{
-                        $fecha_ultima_asistencia = Carbon::createFromFormat('Y-m-d',$alumno->fecha_inscripcion);
+                        $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$alumno->fecha_inscripcion);
                     }
 
-                    $fecha_a_comparar = $fecha_ultima_asistencia;
+                    $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
                                
                     if(Carbon::now() <= $fecha_final){
                         $fecha_de_finalizacion = Carbon::now();
@@ -754,7 +754,7 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['dias_vencimiento'] = $dias_vencimiento;
                 $alumno_array['llamadas'] = $llamadas;
                 $alumno_array['inasistencias'] = $inasistencias;
-                $alumno_array['ultima_asistencia'] = $fecha_ultima_asistencia->format('d-m-Y');
+                $alumno_array['ultima_asistencia'] = $fecha_ultima_asistencia;
 
                 $array[$alumno->id] = $alumno_array;
 
