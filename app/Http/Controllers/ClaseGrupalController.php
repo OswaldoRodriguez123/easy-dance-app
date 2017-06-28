@@ -663,6 +663,8 @@ class ClaseGrupalController extends BaseController {
                     $array_dias[] = $dia_principal;
                 }
 
+                dd($array_dias);
+
                 $tipo_clase = array(1,2);
                 $in = array(2,4);
 
