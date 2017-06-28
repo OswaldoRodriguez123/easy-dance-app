@@ -732,11 +732,6 @@ class ClaseGrupalController extends BaseController {
 
                         $index_inicial = 0;
                     }
-
-                    
-                    if($alumno->id == 521){
-                        dd($array_fecha_a_comparar);
-                    }
                     
                     if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
                         $estatus="c-youtube";
