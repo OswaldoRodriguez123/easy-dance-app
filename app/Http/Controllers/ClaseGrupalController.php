@@ -722,7 +722,7 @@ class ClaseGrupalController extends BaseController {
                             if($j != 0){
                                 if($fecha_a_comparar < Carbon::now()->addDay()){
                                     if($alumno->id == 521){
-                                        dd($fecha_a_comparar);
+                                        dd(Carbon::now()->addDay());
                                     }
 
                                     $inasistencias++;
