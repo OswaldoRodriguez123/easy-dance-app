@@ -671,7 +671,7 @@ class ClaseGrupalController extends BaseController {
                     ->first();
 
                     if($alumno->id == 521){
-                        dd($ultima_asistencia);
+                        dd($array_dias);
                     }
                     
                     if($ultima_asistencia){
