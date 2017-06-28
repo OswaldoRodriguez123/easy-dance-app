@@ -457,6 +457,7 @@ class ClaseGrupalController extends BaseController {
 
             $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio);
             $fecha_final = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_final);
+            $dia_inicio = $fecha_inicio->dayOfWeek;
 
             //RESERVACIONES
 
@@ -662,7 +663,16 @@ class ClaseGrupalController extends BaseController {
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
                         $boolean_inscripcion = false;
                     }else{
+
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$alumno->fecha_inscripcion);
+                        $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
+
+                        while($dia_inicio != $dia_inscripcion){
+
+                            $fecha_a_comparar->addDay();
+                            $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
+                        }
+                        
                         $boolean_inscripcion = true;
                     }
 
