@@ -671,9 +671,11 @@ class ClaseGrupalController extends BaseController {
                     ->first();
                     
                     if($ultima_asistencia){
+
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
                         $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
                         $j = 0;
+
                     }else{
 
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$alumno->fecha_inscripcion);
@@ -687,12 +689,13 @@ class ClaseGrupalController extends BaseController {
                         $j = 1;
                     }
 
-                    $index_inicial = array_search($dia_inscripcion, $array_dias_clases_inscripcion);
-
-
-                    // if($alumno->id == 521){
-                    //     dd($index_inicial);
-                    // }
+                    foreach($array_dias_clases_inscripcion as $index => $dia_clase_inscripcion){
+                        if($dia_clase_inscripcion == $dia_inscripcion){
+                            $index_inicial = $index;
+                        }
+                    }
+                    
+                    // $index_inicial = array_search($dia_inscripcion, $array_dias_clases_inscripcion);
 
                     $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
                     $array_fecha_a_comparar = array();
