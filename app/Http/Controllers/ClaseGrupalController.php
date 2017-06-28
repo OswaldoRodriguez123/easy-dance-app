@@ -630,6 +630,8 @@ class ClaseGrupalController extends BaseController {
             $dia_principal = $dia_principal + $fecha_inicio->dayOfWeek;
             $array_dias[] = $dia_principal;
 
+            dd($array_dias);
+
             // foreach($array_organizador as $array){
             //     $tipo_id[] = $horario->id;
             //     $cantidad_clases++;
@@ -755,7 +757,6 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['llamadas'] = $llamadas;
                 $alumno_array['inasistencias'] = $inasistencias;
                 $alumno_array['ultima_asistencia'] = $fecha_ultima_asistencia;
-                $alumno_array['fecha_de_finalizacion'] = $fecha_de_finalizacion;
 
                 $array[$alumno->id] = $alumno_array;
 
