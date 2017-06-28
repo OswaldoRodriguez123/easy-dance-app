@@ -1146,9 +1146,8 @@
                                 	'Cantidad que adeuda: ' . number_format($deuda, 2, '.' , '.')  . '<br>'.
                                   'Modalidad de pago: <span id="tipo_pago_'.$id.'">' . $tipo_pago . '</span><br>'.
                                   'Registro de llamada: ' . $alumno['llamadas'] . '<br>'.
-                                  'Inasistencias: ' . $alumno['inasistencias'] . '<br>'.
-                                  'Ultima Asistencia: ' . $alumno['ultima_asistencia'] . '<br>'.
-                                  'Fecha Finalizacion: ' . $alumno['fecha_de_finalizacion'] . '<br>'.
+                                  // 'Inasistencias: ' . $alumno['inasistencias'] . '<br>'.
+                                  // 'Ultima Asistencia: ' . $alumno['ultima_asistencia'] . '<br>'.
                                 '</p>';
 
                               ;?>
@@ -1489,11 +1488,11 @@
                 var values = $('#promotor').val();
                 
                 var promotores = '';
-                
-                for(var i = 0; i < values.length; i += 1) {
 
-                  promotores = promotores + ',' + values[i];
-
+                if(values){
+                  for(var i = 0; i < values.length; i += 1) {
+                    promotores = promotores + ',' + values[i];
+                  }
                 }
 
                 procesando();

@@ -611,26 +611,34 @@ class ClaseGrupalController extends BaseController {
 
             }
 
-            foreach($array_organizador as $index => $organizador){
+            if(!$array_organizador){
+                $array_dias[] = 7;
+            }else if(count($array_organizador) == 1){
+                $dias = abs($fecha_inicio->dayOfWeek - $array_organizador[0]['dia']);
+                $array_dias[] = $dias;
+                $dia_principal = 7 - $dias;
+                $array_dias[] = $dia_principal;
+            }else{
 
-                $tipo_id[] = $organizador['id'];
+                foreach($array_organizador as $index => $organizador){
 
-                if ($index == 0) {
-                    $fecha_a_añadir = $organizador['fecha'];
+                    $tipo_id[] = $organizador['id'];
+
+                    if ($index == 0) {
+                        $dias_a_restar = $organizador['dia'];
+                        continue;
+                    }
+
+                    $dias_a_añadir = $organizador['dia'] - $dias_a_restar;
+                    $array_dias[] = $dias_a_añadir;
                     $dias_a_restar = $organizador['dia'];
-                    continue;
+
                 }
 
-                $dias_a_añadir = $organizador['dia'] - $dias_a_restar;
-                $array_dias[] = $dias_a_añadir;
-                $dias_a_restar = $organizador['dia'];
+                $dia_principal = 7 - $dias_a_restar;
+                $dia_principal = $dia_principal + $fecha_inicio->dayOfWeek;
+                $array_dias[] = $dia_principal;
             }
-
-            $dia_principal = 7 - $dias_a_restar;
-            $dia_principal = $dia_principal + $fecha_inicio->dayOfWeek;
-            $array_dias[] = $dia_principal;
-
-            dd($array_dias);
 
             // foreach($array_organizador as $array){
             //     $tipo_id[] = $horario->id;
@@ -666,7 +674,7 @@ class ClaseGrupalController extends BaseController {
                     while($fecha_a_comparar <= $fecha_de_finalizacion){
                         foreach($array_dias as $dia_a_añadir){
                             if($fecha_a_comparar <= Carbon::now()){
-                                $inasistencias += $dia_a_añadir;
+                                $inasistencias++;
                                 $fecha_a_comparar->addDays($dia_a_añadir);
                             }else{
                                 break;
@@ -1451,7 +1459,6 @@ class ClaseGrupalController extends BaseController {
     {
 
     $rules = [
-        'promotores' => 'required',
         'clase_grupal_id' => 'required',
         'alumno_id' => 'required',
         'costo_inscripcion' => 'required|numeric',
@@ -1460,7 +1467,6 @@ class ClaseGrupalController extends BaseController {
     ];
 
     $messages = [
-        'promotores.required' => 'Ups! El Promotor es requerido',
         'clase_grupal_id.required' => 'Ups! El Nombre  es requerido',
         'alumno_id.required' => 'Ups! El Alumno es requerido',
         'costo_inscripcion.required' => 'Ups! El costo de la inscripción es requerido',
