@@ -721,6 +721,10 @@ class ClaseGrupalController extends BaseController {
                             $array_dias_tmp[] = $array_dias[$k];
                             if($j != 0){
                                 if($fecha_a_comparar < Carbon::now()->addDay()){
+                                    if($alumno->id == 521){
+                                        dd($fecha_a_comparar);
+                                    }
+
                                     $inasistencias++;
                                     $fecha_a_comparar->addDays($array_dias[$k]);
                                 }
