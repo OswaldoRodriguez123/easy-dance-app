@@ -593,8 +593,6 @@ class ClaseGrupalController extends BaseController {
 
             $tipo_id = array($id);
             $horarios_clases_grupales = HorarioClaseGrupal::where('clase_grupal_id', $id)->orderBy('fecha')->get();
-            // $cantidad_clases = 1;
-
             $array_dias = array();
             $array_organizador = array();
             $i = 0;
@@ -640,11 +638,7 @@ class ClaseGrupalController extends BaseController {
                 $array_dias[] = $dia_principal;
             }
 
-            // foreach($array_organizador as $array){
-            //     $tipo_id[] = $horario->id;
-            //     $cantidad_clases++;
-
-            // }
+            dd($array_dias);
 
             $tipo_clase = array(1,2);
             $in = array(2,4);
@@ -680,8 +674,6 @@ class ClaseGrupalController extends BaseController {
                                 break;
                             }
                         }
-                        // $clases_completadas += $cantidad_clases;
-                        // $fecha_a_comparar->addWeek();
                     }
                     
                     if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
