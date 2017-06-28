@@ -624,10 +624,10 @@ class ClaseGrupalController extends BaseController {
                     $array_dias[] = 7;
                 }else if(count($array_organizador) == 1){
                     $dias = abs($fecha_inicio->dayOfWeek - $array_organizador[0]['dia']);
+
+         
+                    dd($dias);
                     
-                    if($alumno->id == 521){
-                        dd($dias);
-                    }
                     $array_dias[] = $dias;
                     $dia_principal = 7 - $dias;
                     $array_dias[] = $dia_principal;
