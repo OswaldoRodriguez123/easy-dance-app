@@ -754,6 +754,7 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['dias_vencimiento'] = $dias_vencimiento;
                 $alumno_array['llamadas'] = $llamadas;
                 $alumno_array['inasistencias'] = $inasistencias;
+                $alumno_array['ultima_asistencia'] = $fecha_ultima_asistencia->format('d-m-Y');
 
                 $array[$alumno->id] = $alumno_array;
 
