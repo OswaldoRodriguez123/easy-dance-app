@@ -703,15 +703,15 @@ class ClaseGrupalController extends BaseController {
                         $j = 1;
                     }
 
-                    foreach($array_dias_clases_inscripcion as $index => $dia_clase_inscripcion){
-                        if($dia_clase_inscripcion == $dia_inscripcion){
-                            $index_inicial = $index;
-                        }
-                    }
+                    // foreach($array_dias_clases_inscripcion as $index => $dia_clase_inscripcion){
+                    //     if($dia_clase_inscripcion == $dia_inscripcion){
+                    //         $index_inicial = $index;
+                    //     }
+                    // }
 
-                    // $index_inicial = array_search($dia_inscripcion, $array_dias_clases_inscripcion);
+                    $index_inicial = array_search($dia_inscripcion, $array_dias_clases_inscripcion);
 
-                    dd($index_inicial);
+                    dd($dia_inscripcion);
 
                     $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
                     $array_fecha_a_comparar = array();
