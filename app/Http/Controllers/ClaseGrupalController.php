@@ -663,8 +663,6 @@ class ClaseGrupalController extends BaseController {
                     $array_dias[] = $dia_principal;
                 }
 
-                dd($array_dias);
-
                 $tipo_clase = array(1,2);
                 $in = array(2,4);
 
@@ -713,6 +711,8 @@ class ClaseGrupalController extends BaseController {
 
                     $index_inicial = array_search($dia_inscripcion, $array_dias_clases_inscripcion);
 
+                    dd($index_inicial);
+
                     $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
                     $array_fecha_a_comparar = array();
                     $array_dias_tmp = array();
@@ -725,7 +725,6 @@ class ClaseGrupalController extends BaseController {
                                 if($fecha_a_comparar < Carbon::now()->addDay()){
                                     $inasistencias++;
                                     $fecha_a_comparar->addDays($array_dias[$k]);
-
                                 }
                             }else{
                                 $fecha_a_comparar->addDays($array_dias[$k]);
