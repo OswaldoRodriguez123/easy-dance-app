@@ -722,7 +722,7 @@ class ClaseGrupalController extends BaseController {
 
                     
                     if($alumno->id == 521){
-                        dd($array_dias_tmp);
+                        dd($array_fecha_a_comparar);
                     }
                     
                     if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
