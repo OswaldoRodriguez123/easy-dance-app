@@ -641,7 +641,7 @@ class ClaseGrupalController extends BaseController {
 
             foreach($alumnos_inscritos as $alumno){
 
-                $clases_completadas = 0;
+                $inasistencias = 0;
 
                 if(Carbon::now() > $fecha_inicio){
 
@@ -664,7 +664,7 @@ class ClaseGrupalController extends BaseController {
                     while($fecha_a_comparar <= $fecha_de_finalizacion){
                         foreach($array_dias as $dia_a_añadir){
                             if($fecha_a_comparar <= Carbon::now()){
-                                $clases_completadas += $dia_a_añadir;
+                                $inasistencias += $dia_a_añadir;
                                 $fecha_a_comparar->addDays($dia_a_añadir);
                             }else{
                                 break;
@@ -674,7 +674,7 @@ class ClaseGrupalController extends BaseController {
                         // $fecha_a_comparar->addWeek();
                     }
                     
-                    if($clases_completadas >= $asistencia_roja && $asistencia_roja != 0){
+                    if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
                         $estatus="c-youtube";
 
                         // if($asistencia_roja > 0)
@@ -684,7 +684,7 @@ class ClaseGrupalController extends BaseController {
                         // }
                         
                         // continue;
-                    }else if($clases_completadas >= $asistencia_amarilla && $asistencia_amarilla != 0){
+                    }else if($inasistencias >= $asistencia_amarilla && $asistencia_amarilla != 0){
                         $estatus="c-amarillo";
                     }else{
                         $estatus="c-verde";
@@ -753,6 +753,7 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['cantidad'] = $cantidad;
                 $alumno_array['dias_vencimiento'] = $dias_vencimiento;
                 $alumno_array['llamadas'] = $llamadas;
+                $alumno_array['inasistencias'] = $inasistencias;
 
                 $array[$alumno->id] = $alumno_array;
 
