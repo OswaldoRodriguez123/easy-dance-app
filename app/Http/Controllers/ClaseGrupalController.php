@@ -669,6 +669,10 @@ class ClaseGrupalController extends BaseController {
                         ->where('alumno_id', $alumno->id)
                         ->orderBy('created_at', 'desc')
                     ->first();
+
+                    if($alumno->id == 521){
+                        dd($ultima_asistencia);
+                    }
                     
                     if($ultima_asistencia){
 
@@ -718,11 +722,6 @@ class ClaseGrupalController extends BaseController {
                         }
 
                         $index_inicial = 0;
-                    }
-
-                    
-                    if($alumno->id == 521){
-                        dd($array_fecha_a_comparar);
                     }
                     
                     if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
