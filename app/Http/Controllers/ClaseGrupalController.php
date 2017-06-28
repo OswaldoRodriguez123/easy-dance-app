@@ -694,11 +694,8 @@ class ClaseGrupalController extends BaseController {
                             $index_inicial = $index;
                         }
                     }
-                    // $index_inicial = array_search($dia_inscripcion, $array_dias_clases_inscripcion);
 
-                    if($alumno->id == 521){
-                        dd($index_inicial);
-                    }
+                    // $index_inicial = array_search($dia_inscripcion, $array_dias_clases_inscripcion);
 
                     $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
                     $array_fecha_a_comparar = array();
@@ -721,6 +718,11 @@ class ClaseGrupalController extends BaseController {
                         }
 
                         $index_inicial = 0;
+                    }
+
+                    
+                    if($alumno->id == 521){
+                        dd($array_dias_tmp);
                     }
                     
                     if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
