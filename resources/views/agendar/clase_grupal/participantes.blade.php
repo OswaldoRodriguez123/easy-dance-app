@@ -1146,7 +1146,6 @@
                                 	'Cantidad que adeuda: ' . number_format($deuda, 2, '.' , '.')  . '<br>'.
                                   'Modalidad de pago: <span id="tipo_pago_'.$id.'">' . $tipo_pago . '</span><br>'.
                                   'Registro de llamada: ' . $alumno['llamadas'] . '<br>'.
-                                  'Cantidad Inasistencias: ' . $alumno['clases_completadas'] . '<br>'.
                                 '</p>';
 
                               ;?>
