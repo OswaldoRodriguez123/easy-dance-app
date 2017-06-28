@@ -624,6 +624,10 @@ class ClaseGrupalController extends BaseController {
                     $array_dias[] = 7;
                 }else if(count($array_organizador) == 1){
                     $dias = abs($fecha_inicio->dayOfWeek - $array_organizador[0]['dia']);
+                    
+                    if($alumno->id == 521){
+                        dd($dias);
+                    }
                     $array_dias[] = $dias;
                     $dia_principal = 7 - $dias;
                     $array_dias[] = $dia_principal;
@@ -670,10 +674,6 @@ class ClaseGrupalController extends BaseController {
                         ->orderBy('created_at', 'desc')
                     ->first();
 
-                    if($alumno->id == 521){
-                        dd($array_dias);
-                    }
-                    
                     if($ultima_asistencia){
 
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
