@@ -448,9 +448,9 @@ class ClaseGrupalController extends BaseController {
         $hombres = 0;
 
         $clasegrupal = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'clases_grupales.id as clase_grupal_id', 'instructores.id as instructor_id')
-                ->where('clases_grupales.id', '=', $id)
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'clases_grupales.id as clase_grupal_id', 'instructores.id as instructor_id')
+            ->where('clases_grupales.id', '=', $id)
         ->first();
 
         if($clasegrupal){
@@ -660,19 +660,29 @@ class ClaseGrupalController extends BaseController {
                     
                     if($ultima_asistencia){
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
+                        $boolean_inscripcion = false;
                     }else{
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$alumno->fecha_inscripcion);
+                        $boolean_inscripcion = true;
                     }
 
                     $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
+
+                    $j = 0;
                                
-                    while($fecha_a_comparar <= $fecha_de_finalizacion){
+                    while($fecha_a_comparar < $fecha_de_finalizacion){
                         foreach($array_dias as $dia_a_añadir){
-                            if($fecha_a_comparar <= Carbon::now()){
-                                $inasistencias++;
-                                $fecha_a_comparar->addDays($dia_a_añadir);
+                            if($j != 0 OR $boolean_inscripcion){
+                                $j++;
+                                if($fecha_a_comparar <= Carbon::now()){
+                                    $inasistencias++;
+                                    $fecha_a_comparar->addDays($dia_a_añadir);
+                                }else{
+                                    break;
+                                }
                             }else{
-                                break;
+                                $fecha_a_comparar->addDays($dia_a_añadir);
+                                $j++;
                             }
                         }
                     }
@@ -3505,6 +3515,14 @@ class ClaseGrupalController extends BaseController {
         $j = 0;
 
         if($fecha_inscripcion >= $fecha_clase_grupal){
+            $dia_inscripcion = $fecha_inscripcion->dayOfWeek;
+
+            while($i != $dia_inscripcion){
+
+                $fecha_inscripcion->addDay();
+                $dia_inscripcion = $fecha_inscripcion->dayOfWeek;
+            }
+
             $fecha = $fecha_inscripcion;
         }else{
             $fecha = $fecha_clase_grupal;
@@ -3558,6 +3576,7 @@ class ClaseGrupalController extends BaseController {
                 $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('clase_grupal_id',$clase_grupal_id)->where('fecha',$fecha_a_comparar)->first();
 
                 if($asistencia){
+
                     $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
                     $hora = $asistencia->hora;
      
@@ -3585,8 +3604,17 @@ class ClaseGrupalController extends BaseController {
         foreach($horarios_clase_grupales as $horario){
 
             $fecha_horario = Carbon::createFromFormat('Y-m-d',$horario->fecha);
+            $i = $fecha_horario->dayOfWeek;
 
             if($fecha_inscripcion >= $fecha_horario){
+                $dia_inscripcion = $fecha_inscripcion->dayOfWeek;
+
+                while($i != $dia_inscripcion){
+
+                    $fecha_inscripcion->addDay();
+                    $dia_inscripcion = $fecha_inscripcion->dayOfWeek;
+                }
+
                 $fecha = $fecha_inscripcion;
             }else{
                 $fecha = $fecha_horario;
@@ -4135,7 +4163,6 @@ class ClaseGrupalController extends BaseController {
                 }
 
             }
-
         }
 
         return view('agendar.clase_grupal.ausencia')->with(['alumnos' => $array, 'inasistencias' => $array_inasistencia]);
@@ -4207,7 +4234,17 @@ class ClaseGrupalController extends BaseController {
             $j = 0;
 
             if($fecha_inscripcion >= $fecha_clase_grupal){
+
+                $dia_inscripcion = $fecha_inscripcion->dayOfWeek;
+
+                while($i != $dia_inscripcion){
+
+                    $fecha_inscripcion->addDay();
+                    $dia_inscripcion = $fecha_inscripcion->dayOfWeek;
+                }
+
                 $fecha = $fecha_inscripcion;
+
             }else{
                 $fecha = $fecha_clase_grupal;
             }
@@ -4281,7 +4318,7 @@ class ClaseGrupalController extends BaseController {
                     }
                     
                     $array[] = array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
-                    
+
                     $j = $j + 1;
                    
                 }
@@ -4293,8 +4330,17 @@ class ClaseGrupalController extends BaseController {
             foreach($horarios_clase_grupales as $horario){
 
                 $fecha_horario = Carbon::createFromFormat('Y-m-d',$horario->fecha);
+                $i = $fecha_horario->dayOfWeek;
 
                 if($fecha_inscripcion >= $fecha_horario){
+                    $dia_inscripcion = $fecha_inscripcion->dayOfWeek;
+
+                    while($i != $dia_inscripcion){
+
+                        $fecha_inscripcion->addDay();
+                        $dia_inscripcion = $fecha_inscripcion->dayOfWeek;
+                    }
+
                     $fecha = $fecha_inscripcion;
                 }else{
                     $fecha = $fecha_horario;
