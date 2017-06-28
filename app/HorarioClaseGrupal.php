@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class HorarioClaseGrupal extends Model
 {
 	use SoftDeletes;
-    protected $table = 'horario_clase_grupales';
+    protected $table = 'horarios_clases_grupales';
 }

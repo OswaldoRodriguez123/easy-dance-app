@@ -445,11 +445,11 @@ class AsistenciaController extends BaseController
             ->where('inscripcion_clase_grupal.alumno_id','=',$usuario_id)
           ->get();
 
-          $horarios_clase_grupales = HorarioClaseGrupal::join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+          $horarios_clase_grupales = HorarioClaseGrupal::join('clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'inscripcion_clase_grupal.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
-            ->select('horario_clase_grupales.*', 'config_clases_grupales.nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
+            ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('horarios_clases_grupales.*', 'config_clases_grupales.nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
             ->where('inscripcion_clase_grupal.alumno_id','=',$usuario_id)
           ->get();
 
@@ -587,10 +587,10 @@ class AsistenciaController extends BaseController
             ->where('clases_grupales.instructor_id','=',$usuario_id)
           ->get();
 
-          $horarios_clase_grupales = HorarioClaseGrupal::join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+          $horarios_clase_grupales = HorarioClaseGrupal::join('clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->select('horario_clase_grupales.*', 'config_clases_grupales.nombre')
-            ->where('horario_clase_grupales.instructor_id','=',$usuario_id)
+            ->select('horarios_clases_grupales.*', 'config_clases_grupales.nombre')
+            ->where('horarios_clases_grupales.instructor_id','=',$usuario_id)
           ->get();
 
           $instructor_id = $usuario_id;
@@ -959,12 +959,12 @@ class AsistenciaController extends BaseController
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
       ->get();
 
-      $horarios_clase_grupales= HorarioClaseGrupal::join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
-            ->join('config_estudios', 'horario_clase_grupales.estudio_id', '=', 'config_estudios.id')
-            ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
-            ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+      $horarios_clase_grupales= HorarioClaseGrupal::join('config_especialidades', 'horarios_clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_estudios', 'horarios_clases_grupales.estudio_id', '=', 'config_estudios.id')
+            ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
+            ->join('clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'horario_clase_grupales.fecha as fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id', 'horario_clase_grupales.id as horario_id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'horarios_clases_grupales.hora_inicio','horarios_clases_grupales.hora_final', 'horarios_clases_grupales.fecha as fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id', 'horarios_clases_grupales.id as horario_id')
             ->where('clases_grupales.deleted_at', '=', null)
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
@@ -1078,12 +1078,12 @@ class AsistenciaController extends BaseController
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
-        $horarios_clase_grupales= HorarioClaseGrupal::join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
-            ->join('config_estudios', 'horario_clase_grupales.estudio_id', '=', 'config_estudios.id')
-            ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
-            ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+        $horarios_clase_grupales= HorarioClaseGrupal::join('config_especialidades', 'horarios_clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_estudios', 'horarios_clases_grupales.estudio_id', '=', 'config_estudios.id')
+            ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
+            ->join('clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'horario_clase_grupales.fecha as fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id', 'horario_clase_grupales.id as horario_id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'horarios_clases_grupales.hora_inicio','horarios_clases_grupales.hora_final', 'horarios_clases_grupales.fecha as fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id', 'horarios_clases_grupales.id as horario_id')
             ->where('clases_grupales.deleted_at', '=', null)
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();

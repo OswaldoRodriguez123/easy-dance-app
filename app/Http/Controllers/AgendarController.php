@@ -81,12 +81,12 @@ class AgendarController extends BaseController
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
-        $horarios_clasegrupal = HorarioClaseGrupal::join('clases_grupales', 'clases_grupales.id', '=', 'horario_clase_grupales.clase_grupal_id')
+        $horarios_clasegrupal = HorarioClaseGrupal::join('clases_grupales', 'clases_grupales.id', '=', 'horarios_clases_grupales.clase_grupal_id')
             ->join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-            ->join('config_especialidades', 'config_especialidades.id', '=', 'horario_clase_grupales.especialidad_id')
+            ->join('config_especialidades', 'config_especialidades.id', '=', 'horarios_clases_grupales.especialidad_id')
             ->join('config_niveles_baile', 'config_niveles_baile.id', '=', 'clases_grupales.nivel_baile_id')
-            ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
-            ->select('clases_grupales.id', 'clases_grupales.fecha_final', 'horario_clase_grupales.fecha as fecha_inicio', 'horario_clase_grupales.hora_inicio', 'horario_clase_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horario_clase_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
+            ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('clases_grupales.id', 'clases_grupales.fecha_final', 'horarios_clases_grupales.fecha as fecha_inicio', 'horarios_clases_grupales.hora_inicio', 'horarios_clases_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horarios_clases_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
         ->get();

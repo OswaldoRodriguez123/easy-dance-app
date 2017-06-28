@@ -735,9 +735,9 @@ class ReporteController extends BaseController
         ->get();
 
         $horarios = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('horario_clase_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
-            ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
-            ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.id as instructor_id','clases_grupales.id as clase_grupal_id' , 'horario_clase_grupales.fecha as fecha_inicio', 'horario_clase_grupales.id as horario_id','instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final')
+            ->join('horarios_clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.id as instructor_id','clases_grupales.id as clase_grupal_id' , 'horarios_clases_grupales.fecha as fecha_inicio', 'horarios_clases_grupales.id as horario_id','instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
         ->get();

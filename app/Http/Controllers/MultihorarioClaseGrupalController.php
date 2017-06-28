@@ -353,13 +353,12 @@ class MultihorarioClaseGrupalController extends BaseController
     public function edit($id)
     {
 
-        $clase_grupal_join = DB::table('horario_clase_grupales')
-            ->join('clases_grupales', 'horario_clase_grupales.clase_grupal_id', '=', 'clases_grupales.id')
-            ->join('config_especialidades', 'horario_clase_grupales.especialidad_id', '=', 'config_especialidades.id')
-            ->join('config_estudios', 'horario_clase_grupales.estudio_id', '=', 'config_estudios.id')
-            ->join('instructores', 'horario_clase_grupales.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'horario_clase_grupales.hora_inicio','horario_clase_grupales.hora_final', 'horario_clase_grupales.id' , 'horario_clase_grupales.fecha', 'clases_grupales.id as clase_grupal_id', 'horario_clase_grupales.color_etiqueta')
-            ->where('horario_clase_grupales.id', '=', $id)
+        $clase_grupal_join = HorarioClaseGrupal::join('clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_especialidades', 'horarios_clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_estudios', 'horarios_clases_grupales.estudio_id', '=', 'config_estudios.id')
+            ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'horarios_clases_grupales.hora_inicio','horarios_clases_grupales.hora_final', 'horarios_clases_grupales.id' , 'horarios_clases_grupales.fecha', 'clases_grupales.id as clase_grupal_id', 'horarios_clases_grupales.color_etiqueta')
+            ->where('horarios_clases_grupales.id', '=', $id)
         ->first();
 
         if($clase_grupal_join){
