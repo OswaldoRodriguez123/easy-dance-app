@@ -641,7 +641,7 @@ class ClaseGrupalController extends BaseController {
 
             foreach($alumnos_inscritos as $alumno){
 
-                // $clases_completadas = 0;
+                $clases_completadas = 0;
 
                 if(Carbon::now() > $fecha_inicio){
 
