@@ -690,7 +690,7 @@ class ClaseGrupalController extends BaseController {
                     $index_inicial = array_search($dia_inscripcion, $array_dias_clases_inscripcion);
 
 
-                    if($alumno->id == 531){
+                    if($alumno->id == 521){
                         dd($index_inicial);
                     }
 
