@@ -128,8 +128,8 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="fecha" data-order="desc">Fecha</th>
-                                    <th class="text-center" data-column-id="hora" data-order="desc">Hora</th>
                                     <th class="text-center" data-column-id="dia" data-order="desc">Dia</th>
+                                    <th class="text-center" data-column-id="hora" data-order="desc">Hora</th>
                                     <th class="text-center" data-column-id="asistio" data-order="desc"></th>
                                 </tr>
                             </thead>
@@ -139,8 +139,8 @@
                                 <?php $id = $asistencia['id']; ?>
                                 <tr id="{{$id}}" class="disabled"> 
                                     <td class="text-center previa">{{$asistencia['fecha']}}</td>
-                                    <td class="text-center previa">{{$asistencia['hora']}}</td>
                                     <td class="text-center previa">{{$asistencia['dia']}}</td>
+                                    <td class="text-center previa">{{$asistencia['hora']}}</td>
                                     <td class="text-center previa"><i class="{{$asistencia['asistio']}}"></i></td>
                                 </tr>
                             @endforeach
@@ -181,7 +181,7 @@
         processing: true,
         serverSide: false,
         pageLength: 25, 
-        order: [[0, 'desc'], [1, 'desc']],
+        order: [[0, 'desc'], [2, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
         },
