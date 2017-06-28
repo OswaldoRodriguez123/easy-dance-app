@@ -639,6 +639,12 @@ class ClaseGrupalController extends BaseController {
             $tipo_clase = array(1,2);
             $in = array(2,4);
 
+            if(Carbon::now() <= $fecha_final){
+                $fecha_de_finalizacion = Carbon::now();
+            }else{
+                $fecha_de_finalizacion = $fecha_final;
+            }
+
             foreach($alumnos_inscritos as $alumno){
 
                 $inasistencias = 0;
@@ -655,12 +661,6 @@ class ClaseGrupalController extends BaseController {
 
                     $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
                                
-                    if(Carbon::now() <= $fecha_final){
-                        $fecha_de_finalizacion = Carbon::now();
-                    }else{
-                        $fecha_de_finalizacion = $fecha_final;
-                    }
-
                     while($fecha_a_comparar <= $fecha_de_finalizacion){
                         foreach($array_dias as $dia_a_añadir){
                             if($fecha_a_comparar <= Carbon::now()){
@@ -755,6 +755,7 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['llamadas'] = $llamadas;
                 $alumno_array['inasistencias'] = $inasistencias;
                 $alumno_array['ultima_asistencia'] = $fecha_ultima_asistencia;
+                $alumno_array['fecha_de_finalizacion'] = $fecha_de_finalizacion;
 
                 $array[$alumno->id] = $alumno_array;
 

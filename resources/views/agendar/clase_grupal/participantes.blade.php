@@ -1148,6 +1148,7 @@
                                   'Registro de llamada: ' . $alumno['llamadas'] . '<br>'.
                                   'Inasistencias: ' . $alumno['inasistencias'] . '<br>'.
                                   'Ultima Asistencia: ' . $alumno['ultima_asistencia'] . '<br>'.
+                                  'Fecha Finalizacion: ' . $alumno['fecha_de_finalizacion'] . '<br>'.
                                 '</p>';
 
                               ;?>
