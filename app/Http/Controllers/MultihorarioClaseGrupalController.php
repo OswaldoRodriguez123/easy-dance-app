@@ -88,13 +88,13 @@ class MultihorarioClaseGrupalController extends BaseController
 
                 if($hora_inicio > $hora_final)
                 {
-
                     return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
                 }
 
                 $comparacion_instructor_clase = ClaseGrupal::where('instructor_id', $request->instructor_acordeon_id)->get();
 
                 foreach($comparacion_instructor_clase as $comparacion){
+
                     $fecha_inicio = Carbon::createFromFormat('Y-m-d', $comparacion->fecha_inicio);
                     $dia_de_semana = $fecha_inicio->dayOfWeek;
 
@@ -106,8 +106,6 @@ class MultihorarioClaseGrupalController extends BaseController
                         
                         $hora_inicio_ingresada = Carbon::createFromFormat('H:i', $request->hora_inicio_acordeon);
                         $hora_final_ingresada = Carbon::createFromFormat('H:i', $request->hora_final_acordeon);
-
-                        // dd($hora_inicio->toTimeString() . ' ' . $hora_final->toTimeString() . ' ' . $hora_inicio_ingresada->toTimeString());
 
                         if($hora_inicio_ingresada->between($hora_inicio, $hora_final) OR $hora_final_ingresada->between($hora_inicio, $hora_final)){
                             return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El instructor tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422);
@@ -239,8 +237,6 @@ class MultihorarioClaseGrupalController extends BaseController
                     }
                 }
 
-                //$time=Carbon::createFromFormat('H:m:s', $multH['new_hora_inicio'])->toDateTimeString(); 
-
                 $fecha_inicio = Carbon::now();
                 $dia_de_semana = $fecha_inicio->dayOfWeek;
 
@@ -266,30 +262,11 @@ class MultihorarioClaseGrupalController extends BaseController
                 $find = ConfigEstudios::find($request->estudio_id);
                 $estudio = $find->nombre;
 
-                // $fecha_clasegrupal=ClaseGrupal::find($request->id);
-                // $fecha_clasegrupal_inicio=$fecha_clasegrupal->fecha_inicio;
-                // $fecha_clasegrupal_final=$fecha_clasegrupal->fecha_final;
-
-
-                // $horario_clase_grupal = new HorarioClaseGrupal();
-                // $horario_clase_grupal->fecha=$fecha_inicio;
-                // $horario_clase_grupal->hora_inicio=$request->hora_inicio_acordeon;
-                // $horario_clase_grupal->hora_final=$request->hora_final_acordeon;
-                // $horario_clase_grupal->instructor_id=$request->instructor_acordeon_id;
-                // $horario_clase_grupal->especialidad_id=$request->especialidad_acordeon_id;
-                // $horario_clase_grupal->estudio_id=$request->estudio_id;
-                // $horario_clase_grupal->clase_grupal_id=$request->id;
-
-                // $horario_clase_grupal->save();
-                
-               
-
 
                 $array = array(['instructor' => $request->instructor_acordeon_id , 'fecha_inicio' => $fecha_inicio, 'especialidad' => $request->especialidad_acordeon_id, 'estudio' => $request->estudio_id, 'hora_inicio' => $request->hora_inicio_acordeon, 'hora_final' => $request->hora_final_acordeon, 'color_etiqueta' => $request->color_etiqueta]);
 
 
                 Session::push('horarios', $array);
-
 
                 $items = Session::get('horarios');
                 end( $items );
@@ -303,24 +280,7 @@ class MultihorarioClaseGrupalController extends BaseController
                     'hora_inicio' => $request->hora_inicio_acordeon,
                     'hora_final' => $request->hora_final_acordeon,
                     'id'=>$contador
-                );
-
-                // $cart[$stringKey] = array(
-                //     'instructor' => $instructor ,
-                //     'dia_de_semana' => $dia_de_semana,
-                //     'new_dia_de_semama'=>$dia_n,
-                //     'especialidad' => $especialidad,
-                //     'hora_inicio' => $request->hora_inicio_acordeon,
-                //     'new_hora_inicio' => $new_hora_i,
-                //     'hora_final' => $request->hora_final_acordeon,
-                //     'new_hora_final' => $new_hora_f,
-                //     'fecha'=> $fd->toDateString(),
-                //     'id'=>$horario_clase_grupal->id
-                // );
-
-                // Session::put('horario', $cart);
-
-                //Carbon::setTestNow();                                  
+                );                                 
 
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
 

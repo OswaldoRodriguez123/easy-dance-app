@@ -592,14 +592,49 @@ class ClaseGrupalController extends BaseController {
             //CREAR ARREGLO DE CLASES GRUPALES A CONSULTAR EN LA ASISTENCIA
 
             $tipo_id = array($id);
-            $horarios_clases_grupales = HorarioClaseGrupal::where('clase_grupal_id', $id)->get();
-            $cantidad_clases = 1;
+            $horarios_clases_grupales = HorarioClaseGrupal::where('clase_grupal_id', $id)->orderBy('fecha')->get();
+            // $cantidad_clases = 1;
+
+            $array_dias = array();
+            $array_organizador = array();
+            $i = 0;
 
             foreach($horarios_clases_grupales as $horario){
-                $tipo_id[] = $horario->id;
-                $cantidad_clases++;
+
+                $fecha = Carbon::createFromFormat('Y-m-d', $horario->fecha);
+      
+                $dia = $fecha->dayOfWeek;
+                $array_organizador[$i]['dia'] = $dia;
+                $array_organizador[$i]['fecha'] = $fecha;
+                $array_organizador[$i]['id'] = $horario->id;
+                $i++;
 
             }
+
+            foreach($array_organizador as $index => $organizador){
+                
+                $tipo_id[] = $organizador['id'];
+
+                if ($index == 0) {
+                    $fecha_a_añadir = $organizador['fecha'];
+                    $dias_a_restar = $organizador['dia'];
+                    continue;
+                }
+
+                $dias_a_añadir = $organizador['dia'] - $dias_a_restar;
+                $array_dias[] = $dias_a_añadir;
+                $dias_a_restar = $organizador['dia'];
+            }
+
+            $dia_principal = 7 - $dias_a_restar;
+            $dia_principal = $dia_principal + $fecha_inicio->dayOfWeek;
+            $array_dias[] = $dia_principal;
+
+            // foreach($array_organizador as $array){
+            //     $tipo_id[] = $horario->id;
+            //     $cantidad_clases++;
+
+            // }
 
             $tipo_clase = array(1,2);
             $in = array(2,4);
@@ -612,21 +647,29 @@ class ClaseGrupalController extends BaseController {
                 
                 if($ultima_asistencia){
                     $fecha_ultima_asistencia = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
-                    $fecha_a_comparar = $fecha_ultima_asistencia;
                 }else{
                     $fecha_ultima_asistencia = Carbon::createFromFormat('Y-m-d',$alumno->fecha_inscripcion);
-                    $fecha_a_comparar = $fecha_ultima_asistencia;
                 }
+
+                $fecha_a_comparar = $fecha_ultima_asistencia;
                            
-                if(Carbon::now() < $fecha_final){
+                if(Carbon::now() <= $fecha_final){
                     $fecha_de_finalizacion = Carbon::now();
                 }else{
                     $fecha_de_finalizacion = $fecha_final;
                 }
 
                 while($fecha_a_comparar <= $fecha_de_finalizacion){
-                    $clases_completadas += $cantidad_clases;
-                    $fecha_a_comparar->addWeek();
+                    foreach($array_dias as $dia_a_añadir){
+                        if($fecha_a_comparar <= Carbon::now()){
+                            $clases_completadas += $dia_a_añadir;
+                            $fecha_a_comparar->addDays($dia_a_añadir);
+                        }else{
+                            break;
+                        }
+                    }
+                    // $clases_completadas += $cantidad_clases;
+                    // $fecha_a_comparar->addWeek();
                 }
                 
                 if($clases_completadas >= $asistencia_roja && $asistencia_roja != 0){
@@ -705,6 +748,7 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['cantidad'] = $cantidad;
                 $alumno_array['dias_vencimiento'] = $dias_vencimiento;
                 $alumno_array['llamadas'] = $llamadas;
+                $alumno_array['clases_completadas'] = $clases_completadas;
 
                 $array[$alumno->id] = $alumno_array;
 
