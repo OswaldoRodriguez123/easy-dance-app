@@ -264,6 +264,7 @@
                                     <th class="text-center" data-column-id="sexo" data-order="desc">Sexo</th>                    
                                     <th class="text-center" data-column-id="celular">Contacto Móvil</th>
                                     <th class="text-center" data-column-id="curso">Curso</th>
+                                    <th class="text-center" data-column-id="hora">Hora</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -451,6 +452,7 @@
                             ''+sexo+'',
                             ''+array.celular+'',
                             ''+array.curso+'',
+                            ''+array.hora_inicio+ ' - ' +array.hora_final+'',
                             ] ).draw(false).node();
                             $( rowNode )
                                 .attr('id',array.id)

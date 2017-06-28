@@ -363,9 +363,9 @@ class ReporteController extends BaseController
 
         $array_hora = array();
 
-        $array_manana = array('Mañana', $manana);
-        $array_tarde = array('Tarde', $tarde);
-        $array_noche = array('Noche', $noche);
+        $array_manana = array('Mañana / 7:00 - 12:00', $manana);
+        $array_tarde = array('Tarde / 12:01 - 5:00', $tarde);
+        $array_noche = array('Noche / 5:01 - 10:00', $noche);
 
         array_push($array_hora, $array_manana);
         array_push($array_hora, $array_tarde);
