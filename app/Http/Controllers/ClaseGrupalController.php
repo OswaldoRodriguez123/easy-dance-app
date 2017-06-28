@@ -3562,7 +3562,7 @@ class ClaseGrupalController extends BaseController {
 
                     }
 
-                    $total_asistencia = $total_asistencia + 1;
+                    $total_asistencia++;
                 }else{
 
                     if(Carbon::now()->toDateString() != $fecha_a_comparar){
@@ -3573,7 +3573,7 @@ class ClaseGrupalController extends BaseController {
                     
                     $hora = '';
                     $dia = '';
-                    $total_inasistencia = $total_inasistencia + 1;
+                    $total_inasistencia++;
                 }
                 $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
                 $j = $j + 1;
@@ -3645,7 +3645,7 @@ class ClaseGrupalController extends BaseController {
 
                         }
 
-                        $total_asistencia = $total_asistencia + 1;
+                        $total_asistencia++;
                     }else{
                         if(Carbon::now()->toDateString() != $fecha_a_comparar){
                             $asistio = 'zmdi c-youtube zmdi-close zmdi-hc-fw f-20';
@@ -3655,7 +3655,7 @@ class ClaseGrupalController extends BaseController {
                         $hora = '';
                         $dia = '';
 
-                        $total_inasistencia = $total_inasistencia + 1;
+                        $total_inasistencia++;
                     }
 
                     $array[]=array('id' => $j, 'fecha' => $fecha_a_comparar, 'asistio' => $asistio, 'hora' => $hora, 'dia' => $dia);
@@ -3671,7 +3671,7 @@ class ClaseGrupalController extends BaseController {
         $total = $total_asistencia + $total_inasistencia;
 
         if($total > 0){
-            $porcentaje = intval($total_asistencia / $total) * 100;
+            $porcentaje = intval(($total_asistencia / $total) * 100);
         }else{
             $porcentaje = 0;
         }
@@ -4341,7 +4341,7 @@ class ClaseGrupalController extends BaseController {
         $total = $total_asistencia + $total_inasistencia;
 
         if($total > 0){
-            $porcentaje = intval($total_asistencia / $total) * 100;
+            $porcentaje = intval(($total_asistencia / $total) * 100);
         }else{
             $porcentaje = 0;
         }
