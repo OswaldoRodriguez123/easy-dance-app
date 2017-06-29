@@ -369,6 +369,13 @@ class ClaseGrupalController extends BaseController {
 
         if($clasegrupal){
 
+            $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela', 'alumnos.tipo_pago', 'inscripcion_clase_grupal.fecha_inscripcion')
+                    ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
+                    ->where('inscripcion_clase_grupal.boolean_congelacion',0)
+                    ->where('inscripcion_clase_grupal.deleted_at', '=', null)
+            ->get();
+
             $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio);
             $fecha_final = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_final);
             $dia_inicio = $fecha_inicio->dayOfWeek;
@@ -491,13 +498,6 @@ class ClaseGrupalController extends BaseController {
                 $array['2-'.$alumno->id] = $alumno_array;
             
             }
-
-            $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela', 'alumnos.tipo_pago', 'inscripcion_clase_grupal.fecha_inscripcion')
-                    ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
-                    ->where('inscripcion_clase_grupal.boolean_congelacion',0)
-                    ->where('inscripcion_clase_grupal.deleted_at', '=', null)
-            ->get();
 
             //ALUMNOS
 
