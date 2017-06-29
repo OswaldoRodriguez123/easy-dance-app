@@ -138,7 +138,10 @@ class ClaseGrupalController extends BaseController {
                 $hoy = 7;
             } 
 
-            $alumnos = Alumno::where('academia_id',Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+            $alumnos = Alumno::where('academia_id',Auth::user()->academia_id)
+                ->orderBy('created_at', 'desc')
+                ->limit('100')
+            ->get();
 
             $riesgo = 0;
             $activos = 0;
