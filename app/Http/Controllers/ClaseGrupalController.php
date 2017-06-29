@@ -169,7 +169,8 @@ class ClaseGrupalController extends BaseController {
 
                         //CREAR ARREGLO DE CLASES GRUPALES A CONSULTAR EN LA ASISTENCIA
 
-                        $horarios_clases_grupales = HorarioClaseGrupal::where('clase_grupal_id', $clase_grupal->id)->orderBy('fecha')->get();
+                        // $horarios_clases_grupales = HorarioClaseGrupal::where('clase_grupal_id', $clase_grupal->id)->orderBy('fecha')->get();
+                        $horario = HorarioClaseGrupal::where('clase_grupal_id', $clase_grupal->id)->first();
                         $array_dias = array();
                         $array_organizador = array();
                         $i = 0;
@@ -181,7 +182,8 @@ class ClaseGrupalController extends BaseController {
 
                         $array_dias_clases_inscripcion[] = $fecha_inicio->dayOfWeek;
 
-                        foreach($horarios_clases_grupales as $horario){
+                        if($horario){
+                        // foreach($horarios_clases_grupales as $horario){
                             $tipo_id[] = $horario->id;
                             $fecha = Carbon::createFromFormat('Y-m-d', $horario->fecha);
                   
