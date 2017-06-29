@@ -4629,7 +4629,7 @@ class ClaseGrupalController extends BaseController {
                             // $array_dias_tmp[] = $array_dias[$k];
 
                             if(count($array_dias) > 1){
-                                dd($array_dias);
+                                dd($array_organizador);
                             }
                             
 
