@@ -275,10 +275,6 @@ class ClaseGrupalController extends BaseController {
 
                                 $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
 
-                                if($pa_atras == true){
-                                    dd($inactivos . ' '. $riesgo . ' ' . $activos);
-                                }
-
                                 if($dia_inscripcion >= 6 && $pa_atras == false){
                                     $pa_atras = true;
                                 }
