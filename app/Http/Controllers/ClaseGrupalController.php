@@ -551,7 +551,7 @@ class ClaseGrupalController extends BaseController {
                         }
                     }
 
-                    $dias = abs($dia_inicio_clase - ($dia_inicio_horario + 1));
+                    $dias = abs($dia_inicio - ($dia_inicio_horario + 1));
                     $dias = $dias + $cantidad_dias;
                     $array_dias[] = $dias;
                     $dia_principal = 7 - $dias;
