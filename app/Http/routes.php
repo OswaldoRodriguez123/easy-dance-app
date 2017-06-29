@@ -650,6 +650,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('agendar/clases-grupales/agenda/{id}', 'ClaseGrupalController@agenda');
 		Route::get('agendar/clases-grupales/riesgo-ausencia', 'ClaseGrupalController@riesgo_ausencia');
 		Route::get('agendar/clases-grupales/riesgo-ausencia/historial/{id}', 'ClaseGrupalController@historial_asistencia_general');
+		Route::post('agendar/clases-grupales/consulta-estatus-alumnos', 'ClaseGrupalController@consulta_estatus_alumnos');
 
 		Route::put('agendar/clases-grupales/update/nombre', 'ClaseGrupalController@updateNombre');
 		Route::put('agendar/clases-grupales/update/fecha', 'ClaseGrupalController@updateFecha');

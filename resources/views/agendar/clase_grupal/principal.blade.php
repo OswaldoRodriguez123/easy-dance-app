@@ -109,11 +109,11 @@
                         <div class="card-header">
 
                             <div class="col-sm-6">
-                                <i class="zmdi zmdi-label-alt f-25 c-verde"></i> Activos: {{$activos}} 
+                                <i class="zmdi zmdi-label-alt f-25 c-verde"></i> Activos: <span id="activos">0</span>
                                 <div class="clearfix"></div>
-                                <a href="{{url('/')}}/agendar/clases-grupales/riesgo-ausencia"><i class="zmdi zmdi-label-alt f-25 c-amarillo"></i> Riesgo de Ausencia: {{$riesgo}}</a>
+                                <a href="{{url('/')}}/agendar/clases-grupales/riesgo-ausencia"><i class="zmdi zmdi-label-alt f-25 c-amarillo"></i> Riesgo de Ausencia: <span id="riesgo">0</span></a>
                                 <div class="clearfix m-b-20"></div>
-                                <span class="f-15">Total: {{$activos + $riesgo}}</span>
+                                <span class="f-15">Total: <span id="total">0</span></span>
                             </div>
 
                             <div class="col-sm-6 text-right">
@@ -192,6 +192,7 @@
         route_participantes="{{url('/')}}/agendar/clases-grupales/participantes";
         route_principal="{{url('/')}}/agendar/clases-grupales";
         route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminar/";
+        route_consulta="{{url('/')}}/agendar/clases-grupales/consulta-estatus-alumnos/";
 
         var clases_grupales = <?php echo json_encode($clase_grupal_join);?>;
 
@@ -200,58 +201,62 @@
 
         $(document).ready(function(){
 
-        i = parseInt("{{$hoy}}");
-        hoy = i;
-        
-        $(".button_izquierda").removeAttr("disabled");
-        $(".button_derecha").removeAttr("disabled");
+            i = parseInt("{{$hoy}}");
+            hoy = i;
+            
+            $(".button_izquierda").removeAttr("disabled");
+            $(".button_derecha").removeAttr("disabled");
 
 
-        if(i == 1){
-            $(".button_izquierda").attr("disabled","disabled");
-        }
+            if(i == 1){
+                $(".button_izquierda").attr("disabled","disabled");
+            }
 
-        if(i == 7){
-            $(".button_derecha").attr("disabled","disabled");
-        }
+            if(i == 7){
+                $(".button_derecha").attr("disabled","disabled");
+            }
 
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25,   
-        order: [[3, 'asc']],
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
-        });
-
-                changeSpan();
-
+            t=$('#tablelistar').DataTable({
+                processing: true,
+                serverSide: false,
+                pageLength: 25,   
+                order: [[3, 'asc']],
+                fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
+                },
+                language: {
+                                processing:     "Procesando ...",
+                                search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                                searchPlaceholder: "BUSCAR",
+                                lengthMenu:     "Mostrar _MENU_ Registros",
+                                info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                                infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                                infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                                infoPostFix:    "",
+                                loadingRecords: "...",
+                                zeroRecords:    "No se encontraron registros coincidentes",
+                                emptyTable:     "No hay datos disponibles en la tabla",
+                                paginate: {
+                                    first:      "Primero",
+                                    previous:   "Anterior",
+                                    next:       "Siguiente",
+                                    last:       "Ultimo"
+                                },
+                                aria: {
+                                    sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                    sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                                }
+                            }
             });
+
+            changeSpan();
+
+            setTimeout(function(){ 
+                consulta_estatus_alumnos();
+            }, 1000); 
+
+        });
 
         $(".button_izquierda").click(function(){
 
@@ -613,6 +618,43 @@
     $('.table-responsive').on('hide.bs.dropdown', function () {
       $('.table-responsive').css( "overflow", "auto" );
     })
+
+    function consulta_estatus_alumnos(){
+      var route = route_consulta;
+      var token = $('input:hidden[name=_token]').val();
+
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+          dataType: 'json',
+          success:function(respuesta){
+
+              $('#activos').text(respuesta.activos)
+              $('#riesgo').text(respuesta.riesgo)
+              $('#total').text(parseInt(respuesta.activos + respuesta.riesgo))
+
+          },
+          error:function (msj, ajaxOptions, thrownError){
+            setTimeout(function(){ 
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
+              var nType = 'danger';
+              if(msj.responseJSON.status=="ERROR"){
+                errores(msj.responseJSON.errores);
+                var nTitle=" Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle=" Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                
+            }, 1000);             
+          }
+      });
+    }
 
     </script>
 @stop
