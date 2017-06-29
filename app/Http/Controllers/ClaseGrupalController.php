@@ -380,6 +380,9 @@ class ClaseGrupalController extends BaseController {
             $fecha_final = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_final);
             $dia_inicio = $fecha_inicio->dayOfWeek;
 
+            $tipo_clase = array(1,2);
+            $in = array(2,4);
+
             //RESERVACIONES
 
             $reservaciones = Reservacion::where('tipo_reservacion_id', '=', $id)
@@ -576,9 +579,6 @@ class ClaseGrupalController extends BaseController {
                     $dia_principal = $dia_principal + $fecha_inicio->dayOfWeek;
                     $array_dias[] = $dia_principal;
                 }
-
-                $tipo_clase = array(1,2);
-                $in = array(2,4);
 
                 if(Carbon::now() <= $fecha_final){
                     $fecha_de_finalizacion = Carbon::now();
