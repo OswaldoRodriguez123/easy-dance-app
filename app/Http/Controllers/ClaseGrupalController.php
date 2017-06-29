@@ -504,7 +504,7 @@ class ClaseGrupalController extends BaseController {
 
             //ALUMNOS
 
-            if(Carbon::now() > $fecha_inicio){
+            if(Carbon::now() >= $fecha_inicio){
 
                 $asistencia_roja = $clasegrupal->asistencia_rojo;
                 $asistencia_amarilla = $clasegrupal->asistencia_amarilla;
@@ -541,13 +541,12 @@ class ClaseGrupalController extends BaseController {
                     $array_dias[] = 7;
                 }else if(count($array_organizador) == 1){
 
-                    $dia_inicio_clase = $fecha_inicio->dayOfWeek;
                     $dia_inicio_horario = $array_organizador[0]['dia'];
                     $cantidad_dias = 0;
 
-                    if($dia_inicio_clase > $dia_inicio_horario){
-                        while ($dia_inicio_clase != 7){
-                            $dia_inicio_clase++;
+                    if($dia_inicio > $dia_inicio_horario){
+                        while ($dia_inicio != 7){
+                            $dia_inicio++;
                             $cantidad_dias++;
                         }
                     }
@@ -591,7 +590,7 @@ class ClaseGrupalController extends BaseController {
 
                 $inasistencias = 0;
 
-                if(Carbon::now() > $fecha_inicio){
+                if(Carbon::now() >= $fecha_inicio){
 
                     $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->whereIn('tipo_id',$tipo_id)
                         ->where('alumno_id', $alumno->id)
