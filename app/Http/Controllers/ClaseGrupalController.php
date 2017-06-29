@@ -274,7 +274,7 @@ class ClaseGrupalController extends BaseController {
                                 }
 
                                 $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
-                                if($dia_inscripcion == 7 && $pa_atras == false){
+                                if($dia_inscripcion >= 6 && $pa_atras == false){
                                     $pa_atras = true;
                                 }
                             }
