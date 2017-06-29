@@ -4558,14 +4558,19 @@ class ClaseGrupalController extends BaseController {
 
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inscripcion);
                         $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
+
+                        $break = 0;
                         
-                        // while(!in_array($dia_inscripcion,$array_dias_clases_inscripcion)){
-                        //     $fecha_a_comparar->addDay();
-                        //     $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
-                        //     if($dia_inscripcion == 6){
-                        //         dd($fecha_a_comparar . ' ' . $dia_inscripcion);
-                        //     }
-                        // }
+                        while(!in_array($dia_inscripcion,$array_dias_clases_inscripcion)){
+                            $fecha_a_comparar->addDay();
+                            $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
+
+                            // if($break == 10){
+                            //     dd('add');
+                            // }
+
+                            // $break++;
+                        }
                         
                         $j = 1;
                     }
@@ -4592,7 +4597,6 @@ class ClaseGrupalController extends BaseController {
                             }
                             $j++;
                         }
-
                         $index_inicial = 0;
                     }
                     
