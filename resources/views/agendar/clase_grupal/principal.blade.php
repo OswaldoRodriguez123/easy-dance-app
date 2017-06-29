@@ -192,7 +192,7 @@
         route_participantes="{{url('/')}}/agendar/clases-grupales/participantes";
         route_principal="{{url('/')}}/agendar/clases-grupales";
         route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminar/";
-        route_consulta="{{url('/')}}/agendar/clases-grupales/consulta-estatus-alumnos/";
+        route_consulta="{{url('/')}}/agendar/clases-grupales/consulta-estatus-alumnos";
 
         var clases_grupales = <?php echo json_encode($clase_grupal_join);?>;
 

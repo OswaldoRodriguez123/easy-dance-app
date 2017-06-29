@@ -4558,26 +4558,24 @@ class ClaseGrupalController extends BaseController {
 
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inscripcion);
                         $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
-                        $dia_inscripcion_original = $dia_inscripcion;
                         
-                        while(!in_array($dia_inscripcion,$array_dias_clases_inscripcion)){
-
-                            $fecha_a_comparar->addDay();
-                            $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
-
-                            if($dia_inscripcion >= 6){
-                                $fecha_a_comparar = $fecha_a_comparar->startOfWeek()->addWeek();
-                            }
-                        }
+                        // while(!in_array($dia_inscripcion,$array_dias_clases_inscripcion)){
+                        //     $fecha_a_comparar->addDay();
+                        //     $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
+                        //     if($dia_inscripcion == 6){
+                        //         dd($fecha_a_comparar . ' ' . $dia_inscripcion);
+                        //     }
+                        // }
                         
                         $j = 1;
                     }
 
-                    $index_inicial = array_search($dia_inscripcion, $array_dias_clases_inscripcion);
+                    // $index_inicial = array_search($dia_inscripcion, $array_dias_clases_inscripcion);
+                    $index_inicial = 0;
 
                     $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
-                    $array_fecha_a_comparar = array();
-                    $array_dias_tmp = array();
+                    // $array_fecha_a_comparar = array();
+                    // $array_dias_tmp = array();
 
                     while($fecha_a_comparar < $fecha_de_finalizacion){
                         for($k = $index_inicial; $k < count($array_dias); $k++){
