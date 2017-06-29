@@ -140,7 +140,6 @@ class ClaseGrupalController extends BaseController {
 
             $alumnos = Alumno::where('academia_id',Auth::user()->academia_id)
                 ->orderBy('created_at', 'desc')
-                ->limit('100')
             ->get();
 
             $riesgo = 0;
@@ -263,10 +262,21 @@ class ClaseGrupalController extends BaseController {
 
                             $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inscripcion);
                             $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
+
+                            $pa_atras = false;
                             
                             while(!in_array($dia_inscripcion,$array_dias_clases_inscripcion)){
-                                $fecha_a_comparar->addDay();
+
+                                if($pa_atras == false){
+                                    $fecha_a_comparar->addDay();
+                                }else{
+                                    $fecha_a_comparar->subDay();
+                                }
+
                                 $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
+                                if($dia_inscripcion == 7 && $pa_atras == false){
+                                    $pa_atras = true;
+                                }
                             }
                             
                             $j = 1;
