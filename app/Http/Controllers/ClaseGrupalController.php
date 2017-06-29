@@ -703,11 +703,11 @@ class ClaseGrupalController extends BaseController {
 
                 if($usuario){
 
-                  if($usuario->imagen){
-                    $imagen = $usuario->imagen;
-                  }else{
-                    $imagen = '';
-                  }
+                    if($usuario->imagen){
+                        $imagen = $usuario->imagen;
+                    }else{
+                        $imagen = '';
+                    }
 
                 }else{
                     $imagen = '';
