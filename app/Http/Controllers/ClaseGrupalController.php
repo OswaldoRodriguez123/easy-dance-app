@@ -489,6 +489,7 @@ class ClaseGrupalController extends BaseController {
 
                 $collection=collect($alumno);     
                 $alumno_array = $collection->toArray();
+                $alumno_array['imagen'] = '';
                 $alumno_array['nombre'] = $alumno->nombre;
                 $alumno_array['apellido'] = $alumno->apellido;
                 $alumno_array['sexo'] = $alumno->sexo;
