@@ -390,45 +390,38 @@ class UsuarioController extends BaseController {
 
     public function updatePassword(Request $request){
 
-    $rules = [
-        'password' => 'required|min:6|confirmed',
-        'password_confirmation' => 'required',
-    ];
+        $rules = [
+            'password' => 'required|min:6|confirmed',
+            'password_confirmation' => 'required',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'password.required' => 'Ups! La contraseña es requerida',
-        'password.confirmed' => 'Ups! Las contraseñas introducidas no coinciden, intenta de nuevo',
-        'password.min' => 'Ups! La contraseña debe contener un mínimo de 6 caracteres',
-        'password_confirmation.required' => 'Ups! La contraseña es requerida',
-    ];
+            'password.required' => 'Ups! La contraseña es requerida',
+            'password.confirmed' => 'Ups! Las contraseñas introducidas no coinciden, intenta de nuevo',
+            'password.min' => 'Ups! La contraseña debe contener un mínimo de 6 caracteres',
+            'password_confirmation.required' => 'Ups! La contraseña es requerida',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        // return redirect("alumno/edit/{$request->id}")
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-        // ->withErrors($validator)
-        // ->withInput();
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
-
-    }
-
-    else{
-        
-        $usuario = User::find(Auth::user()->id);
-        $usuario->password = bcrypt($request->password);
-
-        if($usuario->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-    }
+
+        else{
+            
+            $usuario = User::find(Auth::user()->id);
+            $usuario->password = bcrypt($request->password);
+
+            if($usuario->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
     }
 
     public function updateImagen(Request $request)

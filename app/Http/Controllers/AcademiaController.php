@@ -1152,4 +1152,40 @@ class AcademiaController extends BaseController {
         }
     }
 
+    public function updatePassword(Request $request){
+
+        $rules = [
+            'password' => 'required|min:6|confirmed',
+            'password_confirmation' => 'required',
+        ];
+
+        $messages = [
+
+            'password.required' => 'Ups! La contraseña es requerida',
+            'password.confirmed' => 'Ups! Las contraseñas introducidas no coinciden, intenta de nuevo',
+            'password.min' => 'Ups! La contraseña debe contener un mínimo de 6 caracteres',
+            'password_confirmation.required' => 'Ups! La contraseña es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+            
+            $academia = Academia::find(Auth::user()->academia_id);
+            $academia->password_supervision = bcrypt($request->password);
+
+            if($academia->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
 }

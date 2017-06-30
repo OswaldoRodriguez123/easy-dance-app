@@ -10,6 +10,7 @@ use Validator;
 use Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Incidencia;
 use App\Staff;
 use App\Instructor;
@@ -399,18 +400,23 @@ class IncidenciaController extends BaseController {
     }
 
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
+        $academia = Academia::find(Auth::user()->academia_id);
 
-        $incidencia = Incidencia::find($id);
+        if($academia->password_supervision){
+            if(!Hash::check($request->password_supervision, $academia->password_supervision)) {
+                return response()->json(['error_mensaje'=> 'Ups! La contraseña no coincide', 'status' => 'ERROR-PASSWORD'],422);
+            }
+        }
+        
+        $incidencia = Incidencia::find($request->id);
         
         if($incidencia->delete()){
             return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno");
+        
     }
-
-
 }

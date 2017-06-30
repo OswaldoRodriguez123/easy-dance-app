@@ -97,7 +97,7 @@
             
         <script type="text/javascript">
             route_detalle="{{url('/')}}/incidencias/detalle";
-            route_eliminar="{{url('/')}}/incidencias/eliminar/";
+            route_eliminar="{{url('/')}}/incidencias/eliminar";
 
         $(document).ready(function(){
 
@@ -148,73 +148,67 @@
         }
 
          $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
+            var route = route_operacion+"/"+this.id;
+            window.location = route;
          });
 
          $("i[name=eliminar]").click(function(){
-                id = this.id;
-                element = this;
-                swal({   
-                    title: "Desea eliminar la incidencia?",   
-                    text: "Confirmar eliminación!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Eliminar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true 
-                }, function(isConfirm){   
-          if (isConfirm) {
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-            var nTitle="Ups! ";
-            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-            // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-            
-            eliminar(id, element);
-                }
-            });
-        });
-      function eliminar(id, element){
-         var route = route_eliminar + id;
-         var token = "{{ csrf_token() }}";
-         procesando();
+
+            id = this.id;
+            element = this;
+
+            swal({   
+                title: "Para eliminar la incidencia necesita colocar la clave de supervisión",   
+                text: "Confirmar eliminación!",   
+                type: "input",  
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: false,
+                animation: "slide-from-top",
+                inputPlaceholder: "Coloque la clave de supervisión"
+            }, function(inputValue){
+                if (inputValue === false) return false;
                 
-                $.ajax({
+                if (inputValue === "") {
+                    swal.showInputError("Ups! La clave de supervisión es requerida");
+                    return false
+                }else{
+
+                  var route = route_eliminar;
+                  var token = "{{ csrf_token() }}"
+                  var datos = "&id="+id+"&password_supervision="+inputValue
+                  procesando();
+                  
+                  $.ajax({
                     url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'DELETE',
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
                     dataType: 'json',
-                    data:id,
+                    data:datos,
                     success:function(respuesta){
 
-                    t.row( $(element).parents('tr') )
-                      .remove()
-                      .draw();
+                        t.row($(element).parents('tr') )
+                            .remove()
+                            .draw();
 
-                    swal("Hecho!","Eliminado con éxito!","success");
-
-                    finprocesado();
+                        swal("Hecho!","Eliminado con éxito!","success");
+                        finprocesado();
 
                     },
                     error:function(msj){
-                                $("#msj-danger").fadeIn(); 
-                                var text="";
-                                console.log(msj);
-                                var merror=msj.responseJSON;
-                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                $("#msj-error").html(text);
-                                setTimeout(function(){
-                                         $("#msj-danger").fadeOut();
-                                        }, 3000);
-                                }
-                });
-      }
+                      finprocesado();
+                      if(msj.responseJSON.status == "ERROR-PASSWORD"){
+                        swal.showInputError("Ups! La clave de supervisión es incorrecta");
+                      }else{
+                        swal('Solicitud no procesada','Ups! Ha ocurrido un error, intente nuevamente','error');
+                      }
+                    }
+                  });
+                }
+              });
+          });
 
     </script>
 

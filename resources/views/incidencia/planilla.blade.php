@@ -380,7 +380,7 @@
    <script type="text/javascript">
 
     route_update="{{url('/')}}/incidencias/update";
-    route_eliminar="{{url('/')}}/incidencias/eliminar/";
+    route_eliminar="{{url('/')}}/incidencias/eliminar";
     route_principal="{{url('/')}}/incidencias";
 
     $(document).ready(function(){
@@ -585,50 +585,53 @@
     })
 
     $("i[name=eliminar]").click(function(){
-            swal({   
-                title: "Desea eliminar la incidencia",   
-                text: "Confirmar eliminación!",   
-                type: "warning",   
-                showCancelButton: true,   
-                confirmButtonColor: "#DD6B55",   
-                confirmButtonText: "Eliminar!",  
-                cancelButtonText: "Cancelar",         
-                closeOnConfirm: true 
-            }, function(isConfirm){   
-      if (isConfirm) {
+      swal({   
+          title: "Para eliminar la incidencia necesita colocar la clave de supervisión",   
+          text: "Confirmar eliminación!",   
+          type: "input",  
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Eliminar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: false,
+          animation: "slide-from-top",
+          inputPlaceholder: "Coloque la clave de supervisión"
+      }, function(inputValue){
+        if (inputValue === false) return false;
+        
+        if (inputValue === "") {
+          swal.showInputError("Ups! La clave de supervisión es requerida");
+          return false
+        }else{
 
-                    eliminar();
-      }
-            });
-        });
-      function eliminar(){
-         var route = route_eliminar + "{{$id}}";
-         var token = $('input:hidden[name=_token]').val();
-         procesando();
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'DELETE',
-                    dataType: 'json',
-                    success:function(respuesta){
+          var route = route_eliminar;
+          var token = $('input:hidden[name=_token]').val();
+          var datos = "&id={{$id}}&password_supervision="+inputValue
+          procesando();
+          
+          $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            dataType: 'json',
+            data:datos,
+            success:function(respuesta){
 
-                        window.location=route_principal; 
+              window.location=route_principal; 
 
-                    },
-                    error:function(msj){
-                                $("#msj-danger").fadeIn(); 
-                                var text="";
-                                console.log(msj);
-                                var merror=msj.responseJSON;
-                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                $("#msj-error").html(text);
-                                setTimeout(function(){
-                                         $("#msj-danger").fadeOut();
-                                        }, 3000);
-                                }
-                });
-      }
+            },
+            error:function(msj){
+              finprocesado();
+              if(msj.responseJSON.status == "ERROR-PASSWORD"){
+                swal.showInputError("Ups! La clave de supervisión es incorrecta");
+              }else{
+                swal('Solicitud no procesada','Ups! Ha ocurrido un error, intente nuevamente','error');
+              }
+            }
+          });
+        }
+      });
+  });
 
   function countChar(val) {
     var len = val.value.length;

@@ -212,6 +212,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::put('configuracion/academia/update/redes', 'AcademiaController@updateRedes');
 		Route::post('configuracion/academia/update/especiales', 'AcademiaController@updateEspeciales');
 		Route::put('configuracion/academia/update/administrativo', 'AcademiaController@updateAdministrativo');
+		Route::put('configuracion/academia/update/password', 'AcademiaController@updatePassword');
 
 		// MANUALES DE PROCEDIMIENTOS
 
@@ -1110,7 +1111,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::put('incidencias/update/gravedad','IncidenciaController@updateGravedad');
 		Route::put('incidencias/update/fecha','IncidenciaController@updateFecha');
 		Route::put('incidencias/update/mensaje','IncidenciaController@updateMensaje');
-		Route::delete('incidencias/eliminar/{id}', 'IncidenciaController@destroy');
+		Route::post('incidencias/eliminar', 'IncidenciaController@destroy');
 
 		//BUSCADOR
 
