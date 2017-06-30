@@ -695,26 +695,17 @@ $("#permitir_staff").on('click',function(){
 
       alumno_id = $('#asistencia_id_alumno').val();
       clase_grupal_id = $(this).val();
+      console.log(clase_grupal_id);
+
       $("#asistencia-estado_ausencia").removeClass('c-verde')
       $("#asistencia-estado_ausencia").removeClass('c-amarillo')
       $("#asistencia-estado_ausencia").removeClass('c-rojo')
 
-      existe = false;
-
-      $.each(estatus, function (index, array) { 
-
+      $.each(estatus, function (index, array){
         if(array.alumno_id == alumno_id && array.clase_grupal_id == clase_grupal_id){
-          existe = true;
-          estatus = array.estatus
+          $("#asistencia-estado_ausencia").addClass(array.estatus)
         }
-
       });
-
-      if(existe == true){
-
-        $("#asistencia-estado_ausencia").addClass(estatus)
-
-      }
 
       if ($(this).val()=='') {
         $("#asistencia-horario").text("---");           
@@ -724,8 +715,7 @@ $("#permitir_staff").on('click',function(){
       }
     });
 
-
-     $('#asistencia_clase_grupal_id_instructor').on('change', function(){
+    $('#asistencia_clase_grupal_id_instructor').on('change', function(){
       if ($(this).val()=='') {
         $("#asistencia-horario-instructor").text("---");           
       }else{
@@ -854,8 +844,6 @@ $("#permitir_staff").on('click',function(){
         }else{
           var route = route_consultar_ci;
         }
-
-        console.log(route);
         
         var token = $('input:hidden[name=_token]').val();
         $.ajax({

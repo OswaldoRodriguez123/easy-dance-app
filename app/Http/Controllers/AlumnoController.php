@@ -48,6 +48,7 @@ use App\Sugerencia;
 use App\Staff;
 use App\CredencialAlumno;
 use App\Llamada;
+use App\Tipologia;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Image;
@@ -480,7 +481,8 @@ class AlumnoController extends BaseController
         Session::forget('puntos_referidos');
 
         $alumno = Alumno::Leftjoin('staff', 'alumnos.instructor_id', '=', 'staff.id')
-            ->select('alumnos.*','staff.nombre as instructor_nombre','staff.apellido as instructor_apellido')
+            ->Leftjoin('tipologias', 'alumnos.tipologia_id', '=', 'tipologias.id')
+            ->select('alumnos.*','staff.nombre as instructor_nombre','staff.apellido as instructor_apellido', 'tipologias.nombre as tipologia')
             ->where('alumnos.id',$id)
         ->first();
 
@@ -546,7 +548,9 @@ class AlumnoController extends BaseController
                 $tipo_pago = 'Sin Confirmar';
             }
 
-            return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $total, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'edad' => $edad, 'tipo_pago' => $tipo_pago, 'credenciales' => $credenciales, 'usuario' => $usuario]);
+            $tipologias = Tipologia::all();
+
+            return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $total, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'edad' => $edad, 'tipo_pago' => $tipo_pago, 'credenciales' => $credenciales, 'usuario' => $usuario, 'tipologias' => $tipologias]);
         }else{
            return redirect("participante/alumno"); 
         }
@@ -863,6 +867,17 @@ class AlumnoController extends BaseController
     public function updatePromotor(Request $request){
         $alumno = Alumno::find($request->id);
         $alumno->instructor_id = $request->instructor_id;
+
+        if($alumno->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateTipologia(Request $request){
+        $alumno = Alumno::find($request->id);
+        $alumno->tipologia_id = $request->tipologia_id;
 
         if($alumno->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

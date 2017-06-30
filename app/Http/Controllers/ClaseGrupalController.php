@@ -4454,6 +4454,7 @@ class ClaseGrupalController extends BaseController {
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->select('clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'config_clases_grupales.asistencia_rojo', 'config_clases_grupales.asistencia_amarilla', 'inscripcion_clase_grupal.fecha_inscripcion', 'clases_grupales.id')
                 ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
+                ->where('clases_grupales.deleted_at', null)
                 ->orderBy('inscripcion_clase_grupal.fecha_inscripcion', 'desc')
             ->first();
 
@@ -4462,6 +4463,10 @@ class ClaseGrupalController extends BaseController {
                 $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
                 $fecha_final = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_final);
                 $dia_inicio_clase = $fecha_inicio->dayOfWeek;
+
+                if($dia_inicio_clase == 0){
+                    $dia_inicio_clase = 7;
+                }
 
                 if(Carbon::now() > $fecha_inicio){
 
@@ -4528,21 +4533,43 @@ class ClaseGrupalController extends BaseController {
                         
                         if(count($array_organizador) == 1){
 
-                            $cantidad_dias = 0;
                             $dia_inicio_horario = $array_organizador[0]['dia'];
 
-                            if($dia_inicio_clase > $dia_inicio_horario){
-                                while ($dia_inicio_clase != 7){
-                                    $dia_inicio_clase++;
-                                    $cantidad_dias++;
-                                }
+                            if($dia_inicio_horario == 0){
+                                $dia_inicio_horario = 7;
                             }
 
-                            $dias = abs($dia_inicio_clase - ($dia_inicio_horario + 1));
-                            $dias = $dias + $cantidad_dias;
+                            $dias = abs($dia_inicio_clase - $dia_inicio_horario);
+                            $dias = 0;
+
+                            if($dia_inicio_clase  > $dia_inicio_horario){
+
+                                while ($dia_inicio_clase != 7){
+                                    $dia_inicio_clase++;
+                                }
+
+                                $array_dias[] = $dia_inicio_clase + $dia_inicio_horario;
+
+                                $dia_a_comparar = $dia_inicio_horario;
+                                $dias_a_sumar = $dia_inicio_clase;
+                            }else{
+                                $dia_a_comparar = $dia_inicio_clase;
+                                $dias_a_sumar = $dia_inicio_horario;
+                            }
+
+                            while ($dias_a_sumar != 7){
+                                $dias++;
+                                $dias_a_sumar++;
+                            }
+
+                            $cantidad_dias = 0;
+
+                            while ($cantidad_dias != $dia_a_comparar){
+                                $cantidad_dias++;
+                                $dias++;
+                            }
+                            
                             $array_dias[] = $dias;
-                            $dia_inicio_clase = 7 - $dias;
-                            $array_dias[] = $dia_inicio_clase;
 
                         }else{
 
@@ -4562,10 +4589,19 @@ class ClaseGrupalController extends BaseController {
                                 $dias_a_restar = $organizador['dia'];
 
                             }
+
+                            while ($dias_a_sumar != 7){
+                                $dias++;
+                                $dias_a_sumar++;
+                            }
                         }
                     }else{
                         $array_dias[] = 7;
                     }
+
+
+                    dd($array_dias);
+                    
 
                     //COMPROBAR HASTA QUE DIA SE HARA EL CICLO, SI LA CLASE AUN NO HA FINALIZADO, SE HARA HASTA EL DIA DE HOY
 
@@ -4596,8 +4632,6 @@ class ClaseGrupalController extends BaseController {
 
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inscripcion);
                         $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
-
-                        $break = 0;
                         
                         while(!in_array($dia_a_comparar,$array_dias_clases)){
                             $fecha_a_comparar->addDay();
@@ -4627,12 +4661,7 @@ class ClaseGrupalController extends BaseController {
                         for($i = $index_inicial; $i < count($array_dias); $i++){
                             // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
                             // $array_dias_tmp[] = $array_dias[$k];
-
-                            if(count($array_dias) > 1){
-                                dd($array_organizador);
-                            }
                             
-
                             if($j != 0){
                                 if($fecha_a_comparar < Carbon::now()->subDay()){
 

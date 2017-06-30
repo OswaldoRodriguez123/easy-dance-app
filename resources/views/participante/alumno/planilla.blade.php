@@ -231,6 +231,66 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalTipologia-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_tipologia_alumno" id="edit_tipologia_alumno"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="tipologia_id">Tipología</label>
+
+                                      <div class="select">
+                                          <select class="form-control" id="tipologia_id" name="tipologia_id">
+                                            @foreach ( $tipologias as $tipologia )
+                                              <option value = "{{ $tipologia['id'] }}">{{ $tipologia['nombre'] }}</option>
+                                            @endforeach 
+                                          </select>
+                                      </div> 
+
+                                 </div>
+                                 <div class="has-error" id="error-tipologia_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-tipologia_id_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <input type="hidden" name="id" value="{{$alumno->id}}"></input>
+                            
+
+                               <div class="clearfix"></div> 
+                              
+                          </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_tipologia_alumno" data-update="tipologia" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
      
             <div class="modal fade" id="modalID-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
@@ -1275,6 +1335,14 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="alumno-instructor_id" class="capitalize">{{$alumno->instructor_nombre}} {{$alumno->instructor_apellido}}</span></td>
                             </tr> -->
+                            <tr class="detalle" data-toggle="modal" href="#modalTipologia-Alumno">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-instructor_id" class="zmdi {{ empty($alumno->tipologia) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-clases-grupales f-22"></i> </span>
+                               <span class="f-14"> Tipología </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-tipologia_id" class="capitalize">{{$alumno->tipologia}}</span></td>
+                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalTipoPago-Alumno">
                              <td width="50%"> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tipo_pago" class="zmdi {{ empty($tipo_pago) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      
@@ -1726,7 +1794,7 @@
     });
 
     function limpiarMensaje(){
-        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "fecha_pago", "costo_mensualidad"];
+        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "fecha_pago", "costo_mensualidad", 'tipologia_id'];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -1734,8 +1802,6 @@
       }
 
       function errores(merror){
-        console.log(merror);
-        var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion"];
          $.each(merror, function (n, c) {
              console.log(n);
            $.each(this, function (name, value) {
@@ -1772,7 +1838,7 @@
           }else if(c.name=='direccion'){
              $("#alumno-"+c.name).data('valor',c.value);
              $("#alumno-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
-          }else if(c.name=='instructor_id' || c.name=='tipo_pago'){
+          }else if(c.name=='instructor_id' || c.name=='tipo_pago' || c.name=='tipologia_id'){
             
             expresion = "#"+c.name+ " option[value="+c.value+"]";
             texto = $(expresion).text();
