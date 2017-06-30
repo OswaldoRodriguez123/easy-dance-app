@@ -1332,8 +1332,8 @@ class ClaseGrupalController extends BaseController {
         $clasegrupal->cantidad_mujeres = $cantidad_mujeres;
 
         if($clasegrupal->save()){
-            $nombre = DB::table('config_clases_grupales')
-                ->join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
+
+            $config_clase_grupal = ConfigClasesGrupales::join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
                 ->select('config_clases_grupales.nombre')
                 ->where('clases_grupales.clase_grupal_id','=',$request->clase_grupal_id)
             ->first();
@@ -1342,20 +1342,22 @@ class ClaseGrupalController extends BaseController {
 
             $notificacion->tipo_evento = 1;
             $notificacion->evento_id = $clasegrupal->id;
-            $notificacion->mensaje = "Tu academia a creado una nueva clase grupal llamada ".$nombre->nombre;
+            $notificacion->mensaje = "Tu academia a creado una nueva clase grupal llamada ".$config_clase_grupal->nombre;
             $notificacion->titulo = "Nueva Clase Grupal";
 
             if($notificacion->save()){
+
                 $in = array(2,4);
-                $alumnos_a_notificar = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+
+                $usuarios = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                     ->select('users.id')
-                    ->where('usuarios_tipo.tipo','=',$in)
+                    ->whereIn('usuarios_tipo.tipo',$in)
                     ->where('users.academia_id', '=', Auth::user()->academia_id)
                 ->get();
                 
-                foreach ($alumnos_a_notificar as $alumnos) {
+                foreach ($usuarios as $usuario) {
                     $usuarios_notificados = new NotificacionUsuario;
-                    $usuarios_notificados->id_usuario = $alumnos->id;
+                    $usuarios_notificados->id_usuario = $usuario->id;
                     $usuarios_notificados->id_notificacion = $notificacion->id;
                     $usuarios_notificados->visto = 0;
                     $usuarios_notificados->save();

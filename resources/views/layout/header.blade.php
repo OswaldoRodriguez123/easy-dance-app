@@ -129,12 +129,11 @@
                                             @if ($notificacion['tipo_evento'] == 1)
                                                 <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$notificacion['evento_id']}}">
                                             @elseif ($notificacion['tipo_evento'] == 5)
-
                                                 <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/notificaciones">
-                                            @else
-
+                                            @elseif($notificacion['tipo_evento'] == 6)
                                                 <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/evaluaciones/detalle/{{$notificacion['evento_id']}}">
-    
+                                            @else
+                                                <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/incidencias/detalle/{{$notificacion['evento_id']}}">
                                             @endif
                                                 <div class="media">
                                                     <div class="pull-left">
