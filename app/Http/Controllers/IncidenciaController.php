@@ -23,10 +23,31 @@ class IncidenciaController extends BaseController {
 
     public function principal()
     {
-        $incidencias = Incidencia::join('gravedades', 'incidencias.gravedad_id', '=', 'gravedades.id')
-            ->select('incidencias.*', 'gravedades.nombre as gravedad')
-            ->where('academia_id' , Auth::user()->academia_id)
-        ->get();
+        $datos = $this->getDatosUsuario();
+        $usuario_tipo = $datos[0]['usuario_tipo'];
+        $usuario_id = $datos[0]['usuario_id'];
+
+        if($usuario_tipo == 1 OR $usuario_tipo == 5 OR $usuario_tipo == 6){
+
+            $incidencias = Incidencia::join('gravedades', 'incidencias.gravedad_id', '=', 'gravedades.id')
+                ->select('incidencias.*', 'gravedades.nombre as gravedad')
+                ->where('academia_id' , Auth::user()->academia_id)
+            ->get();
+
+        }else{
+
+            if($usuario_tipo == 8){
+                $usuario_tipo = 1;
+            }else{
+                $usuario_tipo = 2;
+            }
+
+            $incidencias = Incidencia::join('gravedades', 'incidencias.gravedad_id', '=', 'gravedades.id')
+                ->select('incidencias.*', 'gravedades.nombre as gravedad')
+                ->where('usuario_tipo' , $usuario_tipo)
+                ->where('usuario_id' , $usuario_id)
+            ->get();
+        }
 
         $array = array();
 
@@ -411,8 +432,14 @@ class IncidenciaController extends BaseController {
         }
         
         $incidencia = Incidencia::find($request->id);
-        
+
         if($incidencia->delete()){
+
+            $notificacion = Notificacion::where('tipo_evento',7)->where('evento_id',$request->id)->first();
+            if($notificacion){
+                $notificacion_usuario = NotificacionUsuario::where('id_notificacion',$notificacion->id)->delete();
+                $notificacion->delete();
+            }
             return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);

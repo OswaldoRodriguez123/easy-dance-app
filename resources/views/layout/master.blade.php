@@ -292,7 +292,7 @@
       function notificacion(){
         
         var route = route_consultar_notificacion;
-        var token = $('input:hidden[name=_token]').val();
+        var token = "{{ csrf_token() }}"
         $.ajax({
           url: route,
           headers: {'X-CSRF-TOKEN': token},
@@ -374,7 +374,7 @@
       $('#numero_de_notificaciones').on('click', function(e){
           $("#numero_actual").text(0);
           var route = route_edit_notificacion;
-          var token = $('input:hidden[name=_token]').val();
+          var token = "{{ csrf_token() }}"
           $.ajax({
             url: route,
             headers: {'X-CSRF-TOKEN': token},
@@ -394,7 +394,7 @@
     
     $("#limpiar_notificaciones").on('click', function(e){
       var route = route_eliminar;
-      var token = $('input:hidden[name=_token]').val();
+      var token = "{{ csrf_token() }}"
         $.ajax({
             url: route,
             headers: {'X-CSRF-TOKEN': token},

@@ -230,15 +230,14 @@ class NotificacionController extends BaseController
     }
 
     public function revisarNotificacion(){
-        $notificacion= NotificacionUsuario::where('notificacion_usuario.id_usuario','=',Auth::user()->id)
-        ->get();
 
-        foreach ($notificacion as $revisadas) {
-            if (($revisadas->visto)==0) {
-                $revisadas->visto=1;
-                $revisadas->save();
-            }
+        $notificaciones = NotificacionUsuario::where('id_usuario',Auth::user()->id)->where('visto',0)->get();
+
+        foreach($notificaciones as $notificacion){
+            $notificacion->visto = 1;
+            $notificacion->save();
         }
+
         return response()->json(['status' => 'OK', 200]);
     }
 

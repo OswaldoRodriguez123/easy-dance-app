@@ -1103,7 +1103,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		//INCIDENCIAS
 
-		Route::get('incidencias', 'IncidenciaController@principal');
 		Route::get('incidencias/generar/{id}', 'IncidenciaController@createconid');
 		Route::get('incidencias/generar', 'IncidenciaController@create');
 		Route::post('incidencias/generar', 'IncidenciaController@store');
@@ -1239,6 +1238,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		//INCIDENCIAS
 
+		Route::get('incidencias', 'IncidenciaController@principal');
 		Route::get('incidencias/detalle/{id}', 'IncidenciaController@planilla');
 
 		//CALENDARIO LABORAL 

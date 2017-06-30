@@ -133,7 +133,7 @@
                                             @elseif($notificacion['tipo_evento'] == 6)
                                                 <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/evaluaciones/detalle/{{$notificacion['evento_id']}}">
                                             @else
-                                                <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/incidencias/detalle/{{$notificacion['evento_id']}}">
+                                                <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/incidencias">
                                             @endif
                                                 <div class="media">
                                                     <div class="pull-left">
