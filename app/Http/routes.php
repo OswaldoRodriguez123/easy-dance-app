@@ -1107,6 +1107,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('incidencias/generar', 'IncidenciaController@create');
 		Route::post('incidencias/generar', 'IncidenciaController@store');
 		Route::get('incidencias/detalle/{id}', 'IncidenciaController@planilla');
+		Route::put('incidencias/update/usuario','IncidenciaController@updateUsuario');
+		Route::put('incidencias/update/gravedad','IncidenciaController@updateGravedad');
+		Route::put('incidencias/update/fecha','IncidenciaController@updateFecha');
+		Route::put('incidencias/update/mensaje','IncidenciaController@updateMensaje');
 		Route::delete('incidencias/eliminar/{id}', 'IncidenciaController@destroy');
 
 		//BUSCADOR

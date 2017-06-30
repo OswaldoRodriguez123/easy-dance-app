@@ -59,38 +59,47 @@
                             <div class="clearfix p-b-15"></div>
                               <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-staff_id">Nombre</label>
+                                  <label for="nombre" id="id-usuario_id">Usuario</label>
 
-
-                                    @if(isset($staff))
-                                    <input type="hidden" name="staff_id" value="{{ $staff->id }}">
-
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
-                                      <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="nombre" id="nombre" placeholder="Ej. Valeria" value="{{$staff->nombre}} {{$staff->apellido}}" disabled>
-                                      </div>
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
+                                    <div class="select">
+                                        <select class="selectpicker bs-select-hidden" name="usuario_id" id="usuario_id" data-live-search="true" title="Selecciona">
+                                          @foreach ( $usuarios as $usuario )
+                                            <option value = "{{ $usuario['id'] }}" data-content="{{ $usuario['nombre'] }} {{ $usuario['apellido'] }} {!!$usuario['icono']!!}"></option>
+                                          @endforeach
+                                        </select>
                                     </div>
-
-                                    @else
-
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
-                                      <div class="select">
-                                          <select class="selectpicker" name="staff_id" id="staff_id" data-live-search="true">
-
-                                            <option value="">Selecciona</option>
-                                            @foreach ( $staffs as $staf )
-                                              <option value = "{{ $staf['id'] }}">{{ $staf['nombre'] }} {{ $staf['apellido'] }}</option>
-                                            @endforeach
-                                          
-                                          </select>
-                                      </div>
-                                    </div>
-                                  @endif
-                                  <div class="has-error" id="error-staff_id">
+                                  </div>
+                       
+                                  <div class="has-error" id="error-usuario_id">
                                       <span >
-                                          <small class="help-block error-span" id="error-staff_id_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-usuario_id_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                                 
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                 
+                                  <label for="nombre" id="id-gravedad_id">Nivel de Incidencia</label>
+
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon_a-niveles f-22"></i></span>
+                                    <div class="select">
+                                        <select class="selectpicker bs-select-hidden" name="gravedad_id" id="gravedad_id" data-live-search="true" title="Selecciona">
+                                          @foreach ( $gravedades as $gravedad )
+                                            <option value = "{{ $gravedad['id'] }}" data-content="{{ $gravedad['nombre'] }}"></option>
+                                          @endforeach
+                                        </select>
+                                    </div>
+                                  </div>
+                       
+                                  <div class="has-error" id="error-gravedad_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-gravedad_id_mensaje" ></small>                                
                                       </span>
                                   </div>
                                  
@@ -115,26 +124,25 @@
                                   </div>
                                </div>
     
-                               <div class="clearfix p-b-35"></div>
+                              <div class="clearfix p-b-35"></div>
 
-                               <div class="col-sm-12">
-                                 
-                                    <label for="mensaje" id="id-mensaje">Incidencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección podrás generar amonestaciones, notificaciones o avisos al personal que labora y que usa cuenta de Easy Dance" title="" data-original-title="Ayuda"></i>
-                                    <br></br>
+                              <div class="col-sm-12">
+                                <div class="form-group">
+                                  <label for="mensaje" id="id-mensaje">Incidencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección podrás generar amonestaciones, notificaciones o avisos al personal que labora y que usa cuenta de Easy Dance" title="" data-original-title="Ayuda"></i>
 
-                                    <div class="fg-line">
-                                      <textarea class="form-control caja" style="height: 100%" id="mensaje" name="mensaje" rows="8" placeholder="1500 Caracteres"></textarea>
-                                      </div>
-                                    <div class="has-error" id="error-condiciones">
-                                      <span >
-                                        <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
+                                    <textarea class="form-control caja" style="height: 100%" id="mensaje" name="mensaje" rows="8" placeholder="2500 Caracteres" onkeyup="countChar(this)" maxlength="2500"></textarea>
+               
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">2500</span> Caracteres</div>
+      
+                                </div>
+                                <div class="has-error" id="error-mensaje">
+                                  <span >
+                                    <small class="help-block error-span" id="error-mensaje_mensaje" ></small>
+                                  </span>
+                                </div>
+                              </div>
 
-                             
-                              
-                       
+                              <div class="clearfix p-b-35"></div>
 
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
@@ -151,6 +159,8 @@
 
                               <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
 
+<!--                               <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
+ -->
                             </div>
                         </div></form>
                     </div>
@@ -240,11 +250,6 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          // finprocesado();
-                          // var nType = 'success';
-                          // $("#agregar_alumno")[0].reset();
-                          // var nTitle="Ups! ";
-                          // var nMensaje=respuesta.mensaje;
                           window.location = route_principal;
                         }else{
                           var nTitle="Ups! ";
@@ -267,9 +272,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
+                        if (typeof msj.responseJSON === "undefined") {
+                          window.location = "{{url('/')}}/error";
+                        }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -300,7 +305,7 @@
             });
 
       function limpiarMensaje(){
-      var campo = ["mensaje", "staff_id"];
+      var campo = ["mensaje", "usuario_id", "gravedad_id", "fecha"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -327,6 +332,15 @@
       }, 1500);          
 
   }
+
+  function countChar(val) {
+    var len = val.value.length;
+    if (len >= 2500) {
+      val.value = val.value.substring(0, 2500);
+    } else {
+      $('#charNum').text(2500 - len);
+    }
+  };
 
 </script> 
 @stop

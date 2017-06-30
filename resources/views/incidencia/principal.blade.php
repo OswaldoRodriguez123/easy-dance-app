@@ -53,7 +53,9 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="nombre">Nombre</th>
+                                    <th class="text-center" data-column-id="nombre">Usuario</th>
+                                    <th class="text-center" data-column-id="nombre">Nivel de Incidencia</th>
+                                    <th class="text-center" data-column-id="nombre">Administrador</th>
                                     <th class="text-center" data-column-id="nombre">Fecha</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
@@ -61,10 +63,12 @@
                             <tbody>
 
                             @foreach ($incidencias as $incidencia)
-                                <?php $id = $incidencia->id; ?>
+                                <?php $id = $incidencia['id']; ?>
                                 <tr id="{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$incidencia->nombre}} {{$incidencia->apellido}}</td>
-                                    <td class="text-center previa">{{ $incidencia->fecha }} </td>
+                                    <td class="text-center previa">{{$incidencia['usuario']}}</td>
+                                    <td class="text-center previa">{{$incidencia['gravedad']}}</td>
+                                    <td class="text-center previa">{{$incidencia['administrador']}}</td>
+                                    <td class="text-center previa">{{$incidencia['fecha']}} </td>
                                     <td class="text-center disabled"><i name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 

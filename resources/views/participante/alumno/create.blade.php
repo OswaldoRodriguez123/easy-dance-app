@@ -236,7 +236,7 @@
                                <div class="clearfix p-b-35"></div>
 
                               <div class="col-sm-12">
-                                 <div class="form-group fg-line">
+                                 <div class="form-group">
                                     <label for="direccion" id="id-direccion">Dirección</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la dirección del participante" title="" data-original-title="Ayuda"></i>
                                       <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-pin-drop zmdi-hc-fw f-22"></i></span>

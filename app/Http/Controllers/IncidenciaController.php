@@ -11,6 +11,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Incidencia;
 use App\Staff;
+use App\Instructor;
+use App\Gravedad;
 use App\Notificacion;
 use App\NotificacionUsuario;
 use DB;
@@ -19,12 +21,44 @@ class IncidenciaController extends BaseController {
 
     public function principal()
     {
-        $incidencias = Incidencia::join('staff', 'incidencias.staff_id', '=', 'staff.id')
-            ->select('incidencias.*', 'staff.nombre', 'staff.apellido')
-            ->where('incidencias.academia_id' , Auth::user()->academia_id)
+        $incidencias = Incidencia::join('gravedades', 'incidencias.gravedad_id', '=', 'gravedades.id')
+            ->select('incidencias.*', 'gravedades.nombre as gravedad')
+            ->where('academia_id' , Auth::user()->academia_id)
         ->get();
 
-        return view('incidencia.principal')->with('incidencias', $incidencias);
+        $array = array();
+
+        foreach($incidencias as $incidencia){
+
+            $administrador = User::find($incidencia->administrador_id);
+
+            if($administrador){
+                $administrador = $administrador->nombre . ' '. $administrador->apellido;
+            }else{
+                $administrador = '';
+            }
+
+            if($incidencia->usuario_tipo == 1){
+                $usuario = Staff::find($incidencia->usuario_id);
+            }else{
+                $usuario = Instructor::find($incidencia->usuario_id);
+            }
+
+            if($usuario){
+                $usuario = $usuario->nombre . ' '. $usuario->apellido;
+            }else{
+                $usuario = '';
+            }
+
+            $collection=collect($incidencia);     
+            $incidencia_array = $collection->toArray();
+            $incidencia_array['administrador']=$administrador;
+            $incidencia_array['usuario']=$usuario;
+            $array[$incidencia->id] = $incidencia_array;
+
+        }
+
+        return view('incidencia.principal')->with('incidencias', $array);
     }
 
     public function createconid($id)
@@ -36,9 +70,37 @@ class IncidenciaController extends BaseController {
 
     public function create()
     {
-        $staff = Staff::where('academia_id' , Auth::user()->academia_id)->get();
+        $usuarios = array();
 
-        return view('incidencia.create')->with('staffs', $staff);
+        $staffs = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($staffs as $staff){
+
+            $collection=collect($staff);     
+            $usuario_array = $collection->toArray();
+
+            $usuario_array['tipo']=1;
+            $usuario_array['id']='1-'.$staff->id;
+            $usuario_array['icono']="<i class='icon_f-staff'></i>";
+            $usuarios['1-'.$staff->id] = $usuario_array;
+        }
+
+        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($instructores as $instructor)
+        {
+            $collection=collect($instructor);     
+            $usuario_array = $collection->toArray();
+
+            $usuario_array['tipo']=2;
+            $usuario_array['id']='2-'.$instructor->id;
+            $usuario_array['icono']="<i class='icon_a-instructor'></i>";
+            $usuarios['2-'.$instructor->id] = $usuario_array;
+        }
+
+        $gravedades = Gravedad::all();
+
+        return view('incidencia.create')->with(['usuarios' => $usuarios, 'gravedades' => $gravedades]);
     }
 
 
@@ -46,15 +108,17 @@ class IncidenciaController extends BaseController {
     {
 
         $rules = [
-            'staff_id' => 'required',
+            'usuario_id' => 'required',
+            'gravedad_id' => 'required',
             'fecha' => 'required',
             'mensaje' => 'required',
         ];
 
         $messages = [
-            'staff_id.required' => 'Ups! El staff es requerido',
-            'fecha.required' => 'Ups! La fecha es requerida',
-            'mensaje.required' => 'Ups! El mensaje es requerido',
+            'usuario_id.required' => 'Ups! El usuario es requerido',
+            'gravedad_id.required' => 'Ups! El nivel es requerido',
+            'fecha.required' => 'Ups! La Fecha es requerida',
+            'mensaje.required' => 'Ups! La incidencia es requerida',
 
         ];
 
@@ -70,13 +134,19 @@ class IncidenciaController extends BaseController {
 
             $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha)->toDateString();
 
+            $explode = explode('-',$request->usuario_id);
+            $usuario_tipo = $explode[0];
+            $usuario_id = $explode[1];
+
             $incidencia = new Incidencia;
 
-            $incidencia->usuario_id = Auth::user()->id;
+            $incidencia->academia_id = Auth::user()->academia_id;
+            $incidencia->usuario_tipo = $usuario_tipo;
+            $incidencia->usuario_id = $usuario_id;
+            $incidencia->gravedad_id = $request->gravedad_id;
+            $incidencia->administrador_id = Auth::user()->id;
             $incidencia->fecha = $fecha;
             $incidencia->mensaje = $request->mensaje;
-            $incidencia->academia_id = Auth::user()->academia_id;
-            $incidencia->staff_id = $request->staff_id;
 
             if($incidencia->save()){
 
@@ -92,16 +162,190 @@ class IncidenciaController extends BaseController {
     public function planilla($id)
     {
 
-        $incidencia = Incidencia::join('staff', 'incidencias.staff_id', '=', 'staff.id')
+        $incidencia = Incidencia::join('gravedades', 'incidencias.gravedad_id', '=', 'gravedades.id')
+            ->select('incidencias.*', 'gravedades.nombre as gravedad')
             ->where('incidencias.id', '=' , $id)
         ->first();
 
         if($incidencia){
 
-            return view('incidencia.planilla')->with(['incidencia' => $incidencia]);
+            $usuarios = array();
+
+            $staffs = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+            foreach($staffs as $staff){
+
+                $collection=collect($staff);     
+                $usuario_array = $collection->toArray();
+
+                $usuario_array['tipo']=1;
+                $usuario_array['id']='1-'.$staff->id;
+                $usuario_array['icono']="<i class='icon_f-staff'></i>";
+                $usuarios['1-'.$staff->id] = $usuario_array;
+            }
+
+            $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+            foreach($instructores as $instructor)
+            {
+                $collection=collect($instructor);     
+                $usuario_array = $collection->toArray();
+
+                $usuario_array['tipo']=2;
+                $usuario_array['id']='2-'.$instructor->id;
+                $usuario_array['icono']="<i class='icon_a-instructor'></i>";
+                $usuarios['2-'.$instructor->id] = $usuario_array;
+            }
+
+            $gravedades = Gravedad::all();
+
+            $administrador = User::find($incidencia->administrador_id);
+
+            if($administrador){
+                $administrador = $administrador->nombre . ' '. $administrador->apellido;
+            }else{
+                $administrador = '';
+            }
+
+            if($incidencia->usuario_tipo == 1){
+                $usuario = Staff::find($incidencia->usuario_id);
+            }else{
+                $usuario = Instructor::find($incidencia->usuario_id);
+            }
+
+            if($usuario){
+                $usuario = $usuario->nombre . ' '. $usuario->apellido;
+            }else{
+                $usuario = '';
+            }
+
+            return view('incidencia.planilla')->with(['incidencia' => $incidencia, 'usuario' => $usuario, 'administrador' => $administrador, 'gravedades' => $gravedades, 'instructores_staffs'=> $usuarios, 'id' => $id]);
 
         }else{
            return redirect("inicio"); 
+        }
+
+    }
+
+    public function updateUsuario(Request $request){
+
+        $rules = [
+
+            'usuario_id' => 'required',
+        ];
+
+        $messages = [
+
+            'usuario_id.required' => 'Ups! El usuario es requerido',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+        }
+
+        $explode = explode('-',$request->usuario_id);
+        $usuario_tipo = $explode[0];
+        $usuario_id = $explode[1];
+
+        $incidencia = Incidencia::find($request->id);
+        $incidencia->usuario_id = $usuario_id;
+        $incidencia->usuario_tipo = $usuario_tipo;
+
+        if($incidencia->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
+    }
+
+    public function updateGravedad(Request $request){
+
+        $rules = [
+
+            'gravedad_id' => 'required',
+        ];
+
+        $messages = [
+
+            'gravedad_id.required' => 'Ups! El nivel es requerido',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+        }
+
+        $incidencia = Incidencia::find($request->id);
+        $incidencia->gravedad_id = $request->gravedad_id;
+
+        if($incidencia->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
+    }
+
+    public function updateFecha(Request $request){
+
+        $rules = [
+
+            'fecha' => 'required',
+        ];
+
+        $messages = [
+
+            'fecha.required' => 'Ups! La fecha es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+        }
+
+        $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha)->toDateString();
+
+        $incidencia = Incidencia::find($request->id);
+        $incidencia->fecha = $fecha;
+
+        if($incidencia->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
+    }
+
+    public function updateMensaje(Request $request){
+
+        $rules = [
+
+            'mensaje' => 'required',
+        ];
+
+        $messages = [
+
+            'mensaje.required' => 'Ups! La incidencia es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+        }
+
+        $incidencia = Incidencia::find($request->id);
+        $incidencia->mensaje = $request->mensaje;
+
+        if($incidencia->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
 
     }
