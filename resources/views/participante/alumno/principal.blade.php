@@ -77,29 +77,38 @@
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-alumnos f-25"></i> Sección de Alumnos</p>
                             <hr class="linea-morada">
 
-                            <div class="col-sm-12">
-                                <div class="form-group fg-line ">
-                                    <div class="p-t-10">
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="todos" value="T" type="radio" checked >
-                                        <i class="input-helper"></i>  
-                                        Todos <i id="todos2" name="todos2" class="zmdi zmdi-male-female zmdi-hc-fw c-verde f-20"></i>
-                                    </label>
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="mujeres" value="F" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Mujeres <i id="mujeres2" name="mujeres2" class="zmdi zmdi-female zmdi-hc-fw f-20"></i>
-                                    </label>
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo" id="hombres" value="M" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Hombres <i id="hombres2" name="hombres2" class="zmdi zmdi-male-alt zmdi-hc-fw f-20"></i>
-                                    </label>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="nombre">Sexo</label>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="sexo" id="sexo" data-live-search="true">
+                                            <option value = "T">Todos</option>
+                                            <option value = "F">Mujeres</option>
+                                            <option value = "M">Hombres</option>
+                                        </select>
+                                      </div>
                                     </div>
-                                    
                                 </div>
                             </div>
 
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="nombre">Tipología</label>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="tipologia" id="tipologia" data-live-search="true">
+                                            <option value = "T">Todos</option>
+                                            <option value = "Paq">Paquetes de Clases</option>
+                                            <option value = "Per">Personalizadas</option>
+                                            <option value = "Tal">Talento Cuerpo de Formación</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
                             <div class="clearfix"></div> 
                                                          
                         </div>
@@ -113,6 +122,7 @@
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
+                                    <th class="text-center" data-column-id="tipologia">Tipología</th>
                                     <th class="text-center" data-column-id="estatu_e">Balance E</th>
                                     <th class="text-center" data-column-id="operacion">Acciones</th>
                                 </tr>
@@ -191,16 +201,15 @@
                                     ?>
 
                                     <td class="text-center previa">{{$nombre_alumno}} {{$apellido_alumno}} </td>
+                                    <td class="text-center previa">{{$alumno['tipologia']}}</td>
                                     <td class="text-center previa">
-                                    <i data-toggle="modal" href="#" class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i>
+                                        <i class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
                                     </td>
-                                    <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
-                                    <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
-                                    @if($alumno['deleted_at'] == null)
-                                        <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
-                                    @else
-                                        <td></td>
-                                    @endif
+                                    <td class="text-center disabled"> 
+                                        @if($alumno['deleted_at'] == null)
+                                            <i name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>
+                                        @endif
+                                    </td>
                                 </tr>
                                 <!-- endcan -->
                             @endforeach 
@@ -288,35 +297,16 @@
             window.location=route;
         });
 
-        $('input[name="tipo"]').on('change', function(){
+        $('#sexo').on('change', function(){
 
             if($(this).val() == 'T'){
-
-                $( "#hombres2" ).removeClass( "c-verde" );
-                $( "#mujeres2" ).removeClass( "c-verde" );
-                $( "#todos2" ).addClass( "c-verde" );
 
                 t
                 .columns(3)
                 .search('')
                 .draw(); 
 
-            }else if($(this).val() == 'F'){
-
-                $( "#hombres2" ).removeClass( "c-verde" );
-                $( "#mujeres2" ).addClass( "c-verde" );
-                $( "#todos2" ).removeClass( "c-verde" );
-
-                t
-                .columns(3)
-                .search($(this).val())
-                .draw();
-
             }else{
-
-                $( "#hombres2" ).addClass( "c-verde" );
-                $( "#mujeres2" ).removeClass( "c-verde" );
-                $( "#todos2" ).removeClass( "c-verde" );
 
                 t
                 .columns(3)
@@ -327,6 +317,26 @@
     
         });
 
-        </script>
+        $('#tipologia').on('change', function(){
+
+            if($(this).val() == 'T'){
+
+                t
+                .columns(5)
+                .search('')
+                .draw(); 
+
+            }else{
+
+                t
+                .columns(5)
+                .search($(this).val())
+                .draw();
+
+            }
+    
+        });
+
+    </script>
 
 @stop

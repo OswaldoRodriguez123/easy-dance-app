@@ -57,27 +57,18 @@ use Image;
 class AlumnoController extends BaseController
 {
 
-
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
-    
     public function principal()
 	{
 
         $in = array(2,4);
-        
-        $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
-            ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-            ->select('alumnos.id as id')
-            ->where('users.academia_id','=', Auth::user()->academia_id)
-            ->where('alumnos.deleted_at', '=', null)
-            ->whereIn('usuarios_tipo.tipo', $in)
-            ->where('users.confirmation_token', '!=', null)
-        ->get();
 
-        $alumnos = Alumno::withTrashed()->where('academia_id', '=' ,  Auth::user()->academia_id)->where('tipo', 1)->orderBy('nombre', 'asc')->get();
+        $alumnos = Alumno::withTrashed()
+            ->Leftjoin('tipologias', 'alumnos.tipologia_id', '=', 'tipologias.id')
+            ->select('alumnos.*','tipologias.nombre as tipologia')
+            ->where('academia_id', '=' ,  Auth::user()->academia_id)
+            ->where('tipo', 1)
+            ->orderBy('alumnos.nombre', 'asc')
+        ->get();
 
         $array = array();
 
@@ -129,9 +120,7 @@ class AlumnoController extends BaseController
 
         }
 
-        $instructor = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-
-		return view('participante.alumno.principal')->with(['alumnos' => $array, 'instructor' => $instructor]);
+		return view('participante.alumno.principal')->with(['alumnos' => $array]);
 	}
 
 
