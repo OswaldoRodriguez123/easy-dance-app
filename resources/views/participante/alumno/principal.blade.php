@@ -92,7 +92,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-4">
+                            <!-- <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="nombre">Tipología</label>
                                     <div class="fg-line">
@@ -106,7 +106,7 @@
                                       </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             
                             <div class="clearfix"></div> 

@@ -309,6 +309,7 @@ class AlumnoController extends BaseController
             $alumno->hipertension = $request->hipertension;
             $alumno->lesiones = $request->lesiones;
             $alumno->codigo_referido = $codigo_referido;
+            $alumno->tipologia_id = $request->tipologia_id;
 
             if($alumno->save()){
 
@@ -452,8 +453,9 @@ class AlumnoController extends BaseController
 
     public function create()
     {
+        $tipologias = Tipologia::all();
  
-        return view('participante.alumno.create')->with(['instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get()]);
+        return view('participante.alumno.create')->with(['tipologias' => $tipologias]);
     }
 
     public function agregarvisitante($id)

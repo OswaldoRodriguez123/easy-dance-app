@@ -181,7 +181,7 @@
                 type: "input",  
                 showCancelButton: true,   
                 confirmButtonColor: "#DD6B55",   
-                confirmButtonText: "Eliminar!",  
+                confirmButtonText: "Aceptar",  
                 cancelButtonText: "Cancelar",         
                 closeOnConfirm: false,
                 animation: "slide-from-top",

@@ -55,32 +55,6 @@
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
-
-    <!--                          <div class="col-sm-12">
-                                 
-                                    <label for="especialidad" id="id-instructor_id">Promotor</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el promotor" title="" data-original-title="Ayuda"></i>
-
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $instructores as $instructor )
-                                          <option value = "{{ $instructor['id'] }}">{{ $instructor['nombre'] }} {{ $instructor['apellido'] }}</option>
-                                          @endforeach
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="has-error" id="error-instructor_id">
-                                      <span >
-                                        <small class="help-block error-span" id="error-instructor_id_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div> -->
-
-                               <div class="clearfix p-b-35"></div>
                                
                               <div class="col-sm-12">
                                  
@@ -413,6 +387,32 @@
                                </div>
 
                                <div class="clearfix p-b-35"></div>
+
+
+                             <div class="col-sm-12">
+                                 
+                                <label for="tipologia_id" id="id-tipologia_id">Tipologia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona la tipologia" title="" data-original-title="Ayuda"></i>
+
+                                 <div class="input-group">
+                                  <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
+                                <div class="fg-line">
+                                  <div class="select">
+                                    <select class="selectpicker" name="tipologia_id" id="tipologia_id" data-live-search="true">
+                                      @foreach ( $tipologias as $tipologia )
+                                        <option value = "{{ $tipologia->id }}">{{ $tipologia->nombre }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="has-error" id="error-tipologia_id">
+                                  <span >
+                                    <small class="help-block error-span" id="error-tipologia_id_mensaje" ></small>                                           
+                                  </span>
+                                </div>
+                              </div>
+                           </div>
+
+                          <div class="clearfix p-b-35"></div>
 
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">

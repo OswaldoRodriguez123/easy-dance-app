@@ -1335,14 +1335,6 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="alumno-instructor_id" class="capitalize">{{$alumno->instructor_nombre}} {{$alumno->instructor_apellido}}</span></td>
                             </tr> -->
-                            <tr class="detalle" data-toggle="modal" href="#modalTipologia-Alumno">
-                             <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-instructor_id" class="zmdi {{ empty($alumno->tipologia) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="icon_a-clases-grupales f-22"></i> </span>
-                               <span class="f-14"> Tipología </span>
-                             </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-tipologia_id" class="capitalize">{{$alumno->tipologia}}</span></td>
-                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalTipoPago-Alumno">
                              <td width="50%"> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tipo_pago" class="zmdi {{ empty($tipo_pago) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      
@@ -1469,6 +1461,14 @@
                              </td>
                              <td class="f-14 m-l-15" >
                               <span id="alumno-codigo" data-valor="{{$alumno->codigo_referido}}">{{$alumno->codigo_referido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalTipologia-Alumno">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-instructor_id" class="zmdi {{ empty($alumno->tipologia) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-clases-grupales f-22"></i> </span>
+                               <span class="f-14"> Tipología </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-tipologia_id" class="capitalize">{{$alumno->tipologia}}</span></td>
                             </tr>
                           </table>
                         </div>
