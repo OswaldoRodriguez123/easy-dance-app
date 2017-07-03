@@ -1444,7 +1444,7 @@ class AlumnoController extends BaseController
     }
 
     public function eliminar_permanentemente($id){
-        
+
         $in = array(2,4);
         $delete = ItemsFacturaProforma::where('usuario_id',$id)->where('usuario_tipo',1)->forceDelete();
         $evaluaciones = Evaluacion::where('alumno_id',$id)->get();
@@ -1595,6 +1595,7 @@ class AlumnoController extends BaseController
             $delete = NotificacionUsuario::where('id_usuario', $usuario->id)->forceDelete();
             $delete = Incidencia::where('usuario_id', $usuario->id)->forceDelete();
             $delete = Sugerencia::where('usuario_id', $usuario->id)->forceDelete();
+            $delete = UsuarioTipo::where('usuario_id', $usuario->id)->forceDelete();
 
         }
 
@@ -1602,6 +1603,7 @@ class AlumnoController extends BaseController
             ->where('usuarios_tipo.tipo_id',$id)
             ->whereIn('usuarios_tipo.tipo',$array)
         ->forceDelete();
+
         $delete = Alumno::withTrashed()->where('id',$id)->forceDelete();
 
 
