@@ -1493,6 +1493,7 @@ class AlumnoController extends BaseController
         $array = array(2, 4);
         $delete = PerfilEvaluativo::where('usuario_id', $id)->forceDelete();
         $delete = CredencialAlumno::where('alumno_id',$id)->forceDelete();
+        $delete = Visitante::where('alumno_id',$id)->forceDelete();
 
         $alumno = Alumno::withTrashed()->find($id);
 
@@ -1540,6 +1541,7 @@ class AlumnoController extends BaseController
                     $delete = Cita::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = PerfilEvaluativo::where('usuario_id', $hijo->id)->forceDelete();
                     $delete = CredencialAlumno::where('alumno_id',$hijo->id)->forceDelete();
+                    $delete = Visitante::where('alumno_id',$hijo->id)->forceDelete();
 
                     $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                         ->where('usuarios_tipo.tipo_id',$hijo->id)
