@@ -1571,19 +1571,19 @@ class ReporteController extends BaseController
 
             //LINEA DE SERVICIO
 
-            // if($request->tipo_servicio)
-            // {
-            //     if($request->tipo_servicio == 99)
-            //     {
-            //         $query->where('egresos.tipo', 1);
-            //     }else if($request->tipo_servicio == 14){
-            //         $query->where('egresos.tipo', 2);
-            //     }else if($request->tipo_servicio == 5){
-            //         $query->where('egresos.tipo', 3);
-            //     }else if($request->tipo_servicio == 11){
-            //         $query->where('egresos.tipo', 4);
-            //     }
-            // }
+            if($request->tipo_servicio)
+            {
+                if($request->tipo_servicio == 99)
+                {
+                    $query->where('egresos.tipo', 1);
+                }else if($request->tipo_servicio == 14){
+                    $query->where('egresos.tipo', 2);
+                }else if($request->tipo_servicio == 5){
+                    $query->where('egresos.tipo', 3);
+                }else if($request->tipo_servicio == 11){
+                    $query->where('egresos.tipo', 4);
+                }
+            }
 
             if($request->servicio_tipo)
             {
