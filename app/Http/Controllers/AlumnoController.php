@@ -1547,6 +1547,7 @@ class AlumnoController extends BaseController
                     ->first();
 
                     if($usuario){
+
                         $notificaciones_usuarios = NotificacionUsuario::where('id_usuario', $usuario->id)->get();
                         foreach($notificaciones_usuarios as $notificacion_usuario)
                         {
@@ -1559,16 +1560,10 @@ class AlumnoController extends BaseController
                         $delete = Incidencia::where('usuario_id', $usuario->id)->forceDelete();
                         $delete = Sugerencia::where('usuario_id', $usuario->id)->forceDelete();
 
-                        $delete = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                            ->where('usuarios_tipo.tipo_id',$id)
-                            ->whereIn('usuarios_tipo.tipo',$array)
-                        ->forceDelete();
+                        $usuario->forceDelete();
 
                     }
-                    $delete = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                        ->where('usuarios_tipo.tipo_id',$hijo->id)
-                        ->whereIn('usuarios_tipo.tipo',$array)
-                    ->forceDelete();
+
                     $delete = Alumno::withTrashed()->where('id',$hijo->id)->forceDelete();
                 }
             }
@@ -1596,16 +1591,11 @@ class AlumnoController extends BaseController
             $delete = Incidencia::where('usuario_id', $usuario->id)->forceDelete();
             $delete = Sugerencia::where('usuario_id', $usuario->id)->forceDelete();
             $delete = UsuarioTipo::where('usuario_id', $usuario->id)->forceDelete();
+            $usuario->forceDelete();
 
         }
 
-        $delete = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-            ->where('usuarios_tipo.tipo_id',$id)
-            ->whereIn('usuarios_tipo.tipo',$array)
-        ->forceDelete();
-
         $delete = Alumno::withTrashed()->where('id',$id)->forceDelete();
-
 
         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         
