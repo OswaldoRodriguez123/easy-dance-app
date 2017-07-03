@@ -154,6 +154,7 @@ class EgresoController extends BaseController {
             $egreso->nit = $request->nit;
             $egreso->tipo = $request->tipo;
             $egreso->tipo_id = $request->tipo_id;
+            $egreso->administrador_id = Auth::user()->id;
 
             if($egreso->save()){
                 

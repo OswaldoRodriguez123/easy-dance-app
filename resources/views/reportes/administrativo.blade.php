@@ -476,15 +476,14 @@
 
                     t.clear().draw();
 
-                    tipo = $('#tipo').val();
-
-                    if(tipo != 3){
-                         t.column(2).visible(true);
-                    }else{
-                         t.column(2).visible(false);
-                    }
-
                     $.each(respuesta.facturas, function (index, array) {
+
+                        concepto = array.nombre 
+                        concepto_completo = array.nombre
+
+                        if(concepto.length > 30){
+                            concepto = concepto.substr(0, 30) + "..."
+                        }
 
                         if(array.tipo == 1){
                             monto = '+'+formatmoney(parseFloat(array.importe_neto))
@@ -499,11 +498,19 @@
                             ''+array.hora+'',
                             ''+array.cliente+'',
                             ''+array.tipo_pago+'',
-                            ''+array.nombre+'',
+                            ''+concepto+'',
                             ''+monto+''
                         ] ).draw(false).node();
 
                         $( rowNode )
+                            .attr('data-trigger','hover')
+                            .attr('data-toggle','popover')
+                            .attr('data-placement','top')
+                            .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;&nbsp;')
+                            .attr('data-html','true')
+                            .attr('data-container','body')
+                            .attr('title','')
+                            .attr('data-content',concepto_completo)
                             .attr('id',array.id)
                             .data('tipo',array.tipo)
 
@@ -515,6 +522,8 @@
                     });
 
                     datos = JSON.parse(JSON.stringify(respuesta));
+
+                    tipo = $('#tipo').val();
 
                     if(tipo == 1 || tipo == 2){
 
@@ -835,7 +844,7 @@
         // });
 
         $('#tipo_servicio').on('change', function(){
-            
+
             tipo_servicio = $(this).val();
             nombre = '';
             tipo_dropdown = ''

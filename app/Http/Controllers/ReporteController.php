@@ -1566,7 +1566,8 @@ class ReporteController extends BaseController
             //EGRESOS
 
             $query = Egreso::join('tipos_egresos', 'egresos.tipo', '=', 'tipos_egresos.id')
-            ->select('egresos.*', 'tipos_egresos.nombre as nombre_egreso')
+            ->join('users', 'egresos.administrador_id', '=', 'users.id')
+            ->select('egresos.*', 'tipos_egresos.nombre as nombre_egreso', 'users.nombre as administrador_nombre','users.apellido as administrador_apellido')
             ->where('egresos.academia_id', '=', Auth::user()->academia_id);
 
             //LINEA DE SERVICIO
@@ -1662,7 +1663,7 @@ class ReporteController extends BaseController
 
                 $collection=collect($egreso);     
                 $egreso_array = $collection->toArray();
-                $egreso_array['cliente'] = 'Egreso';
+                $egreso_array['cliente'] = $egreso->administrador_nombre . ' ' . $egreso->administrador_apellido;
                 $egreso_array['nombre'] = $egreso->concepto;
                 $egreso_array['importe_neto'] = $egreso->cantidad;
                 $egreso_array['fecha'] = Carbon::parse($egreso->fecha)->toDateString();
