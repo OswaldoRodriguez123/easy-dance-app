@@ -1590,6 +1590,46 @@ class ReporteController extends BaseController
                 $query->where('egresos.config_tipo', $request->tipo_servicio);
             }
 
+
+            $config_egreso = ConfigEgreso::all();
+
+            foreach($config_egreso as $egreso){
+                $array_config_egreso[$egreso->id] = ['nombre' => $egreso->nombre, 'cantidad' => 0];
+
+            }
+
+            if(!$request->tipo_servicio || $request->tipo_servicio == 6){
+
+                $comisiones = Comision::join('staff','comisiones.usuario_id','=','staff.id')
+                    ->select('comisiones.*')
+                    ->where('staff.academia_id',Auth::user()->academia_id)
+                    ->whereBetween('comisiones.fecha', [$start,$end])
+                    ->where('comisiones.boolean_pago',1)
+                ->sum('comisiones.monto');
+
+                if(!$comisiones){
+                    $comisiones = 0;
+                }
+
+                $array_config_egreso[6]['cantidad'] += $comisiones;
+            }
+
+            if(!$request->tipo_servicio || $request->tipo_servicio == 7){
+
+                $nomina = PagoInstructor::join('instructores','pagos_instructor.instructor_id','=','instructores.id')
+                    ->select('pagos_instructor.*')
+                    ->where('instructores.academia_id',Auth::user()->academia_id)
+                    ->whereBetween('pagos_instructor.fecha', [$start,$end])
+                    ->where('pagos_instructor.boolean_pago',1)
+                ->sum('pagos_instructor.monto');
+
+                if(!$nomina){
+                    $nomina = 0;
+                }
+
+                $array_config_egreso[7]['cantidad'] += $nomina;
+            }
+
             //FECHA
 
             if($request->boolean_fecha){
@@ -1616,39 +1656,6 @@ class ReporteController extends BaseController
             }
 
             $egresos = $query->get();
-
-            $config_egreso = ConfigEgreso::all();
-
-            foreach($config_egreso as $egreso){
-                $array_config_egreso[$egreso->id] = ['nombre' => $egreso->nombre, 'cantidad' => 0];
-
-            }
-
-            $comisiones = Comision::join('staff','comisiones.usuario_id','=','staff.id')
-                ->select('comisiones.*')
-                ->where('staff.academia_id',Auth::user()->academia_id)
-                ->whereBetween('comisiones.fecha', [$start,$end])
-                ->where('comisiones.boolean_pago',1)
-            ->sum('comisiones.monto');
-
-            if(!$comisiones){
-                $comisiones = 0;
-            }
-
-            $array_config_egreso[6]['cantidad'] += $comisiones;
-
-            $nomina = PagoInstructor::join('instructores','pagos_instructor.instructor_id','=','instructores.id')
-                ->select('pagos_instructor.*')
-                ->where('instructores.academia_id',Auth::user()->academia_id)
-                ->whereBetween('pagos_instructor.fecha', [$start,$end])
-                ->where('pagos_instructor.boolean_pago',1)
-            ->sum('pagos_instructor.monto');
-
-            if(!$nomina){
-                $nomina = 0;
-            }
-
-            $array_config_egreso[7]['cantidad'] += $nomina;
 
             foreach($egresos as $egreso){
 
