@@ -468,7 +468,9 @@
 
                     t.clear().draw();
 
-                    if($('#tipo').val() != 3){
+                    tipo = $('#tipo').val();
+
+                    if(tipo != 3){
                          t.column(2).visible(true);
                     }else{
                          t.column(2).visible(false);
@@ -485,12 +487,12 @@
                         }
 
                         var rowNode=t.row.add( [
-                        ''+array.fecha+'',
-                        ''+array.hora+'',
-                        ''+array.cliente+'',
-                        ''+array.tipo_pago+'',
-                        ''+array.nombre+'',
-                        ''+monto+''
+                            ''+array.fecha+'',
+                            ''+array.hora+'',
+                            ''+array.cliente+'',
+                            ''+array.tipo_pago+'',
+                            ''+array.nombre+'',
+                            ''+monto+''
                         ] ).draw(false).node();
 
                         $( rowNode )
@@ -498,14 +500,12 @@
                             .data('tipo',array.tipo)
 
                         if(array.tipo == 1)
-                            $( rowNode ).addClass('seleccion');
+                            $(rowNode).addClass('seleccion');
                         else{
-                            $( rowNode ).addClass('disabled');
+                            $(rowNode).addClass('disabled');
                         }
                     });
 
-
-                    tipo = $('#tipo').val();
                     datos = JSON.parse(JSON.stringify(respuesta));
 
                     if(tipo == 1 || tipo == 2){
@@ -517,11 +517,13 @@
 
                         var pieData1 = ''
                         pieData1 += '[';
+
                         $.each( datos.array_ingreso, function( i, item ) {
                             var label = item.nombre;
                             var cant = item.cantidad;
                             pieData1 += '{"data":"'+cant+'","label":"'+label+'"},';
                         });
+
                         pieData1 = pieData1.substring(0, pieData1.length -1);
                         pieData1 += ']';
 
@@ -562,7 +564,9 @@
                         $('.egresos').hide();
                         $('.proforma').hide();
 
-                    }else if(tipo == 1 || tipo == 3){
+                    }
+
+                    if(tipo == 1 || tipo == 3){
 
                         $("#pie-chart-egresos").html('');
                         $("#flc-pie-egresos").html('');
@@ -573,9 +577,10 @@
                         $.each(respuesta.config_egreso, function (index, array) {
 
                             var rowNode=h.row.add( [
-                            '&nbsp;&nbsp;'+array.nombre+'',
-                            ''+formatmoney(parseFloat(array.cantidad))+'',
+                                '&nbsp;&nbsp;'+array.nombre+'',
+                                ''+formatmoney(parseFloat(array.cantidad))+'',
                             ] ).draw(false).node();
+                            
                             $( rowNode )
                                 .addClass('seleccion');
                         });
@@ -627,7 +632,9 @@
                         $('.ingresos').hide();
                         $('.proforma').hide();
 
-                    }else{
+                    }
+
+                    if(tipo == 1 || tipo == 4){
 
                         $('.egresos').hide();
                         $('.ingresos').hide();
@@ -643,15 +650,13 @@
 
                     finprocesado();       
                     notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-
-
                 }
             });
         });
 
         function pad (str, max) {
-          str = str.toString();
-          return str.length < max ? pad("0" + str, max) : str;
+            str = str.toString();
+            return str.length < max ? pad("0" + str, max) : str;
         }
 
         function formatmoney(n) {
@@ -899,11 +904,6 @@
             $("#fecha").selectpicker('refresh');
             $("#boolean_fecha").val('0');
         })
-
-        function pad (str, max) {
-          str = str.toString();
-          return str.length < max ? pad("0" + str, max) : str;
-        }
 
         function previa(t){
 
