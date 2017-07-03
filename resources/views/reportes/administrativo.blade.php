@@ -512,8 +512,8 @@
 
                         $('#total_ingreso').text('+'+formatmoney(parseFloat(respuesta.total_ingreso)))
 
-                        $(".flot-chart").html('');
-                        $(".flc-pie").html('');
+                        $("#pie-chart-ingresos").html('');
+                        $("#flc-pie-ingresos").html('');
 
                         var pieData1 = ''
                         pieData1 += '[';
@@ -563,6 +563,9 @@
                         $('.proforma').hide();
 
                     }else if(tipo == 1 || tipo == 3){
+
+                        $("#pie-chart-egresos").html('');
+                        $("#flc-pie-egresos").html('');
 
                         $('#total_egreso').text('-'+formatmoney(parseFloat(respuesta.total_egreso)))
                         h.clear().draw();
