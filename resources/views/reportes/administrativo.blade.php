@@ -728,6 +728,9 @@
             servicio_id = $(this).data('servicio_id')
 
             $('#detalle_boton').text(nombre_servicio)
+
+            $('#dropdown_boton').removeClass('open')
+            $('#detalle_boton').attr('aria-expanded',false);
         });
 
         $('#tipo').on('change', function(){
