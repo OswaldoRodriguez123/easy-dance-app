@@ -1585,9 +1585,9 @@ class ReporteController extends BaseController
             //     }
             // }
 
-            if($request->tipo_servicio)
+            if($request->servicio_tipo)
             {
-                $query->where('egresos.config_tipo', $request->tipo_servicio);
+                $query->where('egresos.config_tipo', $request->servicio_tipo);
             }
 
             //FECHA
@@ -1617,14 +1617,14 @@ class ReporteController extends BaseController
 
             $egresos = $query->get();
 
-                        $config_egreso = ConfigEgreso::all();
+            $config_egreso = ConfigEgreso::all();
 
             foreach($config_egreso as $egreso){
                 $array_config_egreso[$egreso->id] = ['nombre' => $egreso->nombre, 'cantidad' => 0];
 
             }
 
-            if($request->tipo_servicio == 0 || $request->tipo_servicio == 6){
+            if($request->servicio_tipo == 0 || $request->servicio_tipo == 6){
 
                 $comisiones = Comision::join('staff','comisiones.usuario_id','=','staff.id')
                     ->select('comisiones.*')
@@ -1640,7 +1640,7 @@ class ReporteController extends BaseController
                 $array_config_egreso[6]['cantidad'] += $comisiones;
             }
 
-            if($request->tipo_servicio == 0 || $request->tipo_servicio == 7){
+            if($request->servicio_tipo == 0 || $request->servicio_tipo == 7){
 
                 $nomina = PagoInstructor::join('instructores','pagos_instructor.instructor_id','=','instructores.id')
                     ->select('pagos_instructor.*')
