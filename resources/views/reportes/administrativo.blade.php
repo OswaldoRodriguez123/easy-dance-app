@@ -327,6 +327,7 @@
     route_detalle="{{url('/')}}/administrativo/factura";
 
     var linea_servicio = <?php echo json_encode($linea_servicio);?>;
+    var config_egresos = <?php echo json_encode($config_egresos);?>;
 
     tipo_dropdown = ''
     tipo_servicio = ''
@@ -731,15 +732,33 @@
 
         $('#tipo').on('change', function(){
 
-            id = $(this).val();
+            tipo = $(this).val();
+            contenido = '';
+            nombre = '';
+            tipo_dropdown = ''
+            servicio_id = ''
 
-            if(id == 2 || id == 4){
+            $('#dropdown_principal').empty()
+            $('#detalle_boton').text('Todos')
+
+            if(tipo == 2 || tipo == 4){
                 $("#clase_grupal_id").removeAttr("disabled");
             }else{
                 $('#clase_grupal_id').attr('disabled','disabled')
             }
 
-            if(id == 4){
+            if(tipo == 3){
+
+                $.each(config_egresos, function (index, array) {
+
+                    contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.id+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
+                })
+
+                $('#dropdown_principal').append(contenido);
+
+            }
+
+            if(tipo == 4){
                 $('#fecha').attr('disabled','disabled')
                 $('#personalizar').addClass('disabled')
                 $('#personalizar').attr('href','')
@@ -813,6 +832,9 @@
         // });
 
         $('#tipo_servicio').on('change', function(){
+
+            $('#tipo').val(2)
+            $('#tipo').selectpicker('refresh')
 
             tipo_servicio = $(this).val();
             nombre = '';

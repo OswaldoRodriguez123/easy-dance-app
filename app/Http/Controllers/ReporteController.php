@@ -1388,7 +1388,9 @@ class ReporteController extends BaseController
         $collection=collect($tmp);   
         $linea_servicio = $collection->toArray();
 
-        return view('reportes.administrativo')->with(['clases_grupales' => $array, 'linea_servicio' => $linea_servicio]);
+        $config_egresos = ConfigEgreso::all();
+
+        return view('reportes.administrativo')->with(['clases_grupales' => $array, 'linea_servicio' => $linea_servicio, 'config_egresos' => $config_egresos]);
     }
 
     public function AdministrativoFiltros(Request $request)
@@ -1441,7 +1443,6 @@ class ReporteController extends BaseController
 
             if($request->servicio_tipo)
             {
-
                 if($request->servicio_tipo == 99)
                 {
                     $not_in = array(5,11,14);
@@ -1570,19 +1571,23 @@ class ReporteController extends BaseController
 
             //LINEA DE SERVICIO
 
+            // if($request->tipo_servicio)
+            // {
+            //     if($request->tipo_servicio == 99)
+            //     {
+            //         $query->where('egresos.tipo', 1);
+            //     }else if($request->tipo_servicio == 14){
+            //         $query->where('egresos.tipo', 2);
+            //     }else if($request->tipo_servicio == 5){
+            //         $query->where('egresos.tipo', 3);
+            //     }else if($request->tipo_servicio == 11){
+            //         $query->where('egresos.tipo', 4);
+            //     }
+            // }
+
             if($request->tipo_servicio)
             {
-
-                if($request->tipo_servicio == 99)
-                {
-                    $query->where('egresos.tipo', 1);
-                }else if($request->tipo_servicio == 14){
-                    $query->where('egresos.tipo', 2);
-                }else if($request->tipo_servicio == 5){
-                    $query->where('egresos.tipo', 3);
-                }else if($request->tipo_servicio == 11){
-                    $query->where('egresos.tipo', 4);
-                }
+                $query->where('egresos.config_tipo', $request->tipo_servicio);
             }
 
             //FECHA
