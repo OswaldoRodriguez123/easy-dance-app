@@ -899,19 +899,19 @@
 
                             <div class="col-sm-12">
 
-                              <span class="f-18 opaco-0-8 clase_grupal clase-grupal-{{$clase_grupal->inscripcion_id}} c-morado pointer f-700" id="{{$clase_grupal->inscripcion_id}}" data-costo="{{$clase_grupal->costo_mensualidad}}" data-fecha="{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->diffInDays(\Carbon\Carbon::now())}}</span> - Talla: <span class = "talla_franela-{{$clase_grupal->inscripcion_id}}">{{$clase_grupal->talla_franela}}</span></span> 
+                              <span class="f-18 opaco-0-8 clase_grupal clase-grupal-{{$clase_grupal['inscripcion_id']}} c-morado pointer f-700" id="{{$clase_grupal['inscripcion_id']}}" data-costo="{{$clase_grupal['costo_mensualidad']}}" data-fecha="{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal['fecha_pago'])->format('d/m/Y')}}">{{$clase_grupal['nombre']}} -  {{$clase_grupal['dias_de_semana']}} -  Desde: {{$clase_grupal['hora_inicio']}}  /   Hasta: {{$clase_grupal['hora_final']}}  -  {{$clase_grupal['instructor_nombre']}} {{$clase_grupal['instructor_apellido']}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal['inscripcion_id']}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal['fecha_pago'])->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal['fecha_pago'])->diffInDays(\Carbon\Carbon::now())}}</span> - Talla: <span class = "talla_franela-{{$clase_grupal['inscripcion_id']}}">{{$clase_grupal['talla_franela']}}</span></span> 
 
-                              @if($clase_grupal->boolean_franela && $clase_grupal->boolean_programacion)
-                                <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                              @if($clase_grupal['boolean_franela'] && $clase_grupal['boolean_programacion'])
+                                <span class = "iconos-{{$clase_grupal['inscripcion_id']}}"> <i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                               @else
-                                @if($clase_grupal->boolean_franela == 0 && $clase_grupal->boolean_programacion == 0)
-                                  <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i></span>
+                                @if($clase_grupal['boolean_franela'] == 0 && $clase_grupal['boolean_programacion'] == 0)
+                                  <span class = "iconos-{{$clase_grupal['inscripcion_id']}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i></span>
                              
                                 @else
-                                    @if($clase_grupal->boolean_franela)
-                                    <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw"></i></span>
+                                    @if($clase_grupal['boolean_franela'])
+                                    <span class = "iconos-{{$clase_grupal['inscripcion_id']}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw"></i></span>
                                   @else
-                                    <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw"></i></span>
+                                    <span class = "iconos-{{$clase_grupal['inscripcion_id']}}"> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw"></i></span>
                                   @endif
                                 @endif
                               @endif
@@ -965,33 +965,29 @@
                         @else
             
                         <div class="show_clase_grupal">
-                          
+
                           @foreach($clases_grupales as $clase_grupal)
 
                             <div class="col-sm-12">
 
-                              <span class="f-18 opaco-0-8 entrega c-morado pointer f-700 clase-grupal-{{$clase_grupal->inscripcion_id}}" id="{{$clase_grupal->inscripcion_id}}" data-franela="{{$clase_grupal->boolean_franela}}" data-programacion="{{$clase_grupal->boolean_programacion}}" data-entrega="{{$clase_grupal->razon_entrega}}" data-talla="{{$clase_grupal->talla_franela}}">{{$clase_grupal->nombre}} -   Desde: {{$clase_grupal->hora_inicio}}  /   Hasta: {{$clase_grupal->hora_final}}  -  {{$clase_grupal->instructor_nombre}} {{$clase_grupal->instructor_apellido}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal->inscripcion_id}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_pago)->diffInDays(\Carbon\Carbon::now())}}</span> - Talla: <span class = "talla_franela-{{$clase_grupal->inscripcion_id}}">{{$clase_grupal->talla_franela}}</span>
+                              <span class="f-18 opaco-0-8 entrega clase-grupal-{{$clase_grupal['inscripcion_id']}} c-morado pointer f-700" id="{{$clase_grupal['inscripcion_id']}}" data-franela="{{$clase_grupal['boolean_franela']}}" data-programacion="{{$clase_grupal['boolean_programacion']}}" data-entrega="{{$clase_grupal['razon_entrega']}}" data-talla="{{$clase_grupal['talla_franela']}}">{{$clase_grupal['nombre']}} -  {{$clase_grupal['dias_de_semana']}} - Desde: {{$clase_grupal['hora_inicio']}}  /   Hasta: {{$clase_grupal['hora_final']}}  -  {{$clase_grupal['instructor_nombre']}} {{$clase_grupal['instructor_apellido']}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal['inscripcion_id']}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal['fecha_pago'])->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal['fecha_pago'])->diffInDays(\Carbon\Carbon::now())}}</span> - Talla: <span class = "talla_franela-{{$clase_grupal['inscripcion_id']}}">{{$clase_grupal['talla_franela']}}</span></span> 
 
-                                 @if($clase_grupal->boolean_franela && $clase_grupal->boolean_programacion)
-                                  <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                              @if($clase_grupal['boolean_franela'] && $clase_grupal['boolean_programacion'])
+                                <span class = "iconos-{{$clase_grupal['inscripcion_id']}}"> <i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                              @else
+                                @if($clase_grupal['boolean_franela'] == 0 && $clase_grupal['boolean_programacion'] == 0)
+                                  <span class = "iconos-{{$clase_grupal['inscripcion_id']}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i></span>
+                             
                                 @else
-                                  @if($clase_grupal->boolean_franela == 0 && $clase_grupal->boolean_programacion == 0)
-                                    <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i></span>
-                               
+                                    @if($clase_grupal['boolean_franela'])
+                                    <span class = "iconos-{{$clase_grupal['inscripcion_id']}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw"></i></span>
                                   @else
-                                      @if($clase_grupal->boolean_franela)
-                                      <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_a-examen zmdi-hc-fw"></i></span>
-                                    @else
-                                      <span class = "iconos-{{$clase_grupal->inscripcion_id}}"> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw"></i></span>
-                                    @endif
+                                    <span class = "iconos-{{$clase_grupal['inscripcion_id']}}"> <i class="zmdi c-youtube icon_f-productos zmdi-hc-fw"></i></span>
                                   @endif
                                 @endif
+                              @endif
 
-                                <span class="c-azul">Cambiar Talla y Programación</span>
-
-                              </span>
-
-                             
+                              <span class="c-azul">Cambiar Talla y Programación</span>
 
                               <div class="clearfix p-b-15"></div>
                               <div class="clearfix p-b-15"></div>
@@ -999,7 +995,7 @@
                             </div>
 
                           @endforeach
-
+                          
                         </div>
 
                         @endif

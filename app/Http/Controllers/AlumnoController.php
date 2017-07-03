@@ -483,16 +483,115 @@ class AlumnoController extends BaseController
                 ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.razon_entrega',  'inscripcion_clase_grupal.talla_franela')
+                ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.razon_entrega',  'inscripcion_clase_grupal.talla_franela', 'clases_grupales.fecha_inicio')
                 ->where('inscripcion_clase_grupal.alumno_id', $id)
                 ->where('clases_grupales.deleted_at', null)
             ->get();
 
             $array_descripcion = array();
+            $array = array();
 
-            foreach($clases_grupales as $clase){
+            foreach($clases_grupales as $clase_grupal){
 
-                array_push($array_descripcion, $clase->nombre);
+                $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                $fecha->addDays($clase_grupal->dias_prorroga);
+                $dia_de_semana = $fecha->dayOfWeek;
+
+                $horarios = HorarioClaseGrupal::where('clase_grupal_id', $clase_grupal->id)->get();
+                $i = 0;
+                $len = count($horarios);
+                $dia_string = '';
+
+                $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                $i = $fecha->dayOfWeek;
+
+                if($i == 1){
+
+                  $dia = 'Lunes';
+
+                }else if($i == 2){
+
+                  $dia = 'Martes';
+
+                }else if($i == 3){
+
+                  $dia = 'Miercoles';
+
+                }else if($i == 4){
+
+                  $dia = 'Jueves';
+
+                }else if($i == 5){
+
+                  $dia = 'Viernes';
+
+                }else if($i == 6){
+
+                  $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
+
+                }
+ 
+                $dia_string = $dia_string . $dia;
+                
+                foreach($horarios as $horario){
+
+                    if($dia_string != ''){
+                        $dia_string = $dia_string . ', ';
+                    }
+
+                    $fecha = Carbon::createFromFormat('Y-m-d', $horario->fecha);
+                    $i = $fecha->dayOfWeek;
+
+                    if($i == 1){
+
+                      $dia = 'Lunes';
+
+                    }else if($i == 2){
+
+                      $dia = 'Martes';
+
+                    }else if($i == 3){
+
+                      $dia = 'Miercoles';
+
+                    }else if($i == 4){
+
+                      $dia = 'Jueves';
+
+                    }else if($i == 5){
+
+                      $dia = 'Viernes';
+
+                    }else if($i == 6){
+
+                      $dia = 'Sabado';
+
+                    }else if($i == 0){
+
+                      $dia = 'Domingo';
+
+                    }
+                    if ($i != $len - 1) {
+                        $dia_string = $dia_string . $dia;
+                    }else{
+                        $dia_string = $dia_string . 'y ' . $dia;
+                    }
+
+                    $i++;
+
+                }
+
+                $collection=collect($clase_grupal);     
+                $clase_grupal_array = $collection->toArray();
+
+                $clase_grupal_array['dias_de_semana']=$dia_string;
+                $array[$clase_grupal->id] = $clase_grupal_array;
+    
+                array_push($array_descripcion, $clase_grupal->nombre);
                
             }
 
@@ -541,7 +640,7 @@ class AlumnoController extends BaseController
 
             $tipologias = Tipologia::all();
 
-            return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $total, 'clases_grupales' => $clases_grupales, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'edad' => $edad, 'tipo_pago' => $tipo_pago, 'credenciales' => $credenciales, 'usuario' => $usuario, 'tipologias' => $tipologias]);
+            return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $total, 'clases_grupales' => $array, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'edad' => $edad, 'tipo_pago' => $tipo_pago, 'credenciales' => $credenciales, 'usuario' => $usuario, 'tipologias' => $tipologias]);
         }else{
            return redirect("participante/alumno"); 
         }
