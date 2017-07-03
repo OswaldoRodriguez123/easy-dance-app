@@ -1106,6 +1106,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('incidencias/generar/{id}', 'IncidenciaController@createconid');
 		Route::get('incidencias/generar', 'IncidenciaController@create');
 		Route::post('incidencias/generar', 'IncidenciaController@store');
+		Route::get('incidencias/detalle/{id}', 'IncidenciaController@planilla');
 		Route::put('incidencias/update/usuario','IncidenciaController@updateUsuario');
 		Route::put('incidencias/update/gravedad','IncidenciaController@updateGravedad');
 		Route::put('incidencias/update/fecha','IncidenciaController@updateFecha');
@@ -1239,7 +1240,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		//INCIDENCIAS
 
 		Route::get('incidencias', 'IncidenciaController@principal');
-		Route::get('incidencias/detalle/{id}', 'IncidenciaController@planilla');
+		Route::get('incidencias/visualizar/{id}', 'IncidenciaController@visualizar');
 
 		//CALENDARIO LABORAL 
 		

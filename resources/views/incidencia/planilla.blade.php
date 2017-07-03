@@ -210,9 +210,9 @@
                                <div class="col-sm-12">
                                  <div class="form-group">
                                     <label for="edad">Incidencia</label>
-                                    <textarea class="form-control caja" style="height: 100%" id="mensaje" name="mensaje" rows="8" placeholder="2500 Caracteres" onkeyup="countChar(this)" maxlength="2500"></textarea>
+                                    <textarea class="form-control caja" style="height: 100%" id="mensaje" name="mensaje" rows="8" placeholder="6000 Caracteres" onkeyup="countChar(this)" maxlength="2500"></textarea>
                
-                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">2500</span> Caracteres</div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">6000</span> Caracteres</div>
                                  </div>
                                  <div class="has-error" id="error-mensaje">
                                       <span >
@@ -300,7 +300,7 @@
                                   <span class="f-16 f-700">Acciones</span>
 
                                   <hr></hr>
-                                  
+                                  <a href="{{url('/')}}/incidencias/visualizar/{{$id}}"><i class="zmdi zmdi-eye f-20 m-r-10 boton red sa-warning"  data-original-title="Visualizar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
@@ -635,10 +635,10 @@
 
   function countChar(val) {
     var len = val.value.length;
-    if (len >= 2500) {
-      val.value = val.value.substring(0, 2500);
+    if (len >= 6000) {
+      val.value = val.value.substring(0, 6000);
     } else {
-      $('#charNum').text(2500 - len);
+      $('#charNum').text(6000 - len);
     }
   };
 

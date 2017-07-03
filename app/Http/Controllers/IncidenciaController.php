@@ -223,10 +223,73 @@ class IncidenciaController extends BaseController {
         ->first();
 
         if($incidencia){
+            
+            $administrador = User::find($incidencia->administrador_id);
 
-            $datos = $this->getDatosUsuario();
+            if($administrador){
+                $administrador = $administrador->nombre . ' '. $administrador->apellido;
+            }else{
+                $administrador = '';
+            }
 
-            $usuario_tipo = $datos[0]['usuario_tipo'];
+            if($incidencia->usuario_tipo == 1){
+                $usuario = Staff::find($incidencia->usuario_id);
+            }else{
+                $usuario = Instructor::find($incidencia->usuario_id);
+            }
+
+            if($usuario){
+                $usuario = $usuario->nombre . ' '. $usuario->apellido;
+            }else{
+                $usuario = '';
+            }
+
+            $usuarios = array();
+
+            $staffs = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+            foreach($staffs as $staff){
+
+                $collection=collect($staff);     
+                $usuario_array = $collection->toArray();
+
+                $usuario_array['tipo']=1;
+                $usuario_array['id']='1-'.$staff->id;
+                $usuario_array['icono']="<i class='icon_f-staff'></i>";
+                $usuarios['1-'.$staff->id] = $usuario_array;
+            }
+
+            $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+            foreach($instructores as $instructor)
+            {
+                $collection=collect($instructor);     
+                $usuario_array = $collection->toArray();
+
+                $usuario_array['tipo']=2;
+                $usuario_array['id']='2-'.$instructor->id;
+                $usuario_array['icono']="<i class='icon_a-instructor'></i>";
+                $usuarios['2-'.$instructor->id] = $usuario_array;
+            }
+
+            $gravedades = Gravedad::all();
+
+             return view('incidencia.planilla')->with(['incidencia' => $incidencia, 'usuario' => $usuario, 'administrador' => $administrador, 'gravedades' => $gravedades, 'instructores_staffs'=> $usuarios, 'id' => $id]);
+
+        }else{
+            return redirect("inicio"); 
+        }
+
+    }
+
+    public function visualizar($id){
+
+        $incidencia = Incidencia::join('gravedades', 'incidencias.gravedad_id', '=', 'gravedades.id')
+            ->select('incidencias.*', 'gravedades.nombre as gravedad')
+            ->where('incidencias.id', '=' , $id)
+        ->first();
+
+        if($incidencia){
 
             $administrador = User::find($incidencia->administrador_id);
 
@@ -236,63 +299,15 @@ class IncidenciaController extends BaseController {
                 $usuario = Instructor::find($incidencia->usuario_id);
             }
 
-            if($usuario_tipo == 1 OR $usuario_tipo == 5 OR $usuario_tipo == 6){
+            $fecha = Carbon::createFromFormat('Y-m-d',$incidencia->fecha)->format('d-m-Y');
+            $hora = Carbon::createFromFormat('Y-m-d H:i:s',$incidencia->created_at)->format('H:i:s');
 
-                if($administrador){
-                    $administrador = $administrador->nombre . ' '. $administrador->apellido;
-                }else{
-                    $administrador = '';
-                }
+            $academia = Academia::find(Auth::user()->academia_id);
 
-                if($usuario){
-                    $usuario = $usuario->nombre . ' '. $usuario->apellido;
-                }else{
-                    $usuario = '';
-                }
-
-                $usuarios = array();
-
-                $staffs = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
-
-                foreach($staffs as $staff){
-
-                    $collection=collect($staff);     
-                    $usuario_array = $collection->toArray();
-
-                    $usuario_array['tipo']=1;
-                    $usuario_array['id']='1-'.$staff->id;
-                    $usuario_array['icono']="<i class='icon_f-staff'></i>";
-                    $usuarios['1-'.$staff->id] = $usuario_array;
-                }
-
-                $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
-
-                foreach($instructores as $instructor)
-                {
-                    $collection=collect($instructor);     
-                    $usuario_array = $collection->toArray();
-
-                    $usuario_array['tipo']=2;
-                    $usuario_array['id']='2-'.$instructor->id;
-                    $usuario_array['icono']="<i class='icon_a-instructor'></i>";
-                    $usuarios['2-'.$instructor->id] = $usuario_array;
-                }
-
-                $gravedades = Gravedad::all();
-
-                return view('incidencia.planilla')->with(['incidencia' => $incidencia, 'usuario' => $usuario, 'administrador' => $administrador, 'gravedades' => $gravedades, 'instructores_staffs'=> $usuarios, 'id' => $id]);
-            }else{
-
-                $fecha = Carbon::createFromFormat('Y-m-d H:i:s',$incidencia->created_at)->format('d-m-Y');
-                $hora = Carbon::createFromFormat('Y-m-d H:i:s',$incidencia->created_at)->format('H:i:s');
-
-                $academia = Academia::find(Auth::user()->academia_id);
-
-                return view('incidencia.incidencia')->with(['incidencia' => $incidencia, 'usuario' => $usuario, 'administrador' => $administrador, 'fecha' => $fecha, 'hora'=> $hora, 'academia' => $academia]);
-            }   
+            return view('incidencia.incidencia')->with(['incidencia' => $incidencia, 'usuario' => $usuario, 'administrador' => $administrador, 'fecha' => $fecha, 'hora'=> $hora, 'academia' => $academia]);
 
         }else{
-           return redirect("inicio"); 
+            return redirect("inicio"); 
         }
 
     }

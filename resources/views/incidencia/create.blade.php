@@ -130,9 +130,9 @@
                                 <div class="form-group">
                                   <label for="mensaje" id="id-mensaje">Incidencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección podrás generar amonestaciones, notificaciones o avisos al personal que labora y que usa cuenta de Easy Dance" title="" data-original-title="Ayuda"></i>
 
-                                    <textarea class="form-control caja" style="height: 100%" id="mensaje" name="mensaje" rows="8" placeholder="2500 Caracteres" onkeyup="countChar(this)" maxlength="2500"></textarea>
+                                    <textarea class="form-control caja" style="height: 100%" id="mensaje" name="mensaje" rows="8" placeholder="6000 Caracteres" onkeyup="countChar(this)" maxlength="2500"></textarea>
                
-                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">2500</span> Caracteres</div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">6000</span> Caracteres</div>
       
                                 </div>
                                 <div class="has-error" id="error-mensaje">
@@ -335,10 +335,10 @@
 
   function countChar(val) {
     var len = val.value.length;
-    if (len >= 2500) {
-      val.value = val.value.substring(0, 2500);
+    if (len >= 6000) {
+      val.value = val.value.substring(0, 6000);
     } else {
-      $('#charNum').text(2500 - len);
+      $('#charNum').text(6000 - len);
     }
   };
 
