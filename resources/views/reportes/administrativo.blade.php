@@ -218,6 +218,20 @@
 
                         <div class="clearfix"></div>
 
+                        <div class="col-md-6 ingresos" style="display:none">
+                            <h2>Informe de Ingresos</h2>
+                            <hr>
+                            <div id="pie-chart-ingresos" class="flot-chart-pie"></div>
+                            <div id="flc-pie-ingresos" class="flc-pie hidden-xs"></div>
+                        </div>
+
+                        <div class="col-md-6 ingresos" style="display:none">
+                            <h2>Informe de Ingresos</h2>
+                            <hr>
+                            <div id="pie-chart-ingresos2" class="flot-chart-pie"></div>
+                            <div id="flc-pie-ingresos2" class="flc-pie hidden-xs"></div>
+                        </div>
+
                         <div class="col-md-4 egresos" style="display: none">
 
                             <table class="table display cell-border" id="table_egresos">
@@ -237,13 +251,6 @@
                             <hr>
                             <div id="pie-chart-egresos" class="flot-chart-pie"></div>
                             <div id="flc-pie-egresos" class="flc-pie hidden-xs"></div>
-                        </div>
-
-                        <div class="col-md-6 ingresos" style="display:none">
-                            <h2>Informe de Ingresos</h2>
-                            <hr>
-                            <div id="pie-chart-ingresos" class="flot-chart-pie"></div>
-                            <div id="flc-pie-ingresos" class="flc-pie hidden-xs"></div>
                         </div>
 
                         <div class="clearfix"></div>
@@ -295,7 +302,7 @@
                                             </div>
                                             <div class="proforma" style="display:none">
                                                 <br>
-                                                <span class="f-15">0</span>
+                                                <span class="f-15" id="total_proforma">0</span>
                                             </div>
                                         </div>
                                     </div>
@@ -514,11 +521,13 @@
 
                         $("#pie-chart-ingresos").html('');
                         $("#flc-pie-ingresos").html('');
+                        $("#pie-chart-ingresos2").html('');
+                        $("#flc-pie-ingresos2").html('');
 
                         var pieData1 = ''
                         pieData1 += '[';
 
-                        $.each( datos.array_ingreso, function( i, item ) {
+                        $.each( datos.array_pago, function( i, item ) {
                             var label = item.nombre;
                             var cant = item.cantidad;
                             pieData1 += '{"data":"'+cant+'","label":"'+label+'"},';
@@ -538,6 +547,53 @@
                             },
                             legend: {
                                 container: '#flc-pie-ingresos',
+                                backgroundOpacity: 0.5,
+                                noColumns: 0,
+                                backgroundColor: "white",
+                                lineWidth: 0
+                            },
+                            grid: {
+                                hoverable: true,
+                                clickable: true
+                            },
+                            tooltip: true,
+                            tooltipOpts: {
+                                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                                shifts: {
+                                    x: 20,
+                                    y: 0
+                                },
+                                defaultTheme: false,
+                                cssClass: 'flot-tooltip'
+                            },
+                            
+                        });
+
+                        // ----- //
+
+                        var pieData1 = ''
+                        pieData1 += '[';
+
+                        $.each( datos.array_ingreso, function( i, item ) {
+                            var label = item.nombre;
+                            var cant = item.cantidad;
+                            pieData1 += '{"data":"'+cant+'","label":"'+label+'"},';
+                        });
+
+                        pieData1 = pieData1.substring(0, pieData1.length -1);
+                        pieData1 += ']';
+
+                        $.plot('#pie-chart-ingresos2', $.parseJSON(pieData1), {
+                            series: {
+                                pie: {
+                                    show: true,
+                                    stroke: { 
+                                        width: 2,
+                                    },
+                                },
+                            },
+                            legend: {
+                                container: '#flc-pie-ingresos2',
                                 backgroundOpacity: 0.5,
                                 noColumns: 0,
                                 backgroundColor: "white",
@@ -639,7 +695,7 @@
                         $('.egresos').hide();
                         $('.ingresos').hide();
                         $('.proforma').show();
-                        $('.proforma').text(formatmoney(parseFloat(respuesta.total_proforma)))
+                        $('.total_proforma').text(formatmoney(parseFloat(respuesta.total_proforma)))
                     }
 
                     if(tipo == 1){

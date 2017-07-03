@@ -1397,6 +1397,7 @@ class ReporteController extends BaseController
         $array = array();
         $array_pago = array();
         $array_config_egreso = array();
+        $array_ingreso = array();
         $total = 0;
         $total_ingreso = 0;
         $total_egreso = 0;
@@ -1412,6 +1413,11 @@ class ReporteController extends BaseController
                 $array_pago[$tipo_pago->id] = ['nombre' => $tipo_pago->nombre, 'cantidad' => 0];
 
             }
+
+            $array_ingreso[0] = ['nombre' => 'Academía Recepción', 'cantidad' => 0];
+            $array_ingreso[1] = ['nombre' => 'Fiestas y Eventos', 'cantidad' => 0];
+            $array_ingreso[2] = ['nombre' => 'Talleres', 'cantidad' => 0];
+            $array_ingreso[3] = ['nombre' => 'Campañas', 'cantidad' => 0];
 
             $query = Factura::join('items_factura', 'items_factura.factura_id', '=', 'facturas.id')
                 ->join('alumnos', 'facturas.usuario_id', '=', 'alumnos.id')
@@ -1527,6 +1533,16 @@ class ReporteController extends BaseController
                     $pago = 'Efectivo';
                 }
 
+                if($factura->tipo == 14){
+                    $array_ingreso[1]['cantidad'] += $importe_neto;
+                }else if($factura->tipo == 5){
+                    $array_ingreso[2]['cantidad'] += $importe_neto;
+                }else if($factura->tipo == 11){
+                    $array_ingreso[3]['cantidad'] += $importe_neto;
+                }else{
+                    $array_ingreso[0]['cantidad'] += $importe_neto;
+                }
+
                 $collection=collect($factura);     
                 $factura_array = $collection->toArray();
                 $factura_array['cliente'] = $factura->nombre . ' ' . $factura->apellido;
@@ -1603,7 +1619,6 @@ class ReporteController extends BaseController
 
             }
 
-            
             $comisiones = Comision::join('staff','comisiones.usuario_id','=','staff.id')
                 ->select('comisiones.*')
                 ->where('staff.academia_id',Auth::user()->academia_id)
@@ -1751,7 +1766,7 @@ class ReporteController extends BaseController
             }
         }
 
-        return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 'total_ingreso' => $total_ingreso,'total_egreso' => $total_egreso, 'total_proforma' => $total_proforma, 'array_ingreso' => $array_pago, 'config_egreso' => $array_config_egreso, 200]);
+        return response()->json(['mensaje' => '¡Excelente! El reporte se ha generado satisfactoriamente', 'status' => 'OK', 'facturas' => $array, 'total_ingreso' => $total_ingreso,'total_egreso' => $total_egreso, 'total_proforma' => $total_proforma, 'array_pago' => $array_pago, 'array_ingreso' => $array_ingreso, 'config_egreso' => $array_config_egreso, 200]);
 
     }
 
