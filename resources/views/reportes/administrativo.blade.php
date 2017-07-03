@@ -478,8 +478,8 @@
 
                     $.each(respuesta.facturas, function (index, array) {
 
-                        concepto = array.nombre 
-                        concepto_completo = array.nombre
+                        concepto = array.toLowerCase().nombre 
+                        concepto_completo = concepto
 
                         if(concepto.length > 30){
                             concepto = concepto.substr(0, 30) + "..."
