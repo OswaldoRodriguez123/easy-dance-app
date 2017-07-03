@@ -232,18 +232,18 @@
                             </table>
                         </div>
 
-                        <div class="col-md-6 ingresos" style="display:none">
-                            <h2>Informe de Ingresos</h2>
-                            <hr>
-                            <div id="pie-chart-ingresos" class="flot-chart-pie"></div>
-                            <div id="flc-pie-ingresos" class="flc-pie hidden-xs"></div>
-                        </div>
-
                         <div class="col-md-6 col-sm-offset-2 egresos" style="display:none">
                             <h2>Informe de Egresos</h2>
                             <hr>
                             <div id="pie-chart-egresos" class="flot-chart-pie"></div>
                             <div id="flc-pie-egresos" class="flc-pie hidden-xs"></div>
+                        </div>
+
+                        <div class="col-md-6 ingresos" style="display:none">
+                            <h2>Informe de Ingresos</h2>
+                            <hr>
+                            <div id="pie-chart-ingresos" class="flot-chart-pie"></div>
+                            <div id="flc-pie-ingresos" class="flc-pie hidden-xs"></div>
                         </div>
 
                         <div class="clearfix"></div>
@@ -625,10 +625,17 @@
                         $('.proforma').hide();
 
                     }else{
+
                         $('.egresos').hide();
                         $('.ingresos').hide();
                         $('.proforma').show();
                         $('.proforma').text(formatmoney(parseFloat(respuesta.total_proforma)))
+                    }
+
+                    if(tipo == 1){
+                        $('.egresos').show();
+                        $('.ingresos').show();
+                        $('.proforma').show();
                     }
 
                     finprocesado();       
