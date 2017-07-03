@@ -1590,8 +1590,34 @@ class ReporteController extends BaseController
                 $query->where('egresos.config_tipo', $request->tipo_servicio);
             }
 
+            //FECHA
 
-            $config_egreso = ConfigEgreso::all();
+            if($request->boolean_fecha){
+                    $fecha = explode(' - ', $request->fecha2);
+                    $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+                    $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+                    $query->whereBetween('egresos.fecha', [$start,$end]);
+            }else{
+
+                if($request->fecha){
+                    if($request->fecha == 1){
+                        $start = Carbon::now()->toDateString();
+                        $end = Carbon::now()->toDateString();  
+                    }else if($request->fecha == 2){
+                        $start = Carbon::now()->startOfMonth()->toDateString();
+                        $end = Carbon::now()->endOfMonth()->toDateString();  
+                    }else if($request->fecha == 3){
+                        $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                        $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
+                    }
+
+                    $query->whereBetween('egresos.fecha', [$start,$end]);
+                }
+            }
+
+            $egresos = $query->get();
+
+                        $config_egreso = ConfigEgreso::all();
 
             foreach($config_egreso as $egreso){
                 $array_config_egreso[$egreso->id] = ['nombre' => $egreso->nombre, 'cantidad' => 0];
@@ -1629,33 +1655,6 @@ class ReporteController extends BaseController
 
                 $array_config_egreso[7]['cantidad'] += $nomina;
             }
-
-            //FECHA
-
-            if($request->boolean_fecha){
-                    $fecha = explode(' - ', $request->fecha2);
-                    $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
-                    $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
-                    $query->whereBetween('egresos.fecha', [$start,$end]);
-            }else{
-
-                if($request->fecha){
-                    if($request->fecha == 1){
-                        $start = Carbon::now()->toDateString();
-                        $end = Carbon::now()->toDateString();  
-                    }else if($request->fecha == 2){
-                        $start = Carbon::now()->startOfMonth()->toDateString();
-                        $end = Carbon::now()->endOfMonth()->toDateString();  
-                    }else if($request->fecha == 3){
-                        $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-                        $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
-                    }
-
-                    $query->whereBetween('egresos.fecha', [$start,$end]);
-                }
-            }
-
-            $egresos = $query->get();
 
             foreach($egresos as $egreso){
 
