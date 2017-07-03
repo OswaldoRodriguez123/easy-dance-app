@@ -171,7 +171,9 @@ class AsistenciaController extends BaseController
             $asistencia_array = $collection->toArray();
             
             $asistencia_array['dia']=$dia;
-            $asistencia_array['hora']=$instructor->nombre . ' ' . $instructor->apellido;
+            $asistencia_array['nombre']=$instructor->nombre;
+            $asistencia_array['apellido']=$instructor->nombre;
+            $asistencia_array['hora']=$asistencia->nombre . ' ' . $asistencia->apellido;
             $asistencia_array['hora_salida']=$asistencia->hora;
             $asistencia_array['tipo']='A';
             $array[] = $asistencia_array;
