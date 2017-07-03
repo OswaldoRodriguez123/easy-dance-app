@@ -521,6 +521,8 @@
                         }
                     });
 
+                    $('[data-toggle="popover"]').popover(); 
+
                     datos = JSON.parse(JSON.stringify(respuesta));
 
                     tipo = $('#tipo').val();
