@@ -1624,7 +1624,7 @@ class ReporteController extends BaseController
 
             }
 
-            if(!$request->tipo_servicio || $request->tipo_servicio == 6){
+            if($request->tipo_servicio == 0 || $request->tipo_servicio == 6){
 
                 $comisiones = Comision::join('staff','comisiones.usuario_id','=','staff.id')
                     ->select('comisiones.*')
@@ -1640,7 +1640,7 @@ class ReporteController extends BaseController
                 $array_config_egreso[6]['cantidad'] += $comisiones;
             }
 
-            if(!$request->tipo_servicio || $request->tipo_servicio == 7){
+            if($request->tipo_servicio == 0 || $request->tipo_servicio == 7){
 
                 $nomina = PagoInstructor::join('instructores','pagos_instructor.instructor_id','=','instructores.id')
                     ->select('pagos_instructor.*')
