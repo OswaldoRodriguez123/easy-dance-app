@@ -835,10 +835,7 @@
         // });
 
         $('#tipo_servicio').on('change', function(){
-
-            $('#tipo').val(2)
-            $('#tipo').selectpicker('refresh')
-
+            
             tipo_servicio = $(this).val();
             nombre = '';
             tipo_dropdown = ''
