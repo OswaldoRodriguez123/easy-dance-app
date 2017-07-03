@@ -154,7 +154,7 @@
 
 
 
-                                    <div class="dropdown">
+                                    <div class="dropdown" id="dropdown_boton">
                                         <a id="detalle_boton" role="button" data-toggle="dropdown" class="btn btn-blanco">
                                             Todos <span class="caret"></span>
                                         </a>
