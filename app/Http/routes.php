@@ -216,19 +216,19 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		// MANUALES DE PROCEDIMIENTOS
 
-		Route::get('configuracion/academia/procedimientos', 'AcademiaController@principal_procedimientos');
-		Route::get('configuracion/academia/procedimientos/detalle','AcademiaController@planilla_procedimientos');
+		Route::get('procedimientos', 'HerramientaController@principal_procedimientos');
+		Route::get('configuracion/herramientas/procedimientos','HerramientaController@planilla_procedimientos');
 
-		Route::post('configuracion/academia/procedimientos/update/coordinacion', 'AcademiaController@updateCoordinacion');
-		Route::post('configuracion/academia/procedimientos/update/evento', 'AcademiaController@updateEvento');
-		Route::post('configuracion/academia/procedimientos/update/venta', 'AcademiaController@updateVenta');
-		Route::post('configuracion/academia/procedimientos/update/supervisor', 'AcademiaController@updateSupervisor');
-		Route::post('configuracion/academia/procedimientos/update/recepcionista', 'AcademiaController@updateRecepcionista');
-		Route::post('configuracion/academia/procedimientos/update/instructor', 'AcademiaController@updateInstructor');
-		Route::post('configuracion/academia/procedimientos/update/administrativo', 'AcademiaController@updateAdministrativoProcedimiento');
-		Route::post('configuracion/academia/procedimientos/update/ambiente', 'AcademiaController@updateAmbiente');
-		Route::post('configuracion/academia/procedimientos/update/rol', 'AcademiaController@updateRol');
-		Route::post('configuracion/academia/procedimientos/update/guia', 'AcademiaController@updateGuia');
+		Route::post('configuracion/herramientas/procedimientos/update/coordinacion', 'HerramientaController@updateCoordinacion');
+		Route::post('configuracion/herramientas/procedimientos/update/evento', 'HerramientaController@updateEvento');
+		Route::post('configuracion/herramientas/procedimientos/update/venta', 'HerramientaController@updateVenta');
+		Route::post('configuracion/herramientas/procedimientos/update/supervisor', 'HerramientaController@updateSupervisor');
+		Route::post('configuracion/herramientas/procedimientos/update/recepcionista', 'HerramientaController@updateRecepcionista');
+		Route::post('configuracion/herramientas/procedimientos/update/instructor', 'HerramientaController@updateInstructor');
+		Route::post('configuracion/herramientas/procedimientos/update/administrativo', 'HerramientaController@updateAdministrativoProcedimiento');
+		Route::post('configuracion/herramientas/procedimientos/update/ambiente', 'HerramientaController@updateAmbiente');
+		Route::post('configuracion/herramientas/procedimientos/update/rol', 'HerramientaController@updateRol');
+		Route::post('configuracion/herramientas/procedimientos/update/guia', 'HerramientaController@updateGuia');
 
 		// HERRAMIENTAS
 

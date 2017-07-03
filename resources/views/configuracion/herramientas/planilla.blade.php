@@ -2091,7 +2091,7 @@
 
     $(".procedimientos").click(function(){
       procesando();
-      window.location = "{{url('/')}}/configuracion/academia/procedimientos/detalle";
+      window.location = "{{url('/')}}/configuracion/herramientas/procedimientos";
     });
 
    </script>     

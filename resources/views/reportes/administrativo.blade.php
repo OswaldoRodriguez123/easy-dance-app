@@ -468,6 +468,12 @@
 
                     t.clear().draw();
 
+                    if($('#tipo').val() != 3){
+                         t.column(2).visible(true);
+                    }else{
+                         t.column(2).visible(false);
+                    }
+
                     $.each(respuesta.facturas, function (index, array) {
 
                         if(array.tipo == 1){

@@ -255,9 +255,6 @@
                             <div class="text-center p-t-30">       
                               <div class="row p-b-15 ">
                                 <div class="col-md-12" data-src="/assets/img/ayuda-configuracion.jpg">
-                                  <!--<div class="text-center">
-                                    <img src="{{url('/')}}/assets/img/detalle_alumnos.jpg" class="img-responsive img-efecto text-center" alt="">
-                                  </div>-->
                                   <ul class="ca-menu-planilla">
                                     <li>
                                         <a href="#" class="disabled">

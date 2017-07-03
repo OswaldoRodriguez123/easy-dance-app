@@ -228,7 +228,7 @@
                                     </li>
 
                                     <li class="hidden-xs">
-                                        <a href="{{url('configuracion/academia/procedimientos')}}"><i class="zmdi icon_a-tutoriales"></i> Manuales de Procedimientos</a>
+                                        <a href="{{url('procedimientos')}}"><i class="zmdi icon_a-tutoriales"></i> Manuales de Procedimientos</a>
                                     </li>
                                 @endif
                             @endif 
