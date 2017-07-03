@@ -218,17 +218,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		Route::get('procedimientos', 'HerramientaController@principal_procedimientos');
 		Route::get('configuracion/herramientas/procedimientos','HerramientaController@planilla_procedimientos');
-
-		Route::post('configuracion/herramientas/procedimientos/update/coordinacion', 'HerramientaController@updateCoordinacion');
-		Route::post('configuracion/herramientas/procedimientos/update/evento', 'HerramientaController@updateEvento');
-		Route::post('configuracion/herramientas/procedimientos/update/venta', 'HerramientaController@updateVenta');
-		Route::post('configuracion/herramientas/procedimientos/update/supervisor', 'HerramientaController@updateSupervisor');
-		Route::post('configuracion/herramientas/procedimientos/update/recepcionista', 'HerramientaController@updateRecepcionista');
-		Route::post('configuracion/herramientas/procedimientos/update/instructor', 'HerramientaController@updateInstructor');
-		Route::post('configuracion/herramientas/procedimientos/update/administrativo', 'HerramientaController@updateAdministrativoProcedimiento');
-		Route::post('configuracion/herramientas/procedimientos/update/ambiente', 'HerramientaController@updateAmbiente');
-		Route::post('configuracion/herramientas/procedimientos/update/rol', 'HerramientaController@updateRol');
-		Route::post('configuracion/herramientas/procedimientos/update/guia', 'HerramientaController@updateGuia');
+		Route::post('configuracion/herramientas/procedimientos/agregar', 'HerramientaController@agregarProcedimiento');
+		Route::delete('configuracion/herramientas/procedimientos/eliminar/{id}', 'HerramientaController@eliminarProcedimiento');
 
 		// HERRAMIENTAS
 

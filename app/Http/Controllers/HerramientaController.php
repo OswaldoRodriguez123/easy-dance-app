@@ -39,6 +39,7 @@ use App\Patrocinador;
 use App\Egreso;
 use App\Puntaje;
 use App\ConfigFormulaExito;
+use App\ManualProcedimiento;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -366,114 +367,33 @@ class HerramientaController extends BaseController {
 
     }
 
-    public function planilla_procedimientos(){
-
-        $academia = Academia::find(Auth::user()->academia_id);
-        return view('configuracion.herramientas.procedimientos.planilla')->with(['academia' => $academia]);
-        
-        
-    }
-
     public function principal_procedimientos(){
 
-        $id = Auth::user()->academia_id;
+        $procedimientos = ManualProcedimiento::where('academia_id',Auth::user()->academia_id)->get();
 
-        $file = File::exists('assets/uploads/procedimientos/coordinacion-de-pista-'.$id.'.pdf');
-
-        if($file){
-            $coordinacion = 'assets/uploads/procedimientos/coordinacion-de-pista-'.$id.'.pdf';
-        }else{
-            $coordinacion = '';
-        }
-
-        $file = File::exists('assets/uploads/procedimientos/productora-de-eventos-'.$id.'.pdf');
-
-        if($file){
-            $evento = 'assets/uploads/procedimientos/productora-de-eventos-'.$id.'.pdf';
-        }else{
-            $evento = '';
-        }
-
-
-        $file = File::exists('assets/uploads/procedimientos/ventas-'.$id.'.pdf');
-
-        if($file){
-            $venta = 'assets/uploads/procedimientos/ventas-'.$id.'.pdf';
-        }else{
-            $venta = '';
-        }
-
-        $file = File::exists('assets/uploads/procedimientos/supervisores-'.$id.'.pdf');
-
-        if($file){
-            $supervisor = 'assets/uploads/procedimientos/supervisores-'.$id.'.pdf';
-        }else{
-            $supervisor = '';
-        }
-
-        $file = File::exists('assets/uploads/procedimientos/recepcionistas-'.$id.'.pdf');
-
-        if($file){
-            $recepcionista = 'assets/uploads/procedimientos/recepcionistas-'.$id.'.pdf';
-        }else{
-            $recepcionista = '';
-        }
-
-        $file = File::exists('assets/uploads/procedimientos/instructores-'.$id.'.pdf');
-
-        if($file){
-            $instructor = 'assets/uploads/procedimientos/instructores-'.$id.'.pdf';
-        }else{
-            $instructor = '';
-        }
-
-        $file = File::exists('assets/uploads/procedimientos/administrativo-'.$id.'.pdf');
-
-        if($file){
-            $administrativo = 'assets/uploads/procedimientos/administrativo-'.$id.'.pdf';
-        }else{
-            $administrativo = '';
-        }
-
-        $file = File::exists('assets/uploads/procedimientos/ambiente-'.$id.'.pdf');
-
-        if($file){
-            $ambiente = 'assets/uploads/procedimientos/ambiente-'.$id.'.pdf';
-        }else{
-            $ambiente = '';
-        }
-
-        $file = File::exists('assets/uploads/procedimientos/roles-de-aplicacion-'.$id.'.pdf');
-
-        if($file){
-            $rol = 'assets/uploads/procedimientos/roles-de-aplicacion-'.$id.'.pdf';
-        }else{
-            $rol = '';
-        }
-
-        $file = File::exists('assets/uploads/procedimientos/guia-de-atencion-al-cliente-'.$id.'.pdf');
-
-        if($file){
-            $guia = 'assets/uploads/procedimientos/guia-de-atencion-al-cliente-'.$id.'.pdf';
-        }else{
-            $guia = '';
-        }
-
-
-        return view('configuracion.herramientas.procedimientos.principal')->with(['id' => $id, 'coordinacion' => $coordinacion, 'evento' => $evento, 'venta' => $venta, 'supervisor' => $supervisor, 'recepcionista' => $recepcionista, 'instructor' => $instructor, 'administrativo' => $administrativo, 'ambiente' => $ambiente, 'rol' => $rol, 'guia' => $guia]);
+        return view('configuracion.herramientas.procedimientos.principal')->with(['procedimientos' => $procedimientos, 'id' => Auth::user()->academia_id]);
         
     }
 
-    public function updateCoordinacion(Request $request){
+    public function planilla_procedimientos(){
+
+        $procedimientos = ManualProcedimiento::where('academia_id',Auth::user()->academia_id)->get();
+
+        return view('configuracion.herramientas.procedimientos.planilla')->with(['procedimientos' => $procedimientos]);
+        
+    }
+
+    public function agregarProcedimiento(Request $request){
 
         $rules = [
-
-            'coordinacion' => 'mimes:pdf',
-
+            'nombre' => 'required|min:1',
+            'pdf' => 'required|mimes:pdf',
         ];
 
         $messages = [
-            'coordinacion.mimes' => 'Ups! Solo se aceptan archivos PDF',
+            'nombre.required' => 'Ups! El Nombre es requerido',
+            'pdf.required' => 'Ups! El PDF es requerido',
+            'pdf.mimes' => 'Ups! Solo se aceptan archivos PDF',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -486,362 +406,45 @@ class HerramientaController extends BaseController {
 
         else{
 
-            $academia = Academia::find(Auth::user()->academia_id);
+            $procedimiento = ManualProcedimiento::where('academia_id',Auth::user()->academia_id)->where('nombre',$request->nombre)->first();
 
-            if($request->coordinacion){
+            if(!$procedimiento){
 
-                $extension = $request->coordinacion->getClientOriginalExtension();
-                $nombre_archivo = 'coordinacion-de-pista-'.Auth::user()->academia_id.'.'.$extension;
+                $procedimiento = new ManualProcedimiento;
+                $procedimiento->nombre = $request->nombre;
+                $procedimiento->academia_id = Auth::user()->academia_id;
 
-                \Storage::disk('procedimientos')->put($nombre_archivo,  \File::get($request->coordinacion));
+                if($procedimiento->save()){
 
+                    $extension = $request->pdf->getClientOriginalExtension();
+                    $nombre_archivo = $request->nombre.'-'.Auth::user()->academia_id.'.'.$extension;
+
+                    \Storage::disk('procedimientos')->put($nombre_archivo,  \File::get($request->pdf));
+
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'procedimiento' => $procedimiento, 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+                }
+                
+            }else{
+                return response()->json(['errores' => ['nombre' => [0, 'Ups! Ya posee un manual de procedimientos con este nombre']], 'status' => 'ERROR'],422);
             }
-
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
         }
     }
 
-    public function updateEvento(Request $request){
+    public function eliminarProcedimiento($id)
+    {
+        $procedimiento = ManualProcedimiento::find($id);
+        $nombre = $procedimiento->nombre;
+        
+        if($procedimiento->delete()){
 
-        $rules = [
-
-            'evento' => 'mimes:pdf',
-
-        ];
-
-        $messages = [
-            'evento.mimes' => 'Ups! Solo se aceptan archivos PDF',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()){
-
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
+            \Storage::disk('procedimientos')->delete($nombre.'-'.Auth::user()->academia_id.'.pdf');
+            return response()->json(['mensaje' => '¡Excelente! El Manual de procedimientos se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-
-        else{
-
-            $academia = Academia::find(Auth::user()->academia_id);
-
-            if($request->evento){
-
-                $extension = $request->evento->getClientOriginalExtension();
-                $nombre_archivo = 'productora-de-eventos-'.Auth::user()->academia_id.'.'.$extension;
-
-                \Storage::disk('procedimientos')->put($nombre_archivo,  \File::get($request->evento));
-
-            }
-
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
-        }
-    }
-
-    public function updateVenta(Request $request){
-
-        $rules = [
-
-            'venta' => 'mimes:pdf',
-
-        ];
-
-        $messages = [
-            'venta.mimes' => 'Ups! Solo se aceptan archivos PDF',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()){
-
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        }
-
-        else{
-
-            $academia = Academia::find(Auth::user()->academia_id);
-
-            if($request->venta){
-
-                $extension = $request->venta->getClientOriginalExtension();
-                $nombre_archivo = 'ventas-'.Auth::user()->academia_id.'.'.$extension;
-
-                \Storage::disk('procedimientos')->put($nombre_archivo,  \File::get($request->venta));
-
-            }
-
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
-        }
-    }
-
-    public function updateSupervisor(Request $request){
-
-        $rules = [
-
-            'supervisor' => 'mimes:pdf',
-
-        ];
-
-        $messages = [
-            'supervisor.mimes' => 'Ups! Solo se aceptan archivos PDF',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()){
-
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        }
-
-        else{
-
-            $academia = Academia::find(Auth::user()->academia_id);
-
-            if($request->supervisor){
-
-                $extension = $request->supervisor->getClientOriginalExtension();
-                $nombre_archivo = 'supervisores-'.Auth::user()->academia_id.'.'.$extension;
-
-                \Storage::disk('procedimientos')->put($nombre_archivo,  \File::get($request->supervisor));
-
-            }
-
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
-        }
-    }
-
-    public function updateRecepcionista(Request $request){
-
-        $rules = [
-
-            'recepcionista' => 'mimes:pdf',
-
-        ];
-
-        $messages = [
-            'recepcionista.mimes' => 'Ups! Solo se aceptan archivos PDF',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()){
-
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        }
-
-        else{
-
-            $academia = Academia::find(Auth::user()->academia_id);
-
-            if($request->recepcionista){
-
-                $extension = $request->recepcionista->getClientOriginalExtension();
-                $nombre_archivo = 'recepcionistas-'.Auth::user()->academia_id.'.'.$extension;
-
-                \Storage::disk('procedimientos')->put($nombre_archivo,  \File::get($request->recepcionista));
-
-            }
-
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
-        }
-    }
-
-    public function updateInstructor(Request $request){
-
-        $rules = [
-
-            'instructor' => 'mimes:pdf',
-
-        ];
-
-        $messages = [
-            'instructor.mimes' => 'Ups! Solo se aceptan archivos PDF',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()){
-
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        }
-
-        else{
-
-            $academia = Academia::find(Auth::user()->academia_id);
-
-            if($request->instructor){
-
-                $extension = $request->instructor->getClientOriginalExtension();
-                $nombre_archivo = 'instructores-'.Auth::user()->academia_id.'.'.$extension;
-
-                \Storage::disk('procedimientos')->put($nombre_archivo,  \File::get($request->instructor));
-
-            }
-
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
-        }
-    }
-
-    public function updateAdministrativoProcedimiento(Request $request){
-
-        $rules = [
-
-            'administrativo' => 'mimes:pdf',
-
-        ];
-
-        $messages = [
-            'administrativo.mimes' => 'Ups! Solo se aceptan archivos PDF',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()){
-
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        }
-
-        else{
-
-            $academia = Academia::find(Auth::user()->academia_id);
-
-            if($request->administrativo){
-
-                $extension = $request->administrativo->getClientOriginalExtension();
-                $nombre_archivo = 'administrativo-'.Auth::user()->academia_id.'.'.$extension;
-
-                \Storage::disk('procedimientos')->put($nombre_archivo,  \File::get($request->administrativo));
-
-            }
-
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
-        }
-    }
-
-    public function updateAmbiente(Request $request){
-
-        $rules = [
-
-            'ambiente' => 'mimes:pdf',
-
-        ];
-
-        $messages = [
-            'ambiente.mimes' => 'Ups! Solo se aceptan archivos PDF',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()){
-
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        }
-
-        else{
-
-            $academia = Academia::find(Auth::user()->academia_id);
-
-            if($request->ambiente){
-
-                $extension = $request->ambiente->getClientOriginalExtension();
-                $nombre_archivo = 'ambiente-'.Auth::user()->academia_id.'.'.$extension;
-
-                \Storage::disk('procedimientos')->put($nombre_archivo,  \File::get($request->ambiente));
-
-            }
-
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
-        }
-    }
-
-    public function updateRol(Request $request){
-
-        $rules = [
-
-            'rol' => 'mimes:pdf',
-
-        ];
-
-        $messages = [
-            'rol.mimes' => 'Ups! Solo se aceptan archivos PDF',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()){
-
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        }
-
-        else{
-
-            $academia = Academia::find(Auth::user()->academia_id);
-
-            if($request->rol){
-
-                $extension = $request->rol->getClientOriginalExtension();
-                $nombre_archivo = 'roles-de-aplicacion-'.Auth::user()->academia_id.'.'.$extension;
-
-                \Storage::disk('procedimientos')->put($nombre_archivo,  \File::get($request->rol));
-
-            }
-
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
-        }
-    }
-
-    public function updateGuia(Request $request){
-
-        $rules = [
-
-            'guia' => 'mimes:pdf',
-
-        ];
-
-        $messages = [
-            'guia.mimes' => 'Ups! Solo se aceptan archivos PDF',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()){
-
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        }
-
-        else{
-
-            $academia = Academia::find(Auth::user()->academia_id);
-
-            if($request->guia){
-
-                $extension = $request->guia->getClientOriginalExtension();
-                $nombre_archivo = 'guia-de-atencion-al-cliente-'.Auth::user()->academia_id.'.'.$extension;
-
-                \Storage::disk('procedimientos')->put($nombre_archivo,  \File::get($request->guia));
-
-            }
-
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
-        }
+        // return redirect("alumno");
     }
 
 }

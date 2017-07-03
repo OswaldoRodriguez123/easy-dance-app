@@ -104,279 +104,34 @@
 
                         <div class="pm-body clearfix col-sm-9">
                             <div class="timeline">
+                                
+                                @foreach($procedimientos as $procedimiento)
+                                    <div class="t-view" data-tv-type="text">
+                                        <div class="tv-header media">
+                                            <a href="" class="tvh-user pull-left">
+                                                <i class="icon_a icon_a-tutoriales f-30 m-r-5 boton blue sa-warning"></i>
+                                            </a>
+                                            <div class="media-body p-t-5">
+                                                <strong class="d-block f-20">{{$procedimiento->nombre}}</strong>
 
-                                <div class="t-view" data-tv-type="text">
-                                    <div class="tv-header media">
-                                        <a href="" class="tvh-user pull-left">
-                                            <i class="icon_a icon_a-tutoriales f-30 m-r-5 boton blue sa-warning"></i>
-                                        </a>
-                                        <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">COORDINACIÓN DE PISTA</strong>
-
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="tv-body">
-               
-                                    
-                                        <div class="clearfix"></div>
+                                        <div class="tv-body">
+                   
                                         
-                                        <br>
+                                            <div class="clearfix"></div>
+                                            
+                                            <br>
 
-                                        <div class="text-right">
+                                            <div class="text-right">
 
-                                            @if($coordinacion)
-                                                <a href="{{url('/')}}/{{$coordinacion}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
-                                            @else
-                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
-                                            @endif
+                                                
+                                                <a href="{{url('/')}}/assets/uploads/procedimientos/{{$procedimiento->nombre}}-{{$id}}.pdf" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
+                                                
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-
-                                <div class="t-view" data-tv-type="text">
-                                    <div class="tv-header media">
-                                        <a href="" class="tvh-user pull-left">
-                                            <i class="icon_a icon_a-tutoriales f-30 m-r-5 boton blue sa-warning"></i>
-                                        </a>
-                                        <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">PRODUCTORA DE EVENTOS</strong>
-
-                                        </div>
-                                    </div>
-                                    <div class="tv-body">
-               
-                                    
-                                        <div class="clearfix"></div>
-                                        
-                                        <br>
-
-                                        <div class="text-right">
-                                            @if($evento)
-                                                <a href="{{url('/')}}/{{$evento}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
-                                            @else
-                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="t-view" data-tv-type="text">
-                                    <div class="tv-header media">
-                                        <a href="" class="tvh-user pull-left">
-                                            <i class="icon_a icon_a-tutoriales f-30 m-r-5 boton blue sa-warning"></i>
-                                        </a>
-                                        <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">VENTAS</strong>
-
-                                        </div>
-                                    </div>
-                                    <div class="tv-body">
-               
-                                    
-                                        <div class="clearfix"></div>
-                                        
-                                        <br>
-
-                                        <div class="text-right">
-                                            @if($venta)
-                                                <a href="{{url('/')}}/{{$venta}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
-                                            @else
-                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="t-view" data-tv-type="text">
-                                    <div class="tv-header media">
-                                        <a href="" class="tvh-user pull-left">
-                                            <i class="icon_a icon_a-tutoriales f-30 m-r-5 boton blue sa-warning"></i>
-                                        </a>
-                                        <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">SUPERVISOR</strong>
-
-                                        </div>
-                                    </div>
-                                    <div class="tv-body">
-               
-                                    
-                                        <div class="clearfix"></div>
-                                        
-                                        <br>
-
-                                        <div class="text-right">
-                                            @if($supervisor)
-                                                <a href="{{url('/')}}/{{$supervisor}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
-                                            @else
-                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="t-view" data-tv-type="text">
-                                    <div class="tv-header media">
-                                        <a href="" class="tvh-user pull-left">
-                                            <i class="icon_a icon_a-tutoriales f-30 m-r-5 boton blue sa-warning"></i>
-                                        </a>
-                                        <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">RECEPCIONISTA</strong>
-
-                                        </div>
-                                    </div>
-                                    <div class="tv-body">
-               
-                                    
-                                        <div class="clearfix"></div>
-                                        
-                                        <br>
-
-                                        <div class="text-right">
-                                            @if($recepcionista)
-                                                <a href="{{url('/')}}/{{$recepcionista}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
-                                            @else
-                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="t-view" data-tv-type="text">
-                                    <div class="tv-header media">
-                                        <a href="" class="tvh-user pull-left">
-                                            <i class="icon_a icon_a-tutoriales f-30 m-r-5 boton blue sa-warning"></i>
-                                        </a>
-                                        <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">INSTRUCTORES</strong>
-
-                                        </div>
-                                    </div>
-                                    <div class="tv-body">
-               
-                                    
-                                        <div class="clearfix"></div>
-                                        
-                                        <br>
-
-                                        <div class="text-right">
-                                            @if($instructor)
-                                                <a href="{{url('/')}}/{{$instructor}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
-                                            @else
-                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="t-view" data-tv-type="text">
-                                    <div class="tv-header media">
-                                        <a href="" class="tvh-user pull-left">
-                                            <i class="icon_a icon_a-tutoriales f-30 m-r-5 boton blue sa-warning"></i>
-                                        </a>
-                                        <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">ADMINISTRATIVO</strong>
-
-                                        </div>
-                                    </div>
-                                    <div class="tv-body">
-               
-                                    
-                                        <div class="clearfix"></div>
-                                        
-                                        <br>
-
-                                        <div class="text-right">
-                                            @if($administrativo)
-                                                <a href="{{url('/')}}/{{$administrativo}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
-                                            @else
-                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="t-view" data-tv-type="text">
-                                    <div class="tv-header media">
-                                        <a href="" class="tvh-user pull-left">
-                                            <i class="icon_a icon_a-tutoriales f-30 m-r-5 boton blue sa-warning"></i>
-                                        </a>
-                                        <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">GENERAR AMBIENTE</strong>
-
-                                        </div>
-                                    </div>
-                                    <div class="tv-body">
-               
-                                    
-                                        <div class="clearfix"></div>
-                                        
-                                        <br>
-
-                                        <div class="text-right">
-                                            @if($ambiente)
-                                                <a href="{{url('/')}}/{{$ambiente}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
-                                            @else
-                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="t-view" data-tv-type="text">
-                                    <div class="tv-header media">
-                                        <a href="" class="tvh-user pull-left">
-                                            <i class="icon_a icon_a-tutoriales f-30 m-r-5 boton blue sa-warning"></i>
-                                        </a>
-                                        <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">ROLES DE LA APLICACIÓN</strong>
-
-                                        </div>
-                                    </div>
-                                    <div class="tv-body">
-               
-                                    
-                                        <div class="clearfix"></div>
-                                        
-                                        <br>
-
-                                        <div class="text-right">
-                                            @if($rol)
-                                                <a href="{{url('/')}}/{{$rol}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
-                                            @else
-                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="t-view" data-tv-type="text">
-                                    <div class="tv-header media">
-                                        <a href="" class="tvh-user pull-left">
-                                            <i class="icon_a icon_a-tutoriales f-30 m-r-5 boton blue sa-warning"></i>
-                                        </a>
-                                        <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">GUÍA DE ATENCIÓN AL CLIENTE</strong>
-
-                                        </div>
-                                    </div>
-                                    <div class="tv-body">
-               
-                                    
-                                        <div class="clearfix"></div>
-                                        
-                                        <br>
-
-                                        <div class="text-right">
-                                            @if($guia)
-                                                <a href="{{url('/')}}/{{$guia}}" target="_blank" class="f-18 p-t-0 c-morado pointer"> Ver Procedimientos</a>
-                                            @else
-                                                <a href="#" class="f-18 p-t-0 c-morado pointer no_procedimiento"> Ver Procedimientos</a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                           
+                                @endforeach
 
                             </div>
                         </div>
