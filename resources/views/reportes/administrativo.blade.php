@@ -930,51 +930,51 @@
                     contenido = '';
                 
 
-                    }else if(id == 14){
+                }else if(id == 14){
                         
 
-                        $.each(linea_servicio, function (index, array) {  
+                    $.each(linea_servicio, function (index, array) {  
 
-                            if(array.tipo == 14){
+                        if(array.tipo == 14){
 
-                                contenido = '';
+                            contenido = '';
 
-                                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
+                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
 
-                                $('#dropdown_principal').append(contenido);
+                            $('#dropdown_principal').append(contenido);
 
-                            }                   
-                        });
-                        
-                    }else if(id == 5){
+                        }                   
+                    });
+                    
+                }else if(id == 5){
 
-                        $.each(linea_servicio, function (index, array) {  
+                    $.each(linea_servicio, function (index, array) {  
 
-                            if(array.tipo == 5){
+                        if(array.tipo == 5){
 
-                                contenido = '';
+                            contenido = '';
 
-                                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
+                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
 
-                                $('#dropdown_principal').append(contenido);
+                            $('#dropdown_principal').append(contenido);
 
-                            }                   
-                        });
-                    }else if(id == 11){
+                        }                   
+                    });
+                }else if(id == 11){
 
-                        $.each(linea_servicio, function (index, array) {  
+                    $.each(linea_servicio, function (index, array) {  
 
-                            if(array.tipo == 11){
+                        if(array.tipo == 11){
 
-                                contenido = '';
+                            contenido = '';
 
-                                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
+                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
 
-                                $('#dropdown_principal').append(contenido);
+                            $('#dropdown_principal').append(contenido);
 
-                            }                   
-                        });
-                    }
+                        }                   
+                    });
+                    
                 }
             }
         });
