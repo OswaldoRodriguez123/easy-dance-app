@@ -41,6 +41,7 @@ use DB;
 use Mail;
 use Redirect;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use App\ConfigComision;
@@ -798,17 +799,24 @@ class AdministrativoController extends BaseController {
 
     }
 
-    public function eliminardeuda($id)
+    public function eliminardeuda(Request $request)
     {
 
-        $factura_proforma = ItemsFacturaProforma::find($id);
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        if($academia->password_supervision){
+            if(!Hash::check($request->password_supervision, $academia->password_supervision)) {
+                return response()->json(['error_mensaje'=> 'Ups! La contraseña no coincide', 'status' => 'ERROR-PASSWORD'],422);
+            }
+        }
+
+        $factura_proforma = ItemsFacturaProforma::find($request->id);
         
         if($factura_proforma->delete()){
             return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno");
     }
 
     public function CancelarGestion()
@@ -1232,15 +1240,23 @@ class AdministrativoController extends BaseController {
         }
     }
 
-    public function eliminar_factura($id)
+    public function eliminar_factura(Request $request)
     {
 
-        $factura = Factura::find($id);
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        if($academia->password_supervision){
+            if(!Hash::check($request->password_supervision, $academia->password_supervision)) {
+                return response()->json(['error_mensaje'=> 'Ups! La contraseña no coincide', 'status' => 'ERROR-PASSWORD'],422);
+            }
+        }
+
+        $factura = Factura::find($request->id);
 
         if($factura){
 
-            $pagos = Pago::where('factura_id',$id)->delete();
-            $items_factura = ItemsFactura::where('factura_id',$id)->delete();
+            $pagos = Pago::where('factura_id',$factura->id)->delete();
+            $items_factura = ItemsFactura::where('factura_id',$factura->id)->delete();
             
             if($factura->delete()){
                 return response()->json(['mensaje' => '¡Excelente! La factura se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);

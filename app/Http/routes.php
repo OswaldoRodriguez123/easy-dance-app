@@ -376,7 +376,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('administrativo/pagos', 'AdministrativoController@principalpagos');
 		Route::get('administrativo/pagos/generar', 'AdministrativoController@generarpagos');
 		Route::get('administrativo/pagos/generar/{id}', 'AdministrativoController@generarpagoscondeuda');
-		Route::delete('administrativo/pagos/eliminardeuda/{id}', 'AdministrativoController@eliminardeuda');
+		Route::post('administrativo/pagos/eliminardeuda', 'AdministrativoController@eliminardeuda');
 		Route::post('administrativo/pagos/agregaritem', 'AdministrativoController@agregaritem');
 		Route::post('administrativo/pagos/eliminaritem/{id}', 'AdministrativoController@eliminaritem');
 		Route::post('administrativo/pagos/itemspendientes/{id}', 'AdministrativoController@itemspendientes');
@@ -391,7 +391,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('administrativo/pagos/cancelargestion', 'AdministrativoController@CancelarGestion');
 
 		Route::post('administrativo/pagos/factura', 'AdministrativoController@storeFactura');
-		Route::delete('administrativo/pagos/eliminar-factura/{id}', 'AdministrativoController@eliminar_factura');
+		Route::post('administrativo/pagos/eliminar-factura', 'AdministrativoController@eliminar_factura');
 		Route::post('administrativo/factura/enviar/{id}', 'AdministrativoController@enviarfactura');
 		Route::post('administrativo/pagos/agregarcliente', 'AdministrativoController@AgregarCliente');
 

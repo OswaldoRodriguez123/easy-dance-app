@@ -157,8 +157,8 @@
         route_detalle="{{url('/')}}/administrativo/factura";
         route_enviar="{{url('/')}}/administrativo/factura/enviar/";
         route_gestion="{{url('/')}}/administrativo/pagos/gestion/";
-        route_eliminar="{{url('/')}}/administrativo/pagos/eliminardeuda/";
-        route_eliminar_factura="{{url('/')}}/administrativo/pagos/eliminar-factura/";
+        route_eliminar="{{url('/')}}/administrativo/pagos/eliminardeuda";
+        route_eliminar_factura="{{url('/')}}/administrativo/pagos/eliminar-factura";
 
         var proformas = <?php echo json_encode($proformas);?>;
         var facturas = <?php echo json_encode($facturas);?>;
@@ -435,142 +435,119 @@
 
     $('#tablelistar tbody').on( 'click', 'i.eliminar_factura', function () {
 
-        var id = $(this).closest('tr').attr('id');
-        element = this;
+          var id = $(this).closest('tr').attr('id');
+          element = this;
 
-        swal({   
-            title: "Desea eliminar la factura?",   
-            text: "Confirmar eliminación!",   
-            type: "warning",   
-            showCancelButton: true,   
-            confirmButtonColor: "#DD6B55",   
-            confirmButtonText: "Eliminar!",  
-            cancelButtonText: "Cancelar",         
-            closeOnConfirm: true 
-        }, function(isConfirm){   
-            if (isConfirm) {
-                var nFrom = $(this).attr('data-from');
-                var nAlign = $(this).attr('data-align');
-                var nIcons = $(this).attr('data-icon');
-                var nType = 'success';
-                var nAnimIn = $(this).attr('data-animation-in');
-                var nAnimOut = $(this).attr('data-animation-out')
+          swal({   
+              title: "Para eliminar la factura necesita colocar la clave de supervisión",   
+              text: "Confirmar eliminación!",   
+              type: "input",  
+              showCancelButton: true,   
+              confirmButtonColor: "#DD6B55",   
+              confirmButtonText: "Aceptar",  
+              cancelButtonText: "Cancelar",         
+              closeOnConfirm: false,
+              animation: "slide-from-top",
+              inputPlaceholder: "Coloque la clave de supervisión"
+          }, function(inputValue){
+            if (inputValue === false) return false;
+            
+            if (inputValue === "") {
+              swal.showInputError("Ups! La clave de supervisión es requerida");
+              return false
+            }else{
 
-                eliminar_factura(id, element);
-            }
-        });
-    });
-      
-    function eliminar_factura(id, element){
-        var route = route_eliminar_factura + id;
-        var token = "{{ csrf_token() }}";
-        procesando();
-                
-        $.ajax({
-            url: route,
+              var route = route_eliminar_factura;
+              var token = "{{ csrf_token() }}"
+              var datos = "&id="+id+"&password_supervision="+inputValue
+              procesando();
+              
+              $.ajax({
+                url: route,
                 headers: {'X-CSRF-TOKEN': token},
-                type: 'DELETE',
-            dataType: 'json',
-            data:id,
-            success:function(respuesta){
-                var nFrom = $(this).attr('data-from');
-                var nAlign = $(this).attr('data-align');
-                var nIcons = $(this).attr('data-icon');
-                var nAnimIn = "animated flipInY";
-                var nAnimOut = "animated flipOutY"; 
-                if(respuesta.status=="OK"){
-                  finprocesado();
-                  var nType = 'success';
-                  var nTitle="Ups! ";
-                  var nMensaje=respuesta.mensaje;
+                type: 'POST',
+                dataType: 'json',
+                data:datos,
+                success:function(respuesta){
 
                   swal("Exito!","La factura ha sido eliminada!","success");
 
                   t.row( $(element).parents('tr') )
-                    .remove()
-                    .draw();
-                
-                }
-            },
-            error:function(msj){
-                $("#msj-danger").fadeIn(); 
-                var text="";
-                console.log(msj);
-                var merror=msj.responseJSON;
-                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                $("#msj-error").html(text);
+                      .remove()
+                      .draw();
+                  finprocesado()
 
-                setTimeout(function(){
-                    $("#msj-danger").fadeOut();
-                }, 3000);
+                },
+                error:function(msj){
+                  finprocesado();
+                  if(msj.responseJSON.status == "ERROR-PASSWORD"){
+                    swal.showInputError("Ups! La clave de supervisión es incorrecta");
+                  }else{
+                    swal('Solicitud no procesada','Ups! Ha ocurrido un error, intente nuevamente','error');
+                  }
+                }
+              });
             }
-        });
-    }
+          });
+      });
 
       $('#tablelistar tbody').on( 'click', 'i.eliminar', function () {
 
-                var id = $(this).closest('tr').attr('id');
-                // var temp = row.split('_');
-                // var id = temp[1];
-                element = this;
+          var id = $(this).closest('tr').attr('id');
+          element = this;
 
-                swal({   
-                    title: "Desea eliminar la proforma?",   
-                    text: "Confirmar eliminación!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Eliminar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true 
-                }, function(isConfirm){   
-          if (isConfirm) {
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-                        
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar(id, element);
-          }
-                });
-            });
-      
-        function eliminar(id, element){
-         var route = route_eliminar + id;
-         var token = "{{ csrf_token() }}";
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'DELETE',
-                    dataType: 'json',
-                    data:id,
-                    success:function(respuesta){
-                        if(respuesta.status=="OK"){
+          swal({   
+              title: "Para eliminar la proforma necesita colocar la clave de supervisión",   
+              text: "Confirmar eliminación!",   
+              type: "input",  
+              showCancelButton: true,   
+              confirmButtonColor: "#DD6B55",   
+              confirmButtonText: "Aceptar",  
+              cancelButtonText: "Cancelar",         
+              closeOnConfirm: false,
+              animation: "slide-from-top",
+              inputPlaceholder: "Coloque la clave de supervisión"
+          }, function(inputValue){
+            if (inputValue === false) return false;
+            
+            if (inputValue === "") {
+              swal.showInputError("Ups! La clave de supervisión es requerida");
+              return false
+            }else{
 
-                            swal("Exito!","La proforma ha sido eliminada!","success");
-                            t.row($(element).parents('tr') )
-                                .remove()
-                                .draw();
-                        
-                        }
-                    },
-                    error:function(msj){
-                                $("#msj-danger").fadeIn(); 
-                                var text="";
-                                console.log(msj);
-                                var merror=msj.responseJSON;
-                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                $("#msj-error").html(text);
-                                setTimeout(function(){
-                                         $("#msj-danger").fadeOut();
-                                        }, 3000);
-                                }
-                });
-      }
+              var route = route_eliminar;
+              var token = "{{ csrf_token() }}"
+              var datos = "&id="+id+"&password_supervision="+inputValue
+              procesando();
+              
+              $.ajax({
+                url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                data:datos,
+                success:function(respuesta){
+
+                  swal("Exito!","La proforma ha sido eliminada!","success");
+
+                  t.row( $(element).parents('tr') )
+                      .remove()
+                      .draw();
+                  finprocesado()
+
+                },
+                error:function(msj){
+                  finprocesado();
+                  if(msj.responseJSON.status == "ERROR-PASSWORD"){
+                    swal.showInputError("Ups! La clave de supervisión es incorrecta");
+                  }else{
+                    swal('Solicitud no procesada','Ups! Ha ocurrido un error, intente nuevamente','error');
+                  }
+                }
+              });
+            }
+          });
+      });
 
 
     function pad (str, max) {
