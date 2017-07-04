@@ -259,8 +259,8 @@
 
 <script type="text/javascript">
 
-    route_agregar="{{url('/')}}/administrativo/egresos/agregar-egreso";
-    route_eliminar="{{url('/')}}/administrativo/egresos/eliminar-egreso/";
+    route_agregar="{{url('/')}}/administrativo/egresos/agregar";
+    route_eliminar="{{url('/')}}/administrativo/egresos/eliminar/";
     route_detalle="{{url('/')}}/administrativo/egresos/detalle/";
 
     var total = parseFloat("{{$total}}")

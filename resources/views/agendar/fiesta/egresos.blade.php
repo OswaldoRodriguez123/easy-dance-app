@@ -261,8 +261,9 @@
 
 <script type="text/javascript">
 
-    route_agregar="{{url('/')}}/administrativo/egresos/agregar-egreso";
-    route_eliminar="{{url('/')}}/administrativo/egresos/eliminar-egreso/";
+    route_agregar="{{url('/')}}/administrativo/egresos/agregar";
+    route_eliminar="{{url('/')}}/administrativo/egresos/eliminar/";
+    route_detalle="{{url('/')}}/administrativo/egresos/detalle/";
 
     var total = parseFloat("{{$total}}")
 
@@ -278,8 +279,8 @@
         pageLength: 25,   
         order: [[5, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2)', nRow).addClass( "disabled" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -494,6 +495,12 @@
 
     function formatmoney(n) {
         return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+    }
+
+    function previa(t){
+      var id = $(t).closest('tr').attr('id');
+      var route =route_detalle + id;
+      window.location=route;
     }
 
     </script>

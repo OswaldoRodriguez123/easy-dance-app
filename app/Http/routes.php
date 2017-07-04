@@ -430,9 +430,15 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('administrativo/egresos/campañas', 'EgresoController@campanas');
 		Route::get('administrativo/egresos/fiestas', 'EgresoController@fiestas');
 		Route::get('administrativo/egresos/detalle/{id}', 'EgresoController@edit');
+		Route::put('administrativo/egresos/update/factura', 'EgresoController@updateFactura');
+		Route::put('administrativo/egresos/update/proveedor', 'EgresoController@updateProveedor');
+		Route::put('administrativo/egresos/update/concepto', 'EgresoController@updateConcepto');
+		Route::put('administrativo/egresos/update/cantidad', 'EgresoController@updateCantidad');
+		Route::put('administrativo/egresos/update/fecha', 'EgresoController@updateFecha');
+		Route::put('administrativo/egresos/update/nit', 'EgresoController@updateNit');
 
-		Route::post('administrativo/egresos/agregar-egreso', 'EgresoController@agregar_egreso');
-		Route::delete('administrativo/egresos/eliminar-egreso/{id}', 'EgresoController@eliminar_egreso');
+		Route::post('administrativo/egresos/agregar', 'EgresoController@store');
+		Route::delete('administrativo/egresos/eliminar/{id}', 'EgresoController@destroy');
 
 		// REPORTES
 		

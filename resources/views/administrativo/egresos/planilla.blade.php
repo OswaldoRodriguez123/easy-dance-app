@@ -32,7 +32,7 @@
                     <div class="form-group fg-line">
                         <label for="factura" id="id-factura">Factura</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el número de la factura" title="" data-original-title="Ayuda"></i>
 
-                        <input type="text" class="form-control input-sm" name="factura" id="factura" data-mask="00000000000000000000" placeholder="Ej. 16234987">
+                        <input type="text" class="form-control input-sm" name="factura" id="factura" data-mask="00000000000000000000" placeholder="Ej. 16234987" value="{{$egreso->factura}}">
                     </div>
                     <div class="has-error" id="error-factura">
                       <span >
@@ -86,7 +86,7 @@
                   <div class="form-group fg-line">
                       <label for="proveedor" id="id-proveedor">Proveedor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el proveedor de la factura" title="" data-original-title="Ayuda"></i>
 
-                      <input type="text" class="form-control input-sm" name="proveedor" id="proveedor" placeholder="Ej. Sillas">
+                      <input type="text" class="form-control input-sm" name="proveedor" id="proveedor" placeholder="Ej. Sillas" value="{{$egreso->proveedor}}">
                   </div>
                   <div class="has-error" id="error-proveedor">
                     <span >
@@ -135,7 +135,7 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <div class="form-group fg-line">
-                      <label for="concepto" id="id-concepto">Proveedor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el concepto de la factura" title="" data-original-title="Ayuda"></i>
+                      <label for="concepto" id="id-concepto">Concepto</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el concepto de la factura" title="" data-original-title="Ayuda"></i>
 
                       <input type="text" class="form-control input-sm" name="concepto" id="concepto" placeholder="Ej. Sillas">
                   </div>
@@ -186,9 +186,9 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <div class="form-group fg-line">
-                      <label for="cantidad" id="id-cantidad">Proveedor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto" title="" data-original-title="Ayuda"></i>
+                      <label for="cantidad" id="id-cantidad">Cantidad</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto" title="" data-original-title="Ayuda"></i>
 
-                      <input type="text" class="form-control input-sm" name="cantidad" id="cantidad" placeholder="Ej. 5000" data-mask="00000000000000000000">
+                      <input type="text" class="form-control input-sm" name="cantidad" id="cantidad" placeholder="Ej. 5000" data-mask="00000000000000000000" value="{{$egreso->cantidad}}">
                   </div>
                   <div class="has-error" id="error-cantidad">
                     <span >
@@ -290,9 +290,9 @@
               <div class="col-sm-12">
                 <div class="form-group">
                   <div class="form-group fg-line">
-                      <label for="nit" id="id-nit">Proveedor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nit de la factura" title="" data-original-title="Ayuda"></i>
+                      <label for="nit" id="id-nit">Nit</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nit de la factura" title="" data-original-title="Ayuda"></i>
 
-                      <input type="text" class="form-control input-sm" name="nit" id="nit" placeholder="Ej. Sillas">
+                      <input type="text" class="form-control input-sm" name="nit" id="nit" placeholder="Ej. Sillas" value="{{$egreso->nit}}">
                   </div>
                   <div class="has-error" id="error-nit">
                     <span >
@@ -473,9 +473,9 @@
 
 @section('js') 
   <script type="text/javascript">
-      route_update="{{url('/')}}/agendar/fiestas/update";
-      route_eliminar="{{url('/')}}/agendar/fiestas/eliminar/";
-      route_principal="{{url('/')}}/agendar/fiestas";
+      route_update="{{url('/')}}/administrativo/egresos/update";
+      route_eliminar="{{url('/')}}/administrativo/egresos/eliminar/";
+      route_principal="{{url('/')}}/administrativo/egresos";
 
       $(document).ready(function(){
 
@@ -548,7 +548,7 @@
              $("#egreso-"+c.name).data('valor',c.value);
              $("#egreso-"+c.name).html(c.value.substr(0, 30) + "...");
           }else{
-            $("#egreso-"+c.name).text(c.value.toLowerCase());
+            $("#egreso-"+c.name).text(c.value);
           }
 
           if(c.value == ''){

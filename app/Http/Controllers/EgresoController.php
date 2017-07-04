@@ -110,7 +110,7 @@ class EgresoController extends BaseController {
     }
 
 
-    public function agregar_egreso(Request $request)
+    public function store(Request $request)
     {
 
         $rules = [
@@ -140,7 +140,11 @@ class EgresoController extends BaseController {
 
         else{
 
-            $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha);
+            if($request->fecha){
+                $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha);
+            }else{
+                $fecha = '';
+            }
 
             $egreso = new Egreso;
 
@@ -165,7 +169,167 @@ class EgresoController extends BaseController {
         }
     }
 
-    public function eliminar_egreso($id)
+    public function updateFactura(Request $request){
+
+        $rules = [
+            'factura' => 'required',
+        ];
+
+        $messages = [
+
+            'factura.required' => 'Ups! La factura es requerida ',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $egreso = Egreso::find($request->id);
+            $egreso->factura = $request->factura;
+
+            if($egreso->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function updateProveedor(Request $request){
+
+        $rules = [
+            'proveedor' => 'required',
+        ];
+
+        $messages = [
+
+            'proveedor.required' => 'Ups! El proveedor es requerido',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $egreso = Egreso::find($request->id);
+            $egreso->proveedor = $request->proveedor;
+
+            if($egreso->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function updateConcepto(Request $request){
+
+        $rules = [
+            'concepto' => 'required',
+        ];
+
+        $messages = [
+
+            'concepto.required' => 'Ups! El concepto es requerido',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $egreso = Egreso::find($request->id);
+            $egreso->concepto = $request->concepto;
+
+            if($egreso->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function updateCantidad(Request $request){
+
+        $rules = [
+            'cantidad' => 'required',
+        ];
+
+        $messages = [
+
+            'cantidad.required' => 'Ups! La cantidad es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $egreso = Egreso::find($request->id);
+            $egreso->cantidad = $request->cantidad;
+
+            if($egreso->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function updateFecha(Request $request){
+
+        if($request->fecha){
+            $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha);
+        }else{
+            $fecha = '';
+        }
+   
+        $egreso = Egreso::find($request->id);
+        $egreso->fecha = $fecha;
+
+        if($egreso->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        
+    }
+
+    public function updateNit(Request $request){
+   
+        $egreso = Egreso::find($request->id);
+        $egreso->nit = $request->nit;
+
+        if($egreso->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        
+    }
+
+    public function destroy($id)
     {
         $egreso = Egreso::find($id);
 
