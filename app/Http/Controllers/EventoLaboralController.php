@@ -20,11 +20,13 @@ class EventoLaboralController extends BaseController
 	public function calendario()
     {
     	$eventos_laborales = EventoLaboral::join('staff', 'eventos_laborales.staff_id', '=', 'staff.id')
-            ->select('eventos_laborales.*', 'staff.nombre as staff_nombre', 'staff.apellido as staff_apellido')
+            ->select('eventos_laborales.*', 'staff.nombre as staff_nombre', 'staff.apellido as staff_apellido', 'staff.cargo')
             ->where('staff.academia_id','=', Auth::user()->academia_id)
         ->get();
 
-        return view('configuracion.eventos_laborales.calendario')->with(['eventos' => $eventos_laborales]);
+        $cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
+
+        return view('configuracion.eventos_laborales.calendario')->with(['eventos' => $eventos_laborales, 'cargos' => $cargos]);
     }
 
 	public function principal()

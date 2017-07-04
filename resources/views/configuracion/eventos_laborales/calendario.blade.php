@@ -26,6 +26,7 @@
                 <div class="container">
 
                 <div id="calendar"></div>
+                <input type="hidden" id="cargo" name="cargo" value="0" />
                     
                 
                       
@@ -124,6 +125,7 @@
                             backgroundColor:'{{$etiqueta}}',
                             className: '{{$actividad}}',
                             url: '{{$url}}',
+                            cargo: '{{$evento->cargo}}',
                         },
                         @endforeach 
             
@@ -181,7 +183,16 @@
                             }
                         });
 
-                    }
+                    },
+                    eventRender: function(event, eventElement) {
+                        
+                        cargo = $('#cargo').val();
+
+                        if(cargo != 0){
+                            return cargo.indexOf(event.cargo) >= 0
+                        }
+
+                    },
                 });
 
                 
@@ -220,6 +231,24 @@
 
 
                 cId.find('.fc-toolbar').append(actionMenu);
+
+                var actionMenu = '<ul class="actions actions-alt" id="fc-tipo">' +
+                                    '<li class="dropdown">' +
+                                        '<a href="" data-toggle="dropdown"><i class="zmdi zmdi-more-vert"></i></a>' +
+                                        '<ul class="dropdown-menu dropdown-menu-left">' +
+                                            '<li>' +
+                                                '<a class="pointer active" data-tipo="0">Todos</a>' +
+                                            '</li>' +
+                                            @foreach($cargos as $cargo)
+                                                '<li>' +
+                                                    '<a class="pointer" data-cargo="{{$cargo->id}}">{{$cargo->nombre}}</a>' +
+                                                '</li>' +
+                                            @endforeach
+                                        '</ul>' +
+                                    '</div>' +
+                                '</li>';
+
+                cId.find('.fc-clear').after(actionMenu);
                 
                 //Event Tag Selector
                 (function(){
@@ -284,6 +313,13 @@
                         .replace(/ì/g, '&igrave;')
                         .replace(/\n/g, '<br />');
                 }
+
+                $(".dropdown-menu a").unbind('click').bind('click', function(e) {
+                    cargo = $(this).data('cargo')
+                    $('#cargo').val(cargo)
+                    cId.fullCalendar('rerenderEvents');
+                    $('.dropdown').removeClass('open')
+                });
 
                 $('.fc-toolbar').css('background-image',"url('{{url('/')}}/assets/img/eventos_laborales_header.jpg')");
 
