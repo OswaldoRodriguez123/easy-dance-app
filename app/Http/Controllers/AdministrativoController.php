@@ -1751,7 +1751,7 @@ class AdministrativoController extends BaseController {
             $item_factura->precio_neto = $producto_servicio->costo;
             $item_factura->impuesto = $request->impuesto;
             $item_factura->importe_neto = $importe_neto;
-            $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+            $item_factura->fecha_vencimiento = Carbon::now()->addDay()->toDateString();
             $item_factura->promotor_id = $promotor_id;
             $item_factura->tipo_promotor = $tipo_promotor;
             $item_factura->servicio_producto = $servicio_producto;
