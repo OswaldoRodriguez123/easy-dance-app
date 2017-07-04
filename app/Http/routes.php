@@ -432,6 +432,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('administrativo/egresos/fiestas', 'EgresoController@fiestas');
 		Route::get('administrativo/egresos/detalle/{id}', 'EgresoController@edit');
 		Route::put('administrativo/egresos/update/factura', 'EgresoController@updateFactura');
+		Route::put('administrativo/egresos/update/tipo', 'EgresoController@updateTipo');
 		Route::put('administrativo/egresos/update/proveedor', 'EgresoController@updateProveedor');
 		Route::put('administrativo/egresos/update/concepto', 'EgresoController@updateConcepto');
 		Route::put('administrativo/egresos/update/cantidad', 'EgresoController@updateCantidad');

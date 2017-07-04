@@ -70,6 +70,65 @@
     </div>
   </div>
 
+  <div class="modal fade" id="modalTipo-Egreso" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Egreso<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+        </div>
+        <form name="edit_tipo_egreso" id="edit_tipo_egreso"  >
+          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+          <div class="modal-body">                           
+              <div class="row p-t-20 p-b-0">
+                <div class="col-sm-12">
+
+                  <label for="config_tipo" id="id-config_tipo">Tipo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de egreso" title="" data-original-title="Ayuda"></i>
+
+                  <div class="fg-line">
+                    <div class="select">
+                      <select class="selectpicker" name="config_tipo" id="config_tipo" data-live-search="true">
+                        <option value="">Selecciona</option>
+                        @foreach ( $config_egresos as $tipo )
+                        <option value = "{{ $tipo->id }}">{{ $tipo->nombre }}</option>
+                        @endforeach
+                      </select>
+                    </div>
+                  </div>
+                  <div class="has-error" id="error-config_tipo">
+                    <span >
+                      <small class="help-block error-span" id="error-config_tipo_mensaje" ></small>                                           
+                    </span>
+                  </div>
+                </div>
+
+                <input type="hidden" name="id" value="{{$egreso->id}}"></input>
+                
+                <div class="clearfix"></div> 
+              </div>
+           
+            </div>
+          </form>
+        <div class="modal-footer p-b-20 m-b-20">
+            <div class="col-sm-12 text-left">
+              <div class="procesando hidden">
+              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+              <div class="preloader pls-purple">
+                  <svg class="pl-circular" viewBox="25 25 50 50">
+                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                  </svg>
+              </div>
+              </div>
+            </div>
+            <div class="col-sm-12">                            
+
+              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_tipo_egreso" data-update="tipo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="modal fade" id="modalProveedor-Egreso" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -409,6 +468,14 @@
                    </td>
                    <td class="f-14 m-l-15" ><span id="egreso-factura">{{$egreso->factura}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                   </tr>
+                  <tr class="detalle" data-toggle="modal" href="#modalTipo-Egreso">
+                   <td>
+                     <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-config_tipo" class="zmdi  {{ empty($egreso->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                     <span class="m-l-10 m-r-10"> <i class="icon_a-especialidad f-22"></i> </span>
+                     <span class="f-14"> Tipo </span>
+                   </td>
+                   <td class="f-14 m-l-15" ><span id="egreso-config_tipo"><span>{{$egreso->nombre}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                  </tr>
                   <tr class="detalle" data-toggle="modal" href="#modalProveedor-Egreso">
                    <td>
                      <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-proveedor" class="zmdi {{ empty($egreso->proveedor) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -544,6 +611,12 @@
             }
             $("#egreso-"+c.name).data('valor',c.value);
             $("#egreso-"+c.name).html(valor);
+          }else if(c.name=='config_tipo'){
+            
+            expresion = "#"+c.name+ " option[value="+c.value+"]";
+            texto = $(expresion).text();
+            
+            $("#egreso-"+c.name).text(texto);
           }else if(c.name=='concepto'){
              $("#egreso-"+c.name).data('valor',c.value);
              $("#egreso-"+c.name).html(c.value.substr(0, 30) + "...");

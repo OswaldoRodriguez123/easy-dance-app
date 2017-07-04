@@ -1491,7 +1491,7 @@ class ReporteController extends BaseController
 
                 if($request->tipo){
                     if($request->fecha == 1){
-                        $start = Carbon::now()->toDateString();
+                        $start = Carbon::now()->subDay()->toDateString();
                         $end = Carbon::now()->toDateString();  
                     }else if($request->fecha == 2){
                         $start = Carbon::now()->startOfMonth()->toDateString();
@@ -1602,7 +1602,7 @@ class ReporteController extends BaseController
 
                 if($request->fecha){
                     if($request->fecha == 1){
-                        $start = Carbon::now()->toDateString();
+                        $start = Carbon::now()->subDay()->toDateString();
                         $end = Carbon::now()->toDateString();  
                     }else if($request->fecha == 2){
                         $start = Carbon::now()->startOfMonth()->toDateString();

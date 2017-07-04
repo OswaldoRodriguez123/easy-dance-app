@@ -203,6 +203,19 @@ class EgresoController extends BaseController {
         }
     }
 
+    public function updateTipo(Request $request){
+   
+        $egreso = Egreso::find($request->id);
+        $egreso->config_tipo = $request->config_tipo;
+
+        if($egreso->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        
+    }
+
     public function updateProveedor(Request $request){
 
         $rules = [
@@ -354,10 +367,14 @@ class EgresoController extends BaseController {
 
     public function edit($id)
     {   
-        $egreso = Egreso::find($id);
+        $egreso = Egreso::Leftjoin('config_egresos', 'egresos.tipo' , '=', 'config_egresos.id')
+            ->select('egresos.*','config_egresos.nombre')
+            ->where('egresos.id',$id)
+        ->first();
 
         if($egreso){
-            return view('administrativo.egresos.planilla')->with(['egreso' => $egreso , 'id' => $id]);
+            $config_egresos = ConfigEgreso::all();
+            return view('administrativo.egresos.planilla')->with(['egreso' => $egreso, 'config_egresos' => $config_egresos, 'id' => $id]);
         }else{
            return redirect("administrativo/egresos"); 
         }
