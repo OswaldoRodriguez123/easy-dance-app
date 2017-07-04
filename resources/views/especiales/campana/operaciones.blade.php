@@ -4,7 +4,6 @@
 
 <link href="{{url('/')}}/assets/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
-<link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet">
 @stop
 
 

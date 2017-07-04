@@ -177,4 +177,15 @@ class EgresoController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
+
+    public function edit($id)
+    {   
+        $egreso = Egreso::find($id);
+
+        if($egreso){
+            return view('administrativo.egresos.planilla')->with(['egreso' => $egreso , 'id' => $id]);
+        }else{
+           return redirect("administrativo/egresos"); 
+        }
+    }
 }

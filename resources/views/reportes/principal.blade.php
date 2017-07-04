@@ -28,12 +28,12 @@
                   
                   <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta"><div class="icon_a icon_a-punto-de-venta f-30" style="color:#4caf50;  "></div><p style=" margin-bottom: -2px; color:#4caf50;">Punto de Venta</p></a></li>
                  
-                  <li class="active" role="presentation"><a class="rojo" href="{{url('/')}}/reportes" aria-controls="reportes" role="tab"><div class="icon_a icon_a-reservaciones f-30" style="color:#f44336;  "></div><p style=" margin-bottom: -2px; color:#f44336;">Reportes</p></a></li>   
+                  <li class="active" role="presentation"><a class="rojo" href="{{url('/')}}/reportes" aria-controls="reportes" role="tab"><div class="icon_d icon_d-reporte f-30" style="color:#f44336;  "></div><p style=" margin-bottom: -2px; color:#f44336;">Reportes</p></a></li>   
                 </ul>
             </div>
             <div class="tab-content ">
               <div role="tabpanel" class="tab-pane  animated active fadeInRight in" id="reportes">
-                <div id="id-reporte" class="text-center icon_a icon_a-reservaciones f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Reportes</p></div>
+                <div id="id-reporte" class="text-center icon_d icon_d-reporte f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Reportes</p></div>
                 <ul id="sti-menu"  class="sti-menu">
                   <li data-hovercolor="#f44336">
                       <a href="{{url('/')}}/reportes/asistencias"><h2 data-type="mText" class="sti-item">Asistencias</h2><span data-type="icon" class="sti-icon sti-icon-reportes5 sti-item"></span></a>

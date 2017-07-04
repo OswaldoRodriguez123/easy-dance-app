@@ -8,7 +8,6 @@
 <link href="{{url('/')}}/assets/vendors/farbtastic/farbtastic.css" rel="stylesheet">
 
 <link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
-<link href="https://opensource.keycdn.com/fontawesome/4.7.0/font-awesome.min.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -1037,7 +1036,7 @@
                                             
                             <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
                                            
-                            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-reservaciones f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+                            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                         </ul>
                     </div> 
                     
@@ -1208,7 +1207,7 @@
                             <tr class="detalle" data-toggle="modal" href="#modalCupoOnline-Taller">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cupo_reservacion" class="zmdi {{ empty($taller->cupo_reservacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"><i class="icon_a icon_a-reservaciones f-18"></i></span>
+                               <span class="m-l-10 m-r-10"><i class="icon_d icon_d-reporte f-18"></i></span>
                                <span class="f-14"> Cantidad de cupos para reserva online  </span>
                              </td>
                              <td  class="f-14 m-l-15"> <span id="taller-cupo_reservacion">{{$taller->cupo_reservacion}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>

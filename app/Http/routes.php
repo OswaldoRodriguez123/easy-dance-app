@@ -429,6 +429,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('administrativo/egresos/talleres', 'EgresoController@talleres');
 		Route::get('administrativo/egresos/campañas', 'EgresoController@campanas');
 		Route::get('administrativo/egresos/fiestas', 'EgresoController@fiestas');
+		Route::get('administrativo/egresos/detalle/{id}', 'EgresoController@edit');
 
 		Route::post('administrativo/egresos/agregar-egreso', 'EgresoController@agregar_egreso');
 		Route::delete('administrativo/egresos/eliminar-egreso/{id}', 'EgresoController@eliminar_egreso');

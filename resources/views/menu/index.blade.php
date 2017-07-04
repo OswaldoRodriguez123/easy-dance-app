@@ -56,7 +56,7 @@
                                             
                                             <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta"><div class="icon_a icon_a-punto-de-venta f-30" style="color:#4caf50;  "></div><p style=" margin-bottom: -2px; color:#4caf50;">Punto de Venta</p></a></li>
                                            
-                                            <li role="presentation"><a class="rojo" href="{{url('/')}}/reportes"  aria-controls="reportes" role="tab"><div class="icon_a icon_a-reservaciones f-30" style="color:#f44336;  "></div><p style=" margin-bottom: -2px; color:#f44336;">Reportes</p></a></li>
+                                            <li role="presentation"><a class="rojo" href="{{url('/')}}/reportes"  aria-controls="reportes" role="tab"><div class="icon_d icon_d-reporte f-30" style="color:#f44336;  "></div><p style=" margin-bottom: -2px; color:#f44336;">Reportes</p></a></li>
                                         </ul>
                                       </div>
                                         <div class="tab-content ">
@@ -144,7 +144,7 @@
                     
                     <div role="tabpanel" class="tab-pane animated fadeInRight" id="reportes">
                       
-                      <div class="text-center icon_a icon_a-reservaciones f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Reportes</p></div>
+                      <div class="text-center icon_d icon_d-reporte f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Reportes</p></div>
                       
                       
                       <ul id="sti-menu6" class="sti-menu roww">

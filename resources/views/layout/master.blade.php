@@ -32,6 +32,7 @@
       <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
       <link href="{{url('/')}}/assets/css/easydance.css" rel="stylesheet">
+      <link href="{{url('/')}}/assets/css/font-awesome.min.css" rel="stylesheet">
 
       <link rel='shortcut icon' type='image/x-icon' href='http://easydancelatino.com/img/easy-dance.ico' />
 
@@ -234,7 +235,7 @@
           <h4 class="modal-title c-negro">Información <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
         </div>
         <div class="modal-body">
-          <div class="text-center icon_a icon_a-reservaciones f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Reportes</p></div>
+          <div class="text-center icon_d icon_d-reporte f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Reportes</p></div>
           <ul id="sti-menu"  class="sti-menu">
             <li data-hovercolor="#f44336">
               <a href="{{url('/')}}/reportes/diagnosticos"><h2 data-type="mText" class="sti-item">Diagnosticos</h2><span data-type="icon" class="sti-icon sti-icon-reportes1 sti-item"></span></a>
