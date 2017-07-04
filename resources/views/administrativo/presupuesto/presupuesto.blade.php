@@ -13,7 +13,6 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<!--<script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.es.js"></script>-->
 <script src="{{url('/')}}/assets/vendors/farbtastic/farbtastic.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
@@ -189,7 +188,6 @@
                                            
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                         </ul>
-                      <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
                       <div class="card">
@@ -200,7 +198,7 @@
                               <li class="waves-effect"><a href="{{url('/')}}/administrativo/pagos/generar" aria-controls="home11" onclick="procesando()"><div class="icon_a icon_a-pagar f-30"></div><p style=" margin-bottom: -2px;">Pagos</p></a></li>
                               <li class="waves-effect"><a href="{{url('/')}}/administrativo/acuerdos/generar" aria-controls="home11" onclick="procesando()"><div class="icon_a icon_a-acuerdo-de-pago f-30"></div><p style=" margin-bottom: -2px;">Acuerdos</p></a></li>
                               <li class="waves-effect active"><a href="{{url('/')}}/administrativo/presupuestos/generar" aria-controls="home11" onclick="procesando()"><div class="icon_a icon_a-presupuesto f-30"></div><p style=" margin-bottom: -2px;">Presupuestos</p></a></li>
-                              <li class="waves-effect"><a data-toggle="modal" href="{{url('/')}}/administrativo/egresos"><div class="fa fa-money f-30"></div><p style=" margin-bottom: -2px;">Egresos</p></a></li>
+                              <li class="waves-effect"><a href="{{url('/')}}/administrativo/egresos"><div class="fa fa-money f-30"></div><p style=" margin-bottom: -2px;">Egresos</p></a></li>
                                     
                           </ul>
                         </div>
