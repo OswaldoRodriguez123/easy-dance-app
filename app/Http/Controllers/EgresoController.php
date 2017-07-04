@@ -8,6 +8,7 @@ use App\Fiesta;
 use App\Academia;
 use App\ConfigEgreso;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Validator;
 use Carbon\Carbon;
@@ -155,6 +156,7 @@ class EgresoController extends BaseController {
             $egreso->concepto = $request->concepto;
             $egreso->cantidad = $request->cantidad;
             $egreso->fecha = $fecha;
+            $egreso->hora = Carbon::now()->toTimeString();
             $egreso->nit = $request->nit;
             $egreso->tipo = $request->tipo;
             $egreso->tipo_id = $request->tipo_id;
@@ -329,9 +331,17 @@ class EgresoController extends BaseController {
         
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $egreso = Egreso::find($id);
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        if($academia->password_supervision){
+            if(!Hash::check($request->password_supervision, $academia->password_supervision)) {
+                return response()->json(['error_mensaje'=> 'Ups! La contraseña no coincide', 'status' => 'ERROR-PASSWORD'],422);
+            }
+        }
+
+        $egreso = Egreso::find($request->id);
 
         $cantidad = $egreso->cantidad;
         

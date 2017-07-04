@@ -438,7 +438,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::put('administrativo/egresos/update/nit', 'EgresoController@updateNit');
 
 		Route::post('administrativo/egresos/agregar', 'EgresoController@store');
-		Route::delete('administrativo/egresos/eliminar/{id}', 'EgresoController@destroy');
+		Route::post('administrativo/egresos/eliminar', 'EgresoController@destroy');
 
 		// REPORTES
 		

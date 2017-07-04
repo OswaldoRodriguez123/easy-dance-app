@@ -212,11 +212,9 @@
                                 <tr>
                                     <th class="text-center" data-column-id="factura" data-order="desc">Factura</th>
                                     <th class="text-center" data-column-id="tipo">Tipo</th>
-                                    <th class="text-center" data-column-id="proveedor">Proveedor</th>
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
                                     <th class="text-center" data-column-id="cantidad" data-order="desc">Cantidad</th>
                                     <th class="text-center" data-column-id="fecha" data-order="desc">Fecha</th>
-                                    <th class="text-center" data-column-id="hora" data-order="desc">Hora</th>
                                     <th class="text-center" data-column-id="nit" data-order="desc">Nit</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
@@ -224,19 +222,28 @@
                             <tbody class="text-center" >
 
                             @foreach ($egresos as $egreso)
-                                <?php $id = $egreso->id; ?>
-                                <tr id="{{$id}}" class="seleccion"> 
+                                <?php 
+
+                                    $id = $egreso->id; 
+                                    $contenido = '';
+
+                                    $contenido = 
+                                        'Proveedor: ' . $egreso->proveedor . '<br>'.
+                                        'Hora: ' . $egreso->hora . '<br>'.
+                                        'Concepto: ' . $egreso->concepto . '<br>';
+                    
+                                ?>
+
+                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion"> 
                                     <td class="text-center previa">{{$egreso->factura}}</td>
                                     <td class="text-center previa">{{$egreso->config_tipo}}</td>
-                                    <td class="text-center previa">{{$egreso->proveedor}}</td>
-                                    <td class="text-center previa">{{$egreso->concepto}}</td>
+                                    <td class="text-center previa">{{ str_limit($egreso->concepto, $limit = 30, $end = '...') }}</td>
                                     <td class="text-center previa">{{ number_format($egreso->cantidad, 2, '.' , '.') }}</td>
                                     <td class="text-center previa">{{$egreso->fecha}}</td>
-                                    <td class="text-center previa">{{$egreso->hora}}</td>
                                     <td class="text-center previa">{{$egreso->nit}}</td>
                                     <td class="text-center disabled"> <i class="zmdi zmdi-delete pointer f-20 p-r-10"></i></td>
                                 </tr>
-                            @endforeach  
+                            @endforeach    
                                                            
                             </tbody>
                         </table>
@@ -341,22 +348,41 @@
                 expresion = "#config_tipo option[value="+config_tipo+"]";
                 config_tipo = $(expresion).text();
 
+                concepto = toTitleCase(respuesta.array.concepto)
+
+                var contenido = 'Proveedor: ' + respuesta.array.proveedor + '<br>'
+                contenido += 'Hora: ' + respuesta.array.hora + '<br>'
+                contenido += 'Concepto: ' + respuesta.array.concepto + '<br>'
+
+                if(concepto.length > 30){
+                    concepto = concepto.substr(0, 30) + "..."
+                }
 
                 var rowId=respuesta.array.id;
 
                 var rowNode=t.row.add( [
                   ''+respuesta.array.factura+'',
                   ''+config_tipo+'',
-                  ''+respuesta.array.proveedor+'',
-                  ''+respuesta.array.concepto+'',
+                  ''+concepto+'',
                   ''+formatmoney(parseFloat(respuesta.array.cantidad))+'',
                   ''+respuesta.fecha+'',
                   ''+respuesta.array.nit+'',
                   '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
-                  ] ).draw(false).node();
-                  $( rowNode )
+                ] ).draw(false).node();
+
+                $( rowNode )
+                  .attr('data-trigger','hover')
+                  .attr('data-toggle','popover')
+                  .attr('data-placement','top')
+                  .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;&nbsp;')
+                  .attr('data-html','true')
+                  .attr('data-container','body')
+                  .attr('title','')
+                  .attr('data-content',contenido)
                   .attr('id',rowId)
                   .addClass('seleccion');
+
+                $('[data-toggle="popover"]').popover(); 
 
                 total = total + parseFloat(respuesta.array.cantidad)
                 $("#form_agregar")[0].reset();
@@ -379,9 +405,9 @@
           },
           error:function(msj){
             setTimeout(function(){ 
-              if (typeof msj.responseJSON === "undefined") {
-                window.location = "{{url('/')}}/error";
-              }
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
               if(msj.responseJSON.status=="ERROR"){
                 console.log(msj.responseJSON.errores);
                 errores(msj.responseJSON.errores);
@@ -407,77 +433,64 @@
     });
 
     $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+      var id = $(this).closest('tr').attr('id');
+      element = this;
 
-        var id = $(this).closest('tr').attr('id');
-        element = this;
+      swal({   
+          title: "Para eliminar el egreso necesita colocar la clave de supervisión",   
+          text: "Confirmar eliminación!",   
+          type: "input",  
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Aceptar",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: false,
+          animation: "slide-from-top",
+          inputPlaceholder: "Coloque la clave de supervisión"
+      }, function(inputValue){
+        if (inputValue === false) return false;
+        
+        if (inputValue === "") {
+          swal.showInputError("Ups! La clave de supervisión es requerida");
+          return false
+        }else{
 
-        swal({   
-            title: "Desea eliminar el egreso?",   
-            text: "Confirmar eliminación!",   
-            type: "warning",   
-            showCancelButton: true,   
-            confirmButtonColor: "#DD6B55",   
-            confirmButtonText: "Eliminar!",  
-            cancelButtonText: "Cancelar",         
-            closeOnConfirm: true 
-        }, function(isConfirm){   
-            if (isConfirm) {
-                var nFrom = $(this).attr('data-from');
-                var nAlign = $(this).attr('data-align');
-                var nIcons = $(this).attr('data-icon');
-                var nType = 'success';
-                var nAnimIn = $(this).attr('data-animation-in');
-                var nAnimOut = $(this).attr('data-animation-out')
-                eliminar(id, element);
+          var route = route_eliminar;
+          var token = $('input:hidden[name=_token]').val();
+          var datos = "&id="+id+"&password_supervision="+inputValue
+          procesando();
+          
+          $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            dataType: 'json',
+            data:datos,
+            success:function(respuesta){
+
+              swal("Exito!","El egreso ha sido eliminado!","success");
+
+              total = total - parseFloat(respuesta.cantidad)
+              $('#total').text(formatmoney(parseFloat(total)))
+
+              t.row( $(element).parents('tr') )
+                  .remove()
+                  .draw();
+              finprocesado()
+
+            },
+            error:function(msj){
+              finprocesado();
+              if(msj.responseJSON.status == "ERROR-PASSWORD"){
+                swal.showInputError("Ups! La clave de supervisión es incorrecta");
+              }else{
+                swal('Solicitud no procesada','Ups! Ha ocurrido un error, intente nuevamente','error');
+              }
             }
-        });
-    });
-      
-        function eliminar(id, element){
-            var route = route_eliminar + id;
-            var token = "{{ csrf_token() }}";
-                
-            $.ajax({
-                url: route,
-                    headers: {'X-CSRF-TOKEN': token},
-                    type: 'DELETE',
-                dataType: 'json',
-                data:id,
-                success:function(respuesta){
-                    var nFrom = $(this).attr('data-from');
-                    var nAlign = $(this).attr('data-align');
-                    var nIcons = $(this).attr('data-icon');
-                    var nAnimIn = "animated flipInY";
-                    var nAnimOut = "animated flipOutY"; 
-                    if(respuesta.status=="OK"){
-                        var nType = 'success';
-                        var nTitle="Ups! ";
-                        var nMensaje=respuesta.mensaje;
-
-                        swal("Exito!","El egreso ha sido eliminado!","success");
-
-                        total = total - parseFloat(respuesta.cantidad)
-                        $('#total').text(formatmoney(parseFloat(total)))
-
-                        t.row( $(element).parents('tr') )
-                            .remove()
-                            .draw();
-                    
-                    }
-                },
-                error:function(msj){
-                    $("#msj-danger").fadeIn(); 
-                    var text="";
-                    console.log(msj);
-                    var merror=msj.responseJSON;
-                    text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                    $("#msj-error").html(text);
-                    setTimeout(function(){
-                        $("#msj-danger").fadeOut();
-                    }, 3000);
-                }
-            });
+          });
         }
+      });
+  });
 
 
     $('#modalAgregar').on('show.bs.modal', function (event) {
@@ -502,6 +515,11 @@
       var id = $(t).closest('tr').attr('id');
       var route =route_detalle + id;
       window.location=route;
+    }
+
+    function toTitleCase(str)
+    {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     }
 
     </script>
