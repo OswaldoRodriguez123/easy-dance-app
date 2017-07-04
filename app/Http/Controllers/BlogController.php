@@ -23,6 +23,158 @@ use Mail;
 
 class BlogController extends BaseController {
 
+    public function tu_clase_de_baile(){
+
+        if(Auth::check()){
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
+        }else{
+            $usuario_tipo = 0;
+        }
+
+        $id = 7;
+
+        $academia = Academia::find($id);
+
+        $array = array();
+
+        $query = EntradaBlog::join('bloggers', 'entradas_blog.usuario_id' , '=', 'bloggers.id')
+            ->select('entradas_blog.*', 'bloggers.nombre')
+            ->where('entradas_blog.academia_id', $id)
+            ->orderBy('entradas_blog.created_at', 'desc');
+
+        $recientes = EntradaBlog::join('bloggers', 'entradas_blog.usuario_id' , '=', 'bloggers.id')
+            ->select('entradas_blog.*', 'bloggers.nombre')
+            ->where('entradas_blog.academia_id', $id)
+            ->orderBy('entradas_blog.created_at', 'desc')
+            ->where('entradas_blog.boolean_mostrar', 1)
+            ->limit(4)
+        ->get();
+
+        $populares = EntradaBlog::join('bloggers', 'entradas_blog.usuario_id' , '=', 'bloggers.id')
+            ->select('entradas_blog.*', 'bloggers.nombre')
+            ->where('entradas_blog.academia_id', $id)
+            ->orderBy('entradas_blog.cantidad_visitas', 'desc')
+            ->where('entradas_blog.boolean_mostrar', 1)
+            ->limit(4)
+        ->get();
+
+        if(!$usuario_tipo){
+            $query->where('entradas_blog.boolean_mostrar', 1);
+        }
+
+        $entradas = $query->get();
+
+        $categoria_array = array();
+
+        $categorias = CategoriaBlog::where('academia_id', $id)->orWhere('academia_id', null)->orderBy('nombre')->get();
+
+        $cantidad_total = 0;
+
+        foreach($categorias as $categoria){
+
+
+            $query = EntradaBlog::where('categoria', $categoria->id)->where('academia_id', $id);
+
+            if(!$usuario_tipo){
+                $query->where('entradas_blog.boolean_mostrar', 1);
+            }
+
+            $cantidad = $query->count();
+
+            $cantidad_total = $cantidad_total + $cantidad;
+
+            $categoria_array[$categoria->id] = ['nombre' => $categoria->nombre, 'cantidad' => $cantidad];
+        }
+
+        $i = 1;
+                
+        foreach($entradas as $entrada){
+
+            $usuario = Blogger::find($entrada->usuario_id);
+
+            if($usuario->imagen){
+                $usuario_imagen = $usuario->imagen;
+            }else{
+                $usuario_imagen = '';
+            }
+
+            $contenido = File::get('assets/uploads/entradas/entrada-'.$entrada->id.'.txt');
+
+            $contenido = $this->cut_html($contenido, 350);
+
+            $collection=collect($entrada);     
+            $entrada_array = $collection->toArray();
+
+            if($entrada->imagen_poster){
+                $imagen = "/assets/uploads/entradas/{$entrada->imagen_poster}";
+            }else{
+                $imagen = '';
+            }
+
+            $fecha_tmp = Carbon::parse($entrada->created_at);
+
+            $dia = $fecha_tmp->format('d'); 
+
+            switch ($fecha_tmp->month) {
+                case 1:
+                    $mes = "Enero";
+                    break;
+                case 2:
+                    $mes = "Febrero";
+                    break;
+                case 3:
+                    $mes = "Marzo";
+                    break;
+                case 4:
+                    $mes = "Abril";
+                    break;
+                case 5:
+                    $mes = "Mayo";
+                    break;
+                case 6:
+                    $mes = "Junio";
+                    break;
+                case 7:
+                    $mes = "Julio";
+                    break;
+                case 8:
+                    $mes = "Agosto";
+                    break;
+                case 9:
+                    $mes = "Septiembre";
+                    break;
+                case 10:
+                    $mes = "Octubre";
+                    break;
+                case 11:
+                    $mes = "Noviembre";
+                    break;
+                case 12:
+                    $mes = "Diciembre";
+                    break;
+            }
+
+            $ano = $fecha_tmp->format('Y'); 
+
+            $hora = Carbon::parse($entrada->created_at)->format('h:i:s A');
+
+            $fecha = $dia . ' de ' . $mes . ' ' . $ano . ' ' . $hora;
+            
+            $entrada_array['fecha'] = $fecha;  
+            $entrada_array['contenido'] = $contenido;
+            $entrada_array['imagen'] = $imagen;
+            $entrada_array['usuario_imagen'] = $usuario_imagen;
+            $entrada_array['url']= "/blog/entrada/{$entrada->id}";
+            $entrada_array['contador'] = $i;
+            $array[$entrada->id] = $entrada_array;
+
+            $i = $i + 1;
+
+        }
+
+        return view('blog.index')->with(['academia' => $academia, 'entradas' => $array, 'categorias' => $categoria_array, 'cantidad' => $cantidad_total, 'populares' => $populares, 'recientes' => $recientes, 'usuario_tipo' => $usuario_tipo]);
+    }
+
 
 	public function index(){
 

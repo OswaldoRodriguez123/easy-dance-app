@@ -131,6 +131,7 @@ Route::get('especiales/campañas/invitacion/enhorabuena', 'CampanaController@enh
 
 //BLOG
 
+Route::get('blog/tuclasedebaile', 'BlogController@tu_clase_de_baile');
 Route::get('blog', 'BlogController@index');
 Route::get('blog/entrada/{id}', 'BlogController@entrada');
 Route::get('blog/categoria/{id}', 'BlogController@categoria');
