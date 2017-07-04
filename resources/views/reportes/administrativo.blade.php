@@ -484,7 +484,7 @@
                         if(concepto.length > 30){
                             concepto = concepto.substr(0, 30) + "..."
                         }
-                        
+
                         if(array.tipo == 1){
                             monto = '+'+formatmoney(parseFloat(array.importe_neto))
                         }else if(array.tipo == 2){
@@ -847,130 +847,136 @@
 
         $('#tipo_servicio').on('change', function(){
 
-            tipo_servicio = $(this).val();
-            nombre = '';
-            tipo_dropdown = ''
-            servicio_id = ''
+            tipo = $('#tipo').val();
 
-            $('#detalle_boton').text('Todos')
+            if(tipo == 2){
 
-            id = $(this).val();
-            $('#dropdown_principal').empty();
+                tipo_servicio = $(this).val();
+                nombre = '';
+                tipo_dropdown = ''
+                servicio_id = ''
 
-            if(id == 99){
+                $('#detalle_boton').text('Todos')
 
-                contenido = '';
+                id = $(this).val();
+                $('#dropdown_principal').empty();
 
-                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="3" data-nombre_servicio="Clases Grupales" data-servicio_id ="3">'
-                contenido += '<a>Clases Grupales</a>'
-                contenido += '<ul class="dropdown-menu">'
+                if(id == 99){
 
-                $.each(linea_servicio, function (index, array) {  
-                    if(array.tipo == 3 || array.tipo == 4){
-                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
-                    }                   
-                });
+                    contenido = '';
 
-                contenido += '</ul></li>'
-
-                $('#dropdown_principal').append(contenido);
-
-                contenido = '';
-            
-                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="9" data-nombre_servicio="Clases Personalizadas" data-servicio_id ="9">'
-                contenido += '<a>Clases Personalizadas</a>'
-                contenido += '<ul class="dropdown-menu">'
-
-                $.each(linea_servicio, function (index, array) {  
-                    if(array.tipo == 9){
-                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
-                    }                   
-                });
-
-                contenido += '</ul></li>'
-
-                $('#dropdown_principal').append(contenido);
-
-                contenido = '';
-
-                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="2" data-nombre_servicio="Productos" data-servicio_id ="2">'
-                contenido += '<a>Productos</a>'
-                contenido += '<ul class="dropdown-menu">'
-
-                $.each(linea_servicio, function (index, array) {  
-                    if(array.tipo == 2){
-                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
-                    }                   
-                });
-
-                contenido += '</ul></li>'
-
-                $('#dropdown_principal').append(contenido);
-
-                contenido = '';
-
-                contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="1" data-nombre_servicio="Servicios" data-servicio_id ="1">'
-                contenido += '<a>Servicios</a>'
-                contenido += '<ul class="dropdown-menu">'
-
-                $.each(linea_servicio, function (index, array) {  
-                    if(array.tipo == 1){
-                        contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
-                    }                   
-                });
-
-                contenido += '</ul></li>'
-
-                $('#dropdown_principal').append(contenido);
-
-                contenido = '';
-            
-
-                }else if(id == 14){
-                    
+                    contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="3" data-nombre_servicio="Clases Grupales" data-servicio_id ="3">'
+                    contenido += '<a>Clases Grupales</a>'
+                    contenido += '<ul class="dropdown-menu">'
 
                     $.each(linea_servicio, function (index, array) {  
-
-                        if(array.tipo == 14){
-
-                            contenido = '';
-
-                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
-
-                            $('#dropdown_principal').append(contenido);
-
+                        if(array.tipo == 3 || array.tipo == 4){
+                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
                         }                   
                     });
-                    
-                }else if(id == 5){
+
+                    contenido += '</ul></li>'
+
+                    $('#dropdown_principal').append(contenido);
+
+                    contenido = '';
+                
+                    contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="9" data-nombre_servicio="Clases Personalizadas" data-servicio_id ="9">'
+                    contenido += '<a>Clases Personalizadas</a>'
+                    contenido += '<ul class="dropdown-menu">'
 
                     $.each(linea_servicio, function (index, array) {  
-
-                        if(array.tipo == 5){
-
-                            contenido = '';
-
-                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
-
-                            $('#dropdown_principal').append(contenido);
-
+                        if(array.tipo == 9){
+                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
                         }                   
                     });
-                }else if(id == 11){
+
+                    contenido += '</ul></li>'
+
+                    $('#dropdown_principal').append(contenido);
+
+                    contenido = '';
+
+                    contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="2" data-nombre_servicio="Productos" data-servicio_id ="2">'
+                    contenido += '<a>Productos</a>'
+                    contenido += '<ul class="dropdown-menu">'
 
                     $.each(linea_servicio, function (index, array) {  
-
-                        if(array.tipo == 11){
-
-                            contenido = '';
-
-                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
-
-                            $('#dropdown_principal').append(contenido);
-
+                        if(array.tipo == 2){
+                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
                         }                   
                     });
+
+                    contenido += '</ul></li>'
+
+                    $('#dropdown_principal').append(contenido);
+
+                    contenido = '';
+
+                    contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-tipo_servicio="1" data-nombre_servicio="Servicios" data-servicio_id ="1">'
+                    contenido += '<a>Servicios</a>'
+                    contenido += '<ul class="dropdown-menu">'
+
+                    $.each(linea_servicio, function (index, array) {  
+                        if(array.tipo == 1){
+                            contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
+                        }                   
+                    });
+
+                    contenido += '</ul></li>'
+
+                    $('#dropdown_principal').append(contenido);
+
+                    contenido = '';
+                
+
+                    }else if(id == 14){
+                        
+
+                        $.each(linea_servicio, function (index, array) {  
+
+                            if(array.tipo == 14){
+
+                                contenido = '';
+
+                                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
+
+                                $('#dropdown_principal').append(contenido);
+
+                            }                   
+                        });
+                        
+                    }else if(id == 5){
+
+                        $.each(linea_servicio, function (index, array) {  
+
+                            if(array.tipo == 5){
+
+                                contenido = '';
+
+                                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
+
+                                $('#dropdown_principal').append(contenido);
+
+                            }                   
+                        });
+                    }else if(id == 11){
+
+                        $.each(linea_servicio, function (index, array) {  
+
+                            if(array.tipo == 11){
+
+                                contenido = '';
+
+                                contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-tipo_servicio="'+array.tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
+
+                                $('#dropdown_principal').append(contenido);
+
+                            }                   
+                        });
+                    }
                 }
+            }
         });
 
         function collapse_minus(collaps){
