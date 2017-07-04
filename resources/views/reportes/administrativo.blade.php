@@ -485,6 +485,10 @@
                             concepto = concepto.substr(0, 30) + "..."
                         }
 
+                        concepto.split(' ')
+                           .map(w => w[0].toUpperCase() + w.substr(1).toLowerCase())
+                           .join(' ')
+
                         if(array.tipo == 1){
                             monto = '+'+formatmoney(parseFloat(array.importe_neto))
                         }else if(array.tipo == 2){
