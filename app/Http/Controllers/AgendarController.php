@@ -398,13 +398,19 @@ class AgendarController extends BaseController
         $citas = $query->get();
 
         foreach ($citas as $cita) {
+
+            if($cita->tipo_id != 5){
+                $nombre = $cita->alumno_nombre . ' ' . $cita->alumno_apellido;
+            }else{
+                $nombre = $cita->alumno_nombre . ' ' . $cita->alumno_apellido . ' ★'; 
+            }
+
             $fecha_start=explode('-',$cita->fecha);
             $fecha_end=explode('-',$cita->fecha);
 
             $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
             $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
             
-            $nombre = $cita->alumno_nombre . ' ' . $cita->alumno_apellido;
             $descripcion=$cita->nombre;
             $hora_inicio=$cita->hora_inicio;
             $hora_final=$cita->hora_final;
