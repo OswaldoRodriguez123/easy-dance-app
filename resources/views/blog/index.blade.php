@@ -59,6 +59,8 @@
 
           <div class="col-sm-9">
 
+          <div class="clearfix p-b-15"></div>
+
            <div class ="entradas">
 
             @foreach(array_slice($entradas, 0, 10) as $entrada)

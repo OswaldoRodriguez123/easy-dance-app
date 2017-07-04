@@ -90,9 +90,9 @@
                                  
                                  <div class="opaco-0-8 text-right">Resta <span id="charNum">350</span> Caracteres</div>
                                  
-                                 <div class="has-error" id="error-titulo">
+                                 <div class="has-error" id="error-descripcion">
                                       <span >
-                                          <small class="help-block error-span" id="error-titulo_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
