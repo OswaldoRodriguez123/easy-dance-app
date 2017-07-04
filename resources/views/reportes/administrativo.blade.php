@@ -478,15 +478,13 @@
 
                     $.each(respuesta.facturas, function (index, array) {
 
-                        concepto = array.nombre
+                        concepto = toTitleCase(array.nombre)
                         concepto_completo = concepto
 
                         if(concepto.length > 30){
                             concepto = concepto.substr(0, 30) + "..."
                         }
-
-                        concepto = toTitleCase(concepto)
-
+                        
                         if(array.tipo == 1){
                             monto = '+'+formatmoney(parseFloat(array.importe_neto))
                         }else if(array.tipo == 2){
