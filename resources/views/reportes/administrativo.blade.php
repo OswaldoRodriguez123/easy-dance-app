@@ -478,7 +478,7 @@
 
                     $.each(respuesta.facturas, function (index, array) {
 
-                        concepto = array.toLowerCase().nombre 
+                        concepto = array.nombre.toLowerCase()
                         concepto_completo = concepto
 
                         if(concepto.length > 30){
