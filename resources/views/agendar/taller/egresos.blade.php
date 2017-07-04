@@ -212,11 +212,9 @@
                                 <tr>
                                     <th class="text-center" data-column-id="factura" data-order="desc">Factura</th>
                                     <th class="text-center" data-column-id="tipo">Tipo</th>
-                                    <th class="text-center" data-column-id="proveedor">Proveedor</th>
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
                                     <th class="text-center" data-column-id="cantidad" data-order="desc">Cantidad</th>
                                     <th class="text-center" data-column-id="fecha" data-order="desc">Fecha</th>
-                                    <th class="text-center" data-column-id="hora" data-order="desc">Hora</th>
                                     <th class="text-center" data-column-id="nit" data-order="desc">Nit</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>

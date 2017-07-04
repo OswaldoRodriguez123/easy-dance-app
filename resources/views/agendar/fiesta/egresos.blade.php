@@ -236,11 +236,9 @@
                                 <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion"> 
                                     <td class="text-center previa">{{$egreso->factura}}</td>
                                     <td class="text-center previa">{{$egreso->config_tipo}}</td>
-                                    <td class="text-center previa">{{$egreso->proveedor}}</td>
                                     <td class="text-center previa">{{ str_limit($egreso->concepto, $limit = 30, $end = '...') }}</td>
                                     <td class="text-center previa">{{ number_format($egreso->cantidad, 2, '.' , '.') }}</td>
                                     <td class="text-center previa">{{$egreso->fecha}}</td>
-                                    <td class="text-center previa">{{$egreso->hora}}</td>
                                     <td class="text-center previa">{{$egreso->nit}}</td>
                                     <td class="text-center disabled"> <i class="zmdi zmdi-delete pointer f-20 p-r-10"></i></td>
                                 </tr>
