@@ -1136,7 +1136,7 @@
                 ''+formatmoney(parseFloat(respuesta.array[0].precio_neto))+'',
                 ''+respuesta.array[0].impuesto+'',
                 ''+formatmoney(parseFloat(respuesta.array[0].importe_neto))+'',
-                ''+Por Cobrar+'',
+                ''+'Por Cobrar'+'',
                 '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
