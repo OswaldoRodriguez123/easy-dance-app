@@ -485,9 +485,7 @@
                             concepto = concepto.substr(0, 30) + "..."
                         }
 
-                        concepto.split(' ')
-                           .map(w => w[0].toUpperCase() + w.substr(1).toLowerCase())
-                           .join(' ')
+                        concepto = toTitleCase(concepto)
 
                         if(array.tipo == 1){
                             monto = '+'+formatmoney(parseFloat(array.importe_neto))
@@ -1010,6 +1008,11 @@
                 var route =route_detalle+"/"+id;
                 window.location=route;
             }
+        }
+
+        function toTitleCase(str)
+        {
+            return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
         }
 
         </script>
