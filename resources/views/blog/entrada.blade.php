@@ -46,6 +46,7 @@
               <tbody>
                 <tr>
                   <td>
+                    <br>
                     <img class="img_blogger" src="{{url('/')}}/{{$usuario_imagen}}?size=250" alt="{{$blogger->nombre}}" width="70" height="70" />Autor: <b><a title="{{$blogger->nombre}}" href="{{ empty($blogger->pagina_web) ? 'http://tuclasedebaile.com.co' : $blogger->pagina_web}}" target="_blank">{{$blogger->nombre}}</a></b> {{$blogger->descripcion}} <br><br>
 
 
@@ -97,7 +98,9 @@
 
                     <br><br><br>
 
-                    <a class="btn-blanco m-t-10" href="{{url('/')}}/blog/entradas/{{$blogger->id}}">Ver todos sus posts</a>
+                    <a class="btn-blanco m-l-10 m-t-10" href="{{url('/')}}/blog/entradas/{{$blogger->id}}">Ver todos sus posts</a>
+
+                    <br><br><br>
 
                   </td>
                 </tr>
