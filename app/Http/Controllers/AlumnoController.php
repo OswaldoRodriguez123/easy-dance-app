@@ -462,8 +462,9 @@ class AlumnoController extends BaseController
     {
 
         $visitante = Visitante::find($id);
+        $tipologias = Tipologia::all();
  
-        return view('participante.alumno.create')->with(['visitante' => $visitante, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get()]);
+        return view('participante.alumno.create')->with(['visitante' => $visitante, 'tipologias' => $tipologias]);
     }
 
     public function edit($id)
