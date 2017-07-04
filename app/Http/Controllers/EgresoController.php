@@ -26,14 +26,14 @@ class EgresoController extends BaseController {
     {
         $config_egresos = ConfigEgreso::all();
 
-        $egresos = Egreso::Leftjoin('config_egresos', 'egresos.tipo' , '=', 'config_egresos.id')
+        $egresos = Egreso::Leftjoin('config_egresos', 'egresos.config_tipo' , '=', 'config_egresos.id')
             ->select('egresos.*', 'config_egresos.nombre as config_tipo')
             ->where('academia_id',Auth::user()->academia_id)
             ->where('tipo_id',Auth::user()->academia_id)
             ->where('tipo',1)
         ->get();
 
-        $total = Egreso::Leftjoin('config_egresos', 'egresos.tipo' , '=', 'config_egresos.id')
+        $total = Egreso::Leftjoin('config_egresos', 'egresos.config_tipo' , '=', 'config_egresos.id')
             ->select('egresos.*', 'config_egresos.nombre as config_tipo')
             ->where('academia_id',Auth::user()->academia_id)
             ->where('tipo_id',Auth::user()->academia_id)
@@ -367,7 +367,7 @@ class EgresoController extends BaseController {
 
     public function edit($id)
     {   
-        $egreso = Egreso::Leftjoin('config_egresos', 'egresos.tipo' , '=', 'config_egresos.id')
+        $egreso = Egreso::Leftjoin('config_egresos', 'egresos.config_tipo' , '=', 'config_egresos.id')
             ->select('egresos.*','config_egresos.nombre')
             ->where('egresos.id',$id)
         ->first();

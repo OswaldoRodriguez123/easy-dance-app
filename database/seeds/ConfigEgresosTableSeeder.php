@@ -20,7 +20,7 @@ class ConfigEgresosTableSeeder extends Seeder
   	    ));
 
   	    ConfigEgreso::create(array(
-  	      'nombre' => 'Utilidad',
+  	      'nombre' => 'Inversión',
   	    ));
 
   	    ConfigEgreso::create(array(

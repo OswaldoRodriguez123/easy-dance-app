@@ -89,7 +89,7 @@
                       <select class="selectpicker" name="config_tipo" id="config_tipo" data-live-search="true">
                         <option value="">Selecciona</option>
                         @foreach ( $config_egresos as $tipo )
-                        <option value = "{{ $tipo->id }}">{{ $tipo->nombre }}</option>
+                          <option value = "{{ $tipo->id }}">{{ $tipo->nombre }}</option>
                         @endforeach
                       </select>
                     </div>
