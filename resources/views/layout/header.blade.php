@@ -226,14 +226,20 @@
                                     <li class="hidden-xs">
                                         <a href="{{url('configuracion')}}"><i class="zmdi zmdi-settings"></i> Configuración General</a>
                                     </li>
+                                @endif
 
+                                @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6 || $usuario_tipo == 3)
                                     <li class="hidden-xs">
                                         <a href="{{url('procedimientos')}}"><i class="zmdi icon_a-tutoriales"></i> Manuales de Procedimientos</a>
                                     </li>
                                 @endif
-                                <li class="hidden-xs">
-                                    <a href="{{url('normativas')}}"><i class="zmdi icon_a-tutoriales"></i> Normativas</a>
-                                </li>
+
+                                @if($usuario_tipo)
+                                    <li class="hidden-xs">
+                                        <a href="{{url('normativas')}}"><i class="zmdi icon_a-tutoriales"></i> Normativas</a>
+                                    </li>
+                                @endif
+
                             @endif 
 
                             <li>

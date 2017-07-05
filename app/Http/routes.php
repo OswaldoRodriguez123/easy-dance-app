@@ -217,18 +217,12 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		// MANUALES DE PROCEDIMIENTOS
 
-		Route::get('procedimientos', 'HerramientaController@principal_procedimientos');
 		Route::get('configuracion/herramientas/procedimientos','HerramientaController@planilla_procedimientos');
 		Route::post('configuracion/herramientas/procedimientos/agregar', 'HerramientaController@agregarProcedimiento');
 		Route::delete('configuracion/herramientas/procedimientos/eliminar/{id}', 'HerramientaController@eliminarProcedimiento');
 
 		// NORMATIVAS
 
-		Route::get('/normativas', 'NormativaController@principal');
-		Route::get('/normativas/generales', 'NormativaController@generales');
-		Route::get('/normativas/clases-grupales', 'NormativaController@clases_grupales');
-		Route::get('/normativas/clases-personalizadas', 'NormativaController@clases_personalizadas');
-		Route::get('/normativas/diagnostico', 'NormativaController@diagnostico');
 		Route::get('configuracion/herramientas/normativas','NormativaController@edit');
 		Route::post('configuracion/herramientas/normativas/agregar', 'NormativaController@store');
 		Route::delete('configuracion/herramientas/normativas/eliminar/{id}', 'NormativaController@destroy');
@@ -1137,6 +1131,14 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	--------------------------------------------------------*/
 	Route::group(['middleware' => ['alumno']], function() {
 
+		//NORMATIVAS
+
+		Route::get('/normativas', 'NormativaController@principal');
+		Route::get('/normativas/generales', 'NormativaController@generales');
+		Route::get('/normativas/clases-grupales', 'NormativaController@clases_grupales');
+		Route::get('/normativas/clases-personalizadas', 'NormativaController@clases_personalizadas');
+		Route::get('/normativas/diagnostico', 'NormativaController@diagnostico');
+
 		//SUGERENCIAS
 
 		Route::get('sugerencias/generar', 'SugerenciaController@create');
@@ -1239,6 +1241,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	});//END MIDDLEWARE ALUMNO
 
 	Route::group(['middleware' => ['instructor']], function() {
+
+		//PROCEDIMIENTOS
+
+		Route::get('procedimientos', 'HerramientaController@principal_procedimientos');
 
 		//INCIDENCIAS
 

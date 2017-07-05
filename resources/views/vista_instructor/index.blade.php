@@ -90,12 +90,11 @@
 
           <div class="col-xs-12 text-left">
             <ul class="tab-nav tn-justified" role="tablist">
-                      <li class="waves-effect"><a href="{{url('/')}}/pagos" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Administrativo</p></a></li>
-                      <li class="waves-effect"><a href="{{url('/')}}/asistencia" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Asistencia</p></a></li>
-                      <li class="waves-effect"><a href="{{url('/')}}/normativas" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Procedimiento</p></a></li>
-                      
-              </ul>
-            </div>
+              <li class="waves-effect"><a href="{{url('/')}}/pagos" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Administrativo</p></a></li>
+              <li class="waves-effect"><a href="{{url('/')}}/asistencia" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Asistencia</p></a></li>
+              <li class="waves-effect"><a href="{{url('/')}}/procedimientos" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Procedimientos</p></a></li>
+            </ul>
+          </div>
 
            
             </div>

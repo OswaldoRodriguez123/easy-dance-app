@@ -250,13 +250,12 @@
           <div class="col-sm-6" style="width:49%">
 
           <div class="col-xs-12 text-left">
-                          <ul class="tab-nav tn-justified" role="tablist">
-                                    <li class="waves-effect"><a href="{{url('/')}}/administrativo" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Administrativo</p></a></li>
-                                    <li class="waves-effect"><a href="{{url('/')}}/asistencia" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Asistencia</p></a></li>
-                                    <li class="waves-effect"><a href="{{url('/')}}/normativas" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Normativas</p></a></li>
-                                    
-                            </ul>
-              </div>
+            <ul class="tab-nav tn-justified" role="tablist">
+              <li class="waves-effect"><a href="{{url('/')}}/administrativo" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Administrativo</p></a></li>
+              <li class="waves-effect"><a href="{{url('/')}}/asistencia" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Asistencia</p></a></li>
+              <li class="waves-effect"><a href="{{url('/')}}/normativas" aria-controls="home11" onclick="procesando()"><p style=" margin-bottom: -2px;">Normativas</p></a></li>
+            </ul>
+          </div>
 
            <div class="clearfix p-b-20"></div>
 
