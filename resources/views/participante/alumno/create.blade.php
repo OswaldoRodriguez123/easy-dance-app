@@ -391,7 +391,7 @@
 
                              <div class="col-sm-12">
                                  
-                                <label for="tipologia_id" id="id-tipologia_id">Tipologia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona la tipologia" title="" data-original-title="Ayuda"></i>
+                                <label for="tipologia_id" id="id-tipologia_id">Perfil del Cliente</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el perfil del cliente" title="" data-original-title="Ayuda"></i>
 
                                  <div class="input-group">
                                   <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>

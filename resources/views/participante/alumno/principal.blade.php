@@ -121,7 +121,6 @@
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
-                                    <th class="text-center" data-column-id="tipologia">Tipología</th>
                                     <th class="text-center" data-column-id="estatu_e">Balance E</th>
                                     <th class="text-center" data-column-id="operacion">Acciones</th>
                                 </tr>
@@ -200,7 +199,6 @@
                                     ?>
 
                                     <td class="text-center previa">{{$nombre_alumno}} {{$apellido_alumno}} </td>
-                                    <td class="text-center previa">{{$alumno['tipologia']}}</td>
                                     <td class="text-center previa">
                                         <i class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
                                     </td>
