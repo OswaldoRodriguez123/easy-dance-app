@@ -43,6 +43,7 @@ use App\Visitante;
 use App\User;
 use App\Promocion;
 use App\Llamada;
+use App\Tipologia;
 use PulkitJalan\GeoIP\GeoIP;
 
 
@@ -846,7 +847,9 @@ class ClaseGrupalController extends BaseController {
                 $promotores['2-'.$instructor->id] = $promotor_array;
             }
 
-            return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'examen' => $examen, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal, 'promotores' => $promotores, 'promociones' => $promociones, 'usuario_tipo' => $usuario_tipo]);
+            $tipologias = Tipologia::all();
+
+            return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'examen' => $examen, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal, 'promotores' => $promotores, 'promociones' => $promociones, 'usuario_tipo' => $usuario_tipo, 'tipologias' => $tipologias]);
 
         }else{
             return redirect("agendar/clases-grupales"); 
@@ -1781,23 +1784,15 @@ class ClaseGrupalController extends BaseController {
     {
 
         $inscripcion = InscripcionClaseGrupal::find($request->id_participante);
-        $inscripcion->tipo_pago = $request->tipo_pago_participante;
+        $alumno = Alumno::find($inscripcion->alumno_id);
+        $alumno->tipologia_id = $request->tipologia_id_participante;
 
-        if($inscripcion->save())
+        if($alumno->save())
         {
-            $alumno = Alumno::find($inscripcion->alumno_id);
-
-            if($alumno){
-                $alumno->tipo_pago = $inscripcion->tipo_pago;
-                $alumno->save();
-            }
-            
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'tipo_pago' => $request->tipo_pago_participante, 'id' => $request->id_participante, 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'tipologia_id' => $request->tipologia_id_participante, 'id' => $request->id_participante, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-
-        
     }
 
     public function editarcredencial(Request $request)

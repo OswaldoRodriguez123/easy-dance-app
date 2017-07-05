@@ -32,17 +32,17 @@
                               <form name="form_actualizar" id="form_actualizar">
                                 <input class ="id_participante" type="hidden" name="id_participante" id="id_participante" value=""></input>
                                 <div class="col-sm-6">
-                                  <label for="nombre" id="id-tipo_pago_participante">Modalidad de Pago</label>
+                                  <label for="nombre" id="id-tipologia_id_participante">Perfil del Cliente</label>
                                   <div class="select">
-                                    <select class="selectpicker" name="tipo_pago_participante" id="tipo_pago_participante" data-live-search="true">
-                                      <option value = "1">Contado</option>
-                                      <option value = "2">Crédito</option>
-                                      <option value = "3">Sin Confirmar</option>
+                                    <select class="selectpicker" name="tipologia_id_participante" id="tipologia_id_participante" data-live-search="true">
+                                      @foreach($tipologias as $tipologia)
+                                        <option value = "{{$tipologia->id}}">{{$tipologia->nombre}}</option>
+                                      @endforeach
                                     </select>
                                   </div>
-                                  <div class="has-error" id="error-tipo_pago_participante">
+                                  <div class="has-error" id="error-tipologia_id_participante">
                                     <span >
-                                      <small class="help-block error-span" id="error-tipo_pago_participante_mensaje" ></small>                
+                                      <small class="help-block error-span" id="error-tipologia_id_participante_mensaje" ></small>                
                                     </span>
                                   </div>
                                 </div>
@@ -1153,7 +1153,7 @@
                               ;?>
 
                                 @if($alumno['tipo'] == 1)
-                                  <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo ="{{$alumno['tipo']}}" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-cantidad="{{$alumno['cantidad']}}" data-dias_vencimiento="{{$alumno['dias_vencimiento']}}" data-alumno_id="{{$alumno_id}}" data-fecha_nacimiento="{{$alumno['fecha_nacimiento']}}" data-celular="{{$alumno['celular']}}" data-telefono="{{$alumno['telefono']}}" data-identificacion="{{$alumno['identificacion']}}" data-tipo_pago="{{$alumno['tipo_pago']}}">
+                                  <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo ="{{$alumno['tipo']}}" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-cantidad="{{$alumno['cantidad']}}" data-dias_vencimiento="{{$alumno['dias_vencimiento']}}" data-alumno_id="{{$alumno_id}}" data-fecha_nacimiento="{{$alumno['fecha_nacimiento']}}" data-celular="{{$alumno['celular']}}" data-telefono="{{$alumno['telefono']}}" data-identificacion="{{$alumno['identificacion']}}" data-tipologia_id="{{$alumno['tipologia_id']}}">
 
                                       
                                     <td class="text-center previa"> 
@@ -2057,17 +2057,7 @@
                           var nTitle="Ups! ";
                           var nMensaje=respuesta.mensaje;
                           var row = "#"+respuesta.id;
-                          $(row).data('tipo_pago', respuesta.tipo_pago)
-
-                          if(respuesta.tipo_pago == 1){
-                            tipo_pago = 'Contado';
-                          }else if(respuesta.tipo_pago == 2){
-                            tipo_pago = 'Crédito';
-                          }else{
-                            tipo_pago = 'Sin Confirmar';
-                          }
-
-                          $('#tipo_pago_'+respuesta.id).text(tipo_pago)
+                          $(row).data('tipologia_id', respuesta.tipologia_id)
 
                         }else{
                           var nTitle="Ups! ";
@@ -2325,7 +2315,7 @@
             var sexo = $(t).closest('tr').data('sexo');
             var telefono = $(t).closest('tr').data('telefono');
             var celular = $(t).closest('tr').data('celular');
-            var tipo_pago = $(t).closest('tr').data('tipo_pago');
+            var tipologia_id = $(t).closest('tr').data('tipologia_id');
 
             if(sexo=="M"){
               $("#hombre").prop("checked", true);
@@ -2342,9 +2332,9 @@
             $('#fecha_nacimiento_participante').val(fecha_nacimiento);
             $('#telefono_participante').val(telefono);
             $('#celular_participante').val(celular);
-            $('#tipo_pago_participante').val(tipo_pago);
+            $('#tipologia_id_participante').val(tipologia_id);
 
-            $('#tipo_pago_participante').selectpicker('refresh');
+            $('#tipologia_id_participante').selectpicker('refresh');
             
             $('#modalAlumno').modal('show');
         }
