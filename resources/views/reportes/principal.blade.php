@@ -96,6 +96,10 @@
                       <a href="{{url('/')}}/reportes/eliminados"><h2 data-type="mText" class="sti-item">Eliminados</h2><span data-type="icon" class="sti-icon sti-icon-reportes14 sti-item"></span></a>
                   </li>
 
+                  <li data-hovercolor="#f44336">
+                      <a href="{{url('/')}}/reportes/clientes"><h2 data-type="mText" class="sti-item">Perfil del Cliente </h2><span data-type="icon" class="sti-icon sti-icon-reportes2 sti-item"></span></a>
+                  </li>
+
                 </ul>
               </div>
             </div>

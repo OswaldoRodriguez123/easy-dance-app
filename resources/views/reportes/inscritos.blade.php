@@ -173,7 +173,6 @@
                             <hr>
                             <div id="pie-chart-procesos" class="flot-chart-pie"></div>
                             <div class="flc-pie hidden-xs"></div>
-
                         </div>
 
 

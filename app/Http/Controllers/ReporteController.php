@@ -36,6 +36,7 @@ use App\PagoInstructor;
 use App\FormasPago;
 use App\Reservacion;
 use App\Participante;
+use App\Tipologia;
 use Mail;
 use DB;
 use Validator;
@@ -3200,6 +3201,185 @@ class ReporteController extends BaseController
         return response()->json(
             [
                 'eliminados'         => $eliminados,
+                'mensaje'           => '¡Excelente! El reporte se ha generado satisfactoriamente'
+
+            ]);
+
+    }
+
+    public function Clientes(){
+
+        $clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->select('clases_grupales.id',
+                         'clases_grupales.hora_inicio',
+                         'clases_grupales.hora_final',
+                         'clases_grupales.fecha_inicio',
+                         'config_clases_grupales.nombre',
+                         'instructores.nombre as instructor_nombre',
+                         'instructores.apellido as instructor_apellido')
+                ->where('clases_grupales.academia_id','=',Auth::user()->academia_id)
+                ->orderBy('clases_grupales.hora_inicio', 'asc')
+        ->get();
+
+        $array = array();
+
+        foreach($clases_grupales as $clase){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
+          
+            $i = $fecha->dayOfWeek;
+
+            if($i == 1){
+
+              $dia = 'Lunes';
+
+            }else if($i == 2){
+
+              $dia = 'Martes';
+
+            }else if($i == 3){
+
+              $dia = 'Miercoles';
+
+            }else if($i == 4){
+
+              $dia = 'Jueves';
+
+            }else if($i == 5){
+
+              $dia = 'Viernes';
+
+            }else if($i == 6){
+
+              $dia = 'Sabado';
+
+            }else if($i == 0){
+
+              $dia = 'Domingo';
+
+            }
+
+            $collection=collect($clase);     
+            $clase_array = $collection->toArray();
+                
+            $clase_array['dia']=$dia;
+            $array[$clase->id] = $clase_array;
+        }
+
+        $tipologias = Tipologia::all();
+
+        return view('reportes.clientes')->with(['clases_grupales' => $array, 'tipologias' => $tipologias]);
+    }
+
+    public function ClientesFiltros(Request $request)
+    {
+
+        $query = Alumno::where('academia_id','=', Auth::user()->academia_id)->whereNotNull('tipologia_id');
+
+        if($request->tipologia_id)
+        {
+            $query->where('tipologia_id','=', $request->tipologia_id);
+        }
+
+        if($request->boolean_fecha){
+            $fecha = explode(' - ', $request->fecha2);
+            $start = Carbon::createFromFormat('d/m/Y',$fecha2[0])->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$fecha2[1])->toDateString();
+            $query->whereBetween('created_at', [$start,$end]);
+        }else{
+
+            if($request->fecha){
+                if($request->fecha == 1){
+                    $start = Carbon::now()->toDateString();
+                    $end = Carbon::now()->toDateString();  
+                }else if($request->fecha == 2){
+                    $start = Carbon::now()->startOfMonth()->toDateString();
+                    $end = Carbon::now()->endOfMonth()->toDateString();  
+                }else if($request->fecha == 3){
+                    $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                    $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
+                }
+
+                $query->whereBetween('created_at', [$start,$end]);
+            }
+        }
+
+        if($request->clase_grupal_id)
+        {
+            $query->join('inscripcion_clase_grupal','inscripcion_clase_grupal.alumno_id','=','alumnos.id')
+                ->where('inscripcion_clase_grupal.clase_grupal_id','=', $request->clase_grupal_id);
+        }
+
+            
+        $clientes = $query->get();
+
+        $array = array();
+
+        $mujeres = 0;
+        $hombres = 0;
+        $array_tipologia = array();
+
+        $tipologias = Tipologia::all();
+
+        foreach($tipologias as $tipologia){
+            $array_tipologia[$tipologia->id] = ['nombre' => $tipologia->nombre, 'cantidad' => 0];
+
+        }
+
+        foreach($clientes as $cliente){
+
+            $array_tipologia[$cliente->tipologia_id]['cantidad']++;
+
+            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                    ->where('usuario_id', $cliente->id)
+                ->sum('importe_neto');
+
+            if($deuda){
+                $estatus = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
+            }else{
+                $estatus = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
+                $deuda = 0;
+            }
+            
+            if($cliente->sexo == 'F'){
+                $mujeres++;
+            }else{
+                $hombres++;
+            }
+
+            $collection=collect($cliente);     
+            $cliente_array = $collection->toArray();  
+            $cliente_array['deuda']=$deuda;
+            $cliente_array['estatus']=$estatus;
+            $array[$cliente->id] = $cliente_array;
+
+        }
+
+        $array_sexo = array();
+        $tipologias = array();
+        $array_tmp = array();
+
+        foreach($array_tipologia as $tipologia){
+            $array_tmp[] = array($tipologia['nombre'],$tipologia['cantidad']);
+        }
+
+        foreach($array_tmp as $tmp){
+            array_push($tipologias, $tmp);
+        }
+
+        // $array_hombres = array('M', $hombres);
+        // $array_mujeres = array('F', $mujeres);
+
+        // array_push($array_sexo, $array_hombres);
+        // array_push($array_sexo, $array_mujeres);   
+
+        return response()->json(
+            [
+                'clientes'          => $array,
+                'mujeres'           => $mujeres,
+                'hombres'           => $hombres,
+                'tipologias'        => $tipologias,
                 'mensaje'           => '¡Excelente! El reporte se ha generado satisfactoriamente'
 
             ]);
