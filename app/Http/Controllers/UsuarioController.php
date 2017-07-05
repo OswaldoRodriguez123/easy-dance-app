@@ -488,56 +488,6 @@ class UsuarioController extends BaseController {
         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'imagen' => $nombre_img, 200]);
     }
 
-    public function documentos(){
-
-        $academia = Academia::find(Auth::user()->academia_id);
-        $datos = $this->getDatosUsuario();
-
-        $usuario_id = $datos[0]['usuario_id'];
-
-        $clase_grupal_join = DB::table('clases_grupales')
-            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
-            ->select('config_clases_grupales.nombre','config_clases_grupales.condiciones', 'config_clases_grupales.id')
-            ->where('inscripcion_clase_grupal.alumno_id','=', $usuario_id)
-        ->get();
-
-        $taller_join = DB::table('talleres')
-            ->join('inscripcion_taller', 'inscripcion_taller.taller_id', '=', 'talleres.id')
-            ->select('talleres.nombre','talleres.condiciones', 'talleres.id')
-            ->where('inscripcion_taller.alumno_id','=', $usuario_id)
-        ->get();
-
-        $config_clase_personalizada = ConfigClasesPersonalizadas::where('academia_id', Auth::user()->academia_id)->first();
-        
-        return view('vista_alumno.normativas')->with(['academia' => $academia, 'clases_grupales' => $clase_grupal_join, 'config_clase_personalizada' => $config_clase_personalizada, 'talleres' => $taller_join]);
-
-    }
-
-    public function generales(){
-        
-        return view('normativas.generales');
-
-    }
-
-    public function clases_grupales(){
-        
-        return view('normativas.clases_grupales');
-
-    }
-
-    public function clases_personalizadas(){
-        
-        return view('normativas.clases_personalizadas');
-
-    }
-
-    public function diagnostico(){
-        
-        return view('normativas.diagnostico');
-
-    }
-
     public function seleccionar_tipo()
     {
         $usuario_tipo = Session::get('easydance_usuario_tipo');

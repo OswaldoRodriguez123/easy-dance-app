@@ -231,6 +231,9 @@
                                         <a href="{{url('procedimientos')}}"><i class="zmdi icon_a-tutoriales"></i> Manuales de Procedimientos</a>
                                     </li>
                                 @endif
+                                <li class="hidden-xs">
+                                    <a href="{{url('normativas')}}"><i class="zmdi icon_a-tutoriales"></i> Normativas</a>
+                                </li>
                             @endif 
 
                             <li>

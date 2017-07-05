@@ -222,6 +222,17 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('configuracion/herramientas/procedimientos/agregar', 'HerramientaController@agregarProcedimiento');
 		Route::delete('configuracion/herramientas/procedimientos/eliminar/{id}', 'HerramientaController@eliminarProcedimiento');
 
+		// NORMATIVAS
+
+		Route::get('/normativas', 'NormativaController@principal');
+		Route::get('/normativas/generales', 'NormativaController@generales');
+		Route::get('/normativas/clases-grupales', 'NormativaController@clases_grupales');
+		Route::get('/normativas/clases-personalizadas', 'NormativaController@clases_personalizadas');
+		Route::get('/normativas/diagnostico', 'NormativaController@diagnostico');
+		Route::get('configuracion/herramientas/normativas','NormativaController@edit');
+		Route::post('configuracion/herramientas/normativas/agregar', 'NormativaController@store');
+		Route::delete('configuracion/herramientas/normativas/eliminar/{id}', 'NormativaController@destroy');
+
 		// HERRAMIENTAS
 
 		Route::get('configuracion/herramientas','HerramientaController@index');
@@ -1154,14 +1165,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		Route::post('especiales/regalos/verificar', 'RegaloController@verify');
 		Route::post('especiales/regalos/verificar/{id}', 'RegaloController@verificarconalumno');
-
-		// NORMATIVAS
-
-		Route::get('/normativas', 'UsuarioController@documentos');
-		Route::get('/normativas/generales', 'UsuarioController@generales');
-		Route::get('/normativas/clases-grupales', 'UsuarioController@clases_grupales');
-		Route::get('/normativas/clases-personalizadas', 'UsuarioController@clases_personalizadas');
-		Route::get('/normativas/diagnostico', 'UsuarioController@diagnostico');
 
 		// --- ADMINISTRATIVO --- 
 
