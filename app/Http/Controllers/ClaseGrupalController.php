@@ -1783,14 +1783,19 @@ class ClaseGrupalController extends BaseController {
 
     public function actualizar_participante(Request $request)
     {
+        if($request->tipologia_id_participante){
+            $tipologia_id = $request->tipologia_id_participante;
+        }else{
+            $tipologia_id = null;
+        }
 
         $inscripcion = InscripcionClaseGrupal::find($request->id_participante);
         $alumno = Alumno::find($inscripcion->alumno_id);
-        $alumno->tipologia_id = $request->tipologia_id_participante;
+        $alumno->tipologia_id = $tipologia_id;
 
         if($alumno->save())
         {
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'tipologia_id' => $request->tipologia_id_participante, 'id' => $request->id_participante, 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'tipologia_id' => $tipologia_id, 'id' => $request->id_participante, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
