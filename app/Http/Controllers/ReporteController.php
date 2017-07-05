@@ -3275,7 +3275,10 @@ class ReporteController extends BaseController
     public function ClientesFiltros(Request $request)
     {
 
-        $query = Alumno::where('academia_id','=', Auth::user()->academia_id)->whereNotNull('tipologia_id');
+        $query = Alumno::join('tipologias','alumnos.tipologia_id','=','tipologias.id')
+        ->select('alumnos.*','tipologias.nombre as tipologia')
+        ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+        ->whereNotNull('alumnos.tipologia_id');
 
         if($request->tipologia_id)
         {
@@ -3286,13 +3289,13 @@ class ReporteController extends BaseController
             $fecha = explode(' - ', $request->fecha2);
             $start = Carbon::createFromFormat('d/m/Y',$fecha2[0])->toDateString();
             $end = Carbon::createFromFormat('d/m/Y',$fecha2[1])->toDateString();
-            $query->whereBetween('updated_at', [$start,$end]);
+            $query->whereBetween('alumnos.updated_at', [$start,$end]);
         }else{
 
             if($request->fecha){
                 if($request->fecha == 1){
                     $start = Carbon::now()->subDay()->toDateString();
-                    $end = Carbon::now()->toDateString();  
+                    $end = Carbon::now()->addDay()->toDateString();  
                 }else if($request->fecha == 2){
                     $start = Carbon::now()->startOfMonth()->toDateString();
                     $end = Carbon::now()->endOfMonth()->toDateString();  
@@ -3301,7 +3304,7 @@ class ReporteController extends BaseController
                     $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
                 }
 
-                $query->whereBetween('updated_at', [$start,$end]);
+                $query->whereBetween('alumnos.updated_at', [$start,$end]);
             }
         }
 
@@ -3330,17 +3333,6 @@ class ReporteController extends BaseController
         foreach($clientes as $cliente){
 
             $array_tipologia[$cliente->tipologia_id]['cantidad']++;
-
-            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
-                    ->where('usuario_id', $cliente->id)
-                ->sum('importe_neto');
-
-            if($deuda){
-                $estatus = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20"></i>';
-            }else{
-                $estatus = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20"></i>';
-                $deuda = 0;
-            }
             
             if($cliente->sexo == 'F'){
                 $mujeres++;
@@ -3350,8 +3342,6 @@ class ReporteController extends BaseController
 
             $collection=collect($cliente);     
             $cliente_array = $collection->toArray();  
-            $cliente_array['deuda']=$deuda;
-            $cliente_array['estatus']=$estatus;
             $array[$cliente->id] = $cliente_array;
 
         }
