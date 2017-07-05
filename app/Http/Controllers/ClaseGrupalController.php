@@ -375,6 +375,7 @@ class ClaseGrupalController extends BaseController {
                     ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
                     ->where('inscripcion_clase_grupal.boolean_congelacion',0)
                     ->where('inscripcion_clase_grupal.deleted_at', '=', null)
+                    ->where('alumnos.deleted_at', '=', null)
             ->get();
 
             $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio);
