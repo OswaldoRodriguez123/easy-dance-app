@@ -247,6 +247,7 @@
 
                                       <div class="select">
                                           <select class="form-control" id="tipologia_id" name="tipologia_id">
+                                            <option value="">Selecciona</option>
                                             @foreach ( $tipologias as $tipologia )
                                               <option value = "{{ $tipologia['id'] }}">{{ $tipologia['nombre'] }}</option>
                                             @endforeach 
