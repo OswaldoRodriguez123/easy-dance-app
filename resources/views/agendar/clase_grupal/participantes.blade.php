@@ -35,6 +35,7 @@
                                   <label for="nombre" id="id-tipologia_id_participante">Perfil del Cliente</label>
                                   <div class="select">
                                     <select class="selectpicker" name="tipologia_id_participante" id="tipologia_id_participante" data-live-search="true">
+                                      <option value="">Selecciona</option>
                                       @foreach($tipologias as $tipologia)
                                         <option value = "{{$tipologia->id}}">{{$tipologia->nombre}}</option>
                                       @endforeach
