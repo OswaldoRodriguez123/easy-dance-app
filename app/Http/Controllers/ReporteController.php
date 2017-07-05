@@ -3286,7 +3286,7 @@ class ReporteController extends BaseController
             $fecha = explode(' - ', $request->fecha2);
             $start = Carbon::createFromFormat('d/m/Y',$fecha2[0])->toDateString();
             $end = Carbon::createFromFormat('d/m/Y',$fecha2[1])->toDateString();
-            $query->whereBetween('created_at', [$start,$end]);
+            $query->whereBetween('updated_at', [$start,$end]);
         }else{
 
             if($request->fecha){
@@ -3301,7 +3301,7 @@ class ReporteController extends BaseController
                     $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
                 }
 
-                $query->whereBetween('created_at', [$start,$end]);
+                $query->whereBetween('updated_at', [$start,$end]);
             }
         }
 
