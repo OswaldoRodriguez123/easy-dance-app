@@ -736,11 +736,19 @@ class ClaseGrupalController extends BaseController {
                         if($fecha_a_comparar < Carbon::now()->subDay()){
                             for($i = $index_inicial; $i < count($array_dias); $i++){
 
-                                if($j != 0){
-                                    $inasistencias++;
-                                    $fecha_a_comparar->addDays($array_dias[$i]);
-                                }else{
-                                    $fecha_a_comparar->addDays($array_dias[$i]);
+                                $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha_a_comparar)
+                                    ->where('fecha_final', '>=', $fecha_a_comparar)
+                                    ->where('tipo_id', $id)
+                                    ->where('tipo', 1)
+                                ->first();
+
+                                if(!$horario_bloqueado){
+                                    if($j != 0){
+                                        $inasistencias++;
+                                        $fecha_a_comparar->addDays($array_dias[$i]);
+                                    }else{
+                                        $fecha_a_comparar->addDays($array_dias[$i]);
+                                    }
                                 }
 
                                 //PARA QUE LAS INASISTENCIAS SE EMPIECEN A CONTABILIZAR 
