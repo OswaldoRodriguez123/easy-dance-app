@@ -4718,6 +4718,10 @@ class ClaseGrupalController extends BaseController {
                                 // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
                                 // $array_dias_tmp[] = $array_dias[$i];
 
+                                if($array_dias[$i] == 0){
+                                    dd($array_dias);
+                                }
+
                                 if($j != 0){
                                     $inasistencias++;
                                     $fecha_a_comparar->addDays($array_dias[$i]);
