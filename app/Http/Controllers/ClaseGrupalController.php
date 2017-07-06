@@ -4469,10 +4469,6 @@ class ClaseGrupalController extends BaseController {
                         $array_dias[] = 7;
                     }
 
-                    if(count($array_dias) < 2 || count($array_dias) > 2){
-                        continue;
-                    }
-
                     //CONSULTAR LA ULTIMA ASISTENCIA, EL TIPO ES 1 (CLASE PRINCIPAL) Y 2 (MULTIHORARIO), EL TIPO_ID ES UN ARRAY CON EL ID DE LA CLASE PRINCIPAL Y LOS MULTIHORARIOS QUE POSEA
      
                     $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)
@@ -4538,19 +4534,19 @@ class ClaseGrupalController extends BaseController {
                     //     $index_inicial = 0;
                     // }
 
-                    // $cantidad_inasistencias = count($array_dias);
+                    $cantidad_inasistencias = count($array_dias);
 
                     while($fecha_a_comparar < $fecha_de_finalizacion){
                         if($fecha_a_comparar < Carbon::now()->subDay()){
-                            // for($i = $index_inicial; $i < count($array_dias); $i++){
+                            for($i = $index_inicial; $i < count($array_dias); $i++){
 
                                 // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
                                 // $array_dias_tmp[] = $array_dias[$i];
 
                                 if($j != 0){
-                                    // $inasistencias += $cantidad_inasistencias;
+                                    $inasistencias += $cantidad_inasistencias;
                                     $fecha_a_comparar->addWeek();
-                                    $inasistencias++;
+                                    // $inasistencias++;
                                     // $fecha_a_comparar->addDays($array_dias[$i]);
 
                                     
@@ -4562,7 +4558,7 @@ class ClaseGrupalController extends BaseController {
                                 //PARA QUE LAS INASISTENCIAS SE EMPIECEN A CONTABILIZAR 
 
                                 $j++;
-                            // }
+                            }
                         }else{
                             break;
                         }
@@ -4804,10 +4800,6 @@ class ClaseGrupalController extends BaseController {
                         $array_dias[] = 7;
                     }
 
-                    if(count($array_dias) < 2 || count($array_dias) > 2){
-                        continue;
-                    }
-
                     //CONSULTAR LA ULTIMA ASISTENCIA, EL TIPO ES 1 (CLASE PRINCIPAL) Y 2 (MULTIHORARIO), EL TIPO_ID ES UN ARRAY CON EL ID DE LA CLASE PRINCIPAL Y LOS MULTIHORARIOS QUE POSEA
      
                     $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)
@@ -4883,9 +4875,9 @@ class ClaseGrupalController extends BaseController {
                                 // $array_dias_tmp[] = $array_dias[$i];
 
                                 if($j != 0){
-                                    // $inasistencias += $cantidad_inasistencias;
+                                    $inasistencias += $cantidad_inasistencias;
                                     $fecha_a_comparar->addWeek();
-                                    $inasistencias++;
+                                    // $inasistencias++;
                                     // $fecha_a_comparar->addDays($array_dias[$i]);
 
                                     
