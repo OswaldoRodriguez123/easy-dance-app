@@ -4711,33 +4711,33 @@ class ClaseGrupalController extends BaseController {
                     //     $index_inicial = 0;
                     // }
 
-                    while($fecha_a_comparar < $fecha_de_finalizacion){
-                        if($fecha_a_comparar < Carbon::now()->subDay()){
-                            for($i = $index_inicial; $i < count($array_dias); $i++){
+                    // while($fecha_a_comparar < $fecha_de_finalizacion){
+                    //     if($fecha_a_comparar < Carbon::now()->subDay()){
+                    //         for($i = $index_inicial; $i < count($array_dias); $i++){
 
-                                // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
-                                // $array_dias_tmp[] = $array_dias[$i];
+                    //             // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
+                    //             // $array_dias_tmp[] = $array_dias[$i];
 
-                                if($j != 0){
-                                    $inasistencias++;
-                                    $fecha_a_comparar->addDays($array_dias[$i]);
+                    //             if($j != 0){
+                    //                 $inasistencias++;
+                    //                 $fecha_a_comparar->addDays($array_dias[$i]);
                                     
-                                }else{
-                                    $fecha_a_comparar->addDays($array_dias[$i]);
-                                }
+                    //             }else{
+                    //                 $fecha_a_comparar->addDays($array_dias[$i]);
+                    //             }
 
-                                //PARA QUE LAS INASISTENCIAS SE EMPIECEN A CONTABILIZAR 
+                    //             //PARA QUE LAS INASISTENCIAS SE EMPIECEN A CONTABILIZAR 
 
-                                $j++;
-                            }
-                        }else{
-                            break;
-                        }
+                    //             $j++;
+                    //         }
+                    //     }else{
+                    //         break;
+                    //     }
 
-                        //EL INDEX VUELVE A 0 PARA PODER REALIZAR EL CICLO FOR DESDE EL PRINCIPIO HASTA QUE LA FECHA A COMPARAR SEA MAYOR A LA FECHA DE FINALIZACIÓN
+                    //     //EL INDEX VUELVE A 0 PARA PODER REALIZAR EL CICLO FOR DESDE EL PRINCIPIO HASTA QUE LA FECHA A COMPARAR SEA MAYOR A LA FECHA DE FINALIZACIÓN
 
-                        $index_inicial = 0;
-                    }
+                    //     $index_inicial = 0;
+                    // }
                     
                     // LA CONFIGURACIÓN DE LAS ASISTENCIAS DEBEN ESTAR ESTABLECIDAS PARA QUE LAS CONTABILIZACIONES SE HAGAN (!= 0)
 
