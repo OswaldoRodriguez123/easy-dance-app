@@ -4715,12 +4715,8 @@ class ClaseGrupalController extends BaseController {
                         if($fecha_a_comparar < Carbon::now()->subDay()){
                             for($i = $index_inicial; $i < count($array_dias); $i++){
 
-                                // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
-                                // $array_dias_tmp[] = $array_dias[$i];
-
-                                if($array_dias[$i] == 0){
-                                    dd($array_dias);
-                                }
+                                $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
+                                $array_dias_tmp[] = $array_dias[$i];
 
                                 if($j != 0){
                                     $inasistencias++;
@@ -4742,6 +4738,8 @@ class ClaseGrupalController extends BaseController {
 
                         $index_inicial = 0;
                     }
+
+                    dd($array_fecha_a_comparar);
                     
                     // LA CONFIGURACIÓN DE LAS ASISTENCIAS DEBEN ESTAR ESTABLECIDAS PARA QUE LAS CONTABILIZACIONES SE HAGAN (!= 0)
 
