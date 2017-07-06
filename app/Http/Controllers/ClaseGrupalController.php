@@ -3988,179 +3988,6 @@ class ClaseGrupalController extends BaseController {
         return view('agendar.clase_grupal.reservaciones_vencidas')->with(['reservaciones' => $array, 'id' => $id]);
     }
 
-    public function riesgo_ausencia(){
-
-        $alumnos = Alumno::where('academia_id',Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
-
-        $array = array();
-        $array_inasistencia = array();
-
-        foreach($alumnos as $alumno){
-
-            $inasistencias = 0;
-
-            $clases_grupales = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
-                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->select('clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'config_clases_grupales.asistencia_rojo', 'config_clases_grupales.asistencia_amarilla', 'inscripcion_clase_grupal.fecha_inscripcion')
-                ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
-                ->orderBy('inscripcion_clase_grupal.fecha_inscripcion', 'desc')
-            ->get();
-
-            foreach($clases_grupales as $clase_grupal){
-
-                $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-                $fecha_final = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_final);
-
-                if(Carbon::now() > $fecha_inicio){
-
-                    $asistencia_amarilla = $clase_grupal->asistencia_amarilla;
-                    $asistencia_roja = $clase_grupal->asistencia_rojo;
-
-                    //CREAR ARREGLO DE CLASES GRUPALES A CONSULTAR EN LA ASISTENCIA
-
-                    $horarios_clases_grupales = HorarioClaseGrupal::where('clase_grupal_id', $clase_grupal->id)->orderBy('fecha')->get();
-                    $array_dias = array();
-                    $array_organizador = array();
-                    $i = 0;
-                    $tipo_id = array();
-                    $tipo_id[] = intval($clase_grupal->id);
-                    $array_dias_clases_inscripcion = array();
-
-                    //COMPROBAR CUANTOS MULTIHORARIOS HAY PARA CONSTRUIR EL ADDDAYS
-
-                    $array_dias_clases_inscripcion[] = $fecha_inicio->dayOfWeek;
-
-                    foreach($horarios_clases_grupales as $horario){
-                        $tipo_id[] = $horario->id;
-                        $fecha = Carbon::createFromFormat('Y-m-d', $horario->fecha);
-              
-                        $dia = $fecha->dayOfWeek;
-                        $array_organizador[$i]['dia'] = $dia;
-                        $array_organizador[$i]['fecha'] = $fecha;
-                        $array_organizador[$i]['id'] = $horario->id;
-                        $i++;
-
-                        $array_dias_clases_inscripcion[] = $dia;
-
-                    }
-
-                    if(!$array_organizador){
-                        $array_dias[] = 7;
-                    }else if(count($array_organizador) == 1){
-
-                        $dia_inicio_clase = $fecha_inicio->dayOfWeek;
-                        $dia_inicio_horario = $array_organizador[0]['dia'];
-                        $cantidad_dias = 0;
-
-                        if($dia_inicio_clase > $dia_inicio_horario){
-                            while ($dia_inicio_clase != 7){
-                                $dia_inicio_clase++;
-                                $cantidad_dias++;
-                            }
-                        }
-
-                        $dias = abs($dia_inicio_clase - ($dia_inicio_horario + 1));
-                        $dias = $dias + $cantidad_dias;
-                        $array_dias[] = $dias;
-                        $dia_principal = 7 - $dias;
-                        $array_dias[] = $dia_principal;
-
-                    }else{
-
-                        foreach($array_organizador as $index => $organizador){
-
-                            $tipo_id[] = $organizador['id'];
-
-                            if ($index == 0) {
-                                $dias_a_restar = $organizador['dia'];
-                                continue;
-                            }
-
-                            $dias_a_añadir = $organizador['dia'] - $dias_a_restar;
-                            $array_dias[] = $dias_a_añadir;
-                            $dias_a_restar = $organizador['dia'];
-
-                        }
-
-                        $dia_principal = 7 - $dias_a_restar;
-                        $dia_principal = $dia_principal + $fecha_inicio->dayOfWeek;
-                        $array_dias[] = $dia_principal;
-                    }
-
-                    $tipo_clase = array(1,2);
-                    $in = array(2,4);
-
-                    if(Carbon::now() <= $fecha_final){
-                        $fecha_de_finalizacion = Carbon::now();
-                    }else{
-                        $fecha_de_finalizacion = $fecha_final;
-                    }
-     
-                    $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)->whereIn('tipo_id',$tipo_id)
-                        ->where('alumno_id', $alumno->id)
-                        ->orderBy('created_at', 'desc')
-                    ->first();
-
-                    if($ultima_asistencia){
-
-                        $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
-                        $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
-                        $j = 0;
-
-                    }else{
-
-                        $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inscripcion);
-                        $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
-                        
-                        while(!in_array($dia_inscripcion,$array_dias_clases_inscripcion)){
-                            $fecha_a_comparar->addDay();
-                            $dia_inscripcion = $fecha_a_comparar->dayOfWeek;
-                        }
-                        
-                        $j = 1;
-                    }
-
-                    $index_inicial = array_search($dia_inscripcion, $array_dias_clases_inscripcion);
-
-                    $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
-                    $array_fecha_a_comparar = array();
-                    $array_dias_tmp = array();
-
-                    while($fecha_a_comparar < $fecha_de_finalizacion){
-                        for($k = $index_inicial; $k < count($array_dias); $k++){
-                            $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
-                            $array_dias_tmp[] = $array_dias[$k];
-                            if($j != 0){
-                                if($fecha_a_comparar < Carbon::now()->subDay()){
-
-                                    $inasistencias++;
-                                    $fecha_a_comparar->addDays($array_dias[$k]);
-                                }
-                            }else{
-                                $fecha_a_comparar->addDays($array_dias[$k]);
-                            }
-                            $j++;
-                        }
-
-                        $index_inicial = 0;
-                    }
-                    
-                    if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
-                        // $array[] = $alumno;
-                    }
-                    else if($inasistencias >= $asistencia_amarilla && $asistencia_amarilla != 0){
-                        $array[] = $alumno;
-                        $array_inasistencia[$alumno->id] = $inasistencias;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return view('agendar.clase_grupal.ausencia')->with(['alumnos' => $array, 'inasistencias' => $array_inasistencia]);
-
-    }
-
     public function historial_asistencia_general($id){
 
         $inscripciones = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
@@ -4762,6 +4589,340 @@ class ClaseGrupalController extends BaseController {
         }
 
         return response()->json(['mensaje' => '¡Excelente! Los datos se han generado satisfactoriamente', 'status' => 'OK', 'inactivos' => $inactivos, 'riesgo' => $riesgo, 'activos' => $activos, 200]);
+
+    }
+
+    public function riesgo_ausencia(){
+
+        $alumnos = Alumno::where('academia_id',Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        $array = array();
+        $array_inasistencia = array();
+
+        $alumnos = Alumno::where('academia_id',Auth::user()->academia_id)
+            ->orderBy('created_at', 'desc')
+        ->get();
+
+        //ARRAY DE BUSQUEDA EN ASISTENCIAS
+
+        $tipo_clase = array(1,2);
+
+        foreach($alumnos as $alumno){
+
+            $inasistencias = 0;
+
+            $clase_grupal = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->select('clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'config_clases_grupales.asistencia_rojo', 'config_clases_grupales.asistencia_amarilla', 'inscripcion_clase_grupal.fecha_inscripcion', 'clases_grupales.id')
+                ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
+                ->where('clases_grupales.deleted_at', null)
+                ->orderBy('inscripcion_clase_grupal.fecha_inscripcion', 'desc')
+            ->first();
+
+            if($clase_grupal){
+
+                $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+
+                if(Carbon::now() > $fecha_inicio){
+
+                    $fecha_final = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_final);
+
+                    //COMPROBAR HASTA QUE DIA SE HARA EL CICLO, SI LA CLASE AUN NO HA FINALIZADO, SE HARA HASTA EL DIA DE HOY
+
+                    if(Carbon::now() <= $fecha_final){
+                        $fecha_de_finalizacion = Carbon::now();
+                    }else{
+                        $fecha_de_finalizacion = $fecha_final;
+                    }
+
+                    $dia_inicio_clase = $fecha_inicio->dayOfWeek;
+
+                    if($dia_inicio_clase == 0){
+                        $dia_inicio_clase = 7;
+                    }
+
+                    //CONFIGURACIONES DE ASISTENCIAS
+
+                    $asistencia_amarilla = $clase_grupal->asistencia_amarilla;
+                    $asistencia_roja = $clase_grupal->asistencia_rojo;
+
+                    //CREAR ARREGLO DE CLASES GRUPALES A CONSULTAR EN LA ASISTENCIA
+
+                    $horarios_clases_grupales = HorarioClaseGrupal::where('clase_grupal_id', $clase_grupal->id)
+                        ->orderBy('fecha')
+                    ->get();
+
+                    //ARRAYS CREADO CON EL FIN DE ESTABLECER LOS SALTOS DE DIAS ENTRE CADA CLASE Y SUS MULTIHORARIOS QUE TENDRA LA CONSULTA DE ASISTENCIA, EL ORGANIZADOR ESTABLECE EN LA PRIMERA POSICIÓN EL PRIMER MULTIHORARIO QUE TENGA, Y DE ULTIMO LA CLASE PRINCIPAL PARA PODER REALIZAR EL CICLO CORRECTAMENTE, EL ARRAY DE DIAS SIMPLEMENTE SE USARA PARA LAS CONSULTAS
+
+                    $array_organizador = array();
+                    $array_organizador_before = array();
+                    $array_organizador_after = array();
+                    $array_dias = array();
+
+                    //ARRAY DE BUSQUEDA EN ASISTENCIAS
+
+                    $tipo_id = array();
+                    $tipo_id[] = intval($clase_grupal->id);
+
+                    // 1.1 -- ARRAY CREADO PARA ESTABLECER EL INDEX CON EL QUE SE COMENZARA A REALIZAR LA BUSQUEDA POR SI LA ULTIMA ASISTENCIA FUE REALIZADA EN UN MULTIHORARIO, ESTO CON LA FINALIDAD DE SABER QUE INDEX CORRESPONDE DESPUES EN LA CONSULTA
+
+                    $array_dias_clases = array();
+                    $array_dias_clases_before = array();
+                    $array_dias_clases_after = array();
+
+                    //ESTABLECE EL DIA PRINCIPAL COMO PRIMER INDEX DEL ARRAY DE DIAS
+
+                    $array_dias_clases[] = $dia_inicio_clase;
+
+                    //SE CREA EL ARRAY ORGANIZADOR Y EL ARRAY DE DIAS
+
+                    foreach($horarios_clases_grupales as $horario){
+
+                        $tipo_id[] = $horario->id;
+                        $fecha = Carbon::createFromFormat('Y-m-d', $horario->fecha);
+                        $dia = $fecha->dayOfWeek;
+
+                        if($dia == 0){
+                            $dia = 7;
+                        }
+
+                        if($dia_inicio_clase >= $dia){
+                            $array_dias_clases_before[] = $dia;
+                            $array_organizador_before[] = $dia;
+                        }else{
+                            $array_dias_clases_after[] = $dia;
+                            $array_organizador_after[] = $dia;
+                        }
+
+                    }
+
+                    //SE ORDENA EL ARREGLO DE DIAS ANTERIORES A LA CLASE PRINCIPAL
+
+                    usort($array_dias_clases_before, function($a, $b) {
+                        return $a - $b;
+                    });
+
+                    usort($array_organizador_before, function($a, $b) {
+                        return $a - $b;
+                    });
+
+                    //ESTE PROCESO SE HACE PARA QUE LA CLASE PRINCIPAL SEA LA PRIMERA EN CONSULTAR, LUEGO SERAN LAS CLASES POSTERIORES A ELLA Y POR ULTIMO LAS CLASES ANTERIORES, PARA QUE EL CICLO AGREGUE UNA SEMANA ANTES DE CONSULTAR LAS CLASES ANTERIORES
+
+                    $merge = array_merge($array_dias_clases, $array_dias_clases_after);
+                    $array_dias_clases = array_merge($merge, $array_dias_clases_before);
+                    $array_organizador = array_merge($array_organizador_after, $array_dias_clases_before);
+
+                    //SE ESTABLECE QUE SI NO HAY MULTIHORARIO, EL ARRAY DE DIA SOLO TENDRA UNA POSICIÓN DE 7, PARA QUE LAS CONSULTAS SE HAGAN SEMANALMENTE
+
+                    //SI SOLO TIENE UN MULTIHORARIO, LA PRIMERA POSICIÓN SERA LA CANTIDAD DE DIAS QUE LE FALTA A LA CLASE PRINCIPAL PARA LLEGAR AL DIA DEL MULTIHORARIO, LA ULTIMA SERA LA CANTIDAD DE DIAS PARA LLEGAR DE NUEVO A LA CLASE PRINCIPAL, TENDRA SOLO 2 POSICIONES
+
+                    // SI TIENE MAS DE UN MULTIHORARIO, ESTABLECERA UN CICLO PARA VER CUANTOS DIAS HAY ENTRE CADA MULTIHORARIO, DEJANDO POR ULTIMO LA CLASE PRINCIPAL PARA REPETIR EL CICLO
+
+                    //LA CONSULTA DE LOS MULTIHORARIOS LOS ORDENARA POR FECHA PARA ASI SOLO TENER QUE ESTABLECER LA CANTIDAD DE DIAS ENTRE ELLOS
+
+                    if($array_organizador){
+
+                        $dias_a_sumar = 0;
+                        
+                        if(count($array_organizador) == 1){
+
+                            $dia_inicio_horario = $array_organizador;
+
+                            if($dia_inicio_clase  > $dia_inicio_horario){
+
+                                while ($dia_inicio_clase != 7){
+                                    $dias_a_sumar++;
+                                    $dia_inicio_clase++;
+                                }
+
+                                $array_dias[] = $dias_a_sumar + $dia_inicio_horario;
+
+                                $dia_a_comparar = $dia_inicio_horario;
+                                $dias_a_sumar = $dia_inicio_clase;
+
+                            }else{
+
+                                $dias = abs(intval($dia_inicio_horario) - intval($dia_inicio_clase));
+                                $array_dias[] = $dias;
+
+                                $dia_a_comparar = $dia_inicio_clase;
+                                $dias_a_sumar = $dia_inicio_horario;
+                            }
+
+                            $dias = 0;
+                            $cantidad_dias = 0;
+
+                            if($dias_a_sumar < 7){
+                                while ($dias_a_sumar != 7){
+                                    $dias++;
+                                    $dias_a_sumar++;
+                                }
+                            }
+
+                            while ($cantidad_dias != $dia_a_comparar){
+                                $cantidad_dias++;
+                                $dias++;
+                            }
+                            
+                            $array_dias[] = $dias;
+
+                        }else{
+
+                            $dias_a_restar = $dia_inicio_clase;
+
+                            foreach($array_organizador as $index => $organizador){
+
+                                //SE MIDE LA CANTIDAD DE DIAS ENTRE LA CLASE PRINCIPAL Y EL PRIMER MULTIHORARIO, Y LUEGO ENTRE CADA UNO DE LOS MULTIHORARIOS
+
+                                if($dias_a_restar < $organizador){
+                                    $dias_a_añadir = abs($organizador - $dias_a_restar);
+                                }else{
+                                    $dias_a_añadir = abs(($organizador + 7) - $dias_a_restar);
+                                }
+
+                                $array_dias[] = $dias_a_añadir;
+                                $dias_a_restar = $organizador;
+
+                            }
+
+                            if($dias_a_restar > $dia_inicio_clase){
+                                $dias_a_sumar = 0;
+
+                                while ($dias_a_restar != 7){
+                                    $dias_a_sumar++;
+                                    $dias_a_restar++;
+
+                                }
+
+                                $dias_a_sumar = $dias_a_sumar + $dia_inicio_clase;
+                            }else{
+                                $dias_a_sumar = abs($dias_a_restar - $dia_inicio_clase);
+                            }
+
+                            $array_dias[] = $dias_a_sumar;
+                        }
+                    }else{
+                        $array_dias[] = 7;
+                    }
+
+                    if(count($array_dias) < 2 || count($array_dias) > 2){
+                        continue;
+                    }
+
+                    //CONSULTAR LA ULTIMA ASISTENCIA, EL TIPO ES 1 (CLASE PRINCIPAL) Y 2 (MULTIHORARIO), EL TIPO_ID ES UN ARRAY CON EL ID DE LA CLASE PRINCIPAL Y LOS MULTIHORARIOS QUE POSEA
+     
+                    $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)
+                        ->whereIn('tipo_id',$tipo_id)
+                        ->where('alumno_id', $alumno->id)
+                        ->orderBy('created_at', 'desc')
+                    ->first();
+
+                    //SI POSEE UNA ASISTENCIA, EL COMPARARA DESDE ESE DIA, SINO, ESTE TOMARA EL DIA EN QUE EL ALUMNO SE INSCRIBIO
+
+                    //NOTA IMPORTANTE: PARA NO ROMPER EL CICLO CON LA FECHA DE LA INSCRIPCION, EL PROCESO CONVERTIRA ESTA FECHA A UNA QUE CONCUERDE CON LA CLASE PRINCIPAL O ALGUN MULTIHORARIO, SINO LAS CONSULTAS NUNCA FUNCIONARAN
+
+                    if($ultima_asistencia){
+
+                        $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
+                        $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
+                        
+                        if($dia_a_comparar != 0){
+                            $dia_a_comparar = $fecha_a_comparar->dayOfWeek + 1;
+                        }else{
+                            $dia_a_comparar = 7;
+                        }
+
+                        $j = 0;
+
+                    }else{
+
+                        $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inscripcion);
+                        $dia_a_comparar = $fecha_a_comparar->dayOfWeek + 1;
+                        
+                        while(!in_array($dia_a_comparar,$array_dias_clases)){
+
+                            $fecha_a_comparar->addDay();
+                            $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
+
+                            if($dia_a_comparar != 0){
+                                $dia_a_comparar = $fecha_a_comparar->dayOfWeek + 1;
+                            }else{
+                                $dia_a_comparar = 7;
+                            }
+                        }
+                        
+                        $j = 1;
+                    }
+
+                    //EL INDEX INICIAL SE CREA PARA SABER DESDE DONDE SE COMENZARA A BUSCAR EN EL CICLO FOR DE ABAJO, YA DESCRITO EN LA NOTA 1.1
+
+                    $index_inicial = array_search($dia_a_comparar, $array_dias_clases);
+                    // $index_inicial = 0;
+
+
+                    //DATOS DE PRUEBA
+
+                    // $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
+                    // $array_fecha_a_comparar = array();
+                    // $array_dias_tmp = array();
+
+                    //EL CICLO WHILE SE ENCARGA DE ESTABLECER LA CANTIDAD DE INASISTENCIAS QUE POSEE LA PERSONA, ESTE AÑADERA LOS DIAS CORRESPONDIENTES DEL ARRAY DE DIAS CREADO ANTERIORMENTE
+
+                    //1.2 -- EL $J != 0 ESTA ESTABLECIDO PARA QUE SI LA PERSONA POSEE ASISTENCIAS, ESTE NO CONTABILICE LAS INASISTENCIAS DESDE LA PRIMERA FECHA, SINO QUE REALICE UN SALTO AL SIGUIENTE INDEX
+
+                    // if($index_inicial > count($array_dias)){
+                    //     $index_inicial = 0;
+                    // }
+
+                    $cantidad_inasistencias = count($array_dias);
+
+                    while($fecha_a_comparar < $fecha_de_finalizacion){
+                        if($fecha_a_comparar < Carbon::now()->subDay()){
+                            // for($i = $index_inicial; $i < count($array_dias); $i++){
+
+                                // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
+                                // $array_dias_tmp[] = $array_dias[$i];
+
+                                if($j != 0){
+                                    $inasistencias += $cantidad_inasistencias;
+                                    $fecha_a_comparar->addWeek();
+                                    // $inasistencias++;
+                                    // $fecha_a_comparar->addDays($array_dias[$i]);
+
+                                    
+                                }else{
+                                    $fecha_a_comparar->addWeek();
+                                    // $fecha_a_comparar->addDays($array_dias[$i]);
+                                }
+
+                                //PARA QUE LAS INASISTENCIAS SE EMPIECEN A CONTABILIZAR 
+
+                                $j++;
+                            // }
+                        }else{
+                            break;
+                        }
+
+                        //EL INDEX VUELVE A 0 PARA PODER REALIZAR EL CICLO FOR DESDE EL PRINCIPIO HASTA QUE LA FECHA A COMPARAR SEA MAYOR A LA FECHA DE FINALIZACIÓN
+
+                        $index_inicial = 0;
+                    }
+                    
+                    // LA CONFIGURACIÓN DE LAS ASISTENCIAS DEBEN ESTAR ESTABLECIDAS PARA QUE LAS CONTABILIZACIONES SE HAGAN (!= 0)
+     
+                    if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
+                        // $array[] = $alumno;
+                    }
+                    else if($inasistencias >= $asistencia_amarilla && $asistencia_amarilla != 0){
+                        $array[] = $alumno;
+                        $array_inasistencia[$alumno->id] = $inasistencias;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return view('agendar.clase_grupal.ausencia')->with(['alumnos' => $array, 'inasistencias' => $array_inasistencia]);
 
     }
 }
