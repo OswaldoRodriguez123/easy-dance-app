@@ -4696,7 +4696,7 @@ class ClaseGrupalController extends BaseController {
                     //1.2 -- EL $J != 0 ESTA ESTABLECIDO PARA QUE SI LA PERSONA POSEE ASISTENCIAS, ESTE NO CONTABILICE LAS INASISTENCIAS DESDE LA PRIMERA FECHA, SINO QUE REALICE UN SALTO AL SIGUIENTE INDEX
 
                     if($index_inicial > count($array_dias)){
-                        $index_inicial = 0
+                        $index_inicial = 0;
                     }
 
                     while($fecha_a_comparar < $fecha_de_finalizacion){
