@@ -160,8 +160,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Watson\Autologin\AutologinServiceProvider::class,
         LivePixel\MercadoPago\Providers\MercadoPagoServiceProvider::class,
-        PulkitJalan\GeoIP\GeoIPServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
+        PulkitJalan\GeoIP\GeoIPServiceProvider::class
 
     ],
 
@@ -213,8 +212,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Autologin' => Watson\Autologin\Facades\Autologin::class,
         'MP' => LivePixel\MercadoPago\Facades\MP::class,
-        'GeoIP' => PulkitJalan\GeoIP\Facades\GeoIP::class,
-        'Debugbar' => Barryvdh\Debugbar\Facade::class,
+        'GeoIP' => PulkitJalan\GeoIP\Facades\GeoIP::class
 
     ],
 
