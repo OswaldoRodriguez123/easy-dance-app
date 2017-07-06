@@ -4737,8 +4737,6 @@ class ClaseGrupalController extends BaseController {
 
                         $index_inicial = 0;
                     }
-
-                    dd($fecha_a_comparar);
                     
                     // LA CONFIGURACIÓN DE LAS ASISTENCIAS DEBEN ESTAR ESTABLECIDAS PARA QUE LAS CONTABILIZACIONES SE HAGAN (!= 0)
 
