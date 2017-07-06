@@ -4706,9 +4706,9 @@ class ClaseGrupalController extends BaseController {
 
                     //1.2 -- EL $J != 0 ESTA ESTABLECIDO PARA QUE SI LA PERSONA POSEE ASISTENCIAS, ESTE NO CONTABILICE LAS INASISTENCIAS DESDE LA PRIMERA FECHA, SINO QUE REALICE UN SALTO AL SIGUIENTE INDEX
 
-                    if($index_inicial > count($array_dias)){
-                        $index_inicial = 0;
-                    }
+                    // if($index_inicial > count($array_dias)){
+                    //     $index_inicial = 0;
+                    // }
 
                     while($fecha_a_comparar < $fecha_de_finalizacion){
                         if($fecha_a_comparar < Carbon::now()->subDay()){
@@ -4738,7 +4738,7 @@ class ClaseGrupalController extends BaseController {
                         $index_inicial = 0;
                     }
 
-                    dd($array_dias_tmp);
+                    dd($fecha_a_comparar);
                     
                     // LA CONFIGURACIÓN DE LAS ASISTENCIAS DEBEN ESTAR ESTABLECIDAS PARA QUE LAS CONTABILIZACIONES SE HAGAN (!= 0)
 
