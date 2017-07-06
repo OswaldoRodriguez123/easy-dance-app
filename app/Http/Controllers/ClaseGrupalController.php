@@ -4576,7 +4576,8 @@ class ClaseGrupalController extends BaseController {
                                 $dias_a_sumar = $dia_inicio_clase;
 
                             }else{
-                                $dias = $dia_inicio_horario - $dia_inicio_clase;
+
+                                $dias = intval($dia_inicio_horario) - intval($dia_inicio_clase);
                                 $array_dias[] = $dias;
 
                                 $dia_a_comparar = $dia_inicio_clase;
