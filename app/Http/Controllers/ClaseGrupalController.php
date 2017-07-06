@@ -4641,6 +4641,11 @@ class ClaseGrupalController extends BaseController {
                         $array_dias[] = 7;
                     }
 
+
+                    $count = sizeof(array_filter($array_dias, create_function('$value', 'return is_numeric($value) && $value < 0;')));
+                    if($count > 0){
+                        dd($count);
+                    }
                     //CONSULTAR LA ULTIMA ASISTENCIA, EL TIPO ES 1 (CLASE PRINCIPAL) Y 2 (MULTIHORARIO), EL TIPO_ID ES UN ARRAY CON EL ID DE LA CLASE PRINCIPAL Y LOS MULTIHORARIOS QUE POSEA
      
                     $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)
@@ -4688,15 +4693,11 @@ class ClaseGrupalController extends BaseController {
 
                     //1.2 -- EL $J != 0 ESTA ESTABLECIDO PARA QUE SI LA PERSONA POSEE ASISTENCIAS, ESTE NO CONTABILICE LAS INASISTENCIAS DESDE LA PRIMERA FECHA, SINO QUE REALICE UN SALTO AL SIGUIENTE INDEX
 
-                    if($index_inicial > count($array_dias)){
-                        $index_inicial = 0;
-                    }
+                    // if($index_inicial > count($array_dias)){
+                    //     $index_inicial = 0;
+                    // }
 
                     while($fecha_a_comparar < $fecha_de_finalizacion){
-
-                        if(count($array_dias) == 1){
-                            break;
-                        }
 
                         if($fecha_a_comparar < Carbon::now()->subDay()){
                             for($i = $index_inicial; $i < count($array_dias); $i++){
