@@ -4682,7 +4682,6 @@ class ClaseGrupalController extends BaseController {
                     //EL INDEX INICIAL SE CREA PARA SABER DESDE DONDE SE COMENZARA A BUSCAR EN EL CICLO FOR DE ABAJO, YA DESCRITO EN LA NOTA 1.1
 
                     $index_inicial = array_search($dia_a_comparar, $array_dias_clases);
-
                     // $index_inicial = 0;
 
 
@@ -4696,11 +4695,13 @@ class ClaseGrupalController extends BaseController {
 
                     //1.2 -- EL $J != 0 ESTA ESTABLECIDO PARA QUE SI LA PERSONA POSEE ASISTENCIAS, ESTE NO CONTABILICE LAS INASISTENCIAS DESDE LA PRIMERA FECHA, SINO QUE REALICE UN SALTO AL SIGUIENTE INDEX
 
+                    if($index_inicial > count($array_dias)){
+                        $index_inicial = 0
+                    }
+
                     while($fecha_a_comparar < $fecha_de_finalizacion){
                         if($fecha_a_comparar < Carbon::now()->subDay()){
                             for($i = $index_inicial; $i < count($array_dias); $i++){
-                                // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
-                                // $array_dias_tmp[] = $array_dias[$k];
                                 
                                 if($j != 0){
                                     
