@@ -4694,9 +4694,9 @@ class ClaseGrupalController extends BaseController {
 
                     //DATOS DE PRUEBA
 
-                    $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
-                    $array_fecha_a_comparar = array();
-                    $array_dias_tmp = array();
+                    // $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
+                    // $array_fecha_a_comparar = array();
+                    // $array_dias_tmp = array();
 
                     //EL CICLO WHILE SE ENCARGA DE ESTABLECER LA CANTIDAD DE INASISTENCIAS QUE POSEE LA PERSONA, ESTE AÑADERA LOS DIAS CORRESPONDIENTES DEL ARRAY DE DIAS CREADO ANTERIORMENTE
 
@@ -4715,8 +4715,8 @@ class ClaseGrupalController extends BaseController {
                         if($fecha_a_comparar < Carbon::now()->subDay()){
                             for($i = $index_inicial; $i < count($array_dias); $i++){
 
-                                $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
-                                $array_dias_tmp[] = $array_dias[$i];
+                                // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
+                                // $array_dias_tmp[] = $array_dias[$i];
 
                                 if($j != 0){
                                     $inasistencias++;
