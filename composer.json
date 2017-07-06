@@ -13,7 +13,8 @@
         "watson/autologin": "^0.4.1",
         "doctrine/dbal": "^2.5",
         "livepixel/mercado-pago": "^1.0",
-        "pulkitjalan/geoip": "2.*"  
+        "pulkitjalan/geoip": "2.*",
+        "barryvdh/laravel-debugbar": "^2.4"  
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
