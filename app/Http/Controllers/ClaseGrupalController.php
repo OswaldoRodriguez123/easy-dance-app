@@ -4538,31 +4538,31 @@ class ClaseGrupalController extends BaseController {
                     //     $index_inicial = 0;
                     // }
 
-                    $cantidad_inasistencias = count($array_dias);
+                    // $cantidad_inasistencias = count($array_dias);
 
                     while($fecha_a_comparar < $fecha_de_finalizacion){
                         if($fecha_a_comparar < Carbon::now()->subDay()){
-                            // for($i = $index_inicial; $i < count($array_dias); $i++){
+                            for($i = $index_inicial; $i < count($array_dias); $i++){
 
                                 // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
                                 // $array_dias_tmp[] = $array_dias[$i];
 
                                 if($j != 0){
-                                    $inasistencias += $cantidad_inasistencias;
-                                    $fecha_a_comparar->addWeek();
-                                    // $inasistencias++;
-                                    // $fecha_a_comparar->addDays($array_dias[$i]);
+                                    // $inasistencias += $cantidad_inasistencias;
+                                    // $fecha_a_comparar->addWeek();
+                                    $inasistencias++;
+                                    $fecha_a_comparar->addDays($array_dias[$i]);
 
                                     
                                 }else{
-                                    $fecha_a_comparar->addWeek();
-                                    // $fecha_a_comparar->addDays($array_dias[$i]);
+                                    // $fecha_a_comparar->addWeek();
+                                    $fecha_a_comparar->addDays($array_dias[$i]);
                                 }
 
                                 //PARA QUE LAS INASISTENCIAS SE EMPIECEN A CONTABILIZAR 
 
                                 $j++;
-                            // }
+                            }
                         }else{
                             break;
                         }
@@ -4598,6 +4598,8 @@ class ClaseGrupalController extends BaseController {
 
         $array = array();
         $array_inasistencia = array();
+        $tipo_clase = array(1,2);
+        $in = array(2,4);
 
         foreach($alumnos as $alumno){
 
@@ -4691,9 +4693,6 @@ class ClaseGrupalController extends BaseController {
                         $array_dias[] = $dia_principal;
                     }
 
-                    $tipo_clase = array(1,2);
-                    $in = array(2,4);
-
                     if(Carbon::now() <= $fecha_final){
                         $fecha_de_finalizacion = Carbon::now();
                     }else{
@@ -4726,14 +4725,8 @@ class ClaseGrupalController extends BaseController {
 
                     $index_inicial = array_search($dia_inscripcion, $array_dias_clases_inscripcion);
 
-                    $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
-                    $array_fecha_a_comparar = array();
-                    $array_dias_tmp = array();
-
                     while($fecha_a_comparar < $fecha_de_finalizacion){
                         for($k = $index_inicial; $k < count($array_dias); $k++){
-                            $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
-                            $array_dias_tmp[] = $array_dias[$k];
                             if($j != 0){
                                 if($fecha_a_comparar < Carbon::now()->subDay()){
 
