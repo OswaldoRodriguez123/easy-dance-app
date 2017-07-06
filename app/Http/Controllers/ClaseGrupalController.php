@@ -4915,7 +4915,6 @@ class ClaseGrupalController extends BaseController {
                     else if($inasistencias >= $asistencia_amarilla && $asistencia_amarilla != 0){
                         $array[] = $alumno;
                         $array_inasistencia[$alumno->id] = $inasistencias;
-                        break;
                     }
                 }
             }
