@@ -1061,38 +1061,38 @@ class AsistenciaController extends BaseController
     public function consulta_clase_grupales_alumno(Request $request)
     {
     	
-        $clases_grupales= ClaseGrupal::join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
-            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id')
-            ->where('clases_grupales.deleted_at', '=', null)
-            ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
-        ->get();
+      $clases_grupales= ClaseGrupal::join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+        ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+        ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
+        ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+        ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id')
+        ->where('clases_grupales.deleted_at', '=', null)
+        ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+      ->get();
 
-        $horarios_clase_grupales= HorarioClaseGrupal::join('config_especialidades', 'horarios_clases_grupales.especialidad_id', '=', 'config_especialidades.id')
-            ->join('config_estudios', 'horarios_clases_grupales.estudio_id', '=', 'config_estudios.id')
-            ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
-            ->join('clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
-            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'horarios_clases_grupales.hora_inicio','horarios_clases_grupales.hora_final', 'horarios_clases_grupales.fecha as fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id', 'horarios_clases_grupales.id as horario_id')
-            ->where('clases_grupales.deleted_at', '=', null)
-            ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
-        ->get();
+      $horarios_clase_grupales= HorarioClaseGrupal::join('config_especialidades', 'horarios_clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+        ->join('config_estudios', 'horarios_clases_grupales.estudio_id', '=', 'config_estudios.id')
+        ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
+        ->join('clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+        ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+        ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'horarios_clases_grupales.hora_inicio','horarios_clases_grupales.hora_final', 'horarios_clases_grupales.fecha as fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id', 'horarios_clases_grupales.id as horario_id')
+        ->where('clases_grupales.deleted_at', '=', null)
+        ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+      ->get();
 
-         $inscripciones = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
-                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id', 'inscripcion_clase_grupal.fecha_pago')
-                ->where('inscripcion_clase_grupal.alumno_id', '=', $request->id)
-                ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
-                ->where('clases_grupales.deleted_at', '=', null)
-          ->get();
+      $inscripciones = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+        ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+        ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id', 'inscripcion_clase_grupal.fecha_pago')
+        ->where('inscripcion_clase_grupal.alumno_id', '=', $request->id)
+        ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
+        ->where('clases_grupales.deleted_at', '=', null)
+      ->get();
 
       $array = array();
 
       foreach($inscripciones as $inscripcion){
 
-      $fecha = Carbon::createFromFormat('Y-m-d', $inscripcion->fecha_inicio);
+        $fecha = Carbon::createFromFormat('Y-m-d', $inscripcion->fecha_inicio);
       
         $i = $fecha->dayOfWeek;
 
@@ -1136,14 +1136,9 @@ class AsistenciaController extends BaseController
         $array[$inscripcion->id] = $inscripcion_array;
       }
 
-     	$alumno=Alumno::all();
-  
 	    $arrayClases=array();
 
       $fechaActual = Carbon::now();
-      // $geoip = new GeoIP();
-      // $geoip->setIp($request->ip());
-      // $fechaActual->tz = $geoip->getTimezone();
       $diaActual = $fechaActual->dayOfWeek;
 
       $collection = collect($clases_grupales);
@@ -1183,9 +1178,9 @@ class AsistenciaController extends BaseController
 
      	  }
 		    
-		}
+		  }
 
-    foreach ($horarios_clase_grupales as $grupal) {
+      foreach ($horarios_clase_grupales as $grupal) {
 
         $fecha_start=explode('-',$grupal->fecha_inicio);
         $fecha_end=explode('-',$grupal->fecha_final);
@@ -1220,15 +1215,12 @@ class AsistenciaController extends BaseController
 
         }
         
-    }
+      }
 
-    $deuda=$this->deuda($request->id);
+      $deuda=$this->deuda($request->id);
+      $alumno=Alumno::all();
 
-		return response()->json(['status' => 'OK', 'clases_grupales'=>$arrayClases, 'deuda'=>$deuda, 'inscripciones' => $array, 200]);
-
-
-
-    	//return ['talleres' => $arrayTalleres];
+		  return response()->json(['status' => 'OK', 'clases_grupales'=>$arrayClases, 'deuda'=>$deuda, 'inscripciones' => $array, 200]);
     	
     }
 

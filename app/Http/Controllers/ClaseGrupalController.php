@@ -372,10 +372,9 @@ class ClaseGrupalController extends BaseController {
 
             $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                 ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela', 'alumnos.tipo_pago', 'inscripcion_clase_grupal.fecha_inscripcion')
-                    ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
-                    ->where('inscripcion_clase_grupal.boolean_congelacion',0)
-                    ->where('inscripcion_clase_grupal.deleted_at', '=', null)
-                    ->where('alumnos.deleted_at', '=', null)
+                ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
+                ->where('inscripcion_clase_grupal.boolean_congelacion',0)
+                ->where('alumnos.deleted_at', '=', null)
             ->get();
 
             $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio);
@@ -4394,6 +4393,11 @@ class ClaseGrupalController extends BaseController {
 
                 $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
 
+                //CONFIGURACIONES DE ASISTENCIAS
+
+                $asistencia_amarilla = $clase_grupal->asistencia_amarilla;
+                $asistencia_roja = $clase_grupal->asistencia_rojo;
+
                 if(Carbon::now() > $fecha_inicio){
 
                     $fecha_final = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_final);
@@ -4411,11 +4415,6 @@ class ClaseGrupalController extends BaseController {
                     if($dia_inicio_clase == 0){
                         $dia_inicio_clase = 7;
                     }
-
-                    //CONFIGURACIONES DE ASISTENCIAS
-
-                    $asistencia_amarilla = $clase_grupal->asistencia_amarilla;
-                    $asistencia_roja = $clase_grupal->asistencia_rojo;
 
                     //CREAR ARREGLO DE CLASES GRUPALES A CONSULTAR EN LA ASISTENCIA
 
