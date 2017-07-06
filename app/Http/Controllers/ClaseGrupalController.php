@@ -4549,9 +4549,9 @@ class ClaseGrupalController extends BaseController {
 
                                 if($j != 0){
                                     // $inasistencias += $cantidad_inasistencias;
-                                    // $fecha_a_comparar->addWeek();
+                                    $fecha_a_comparar->addWeek();
                                     $inasistencias++;
-                                    $fecha_a_comparar->addDays($array_dias[$i]);
+                                    // $fecha_a_comparar->addDays($array_dias[$i]);
 
                                     
                                 }else{
