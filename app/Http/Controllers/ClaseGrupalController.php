@@ -4445,7 +4445,7 @@ class ClaseGrupalController extends BaseController {
         $tipo_clase = array(1,2);
 
         foreach($alumnos as $alumno){
-            
+
             $inasistencias = 0;
 
             $clase_grupal = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
@@ -4707,29 +4707,35 @@ class ClaseGrupalController extends BaseController {
 
                     //1.2 -- EL $J != 0 ESTA ESTABLECIDO PARA QUE SI LA PERSONA POSEE ASISTENCIAS, ESTE NO CONTABILICE LAS INASISTENCIAS DESDE LA PRIMERA FECHA, SINO QUE REALICE UN SALTO AL SIGUIENTE INDEX
 
-                    if($index_inicial > count($array_dias)){
-                        $index_inicial = 0;
-                    }
+                    // if($index_inicial > count($array_dias)){
+                    //     $index_inicial = 0;
+                    // }
+
+                    $cantidad_inasistencias = count($array_dias);
 
                     while($fecha_a_comparar < $fecha_de_finalizacion){
                         if($fecha_a_comparar < Carbon::now()->subDay()){
-                            for($i = $index_inicial; $i < count($array_dias); $i++){
+                            // for($i = $index_inicial; $i < count($array_dias); $i++){
 
                                 // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
                                 // $array_dias_tmp[] = $array_dias[$i];
 
                                 if($j != 0){
-                                    $inasistencias++;
-                                    $fecha_a_comparar->addDays($array_dias[$i]);
+                                    $inasistencias += $cantidad_inasistencias;
+                                    $fecha_a_comparar->addWeek();
+                                    // $inasistencias++;
+                                    // $fecha_a_comparar->addDays($array_dias[$i]);
+
                                     
                                 }else{
-                                    $fecha_a_comparar->addDays($array_dias[$i]);
+                                    $fecha_a_comparar->addWeek();
+                                    // $fecha_a_comparar->addDays($array_dias[$i]);
                                 }
 
                                 //PARA QUE LAS INASISTENCIAS SE EMPIECEN A CONTABILIZAR 
 
                                 $j++;
-                            }
+                            // }
                         }else{
                             break;
                         }
