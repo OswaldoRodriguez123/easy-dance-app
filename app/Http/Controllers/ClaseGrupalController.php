@@ -4692,11 +4692,13 @@ class ClaseGrupalController extends BaseController {
                         $index_inicial = 0;
                     }
 
-                    dd($array_dias);
-
                     while($fecha_a_comparar < $fecha_de_finalizacion){
                         if($fecha_a_comparar < Carbon::now()->subDay()){
                             for($i = $index_inicial; $i < count($array_dias); $i++){
+
+                                if($array_dias[$i] < 0){
+                                    dd($array_dias[$i]);
+                                }
                                 
                                 if($j != 0){
                                     $inasistencias++;
