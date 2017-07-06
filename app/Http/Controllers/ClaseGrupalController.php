@@ -4740,14 +4740,17 @@ class ClaseGrupalController extends BaseController {
                     
                     // LA CONFIGURACIÓN DE LAS ASISTENCIAS DEBEN ESTAR ESTABLECIDAS PARA QUE LAS CONTABILIZACIONES SE HAGAN (!= 0)
 
-                    if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
-                        $inactivos++;
-                    }else if($inasistencias >= $asistencia_amarilla && $asistencia_amarilla != 0){
-                        $riesgo++;
-                    }else{
-                        $activos++;
-                    }
                 }
+
+                if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
+                    $inactivos++;
+                }else if($inasistencias >= $asistencia_amarilla && $asistencia_amarilla != 0){
+                    $riesgo++;
+                }else{
+                    $activos++;
+                }
+            }else{
+                $inactivos++;
             }
         }
 
