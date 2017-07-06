@@ -4563,6 +4563,8 @@ class ClaseGrupalController extends BaseController {
 
                             $dia_inicio_horario = $array_organizador;
 
+
+
                             if($dia_inicio_clase  > $dia_inicio_horario){
 
                                 while ($dia_inicio_clase != 7){
@@ -4587,9 +4589,11 @@ class ClaseGrupalController extends BaseController {
                             $dias = 0;
                             $cantidad_dias = 0;
 
-                            while ($dias_a_sumar != 7){
-                                $dias++;
-                                $dias_a_sumar++;
+                            if($dias_a_sumar < 7){
+                                while ($dias_a_sumar != 7){
+                                    $dias++;
+                                    $dias_a_sumar++;
+                                }
                             }
 
                             while ($cantidad_dias != $dia_a_comparar){
