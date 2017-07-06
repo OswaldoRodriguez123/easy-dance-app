@@ -4434,7 +4434,6 @@ class ClaseGrupalController extends BaseController {
 
         $alumnos = Alumno::where('academia_id',Auth::user()->academia_id)
             ->orderBy('created_at', 'desc')
-            ->limit('100')
         ->get();
 
         $riesgo = 0;
