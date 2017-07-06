@@ -4644,16 +4644,25 @@ class ClaseGrupalController extends BaseController {
                                 // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
                                 // $array_dias_tmp[] = $array_dias[$i];
 
-                                if($j != 0){
-                                    // $inasistencias += $cantidad_inasistencias;
-                                    // $fecha_a_comparar->addWeek();
-                                    $inasistencias++;
-                                    $fecha_a_comparar->addDays($array_dias[$i]);
+                                $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha_a_comparar)
+                                    ->where('fecha_final', '>=', $fecha_a_comparar)
+                                    ->where('tipo_id', $clase_grupal->id)
+                                    ->where('tipo', 1)
+                                ->first();
 
-                                    
-                                }else{
-                                    // $fecha_a_comparar->addWeek();
-                                    $fecha_a_comparar->addDays($array_dias[$i]);
+                                if(!$horario_bloqueado){
+                                    if($j != 0){
+                                        // $inasistencias += $cantidad_inasistencias;
+                                        // $fecha_a_comparar->addWeek();
+        
+                                        $inasistencias++;
+                                        $fecha_a_comparar->addDays($array_dias[$i]);
+
+                                        
+                                    }else{
+                                        // $fecha_a_comparar->addWeek();
+                                        $fecha_a_comparar->addDays($array_dias[$i]);
+                                    }
                                 }
 
                                 //PARA QUE LAS INASISTENCIAS SE EMPIECEN A CONTABILIZAR 
@@ -4962,16 +4971,24 @@ class ClaseGrupalController extends BaseController {
                                 // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
                                 // $array_dias_tmp[] = $array_dias[$i];
 
-                                if($j != 0){
-                                    // $inasistencias += $cantidad_inasistencias;
-                                    // $fecha_a_comparar->addWeek();
-                                    $inasistencias++;
-                                    $fecha_a_comparar->addDays($array_dias[$i]);
+                                $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha_a_comparar)
+                                    ->where('fecha_final', '>=', $fecha_a_comparar)
+                                    ->where('tipo_id', $clase_grupal->id)
+                                    ->where('tipo', 1)
+                                ->first();
 
-                                    
-                                }else{
-                                    // $fecha_a_comparar->addWeek();
-                                    $fecha_a_comparar->addDays($array_dias[$i]);
+                                if(!$horario_bloqueado){
+                                    if($j != 0){
+                                        // $inasistencias += $cantidad_inasistencias;
+                                        // $fecha_a_comparar->addWeek();
+                                        $inasistencias++;
+                                        $fecha_a_comparar->addDays($array_dias[$i]);
+
+                                        
+                                    }else{
+                                        // $fecha_a_comparar->addWeek();
+                                        $fecha_a_comparar->addDays($array_dias[$i]);
+                                    }
                                 }
 
                                 //PARA QUE LAS INASISTENCIAS SE EMPIECEN A CONTABILIZAR 
