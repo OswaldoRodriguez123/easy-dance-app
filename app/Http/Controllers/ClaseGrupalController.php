@@ -4576,7 +4576,7 @@ class ClaseGrupalController extends BaseController {
                                 $dias_a_sumar = $dia_inicio_clase;
 
                             }else{
-                                $dias = abs($dia_inicio_clase - $dia_inicio_horario);
+                                $dias = $dia_inicio_horario - $dia_inicio_clase;
                                 $array_dias[] = $dias;
 
                                 $dia_a_comparar = $dia_inicio_clase;
@@ -4678,7 +4678,7 @@ class ClaseGrupalController extends BaseController {
                     //EL INDEX INICIAL SE CREA PARA SABER DESDE DONDE SE COMENZARA A BUSCAR EN EL CICLO FOR DE ABAJO, YA DESCRITO EN LA NOTA 1.1
 
                     $index_inicial = array_search($dia_a_comparar, $array_dias_clases);
-                    
+
                     // $index_inicial = 0;
 
 
