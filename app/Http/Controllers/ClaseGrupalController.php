@@ -4641,6 +4641,10 @@ class ClaseGrupalController extends BaseController {
                         $array_dias[] = 7;
                     }
 
+                    if(count($array_dias) < 2 || count($array_dias) > 2){
+                        continue;
+                    }
+
                     //CONSULTAR LA ULTIMA ASISTENCIA, EL TIPO ES 1 (CLASE PRINCIPAL) Y 2 (MULTIHORARIO), EL TIPO_ID ES UN ARRAY CON EL ID DE LA CLASE PRINCIPAL Y LOS MULTIHORARIOS QUE POSEA
      
                     $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)
@@ -4707,10 +4711,6 @@ class ClaseGrupalController extends BaseController {
                     // }
 
                     while($fecha_a_comparar < $fecha_de_finalizacion){
-
-                        if(count($array_dias) < 2 || count($array_dias) > 2){
-                            break;
-                        }
 
                         if($fecha_a_comparar < Carbon::now()->subDay()){
                             for($i = $index_inicial; $i < count($array_dias); $i++){
