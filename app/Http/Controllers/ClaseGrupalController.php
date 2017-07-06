@@ -4542,7 +4542,7 @@ class ClaseGrupalController extends BaseController {
 
                     while($fecha_a_comparar < $fecha_de_finalizacion){
                         if($fecha_a_comparar < Carbon::now()->subDay()){
-                            for($i = $index_inicial; $i < count($array_dias); $i++){
+                            for($i = 0; $i < count($array_dias); $i++){
 
                                 // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
                                 // $array_dias_tmp[] = $array_dias[$i];
