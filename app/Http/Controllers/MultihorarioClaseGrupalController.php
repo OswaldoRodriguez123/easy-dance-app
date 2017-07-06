@@ -237,7 +237,10 @@ class MultihorarioClaseGrupalController extends BaseController
                     }
                 }
 
-                $fecha_inicio = Carbon::now();
+                $clase_grupal = ClaseGrupal::find($request->id);
+                $fecha_inicio = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inicio);
+                
+                // $fecha_inicio = Carbon::now();
                 $dia_de_semana = $fecha_inicio->dayOfWeek;
 
                 if(intval($request->dia_de_semana_id) >= $dia_de_semana){

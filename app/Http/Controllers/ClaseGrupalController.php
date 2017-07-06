@@ -4475,13 +4475,17 @@ class ClaseGrupalController extends BaseController {
 
                     //CREAR ARREGLO DE CLASES GRUPALES A CONSULTAR EN LA ASISTENCIA
 
-                    $horarios_clases_grupales = HorarioClaseGrupal::where('clase_grupal_id', $clase_grupal->id)->orderBy('fecha')->get();
+                    $horarios_clases_grupales = HorarioClaseGrupal::where('clase_grupal_id', $clase_grupal->id)
+                        ->orderBy('fecha')
+                    ->get();
 
                     // $horario = HorarioClaseGrupal::where('clase_grupal_id', $clase_grupal->id)->first();
 
                     //ARRAYS CREADO CON EL FIN DE ESTABLECER LOS SALTOS DE DIAS ENTRE CADA CLASE Y SUS MULTIHORARIOS QUE TENDRA LA CONSULTA DE ASISTENCIA, EL ORGANIZADOR ESTABLECE EN LA PRIMERA POSICIÓN EL PRIMER MULTIHORARIO QUE TENGA, Y DE ULTIMO LA CLASE PRINCIPAL PARA PODER REALIZAR EL CICLO CORRECTAMENTE, EL ARRAY DE DIAS SIMPLEMENTE SE USARA PARA LAS CONSULTAS
 
                     $array_organizador = array();
+                    $array_organizador_before = array();
+                    $array_organizador_after = array();
                     $array_dias = array();
 
                     //INDEX DEL ARRAY ORGANIZADOR
@@ -4496,28 +4500,52 @@ class ClaseGrupalController extends BaseController {
                     // 1.1 -- ARRAY CREADO PARA ESTABLECER EL INDEX CON EL QUE SE COMENZARA A REALIZAR LA BUSQUEDA POR SI LA ULTIMA ASISTENCIA FUE REALIZADA EN UN MULTIHORARIO, ESTO CON LA FINALIDAD DE SABER QUE INDEX CORRESPONDE DESPUES EN LA CONSULTA
 
                     $array_dias_clases = array();
+                    $array_dias_clases_before = array();
+                    $array_dias_clases_after = array();
 
                     //ESTABLECE EL DIA PRINCIPAL COMO PRIMER INDEX DEL ARRAY DE DIAS
 
-                    $array_dias_clases[] = $fecha_inicio->dayOfWeek;
+                    $array_dias_clases[] = $dia_inicio_clase;
 
                     // if($horario){
 
                     //SE CREA EL ARRAY ORGANIZADOR Y EL ARRAY DE DIAS
 
                     foreach($horarios_clases_grupales as $horario){
+
                         $tipo_id[] = $horario->id;
                         $fecha = Carbon::createFromFormat('Y-m-d', $horario->fecha);
-              
                         $dia = $fecha->dayOfWeek;
-                        $array_organizador[$i]['dia'] = $dia;
-                        $array_organizador[$i]['fecha'] = $fecha;
-                        $array_organizador[$i]['id'] = $horario->id;
-                        $i++;
 
-                        $array_dias_clases[] = $dia;
+                        if($dia == 0){
+                            $dia = 7;
+                        }
+
+                        if($dia_inicio_clase >= $dia){
+                            $array_dias_clases_before[] = $dia;
+                            $array_organizador_before[] = $dia;
+                        }else{
+                            $array_dias_clases_after[] = $dia;
+                            $array_organizador_after[] = $dia;
+                        }
 
                     }
+
+                    //SE ORDENA EL ARREGLO DE DIAS ANTERIORES A LA CLASE PRINCIPAL
+
+                    usort($array_dias_clases_before, function($a, $b) {
+                        return $a - $b;
+                    });
+
+                    usort($array_organizador_before, function($a, $b) {
+                        return $a - $b;
+                    });
+
+                    //ESTE PROCESO SE HACE PARA QUE LA CLASE PRINCIPAL SEA LA PRIMERA EN CONSULTAR, LUEGO SERAN LAS CLASES POSTERIORES A ELLA Y POR ULTIMO LAS CLASES ANTERIORES, PARA QUE EL CICLO AGREGUE UNA SEMANA ANTES DE CONSULTAR LAS CLASES ANTERIORES
+
+                    $merge = array_merge($array_dias_clases, $array_dias_clases_after);
+                    $array_dias_clases = array_merge($merge, $array_dias_clases_before);
+                    $array_organizador = array_merge($array_organizador_after, $array_dias_clases_before);
 
                     //SE ESTABLECE QUE SI NO HAY MULTIHORARIO, EL ARRAY DE DIA SOLO TENDRA UNA POSICIÓN DE 7, PARA QUE LAS CONSULTAS SE HAGAN SEMANALMENTE
 
@@ -4528,39 +4556,40 @@ class ClaseGrupalController extends BaseController {
                     //LA CONSULTA DE LOS MULTIHORARIOS LOS ORDENARA POR FECHA PARA ASI SOLO TENER QUE ESTABLECER LA CANTIDAD DE DIAS ENTRE ELLOS
 
                     if($array_organizador){
+
+                        $dias_a_sumar = 0;
                         
                         if(count($array_organizador) == 1){
 
-                            $dia_inicio_horario = $array_organizador[0]['dia'];
-
-                            if($dia_inicio_horario == 0){
-                                $dia_inicio_horario = 7;
-                            }
-
-                            $dias = abs($dia_inicio_clase - $dia_inicio_horario);
-                            $dias = 0;
+                            $dia_inicio_horario = $array_organizador;
 
                             if($dia_inicio_clase  > $dia_inicio_horario){
 
                                 while ($dia_inicio_clase != 7){
+                                    $dias_a_sumar++;
                                     $dia_inicio_clase++;
                                 }
 
-                                $array_dias[] = $dia_inicio_clase + $dia_inicio_horario;
+                                $array_dias[] = $dias_a_sumar + $dia_inicio_horario;
 
                                 $dia_a_comparar = $dia_inicio_horario;
                                 $dias_a_sumar = $dia_inicio_clase;
+
                             }else{
+                                $dias = abs($dia_inicio_clase - $dia_inicio_horario);
+                                $array_dias[] = $dias;
+
                                 $dia_a_comparar = $dia_inicio_clase;
                                 $dias_a_sumar = $dia_inicio_horario;
                             }
+
+                            $dias = 0;
+                            $cantidad_dias = 0;
 
                             while ($dias_a_sumar != 7){
                                 $dias++;
                                 $dias_a_sumar++;
                             }
-
-                            $cantidad_dias = 0;
 
                             while ($cantidad_dias != $dia_a_comparar){
                                 $cantidad_dias++;
@@ -4571,35 +4600,42 @@ class ClaseGrupalController extends BaseController {
 
                         }else{
 
+                            $dias_a_restar = $dia_inicio_clase;
+
                             foreach($array_organizador as $index => $organizador){
 
-                                $tipo_id[] = $organizador['id'];
+                                //SE MIDE LA CANTIDAD DE DIAS ENTRE LA CLASE PRINCIPAL Y EL PRIMER MULTIHORARIO, Y LUEGO ENTRE CADA UNO DE LOS MULTIHORARIOS
 
-                                //EL PRIMER INDEX NO PUEDE RESTARSE, ESTE SE ESTABLECE Y EN EL SEGUNDO SE EMPIEZAN A HACER LAS RESTAS PARA SABER CUANTOS DIAS HAY ENTRE ELLOS, PARA ESO ES EL CONTINUE
-
-                                if ($index == 0) {
-                                    $dias_a_restar = $organizador['dia'];
-                                    continue;
+                                if($dias_a_restar < $organizador){
+                                    $dias_a_añadir = abs($organizador - $dias_a_restar);
+                                }else{
+                                    $dias_a_añadir = abs(($organizador + 7) - $dias_a_restar);
                                 }
 
-                                $dias_a_añadir = $organizador['dia'] - $dias_a_restar;
                                 $array_dias[] = $dias_a_añadir;
-                                $dias_a_restar = $organizador['dia'];
+                                $dias_a_restar = $organizador;
 
                             }
 
-                            while ($dias_a_sumar != 7){
-                                $dias++;
-                                $dias_a_sumar++;
+                            if($dias_a_restar > $dia_inicio_clase){
+                                $dias_a_sumar = 0;
+
+                                while ($dias_a_restar != 7){
+                                    $dias_a_sumar++;
+                                    $dias_a_restar++;
+
+                                }
+
+                                $dias_a_sumar = $dias_a_sumar + $dia_inicio_clase;
+                            }else{
+                                $dias_a_sumar = abs($dias_a_restar - $dia_inicio_clase);
                             }
+
+                            $array_dias[] = $dias_a_sumar;
                         }
                     }else{
                         $array_dias[] = 7;
                     }
-
-
-                    dd($array_dias);
-                    
 
                     //COMPROBAR HASTA QUE DIA SE HARA EL CICLO, SI LA CLASE AUN NO HA FINALIZADO, SE HARA HASTA EL DIA DE HOY
 
@@ -4623,17 +4659,17 @@ class ClaseGrupalController extends BaseController {
                     if($ultima_asistencia){
 
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
-                        $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
+                        $dia_a_comparar = $fecha_a_comparar->dayOfWeek + 1;
                         $j = 0;
 
                     }else{
 
                         $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inscripcion);
-                        $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
+                        $dia_a_comparar = $fecha_a_comparar->dayOfWeek + 1;
                         
                         while(!in_array($dia_a_comparar,$array_dias_clases)){
                             $fecha_a_comparar->addDay();
-                            $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
+                            $dia_a_comparar = $fecha_a_comparar->dayOfWeek + 1;
                         }
                         
                         $j = 1;
@@ -4642,6 +4678,7 @@ class ClaseGrupalController extends BaseController {
                     //EL INDEX INICIAL SE CREA PARA SABER DESDE DONDE SE COMENZARA A BUSCAR EN EL CICLO FOR DE ABAJO, YA DESCRITO EN LA NOTA 1.1
 
                     $index_inicial = array_search($dia_a_comparar, $array_dias_clases);
+                    
                     // $index_inicial = 0;
 
 
