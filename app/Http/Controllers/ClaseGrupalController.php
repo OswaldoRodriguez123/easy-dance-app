@@ -4698,9 +4698,9 @@ class ClaseGrupalController extends BaseController {
 
                     //DATOS DE PRUEBA
 
-                    $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
+                    // $fecha_ultima_asistencia = $fecha_a_comparar->toDateString();
                     $array_fecha_a_comparar = array();
-                    $array_dias_tmp = array();
+                    // $array_dias_tmp = array();
 
                     //EL CICLO WHILE SE ENCARGA DE ESTABLECER LA CANTIDAD DE INASISTENCIAS QUE POSEE LA PERSONA, ESTE AÑADERA LOS DIAS CORRESPONDIENTES DEL ARRAY DE DIAS CREADO ANTERIORMENTE
 
@@ -4715,7 +4715,7 @@ class ClaseGrupalController extends BaseController {
                             for($i = $index_inicial; $i < count($array_dias); $i++){
 
                                 $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
-                                $array_dias_tmp[] = $array_dias[$i];
+                                // $array_dias_tmp[] = $array_dias[$i];
 
                                 if($j != 0){
                                     $inasistencias++;
@@ -4737,6 +4737,8 @@ class ClaseGrupalController extends BaseController {
 
                         $index_inicial = 0;
                     }
+
+                    dd($array_fecha_a_comparar);
                     
                     // LA CONFIGURACIÓN DE LAS ASISTENCIAS DEBEN ESTAR ESTABLECIDAS PARA QUE LAS CONTABILIZACIONES SE HAGAN (!= 0)
 
