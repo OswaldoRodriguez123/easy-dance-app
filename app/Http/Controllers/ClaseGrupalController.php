@@ -4694,7 +4694,7 @@ class ClaseGrupalController extends BaseController {
 
                     while($fecha_a_comparar < $fecha_de_finalizacion){
 
-                        if(count($array_dias) == 0){
+                        if(count($array_dias) == 1){
                             break;
                         }
 
