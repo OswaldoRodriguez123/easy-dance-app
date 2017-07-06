@@ -4446,8 +4446,6 @@ class ClaseGrupalController extends BaseController {
 
         foreach($alumnos as $alumno){
 
-            $inasistencias = 0;
-
             $clase_grupal = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->select('clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'config_clases_grupales.asistencia_rojo', 'config_clases_grupales.asistencia_amarilla', 'inscripcion_clase_grupal.fecha_inscripcion', 'clases_grupales.id')
@@ -4459,19 +4457,30 @@ class ClaseGrupalController extends BaseController {
             if($clase_grupal){
 
                 $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-                $fecha_final = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_final);
-                $dia_inicio_clase = $fecha_inicio->dayOfWeek;
-
-                if($dia_inicio_clase == 0){
-                    $dia_inicio_clase = 7;
-                }
 
                 if(Carbon::now() > $fecha_inicio){
+
+                    $fecha_final = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_final);
+
+                    //COMPROBAR HASTA QUE DIA SE HARA EL CICLO, SI LA CLASE AUN NO HA FINALIZADO, SE HARA HASTA EL DIA DE HOY
+
+                    if(Carbon::now() <= $fecha_final){
+                        $fecha_de_finalizacion = Carbon::now();
+                    }else{
+                        $fecha_de_finalizacion = $fecha_final;
+                    }
+
+                    $dia_inicio_clase = $fecha_inicio->dayOfWeek;
+
+                    if($dia_inicio_clase == 0){
+                        $dia_inicio_clase = 7;
+                    }
 
                     //CONFIGURACIONES DE ASISTENCIAS
 
                     $asistencia_amarilla = $clase_grupal->asistencia_amarilla;
                     $asistencia_roja = $clase_grupal->asistencia_rojo;
+                    $inasistencias = 0;
 
                     //CREAR ARREGLO DE CLASES GRUPALES A CONSULTAR EN LA ASISTENCIA
 
@@ -4479,18 +4488,12 @@ class ClaseGrupalController extends BaseController {
                         ->orderBy('fecha')
                     ->get();
 
-                    // $horario = HorarioClaseGrupal::where('clase_grupal_id', $clase_grupal->id)->first();
-
                     //ARRAYS CREADO CON EL FIN DE ESTABLECER LOS SALTOS DE DIAS ENTRE CADA CLASE Y SUS MULTIHORARIOS QUE TENDRA LA CONSULTA DE ASISTENCIA, EL ORGANIZADOR ESTABLECE EN LA PRIMERA POSICIÓN EL PRIMER MULTIHORARIO QUE TENGA, Y DE ULTIMO LA CLASE PRINCIPAL PARA PODER REALIZAR EL CICLO CORRECTAMENTE, EL ARRAY DE DIAS SIMPLEMENTE SE USARA PARA LAS CONSULTAS
 
                     $array_organizador = array();
                     $array_organizador_before = array();
                     $array_organizador_after = array();
                     $array_dias = array();
-
-                    //INDEX DEL ARRAY ORGANIZADOR
-
-                    $i = 0;
 
                     //ARRAY DE BUSQUEDA EN ASISTENCIAS
 
@@ -4506,8 +4509,6 @@ class ClaseGrupalController extends BaseController {
                     //ESTABLECE EL DIA PRINCIPAL COMO PRIMER INDEX DEL ARRAY DE DIAS
 
                     $array_dias_clases[] = $dia_inicio_clase;
-
-                    // if($horario){
 
                     //SE CREA EL ARRAY ORGANIZADOR Y EL ARRAY DE DIAS
 
@@ -4640,14 +4641,6 @@ class ClaseGrupalController extends BaseController {
                         $array_dias[] = 7;
                     }
 
-                    //COMPROBAR HASTA QUE DIA SE HARA EL CICLO, SI LA CLASE AUN NO HA FINALIZADO, SE HARA HASTA EL DIA DE HOY
-
-                    if(Carbon::now() <= $fecha_final){
-                        $fecha_de_finalizacion = Carbon::now();
-                    }else{
-                        $fecha_de_finalizacion = $fecha_final;
-                    }
-
                     //CONSULTAR LA ULTIMA ASISTENCIA, EL TIPO ES 1 (CLASE PRINCIPAL) Y 2 (MULTIHORARIO), EL TIPO_ID ES UN ARRAY CON EL ID DE LA CLASE PRINCIPAL Y LOS MULTIHORARIOS QUE POSEA
      
                     $ultima_asistencia = Asistencia::whereIn('tipo',$tipo_clase)
@@ -4704,7 +4697,6 @@ class ClaseGrupalController extends BaseController {
                             for($i = $index_inicial; $i < count($array_dias); $i++){
                                 
                                 if($j != 0){
-                                    
                                     $inasistencias++;
                                     $fecha_a_comparar->addDays($array_dias[$i]);
                                     
