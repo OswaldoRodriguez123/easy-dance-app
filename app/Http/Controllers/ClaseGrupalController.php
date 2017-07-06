@@ -4706,6 +4706,10 @@ class ClaseGrupalController extends BaseController {
                     //     $index_inicial = 0;
                     // }
 
+                    if(count($array_dias) < 2 || count($array_dias) > 2){
+                        break;
+                    }
+                    
                     while($fecha_a_comparar < $fecha_de_finalizacion){
 
                         if($fecha_a_comparar < Carbon::now()->subDay()){

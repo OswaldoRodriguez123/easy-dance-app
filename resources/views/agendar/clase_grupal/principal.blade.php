@@ -621,7 +621,7 @@
 
     function consulta_estatus_alumnos(){
       var route = route_consulta;
-      var token = $('input:hidden[name=_token]').val();
+      var token = "{{ csrf_token() }}";
 
       $.ajax({
           url: route,
