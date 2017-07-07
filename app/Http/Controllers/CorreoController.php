@@ -137,7 +137,7 @@ class CorreoController extends BaseController {
 					'url' => $correo_informacion->url,
 					'msj_html' => $correo_informacion->msj_html,
 					'correos' => $correos,
-					'subj' => $correo_informacion->subj
+					'subj' => $correo_informacion->titulo
 				];
 
 				Mail::send('correo.personalizado', $array, function($msj) use ($array){
