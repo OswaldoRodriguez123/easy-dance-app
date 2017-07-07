@@ -10,6 +10,7 @@ use App\Instructor;
 use App\Proveedor;
 use App\Visitante;
 use App\ClaseGrupal;
+use App\ConfigClasesGrupales;
 use App\Academia;
 use App\User;
 use App\CorreoInformacion;
@@ -24,103 +25,48 @@ class CorreoController extends BaseController {
 
 	public function index(){
 
-		Session::forget('tipo');
+		Session::put('tipo', 1);
 
 		$alumnos = Alumno::where('academia_id', '=', Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 		// $clasegrupal = ClaseGrupal::where('academia_id', '=', Auth::user()->academia_id)->get();
 
-		$clasegrupal = DB::table('config_clases_grupales')
-                    ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-                    ->select('config_clases_grupales.nombre', 'clases_grupales.id')
-                    ->where('clases_grupales.academia_id', '=', Auth::user()->academia_id)
-                ->get();
-	
-		return view('correo.index')->with(['alumnos' => $alumnos, 'clasegrupal' => $clasegrupal]);
+		return view('correo.index')->with(['alumnos' => $alumnos]);
 
 	}
 
-	public function correoInformacion(Request $request){
+	public function correoPersonalizado(Request $request){
 
-		$array = array(2, 4);
-		$alumnos = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-            ->where('academia_id', Auth::user()->academia_id)
-            ->whereIn('usuarios_tipo.tipo',$array)
-        ->get();
+		$rules = [
+	        'url' => 'required|active_url',
+	        'subj' => 'required',
+	    ];
 
+	    $messages = [
 
-		foreach($alumnos as $alumno)
-		{
+	    	'url.required' => 'Ups! La URL es requerida',
+	        'url.active_url' => 'Ups! La URL no es valida',
+	        'subj.required' => 'Ups! El titulo es requerido',
+	    ];
 
-			$subj = 'Información';
+	    $validator = Validator::make($request->all(), $rules, $messages);
 
-			$msj_html = $request->msj_html;
+	    if ($validator->fails()){
+	        
+	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-			$array = [
-				'msj_html' => $request->msj_html,
-				'email' => $alumno->email,
-				'subj' => $subj
-			];
+	    }else{
 
-				Mail::send('correo.informacion', $array, function($msj) use ($array){
-					$msj->subject($array['subj']);
-				    $msj->to($array['email']);
-				});
-		}
+			$correo_informacion = new CorreoInformacion;
 
-		return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-	 }
+			$correo_informacion->academia_id = Auth::user()->academia_id;
+	        $correo_informacion->url = $request->url;
+	        $correo_informacion->msj_html = $request->msj_html;
+	        $correo_informacion->titulo = $request->subj;
 
-	 public function correoPersonalizado(Request $request){
+	        if($correo_informacion->save())
+	        {
 
-	 $rules = [
-        'url' => 'required|active_url',
-        'subj' => 'required',
-    ];
-
-    $messages = [
-
-    	'url.required' => 'Ups! La URL es requerida',
-        'url.active_url' => 'Ups! La URL no es valida',
-        'subj.required' => 'Ups! El titulo es requerido',
-    ];
-
-    $validator = Validator::make($request->all(), $rules, $messages);
-
-    if ($validator->fails()){
-
-        // return redirect("/home")
-
-        // ->withErrors($validator)
-        // ->withInput();
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
-
-    }
-
-    else{
-
-		$array = array(2, 4);
-		$alumnos = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-            ->where('academia_id', Auth::user()->academia_id)
-            ->whereIn('usuarios_tipo.tipo',$array)
-        ->get();
-
-		$subj = $request->subj;
-		$msj_html = $request->msj_html;
-
-		$correo_informacion = new CorreoInformacion;
-
-		$correo_informacion->academia_id = Auth::user()->academia_id;
-        $correo_informacion->url = $request->url;
-        $correo_informacion->msj_html = $request->msj_html;
-        $correo_informacion->titulo = $request->subj;
-
-        if($correo_informacion->save())
-        {
-
-			if($request->imageBase64){
+				if($request->imageBase64){
 
 	                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
 	                $path = storage_path();
@@ -147,169 +93,66 @@ class CorreoController extends BaseController {
 	                $correo_informacion->save();
 
 	                $imagen = "http://app.easydancelatino.com/assets/uploads/correo/".$nombre_img;
-
-	        }else{
-	        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
-	        }
-
-			foreach($alumnos as $alumno)
-			{
-				
-				$array = [
-					'imagen' => $imagen,
-					'url' => $request->url,
-					'msj_html' => $request->msj_html,
-					'email' => $alumno->email,
-					'subj' => $subj
-				];
-
-					Mail::send('correo.personalizado', $array, function($msj) use ($array){
-						$msj->subject($array['subj']);
-					    $msj->to($array['email']);
-					});
-			}
-
-			return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-
-		 	}else{
-            	return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        	}
-	 	}
-	}
-
-	public function correoPersonalizadoVisitante(Request $request){
-
-	$rules = [
-      'tipo' => 'required',
-      'url'  => 'required|active_url',
-      'subj' => 'required',
-    ];
-
-    $messages = [
-      'tipo.required' => 'Ups! El tipo es requerido',
-      'url.required' => 'Ups! La URL es requerida',
-      'url.active_url' => 'Ups! La URL no es valida',
-      'subj.required' => 'Ups! El titulo es requerido',
-    ];
-
-    $validator = Validator::make($request->all(), $rules, $messages);
-
-    if ($validator->fails()){
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-    }
-
-    else{
-
-    	if($request->tipo == 2){
-
-          if($request->visitante_id == ''){
-            return response()->json(['errores' => ['visitante_id' => [0, 'Ups! El interesado es requerido']], 'status' => 'ERROR'],422);
-          }
-        }
-
-        $subj = $request->subj;
-        $msj_html = $request->msj_html;
-        $url = $request->url;
-
-		$correo_informacion = new CorreoInformacion;
-
-		$correo_informacion->academia_id = Auth::user()->academia_id;
-        $correo_informacion->url = $request->url;
-        $correo_informacion->msj_html = $request->msj_html;
-        $correo_informacion->titulo = $request->subj;
-
-        if($correo_informacion->save())
-        {
-			if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
-
-	                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-	                $path = storage_path();
-	                $split = explode( ';', $request->imageBase64 );
-	                $type =  explode( '/',  $split[0]);
-	                $ext = $type[1];
-	                
-	                if($ext == 'jpeg' || 'jpg'){
-	                    $extension = '.jpg';
-	                }
-
-	                if($ext == 'png'){
-	                    $extension = '.png';
-	                }
-
-	                $nombre_img = "correo-". $correo_informacion->id . $extension;
-	                $image = base64_decode($base64_string);
-
-	                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
-	                $img = Image::make($image)->resize(1440, 500);
-	                $img->save('assets/uploads/correo/'.$nombre_img);
-
-	                $correo_informacion->imagen = $nombre_img;
-	                $correo_informacion->save();
-
-	                $imagen = "http://app.easydancelatino.com/assets/uploads/correo/".$nombre_img;
-
-	        }else{
-	        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
-	        }
-
-	        if($request->tipo == 1){
-
-		        $visitantes=Visitante::where('academia_id', Auth::user()->academia_id)->get();
-
-				foreach($visitantes as $visitante)
-				{
-					if($visitante->correo)
-					{
-
-						$array = [
-							'imagen' => $imagen,
-							'url' => $url,
-							'msj_html' => $msj_html,
-							'email' => $visitante->correo,
-							'subj' => $subj
-						];
-
-							Mail::send('correo.personalizado', $array, function($msj) use ($array){
-								$msj->subject($array['subj']);
-							    $msj->to($array['email']);
-							});
-					}
-				}
-			}else{
-
-		        $visitante=Visitante::find($request->visitante_id);
-
-		        if($visitante->correo){
-
-			        $array = [
-			            'msj_html' => $msj_html,
-			            'email' => $visitante->correo,
-			            'subj' => $subj,
-			            'url' => $url,
-			            'imagen' => $imagen
-			        ];
-
-			        Mail::send('correo.personalizado', $array, function($msj) use ($array){
-			          $msj->subject($array['subj']);
-			            $msj->to($array['email']);
-			        });
 
 		        }else{
-		        	return response()->json(['error_mensaje' => 'Ups! Este visitante no posee correo electrónico', 'status' => 'ERROR-CORREO'],422);
+		        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
 		        }
-	      	}
 
-			return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+		        $correos = array();
+
+		        if($request->dirigido == 1){
+
+		        	$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->get();
+
+					foreach($usuarios as $usuario){
+						if(trim($usuario->correo) != ''){
+							$correos[] = $usuario->correo;
+						}
+					}
+
+					$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->get();
+
+					foreach($usuarios as $usuario){
+						if(trim($usuario->correo) != ''){
+							$correos[] = $usuario->correo;
+						}
+					}
+
+		        }else{
+		        	if($request->dirigido == 2){
+		        		$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->get();
+		        	}else{
+		        		$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->get();
+		        	}
+
+		        	foreach($usuarios as $usuario){
+		        		if(trim($usuario->correo) != ''){
+							$correos[] = $usuario->correo;
+						}
+					}
+		        }
+
+				$array = [
+					'imagen' => $imagen,
+					'url' => $correo_informacion->url,
+					'msj_html' => $correo_informacion->msj_html,
+					'correos' => $correos,
+					'subj' => $correo_informacion->subj
+				];
+
+				Mail::send('correo.personalizado', $array, function($msj) use ($array){
+					$msj->subject($array['subj']);
+				    $msj->to($array['correos']);
+				});
+
+				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
 
 		 	}else{
-            	return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        	}
-	 	}
+	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+	        }
+		}
 	}
 	
-
 	public function indexsinselector($id){
 
 		$tipo = Session::get('tipo');
@@ -891,7 +734,7 @@ class CorreoController extends BaseController {
  		public function correoSuspension(Request $request){
 
 
- 					$tipo = Session::get('tipo');
+ 		$tipo = Session::get('tipo');
 
 		if($tipo){
 
@@ -1063,7 +906,7 @@ class CorreoController extends BaseController {
 
  		public function correoAdelanto(Request $request){
 
- 						$tipo = Session::get('tipo');
+ 		$tipo = Session::get('tipo');
 
 		if($tipo){
 
@@ -1324,35 +1167,27 @@ class CorreoController extends BaseController {
 
  	public function correoVisitante(Request $request){
 
-      $rules = [
-        'tipo' => 'required',
-        'url'  => 'required|active_url',
-        'subj' => 'required',
-      ];
+      	$rules = [
+        	'tipo' => 'required',
+        	'url'  => 'required|active_url',
+        	'subj' => 'required',
+      	];
 
-      $messages = [
-        'tipo.required' => 'Ups! El tipo es requerido',
-        'url.required' => 'Ups! La URL es requerida',
-        'url.active_url' => 'Ups! La URL no es valida',
-        'subj.required' => 'Ups! El titulo es requerido',
-      ];
+      	$messages = [
+        	'tipo.required' => 'Ups! El tipo es requerido',
+        	'url.required' => 'Ups! La URL es requerida',
+        	'url.active_url' => 'Ups! La URL no es valida',
+        	'subj.required' => 'Ups! El titulo es requerido',
+      	];
 
-      $validator = Validator::make($request->all(), $rules, $messages);
+     	$validator = Validator::make($request->all(), $rules, $messages);
 
-      if ($validator->fails()){
+      	if ($validator->fails()){
 
-          // return redirect("/home")
+        	return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-          // ->withErrors($validator)
-          // ->withInput();
 
-          return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-          //dd($validator);
-
-      }
-
-      else{
+      	}else{
 
         if($request->tipo == 2){
 
@@ -1451,5 +1286,5 @@ class CorreoController extends BaseController {
           return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
       }
     }
-  }
- }
+	}
+}

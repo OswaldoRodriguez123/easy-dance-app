@@ -609,7 +609,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		Route::get('participante/visitante/impresion/{id}', 'VisitanteController@impresion');
 		Route::post('participante/visitante/impresion', 'VisitanteController@storeImpresion');
-		Route::post('participante/visitante/enviar', 'VisitanteController@enviar');
+		Route::post('participante/visitante/enviar-correo', 'VisitanteController@enviarCorreo');
+		Route::post('participante/visitante/enviar-correo-personalizado', 'VisitanteController@enviarCorreoPersonalizado');
 
 
 		Route::get('participante/visitante/llamadas/{id}', 'VisitanteController@indexLlamada');
@@ -984,9 +985,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('/correo/suspension', 'CorreoController@correoSuspension');
 		Route::post('/correo/adelanto', 'CorreoController@correoAdelanto');
 		Route::post('/correo/ayuda', 'CorreoController@correoAyuda');
-		Route::post('/correo/informacion', 'CorreoController@correoInformacion');
 		Route::post('/correo/personalizado', 'CorreoController@correoPersonalizado');
-		Route::post('/correo/personalizadovisitante', 'CorreoController@correoPersonalizadoVisitante');
 
 		// ASISTENCIA
 

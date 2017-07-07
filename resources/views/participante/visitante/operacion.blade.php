@@ -102,7 +102,7 @@
 @section('js') 
     <script type="text/javascript">
 
-    route_enviar="{{url('/')}}/participante/visitante/enviar";
+    route_enviar="{{url('/')}}/participante/visitante/enviar-correo";
 
     $(document).ready(function(){
 

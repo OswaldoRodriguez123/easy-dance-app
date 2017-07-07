@@ -888,7 +888,7 @@
     route_update="{{url('/')}}/participante/visitante/update";
     route_email="{{url('/')}}/correo/sesion/";
     route_impresion="{{url('/')}}/participante/visitante/impresion/";
-    route_enviar="{{url('/')}}/participante/visitante/enviar";
+    route_enviar="{{url('/')}}/participante/visitante/enviar-correo";
 
     $(document).ready(function(){
 

@@ -308,7 +308,7 @@
 
         route_detalle="{{url('/')}}/participante/visitante/detalle";
         route_operacion="{{url('/')}}/participante/visitante/operaciones";
-        route_personalizado="{{url('/')}}/correo/personalizadovisitante";
+        route_personalizado="{{url('/')}}/participante/visitante/enviar-correo-personalizado";
             
         $(document).ready(function(){
 
@@ -502,6 +502,19 @@
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
         }
+      }
+
+      function errores(merror){
+        console.log(merror);
+         $.each(merror, function (n, c) {
+             console.log(n);
+           $.each(this, function (name, value) {
+              //console.log(this);
+              var error=value;
+              $("#error-"+n+"_mensaje").html(error);
+              console.log(value);
+           });
+        });
       }
 
 
