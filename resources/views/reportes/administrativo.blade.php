@@ -485,6 +485,8 @@
                             concepto = concepto.substr(0, 30) + "..."
                         }
 
+                        cliente = toTitleCase(array.cliente)
+
                         if(array.tipo == 1){
                             monto = '+'+formatmoney(parseFloat(array.importe_neto))
                         }else if(array.tipo == 2){
@@ -496,9 +498,9 @@
                         var rowNode=t.row.add( [
                             ''+array.fecha+'',
                             ''+array.hora+'',
-                            ''+array.cliente+'',
+                            ''+cliente+'',
                             ''+array.tipo_pago+'',
-                            ''+'<span class="capitalize">'+concepto+'</span>'+'',
+                            ''+concepto+'',
                             ''+monto+''
                         ] ).draw(false).node();
 
