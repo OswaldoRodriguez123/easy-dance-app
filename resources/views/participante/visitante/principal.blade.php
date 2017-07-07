@@ -21,160 +21,6 @@
 @stop
 @section('content')
 
-<div class="modal fade" id="modalCorreo" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro">Editor <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <div>
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-                        <form name="correo_personalizado" id="correo_personalizado"  >
-
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-
-                    <div class="col-sm-12">
-                      <div class="form-group fg-line ">
-                        <label for="tipo p-t-10" id="id-tipo">Tipo de envio</label> <span class="c-morado f-700 f-16">*</span>
-                        <br><br>
-                        <label class="radio radio-inline m-r-20" style="margin-top:0px">
-                            <input name="tipo" id="todos" value="1" type="radio" checked>
-                            <i class="input-helper"></i>  
-                            Todos los visitantes 
-                        </label>
-                        <label class="radio radio-inline m-r-20 ">
-                            <input name="tipo" id="particular" value="2" type="radio">
-                            <i class="input-helper"></i>  
-                            Particular
-                        </label>
-                        
-                      </div>
-                     <div class="has-error" id="error-tipo">
-                          <span >
-                              <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                           
-                          </span>
-                      </div>
-                   </div>
-
-                  <div class="clearfix p-b-35"></div>
-
-                  <div class="col-sm-12 interesados" style="display: none"> 
-                    <label for="nombre" id="id-visitante_id">Visitante</label> <span class="c-morado f-700 f-16">*</span>
-                    <br><br>
-                      <div class="fg-line">
-                      <div class="select">
-                        <select class="selectpicker" name="visitante_id" id="visitante_id" data-live-search="true">
-
-                          <option value="">Selecciona</option>
-                          @foreach ( $visitantes as $visitante )
-                          <option value = "{{ $visitante['id'] }}">{{ $visitante['nombre'] }} {{ $visitante['apellido'] }} - {{ $visitante['correo'] }}</option>
-                          @endforeach
-                        
-                        </select>
-                      </div>
-                    </div>
-                 <div class="has-error" id="error-visitante_id">
-                      <span >
-                          <small class="help-block error-span" id="error-visitante_id_mensaje" ></small>                                
-                      </span>
-                  </div>
-                  <div class="clearfix p-b-35"></div>
-               </div>
-
-
-
-                              <div class="col-sm-12">
-                                  <label for="id" id="id-url">Ingresa url de la imagen</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
-
-                                  <br><br>
-                                  
-
-                                    <div class="fg-line">                       
-                                      <input type="text" class="form-control caja input-sm" name="url" id="url" placeholder="Ingresa la url">
-                                    </div>
-                                   
-                                   <div class="has-error" id="error-url">
-                                    <span >
-                                     <small id="error-url_mensaje" class="help-block error-span" ></small>                                           
-                                    </span>
-                                    </div>                                          
-                                </div>
-
-                                <div class="clearfix p-b-35"></div>
-
-                                <div class="col-sm-12">
-                                 
-                                    <label for="nombre" id="id-subj">Titulo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la clase personalizada" title="" data-original-title="Ayuda"></i>
-
-
-                                      <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="subj" id="subj" placeholder="Ej. Información">
-                                      </div>
-                                 <div class="has-error" id="error-subj">
-                                      <span >
-                                          <small class="help-block error-span" id="error-subj_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-
-                          <div class="col-sm-12">
-                            <label for="apellido" id="id-imagen">Cargar Imagen</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
-                            
-                            <div class="clearfix p-b-15"></div>
-                              
-                            <input type="hidden" name="imageBase64" id="imageBase64">
-                              <div class="fileinput fileinput-new" data-provides="fileinput">
-                                <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px"></div>
-                                <div>
-                                    <span class="btn btn-info btn-file">
-                                        <span class="fileinput-new">Seleccionar Imagen</span>
-                                        <span class="fileinput-exists">Cambiar</span>
-                                        <input type="file" name="imagen" id="imagen" >
-                                    </span>
-                                    <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
-                                </div>
-                            </div>
-                              <div class="has-error" id="error-imagen">
-                              <span >
-                                  <small class="help-block error-span" id="error-imagen_mensaje"  ></small>
-                              </span>
-                            </div>
-                          </div>
-
-                              <div class="clearfix p-b-35"></div>
-
-
-         
-
-                        </form>
-
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>                        
-                        <div class="col-md-12">
-                        <label for="id" id="id-msj_html">Mensaje</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
-
-                                  <br><br>
-                            <div id="html-personalizado"></div>
-                        </div>
-
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-
-                         <div class="modal-footer">
-                            <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" id="EnviarPersonalizado" >Enviar</button>
-                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
-                        </div>
-
-
-                        </div>
-                       
-                    </div>
-                </div>
-            </div>
 
 <a href="{{url('/')}}/participante/visitante/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
@@ -199,10 +45,6 @@
                     
                     <div class="card">
                         <div class="card-header ">
-
-                            <div class="text-left">
-                                <a data-toggle="modal" id="modalPe" href="#modalCorreo" class="f-16 p-t-0 text-success">Enviar Correo</a>
-                            </div>
 
                             <div class="text-right">
                                 <span class="f-16 p-t-0 text-success">Agregar un Visitante <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
@@ -308,56 +150,45 @@
 
         route_detalle="{{url('/')}}/participante/visitante/detalle";
         route_operacion="{{url('/')}}/participante/visitante/operaciones";
-        route_personalizado="{{url('/')}}/participante/visitante/enviar-correo-personalizado";
             
         $(document).ready(function(){
 
-          $("#correo_personalizado")[0].reset();
 
         t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25,   
-        order: [[1, 'desc']],
-        fnDrawCallback: function() {
-        if ("{{count($visitantes)}}" < 25) {
-              $('.dataTables_paginate').hide();
-              $('#tablelistar_length').hide();
-          }else{
-             $('.dataTables_paginate').show();
-          }
-        },
-        pageLength: 25,
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
-        });
-    
-      });
+          processing: true,
+          serverSide: false,
+          pageLength: 25,   
+          order: [[1, 'desc']],
+          fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
+          },
+          language: {
+                          processing:     "Procesando ...",
+                          search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                          searchPlaceholder: "BUSCAR",
+                          lengthMenu:     "Mostrar _MENU_ Registros",
+                          info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                          infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                          infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                          infoPostFix:    "",
+                          loadingRecords: "...",
+                          zeroRecords:    "No se encontraron registros coincidentes",
+                          emptyTable:     "No hay datos disponibles en la tabla",
+                          paginate: {
+                              first:      "Primero",
+                              previous:   "Anterior",
+                              next:       "Siguiente",
+                              last:       "Ultimo"
+                          },
+                          aria: {
+                              sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                              sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                          }
+                      }
+          });
+      
+    });
 
 
     function previa(t){
@@ -368,156 +199,9 @@
       }
 
       $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-         });
-
-      $("#imagen").bind("change", function() {
-              //alert('algo cambio');
-              
-              setTimeout(function(){
-                var imagen = $("#imagena img").attr('src');
-                var canvas = document.createElement("canvas");
-       
-                var context=canvas.getContext("2d");
-                var img = new Image();
-                img.src = imagen;
-                
-                canvas.width  = img.width;
-                canvas.height = img.height;
-
-                context.drawImage(img, 0, 0);
-         
-                var newimage = canvas.toDataURL("image/jpeg", 0.8);
-                var image64 = $("input:hidden[name=imageBase64]").val(newimage);
-              },500);
-
-          });
-
-      $("#modalPe").on("click", function(){
-                $('#html-personalizado').summernote({
-                        height: 150,
-                        toolbar: [
-                          // [groupName, [list of button]]
-                          ['style', ['bold', 'italic', 'underline']],
-                          ['fontsize', ['fontsize']],
-                          ['color', ['color']],
-                          ['para', ['ul', 'ol', 'paragraph']],
-                          ['height', ['height']],
-                          ['link', ['link']],
-                        ],
-                        lang: 'es-ES'
-
-                    });
-                $('#html-personalizado').summernote('code', '');                
-            });
-
-      $("#EnviarPersonalizado").on('click', function(){
-
-                procesando();
-
-                limpiarMensaje();
-
-                var datos = $( "#correo_personalizado" ).serialize();
-                var html = $('#html-personalizado').summernote('code');
-                var token = $('input:hidden[name=_token]').val();
-                $.ajax({
-                    headers: {'X-CSRF-TOKEN': token},
-                    url: route_personalizado,
-                    type: 'POST',
-                    dataType: 'json',
-                    data: datos+"&msj_html="+html,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY"; 
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje="Tu correo ha sido enviado exitósamente";
-
-                      finprocesado();
-                      $('#modalCorreo').modal('hide');
-
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        finprocesado();
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nType = 'danger';
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY";                       
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);          
-                        }else if(msj.responseJSON.status=="ERROR-CORREO"){
-                          swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                        }                        
-                        finprocesado();
-                      }, 1000);
-                    }
-                });
-                        
-            });
-
-      $('input[name=tipo]').change(function() {
-        val = $(this).val();
-
-        if(val == 1)
-        {
-          $(".interesados").hide();
-        }else{
-          $(".interesados").show();
-        }
-    });
-
-      function limpiarMensaje(){
-        var campo = ["visitante_id", "tipo", "url", "imagen", "titulo"];
-        fLen = campo.length;
-        for (i = 0; i < fLen; i++) {
-            $("#error-"+campo[i]+"_mensaje").html('');
-        }
-      }
-
-      function errores(merror){
-        console.log(merror);
-         $.each(merror, function (n, c) {
-             console.log(n);
-           $.each(this, function (name, value) {
-              //console.log(this);
-              var error=value;
-              $("#error-"+n+"_mensaje").html(error);
-              console.log(value);
-           });
-        });
-      }
-
-
+          var route =route_operacion+"/"+this.id;
+          window.location=route;
+       });
 
     </script>
 @stop

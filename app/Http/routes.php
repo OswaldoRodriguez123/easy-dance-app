@@ -610,7 +610,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('participante/visitante/impresion/{id}', 'VisitanteController@impresion');
 		Route::post('participante/visitante/impresion', 'VisitanteController@storeImpresion');
 		Route::post('participante/visitante/enviar-correo', 'VisitanteController@enviarCorreo');
-		Route::post('participante/visitante/enviar-correo-personalizado', 'VisitanteController@enviarCorreoPersonalizado');
 
 
 		Route::get('participante/visitante/llamadas/{id}', 'VisitanteController@indexLlamada');
