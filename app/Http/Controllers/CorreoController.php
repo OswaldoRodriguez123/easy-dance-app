@@ -132,6 +132,8 @@ class CorreoController extends BaseController {
 					}
 		        }
 
+		        $correos = array_unique($correos);
+
 				$array = [
 					'imagen' => $imagen,
 					'url' => $correo_informacion->url,
