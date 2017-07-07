@@ -519,5 +519,26 @@
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     }
 
+    function errores(merror){
+        var elemento="";
+        var contador=0;
+        $.each(merror, function (n, c) {
+        if(contador==0){
+        elemento=n;
+        }
+        contador++;
+
+         $.each(this, function (name, value) {              
+            var error=value;
+            $("#error-"+n+"_mensaje").html(error);             
+         });
+      });
+
+        $('html,body').animate({
+              scrollTop: $("#id-"+elemento).offset().top-90,
+        }, 1500);          
+
+    }
+
     </script>
 @stop
