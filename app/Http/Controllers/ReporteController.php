@@ -1571,7 +1571,9 @@ class ReporteController extends BaseController
             // ->select('egresos.*', 'tipos_egresos.nombre as nombre_egreso', 'users.nombre as administrador_nombre','users.apellido as administrador_apellido')
             // ->where('egresos.academia_id', '=', Auth::user()->academia_id);
 
-             $query = Egreso::where('academia_id', '=', Auth::user()->academia_id);
+             $query = Egreso::join('tipos_egresos', 'egresos.tipo', '=', 'tipos_egresos.id')
+                ->select('egresos.*', 'tipos_egresos.nombre as nombre_egreso')
+            ->where('egresos.academia_id', '=', Auth::user()->academia_id);
 
             //LINEA DE SERVICIO
 
