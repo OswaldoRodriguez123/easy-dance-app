@@ -1194,7 +1194,7 @@
         $('#instructor_id').selectpicker('render');
         limpiarMensaje();
         $('html,body').animate({
-        scrollTop: $("#id-clase_grupal_id").offset().top-90,
+          scrollTop: $("#id-clase_grupal_id").offset().top-90,
         }, 1500);
         $("#pop-nombre_clase").focus();
       });

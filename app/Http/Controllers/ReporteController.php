@@ -1499,7 +1499,7 @@ class ReporteController extends BaseController
                         $end = Carbon::now()->endOfMonth()->toDateString();  
                     }else if($request->fecha == 3){
                         $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-                        $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
+                        $end = Carbon::now()->endOfMonth()->subMonth()->subDay()->toDateString();  
                     }
 
                     $query->whereBetween('facturas.fecha', [$start,$end]);
@@ -1610,7 +1610,7 @@ class ReporteController extends BaseController
                         $end = Carbon::now()->endOfMonth()->toDateString();  
                     }else if($request->fecha == 3){
                         $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-                        $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
+                        $end = Carbon::now()->endOfMonth()->subMonth()->subDay()->toDateString();  
                     }
 
                     $query->whereBetween('egresos.fecha', [$start,$end]);
