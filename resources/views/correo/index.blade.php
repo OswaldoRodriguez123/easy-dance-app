@@ -512,6 +512,33 @@
 
                             <div class="col-sm-12">
                                  
+                                  <label for="tipo" id="id-tipo">Modo de envio</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona a quienes le llegara el correo" title="" data-original-title="Ayuda" data-html="true"></i>
+
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
+                                    <div class="fg-line">
+                                    <div class="select">
+                                      <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
+
+                                        <option value="3">Correo</option>
+                                        <option value="2">Mensaje</option>
+                                        <option value="1">Ambos</option>
+                                        
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+                                 <div class="has-error" id="error-tipo">
+                                      <span >
+                                          <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                            <div class="col-sm-12">
+                                 
                                   <label for="dirigido">A quien va dirigido</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona a quienes le llegara el correo" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                   <div class="input-group">
@@ -565,7 +592,7 @@
                                       <div class="fg-line">
                                       <input type="text" class="form-control input-sm proceso" name="subj" id="subj" placeholder="Ej. Información">
                                       </div>
-                                 <div class="has-error" id="error-subj">
+                                      <div class="has-error" id="error-subj">
                                       <span >
                                           <small class="help-block error-span" id="error-subj_mensaje" ></small>                                
                                       </span>
@@ -606,12 +633,18 @@
                         </form>
 
                         <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>                        
-                        <div class="col-md-12">
-                        <label for="id" id="id-msj_html">Mensaje</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
+                        <div class="clearfix p-b-15"></div> 
 
-                                  <br><br>
-                            <div id="html-personalizado"></div>
+                        <div class="col-md-12">
+                          <label for="id" id="id-msj_html">Mensaje</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
+
+                          <br><br>
+                          <div id="html-personalizado"></div>
+                          <div class="has-error" id="error-msj_html">
+                            <span >
+                                <small class="help-block error-span" id="error-msj_html_mensaje" ></small>
+                            </span>
+                          </div>
                         </div>
 
                          <div class="clearfix p-b-15"></div>
