@@ -93,7 +93,7 @@ class CorreoController extends BaseController {
 
     			if($request->dirigido == 1){
 
-		        	$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->limit(500)->get();
+		        	$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->OrderBy('created_at', 'desc')->limit(500)->get();
 
 					foreach($usuarios as $usuario){
 						if($i <= 500){
@@ -117,7 +117,7 @@ class CorreoController extends BaseController {
 
                 	$numeros = '';
 
-					$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->limit(500)->get();
+					$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->OrderBy('created_at', 'desc')->limit(500)->get();
 
 					foreach($usuarios as $usuario){
 						if($i <= 500){
@@ -142,9 +142,9 @@ class CorreoController extends BaseController {
 		        }else{
 
 		        	if($request->dirigido == 2){
-		        		$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->limit(500)->get();
+		        		$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->OrderBy('created_at', 'desc')->limit(500)->get();
 		        	}else{
-		        		$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->limit(500)->get();
+		        		$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->OrderBy('created_at', 'desc')->limit(500)->get();
 		        	}
 
 		        	foreach($usuarios as $usuario){
@@ -222,7 +222,7 @@ class CorreoController extends BaseController {
 
 		        if($request->dirigido == 1){
 
-		        	$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->get();
+		        	$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->OrderBy('created_at', 'desc')->get();
 
 					foreach($usuarios as $usuario){
 						if(trim($usuario->correo) != ''){
@@ -230,7 +230,7 @@ class CorreoController extends BaseController {
 						}
 					}
 
-					$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->get();
+					$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->OrderBy('created_at', 'desc')->get();
 
 					foreach($usuarios as $usuario){
 						if(trim($usuario->correo) != ''){
@@ -240,9 +240,9 @@ class CorreoController extends BaseController {
 
 		        }else{
 		        	if($request->dirigido == 2){
-		        		$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->get();
+		        		$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->OrderBy('created_at', 'desc')->get();
 		        	}else{
-		        		$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->get();
+		        		$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->OrderBy('created_at', 'desc')->get();
 		        	}
 
 		        	foreach($usuarios as $usuario){
