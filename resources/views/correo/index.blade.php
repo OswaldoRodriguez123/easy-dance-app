@@ -832,6 +832,7 @@
                 // var html = $("div.note-editable.panel-body").html();
                 var datos = $( "#correo_personalizado" ).serialize();
                 var html = $('#html-personalizado').summernote('code');
+                html = encodeURIComponent(html);
                 // var combo = $("#combo").val();
                 // var tipo = $("#tipo").val();
                 var token = $('input:hidden[name=_token]').val();
