@@ -140,7 +140,7 @@ class CorreoController extends BaseController {
                 	$result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$numeros.'&SMSText='.urlencode($mensaje));
 
 		        }else{
-		        	
+
 		        	if($request->dirigido == 2){
 		        		$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->limit(500)->get();
 		        	}else{
@@ -267,12 +267,14 @@ class CorreoController extends BaseController {
 				    $msj->to($array['correos']);
 				});
 
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-
 		 	}else{
 	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
 	        }
 	    }
+
+
+		return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+
 		
 	}
 	
