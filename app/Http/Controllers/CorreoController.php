@@ -93,7 +93,7 @@ class CorreoController extends BaseController {
 
     			if($request->dirigido == 1){
 
-		        	$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->get();
+		        	$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->limit(500)->get();
 
 					foreach($usuarios as $usuario){
 						if($i <= 500){
@@ -112,7 +112,12 @@ class CorreoController extends BaseController {
 						}
 					}
 
-					$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->get();
+					$client = new Client(); //GuzzleHttp\Client
+                	$result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$numeros.'&SMSText='.urlencode($mensaje));
+
+                	$numeros = '';
+
+					$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->limit(500)->get();
 
 					foreach($usuarios as $usuario){
 						if($i <= 500){
@@ -131,11 +136,15 @@ class CorreoController extends BaseController {
 						}
 					}
 
+					$client = new Client(); //GuzzleHttp\Client
+                	$result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$numeros.'&SMSText='.urlencode($mensaje));
+
 		        }else{
+		        	
 		        	if($request->dirigido == 2){
-		        		$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->get();
+		        		$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->limit(500)->get();
 		        	}else{
-		        		$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->get();
+		        		$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->limit(500)->get();
 		        	}
 
 		        	foreach($usuarios as $usuario){
@@ -154,10 +163,10 @@ class CorreoController extends BaseController {
 							break;
 						}
 					}
+
+					$client = new Client(); //GuzzleHttp\Client
+                	$result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$numeros.'&SMSText='.urlencode($mensaje));
 		        }
-		        
-                $client = new Client(); //GuzzleHttp\Client
-                $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$numeros.'&SMSText='.urlencode($mensaje));
 
             }else{
             	return response()->json(['errores' => ['tipo' => [0, 'Ups! El envio de mensajes de texto solo esta disponible en Colombia']], 'status' => 'ERROR'],422);
