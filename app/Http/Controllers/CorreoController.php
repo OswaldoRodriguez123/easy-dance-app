@@ -257,7 +257,7 @@ class CorreoController extends BaseController {
 				$array = [
 					'imagen' => $imagen,
 					'url' => $correo_informacion->url,
-					'msj_html' => $correo_informacion->msj_html,
+					'msj_html' => $request->msj_html,
 					'correos' => $correos,
 					'subj' => $correo_informacion->titulo
 				];
