@@ -973,17 +973,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		// CORREO
 
-		Route::get('/correo/help', 'CorreoController@indexayuda');
-
 		Route::get('/correo','CorreoController@index');
 		Route::get('/correo/{id}','CorreoController@indexsinselector');
 		Route::post('/correo/sesion/{id}', 'CorreoController@Sesion');
-		Route::post('/correo/cumpleaños', 'CorreoController@correoCumpleaños');
-		Route::post('/correo/ausencia', 'CorreoController@correoAusencia');
-		Route::post('/correo/cobro', 'CorreoController@correoCobro');
-		Route::post('/correo/suspension', 'CorreoController@correoSuspension');
-		Route::post('/correo/adelanto', 'CorreoController@correoAdelanto');
-		Route::post('/correo/ayuda', 'CorreoController@correoAyuda');
+		Route::post('/correo/enviar', 'CorreoController@Enviar');
 		Route::post('/correo/personalizado', 'CorreoController@correoPersonalizado');
 
 		// ASISTENCIA
@@ -1123,6 +1116,18 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('perfil/{id}', 'BuscadorController@perfil');
 		Route::get('buscador', 'BuscadorController@index');
 		Route::post('buscador', 'BuscadorController@buscarAlumno');
+
+		//CORREOS
+
+		Route::get('configuracion/correos', 'ConfigCorreoController@principal');
+		Route::get('configuracion/correos/agregar', 'ConfigCorreoController@create');
+		Route::post('configuracion/correos/agregar', 'ConfigCorreoController@store');
+		Route::delete('configuracion/correos/eliminar/{id}', 'ConfigCorreoController@destroy');
+		Route::get('configuracion/correos/detalle/{id}', 'ConfigCorreoController@edit');
+		Route::put('configuracion/correos/update/titulo','ConfigCorreoController@updateTitulo');
+		Route::put('configuracion/correos/update/url','ConfigCorreoController@updateUrl');
+		Route::put('configuracion/correos/update/imagen','ConfigCorreoController@updateImagen');
+		Route::put('configuracion/correos/update/contenido','ConfigCorreoController@updateContenido');
 
 	});// EN MIDDLEWARE RECEPCIONISTA
 	/*--------------------------------------------------------

@@ -13,6 +13,7 @@ use App\ClaseGrupal;
 use App\ConfigClasesGrupales;
 use App\Academia;
 use App\User;
+use App\Correo;
 use App\CorreoInformacion;
 use Validator;
 use DB;
@@ -30,13 +31,151 @@ class CorreoController extends BaseController {
 		Session::put('tipo', 1);
 
 		$alumnos = Alumno::where('academia_id', '=', Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
-		// $clasegrupal = ClaseGrupal::where('academia_id', '=', Auth::user()->academia_id)->get();
+		$correos = Correo::where('academia_id', '=', Auth::user()->academia_id)->get();
 
-		return view('correo.index')->with(['alumnos' => $alumnos]);
+		$array = array();
+
+		foreach($correos as $correo){
+
+			$contenido_cortado = $this->cut_html($correo->contenido, 150);
+
+			$collection=collect($correo);     
+            $correo_array = $collection->toArray();
+            $correo_array['contenido_cortado']=$contenido_cortado;
+            $array[$correo->id] = $correo_array;
+		}
+
+		return view('correo.index')->with(['alumnos' => $alumnos, 'correos' => $array]);
 
 	}
 
-	public function correoPersonalizado(Request $request){
+	public function indexsinselector($id){
+
+		$tipo = Session::get('tipo');
+
+		if($tipo){
+
+			if($tipo == 1)
+			{
+				$usuario = Alumno::withTrashed()->find($id);
+
+				if($usuario->correo){
+
+					$in = array(2,4);
+					$sin_confirmar = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+						->select('users.id')
+			            ->where('usuarios_tipo.tipo_id', $id)
+			            ->where('users.confirmation_token', '!=', null)
+			            ->whereIn('usuarios_tipo.tipo',$in)
+			        ->count();
+					
+				}else{
+					$sin_confirmar = 0;
+				}
+			}
+
+			if($tipo == 2)
+			{
+				$usuario = Instructor::find($id);
+				$sin_confirmar = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+		            ->where('usuarios_tipo.tipo_id', $id)
+		            ->where('users.confirmation_token', '!=', null)
+		            ->where('usuarios_tipo.tipo',3)
+		        ->count();
+			}
+
+			if($tipo == 3)
+			{
+				$usuario = Visitante::find($id);
+				$sin_confirmar = 0;
+			}
+
+			if($tipo == 4)
+			{
+				$usuario = Proveedor::find($id);
+				$sin_confirmar = 0;
+			}
+
+			return view('correo.indexsinselector')->with(['usuario' => $usuario, 'id' => $id, 'sin_confirmar' => $sin_confirmar, 'tipo' => $tipo]);
+
+		}
+		else{
+			return redirect("inicio"); 
+		}
+	
+	}
+
+	public function Sesion($id){
+
+		Session::put('tipo', $id);
+
+		return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+	
+	}
+
+ 	public function Enviar(Request $request){
+
+ 		$tipo = Session::get('tipo');
+
+		if($tipo){
+
+			if($tipo == 1){
+
+				$usuario = Alumno::withTrashed()->find($request->id);
+
+			}else if($tipo == 2){
+
+				$usuario = Instructor::find($request->id);
+
+			}else if($tipo == 3){
+
+				$usuario = Visitante::find($request->id);
+				
+			}else if($tipo == 4){
+
+				$usuario = Proveedor::find($request->id);
+			}
+
+			if($usuario->correo){
+
+				$correo = Correo::find($request->correo_id);
+
+				if($correo){
+
+					if($correo->imagen){
+		                $imagen = "http://app.easydancelatino.com/assets/uploads/correo/".$correo->imagen;
+
+			        }else{
+			        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
+			        }
+
+
+			        $array = [
+						'imagen' => $imagen,
+						'url' => $correo->url,
+						'msj_html' => $correo->contenido,
+						'correo' => $usuario->correo,
+						'subj' => $correo->titulo
+					];
+
+			        Mail::send('correo.personalizado', $array, function($msj) use ($array){
+	                  	$msj->subject($array['subj']);
+	                  	$msj->to($array['correo']);
+	                });
+
+	                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+                }else{
+                	return response()->json(['errores' => ['id' => [0, 'Ups! Este correo no existe']], 'status' => 'ERROR'],422);
+                }
+
+		    }else{
+				return response()->json(['errores' => ['id' => [0, 'Ups! Este usuario no posee correo electrónico configurado']], 'status' => 'ERROR'],422);
+		    }     
+			
+		}
+	}
+
+ 	public function correoPersonalizado(Request $request){
 
 		if($request->tipo != 2){
 
@@ -277,1018 +416,70 @@ class CorreoController extends BaseController {
 
 		
 	}
-	
-	public function indexsinselector($id){
 
-		$tipo = Session::get('tipo');
+		public function correoActivacion(Request $request){
 
-		if($tipo){
+ 		$request->merge(array('email' => trim($request->email)));
 
-			if($tipo == 1)
-			{
-				$usuario = Alumno::withTrashed()->find($id);
+	 	$rules = [
+	        'email' => 'required|email',
+	    ];
 
-				if($usuario->correo){
+	    $messages = [
 
-					$in = array(2,4);
-					$sin_confirmar = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-						->select('users.id')
-			            ->where('usuarios_tipo.tipo_id', $id)
-			            ->where('users.confirmation_token', '!=', null)
-			            ->whereIn('usuarios_tipo.tipo',$in)
-			        ->count();
-					
-				}else{
-					$sin_confirmar = 0;
-				}
-			}
+	        'email.required' => 'Ups! El correo  es requerido ',
+	        'email.email' => 'Ups! El correo tiene una dirección inválida',
+	    ];
 
-			if($tipo == 2)
-			{
-				$usuario = Instructor::find($id);
-				$sin_confirmar = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-		            ->where('usuarios_tipo.tipo_id', $id)
-		            ->where('users.confirmation_token', '!=', null)
-		            ->where('usuarios_tipo.tipo',3)
-		        ->count();
-			}
+	    $validator = Validator::make($request->all(), $rules, $messages);
 
-			if($tipo == 3)
-			{
-				$usuario = Visitante::find($id);
-				$sin_confirmar = 0;
-			}
+	    if ($validator->fails()){
 
-			if($tipo == 4)
-			{
-				$usuario = Proveedor::find($id);
-				$sin_confirmar = 0;
-			}
+	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-			return view('correo.indexsinselector')->with(['usuario' => $usuario, 'id' => $id, 'sin_confirmar' => $sin_confirmar, 'tipo' => $tipo]);
+	    }else{
 
-		}
-		else{
-			return redirect("inicio"); 
-		}
-	
-	}
+ 			$usuario = User::where('email', $request->email)->first();
 
-	public function Sesion($id){
+ 			if($usuario){
 
-		Session::put('tipo', $id);
+ 				// if($usuario->confirmation_token != null)
+ 				// {
 
-		return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-	
-	}
+		 			$academia = Academia::find($usuario->academia_id);
 
- 	public function correoCumpleaños(Request $request){
+		 			$password = str_random(8);
+					$usuario->password = bcrypt($password);
 
- 		$tipo = Session::get('tipo');
+					$usuario->save();
 
-		if($tipo){
+		            $subj = 'Activa tu cuenta en Easy Dance';
+		            $link = "confirmacion/?token=".$usuario->confirmation_token;
 
-			if($tipo == 1)
-			{
-				$alumno = Alumno::withTrashed()->find($request->id);
+		        	$array = [
+		            	'nombre' => $usuario->nombre,
+		                'academia' => $academia->nombre,
+		                'usuario' => $request->email,
+		                'contrasena' => $password,
+		                'subj' => $subj,
+		                'link' => $link
+		            ];
 
-				if($alumno->correo){
-
-				    $subj = 'Feliz cumpleaños';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			        ];
-
-			            Mail::send('correo.cumpleanos', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			            });
-
-						return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-				}else{
-		        	return response()->json(['error_mensaje' => 'Ups! Este alumno no posee correo electrónico', 'status' => 'ERROR-CORREO'],422);
-		        }
-			}
-
-			if($tipo == 2)
-			{
-				$alumno = Instructor::find($request->id);
-
-				if($alumno->correo){
-
-				    $subj = 'Feliz cumpleaños';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			        ];
-
-		            Mail::send('correo.cumpleanos', $array, function($msj) use ($array){
-		                  $msj->subject($array['subj']);
-		                  $msj->to($array['email']);
-		            });
-				            
-					return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-
-				}else{
-		        	return response()->json(['error_mensaje' => 'Ups! Este instructor no posee correo electrónico', 'status' => 'ERROR-CORREO'],422);
-		        }
-			}
-
-			if($tipo == 3)
-			{
-				$alumno = Visitante::find($request->id);
-
-				if($alumno->correo){
-
-				    $subj = 'Feliz cumpleaños';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-		            'msj_html' => $request->msj_html,
-		            'email' => $alumno->correo,
-		            'subj' => $subj
-		             ];
-
-		            Mail::send('correo.cumpleanos', $array, function($msj) use ($array){
-		                  $msj->subject($array['subj']);
-		                  $msj->to($array['email']);
+		            Mail::send('correo.activacion', $array, function($msj) use ($array){
+		                $msj->subject($array['subj']);
+		                $msj->to($array['usuario']);
 		            });
 
-		        }else{
+		            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+	            // }else{
+            	// 	return response()->json(['error_mensaje' => 'Ups! Esta cuenta ya esta activada'], 422);
+           	 // 	}	
+            }else{
+            	return response()->json(['error_mensaje' => 'Ups! No Hemos encontrado la siguiente información del correo  asociada a tu cuenta'], 422);
+            }
+        }
+ 	}
 
-		          	return response()->json(['errores' => ['combo_cumpleaños' => [0, 'Este visitante no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
-		        }
-			            
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-
-			if($tipo == 4)
-			{
-				$alumno = Proveedor::find($request->id);
-
-				if($alumno->correo){
-
-				    $subj = 'Feliz cumpleaños';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.cumpleanos', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			            });
-
-			          }
-			          else{
-
-			          	return response()->json(['errores' => ['combo_cumpleaños' => [0, 'Este proveedor no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
-			          }
-			            
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-		}
-
-
-	 	$combo = explode('-',$request->arreglo);
-
-
-	 		foreach($combo as $id){
-
-	 			if($id != '')
-	 			{
-
-		 			$alumno = Alumno::withTrashed()->find($id);
-
-				    $subj = 'Feliz cumpleaños';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-		            'msj_html' => $request->msj_html,
-		            'email' => $alumno->correo,
-		            'subj' => $subj
-		             ];
-
-		            Mail::send('correo.cumpleanos', $array, function($msj) use ($array){
-	                  $msj->subject($array['subj']);
-	                  $msj->to($array['email']);
-	                 });
-
-	
-
-	 			}
-			}
-
- 		}
-
- 		public function correoAusencia(Request $request){
-
- 				$tipo = Session::get('tipo');
-
-		if($tipo){
-
-			if($tipo == 1)
-			{
-				$alumno = Alumno::withTrashed()->find($request->id);
-
-				    $subj = 'Riesgo de ausencia';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.ausencia', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-
-			if($tipo == 2)
-			{
-				$alumno = Instructor::find($request->id);
-
-				   $subj = 'Riesgo de ausencia';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.ausencia', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-			            
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-
-			if($tipo == 3)
-			{
-				$alumno = Visitante::find($request->id);
-
-				if($alumno->correo){
-
-				    $subj = 'Riesgo de ausencia';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.ausencia', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-
-			          }
-			          else{
-
-			          	return response()->json(['errores' => ['combo_ausencia' => [0, 'Este visitante no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
-			          }
-			            
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-
-			if($tipo == 4)
-			{
-				$alumno = Proveedor::find($request->id);
-
-				if($alumno->correo){
-
-				    $subj = 'Riesgo de ausencia';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.ausencia', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-
-			          }
-			          else{
-
-
-			          	return response()->json(['errores' => ['combo_ausencia' => [0, 'Este proveedor no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
-			          }
-			            
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-		}
-
-	 	$combo = explode('-',$request->arreglo);
-
-	 	// if($request->tipo_ausencia == 'alumno_ausencia'){
-
-	 		foreach($combo as $id){
-
-	 			if($id != '')
-	 			{
-		 			$alumno = Alumno::withTrashed()->find($id);
-
-				    $subj = 'Riesgo de ausencia';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.ausencia', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-	 			}
-			}
-	 	// }else{
-
-	 	// 	foreach($combo as $id){
-
-	 	// 		if($id != '')
-	 	// 		{
-	 	// 			$clasegrupal = DB::table('inscripcion_clase_grupal')
-		 //                ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-		 //                ->select('alumnos.correo')
-		 //                ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
-	  //           	->get();
-
-	  //           	foreach($clasegrupal as $clase){
-
-			// 		    $subj = 'Riesgo de ausencia';
-
-			//         	$msj_html = $request->msj_html;
-
-			// 	        $array = [
-			// 	            'msj_html' => $request->msj_html,
-			// 	            'email' => $clase->correo,
-			// 	            'subj' => $subj
-			// 	             ];
-
-			// 	            Mail::send('correo.ausencia', $array, function($msj) use ($array){
-			// 	                  $msj->subject($array['subj']);
-			// 	                  $msj->to($array['email']);
-			// 	                 });
-			//         	}
-	 	// 			}
-
-	 	// 		}
-	 	// 	}
- 		}
-
- 		public function correoCobro(Request $request){
-
- 		//dd($request->all());
-		$tipo = Session::get('tipo');
-
-		if($tipo){
-
-			if($tipo == 1)
-			{
-				$alumno = Alumno::withTrashed()->find($request->id);
-
-				    $subj = 'Aviso de cobro';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.cobro', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-
-			if($tipo == 2)
-			{
-				$alumno = Instructor::find($request->id);
-
-				   $subj = 'Aviso de cobro';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.cobro', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-			            
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-
-			if($tipo == 3)
-			{
-				$alumno = Visitante::find($request->id);
-
-				if($alumno->correo){
-
-				    $subj = 'Aviso de cobro';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.cobro', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-
-			          }
-			          else{
-
-			          	return response()->json(['errores' => ['combo_cobro' => [0, 'Este visitante no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
-			          }
-			            
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-
-			if($tipo == 4)
-			{
-				$alumno = Proveedor::find($request->id);
-
-				if($alumno->correo){
-
-				    $subj = 'Aviso de cobro';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.cobro', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-
-			          }
-			          else{
-
-			          	return response()->json(['errores' => ['combo_cobro' => [0, 'Este proveedor no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
-			          }
-			            
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-		}
-
-	 	$combo = explode('-',$request->arreglo);
-
-	 	// if($request->tipo_cobro == 'alumno_cobro'){
-
-	 		foreach($combo as $id){
-
-	 			if($id != '')
-	 			{
-		 			$alumno = Alumno::withTrashed()->find($id);
-
-				    $subj = 'Aviso de cobro';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            /*Mail::send('correo.cobro', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });*/
-
-					//Envio de SMS
-			        if($request->cobro_SMS == 1){
-						$data = collect([
-							'nombre' => $alumno->nombre,
-							'apellido' => $alumno->apellido,
-							'celular' => $alumno->celular
-						]);
-			            $academia = Academia::find($alumno->academia_id);
-			            $msg = 'Saludos '.$alumno->nombre.' en '.$academia->nombre.' te recordamos que el /_/_/ vence tu mensualidad. Gracias...';
-					    $sms = $this->sendAlumno($data, $msg);
-					}
-
-	 			}
-			}
-	 	// }else{
-
-	 	// 	foreach($combo as $id){
-
-	 	// 		if($id != '')
-	 	// 		{
-	 	// 			$clasegrupal = DB::table('inscripcion_clase_grupal')
-		 //                ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-		 //                ->select('alumnos.correo')
-		 //                ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
-	  //           	->get();
-
-	  //           	foreach($clasegrupal as $clase){
-
-			// 		    $subj = 'Aviso de cobro';
-
-			//         	$msj_html = $request->msj_html;
-
-			// 	        $array = [
-			// 	            'msj_html' => $request->msj_html,
-			// 	            'email' => $clase->correo,
-			// 	            'subj' => $subj
-			// 	             ];
-
-			// 	            Mail::send('correo.cobro', $array, function($msj) use ($array){
-			// 	                  $msj->subject($array['subj']);
-			// 	                  $msj->to($array['email']);
-			// 	                 });
-			//         	}
-	 	// 			}
-
-	 	// 		}
-	 	// 	}
- 		}
-
-
- 		public function correoSuspension(Request $request){
-
-
- 		$tipo = Session::get('tipo');
-
-		if($tipo){
-
-			if($tipo == 1)
-			{
-				$alumno = Alumno::withTrashed()->find($request->id);
-
-				    $subj = 'Suspensión de clases';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.suspension', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-
-			if($tipo == 2)
-			{
-				$alumno = Instructor::find($request->id);
-
-				   $subj = 'Suspensión de clases';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.suspension', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-			            
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-
-			if($tipo == 3)
-			{
-				$alumno = Visitante::find($request->id);
-
-				if($alumno->correo){
-
-				    $subj = 'Suspensión de clases';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.suspension', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-
-			          }
-			          else{
-
-			          	return response()->json(['errores' => ['combo_suspension' => [0, 'Este visitante no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
-			          }
-			            
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-
-			if($tipo == 4)
-			{
-				$alumno = Proveedor::find($request->id);
-
-				if($alumno->correo){
-
-				    $subj = 'Suspensión de clases';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.suspension', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-
-			          }
-			          else{
-
-			          	return response()->json(['errores' => ['combo_suspension' => [0, 'Este proveedor no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
-			          }
-			            
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-		}
-
-	 	$combo = explode('-',$request->arreglo);
-
-	 	// if($request->tipo_cobro == 'alumno_suspension'){
-
-	 		foreach($combo as $id){
-
-	 			if($id != '')
-	 			{
-		 			$alumno = Alumno::withTrashed()->find($id);
-
-				    $subj = 'Suspensión de clases';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.suspension', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-	 			}
-			}
-	 	// }else{
-
-	 	// 	foreach($combo as $id){
-
-	 	// 		if($id != '')
-	 	// 		{
-	 	// 			$clasegrupal = DB::table('inscripcion_clase_grupal')
-		 //                ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-		 //                ->select('alumnos.correo')
-		 //                ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
-	  //           	->get();
-
-	  //           	foreach($clasegrupal as $clase){
-
-			// 		    $subj = 'Suspensión de clases';
-
-			//         	$msj_html = $request->msj_html;
-
-			// 	        $array = [
-			// 	            'msj_html' => $request->msj_html,
-			// 	            'email' => $clase->correo,
-			// 	            'subj' => $subj
-			// 	             ];
-
-			// 	            Mail::send('correo.suspension', $array, function($msj) use ($array){
-			// 	                  $msj->subject($array['subj']);
-			// 	                  $msj->to($array['email']);
-			// 	                 });
-			//         	}
-	 	// 			}
-
-	 	// 		}
-	 	// 	}
- 		}
-
- 		public function correoAdelanto(Request $request){
-
- 		$tipo = Session::get('tipo');
-
-		if($tipo){
-
-			if($tipo == 1)
-			{
-				$alumno = Alumno::withTrashed()->find($request->id);
-
-				    $subj = 'Adelanto de nuevas aperturas';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.adelanto', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-
-			if($tipo == 2)
-			{
-				$alumno = Instructor::find($request->id);
-
-				   $subj = 'Adelanto de nuevas aperturas';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.adelanto', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-			            
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-
-			if($tipo == 3)
-			{
-				$alumno = Visitante::find($request->id);
-
-				if($alumno->correo){
-
-				   $subj = 'Adelanto de nuevas aperturas';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.adelanto', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-
-			          }
-			          else{
-
-			          	return response()->json(['errores' => ['combo_adelanto' => [0, 'Este visitante no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
-			          }
-			            
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-
-			if($tipo == 4)
-			{
-				$alumno = Proveedor::find($request->id);
-
-				if($alumno->correo){
-
-				    $subj = 'Adelanto de nuevas aperturas';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.adelanto', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-
-			          }
-			          else{
-
-			          	return response()->json(['errores' => ['combo_adelanto' => [0, 'Este proveedor no tiene correo electrónico configurado']], 'status' => 'ERROR'],422);
-			          }
-			            
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-			}
-		}
-
-	 	$combo = explode('-',$request->arreglo);
-
-	 	// if($request->tipo_adelanto == 'alumno_adelanto'){
-
-	 		foreach($combo as $id){
-
-	 			if($id != '')
-	 			{
-		 			$alumno = Alumno::withTrashed()->find($id);
-
-				    $subj = 'Adelanto de nuevas aperturas';
-
-		        	$msj_html = $request->msj_html;
-
-			        $array = [
-			            'msj_html' => $request->msj_html,
-			            'email' => $alumno->correo,
-			            'subj' => $subj
-			             ];
-
-			            Mail::send('correo.adelanto', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                  $msj->to($array['email']);
-			                 });
-	 			}
-			}
-	 	// }else{
-
-	 	// 	foreach($combo as $id){
-
-	 	// 		if($id != '')
-	 	// 		{
-	 	// 			$clasegrupal = DB::table('inscripcion_clase_grupal')
-		 //                ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-		 //                ->select('alumnos.correo')
-		 //                ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
-	  //           	->get();
-
-	  //           	foreach($clasegrupal as $clase){
-
-			// 		    $subj = 'Adelanto de nuevas aperturas';
-
-			//         	$msj_html = $request->msj_html;
-
-			// 	        $array = [
-			// 	            'msj_html' => $request->msj_html,
-			// 	            'email' => $clase->correo,
-			// 	            'subj' => $subj
-			// 	             ];
-
-			// 	            Mail::send('correo.adelanto', $array, function($msj) use ($array){
-			// 	                  $msj->subject($array['subj']);
-			// 	                  $msj->to($array['email']);
-			// 	                 });
-			//         	}
-	 	// 			}
-
-	 	// 		}
-	 	// 	}
- 		}
-
- 		public function correoActivacion(Request $request){
-
-	 		$request->merge(array('email' => trim($request->email)));
-
-		 	$rules = [
-		        'email' => 'required|email',
-		    ];
-
-		    $messages = [
-
-		        'email.required' => 'Ups! El correo  es requerido ',
-		        'email.email' => 'Ups! El correo tiene una dirección inválida',
-		    ];
-
-		    $validator = Validator::make($request->all(), $rules, $messages);
-
-		    if ($validator->fails()){
-
-		        // return redirect("/home")
-
-		        // ->withErrors($validator)
-		        // ->withInput();
-
-		        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-		        //dd($validator);
-
-		    }else{
-
-	 			$usuario = User::where('email', $request->email)->first();
-
-	 			if($usuario){
-
-	 				// if($usuario->confirmation_token != null)
-	 				// {
-
-			 			$academia = Academia::find($usuario->academia_id);
-
-			 			$password = str_random(8);
-						$usuario->password = bcrypt($password);
-
-						$usuario->save();
-
-			            $subj = 'Activa tu cuenta en Easy Dance';
-			            $link = "confirmacion/?token=".$usuario->confirmation_token;
-
-			        	$array = [
-			            	'nombre' => $usuario->nombre,
-			                'academia' => $academia->nombre,
-			                'usuario' => $request->email,
-			                'contrasena' => $password,
-			                'subj' => $subj,
-			                'link' => $link
-			            ];
-
-			            Mail::send('correo.activacion', $array, function($msj) use ($array){
-			                $msj->subject($array['subj']);
-			                $msj->to($array['usuario']);
-			            });
-
-			            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-		            // }else{
-	            	// 	return response()->json(['error_mensaje' => 'Ups! Esta cuenta ya esta activada'], 422);
-	           	 // 	}	
-	            }else{
-	            	return response()->json(['error_mensaje' => 'Ups! No Hemos encontrado la siguiente información del correo  asociada a tu cuenta'], 422);
-	            }
-	        }
-	 	}
-
- 		public function correoAyuda(Request $request)
- 		{
- 	        $array = [
- 	            'msj_html' => $request->mensaje_ayuda,
- 	            'email' => 'siriusdla@gmail.com',
- 	            'subj' => 'Soporte / Ayuda'
- 	             ];
-			Mail::send('correo.ayuda', $array, function($msj) use ($array){
-		      $msj->subject($array['subj']);
-		      $msj->to($array['email']);
-		    });
-
-		    return 'Enviado';
- 		}
-
- 		public function indexayuda(){
- 			return view('correo.ayuda');
- 		}
 
  	public function correoVisitante(Request $request){
 
