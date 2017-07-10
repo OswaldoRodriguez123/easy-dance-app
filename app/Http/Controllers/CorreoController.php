@@ -321,15 +321,12 @@ class CorreoController extends BaseController {
 				    $msj->to($array['correos']);
 				});
 
+				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+
 		 	}else{
 	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
 	        }
 	    }
-
-
-		return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-
-		
 	}
 
 	// public function correoPersonalizado(Request $request){
