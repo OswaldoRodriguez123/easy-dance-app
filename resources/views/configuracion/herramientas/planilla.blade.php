@@ -2127,12 +2127,12 @@
 
     $(".correos").click(function(){
       procesando();
-      window.location = "{{url('/')}}/configuracion/herramientas/correos";
+      window.location = "{{url('/')}}/configuracion/correos";
     });
 
     $(".sms").click(function(){
       procesando();
-      window.location = "{{url('/')}}/configuracion/herramientas/mensajes";
+      window.location = "{{url('/')}}/configuracion/mensajes";
     });
 
    </script>     
