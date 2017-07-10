@@ -19,437 +19,175 @@
 
 @section('content')
 
-            <div class="modal fade" id="modalInformacion" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro">Información <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <div class="text-center">
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-                        <div align="center"><i class="zmdi zmdi-mood zmdi-hc-fw f-60 c-morado"></i></div>
+  <div class="modal fade" id="modalPersonalizado" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                  <h4 class="modal-title c-negro">Editor <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+              </div>
+              <div>
+              <div class="clearfix p-b-15"></div>
+              <div class="clearfix p-b-15"></div>
+              <form name="correo_personalizado" id="correo_personalizado"  >
 
-                        <div class="clearfix p-b-15"></div>
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="id" id="id" value="{{$usuario->id}}">
+                       
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <label for="nombre">Nombre</label>
+                          <br>
+                          <label for="nombre" class="f-14">{{$usuario->nombre}} {{$usuario->apellido}} </label>
+                        </div>
+                        <div class="has-error" id="error-id">
+                          <span >
+                              <small class="help-block error-span" id="error-id_mensaje" ></small> 
+                          </span>
+                        </div>
+                      </div>
+
+                     <div class="clearfix p-b-35"></div>
+
+                    <div class="col-sm-12">
+                        <label for="id" id="id-url">Ingresa url de la imagen</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
+
+                        <br><br>
                         
-                        <div class="col-md-12">
-                         <span class="f-20 opaco-0-8">¡ Desde el  módulo de correos, tienes la oportunidad de enviar los correos prediseñados, con sólo pulsar el botón enviar, se enviará el correo de manera personalizada. !</span>
-                         </div>
+           
+                        <input type="text" class="form-control caja input-sm" name="url" id="url" placeholder="Ingresa la url">
+                         
+                         
+                         <div class="has-error" id="error-url">
+                          <span >
+                           <small id="error-url_mensaje" class="help-block error-span" ></small>                                           
+                          </span>
+                          </div>                                          
+                      </div>
 
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
+                      <div class="clearfix p-b-35"></div>
 
+                      <div class="col-sm-12">
 
-                        </div>
+                      <br><br>
                        
-                    </div>
-                </div>
-            </div>
+                          <label for="nombre" id="id-subj">Titulo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la clase personalizada" title="" data-original-title="Ayuda"></i>
 
-            <!-- MODAL DE CUMPLEAÑOS -->
 
-            <div class="modal fade" id="modalBirthday" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro">Editor <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <div>
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-                        <form name="correo_cumpleaños" id="correo_cumpleaños"  >
-
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <!-- <div class="col-md-12">
-                            <div class="input-group">
-                              <span class="input-group-addon"><i class="zmdi zmdi-email f-22"></i></span>
-                                <div class="dtp-container fg-line">
-                                    <input name="email_para" id="email_para" class="form-control proceso" placeholder="Correo Electronico" type="text">
-                                </div>
+                            <div class="fg-line">
+                            <input type="text" class="form-control input-sm proceso" name="subj" id="subj" placeholder="Ej. Información">
                             </div>
-
-                        </div> -->
-
-   <!--                      <div class="col-sm-6">
-                                 <div class="form-group fg-line ">
-                                    <div class="p-t-10">
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo_cumpleaños" id="alumno_cumpleaños" value="alumno_cumpleaños" type="radio" checked >
-                                        <i class="input-helper"></i>  
-                                        Alumnos <i id="alumno_cumpleaños2" class="icon_a-alumnos c-verde f-20"></i>
-                                    </label>
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo_cumpleaños" id="clase_cumpleaños" value="clase_cumpleaños" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Clases Grupales <i id="clase_cumpleaños2" class="icon_a-clases-grupales f-20"></i>
-                                    </label>
-                                    </div>
-                                    
-                                 </div>
-                                </div> 
-
-                                <div class="clearfix p-b-15"></div>
- -->
-                          <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="nombre">Nombre</label>
-
-                                    <br>
-
-    
-                                       <label for="nombre" class="f-14">{{$usuario->nombre}} {{$usuario->apellido}} </label>
-                                        <!-- <select class="selectpicker bs-select-hidden" id="combo_cumpleaños" name="combo_cumpleaños" multiple="" data-max-options="5" title="Selecciona"> -->
-
-                                    </div>
-                                 <div class="has-error" id="error-combo_cumpleaños">
-                                      <span >
-                                          <small class="help-block error-span" id="error-combo_cumpleaños_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               </form>
-
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>                        
-                        <div class="col-md-12">
-                            <div id="html-cumpleaños"></div>
+                            <div class="has-error" id="error-subj">
+                            <span >
+                                <small class="help-block error-span" id="error-subj_mensaje" ></small>                                
+                            </span>
                         </div>
+                     </div>
 
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
+                     <div class="clearfix p-b-35"></div>
 
-                         <div class="modal-footer">
-                            <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" id="EnviarCumpleaños" >Enviar</button>
-                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
-                        </div>
-
-
-                        </div>
-                       
-                    </div>
+                <div class="col-sm-12">
+                  <label for="apellido" id="id-imagen">Cargar Imagen</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
+                  
+                  <div class="clearfix p-b-15"></div>
+                    
+                  <input type="hidden" name="imageBase64" id="imageBase64">
+                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                      <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px"></div>
+                      <div>
+                          <span class="btn btn-info btn-file">
+                              <span class="fileinput-new">Seleccionar Imagen</span>
+                              <span class="fileinput-exists">Cambiar</span>
+                              <input type="file" name="imagen" id="imagen" >
+                          </span>
+                          <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                      </div>
+                  </div>
+                    <div class="has-error" id="error-imagen">
+                    <span >
+                        <small class="help-block error-span" id="error-imagen_mensaje"  ></small>
+                    </span>
+                  </div>
                 </div>
-            </div>
 
-            <div class="modal fade" id="modalAusencia" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro">Editor <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <div>
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-                        <form name="correo_ausencia" id="correo_ausencia"  >
-
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <!-- <div class="col-md-12">
-                            <div class="input-group">
-                              <span class="input-group-addon"><i class="zmdi zmdi-email f-22"></i></span>
-                                <div class="dtp-container fg-line">
-                                    <input name="email_para" id="email_para" class="form-control proceso" placeholder="Correo Electronico" type="text">
-                                </div>
-                            </div>
-
-                        </div> -->
-<!-- 
-                        <div class="col-sm-6">
-                                 <div class="form-group fg-line ">
-                                    <div class="p-t-10">
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo_ausencia" id="alumno_ausencia" value="alumno_ausencia" type="radio" checked >
-                                        <i class="input-helper"></i>  
-                                        Alumnos <i id="alumno_ausencia2" class="icon_a-alumnos c-verde f-20"></i>
-                                    </label>
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo_ausencia" id="clase_ausencia" value="clase_ausencia" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Clases Grupales <i id="clase_ausencia2" class="icon_a-clases-grupales f-20"></i>
-                                    </label>
-                                    </div>
-                                    
-                                 </div>
-                                </div> 
-
-                                <div class="clearfix p-b-15"></div> -->
-
-                        <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="nombre">Nombre</label>
-
-                                    <br>
-                                    <label for="nombre" class="f-14">{{$usuario->nombre}} {{$usuario->apellido}} </label>
-                                 </div>
-                                 <div class="has-error" id="error-combo_ausencia">
-                                      <span >
-                                          <small class="help-block error-span" id="error-combo_ausencia_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               </form>
-
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>                        
-                        <div class="col-md-12">
-                            <div id="html-ausencia"></div>
-                        </div>
-
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-
-                         <div class="modal-footer">
-                            <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" id="EnviarAusencia" >Enviar</button>
-                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
-                        </div>
+                    <div class="clearfix p-b-35"></div>
 
 
-                        </div>
-                       
-                    </div>
+
+
+              </form>
+
+              <div class="clearfix p-b-15"></div>
+              <div class="clearfix p-b-15"></div> 
+
+              <div class="col-md-12">
+                <label for="id" id="id-msj_html">Mensaje</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
+
+                <br><br>
+                <div id="html-personalizado"></div>
+                <div class="has-error" id="error-msj_html">
+                  <span >
+                      <small class="help-block error-span" id="error-msj_html_mensaje" ></small>
+                  </span>
                 </div>
-            </div>
+              </div>
 
-            <div class="modal fade" id="modalCobro" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro">Editor <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+               <div class="clearfix p-b-15"></div>
+               <div class="clearfix p-b-15"></div>
+
+               <div class="modal-footer">
+                  <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" id="EnviarPersonalizado" >Enviar</button>
+                  <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
+              </div>
+
+
+              </div>
+             
+          </div>
+      </div>
+  </div>
+
+  <div class="modal fade" id="modalCorreo" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                  <h4 class="modal-title c-negro">Enviar Correo: <span id="span_correo"></span> <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+              </div>
+
+              <form name="form_correo" id="form_correo"  >
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="correo_id" id="correo_id">
+                <input type="hidden" name="id" value="{{$usuario->id}}">
+                  <div class="modal-body">                           
+                    <div class="row p-t-20 p-b-0">
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <label for="nombre">Nombre</label>
+                          <br>
+                          <label for="nombre" class="f-14">{{$usuario->nombre}} {{$usuario->apellido}} </label>
                         </div>
-                        <div>
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-                        <form name="correo_cobro" id="correo_cobro"  >
-
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <!-- <div class="col-md-12">
-                            <div class="input-group">
-                              <span class="input-group-addon"><i class="zmdi zmdi-email f-22"></i></span>
-                                <div class="dtp-container fg-line">
-                                    <input name="email_para" id="email_para" class="form-control proceso" placeholder="Correo Electronico" type="text">
-                                </div>
-                            </div>
-
-                        </div> -->
-
-<!--                         <div class="col-sm-6">
-                                 <div class="form-group fg-line ">
-                                    <div class="p-t-10">
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo_cobro" id="alumno_cobro" value="alumno_cobro" type="radio" checked >
-                                        <i class="input-helper"></i>  
-                                        Alumnos <i id="alumno_cobro2" class="icon_a-alumnos c-verde f-20"></i>
-                                    </label>
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo_cobro" id="clase_cobro" value="clase_cobro" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Clases Grupales <i id="clase_cobro2" class="icon_a-clases-grupales f-20"></i>
-                                    </label>
-                                    </div>
-                                    
-                                 </div>
-                                </div> 
-
-                                <div class="clearfix p-b-15"></div> -->
-
-                        <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="nombre">Nombre</label>
-                                    <br>
-                                    <label for="nombre" class="f-14">{{$usuario->nombre}} {{$usuario->apellido}} </label>
-                                 </div>
-                                 <div class="has-error" id="error-combo_cobro">
-                                      <span >
-                                          <small class="help-block error-span" id="error-combo_cobro_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               </form>
-
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>                        
-                        <div class="col-md-12">
-                            <div id="html-cobro"></div>
+                        <div class="has-error" id="error-id">
+                          <span >
+                              <small class="help-block error-span" id="error-id_mensaje" ></small> 
+                          </span>
                         </div>
-
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-
-                         <div class="modal-footer">
-                            <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" id="EnviarCobro" >Enviar</button>
-                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
-                        </div>
-
-
-                        </div>
-                       
+                      </div>
                     </div>
-                </div>
-            </div>
+                  </div>
+              </form>
 
-            <div class="modal fade" id="modalSuspension" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro">Editor <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <div>
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-                        <form name="correo_suspension" id="correo_suspension"  >
+              <div class="clearfix p-b-15"></div>
+              <div class="clearfix p-b-15"></div>
 
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <!-- <div class="col-md-12">
-                            <div class="input-group">
-                              <span class="input-group-addon"><i class="zmdi zmdi-email f-22"></i></span>
-                                <div class="dtp-container fg-line">
-                                    <input name="email_para" id="email_para" class="form-control proceso" placeholder="Correo Electronico" type="text">
-                                </div>
-                            </div>
-
-                        </div> -->
-
-                        <!-- <div class="col-sm-6">
-                                 <div class="form-group fg-line ">
-                                    <div class="p-t-10">
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo_suspension" id="alumno_suspension" value="alumno_suspension" type="radio" checked >
-                                        <i class="input-helper"></i>  
-                                        Alumnos <i id="alumno_suspension2" class="icon_a-alumnos c-verde f-20"></i>
-                                    </label>
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo_suspension" id="clase_suspension" value="clase_suspension" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Clases Grupales <i id="clase_suspension2" class="icon_a-clases-grupales f-20"></i>
-                                    </label>
-                                    </div>
-                                    
-                                 </div>
-                                </div> 
-
-                                <div class="clearfix p-b-15"></div> -->
-
-                        <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="nombre">Nombre</label>
-                                    <br>
-                                    <label for="nombre" class="f-14">{{$usuario->nombre}} {{$usuario->apellido}} </label>
-                                 </div>
-                                 <div class="has-error" id="error-combo_suspension">
-                                      <span >
-                                          <small class="help-block error-span" id="error-combo_suspension_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               </form>
-
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>                        
-                        <div class="col-md-12">
-                            <div id="html-suspension"></div>
-                        </div>
-
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-
-                         <div class="modal-footer">
-                            <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" id="EnviarSuspension" >Enviar</button>
-                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
-                        </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-blanco m-r-10 f-14" id="enviar">Enviar</button>
+                <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
+              </div>
+          </div>
+      </div>
+  </div>
 
 
-                        </div>
-                       
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="modalAdelanto" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro">Editor <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <div>
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-                        <form name="correo_adelanto" id="correo_adelanto"  >
-
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <!-- <div class="col-md-12">
-                            <div class="input-group">
-                              <span class="input-group-addon"><i class="zmdi zmdi-email f-22"></i></span>
-                                <div class="dtp-container fg-line">
-                                    <input name="email_para" id="email_para" class="form-control proceso" placeholder="Correo Electronico" type="text">
-                                </div>
-                            </div>
-
-                        </div> -->
-
-                        <!-- <div class="col-sm-6">
-                                 <div class="form-group fg-line ">
-                                    <div class="p-t-10">
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo_adelanto" id="alumno_adelanto" value="alumno_adelanto" type="radio" checked >
-                                        <i class="input-helper"></i>  
-                                        Alumnos <i id="alumno_adelanto2" class="icon_a-alumnos c-verde f-20"></i>
-                                    </label>
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo_adelanto" id="clase_adelanto" value="clase_adelanto" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Clases Grupales <i id="clase_adelanto2" class="icon_a-clases-grupales f-20"></i>
-                                    </label>
-                                    </div>
-                                    
-                                 </div>
-                                </div> 
-
-                                <div class="clearfix p-b-15"></div>
- -->
-                        <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="nombre">Nombre</label>
-                                    <br>
-                                    <label for="nombre" class="f-14">{{$usuario->nombre}} {{$usuario->apellido}} </label>
-                                 </div>
-                                 <div class="has-error" id="error-combo_adelanto">
-                                      <span >
-                                          <small class="help-block error-span" id="error-combo_adelanto_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               </form>
-
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>                        
-                        <div class="col-md-12">
-                            <div id="html-adelanto"></div>
-                        </div>
-
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-
-                         <div class="modal-footer">
-                            <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" id="EnviarAdelanto" >Enviar</button>
-                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
-                        </div>
-
-
-                        </div>
-                       
-                    </div>
-                </div>
-            </div>
-
-
-<div class="container">
+  <div class="container">
 
       <div class="block-header">
 
@@ -476,9 +214,6 @@
                             <div class="p-t-30">       
                               <div class="row p-b-15 ">
                                 <div class="col-md-12" data-src="/assets/img/ayuda-configuracion.jpg">
-                                  <!--<div class="text-center">
-                                    <img src="{{url('/')}}/assets/img/detalle_alumnos.jpg" class="img-responsive img-efecto text-center" alt="">
-                                  </div>-->
                                   <ul class="ca-menu-planilla">
                                     <li>
                                         <a href="#" class="disabled">
@@ -497,10 +232,6 @@
 
                                   <div class="text-center">
 
-                                    <!-- <span data-toggle="modal" id="modalAgregarBtn" href="#modalInformacion" class="f-18 p-t-0 c-azul pointer">Ver más información</span>
-
-                                    <br><br> -->
-
                                     @if($sin_confirmar) 
                                       <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20 mousedefault" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="top" title="" type="button" data-trigger="hover"></i> <a class="btn-morado m-r-5 f-15 pointer confirmacion"> Enviar confirmación</a>  
                                     @endif
@@ -514,171 +245,52 @@
 
                           <div class="pm-body clearfix col-sm-9">
                             <div class="timeline">
-                                <div class="t-view" data-tv-type="text">
-                                    <div class="tv-header media">
-                                        <a href="" class="tvh-user pull-left">
-                                            <i class="icon_a-pagar f-30 m-r-5 boton blue sa-warning"></i>
-                                        </a>
-                                        <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">AVISO DE COBRO </strong>
-                                        </div>
-                                    </div>
-                                    <div class="tv-body">
-                                        <p class="f-14" id="Cobro">Hola, el siguiente comunicado es para informarte que para la fecha del (_/_/_/) deberás realizar el pago de los servicios ofrecidos y así seguir disfrutando de nuestras clases.</p>
-                                    
-                                        <div class="clearfix"></div>
 
-<!--                                         <span class="f-700 f-16 opaco-0-8"> Automatizar</span>
+                                @foreach($correos as $correo)
 
-                                        <br>
-                                    
-                                        <div class="p-t-10">
-                                            <div class="toggle-switch" data-ts-color="purple">
-                                            <span class="p-r-10 f-700 f-16">No</span><input id="estilo-switch" type="checkbox" hidden="hidden">
-                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                        </div> -->
-                                        
-                                        <br>
+                                  <div class="t-view" data-tv-type="text">
+                                      <div class="tv-header media">
+                                          <a href="" class="tvh-user pull-left">
+                                              <i class="zmdi zmdi-email zmdi-hc-fw f-30 m-r-5 boton blue sa-warning"></i>
+                                          </a>
+                                          <div class="media-body p-t-5">
+                                              <strong class="d-block f-20">{{$correo['titulo']}}</strong>
 
-                                        <div class="text-right">
-                                            <span data-toggle="modal" id="modalCo" href="#modalCobro" class="f-18 p-t-0 c-morado pointer">Enviar Correo</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                          </div>
+                                      </div>
+                                      <div class="tv-body">
+                                          {!!$correo['contenido']!!}
+                                      
+                                          <div class="clearfix"></div>
+                                          
+                                          <br>
+
+                                          <div class="text-right">
+                                              <span class="f-18 p-t-0 c-morado pointer correos" data-titulo ="{{$correo['titulo']}}" id="{{$correo['id']}}">Enviar Correo</span>
+                                          </div>
+                                      </div>
+                                  </div>
+                                @endforeach
 
                                 <div class="t-view" data-tv-type="text">
-                                    <div class="tv-header media">
-                                        <a href="" class="tvh-user pull-left">
-                                            <i class="zmdi zmdi-cake zmdi-hc-fw f-30 m-r-5 boton blue sa-warning"></i>
-                                        </a>
-                                        <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">FELIZ CUMPLEAÑOS   </strong>
-                                        </div>
-                                    </div>
-                                    <div class="tv-body">
-                                        <p class="f-14" id="happyBirth">¡Feliz cumpleaños!. En este día tan especial para ti, deseamos que pases un cumpleaños lleno de mucha alegría y prosperidad; y que la vida te brinde muchos años más al lado de tus seres queridos.</p>
-                                    
-                                        <div class="clearfix"></div>
+                                  <div class="tv-header media">
+                                      <a href="" class="tvh-user pull-left">
+                                          <i class="zmdi zmdi-email f-30 m-r-5 boton blue sa-warning"></i>
+                                      </a>
+                                      <div class="media-body p-t-5">
+                                          <strong class="d-block f-20">Personalizado </strong>
 
-                                        <!-- <span class="f-700 f-16 opaco-0-8"> Automatizar</span>
+                                      </div>
+                                  </div>
+                                  <div class="tv-body">
+                                      
+                                      <br>
 
-                                        <br>
-                                    
-                                        <div class="p-t-10">
-                                            <div class="toggle-switch" data-ts-color="purple">
-                                            <span class="p-r-10 f-700 f-16">No</span><input id="estilo-switch" type="checkbox" hidden="hidden">
-                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                        </div> -->
-                                        
-                                        <br>
-
-                                        <div class="text-right">
-                                            <span data-toggle="modal" id="modalHappyBirth" href="#modalBirthday" class="f-18 p-t-0 c-morado pointer">Enviar Correo</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="t-view" data-tv-type="text">
-                                    <div class="tv-header media">
-                                        <a href="" class="tvh-user pull-left">
-                                            <i class="zmdi zmdi-close-circle zmdi-hc-fw f-30 m-r-5 boton blue sa-warning"></i>
-                                        </a>
-                                        <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">SUSPENSIÓN DE CLASES    </strong>
-                                        </div>
-                                    </div>
-                                    <div class="tv-body">
-                                        <p class="f-14" id="Suspension">Saludos, te informamos que por razones ajenas a nuestra voluntad la clase establecida para la fecha (_/_/_/) ha sido pospuesta, te pedimos disculpas por los cambios realizados y esperamos verte en la siguiente clase para seguir bailando.</p>
-                                    
-                                        <div class="clearfix"></div>
-
-                                        <!-- <span class="f-700 f-16 opaco-0-8"> Automatizar</span>
-
-                                        <br>
-                                    
-                                        <div class="p-t-10">
-                                            <div class="toggle-switch" data-ts-color="purple">
-                                            <span class="p-r-10 f-700 f-16">No</span><input id="estilo-switch" type="checkbox" hidden="hidden">
-                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                        </div> -->
-                                        
-                                        <br>
-
-                                        <div class="text-right">
-                                            <span data-toggle="modal" id="modalSu" href="#modalSuspension" class="f-18 p-t-0 c-morado pointer">Enviar Correo</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="t-view" data-tv-type="text">
-                                    <div class="tv-header media">
-                                        <a href="" class="tvh-user pull-left">
-                                            <i class="zmdi zmdi-rotate-right zmdi-hc-fw f-30 m-r-5 boton blue sa-warning"></i>
-                                        </a>
-                                        <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">ADELANTO DE  NUEVAS APERTURAS     </strong>
-                                        </div>
-                                    </div>
-                                    <div class="tv-body">
-                                        <p class="f-14" id="Adelanto">Hola te informamos que el inicio de nivel establecido para la fecha (_/_/_/) lo adelantaremos para la fecha (_/_/_/) debido a que los cupos ofrecidos fueron ocupados rápidamente, por tal motivo la organización toma la iniciativa de empezar su nivel antes del tiempo previsto, esperamos verte en clases.</p>
-                                    
-                                        <div class="clearfix"></div>
-
-                                        <!-- <span class="f-700 f-16 opaco-0-8"> Automatizar</span>
-
-                                        <br>
-                                    
-                                        <div class="p-t-10">
-                                            <div class="toggle-switch" data-ts-color="purple">
-                                            <span class="p-r-10 f-700 f-16">No</span><input id="estilo-switch" type="checkbox" hidden="hidden">
-                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                        </div> -->
-                                        
-                                        <br>
-
-                                        <div class="text-right">
-                                            <span data-toggle="modal" id="modalAd" href="#modalAdelanto" class="f-18 p-t-0 c-morado pointer">Enviar Correo</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="t-view" data-tv-type="text">
-                                    <div class="tv-header media">
-                                        <a href="" class="tvh-user pull-left">
-                                            <i class="zmdi zmdi-label zmdi-hc-fw f-30 m-r-5 boton blue sa-warning"></i>
-                                        </a>
-                                        <div class="media-body p-t-5">
-                                            <strong class="d-block f-20">RIESGO DE AUSENCIA     </strong>
-                                        </div>
-                                    </div>
-                                    <div class="tv-body">
-                                        <p class="f-14" id="Ausencia">Hola, el motivo de nuestro mensaje es que notamos con preocupación que no has asistido a las clases últimamente. Te invitamos a ponerte en contacto con nosotros para brindarte el apoyo y que puedas recuperar las clases perdidas.</p>
-                                    
-                                        <div class="clearfix"></div>
-
-                                        <!-- <span class="f-700 f-16 opaco-0-8"> Automatizar</span>
-
-                                        <br>
-                                    
-                                        <div class="p-t-10">
-                                            <div class="toggle-switch" data-ts-color="purple">
-                                            <span class="p-r-10 f-700 f-16">No</span><input id="estilo-switch" type="checkbox" hidden="hidden">
-                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                        </div> -->
-                                        
-                                        <br>
-
-                                        <div class="text-right">
-                                            <span data-toggle="modal" id="modalAu" href="#modalAusencia" class="f-18 p-t-0 c-morado pointer">Enviar Correo</span>
-                                        </div>
-                                    </div>
-                                </div>
-
+                                      <div class="text-right">
+                                          <span data-toggle="modal" id="modalPe" href="#modalPersonalizado" class="f-18 p-t-0 c-morado pointer">Enviar Correo</span>
+                                      </div>
+                                  </div>
+                              </div>
 
                             </div>
                         </div>
@@ -688,21 +300,207 @@
         </div>
     </div>
 
-
-
-
 @stop
 
 @section('js') 
 
-        <!-- Following is only for demo purpose. You may ignore this when you implement -->
-        <script type="text/javascript">
+      <script type="text/javascript">
 
-            route_cumpleaños="{{url('/')}}/correo/cumpleaños";
-            route_ausencia="{{url('/')}}/correo/ausencia";
-            route_cobro="{{url('/')}}/correo/cobro";
-            route_suspension="{{url('/')}}/correo/suspension";
-            route_adelanto="{{url('/')}}/correo/adelanto";
+        route_correo="{{url('/')}}/correo/enviar";
+        route_personalizado="{{url('/')}}/correo/personalizado";
+
+        $(document).ready(function() {
+            
+           $("#modalPe").on("click", function(){
+              $('#html-personalizado').summernote({
+                  height: 150,
+                  lang: 'es-ES'
+              });
+
+              $('#html-personalizado').summernote('code', '');                
+          });
+
+          $(".correos").on("click", function(){
+              $('#correo_id').val($(this).attr('id'))  
+              $('#span_correo').text($(this).data('titulo'))  
+              $('#modalCorreo').modal('show')           
+          }); 
+        });
+             
+        $("#EnviarPersonalizado").on('click', function(){
+
+                procesando();
+
+                var datos = $( "#correo_personalizado" ).serialize();
+                var html = $('#html-personalizado').summernote('code');
+                html = encodeURIComponent(html);
+                var token = $('input:hidden[name=_token]').val();
+                $.ajax({
+                    headers: {'X-CSRF-TOKEN': token},
+                    url: route_personalizado,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: datos+"&msj_html="+html,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje="Tu correo ha sido enviado exitósamente";
+
+                          finprocesado();
+                          $('.modal').modal('hide');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        finprocesado();
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        finprocesado();
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });   
+            });
+
+        
+            $("#enviar").on('click', function(){
+
+                procesando();
+                var datos = $( "#form_correo" ).serialize();
+                var token = $('input:hidden[name=_token]').val();
+                $.ajax({
+                    headers: {'X-CSRF-TOKEN': token},
+                    url: route_correo,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: datos,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+                          var nFrom = $(this).attr('data-from');
+                          var nAlign = $(this).attr('data-align');
+                          var nIcons = $(this).attr('data-icon');
+                          var nAnimIn = "animated flipInY";
+                          var nAnimOut = "animated flipOutY"; 
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje="Tu correo ha sido enviado exitósamente";
+
+                          finprocesado();
+                          $('.modal').modal('hide');
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        finprocesado();
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        finprocesado();
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });   
+            });
+
+            function errores(merror){
+              var elemento="";
+              var contador=0;
+              $.each(merror, function (n, c) {
+              if(contador==0){
+              elemento=n;
+              }
+              contador++;
+
+               $.each(this, function (name, value) {              
+                  var error=value;
+                  $("#error-"+n+"_mensaje").html(error);             
+               });
+            });
+
+              $('html,body').animate({
+                    scrollTop: $("#id-"+elemento).offset().top-90,
+              }, 1500);          
+
+          }
+
+
+            $("#imagen").bind("change", function() {
+              
+              setTimeout(function(){
+                var imagen = $("#imagena img").attr('src');
+                var canvas = document.createElement("canvas");
+       
+                var context=canvas.getContext("2d");
+                var img = new Image();
+                img.src = imagen;
+                
+                canvas.width  = img.width;
+                canvas.height = img.height;
+
+                context.drawImage(img, 0, 0);
+         
+                var newimage = canvas.toDataURL("image/jpeg", 0.8);
+                var image64 = $("input:hidden[name=imageBase64]").val(newimage);
+              },500);
+
+          });
 
             function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
                 $.growl({
@@ -745,620 +543,6 @@
                                     '</div>'
                 });
             };
-            
-            $(document).ready(function() {
-
-            // rechargeAlumno();
-
-            // id = "{{{$id or 'Default'}}}";
-
-            // if(id != 'Default')
-            // {
-
-            //   $("#combo_cumpleaños").val("{{{$id or 'Default' }}}");
-            //   $('#combo_cumpleaños').selectpicker('refresh');
-            //   $("#combo_adelanto").val("{{{$id or 'Default' }}}");
-            //   $('#combo_adelanto').selectpicker('refresh');
-            //   $("#combo_ausencia").val("{{{$id or 'Default' }}}");
-            //   $('#combo_ausencia').selectpicker('refresh');
-            //   $("#combo_cobro").val("{{{$id or 'Default' }}}");
-            //   $('#combo_cobro').selectpicker('refresh');
-            //   $("#combo_suspension").val("{{{$id or 'Default' }}}");
-            //   $('#combo_suspension').selectpicker('refresh');
-
-            // }
-
-             //EDICION DE TEXTO DE CUMPLEAÑOS
-             //AGREGADO EL 15-06-2016
-
-
-            $("#modalHappyBirth").on("click", function(){
-                $('#html-cumpleaños').summernote({
-                        height: 150,
-                        toolbar: [
-                          // [groupName, [list of button]]
-                          ['style', ['bold', 'italic', 'underline']],
-                          ['fontsize', ['fontsize']],
-                          ['color', ['color']],
-                          ['para', ['ul', 'ol', 'paragraph']],
-                          ['height', ['height']],
-                          ['link', ['link']],
-                        ],
-                        lang: 'es-ES'
-
-                    });
-                $('#html-cumpleaños').summernote('code', $('#happyBirth').text());                
-            }); 
-
-            $("#modalAu").on("click", function(){
-                $('#html-ausencia').summernote({
-                        height: 150,
-                        toolbar: [
-                          // [groupName, [list of button]]
-                          ['style', ['bold', 'italic', 'underline']],
-                          ['fontsize', ['fontsize']],
-                          ['color', ['color']],
-                          ['para', ['ul', 'ol', 'paragraph']],
-                          ['height', ['height']],
-                          ['link', ['link']],
-                        ],
-                        lang: 'es-ES'
-
-                    });
-                $('#html-ausencia').summernote('code', $('#Ausencia').text());                
-            }); 
-
-            $("#modalCo").on("click", function(){
-                $('#html-cobro').summernote({
-                        height: 150,
-                        toolbar: [
-                          // [groupName, [list of button]]
-                          ['style', ['bold', 'italic', 'underline']],
-                          ['fontsize', ['fontsize']],
-                          ['color', ['color']],
-                          ['para', ['ul', 'ol', 'paragraph']],
-                          ['height', ['height']],
-                          ['link', ['link']],
-                        ],
-                        lang: 'es-ES'
-
-                    });
-                $('#html-cobro').summernote('code', $('#Cobro').text());                
-            }); 
-
-            $("#modalSu").on("click", function(){
-                $('#html-suspension').summernote({
-                        height: 150,
-                        toolbar: [
-                          // [groupName, [list of button]]
-                          ['style', ['bold', 'italic', 'underline']],
-                          ['fontsize', ['fontsize']],
-                          ['color', ['color']],
-                          ['para', ['ul', 'ol', 'paragraph']],
-                          ['height', ['height']],
-                          ['link', ['link']],
-                        ],
-                        lang: 'es-ES'
-
-                    });
-                $('#html-suspension').summernote('code', $('#Suspension').text());                
-            });
-
-            $("#modalAd").on("click", function(){
-                $('#html-adelanto').summernote({
-                        height: 150,
-                        toolbar: [
-                          // [groupName, [list of button]]
-                          ['style', ['bold', 'italic', 'underline']],
-                          ['fontsize', ['fontsize']],
-                          ['color', ['color']],
-                          ['para', ['ul', 'ol', 'paragraph']],
-                          ['height', ['height']],
-                          ['link', ['link']],
-                        ],
-                        lang: 'es-ES'
-
-                    });
-                $('#html-adelanto').summernote('code', $('#Adelanto').text());                
-            });  
-             
-             $("#EnviarCumpleaños").on('click', function(){
-                
-                var datos = $( "#correo_cumpleaños" ).serialize();
-
-                procesando();
-                limpiarMensaje();
-
-                // Aqui se enviara el correo y el mensaje
-                // $html guardara toda la configuracion html y css que contenga
-                // el mensaje para poder ser enviada al correo y que mantenga
-                // el estilo
-                // var html = $("div.note-editable.panel-body").html();
-                var html = $('#html-cumpleaños').summernote('code');
-                // var combo = $("#combo").val();
-                // var tipo = $("#tipo").val();
-                var token = $('input:hidden[name=_token]').val();
-                $.ajax({
-                    headers: {'X-CSRF-TOKEN': token},
-                    url: route_cumpleaños,
-                    type: 'POST',
-                    dataType: 'json',
-                    data: datos + "&msj_html="+html + "&id={{$id}}",
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY"; 
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje="Tu correo ha sido enviado exitósamente";
-
-                      finprocesado();
-                      $('#modalBirthday').modal('hide');
-
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        finprocesado();
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        finprocesado();
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-                        
-            });
-
-            $("#EnviarAusencia").on('click', function(){
-                
-                var datos = $( "#correo_ausencia" ).serialize();
-
-                procesando();
-                limpiarMensaje();
-
-                // Aqui se enviara el correo y el mensaje
-                // $html guardara toda la configuracion html y css que contenga
-                // el mensaje para poder ser enviada al correo y que mantenga
-                // el estilo
-                // var html = $("div.note-editable.panel-body").html();
-                var html = $('#html-ausencia').summernote('code');
-                // var combo = $("#combo").val();
-                // var tipo = $("#tipo").val();
-                var token = $('input:hidden[name=_token]').val();
-                $.ajax({
-                    headers: {'X-CSRF-TOKEN': token},
-                    url: route_ausencia,
-                    type: 'POST',
-                    dataType: 'json',
-                    data: datos + "&msj_html="+html + "&id={{$id}}",
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY"; 
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje="Tu correo ha sido enviado exitósamente";
-
-                      finprocesado();
-                      $('#modalAusencia').modal('hide');
-
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        finprocesado();
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        finprocesado();
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-                        
-            }); 
-
-            $("#EnviarSuspension").on('click', function(){
-                var datos = $( "#correo_suspension" ).serialize();
-
-                procesando();
-                limpiarMensaje();
-
-                var html = $('#html-suspension').summernote('code');
-
-                // Aqui se enviara el correo y el mensaje
-                // $html guardara toda la configuracion html y css que contenga
-                // el mensaje para poder ser enviada al correo y que mantenga
-                // el estilo
-                // var html = $("div.note-editable.panel-body").html();
-                console.log(html);
-                // var combo = $("#combo").val();
-                // var tipo = $("#tipo").val();
-                var token = $('input:hidden[name=_token]').val();
-                $.ajax({
-                    headers: {'X-CSRF-TOKEN': token},
-                    url: route_suspension,
-                    type: 'POST',
-                    dataType: 'json',
-                    data: datos + "&msj_html="+html + "&id={{$id}}",
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY"; 
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje="Tu correo ha sido enviado exitósamente";
-
-                      finprocesado();
-                      $('#modalSuspension').modal('hide');
-
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        finprocesado();
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        finprocesado();
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });   
-            }); 
-
-            $("#EnviarCobro").on('click', function(){
-                
-                var datos = $( "#correo_cobro" ).serialize();
-
-                procesando();
-                limpiarMensaje();
-
-                // Aqui se enviara el correo y el mensaje
-                // $html guardara toda la configuracion html y css que contenga
-                // el mensaje para poder ser enviada al correo y que mantenga
-                // el estilo
-                // var html = $("div.note-editable.panel-body").html();
-                var html = $('#html-cobro').summernote('code');
-                // var combo = $("#combo").val();
-                // var tipo = $("#tipo").val();
-                var token = $('input:hidden[name=_token]').val();
-                $.ajax({
-                    headers: {'X-CSRF-TOKEN': token},
-                    url: route_cobro,
-                    type: 'POST',
-                    dataType: 'json',
-                    data: datos + "&msj_html="+html + "&id={{$id}}",
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY"; 
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje="Tu correo ha sido enviado exitósamente";
-
-                      finprocesado();
-                      $('#modalCobro').modal('hide');
-
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        finprocesado();
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        finprocesado();
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-                        
-            });
-
-            $("#EnviarAdelanto").on('click', function(){
-               
-               var datos = $( "#correo_adelanto" ).serialize();
-
-                procesando();
-                limpiarMensaje();
-
-                // Aqui se enviara el correo y el mensaje
-                // $html guardara toda la configuracion html y css que contenga
-                // el mensaje para poder ser enviada al correo y que mantenga
-                // el estilo
-                // var html = $("div.note-editable.panel-body").html();
-                var html = $('#html-adelanto').summernote('code');
-                // var combo = $("#combo").val();
-                // var tipo = $("#tipo").val();
-                var token = $('input:hidden[name=_token]').val();
-                $.ajax({
-                    headers: {'X-CSRF-TOKEN': token},
-                    url: route_adelanto,
-                    type: 'POST',
-                    dataType: 'json',
-                    data: datos + "&msj_html="+html + "&id={{$id}}",
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY"; 
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje="Tu correo ha sido enviado exitósamente";
-
-                      finprocesado();
-                      $('#modalAdelanto').modal('hide');
-
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        finprocesado();
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        finprocesado();
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-                        
-            });
-
-            });
-            
-
-        function errores(merror){
-          var campo = ["combo_cobro", "combo_cumpleaños", "combo_suspension", "combo_adelanto", "combo_ausencia"];
-          var elemento="";
-          var contador=0;
-          $.each(merror, function (n, c) {
-          if(contador==0){
-          elemento=n;
-          }
-          contador++;
-
-           $.each(this, function (name, value) {              
-              var error=value;
-              $("#error-"+n+"_mensaje").html(error);             
-           });
-        });     
-
-      }
-
-      function limpiarMensaje(){
-        var campo = ["combo_cobro", "combo_cumpleaños", "combo_suspension", "combo_adelanto", "combo_ausencia"];
-        fLen = campo.length;
-        for (i = 0; i < fLen; i++) {
-            $("#error-"+campo[i]+"_mensaje").html('');
-        }
-      }
-
-
-      $(".confirmacion").click(function(){
-                swal({   
-                    title: "Desea enviar el correo de confirmación",   
-                    text: "Confirmar envio!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Enviar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true 
-                }, function(isConfirm){   
-          if (isConfirm) {
-
-               procesando();
-
-               var route = "{{url('/')}}/activar";
-               var token = $('input:hidden[name=_token]').val();
-                
-                $.ajax({
-                    url: route,
-                    headers: {'X-CSRF-TOKEN': token},
-                    type: 'POST',
-                    dataType: 'json',
-                    data:"&email={{$usuario->correo}}",
-                    success:function(respuesta){
-
-                        swal("Listo!","Correo enviado exitósamente!","success");
-                        finprocesado();
-
-                    },
-                    error:function(msj){
-
-                          swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                          finprocesado();
-
-                        }
-
-                    });
-                  }
-                });
-            });
-
             
         </script>
 @stop        

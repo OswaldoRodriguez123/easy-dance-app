@@ -30,36 +30,9 @@
                         <div class="clearfix p-b-15"></div>
                         <form name="correo_personalizado" id="correo_personalizado"  >
 
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                          <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                            <div class="col-sm-12">
-                                 
-                                  <label for="tipo" id="id-tipo">Modo de envio</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona a quienes le llegara el correo" title="" data-original-title="Ayuda" data-html="true"></i>
-
-                                  <div class="input-group">
-                                    <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
-                                    <div class="fg-line">
-                                    <div class="select">
-                                      <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
-
-                                        <option value="3">Correo</option>
-                                        <option value="2">Mensaje</option>
-                                        <option value="1">Ambos</option>
-                                        
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                                 <div class="has-error" id="error-tipo">
-                                      <span >
-                                          <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-
-                            <div class="col-sm-12">
+                          <div class="col-sm-12">
                                  
                                   <label for="dirigido">A quien va dirigido</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona a quienes le llegara el correo" title="" data-original-title="Ayuda" data-html="true"></i>
 
@@ -434,14 +407,12 @@
                 procesando();
                 var datos = $( "#form_correo" ).serialize();
                 var token = $('input:hidden[name=_token]').val();
-                var html = $('#html-personalizado').summernote('code');
-                html = encodeURIComponent(html);
                 $.ajax({
                     headers: {'X-CSRF-TOKEN': token},
                     url: route_correo,
                     type: 'POST',
                     dataType: 'json',
-                    data: datos+"&msj_html="+html,
+                    data: datos,
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
