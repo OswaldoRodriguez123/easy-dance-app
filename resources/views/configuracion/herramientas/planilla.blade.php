@@ -874,6 +874,24 @@
                              </td>
                              <td class="f-14 m-l-15" > <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr> 
+
+                            <tr class="detalle correos">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10">  <i class="zmdi zmdi-email f-22"></i> </span>
+                               <span class="f-14"> Correos </span>
+                             </td>
+                             <td class="f-14 m-l-15" > <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr> 
+
+                            <tr class="detalle sms">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10">  <i class="zmdi zmdi-smartphone f-22"></i> </span>
+                               <span class="f-14"> Mensajes </span>
+                             </td>
+                             <td class="f-14 m-l-15" > <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr> 
                            </table>
                           </div>
                           
@@ -2105,6 +2123,16 @@
     $(".normativas").click(function(){
       procesando();
       window.location = "{{url('/')}}/configuracion/herramientas/normativas";
+    });
+
+    $(".correos").click(function(){
+      procesando();
+      window.location = "{{url('/')}}/configuracion/herramientas/correos";
+    });
+
+    $(".sms").click(function(){
+      procesando();
+      window.location = "{{url('/')}}/configuracion/herramientas/mensajes";
     });
 
    </script>     
