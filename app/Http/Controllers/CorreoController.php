@@ -30,9 +30,13 @@ class CorreoController extends BaseController {
 
 		Session::put('tipo', 1);
 
-		$alumnos = Alumno::where('academia_id', '=', Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+		$alumnos = Alumno::where('academia_id', '=', Auth::user()->academia_id)
+			->where('correo', '!=', '')
+			->orderBy('nombre', 'asc')
+		->get();
 
 		$visitantes = Visitante::where('academia_id', '=' ,  Auth::user()->academia_id)
+			->where('correo', '!=', '')
 			->orderBy('nombre', 'asc')
 		->get();
 
