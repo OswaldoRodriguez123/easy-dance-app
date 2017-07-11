@@ -23,11 +23,11 @@
 @section('content')
 
 
-            <div class="modal fade" id="modalTitulo-Correo" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalTitulo-Mensaje" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Correo<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Mensaje<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_titulo_correo" id="edit_titulo_correo"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -38,7 +38,7 @@
                                  <div class="form-group fg-line">
                                     <label for="nombre">Titulo</label>
                                     <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="titulo" id="titulo" placeholder="Ej. Feliz Cumpleaños" value="{{$correo->titulo}}">
+                                      <input type="text" class="form-control input-sm proceso" name="titulo" id="titulo" placeholder="Ej. Feliz Cumpleaños" value="{{$mensaje->titulo}}">
                                     </div>
                                  </div>
                                     <div class="has-error" id="error-titulo">
@@ -49,7 +49,7 @@
                                 </div>
                                </div>
 
-                               <input type="hidden" name="id" value="{{$correo->id}}"></input>
+                               <input type="hidden" name="id" value="{{$mensaje->id}}"></input>
                               
 
                                <div class="clearfix"></div> 
@@ -78,130 +78,11 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="modalUrl-Correo" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalContenido-Mensaje" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Correo<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="edit_url_correo" id="edit_url_correo"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="nombre">Ingresa url de la imagen</label>
-                                    <input type="text" class="form-control caja input-sm" name="url" id="url" placeholder="Ingresa la url" value="{{$correo->url}}">
-                                 </div>
-                                    <div class="has-error" id="error-url">
-                                      <span >
-                                          <small id="error-url_mensaje" class="help-block error-span" ></small>          
-                                      </span>
-                                    </div>
-                                </div>
-                               </div>
-
-                               <input type="hidden" name="id" value="{{$correo->id}}"></input>
-                              
-
-                               <div class="clearfix"></div> 
-                        </div>
-                        </form>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-12 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-12">                            
-
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_url_correo" data-update="url" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="modalImagen-Correo" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Correo<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <form name="edit_imagen_correo" id="edit_imagen_correo"  >
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-12">
-                                <div class="form-group text-center">
-                                    <div class="form-group fg-line">
-                                        <label for="id">Cargar Imagen</label>
-                                        <div class="clearfix p-b-15"></div>
-                                        <input type="hidden" name="imageBase64" id="imageBase64">
-                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                                        <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px">
-                                          @if($correo->imagen)
-                                            <img src="{{url('/')}}/assets/uploads/correos/{{$correo->imagen}}" style="line-height: 150px;">
-                                          @endif
-                                        </div>
-                                        <div>
-                                            <span class="btn btn-info btn-file">
-                                                <span class="fileinput-new">Seleccionar Imagen</span>
-                                                <span class="fileinput-exists">Cambiar</span>
-                                                <input type="file" name="imagen" id="imagen" >
-                                            </span>
-                                            <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div class="has-error" id="error-imagen">
-                                      <span >
-                                          <small id="error-imagen_mensaje" class="help-block error-span" ></small>                                           
-                                      </span>
-                                    </div>
-                                </div>
-                               </div>
-
-                               <input type="hidden" name="id" value="{{$correo->id}}"></input>
-                              
-
-                               <div class="clearfix"></div> 
-
-                           </div>
-                          </div>
-                        </form>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-12 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-12">                            
-
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_imagen_correo" data-update="imagen" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="modalContenido-Correo" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Correo<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Mensaje<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_contenido_correo" id="edit_contenido_correo"  >
                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -211,7 +92,10 @@
                                 <div class="form-group">
 
                                   <label for="nombre">Contenido</label>
-                                  <div id="contenido">{!!$correo->contenido!!}</div>
+                                  <div class="fg-line">
+                                      <textarea class="form-control" id="contenido" name="contenido" rows="4" placeholder="159 Caracteres" maxlength="159" onkeyup="countChar(this)">{{$mensaje->contenido}}</textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">159</span> Caracteres</div>
                                 </div>
                                 <div class="has-error" id="error-contenido">
                                   <span >
@@ -220,7 +104,7 @@
                                 </div>
                               </div>
 
-                              <input type="hidden" name="id" value="{{$correo->id}}"></input>
+                              <input type="hidden" name="id" value="{{$mensaje->id}}"></input>
                               <div class="clearfix"></div> 
                             </div>
                           </div>
@@ -316,42 +200,26 @@
 					           	<div class="col-sm-9">
 
                          <div class="col-sm-12">
-                              <p class="text-center opaco-0-8 f-22">Datos del Correo</p>
+                              <p class="text-center opaco-0-8 f-22">Datos del Mensaje</p>
                           </div>
 
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
-                           <tr class="detalle" data-toggle="modal" href="#modalTitulo-Correo">
+                           <tr class="detalle" data-toggle="modal" href="#modalTitulo-Mensaje">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-titulo" class="zmdi {{ empty($correo->titulo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-titulo" class="zmdi {{ empty($mensaje->titulo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-email f-22"></i> </span>
                                <span class="f-14"> Titulo </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="correo-titulo"><span>{{$correo->titulo}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="mensaje-titulo"><span>{{$mensaje->titulo}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalUrl-Correo">
+                            <tr class="detalle" data-toggle="modal" href="#modalContenido-Mensaje">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-url" class="zmdi {{ empty($correo->url) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10">  <i class="zmdi zmdi-videocam f-22"></i> </span>
-                               <span class="f-14"> Url de la imagen </span>
-                             </td>
-                             <td class="f-14 m-l-15" ><span id="correo-url"><span>{{$correo->url}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalImagen-Correo">
-                             <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imageBase64" class="zmdi {{ empty($correo->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
-                               <span class="f-14"> Imagen </span>
-                             </td>
-                             <td class="f-14 m-l-15" ><span id="fiesta-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalContenido-Correo">
-                             <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-contenido" class="zmdi {{ empty($correo->contenido) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-contenido" class="zmdi {{ empty($mensaje->contenido) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
                                <span class="f-14"> Contenido </span>
                              </td>
-                             <td class="f-14 m-l-15"><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="mensaje-contenido" class="f-14 m-l-15 capitalize" data-valor="{{$mensaje->contenido}}" >{{ str_limit($mensaje->contenido, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             
                            </table>
@@ -373,18 +241,18 @@
 
 @section('js') 
   <script type="text/javascript">
-    route_update="{{url('/')}}/configuracion/correos/update";
-    route_eliminar="{{url('/')}}/configuracion/correos/eliminar/";
-    route_principal="{{url('/')}}/configuracion/correos";
+    route_update="{{url('/')}}/configuracion/mensajes/update";
+    route_eliminar="{{url('/')}}/configuracion/mensajes/eliminar/";
+    route_principal="{{url('/')}}/configuracion/mensajes";
 
 
     $(document).ready(function(){
 
-      $('#contenido').summernote({
-        height: 400,
-        dialogsInBody: true,
-        lang: 'es-ES'
-      }); 
+      $('#modalContenido-Mensaje').on('show.bs.modal', function (event) {
+        limpiarMensaje();
+         var contenido=$("#mensaje-contenido").data('valor');
+         $("#contenido").val(contenido);
+      })
 
       $('body,html').animate({scrollTop : 0}, 500);
       var animation = 'fadeInLeftBig';
@@ -409,7 +277,7 @@
     })
 
     function limpiarMensaje(){
-        var campo = ["titulo", "contenido", "url"];
+        var campo = ["titulo", "contenido"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -431,7 +299,7 @@
       function campoValor(form){
         $.each(form, function (n, c) {
           
-          $("#correo-"+c.name).text(c.value);
+          $("#mensaje-"+c.name).text(c.value);
          
           if(c.value == ''){
             $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
@@ -507,10 +375,6 @@
         update=$(this).data('update');
         var token = $('input:hidden[name=_token]').val();
         var datos = $( "#"+form ).serialize();
-        if(update == "contenido"){
-          var contenido = $('#contenido').summernote('code');
-          datos += "&contenido=" + encodeURIComponent(contenido);
-        }
         var datos_array=  $( "#"+form ).serializeArray();
         console.log(datos_array);
         
@@ -580,7 +444,7 @@
     $("i[name=eliminar]").click(function(){
                 id = this.id;
                 swal({   
-                    title: "Desea eliminar el correo",   
+                    title: "Desea eliminar el mensaje",   
                     text: "Confirmar eliminación!",   
                     type: "warning",   
                     showCancelButton: true,   
@@ -632,27 +496,6 @@
                                 }
                 });
       }
-
-      $("#imagen").bind("change", function() {
-              
-        setTimeout(function(){
-          var imagen = $("#imagena img").attr('src');
-          var canvas = document.createElement("canvas");
- 
-          var context=canvas.getContext("2d");
-          var img = new Image();
-          img.src = imagen;
-          
-          canvas.width  = img.width;
-          canvas.height = img.height;
-
-          context.drawImage(img, 0, 0);
-   
-          var newimage = canvas.toDataURL("image/jpeg", 0.8);
-          var image64 = $("input:hidden[name=imageBase64]").val(newimage);
-        },500);
-
-    });
 
 
    </script> 
