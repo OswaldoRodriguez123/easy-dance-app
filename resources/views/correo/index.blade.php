@@ -410,7 +410,7 @@
 
   $("#enviar").on('click', function(){
 
-    // procesando();
+    procesando();
     
     var datos = $( "#form_correo" ).serialize();
     var token = $('input:hidden[name=_token]').val();
