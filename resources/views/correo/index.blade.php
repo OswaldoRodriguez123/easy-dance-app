@@ -55,7 +55,7 @@
                                   <div class="col-sm-12">
                                     <div class="form-group">
                                       <label for="nombre">Nombre</label>
-                                      <select class="selectpicker" name="usuario_id" id="usuario_id" data-live-search="true" data-container="body">
+                                      <select class="selectpicker" name="usuario_id" id="usuario_id" data-live-search="true" data-container="body" multiple="" data-max-options="5" title="Todos">
                                       </select>
                                     </div>
                                     <div class="has-error" id="error-usuario_id">
@@ -414,12 +414,21 @@
     
     var datos = $( "#form_correo" ).serialize();
     var token = $('input:hidden[name=_token]').val();
+    var usuario_id = $('#usuario_id').val();
+    var usuarios = '';
+    
+    if(usuario_id){
+      for(var i = 0; i < usuario_id.length; i += 1) {
+        usuarios = usuarios + ',' + usuario_id[i];
+      }
+    }
+
     $.ajax({
         headers: {'X-CSRF-TOKEN': token},
         url: route_correo,
         type: 'POST',
         dataType: 'json',
-        data: datos,
+        data: datos+"&usuarios="+usuarios,
         success:function(respuesta){
           setTimeout(function(){ 
             var nFrom = $(this).attr('data-from');
@@ -631,7 +640,6 @@
   function rechargeAlumno(){
 
     $('#usuario_id').empty();
-    $('#usuario_id').append('<option value="" data-content="Todos"></option>')
 
     $.each(alumnos, function (index, array) {
       $('#usuario_id').append('<option value='+array.id+' data-content="'+array.nombre + " " + array.apellido+ " " + array.identificacion+'"></option>')
@@ -643,7 +651,6 @@
   function rechargeVisitante(){
 
     $('#usuario_id').empty();
-    $('#usuario_id').append('<option value="" data-content="Todos"></option>')
 
     $.each(visitantes, function (index, array) {
       $('#usuario_id').append('<option value='+array.id+' data-content="'+array.nombre + " " + array.apellido+'"></option>');
@@ -656,7 +663,6 @@
   function rechargeClaseGrupal(){
 
     $('#usuario_id').empty();
-    $('#usuario_id').append('<option value="" data-content="Todos"></option>')
 
     $.each(clases_grupales, function (index, array) {
       $('#usuario_id').append('<option value='+array.id+' data-content="'+array.nombre +'  -  '+array.dia+'  -  '+array.hora_inicio+' / '+array.hora_final + '  -  ' + array.instructor_nombre + ' ' + array.instructor_apellido+'"></option>');
@@ -665,6 +671,11 @@
     $('#usuario_id').selectpicker('refresh');
 
   }
+
+  $('#modalCorreo').on('hidden.bs.modal', function (e) {
+    $('#form_correo')[0].reset()
+    $(".selectpicker").selectpicker("refresh");
+  })
 
   </script>
 @stop        

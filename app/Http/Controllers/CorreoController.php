@@ -204,7 +204,7 @@ class CorreoController extends BaseController {
 			$tipo = Session::get('tipo');
 		}
 
-		if(!$request->usuario_id){
+		if(!$request->usuarios){
 			if($tipo == 1){
 				$usuarios = Alumno::where('academia_id',Auth::user()->academia_id)->where('correo', '!=', '')->get();
 			}else if($tipo == 2){
@@ -222,18 +222,21 @@ class CorreoController extends BaseController {
 				->get();
 			}
 		}else{
+
+			$explode = explode(',',$request->usuarios);
+
 			if($tipo == 1){
-				$usuarios = Alumno::where('id',$request->usuario_id)->get();
+				$usuarios = Alumno::whereIn('id',$explode)->get();
 			}else if($tipo == 2){
-				$usuarios = Instructor::where('id',$request->usuario_id)->get();
+				$usuarios = Instructor::whereIn('id',$explode)->get();
 			}else if($tipo == 3){
-				$usuarios = Visitante::where('id',$request->usuario_id)->get();
+				$usuarios = Visitante::whereIn('id',$explode)->get();
 			}else if($tipo == 4){
-				$usuarios = Proveedor::where('id',$request->usuario_id)->get();
+				$usuarios = Proveedor::whereIn('id',$explode)->get();
 			}else{
 				$usuarios = Alumno::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
 					->select('alumnos.*')
-					->where('inscripcion_clase_grupal.clase_grupal_id',$request->usuario_id)
+					->whereIn('inscripcion_clase_grupal.clase_grupal_id',$explode)
 				->get();
 			}
 		}

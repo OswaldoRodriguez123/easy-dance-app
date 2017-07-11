@@ -55,7 +55,7 @@
                                   <div class="col-sm-12">
                                     <div class="form-group">
                                       <label for="nombre">Nombre</label>
-                                      <select class="selectpicker" name="usuario_id" id="usuario_id" data-live-search="true" data-container="body">
+                                      <select class="selectpicker" name="usuario_id" id="usuario_id" data-live-search="true" data-container="body" multiple="" data-max-options="5" title="Todos">
                                       </select>
                                     </div>
                                     <div class="has-error" id="error-usuario_id">
@@ -406,12 +406,20 @@
     
     var datos = $( "#form_mensaje" ).serialize();
     var token = $('input:hidden[name=_token]').val();
+    var usuario_id = $('#usuario_id').val();
+    var usuarios = '';
+    
+    if(usuario_id){
+      for(var i = 0; i < usuario_id.length; i += 1) {
+        usuarios = usuarios + ',' + usuario_id[i];
+      }
+    }
     $.ajax({
         headers: {'X-CSRF-TOKEN': token},
         url: route_mensaje,
         type: 'POST',
         dataType: 'json',
-        data: datos,
+        data: datos+"&usuarios="+usuarios,
         success:function(respuesta){
           setTimeout(function(){ 
             var nFrom = $(this).attr('data-from');
@@ -577,6 +585,11 @@
     $('#usuario_id').selectpicker('refresh');
 
   }
+
+  $('#modalMensaje').on('hidden.bs.modal', function (e) {
+    $('#form_mensaje')[0].reset()
+    $(".selectpicker").selectpicker("refresh");
+  })
 
   </script>
 @stop        
