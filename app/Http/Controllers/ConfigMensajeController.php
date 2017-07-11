@@ -33,12 +33,14 @@ class ConfigMensajeController extends BaseController {
 
 		$rules = [
 			'titulo' => 'required',
-	        'contenido' => 'required',
+	        'contenido' => 'required|min:3|max:159',
 	    ];
 
 	    $messages = [
 	        'titulo.required' => 'Ups! El titulo es requerido',
 	        'contenido.required' => 'Ups! El mensaje es requerido',
+	        'contenido.min' => 'El mínimo de caracteres permitidos son 3',
+        	'contenido.max' => 'El máximo de caracteres permitidos son 159',
 	    ];
 
 
@@ -70,7 +72,7 @@ class ConfigMensajeController extends BaseController {
     {   
         $mensaje = Mensaje::find($id);
 
-        if($correo){
+        if($mensaje){
             return view('configuracion.mensajes.planilla')->with(['mensaje' => $mensaje , 'id' => $id]);
         }else{
            return redirect("configuracion/mensajes"); 
@@ -110,11 +112,13 @@ class ConfigMensajeController extends BaseController {
     public function updateContenido(Request $request){
 
     	$rules = [
-	        'contenido' => 'required',
+	        'contenido' => 'required|min:3|max:159',
 	    ];
 
 	    $messages = [
 	        'contenido.required' => 'Ups! El mensaje es requerido',
+	        'contenido.min' => 'El mínimo de caracteres permitidos son 3',
+        	'contenido.max' => 'El máximo de caracteres permitidos son 159',
 	    ];
 
 

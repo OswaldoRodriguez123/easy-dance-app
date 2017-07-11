@@ -979,6 +979,11 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('/correo/enviar', 'CorreoController@Enviar');
 		Route::post('/correo/personalizado', 'CorreoController@correoPersonalizado');
 
+		// MENSAJES
+
+		Route::get('/mensajes','MensajeController@index');
+		Route::post('/mensajes/enviar', 'MensajeController@Enviar');
+
 		// ASISTENCIA
 
 		Route::get('/asistencia/generar', 'AsistenciaController@generarAsistencia');

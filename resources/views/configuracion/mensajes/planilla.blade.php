@@ -29,7 +29,7 @@
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
                             <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Mensaje<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_titulo_correo" id="edit_titulo_correo"  >
+                        <form name="edit_titulo_mensaje" id="edit_titulo_mensaje"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
@@ -70,7 +70,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_titulo_correo" data-update="titulo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_titulo_mensaje" data-update="titulo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -84,7 +84,7 @@
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
                             <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Mensaje<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
-                        <form name="edit_contenido_correo" id="edit_contenido_correo"  >
+                        <form name="edit_contenido_mensaje" id="edit_contenido_mensaje"  >
                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
                           <div class="modal-body">                           
                             <div class="row p-t-20 p-b-0">
@@ -122,7 +122,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_contenido_correo" data-update="contenido" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_contenido_mensaje" data-update="contenido" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div>
@@ -135,7 +135,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/correos" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Correos</a>
+                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/mensajes" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Mensajes</a>
                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
@@ -164,10 +164,10 @@
                                   <ul class="ca-menu-planilla">
                                     <li>
                                         <a href="#" class="disabled">
-                                            <span class="ca-icon-planilla"><i class="zmdi zmdi-email"></i></span>
+                                            <span class="ca-icon-planilla"><i class="zmdi zmdi-smartphone"></i></span>
                                             <div class="ca-content-planilla">
-                                                <h2 class="ca-main-planilla">Vista Correos</h2>
-                                                <h3 class="ca-sub-planilla">Personaliza el campo correo</h3>
+                                                <h2 class="ca-main-planilla">Vista Mensajes</h2>
+                                                <h3 class="ca-sub-planilla">Personaliza el campo mensaje</h3>
                                             </div>
                                         </a>
                                     </li>
@@ -208,7 +208,7 @@
                            <tr class="detalle" data-toggle="modal" href="#modalTitulo-Mensaje">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-titulo" class="zmdi {{ empty($mensaje->titulo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
-                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-email f-22"></i> </span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-smartphone f-22"></i> </span>
                                <span class="f-14"> Titulo </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="mensaje-titulo"><span>{{$mensaje->titulo}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
@@ -241,6 +241,7 @@
 
 @section('js') 
   <script type="text/javascript">
+
     route_update="{{url('/')}}/configuracion/mensajes/update";
     route_eliminar="{{url('/')}}/configuracion/mensajes/eliminar/";
     route_principal="{{url('/')}}/configuracion/mensajes";
@@ -298,9 +299,14 @@
 
       function campoValor(form){
         $.each(form, function (n, c) {
+
+          if(c.name=='contenido'){
+             $("#mensaje-"+c.name).data('valor',c.value);
+             $("#mensaje-"+c.name).html(c.value.substr(0, 30) + "...");
+          }else{
+            $("#mensaje-"+c.name).text(c.value);
+          }
           
-          $("#mensaje-"+c.name).text(c.value);
-         
           if(c.value == ''){
             $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
             $("#estatus-"+c.name).addClass('c-amarillo zmdi-dot-circle');
@@ -442,7 +448,6 @@
     })
 
     $("i[name=eliminar]").click(function(){
-                id = this.id;
                 swal({   
                     title: "Desea eliminar el mensaje",   
                     text: "Confirmar eliminación!",   
@@ -462,12 +467,12 @@
             var nAnimOut = $(this).attr('data-animation-out')
                         // swal("Done!","It was succesfully deleted!","success");
                         // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar(id);
+                        eliminar();
           }
                 });
             });
-      function eliminar(id){
-         var route = route_eliminar + id;
+      function eliminar(){
+         var route = route_eliminar + "{{$id}}";
          var token = '{{ csrf_token() }}';
                 
                 $.ajax({
@@ -475,7 +480,6 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'DELETE',
                     dataType: 'json',
-                    data:id,
                     success:function(respuesta){
 
                         window.location=route_principal; 
@@ -496,6 +500,15 @@
                                 }
                 });
       }
+
+    function countChar(val) {
+      var len = val.value.length;
+      if (len >= 159) {
+        val.value = val.value.substring(0, 159);
+      } else {
+        $('#charNum').text(159 - len);
+      }
+    };
 
 
    </script> 
