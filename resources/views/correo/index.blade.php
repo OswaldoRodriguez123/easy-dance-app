@@ -12,151 +12,11 @@
 
 <script src="{{url('/')}}/assets/vendors/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/summernote/dist/summernote.js"></script>
-<!--<script src="{{url('/')}}/assets/vendors/summernote/dist/summernote-updated.min.js"></script>-->
 <script src="{{url('/')}}/assets/vendors/summernote/dist/lang/summernote-es-ES.js"></script>
 
 @stop
 
 @section('content')
-
-            <div class="modal fade" id="modalPersonalizado" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro">Editor <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                        <div>
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div>
-                        <form name="correo_personalizado" id="correo_personalizado"  >
-
-                          <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-                          <div class="col-sm-12">
-                                 
-                                  <label for="dirigido">A quien va dirigido</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona a quienes le llegara el correo" title="" data-original-title="Ayuda" data-html="true"></i>
-
-                                  <div class="input-group">
-                                    <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
-                                    <div class="fg-line">
-                                    <div class="select">
-                                      <select class="selectpicker" name="dirigido" id="dirigido" data-live-search="true">
-
-                                        <option value="1">Todos</option>
-                                        <option value="2">Visitantes Presenciales</option>
-                                        <option value="3">Alumnos</option>
-                                        
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
-                                 <div class="has-error" id="error-dirigido">
-                                      <span >
-                                          <small class="help-block error-span" id="error-dirigido_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-
-                              <div class="col-sm-12">
-                                  <label for="id" id="id-url">Ingresa url de la imagen</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
-
-                                  <br><br>
-                                  
-                     
-                                  <input type="text" class="form-control caja input-sm" name="url" id="url" placeholder="Ingresa la url">
-                                   
-                                   
-                                   <div class="has-error" id="error-url">
-                                    <span >
-                                     <small id="error-url_mensaje" class="help-block error-span" ></small>                                           
-                                    </span>
-                                    </div>                                          
-                                </div>
-
-                                <div class="clearfix p-b-35"></div>
-
-                                <div class="col-sm-12">
-
-                                <br><br>
-                                 
-                                    <label for="nombre" id="id-subj">Titulo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la clase personalizada" title="" data-original-title="Ayuda"></i>
-
-
-                                      <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="subj" id="subj" placeholder="Ej. Información">
-                                      </div>
-                                      <div class="has-error" id="error-subj">
-                                      <span >
-                                          <small class="help-block error-span" id="error-subj_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-
-                          <div class="col-sm-12">
-                            <label for="apellido" id="id-imagen">Cargar Imagen</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
-                            
-                            <div class="clearfix p-b-15"></div>
-                              
-                            <input type="hidden" name="imageBase64" id="imageBase64">
-                              <div class="fileinput fileinput-new" data-provides="fileinput">
-                                <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px"></div>
-                                <div>
-                                    <span class="btn btn-info btn-file">
-                                        <span class="fileinput-new">Seleccionar Imagen</span>
-                                        <span class="fileinput-exists">Cambiar</span>
-                                        <input type="file" name="imagen" id="imagen" >
-                                    </span>
-                                    <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
-                                </div>
-                            </div>
-                              <div class="has-error" id="error-imagen">
-                              <span >
-                                  <small class="help-block error-span" id="error-imagen_mensaje"  ></small>
-                              </span>
-                            </div>
-                          </div>
-
-                              <div class="clearfix p-b-35"></div>
-
-
-         
-
-                        </form>
-
-                        <div class="clearfix p-b-15"></div>
-                        <div class="clearfix p-b-15"></div> 
-
-                        <div class="col-md-12">
-                          <label for="id" id="id-msj_html">Mensaje</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
-
-                          <br><br>
-                          <div id="html-personalizado"></div>
-                          <div class="has-error" id="error-msj_html">
-                            <span >
-                                <small class="help-block error-span" id="error-msj_html_mensaje" ></small>
-                            </span>
-                          </div>
-                        </div>
-
-                         <div class="clearfix p-b-15"></div>
-                         <div class="clearfix p-b-15"></div>
-
-                         <div class="modal-footer">
-                            <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" id="EnviarPersonalizado" >Enviar</button>
-                            <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
-                        </div>
-
-
-                        </div>
-                       
-                    </div>
-                </div>
-            </div>
-
 
             <div class="modal fade" id="modalCorreo" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -170,29 +30,150 @@
                           <input type="hidden" name="correo_id" id="correo_id">
                             <div class="modal-body">                           
                               <div class="row p-t-20 p-b-0">
+
+                                @if(!isset($id))
+
+                                  <div class="col-sm-12">
+                                   
+                                    <label for="dirigido">A quien va dirigido</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona a quienes le llegara el correo" title="" data-original-title="Ayuda" data-html="true"></i>
+
+                                    <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
+                                      <option value="1">Alumnos</option>
+                                      <option value="3">Visitantes</option>
+                                      <option value="5">Clases Grupales</option>
+                                    </select>
+         
+                                    <div class="has-error" id="error-tipo">
+                                        <span >
+                                            <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                
+                                        </span>
+                                    </div>
+                                  </div>
+
+                                  <div class="clearfix p-b-15"></div>
+
+                                  <div class="col-sm-12">
+                                    <div class="form-group">
+                                      <label for="nombre">Nombre</label>
+                                      <select class="selectpicker" name="usuario_id" id="usuario_id" data-live-search="true" data-container="body">
+                                      </select>
+                                    </div>
+                                    <div class="has-error" id="error-usuario_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-usuario_id_mensaje" ></small> 
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                @else
+
+                                  <div class="col-sm-12">
+                                    <div class="form-group">
+                                      <label for="nombre">Nombre</label>
+
+                                          <input type="hidden" name="usuario_id" id="usuario_id" value="{{$usuario->id}}">
+                                          <label for="nombre" class="f-14">{{$usuario->nombre}} {{$usuario->apellido}} </label>
+
+                                    </div>
+                                    <div class="has-error" id="error-id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-id_mensaje" ></small> 
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                @endif
+
+                              <div class="personalizado">
+
+                                <div class="clearfix p-b-35"></div>
+
                                 <div class="col-sm-12">
-                                  <div class="form-group">
-                                    <label for="nombre">Nombre</label>
-                                      <div class="select">
-                                        <select class="selectpicker id" name="id" id="id" data-live-search="true">
-                                        </select>
+                                    <label for="id" id="id-url">Ingresa url de la imagen</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
+
+                                    <br><br>
+                                    
+                       
+                                    <input type="text" class="form-control caja input-sm" name="url" id="url" placeholder="Ingresa la url">
+                                     
+                                     
+                                     <div class="has-error" id="error-url">
+                                      <span >
+                                       <small id="error-url_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                      </div>                                          
+                                  </div>
+
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <div class="col-sm-12">
+
+                                  <br><br>
+                                   
+                                      <label for="nombre" id="id-subj">Titulo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la clase personalizada" title="" data-original-title="Ayuda"></i>
+
+
+                                        <div class="fg-line">
+                                        <input type="text" class="form-control input-sm proceso" name="subj" id="subj" placeholder="Ej. Información">
+                                        </div>
+                                        <div class="has-error" id="error-subj">
+                                        <span >
+                                            <small class="help-block error-span" id="error-subj_mensaje" ></small>                                
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="clearfix p-b-35"></div>
+
+                                <div class="col-sm-12">
+                                  <label for="apellido" id="id-imagen">Cargar Imagen</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
+                                  
+                                  <div class="clearfix p-b-15"></div>
+                                    
+                                  <input type="hidden" name="imageBase64" id="imageBase64">
+                                    <div class="fileinput fileinput-new" data-provides="fileinput">
+                                      <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px"></div>
+                                      <div>
+                                          <span class="btn btn-info btn-file">
+                                              <span class="fileinput-new">Seleccionar Imagen</span>
+                                              <span class="fileinput-exists">Cambiar</span>
+                                              <input type="file" name="imagen" id="imagen" >
+                                          </span>
+                                          <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
                                       </div>
                                   </div>
-                                  <div class="has-error" id="error-id">
+                                    <div class="has-error" id="error-imagen">
                                     <span >
-                                        <small class="help-block error-span" id="error-id_mensaje" ></small> 
+                                        <small class="help-block error-span" id="error-imagen_mensaje"  ></small>
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div class="clearfix p-b-15"></div>
+                                <div class="clearfix p-b-15"></div> 
+
+                                <div class="col-md-12">
+                                  <label for="id" id="id-msj_html">Mensaje</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
+
+                                  <br><br>
+                                  <div id="html-personalizado"></div>
+                                  <div class="has-error" id="error-msj_html">
+                                    <span >
+                                        <small class="help-block error-span" id="error-msj_html_mensaje" ></small>
                                     </span>
                                   </div>
                                 </div>
                               </div>
                             </div>
+                          </div>
                         </form>
 
                         <div class="clearfix p-b-15"></div>
                         <div class="clearfix p-b-15"></div>
 
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-blanco m-r-10 f-14" id="enviar">Enviar</button>
+                          <button type="button" class="btn btn-blanco m-r-10 f-14 fijo" id="enviar">Enviar</button>
+                          <button type="button" class="btn btn-blanco m-r-10 f-14 personalizado" id="EnviarPersonalizado">Enviar</button>
                           <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
@@ -238,6 +219,18 @@
                                         </a>
                                     </li>
                                   </ul>
+
+                                  <div class="clearfix p-b-15"></div>
+                                  <div class="clearfix p-b-15"></div>
+
+                                  <div class="text-center">
+                                    @if(isset($id))
+                                      @if($sin_confirmar) 
+                                        <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20 mousedefault" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="top" title="" type="button" data-trigger="hover"></i> <a class="btn-morado m-r-5 f-15 pointer confirmacion"> Enviar confirmación</a>  
+                                      @endif
+                                    @endif
+
+                                  </div> 
 
                                   <div class="clearfix p-b-15"></div>
                                   <div class="clearfix p-b-15"></div>
@@ -291,7 +284,7 @@
                                       <br>
 
                                       <div class="text-right">
-                                          <span data-toggle="modal" id="modalPe" href="#modalPersonalizado" class="f-18 p-t-0 c-morado pointer">Enviar Correo</span>
+                                          <span id="personalizado" class="f-18 p-t-0 c-morado pointer">Enviar Correo</span>
                                       </div>
                                   </div>
                               </div>
@@ -308,262 +301,370 @@
 
 @section('js') 
 
-      <script type="text/javascript">
+<script type="text/javascript">
 
 
-        route_correo="{{url('/')}}/correo/enviar";
-        route_personalizado="{{url('/')}}/correo/personalizado";
+  route_correo="{{url('/')}}/correo/enviar";
+  route_personalizado="{{url('/')}}/correo/personalizado";
 
-        $(document).ready(function() {
-            
-          rechargeAlumno();
+  var alumnos = <?php echo json_encode($alumnos);?>;  
+  var visitantes = <?php echo json_encode($visitantes);?>;  
+  var clases_grupales = <?php echo json_encode($clases_grupales);?>;  
 
-           $("#modalPe").on("click", function(){
-              $('#html-personalizado').summernote({
-                  height: 150,
-                  lang: 'es-ES'
-              });
+  $(document).ready(function(){
 
-              $('#html-personalizado').summernote('code', '');                
-          });
+    $('#tipo').val(1)
+    $('#tipo').selectpicker('refresh')
+    rechargeAlumno();
 
-          $(".correos").on("click", function(){
-              $('#correo_id').val($(this).attr('id'))  
-              $('#span_correo').text($(this).data('titulo'))  
-              $('#modalCorreo').modal('show')           
-          }); 
-        });
+    $('#html-personalizado').summernote({
+        height: 150,
+        lang: 'es-ES'
+    });
 
-            $("#EnviarPersonalizado").on('click', function(){
+    $('#html-personalizado').summernote('code', '');
+  });
 
-                procesando();
+  $(".correos").on("click", function(){
+    $('.fijo').show()
+    $('.personalizado').hide()
+    $('#correo_id').val($(this).attr('id'))  
+    $('#span_correo').text($(this).data('titulo'))  
+    $('#modalCorreo').modal('show')           
+  }); 
 
-                var datos = $( "#correo_personalizado" ).serialize();
-                var html = $('#html-personalizado').summernote('code');
-                html = encodeURIComponent(html);
-                var token = $('input:hidden[name=_token]').val();
-                $.ajax({
-                    headers: {'X-CSRF-TOKEN': token},
-                    url: route_personalizado,
-                    type: 'POST',
-                    dataType: 'json',
-                    data: datos+"&msj_html="+html,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY"; 
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje="Tu correo ha sido enviado exitósamente";
+  $("#personalizado").on("click", function(){
+    $('.personalizado').show()
+    $('.fijo').hide()
+    $('#correo_id').val('')  
+    $('#span_correo').text('Personalizado')  
+    $('#modalCorreo').modal('show')           
+  });
 
-                          finprocesado();
-                          $('.modal').modal('hide');
+  $("#EnviarPersonalizado").on('click', function(){
 
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        finprocesado();
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        finprocesado();
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });   
-            });
+    procesando();
 
-        
-            $("#enviar").on('click', function(){
+    var datos = $( "#form_correo" ).serialize();
+    var html = $('#html-personalizado').summernote('code');
+    html = encodeURIComponent(html);
+    var token = $('input:hidden[name=_token]').val();
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': token},
+        url: route_personalizado,
+        type: 'POST',
+        dataType: 'json',
+        data: datos+"&msj_html="+html,
+        success:function(respuesta){
+          setTimeout(function(){ 
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY"; 
+            if(respuesta.status=="OK"){
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              var nType = 'success';
+              var nTitle="Ups! ";
+              var nMensaje="Tu correo ha sido enviado exitósamente";
 
-                procesando();
-                var datos = $( "#form_correo" ).serialize();
-                var token = $('input:hidden[name=_token]').val();
-                $.ajax({
-                    headers: {'X-CSRF-TOKEN': token},
-                    url: route_correo,
-                    type: 'POST',
-                    dataType: 'json',
-                    data: datos,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY"; 
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje="Tu correo ha sido enviado exitósamente";
+              finprocesado();
+              $('.modal').modal('hide');
 
-                          finprocesado();
-                          $('.modal').modal('hide');
+            }else{
+              var nTitle="Ups! ";
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              var nType = 'danger';
+            }                       
+            finprocesado();
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+          }, 1000);
+        },
+        error:function(msj){
+          setTimeout(function(){ 
+            if(msj.responseJSON.status=="ERROR"){
+              console.log(msj.responseJSON.errores);
+              errores(msj.responseJSON.errores);
+              var nTitle="    Ups! "; 
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+            }else{
+              var nTitle="   Ups! "; 
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+            }                        
+            finprocesado();
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'danger';
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY";                       
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+          }, 1000);
+        }
+    });   
+  });
 
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        finprocesado();
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        finprocesado();
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });   
-            });
+  $("#enviar").on('click', function(){
 
-            function rechargeAlumno(){
+    // procesando();
+    
+    var datos = $( "#form_correo" ).serialize();
+    var token = $('input:hidden[name=_token]').val();
+    $.ajax({
+        headers: {'X-CSRF-TOKEN': token},
+        url: route_correo,
+        type: 'POST',
+        dataType: 'json',
+        data: datos,
+        success:function(respuesta){
+          setTimeout(function(){ 
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY"; 
+            if(respuesta.status=="OK"){
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              var nType = 'success';
+              var nTitle="Ups! ";
+              var nMensaje="Tu correo ha sido enviado exitósamente";
 
-              var alumnos = <?php echo json_encode($alumnos);?>;  
+              finprocesado();
+              $('.modal').modal('hide');
 
-              $.each(alumnos, function (index, array) {
-                $('.id').append( new Option(array.nombre + " " + array.apellido + " " + array.identificacion,array.id));
-              });
+            }else{
+              var nTitle="Ups! ";
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              var nType = 'danger';
+            }                       
+            finprocesado();
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+          }, 1000);
+        },
+        error:function(msj){
+          setTimeout(function(){ 
+            if(msj.responseJSON.status=="ERROR"){
+              console.log(msj.responseJSON.errores);
+              errores(msj.responseJSON.errores);
+              var nTitle="    Ups! "; 
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+            }else{
+              var nTitle="   Ups! "; 
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+            }                        
+            finprocesado();
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'danger';
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY";                       
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+          }, 1000);
+        }
+    });   
+  });
 
-              $('.selectpicker').selectpicker('render');
-              $('.selectpicker').selectpicker('refresh');
+  @if(isset($id))
 
+    $(".confirmacion").click(function(){
+      swal({   
+        title: "Desea enviar el correo de confirmación",   
+        text: "Confirmar envio!",   
+        type: "warning",   
+        showCancelButton: true,   
+        confirmButtonColor: "#DD6B55",   
+        confirmButtonText: "Enviar!",  
+        cancelButtonText: "Cancelar",         
+        closeOnConfirm: true 
+      }, function(isConfirm){   
+        if (isConfirm) {
+
+            procesando();
+
+            var route = "{{url('/')}}/activar";
+            var token = $('input:hidden[name=_token]').val();
+          
+            $.ajax({
+              url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:"&email={{$usuario->correo}}",
+              success:function(respuesta){
+
+                swal("Listo!","Correo enviado exitósamente!","success");
+                finprocesado();
+
+              },
+              error:function(msj){
+                setTimeout(function(){ 
+                if(msj.responseJSON.status=="ERROR"){
+                  console.log(msj.responseJSON.errores);
+                  errores(msj.responseJSON.errores);
+                  var nTitle="    Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                }else{
+                  var nTitle="   Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                }                        
+                finprocesado();
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nType = 'danger';
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY";                       
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+              }, 1000);
             }
+          });   
+        }
+      });
+    });
+  @endif
 
-            function errores(merror){
-              var elemento="";
-              var contador=0;
-              $.each(merror, function (n, c) {
-              if(contador==0){
-              elemento=n;
-              }
-              contador++;
+  function errores(merror){
+      var elemento="";
+      var contador=0;
+      $.each(merror, function (n, c) {
+      if(contador==0){
+      elemento=n;
+      }
+      contador++;
 
-               $.each(this, function (name, value) {              
-                  var error=value;
-                  $("#error-"+n+"_mensaje").html(error);             
-               });
-            });
+       $.each(this, function (name, value) {              
+          var error=value;
+          $("#error-"+n+"_mensaje").html(error);             
+       });
+    });
 
-              $('html,body').animate({
-                    scrollTop: $("#id-"+elemento).offset().top-90,
-              }, 1500);          
+      $('html,body').animate({
+            scrollTop: $("#id-"+elemento).offset().top-90,
+      }, 1500);          
 
-          }
+  }
 
+  $("#imagen").bind("change", function() {
+      
+    setTimeout(function(){
+      var imagen = $("#imagena img").attr('src');
+      var canvas = document.createElement("canvas");
 
-            $("#imagen").bind("change", function() {
-              
-              setTimeout(function(){
-                var imagen = $("#imagena img").attr('src');
-                var canvas = document.createElement("canvas");
-       
-                var context=canvas.getContext("2d");
-                var img = new Image();
-                img.src = imagen;
-                
-                canvas.width  = img.width;
-                canvas.height = img.height;
+      var context=canvas.getContext("2d");
+      var img = new Image();
+      img.src = imagen;
+      
+      canvas.width  = img.width;
+      canvas.height = img.height;
 
-                context.drawImage(img, 0, 0);
-         
-                var newimage = canvas.toDataURL("image/jpeg", 0.8);
-                var image64 = $("input:hidden[name=imageBase64]").val(newimage);
-              },500);
+      context.drawImage(img, 0, 0);
 
-          });
+      var newimage = canvas.toDataURL("image/jpeg", 0.8);
+      var image64 = $("input:hidden[name=imageBase64]").val(newimage);
+    },500);
 
-            function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
-                $.growl({
-                    icon: icon,
-                    title: titulo,
-                    message: mensaje,
-                    url: ''
-                },{
-                        element: 'body',
-                        type: type,
-                        allow_dismiss: true,
-                        placement: {
-                                from: from,
-                                align: align
-                        },
-                        offset: {
-                            x: 20,
-                            y: 85
-                        },
-                        spacing: 10,
-                        z_index: 1070,
-                        delay: 2500,
-                        timer: 2000,
-                        url_target: '_blank',
-                        mouse_over: false,
-                        animate: {
-                                enter: animIn,
-                                exit: animOut
-                        },
-                        icon_type: 'class',
-                        template: '<div data-growl="container" class="alert" role="alert">' +
-                                        '<button type="button" class="close" data-growl="dismiss">' +
-                                            '<span aria-hidden="true">&times;</span>' +
-                                            '<span class="sr-only">Close</span>' +
-                                        '</button>' +
-                                        '<span data-growl="icon"></span>' +
-                                        '<span data-growl="title"></span>' +
-                                        '<span data-growl="message"></span>' +
-                                        '<a href="#" data-growl="url"></a>' +
-                                    '</div>'
-                });
-            };
-            
+  });
 
-        </script>
+  function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
+    $.growl({
+        icon: icon,
+        title: titulo,
+        message: mensaje,
+        url: ''
+    },{
+      element: 'body',
+      type: type,
+      allow_dismiss: true,
+      placement: {
+              from: from,
+              align: align
+      },
+      offset: {
+          x: 20,
+          y: 85
+      },
+      spacing: 10,
+      z_index: 1070,
+      delay: 2500,
+      timer: 2000,
+      url_target: '_blank',
+      mouse_over: false,
+      animate: {
+              enter: animIn,
+              exit: animOut
+      },
+      icon_type: 'class',
+      template: '<div data-growl="container" class="alert" role="alert">' +
+                      '<button type="button" class="close" data-growl="dismiss">' +
+                          '<span aria-hidden="true">&times;</span>' +
+                          '<span class="sr-only">Close</span>' +
+                      '</button>' +
+                      '<span data-growl="icon"></span>' +
+                      '<span data-growl="title"></span>' +
+                      '<span data-growl="message"></span>' +
+                      '<a href="#" data-growl="url"></a>' +
+                  '</div>'
+      });
+    };
+      
+    $("#tipo").change(function(){
+
+      if($(this).val() == 1){
+        rechargeAlumno();
+      }else if($(this).val() == 3){
+        rechargeVisitante()
+      }else{
+        rechargeClaseGrupal()
+      }
+      
+    });
+
+  function rechargeAlumno(){
+
+    $('#usuario_id').empty();
+    $('#usuario_id').append('<option value="" data-content="Todos"></option>')
+
+    $.each(alumnos, function (index, array) {
+      $('#usuario_id').append('<option value='+array.id+' data-content="'+array.nombre + " " + array.apellido+ " " + array.identificacion+'"></option>')
+    });
+
+    $('#usuario_id').selectpicker('refresh');
+  }
+
+  function rechargeVisitante(){
+
+    $('#usuario_id').empty();
+    $('#usuario_id').append('<option value="" data-content="Todos"></option>')
+
+    $.each(visitantes, function (index, array) {
+      $('#usuario_id').append('<option value='+array.id+' data-content="'+array.nombre + " " + array.apellido+'"></option>');
+    });
+
+    $('#usuario_id').selectpicker('refresh');
+
+  }
+
+  function rechargeClaseGrupal(){
+
+    $('#usuario_id').empty();
+    $('#usuario_id').append('<option value="" data-content="Todos"></option>')
+
+    $.each(clases_grupales, function (index, array) {
+      $('#usuario_id').append('<option value='+array.id+' data-content="'+array.nombre +'  -  '+array.dia+'  -  '+array.hora_inicio+' / '+array.hora_final + '  -  ' + array.instructor_nombre + ' ' + array.instructor_apellido+'"></option>');
+    });
+
+    $('#usuario_id').selectpicker('refresh');
+
+  }
+
+  </script>
 @stop        

@@ -974,7 +974,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		// CORREO
 
 		Route::get('/correo','CorreoController@index');
-		Route::get('/correo/{id}','CorreoController@indexsinselector');
+		Route::get('/correo/{id}','CorreoController@indexconusuario');
 		Route::post('/correo/sesion/{id}', 'CorreoController@Sesion');
 		Route::post('/correo/enviar', 'CorreoController@Enviar');
 		Route::post('/correo/personalizado', 'CorreoController@correoPersonalizado');
@@ -1128,6 +1128,16 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::put('configuracion/correos/update/url','ConfigCorreoController@updateUrl');
 		Route::put('configuracion/correos/update/imagen','ConfigCorreoController@updateImagen');
 		Route::put('configuracion/correos/update/contenido','ConfigCorreoController@updateContenido');
+
+		//MENSAJES
+
+		Route::get('configuracion/mensajes', 'ConfigMensajeController@principal');
+		Route::get('configuracion/mensajes/agregar', 'ConfigMensajeController@create');
+		Route::post('configuracion/mensajes/agregar', 'ConfigMensajeController@store');
+		Route::delete('configuracion/mensajes/eliminar/{id}', 'ConfigMensajeController@destroy');
+		Route::get('configuracion/mensajes/detalle/{id}', 'ConfigMensajeController@edit');
+		Route::put('configuracion/mensajes/update/titulo','ConfigMensajeController@updateTitulo');
+		Route::put('configuracion/mensajes/update/contenido','ConfigMensajeController@updateContenido');
 
 	});// EN MIDDLEWARE RECEPCIONISTA
 	/*--------------------------------------------------------

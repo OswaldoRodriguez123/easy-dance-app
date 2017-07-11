@@ -31,6 +31,70 @@ class CorreoController extends BaseController {
 		Session::put('tipo', 1);
 
 		$alumnos = Alumno::where('academia_id', '=', Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+		$visitantes = Visitante::where('academia_id', '=' ,  Auth::user()->academia_id)
+			->orderBy('nombre', 'asc')
+		->get();
+
+		$clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('clases_grupales.id',
+                     'clases_grupales.hora_inicio',
+                     'clases_grupales.hora_final',
+                     'clases_grupales.fecha_inicio',
+                     'config_clases_grupales.nombre',
+                     'instructores.nombre as instructor_nombre',
+                     'instructores.apellido as instructor_apellido')
+            ->where('clases_grupales.academia_id','=',Auth::user()->academia_id)
+            ->orderBy('clases_grupales.hora_inicio', 'asc')
+        ->get();
+
+        $clases = array();
+
+        foreach($clases_grupales as $clase){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
+          
+            $i = $fecha->dayOfWeek;
+
+            if($i == 1){
+
+              $dia = 'Lunes';
+
+            }else if($i == 2){
+
+              $dia = 'Martes';
+
+            }else if($i == 3){
+
+              $dia = 'Miercoles';
+
+            }else if($i == 4){
+
+              $dia = 'Jueves';
+
+            }else if($i == 5){
+
+              $dia = 'Viernes';
+
+            }else if($i == 6){
+
+              $dia = 'Sabado';
+
+            }else if($i == 0){
+
+              $dia = 'Domingo';
+
+            }
+
+            $collection=collect($clase);     
+            $clase_array = $collection->toArray();
+                
+            $clase_array['dia']=$dia;
+            $clases[$clase->id] = $clase_array;
+        }
+
+
 		$correos = Correo::where('academia_id', '=', Auth::user()->academia_id)->get();
 
 		$array = array();
@@ -45,11 +109,11 @@ class CorreoController extends BaseController {
             $array[$correo->id] = $correo_array;
 		}
 
-		return view('correo.index')->with(['alumnos' => $alumnos, 'correos' => $array]);
+		return view('correo.index')->with(['alumnos' => $alumnos, 'visitantes' => $visitantes, 'clases_grupales' => $clases, 'correos' => $array]);
 
 	}
 
-	public function indexsinselector($id){
+	public function indexconusuario($id){
 
 		$tipo = Session::get('tipo');
 
@@ -96,6 +160,7 @@ class CorreoController extends BaseController {
 				$sin_confirmar = 0;
 			}
 
+			$alumnos = Alumno::where('academia_id', '=', Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 			$correos = Correo::where('academia_id', '=', Auth::user()->academia_id)->get();
 
 			$array = array();
@@ -110,7 +175,7 @@ class CorreoController extends BaseController {
 	            $array[$correo->id] = $correo_array;
 			}
 
-			return view('correo.indexsinselector')->with(['usuario' => $usuario, 'id' => $id, 'sin_confirmar' => $sin_confirmar, 'tipo' => $tipo, 'correos' => $correos]);
+			return view('correo.index')->with(['usuario' => $usuario, 'id' => $id, 'sin_confirmar' => $sin_confirmar, 'tipo' => $tipo, 'correos' => $correos, 'alumnos' => $alumnos]);
 
 		}
 		else{
@@ -129,64 +194,95 @@ class CorreoController extends BaseController {
 
  	public function Enviar(Request $request){
 
- 		$tipo = Session::get('tipo');
+ 		if($request->tipo){
+ 			$tipo = $request->tipo;
+ 		}else{
+			$tipo = Session::get('tipo');
+		}
 
-		if($tipo){
-
+		if(!$request->usuario_id){
 			if($tipo == 1){
-
-				$usuario = Alumno::withTrashed()->find($request->id);
-
+				$usuarios = Alumno::where('academia_id',Auth::user()->academia_id)->where('correo', '!=', '')->get();
 			}else if($tipo == 2){
-
-				$usuario = Instructor::find($request->id);
-
+				$usuarios = Instructor::where('academia_id',Auth::user()->academia_id)->where('correo', '!=', '')->get();
 			}else if($tipo == 3){
-
-				$usuario = Visitante::find($request->id);
-				
+				$usuarios = Visitante::where('academia_id',Auth::user()->academia_id)->where('correo', '!=', '')->get();
 			}else if($tipo == 4){
-
-				$usuario = Proveedor::find($request->id);
+				$usuarios = Proveedor::where('academia_id',Auth::user()->academia_id)->where('correo', '!=', '')->get();
+			}else{
+				$usuarios = Alumno::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+					->select('alumnos.*')
+					->where('alumnos.academia_id',Auth::user()->academia_id)
+					->where('alumnos.correo', '!=', '')
+					->distinct('alumnos.id')
+				->get();
 			}
+		}else{
+			if($tipo == 1){
+				$usuarios = Alumno::where('id',$request->usuario_id)->get();
+			}else if($tipo == 2){
+				$usuarios = Instructor::where('id',$request->usuario_id)->get();
+			}else if($tipo == 3){
+				$usuarios = Visitante::where('id',$request->usuario_id)->get();
+			}else if($tipo == 4){
+				$usuarios = Proveedor::where('id',$request->usuario_id)->get();
+			}else{
+				$usuarios = Alumno::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+					->select('alumnos.*')
+					->where('inscripcion_clase_grupal.clase_grupal_id',$request->usuario_id)
+				->get();
+			}
+		}
+		
+		$correos = array();
+
+		foreach($usuarios as $usuario){
 
 			if($usuario->correo){
 
-				$correo = Correo::find($request->correo_id);
-
-				if($correo){
-
-					if($correo->imagen){
-		                $imagen = "http://app.easydancelatino.com/assets/uploads/correo/".$correo->imagen;
-
-			        }else{
-			        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
-			        }
-
-
-			        $array = [
-						'imagen' => $imagen,
-						'url' => $correo->url,
-						'msj_html' => $correo->contenido,
-						'correo' => $usuario->correo,
-						'subj' => $correo->titulo
-					];
-
-			        Mail::send('correo.personalizado', $array, function($msj) use ($array){
-	                  	$msj->subject($array['subj']);
-	                  	$msj->to($array['correo']);
-	                });
-
-	                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-                }else{
-                	return response()->json(['errores' => ['id' => [0, 'Ups! Este correo no existe']], 'status' => 'ERROR'],422);
-                }
+				if(trim($usuario->correo) != ''){
+					$correos[] = $usuario->correo;
+				}
 
 		    }else{
-				return response()->json(['errores' => ['id' => [0, 'Ups! Este usuario no posee correo electrónico configurado']], 'status' => 'ERROR'],422);
-		    }     
-			
+				return response()->json(['errores' => ['usuario_id' => [0, 'Ups! Este usuario no posee correo electrónico configurado']], 'status' => 'ERROR'],422);
+		    }  
 		}
+
+		$correos = array_unique($correos);
+
+		$correo = Correo::find($request->correo_id);
+
+		if($correo){
+
+			if($correo->imagen){
+                $imagen = "http://app.easydancelatino.com/assets/uploads/correo/".$correo->imagen;
+
+	        }else{
+	        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
+	        }
+
+
+	        $array = [
+				'imagen' => $imagen,
+				'url' => $correo->url,
+				'msj_html' => $correo->contenido,
+				'correos' => $correos,
+				'subj' => $correo->titulo
+			];
+
+	        Mail::send('correo.personalizado', $array, function($msj) use ($array){
+              	$msj->subject($array['subj']);
+              	$msj->to($array['correos']);
+            });
+
+            Session::forget('tipo');
+
+            return response()->json(['mensaje' => '¡Excelente! El correo ha sido enviado satisfactoriamente', 'status' => 'OK',  200]);
+        }else{
+        	return response()->json(['errores' => ['usuario_id' => [0, 'Ups! Este correo no existe']], 'status' => 'ERROR'],422);
+        }   
+	
 	}
 
  	public function correoPersonalizado(Request $request){
@@ -206,8 +302,6 @@ class CorreoController extends BaseController {
 	        'msj_html.required' => 'Ups! El mensaje es requerido',
 	    ];
 
-
-
 	    $validator = Validator::make($request->all(), $rules, $messages);
 
 	    if ($validator->fails()){
@@ -216,54 +310,60 @@ class CorreoController extends BaseController {
 
 	    }else{
 
-	    	 $correos = array();
+	        if($request->tipo){
+ 				$tipo = $request->tipo;
+	 		}else{
+				$tipo = Session::get('tipo');
+			}
 
-	        if($request->dirigido){
+			if(!$request->usuario_id){
+				if($tipo == 1){
+					$usuarios = Alumno::where('academia_id',Auth::user()->academia_id)->where('correo', '!=', '')->get();
+				}else if($tipo == 2){
+					$usuarios = Instructor::where('academia_id',Auth::user()->academia_id)->where('correo', '!=', '')->get();
+				}else if($tipo == 3){
+					$usuarios = Visitante::where('academia_id',Auth::user()->academia_id)->where('correo', '!=', '')->get();
+				}else if($tipo == 4){
+					$usuarios = Proveedor::where('academia_id',Auth::user()->academia_id)->where('correo', '!=', '')->get();
+				}else{
+					$usuarios = Alumno::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+						->select('alumnos.*')
+						->where('alumnos.academia_id',Auth::user()->academia_id)
+						->where('alumnos.correo', '!=', '')
+						->distinct('alumnos.id')
+					->get();
+				}
+			}else{
+				if($tipo == 1){
+					$usuarios = Alumno::where('id',$request->usuario_id)->get();
+				}else if($tipo == 2){
+					$usuarios = Instructor::where('id',$request->usuario_id)->get();
+				}else if($tipo == 3){
+					$usuarios = Visitante::where('id',$request->usuario_id)->get();
+				}else if($tipo == 4){
+					$usuarios = Proveedor::where('id',$request->usuario_id)->get();
+				}else{
+					$usuarios = Alumno::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+						->select('alumnos.*')
+						->where('inscripcion_clase_grupal.clase_grupal_id',$request->usuario_id)
+					->get();
+				}
+			}
 
-		        if($request->dirigido == 1){
+			$correos = array();
 
-		        	$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->OrderBy('created_at', 'desc')->get();
+			foreach($usuarios as $usuario){
 
-					foreach($usuarios as $usuario){
-						if(trim($usuario->correo) != ''){
-							$correos[] = $usuario->correo;
-						}
+				if($usuario->correo){
+
+					if(trim($usuario->correo) != ''){
+						$correos[] = $usuario->correo;
 					}
 
-					$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->OrderBy('created_at', 'desc')->get();
-
-					foreach($usuarios as $usuario){
-						if(trim($usuario->correo) != ''){
-							$correos[] = $usuario->correo;
-						}
-					}
-
-		        }else{
-		        	if($request->dirigido == 2){
-		        		$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->OrderBy('created_at', 'desc')->get();
-		        	}else{
-		        		$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->OrderBy('created_at', 'desc')->get();
-		        	}
-
-		        	foreach($usuarios as $usuario){
-		        		if(trim($usuario->correo) != ''){
-							$correos[] = $usuario->correo;
-						}
-					}
-		        }
-	    	}else{
-	    		$usuario = Alumno::find($request->id);
-
-	    		if($usuario){
-		    		if(trim($usuario->correo) != ''){
-		    			$correos[] = $usuario->correo;
-		    		}else{
-		    			return response()->json(['errores' => ['id' => [0, 'Ups! Este usuario no posee correo electrónico']], 'status' => 'ERROR'],422);
-		    		}
-	    		}else{
-	    			return response()->json(['errores' => ['id' => [0, 'Ups! Este usuario no existe']], 'status' => 'ERROR'],422);
-	    		}
-	    	}
+			    }else{
+					return response()->json(['errores' => ['usuario_id' => [0, 'Ups! Este usuario no posee correo electrónico configurado']], 'status' => 'ERROR'],422);
+			    }  
+			}
 
 	        $correos = array_unique($correos);
 
@@ -276,7 +376,7 @@ class CorreoController extends BaseController {
 
 	        if($personalizado->save()){
 
-				if($request->imageBase64){
+				if($request->imageBase64 && $request->imageBase64 != "data:,"){
 
 	                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
 	                $path = storage_path();
@@ -328,248 +428,6 @@ class CorreoController extends BaseController {
 	        }
 	    }
 	}
-
-	// public function correoPersonalizado(Request $request){
-
-	// 	if($request->tipo != 2){
-
-	// 		$rules = [
-	// 	        'url' => 'required|active_url',
-	// 	        'subj' => 'required',
-	// 	        'msj_html' => 'required',
-	// 	    ];
-
-	// 	    $messages = [
-
-	// 	    	'url.required' => 'Ups! La URL es requerida',
-	// 	        'url.active_url' => 'Ups! La URL no es valida',
-	// 	        'subj.required' => 'Ups! El titulo es requerido',
-	// 	        'msj_html.required' => 'Ups! El mensaje es requerido',
-	// 	    ];
-
-	//     }else{
-
-	//     	$rules = [
-	// 	        'msj_html' => 'required',
-	// 	    ];
-
-	// 	    $messages = [
-	// 	        'msj_html.required' => 'Ups! El mensaje es requerido',
-	// 	    ];
-
-	//     }
-
-	//     $validator = Validator::make($request->all(), $rules, $messages);
-
-	//     if ($validator->fails()){
-	        
-	//         return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-	//     }
-
- //    	if($request->tipo == 1 OR $request->tipo == 2){
-
- //    		$academia = Academia::find(Auth::user()->academia_id);
-
- //    		if($academia->pais_id == 11){
-
- //                $mensaje = strip_tags($request->msj_html);
-
- //                if(strlen($mensaje) > 159){
- //                	return response()->json(['errores' => ['msj_html' => [0, 'Ups! Este mensaje es muy largo para enviarlo como SMS']], 'status' => 'ERROR'],422);
- //                }
-
-	// 			// $mensaje = substr($mensaje, 0, 110);
-
- //    			$numeros = '';
- //    			$i = 0;
-
- //    			if($request->dirigido == 1){
-
-	// 	        	$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->OrderBy('created_at', 'desc')->limit(500)->get();
-
-	// 				foreach($usuarios as $usuario){
-	// 					if($i <= 500){
-	// 		        		$celular = getLimpiarNumero($usuario->celular);
-	// 		        		if(trim($celular) != '' && strlen($celular) == 10){
-	// 							if($numeros){
-	// 								$numeros = $numeros . ',' .  $celular;
-	// 							}else{
-	// 								$numeros = $celular;
-	// 							}
-
-	// 							$i++;
-	// 						}
-	// 					}else{
-	// 						break;
-	// 					}
-	// 				}
-
-	// 				$client = new Client(); //GuzzleHttp\Client
- //                	$result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$numeros.'&SMSText='.urlencode($mensaje));
-
- //                	$numeros = '';
-
-	// 				$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->OrderBy('created_at', 'desc')->limit(500)->get();
-
-	// 				foreach($usuarios as $usuario){
-	// 					if($i <= 500){
-	// 						$celular = getLimpiarNumero($usuario->celular);
-	// 		        		if(trim($celular) != '' && strlen($celular) == 10){
-	// 							if($numeros){
-	// 								$numeros = $numeros . ',' .  $celular;
-	// 							}else{
-	// 								$numeros = $celular;
-	// 							}
-
-	// 							$i++;
-	// 						}
-	// 					}else{
-	// 						break;
-	// 					}
-	// 				}
-
-	// 				$client = new Client(); //GuzzleHttp\Client
- //                	$result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$numeros.'&SMSText='.urlencode($mensaje));
-
-	// 	        }else{
-
-	// 	        	if($request->dirigido == 2){
-	// 	        		$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->OrderBy('created_at', 'desc')->limit(500)->get();
-	// 	        	}else{
-	// 	        		$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('celular', '!=', '')->OrderBy('created_at', 'desc')->limit(500)->get();
-	// 	        	}
-
-	// 	        	foreach($usuarios as $usuario){
-	// 	        		if($i <= 500){
-	// 		        		$celular = getLimpiarNumero($usuario->celular);
-	// 		        		if(trim($celular) != '' && strlen($celular) == 10){
-	// 							if($numeros){
-	// 								$numeros = $numeros . ',' .  $celular;
-	// 							}else{
-	// 								$numeros = $celular;
-	// 							}
-
-	// 							$i++;
-	// 						}
-	// 					}else{
-	// 						break;
-	// 					}
-	// 				}
-
-	// 				$client = new Client(); //GuzzleHttp\Client
- //                	$result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$numeros.'&SMSText='.urlencode($mensaje));
-	// 	        }
-
- //            }else{
- //            	return response()->json(['errores' => ['tipo' => [0, 'Ups! El envio de mensajes de texto solo esta disponible en Colombia']], 'status' => 'ERROR'],422);
- //            }
-
- //    	}
-
-	//     if($request->tipo == 1 OR $request->tipo == 3){
-
-	// 		$correo_informacion = new CorreoInformacion;
-
-	// 		$correo_informacion->academia_id = Auth::user()->academia_id;
-	//         $correo_informacion->url = $request->url;
-	//         $correo_informacion->msj_html = $request->msj_html;
-	//         $correo_informacion->titulo = $request->subj;
-
-	//         if($correo_informacion->save())
-	//         {
-
-	// 			if($request->imageBase64){
-
-	//                 $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-	//                 $path = storage_path();
-	//                 $split = explode( ';', $request->imageBase64 );
-	//                 $type =  explode( '/',  $split[0]);
-	//                 $ext = $type[1];
-	                
-	//                 if($ext == 'jpeg' || 'jpg'){
-	//                     $extension = '.jpg';
-	//                 }
-
-	//                 if($ext == 'png'){
-	//                     $extension = '.png';
-	//                 }
-
-	//                 $nombre_img = "correo-". $correo_informacion->id . $extension;
-	//                 $image = base64_decode($base64_string);
-
-	//                 // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
-	//                 $img = Image::make($image)->resize(1440, 500);
-	//                 $img->save('assets/uploads/correo/'.$nombre_img);
-
-	//                 $correo_informacion->imagen = $nombre_img;
-	//                 $correo_informacion->save();
-
-	//                 $imagen = "http://app.easydancelatino.com/assets/uploads/correo/".$nombre_img;
-
-	// 	        }else{
-	// 	        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
-	// 	        }
-
-	// 	        $correos = array();
-
-	// 	        if($request->dirigido == 1){
-
-	// 	        	$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->OrderBy('created_at', 'desc')->get();
-
-	// 				foreach($usuarios as $usuario){
-	// 					if(trim($usuario->correo) != ''){
-	// 						$correos[] = $usuario->correo;
-	// 					}
-	// 				}
-
-	// 				$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->OrderBy('created_at', 'desc')->get();
-
-	// 				foreach($usuarios as $usuario){
-	// 					if(trim($usuario->correo) != ''){
-	// 						$correos[] = $usuario->correo;
-	// 					}
-	// 				}
-
-	// 	        }else{
-	// 	        	if($request->dirigido == 2){
-	// 	        		$usuarios = Visitante::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->OrderBy('created_at', 'desc')->get();
-	// 	        	}else{
-	// 	        		$usuarios = Alumno::where('academia_id', Auth::user()->academia_id)->where('correo', '!=', '')->OrderBy('created_at', 'desc')->get();
-	// 	        	}
-
-	// 	        	foreach($usuarios as $usuario){
-	// 	        		if(trim($usuario->correo) != ''){
-	// 						$correos[] = $usuario->correo;
-	// 					}
-	// 				}
-	// 	        }
-
-	// 	        $correos = array_unique($correos);
-
-	// 			$array = [
-	// 				'imagen' => $imagen,
-	// 				'url' => $correo_informacion->url,
-	// 				'msj_html' => $request->msj_html,
-	// 				'correos' => $correos,
-	// 				'subj' => $correo_informacion->titulo
-	// 			];
-
-	// 			Mail::send('correo.personalizado', $array, function($msj) use ($array){
-	// 				$msj->subject($array['subj']);
-	// 			    $msj->to($array['correos']);
-	// 			});
-
-	// 	 	}else{
-	//             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-	//         }
-	//     }
-
-
-	// 	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-
-		
-	// }
 
 	public function correoActivacion(Request $request){
 
