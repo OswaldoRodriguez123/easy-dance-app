@@ -179,7 +179,7 @@ class MensajeController extends BaseController {
 				}
 
 				$client = new Client(); //GuzzleHttp\Client
-	        	$result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$numeros.'&SMSText='.urlencode($mensaje));
+	        	$result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$numeros.'&SMSText='.urlencode($mensaje->contenido));
 		   
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
 	        
