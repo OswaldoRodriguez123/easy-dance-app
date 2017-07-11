@@ -80,6 +80,9 @@
                                     <a href="{{url('correo')}}"><i class="zmdi zmdi-email f-16"></i> Enviar Correo</a>
                                 </li>
                                 <li class="hidden-xs">
+                                    <a href="{{url('mensajes')}}"><i class="zmdi zmdi-smartphone f-16"></i> Enviar Mensaje</a>
+                                </li>
+                                <li class="hidden-xs">
                                     <a href="{{url('incidencias')}}"><i class="zmdi icon_f-incidencias f-16"></i> Generar Incidencias</a>
                                 </li>
                                 <li class="hidden-xs">
