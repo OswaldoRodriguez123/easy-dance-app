@@ -165,6 +165,69 @@ class CorreoController extends BaseController {
 			}
 
 			$alumnos = Alumno::where('academia_id', '=', Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+			$visitantes = Visitante::where('academia_id', '=' ,  Auth::user()->academia_id)
+				->where('correo', '!=', '')
+				->orderBy('nombre', 'asc')
+			->get();
+
+			$clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+	            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+	            ->select('clases_grupales.id',
+	                     'clases_grupales.hora_inicio',
+	                     'clases_grupales.hora_final',
+	                     'clases_grupales.fecha_inicio',
+	                     'config_clases_grupales.nombre',
+	                     'instructores.nombre as instructor_nombre',
+	                     'instructores.apellido as instructor_apellido')
+	            ->where('clases_grupales.academia_id','=',Auth::user()->academia_id)
+	            ->orderBy('clases_grupales.hora_inicio', 'asc')
+	        ->get();
+
+	        $clases = array();
+
+	        foreach($clases_grupales as $clase){
+
+	            $fecha = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
+	          
+	            $i = $fecha->dayOfWeek;
+
+	            if($i == 1){
+
+	              $dia = 'Lunes';
+
+	            }else if($i == 2){
+
+	              $dia = 'Martes';
+
+	            }else if($i == 3){
+
+	              $dia = 'Miercoles';
+
+	            }else if($i == 4){
+
+	              $dia = 'Jueves';
+
+	            }else if($i == 5){
+
+	              $dia = 'Viernes';
+
+	            }else if($i == 6){
+
+	              $dia = 'Sabado';
+
+	            }else if($i == 0){
+
+	              $dia = 'Domingo';
+
+	            }
+
+	            $collection=collect($clase);     
+	            $clase_array = $collection->toArray();
+	                
+	            $clase_array['dia']=$dia;
+	            $clases[$clase->id] = $clase_array;
+	        }
 			$correos = Correo::where('academia_id', '=', Auth::user()->academia_id)->get();
 
 			$array = array();
@@ -179,7 +242,7 @@ class CorreoController extends BaseController {
 	            $array[$correo->id] = $correo_array;
 			}
 
-			return view('correo.index')->with(['usuario' => $usuario, 'id' => $id, 'sin_confirmar' => $sin_confirmar, 'tipo' => $tipo, 'correos' => $correos, 'alumnos' => $alumnos]);
+			return view('correo.index')->with(['usuario' => $usuario, 'id' => $id, 'sin_confirmar' => $sin_confirmar, 'tipo' => $tipo, 'correos' => $correos, 'alumnos' => $alumnos, 'visitantes' => $visitantes, 'clases_grupales' => $clases]);
 
 		}
 		else{
