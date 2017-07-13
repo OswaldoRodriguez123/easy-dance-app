@@ -106,98 +106,116 @@ class MensajeController extends BaseController {
 
 	public function Enviar(Request $request){
 
-		$academia = Academia::find(Auth::user()->academia_id);
+		$rules = [
+			'usuarios' => 'required',
+	    ];
 
-		if($academia->pais_id == 11){
+	    $messages = [
+	        'usuarios.required' => 'Ups! El destinatario es requerido',
+	    ];
 
-            $mensaje = Mensaje::find($request->mensaje_id);
 
-			if($mensaje){
+	    $validator = Validator::make($request->all(), $rules, $messages);
 
-	            if(strlen($mensaje->contenido) > 159){
-	            	return response()->json(['errores' => ['tipo' => [0, 'Ups! Este mensaje es muy largo para enviarlo como SMS']], 'status' => 'ERROR'],422);
-	            }
+	    if ($validator->fails()){
+	        
+	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-				if($request->tipo){
-		 			$tipo = $request->tipo;
-		 		}else{
-					$tipo = Session::get('tipo');
-				}
+	    }else{
 
-				if(!$request->usuarios){
-					if($tipo == 1){
-						$usuarios = Alumno::where('academia_id',Auth::user()->academia_id)->where('celular', '!=', '')->get();
-					}else if($tipo == 2){
-						$usuarios = Instructor::where('academia_id',Auth::user()->academia_id)->where('celular', '!=', '')->get();
-					}else if($tipo == 3){
-						$usuarios = Visitante::where('academia_id',Auth::user()->academia_id)->where('celular', '!=', '')->get();
-					}else if($tipo == 4){
-						$usuarios = Proveedor::where('academia_id',Auth::user()->academia_id)->where('celular', '!=', '')->get();
-					}else{
-						$usuarios = Alumno::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-							->select('alumnos.*')
-							->where('alumnos.academia_id',Auth::user()->academia_id)
-							->where('alumnos.celular', '!=', '')
-							->distinct('alumnos.id')
-						->get();
+			$academia = Academia::find(Auth::user()->academia_id);
+
+			if($academia->pais_id == 11){
+
+	            $mensaje = Mensaje::find($request->mensaje_id);
+
+				if($mensaje){
+
+		            if(strlen($mensaje->contenido) > 159){
+		            	return response()->json(['errores' => ['tipo' => [0, 'Ups! Este mensaje es muy largo para enviarlo como SMS']], 'status' => 'ERROR'],422);
+		            }
+
+					if($request->tipo){
+			 			$tipo = $request->tipo;
+			 		}else{
+						$tipo = Session::get('tipo');
 					}
-				}else{
 
-					$explode = explode(',',$request->usuarios);
-
-					if($tipo == 1){
-						$usuarios = Alumno::whereIn('id',$explode)->get();
-					}else if($tipo == 2){
-						$usuarios = Instructor::whereIn('id',$explode)->get();
-					}else if($tipo == 3){
-						$usuarios = Visitante::whereIn('id',$explode)->get();
-					}else if($tipo == 4){
-						$usuarios = Proveedor::whereIn('id',$explode)->get();
-					}else{
-						$usuarios = Alumno::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-							->select('alumnos.*')
-							->whereIn('inscripcion_clase_grupal.clase_grupal_id',$explode)
-						->get();
-					}
-				}
-						
-				$numeros = '';
-				$i = 0;
-
-	        	foreach($usuarios as $usuario){
-	        		if($usuario->celular){
-		        		if($i <= 500){
-			        		$celular = getLimpiarNumero($usuario->celular);
-			        		if(trim($celular) != '' && strlen($celular) == 10){
-								if($numeros){
-									$numeros = $numeros . ',' .  $celular;
-								}else{
-									$numeros = $celular;
-								}
-
-								$i++;
-							}
+					if(!$request->usuarios){
+						if($tipo == 1){
+							$usuarios = Alumno::where('academia_id',Auth::user()->academia_id)->where('celular', '!=', '')->get();
+						}else if($tipo == 2){
+							$usuarios = Instructor::where('academia_id',Auth::user()->academia_id)->where('celular', '!=', '')->get();
+						}else if($tipo == 3){
+							$usuarios = Visitante::where('academia_id',Auth::user()->academia_id)->where('celular', '!=', '')->get();
+						}else if($tipo == 4){
+							$usuarios = Proveedor::where('academia_id',Auth::user()->academia_id)->where('celular', '!=', '')->get();
 						}else{
-							break;
+							$usuarios = Alumno::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+								->select('alumnos.*')
+								->where('alumnos.academia_id',Auth::user()->academia_id)
+								->where('alumnos.celular', '!=', '')
+								->distinct('alumnos.id')
+							->get();
 						}
 					}else{
-						return response()->json(['errores' => ['usuario_id' => [0, 'Ups! Este usuario no posee telefono movil configurado']], 'status' => 'ERROR'],422);
-				    }
-				}
 
-				$client = new Client(); //GuzzleHttp\Client
-	        	$result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$numeros.'&SMSText='.urlencode($mensaje->contenido));
-		   
-				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-	        
+						$explode = explode(',',$request->usuarios);
 
-	        }else{
-	        	return response()->json(['errores' => ['tipo' => [0, 'Ups! Este mensaje no existe']], 'status' => 'ERROR'],422);
+						if($tipo == 1){
+							$usuarios = Alumno::whereIn('id',$explode)->get();
+						}else if($tipo == 2){
+							$usuarios = Instructor::whereIn('id',$explode)->get();
+						}else if($tipo == 3){
+							$usuarios = Visitante::whereIn('id',$explode)->get();
+						}else if($tipo == 4){
+							$usuarios = Proveedor::whereIn('id',$explode)->get();
+						}else{
+							$usuarios = Alumno::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+								->select('alumnos.*')
+								->whereIn('inscripcion_clase_grupal.clase_grupal_id',$explode)
+							->get();
+						}
+					}
+							
+					$numeros = '';
+					$i = 0;
+
+		        	foreach($usuarios as $usuario){
+		        		if($usuario->celular){
+			        		if($i <= 500){
+				        		$celular = getLimpiarNumero($usuario->celular);
+				        		if(trim($celular) != '' && strlen($celular) == 10){
+									if($numeros){
+										$numeros = $numeros . ',' .  $celular;
+									}else{
+										$numeros = $celular;
+									}
+
+									$i++;
+								}
+							}else{
+								break;
+							}
+						}else{
+							return response()->json(['errores' => ['usuario_id' => [0, 'Ups! Este usuario no posee telefono movil configurado']], 'status' => 'ERROR'],422);
+					    }
+					}
+
+					$client = new Client(); //GuzzleHttp\Client
+		        	$result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$numeros.'&SMSText='.urlencode($mensaje->contenido));
+			   
+					return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+		        
+
+		        }else{
+		        	return response()->json(['errores' => ['tipo' => [0, 'Ups! Este mensaje no existe']], 'status' => 'ERROR'],422);
+		        }
+		    }else{
+		    	return response()->json(['errores' => ['tipo' => [0, 'Ups! El envio de mensajes de texto solo esta disponible en Colombia']], 'status' => 'ERROR'],422);
+
 	        }
-	    }else{
-	    	return response()->json(['errores' => ['tipo' => [0, 'Ups! El envio de mensajes de texto solo esta disponible en Colombia']], 'status' => 'ERROR'],422);
-
-        }
+    	}
 
 	}
 }

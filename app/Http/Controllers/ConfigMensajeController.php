@@ -9,6 +9,8 @@ use Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\Mensaje;
+use App\Alumno;
+use App\Visitante;
 use DB;
 use Session;
 use Image;
@@ -139,6 +141,26 @@ class ConfigMensajeController extends BaseController {
 	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
 	        }
     	}
+    }
+
+    public function enviar($id){
+
+    	$mensaje = Mensaje::find($id);
+
+    	$alumnos = Alumno::where('academia_id', '=', Auth::user()->academia_id)
+    		->leftJoin('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+    		->select('alumnos.*','inscripcion_clase_grupal.clase_grupal_id')
+			->where('alumnos.celular', '!=', '')
+			->orderBy('alumnos.nombre', 'asc')
+			->groupBy('alumnos.id')
+		->get();
+
+		$visitantes = Visitante::where('academia_id', '=' ,  Auth::user()->academia_id)
+			->where('celular', '!=', '')
+			->orderBy('nombre', 'asc')
+		->get();
+
+        return view('configuracion.mensajes.enviar')->with(['mensaje' => $mensaje, 'alumnos' => $alumnos, 'visitantes' => $visitantes]);
     }
 
 	public function destroy($id)

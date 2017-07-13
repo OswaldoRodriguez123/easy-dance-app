@@ -54,13 +54,13 @@
 
                                   <div class="col-sm-12">
                                     <div class="form-group">
-                                      <label for="nombre">Nombre</label>
+                                      <label for="nombre" id="id-usuarios">Nombre</label>
                                       <select class="selectpicker" name="usuario_id" id="usuario_id" data-live-search="true" data-container="body" multiple="" data-max-options="5" title="Todos">
                                       </select>
                                     </div>
-                                    <div class="has-error" id="error-usuario_id">
+                                    <div class="has-error" id="error-usuarios">
                                       <span >
-                                          <small class="help-block error-span" id="error-usuario_id_mensaje" ></small> 
+                                          <small class="help-block error-span" id="error-usuarios_mensaje" ></small> 
                                       </span>
                                     </div>
                                   </div>
@@ -69,15 +69,15 @@
 
                                   <div class="col-sm-12">
                                     <div class="form-group">
-                                      <label for="nombre">Nombre</label>
+                                      <label for="nombre" id="id-usuarios">Nombre</label>
 
                                           <input type="hidden" name="usuario_id" id="usuario_id" value="{{$usuario->id}}">
                                           <label for="nombre" class="f-14">{{$usuario->nombre}} {{$usuario->apellido}} </label>
 
                                     </div>
-                                    <div class="has-error" id="error-id">
+                                    <div class="has-error" id="error-usuarios">
                                       <span >
-                                          <small class="help-block error-span" id="error-id_mensaje" ></small> 
+                                          <small class="help-block error-span" id="error-usuarios_mensaje" ></small> 
                                       </span>
                                     </div>
                                   </div>
