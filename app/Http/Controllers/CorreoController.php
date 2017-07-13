@@ -326,7 +326,7 @@ class CorreoController extends BaseController {
 		if($correo){
 
 			if($correo->imagen){
-                $imagen = "http://app.easydancelatino.com/assets/uploads/correo/".$correo->imagen;
+                $imagen = "http://app.easydancelatino.com/assets/uploads/correos/".$correo->imagen;
 
 	        }else{
 	        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
@@ -623,12 +623,12 @@ class CorreoController extends BaseController {
 
 		            // \Storage::disk('correo')->put($nombre_img,  $image);
 		            $img = Image::make($image)->resize(1440, 500);
-		            $img->save('assets/uploads/correo/'.$nombre_img);
+		            $img->save('assets/uploads/correos/'.$nombre_img);
 
 		            $personalizado->imagen = $nombre_img;
 		            $personalizado->save();
 
-		            $imagen = "http://app.easydancelatino.com/assets/uploads/correo/".$nombre_img;
+		            $imagen = "http://app.easydancelatino.com/assets/uploads/correos/".$nombre_img;
 
 		        }else{
 		        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
