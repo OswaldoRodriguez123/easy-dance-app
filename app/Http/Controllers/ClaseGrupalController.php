@@ -2948,6 +2948,12 @@ class ClaseGrupalController extends BaseController {
             {
 
                 $config_clase_grupal = ConfigClasesGrupales::find($clasegrupal->clase_grupal_id);
+
+                if($config_clase_grupal){
+                    $costo_mensualidad = $config_clase_grupal->costo_mensualidad;
+                }else{
+                    $costo_mensualidad = $inscripcion->costo_mensualidad;
+                }
                 
                 $inscripcion_anterior = InscripcionClaseGrupal::withTrashed()
                     ->where('alumno_id', $inscripcion->alumno_id)
@@ -2958,13 +2964,13 @@ class ClaseGrupalController extends BaseController {
 
                     $inscripcion->fecha_a_comprobar = Carbon::now()->addWeeks(2)->toDateString();
                     $inscripcion->clase_grupal_id = $request->clase_grupal_id;
-                    $inscripcion->costo_mensualidad = $config_clase_grupal->costo_mensualidad;
+                    $inscripcion->costo_mensualidad = $costo_mensualidad;
                     $inscripcion->save();
                     
                 }else{
 
                     $inscripcion_anterior->fecha_a_comprobar = Carbon::now()->addWeeks(2)->toDateString();
-                    $inscripcion_anterior->costo_mensualidad = $config_clase_grupal->costo_mensualidad;
+                    $inscripcion_anterior->costo_mensualidad = $costo_mensualidad;
                     $inscripcion_anterior->deleted_at = null;
                     $inscripcion_anterior->save();
                     $inscripcion->forceDelete();
