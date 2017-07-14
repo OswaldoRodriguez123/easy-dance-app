@@ -143,26 +143,6 @@ class ConfigMensajeController extends BaseController {
     	}
     }
 
-    public function enviar($id){
-
-    	$mensaje = Mensaje::find($id);
-
-    	$alumnos = Alumno::where('academia_id', '=', Auth::user()->academia_id)
-    		->leftJoin('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-    		->select('alumnos.*','inscripcion_clase_grupal.clase_grupal_id')
-			->where('alumnos.celular', '!=', '')
-			->orderBy('alumnos.nombre', 'asc')
-			->groupBy('alumnos.id')
-		->get();
-
-		$visitantes = Visitante::where('academia_id', '=' ,  Auth::user()->academia_id)
-			->where('celular', '!=', '')
-			->orderBy('nombre', 'asc')
-		->get();
-
-        return view('configuracion.mensajes.enviar')->with(['mensaje' => $mensaje, 'alumnos' => $alumnos, 'visitantes' => $visitantes]);
-    }
-
 	public function destroy($id)
     {
 

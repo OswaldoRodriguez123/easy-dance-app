@@ -255,7 +255,8 @@
                                           <br>
 
                                           <div class="text-right">
-                                              <span class="f-18 p-t-0 c-morado pointer mensajes" data-titulo ="{{$mensaje->titulo}}" id="{{$mensaje->id}}">Enviar Mensaje</span>
+                                              <!-- <span class="f-18 p-t-0 c-morado pointer mensajes" data-titulo ="{{$mensaje->titulo}}" id="{{$mensaje->id}}">Enviar Mensaje</span> -->
+                                              <a href="{{url('/')}}/mensajes/enviar/{{$mensaje->id}}"><span class="f-18 p-t-0 c-morado pointer">Enviar Mensaje</span></a>
                                           </div>
                                       </div>
                                   </div>

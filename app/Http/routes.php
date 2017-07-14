@@ -982,6 +982,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		// MENSAJES
 
 		Route::get('/mensajes','MensajeController@index');
+		Route::get('/mensajes/enviar/{id}', 'MensajeController@detalle');
+		Route::post('/mensajes/filtrar', 'MensajeController@Filtrar');
 		Route::post('/mensajes/enviar', 'MensajeController@Enviar');
 
 		// ASISTENCIA
@@ -1143,7 +1145,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('configuracion/mensajes/detalle/{id}', 'ConfigMensajeController@edit');
 		Route::put('configuracion/mensajes/update/titulo','ConfigMensajeController@updateTitulo');
 		Route::put('configuracion/mensajes/update/contenido','ConfigMensajeController@updateContenido');
-		Route::get('configuracion/mensajes/enviar/{id}', 'ConfigMensajeController@enviar');
 
 	});// EN MIDDLEWARE RECEPCIONISTA
 	/*--------------------------------------------------------

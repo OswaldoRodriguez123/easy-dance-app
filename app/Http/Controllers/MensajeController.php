@@ -104,6 +104,80 @@ class MensajeController extends BaseController {
 
 	}
 
+	public function detalle($id){
+
+    	$mensaje = Mensaje::find($id);
+
+    	$alumnos = Alumno::where('academia_id', '=', Auth::user()->academia_id)
+    		->leftJoin('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+    		->select('alumnos.*','inscripcion_clase_grupal.clase_grupal_id')
+			->where('alumnos.celular', '!=', '')
+			->orderBy('alumnos.nombre', 'asc')
+			->groupBy('alumnos.id')
+		->get();
+
+		$visitantes = Visitante::where('academia_id', '=' ,  Auth::user()->academia_id)
+			->where('celular', '!=', '')
+			->orderBy('nombre', 'asc')
+		->get();
+
+        return view('mensajes.detalle')->with(['mensaje' => $mensaje, 'alumnos' => $alumnos, 'visitantes' => $visitantes]);
+    }
+
+    public function Filtrar(Request $request){
+
+    	if($request->boolean_fecha){
+
+            $fecha = explode(' - ', $request->fecha2);
+            $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+
+        }else{
+
+            if($request->tipo){
+                if($request->fecha == 1){
+                    $start = Carbon::now()->toDateString();
+                    $end = Carbon::now()->addDay()->toDateString();  
+                }else if($request->fecha == 2){
+                    $start = Carbon::now()->startOfMonth()->toDateString();
+                    $end = Carbon::now()->endOfMonth()->toDateString();  
+                }else if($request->fecha == 3){
+                    $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                    $end = Carbon::now()->endOfMonth()->subMonth()->subDay()->toDateString();  
+                }
+            }
+        }
+
+    	if($request->tipo == 1){
+    		$query = Alumno::where('alumnos.academia_id',Auth::user()->academia_id)
+    		->where('alumnos.celular', '!=', '')
+    		->whereBetween('alumnos.created_at', [$start,$end])
+    		->orderBy('alumnos.nombre', 'asc');
+    	}else{
+    		$query = Visitante::where('academia_id',Auth::user()->academia_id)->where('celular', '!=', '')
+    		->whereBetween('created_at', [$start,$end])
+    		->orderBy('nombre', 'asc');
+    	}
+
+    	if($request->tipo2){
+    		if($request->tipo == 1){
+    			$query->leftJoin('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+    				->select('alumnos.*')
+					->groupBy('alumnos.id');
+    		}else{
+    			if($request->tipo2 == 1){
+    				$query->where('cliente',1);
+    			}else{
+    				$query->where('cliente',0);
+    			}
+    		}
+    	}
+
+        $usuarios = $query->get();
+
+        return response()->json(['mensaje' => '¡Excelente! Los usuarios han sido filtrados exitosamente', 'status' => 'OK', 'usuarios' => $usuarios, 200]);
+    } 
+
 	public function Enviar(Request $request){
 
 		$rules = [

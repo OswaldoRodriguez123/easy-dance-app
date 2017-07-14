@@ -181,8 +181,6 @@
 
                                   <hr></hr>
 
-                                  <a href="{{url('/')}}/configuracion/mensajes/enviar/{{$id}}"><i class="zmdi zmdi-smartphone f-20 m-r-10 boton blue sa-warning" data-original-title="Enviar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-
                                   <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
                                   
                                   <br></br>
