@@ -218,7 +218,7 @@ class MensajeController extends BaseController {
     		}
     	}else{
     		if($request->tipo == 1){
-    			$query->whereBetween('alumnos.created_at', [$start,$end])
+    			$query->whereBetween('alumnos.created_at', [$start,$end]);
     		}
     	}
 
