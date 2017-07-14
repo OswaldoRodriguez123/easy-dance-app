@@ -175,7 +175,7 @@ class MensajeController extends BaseController {
 
             $fecha = explode(' - ', $request->fecha2);
             $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
-            $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+            $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->addDay()->toDateString();
 
         }else{
 
