@@ -289,7 +289,7 @@
                               sortDescending: ": habilitado para ordenar la columna en orden descendente"
                           },
                           select: {
-                            rows: "%d usuarios seleccionados de 500"
+                            rows: "%d usuarios seleccionados de _MAX_"
                           }
                       }
 
