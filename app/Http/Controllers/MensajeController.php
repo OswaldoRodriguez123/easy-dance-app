@@ -196,7 +196,6 @@ class MensajeController extends BaseController {
     	if($request->tipo == 1){
     		$query = Alumno::where('alumnos.academia_id',Auth::user()->academia_id)
     		->where('alumnos.celular', '!=', '')
-    		// ->whereBetween('alumnos.created_at', [$start,$end])
     		->orderBy('alumnos.nombre', 'asc');
     	}else{
     		$query = Visitante::where('academia_id',Auth::user()->academia_id)->where('celular', '!=', '')
@@ -216,6 +215,10 @@ class MensajeController extends BaseController {
     			}else{
     				$query->where('cliente',0);
     			}
+    		}
+    	}else{
+    		if($request->tipo == 1){
+    			$query->whereBetween('alumnos.created_at', [$start,$end])
     		}
     	}
 
