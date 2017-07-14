@@ -204,6 +204,8 @@
         route_filtrar="{{url('/')}}/mensajes/filtrar";
         route_mensaje="{{url('/')}}/mensajes/enviar";
 
+        var clases_grupales = <?php echo json_encode($clases_grupales);?>;  
+
         $(document).ready(function(){
           //DateRangePicker
           $('#fecha2').daterangepicker({
@@ -311,7 +313,9 @@
 
             $('#tipo2').empty();
             $('#tipo2').append('<option value="" data-content="Todos"></option>')
-            $('#tipo2').append('<option value="1" data-content="Clases Grupales"></option>')
+            $.each(clases_grupales, function (index, array) {
+              $('#tipo2').append('<option value='+array.id+' data-content="'+array.nombre +'  -  '+array.dia+'  -  '+array.hora_inicio+' / '+array.hora_final + '  -  ' + array.instructor_nombre + ' ' + array.instructor_apellido+'"></option>');
+            });
 
             $('#tipo2').selectpicker('refresh');
 
