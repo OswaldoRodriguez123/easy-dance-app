@@ -270,9 +270,9 @@
                           processing:     "Procesando ...",
                           search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
                           searchPlaceholder: "BUSCAR",
-                          lengthMenu:     " ",
-                          info:           "",
-                          infoEmpty:      "",
+                          lengthMenu:     "Mostrar _MENU_ Registros",
+                          info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                          infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
                           infoFiltered:   "(filtrada de _MAX_ registros en total)",
                           infoPostFix:    "",
                           loadingRecords: "...",
@@ -289,7 +289,7 @@
                               sortDescending: ": habilitado para ordenar la columna en orden descendente"
                           },
                           select: {
-                            rows: "%d usuarios seleccionados de _TOTAL_"
+                            rows: "%d registros seleccionados"
                           }
                       }
 
