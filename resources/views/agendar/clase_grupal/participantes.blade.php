@@ -1218,9 +1218,9 @@
                                                           <a class="modal_transferir"><i class="zmdi zmdi-trending-up f-20 p-r-10"></i> Transferir</a>
                                                       </li>
 
-                                                      <!-- <li class="hidden-xs">
+                                                      <li class="hidden-xs">
                                                           <a class="credencial"><i class="zmdi icon_a-pagar f-20 p-r-10"></i> Credenciales</a>
-                                                      </li> -->
+                                                      </li>
 
                                                       <li class="hidden-xs">
                                                           <a class="valorar"><i class="zmdi icon_a-examen f-20"></i> Valorar</a>
