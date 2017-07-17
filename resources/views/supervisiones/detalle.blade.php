@@ -46,8 +46,8 @@
                     
                     <div class="card">
                         <div class="card-header ch-alt text-center">
-                            @if ($academia->imagen_academia)
-                                <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen_academia}}" alt="">
+                            @if ($academia->imagen)
+                                <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen}}" alt="">
                             @else
                                 <img class="i-logo" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
                             @endif
@@ -55,7 +55,7 @@
 
                             
                             <br>
-                            <span class="f-22 f-700">Academia {{$academia->academia_nombre}}</span>
+                            <span class="f-22 f-700">Academia {{$academia->nombre}}</span>
 
                             <div class="clearfix"></div>
 

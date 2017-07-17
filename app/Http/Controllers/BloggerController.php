@@ -13,7 +13,6 @@ use Image;
 use App\Blogger;
 use App\Academia;
 use App\User;
-use File;
 use Mail;
 
 class BloggerController extends BaseController {
