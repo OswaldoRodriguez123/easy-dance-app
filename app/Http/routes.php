@@ -1063,6 +1063,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('supervisiones/evaluaciones', 'SupervisionController@evaluaciones');
 		Route::get('supervisiones/evaluaciones/{id}', 'SupervisionController@evaluaciones_por_supervision');
 		Route::get('supervisiones/evaluaciones/detalle/{id}', 'SupervisionController@getDetalle');
+		Route::post('supervisiones/evaluaciones/eliminar','SupervisionController@eliminar_evaluacion');
 		Route::put('supervisiones/update/supervisor','SupervisionController@updateSupervisor');
 		Route::put('supervisiones/update/cargo','SupervisionController@updateCargo');
 		Route::put('supervisiones/update/staff','SupervisionController@updateStaff');

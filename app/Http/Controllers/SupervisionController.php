@@ -11,6 +11,7 @@ use Validator;
 use Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Supervision;
 use App\ConfigSupervision;
 use App\Procedimiento;
@@ -1019,6 +1020,28 @@ class SupervisionController extends BaseController {
             'detalle_notas'            => $detalles_notas,
 
         ]);
+    }
+
+    public function eliminar_evaluacion(Request $request)
+    {
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        if($academia->password_supervision){
+            if(!Hash::check($request->password_supervision, $academia->password_supervision)) {
+                return response()->json(['error_mensaje'=> 'Ups! La contraseña no coincide', 'status' => 'ERROR-PASSWORD'],422);
+            }
+        }
+
+        $evaluacion = SupervisionEvaluacion::find($request->id);
+
+        if($evaluacion->delete()){
+
+        	$detalle_evaluacion = DetalleSupervisionEvaluacion::where('evaluacion_id',$request->id)->delete();
+
+            return response()->json(['mensaje' => '¡Excelente! La evaluación se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
     public function destroy($id)

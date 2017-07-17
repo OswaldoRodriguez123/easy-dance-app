@@ -116,6 +116,9 @@
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="nota">Nota</th>
                                     <th class="text-center" data-column-id="nota">Porcentaje</th>
+                                    @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
+                                        <th class="text-center" data-column-id="acciones">Acciones</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
@@ -129,6 +132,9 @@
                                     <td class="text-center previa">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$evaluacion['created_at'])->format('d-m-Y')}}</td>
                                     <td class="text-center previa">{{$evaluacion['total']}}</td>
                                     <td class="text-center previa">{{intval($evaluacion['porcentaje'])}}%</td>
+                                    @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
+                                        <td class="text-center disabled"> <i class="zmdi zmdi-delete pointer f-20 p-r-10"></i></td>
+                                    @endif
                                 </tr>
                             @endforeach  
                                                            
@@ -157,6 +163,7 @@
 <script type="text/javascript">
 
         route_detalle="{{url('/')}}/supervisiones/evaluaciones/detalle/";
+        route_eliminar="{{url('/')}}/supervisiones/evaluaciones/eliminar";
 
         $(document).ready(function(){
 
@@ -166,8 +173,8 @@
         pageLength: 25,   
         order: [[0, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -199,9 +206,67 @@
 
     function previa(t){
 
-            var id = $(t).closest('tr').attr('id');
-            window.location=route_detalle+id;
+        var id = $(t).closest('tr').attr('id');
+        window.location=route_detalle+id;
+    }
+
+
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+      var id = $(this).closest('tr').attr('id');
+      element = this;
+
+      swal({   
+          title: "Para eliminar la evaluación necesita colocar la clave de supervisión",   
+          text: "Confirmar eliminación!",   
+          type: "input",  
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Aceptar",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: false,
+          animation: "slide-from-top",
+          inputPlaceholder: "Coloque la clave de supervisión"
+      }, function(inputValue){
+        if (inputValue === false) return false;
+        
+        if (inputValue === "") {
+          swal.showInputError("Ups! La clave de supervisión es requerida");
+          return false
+        }else{
+
+          var route = route_eliminar;
+          var token = "{{ csrf_token() }}"
+          var datos = "&id="+id+"&password_supervision="+inputValue
+          procesando();
+          
+          $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            dataType: 'json',
+            data:datos,
+            success:function(respuesta){
+
+              swal("Exito!","La evaluación ha sido eliminado!","success");
+
+              t.row( $(element).parents('tr') )
+                  .remove()
+                  .draw();
+              finprocesado()
+
+            },
+            error:function(msj){
+              finprocesado();
+              if(msj.responseJSON.status == "ERROR-PASSWORD"){
+                swal.showInputError("Ups! La clave de supervisión es incorrecta");
+              }else{
+                swal('Solicitud no procesada','Ups! Ha ocurrido un error, intente nuevamente','error');
+              }
+            }
+          });
         }
+      });
+  });
 
 
     </script>
