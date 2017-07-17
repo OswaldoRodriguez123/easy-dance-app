@@ -43,7 +43,7 @@
                         <div class="card-header text-center">
                         
 
-                            <span class="f-25 c-morado"> {{$visitante_presencial->nombre}} </span> <br> <br>
+                            <span class="f-25 c-morado"> {{$visitante->nombre}} </span> <br> <br>
 
                             <span class="f-25 c-morado"> Ayúdenos a mejorar, tu opinión Vale </span>
 
@@ -256,12 +256,12 @@
   $(document).ready(function(){
 
 
-    if("{{$visitante->rapidez}}" != 0){
+    if("{{$encuesta->rapidez}}" != 0){
 
-      $("input[name=rapidez][value={{$visitante->rapidez}}]").attr('checked', 'checked');
-      $("input[name=satisfaccion][value={{$visitante->satisfaccion}}]").attr('checked', 'checked');
-      $("input[name=calidad][value={{$visitante->calidad}}]").attr('checked', 'checked');
-      $("input[name=disponibilidad][value={{$visitante->disponibilidad}}]").attr('checked', 'checked');
+      $("input[name=rapidez][value={{$encuesta->rapidez}}]").attr('checked', 'checked');
+      $("input[name=satisfaccion][value={{$encuesta->satisfaccion}}]").attr('checked', 'checked');
+      $("input[name=calidad][value={{$encuesta->calidad}}]").attr('checked', 'checked');
+      $("input[name=disponibilidad][value={{$encuesta->disponibilidad}}]").attr('checked', 'checked');
 
     }
 
@@ -417,7 +417,7 @@
                 });
             });
 
-      function limpiarMensaje(){
+    function limpiarMensaje(){
       var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "telefono", "celular", "correo", "direccion"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
@@ -425,8 +425,7 @@
         }
       }
 
-      function errores(merror){
-      var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "telefono", "celular", "correo", "direccion"];
+    function errores(merror){
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {
@@ -448,13 +447,13 @@
   }
 
 
-       $( "#cancelar" ).click(function() {
-        $("#perfil_evaluativo")[0].reset();
-        limpiarMensaje();
-        $('html,body').animate({
-        scrollTop: $("#id-aprendizaje").offset().top-90,
-        }, 1000);
-      });
+ $( "#cancelar" ).click(function() {
+  $("#perfil_evaluativo")[0].reset();
+  limpiarMensaje();
+  $('html,body').animate({
+  scrollTop: $("#id-aprendizaje").offset().top-90,
+  }, 1000);
+});
 
 
 </script> 

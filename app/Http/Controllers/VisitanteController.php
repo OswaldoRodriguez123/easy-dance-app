@@ -422,18 +422,18 @@ class VisitanteController extends BaseController {
 
     public function impresion($id)
     {
-        $visitante = EncuestaVisitante::where('visitante_id', $id)->first();
+        $encuesta = EncuestaVisitante::where('visitante_id', $id)->first();
 
 
-        if(!$visitante){
-            $visitante = new EncuestaVisitante;
-            $visitante->visitante_id = $id;
-            $visitante->save();
+        if(!$encuesta){
+            $encuesta = new EncuestaVisitante;
+            $encuesta->visitante_id = $id;
+            $encuesta->save();
         }
 
-        $visitante_presencial = Visitante::find($id);
+        $visitante = Visitante::find($id);
 
-        return view('participante.visitante.planilla_encuesta')->with(['visitante' => $visitante, 'visitante_presencial' => $visitante_presencial]);
+        return view('participante.visitante.planilla_encuesta')->with(['visitante' => $visitante, 'encuesta' => $encuesta]);
     }
 
     public function storeImpresion(Request $request)
