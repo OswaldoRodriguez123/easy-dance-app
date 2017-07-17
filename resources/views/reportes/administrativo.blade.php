@@ -709,7 +709,7 @@
                         $('.egresos').hide();
                         $('.ingresos').hide();
                         $('.proforma').show();
-                        $('.total_proforma').text(formatmoney(parseFloat(respuesta.total_proforma)))
+                        $('#total_proforma').text(formatmoney(parseFloat(respuesta.total_proforma)))
                     }
 
                     if(tipo == 1){
