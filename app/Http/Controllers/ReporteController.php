@@ -3021,15 +3021,15 @@ class ReporteController extends BaseController
                 if($request->tipo == 1 && $comision->boolean_pago){
 
                     if($comision->servicio_producto_tipo == 1){
-                        $servicio_producto = ConfigServicios::find($comision->servicio_producto_id);
+                        $servicio_producto = ConfigServicios::withTrashed()->find($comision->servicio_producto_id);
                     }else{
-                        $servicio_producto = ConfigProductos::find($comision->servicio_producto_id);
+                        $servicio_producto = ConfigProductos::withTrashed()->find($comision->servicio_producto_id);
                     }
 
                     if($comision->usuario_tipo == 1){
-                        $usuario = Staff::find($comision->usuario_id);
+                        $usuario = Staff::withTrashed()->find($comision->usuario_id);
                     }else{
-                        $usuario = Instructor::find($comision->usuario_id);
+                        $usuario = Instructor::withTrashed()->find($comision->usuario_id);
                     }
 
                     $collection=collect($comision);     
@@ -3043,15 +3043,15 @@ class ReporteController extends BaseController
                 }else if($request->tipo == 2 && !$comision->boolean_pago){
 
                     if($comision->servicio_producto_tipo == 1){
-                        $servicio_producto = ConfigServicios::find($comision->servicio_producto_id);
+                        $servicio_producto = ConfigServicios::withTrashed()->find($comision->servicio_producto_id);
                     }else{
-                        $servicio_producto = ConfigProductos::find($comision->servicio_producto_id);
+                        $servicio_producto = ConfigProductos::withTrashed()->find($comision->servicio_producto_id);
                     }
 
                     if($comision->usuario_tipo == 1){
-                        $usuario = Staff::find($comision->usuario_id);
+                        $usuario = Staff::withTrashed()->find($comision->usuario_id);
                     }else{
-                        $usuario = Instructor::find($comision->usuario_id);
+                        $usuario = Instructor::withTrashed()->find($comision->usuario_id);
                     }
 
                     $collection=collect($comision);     
