@@ -865,7 +865,6 @@ class SupervisionController extends BaseController {
         }else{
 
             $notas=explode(",",$request->nota_detalle);
-            $nombres=explode(",",$request->nombre_detalle);
 
             $evaluacion = new SupervisionEvaluacion;
 
@@ -877,13 +876,16 @@ class SupervisionController extends BaseController {
 
             if($evaluacion->save()){
 
+            	$concepto = ConceptoSupervision::find($request->concepto_id);
+            	$items_a_evaluar = ItemProcedimiento::where('procedimiento_id',$concepto->procedimiento_id)->get();
+
             	$i = 0;
 
-            	foreach($nombres as $nombre){
+            	foreach($items_a_evaluar as $item){
 
                     $detalle = new DetalleSupervisionEvaluacion;
 
-                    $detalle->nombre = $nombre;
+                    $detalle->nombre = $item->nombre;
                     $detalle->nota = intval($notas[$i]);
                     $detalle->evaluacion_id = $evaluacion->id;
                     $detalle->save();
