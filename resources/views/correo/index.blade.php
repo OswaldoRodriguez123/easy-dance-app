@@ -263,7 +263,7 @@
                                           <br>
 
                                           <div class="text-right">
-                                              <span class="f-18 p-t-0 c-morado pointer correos" data-titulo ="{{$correo['titulo']}}" id="{{$correo['id']}}">Enviar Correo</span>
+                                              <a href="{{url('/')}}/correo/enviar/{{$correo['id']}}"><span class="f-18 p-t-0 c-morado pointer">Enviar Correo</span></a>
                                           </div>
                                       </div>
                                   </div>

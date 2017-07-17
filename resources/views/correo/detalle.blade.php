@@ -39,7 +39,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/mensajes" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Mensajes</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/correo" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Correos</a>
 
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -57,16 +57,16 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-smartphone f-25"></i> Enviar Mensaje: {{$mensaje->titulo}}</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-email f-25"></i> Enviar Correo: {{$correo->titulo}}</p>
                             <hr class="linea-morada">
                                                          
                         </div>
 
                         <div class="col-sm-12">
-                            <form name="form_mensaje" id="form_mensaje">
+                            <form name="form_correo" id="form_correo">
                                 <input type="hidden" id="boolean_fecha" name="boolean_fecha" value="0">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <input type="hidden" name="mensaje_id" id="mensaje_id" value="{{$mensaje->id}}">
+                                <input type="hidden" name="correo_id" id="correo_id" value="{{$correo->id}}">
 
                                 <div class="col-md-4">
                                     <label>Alumnos / Visitantes</label> &nbsp; &nbsp; &nbsp;
@@ -202,8 +202,8 @@
             
     <script type="text/javascript">
 
-        route_filtrar="{{url('/')}}/mensajes/filtrar";
-        route_mensaje="{{url('/')}}/mensajes/enviar";
+        route_filtrar="{{url('/')}}/correo/filtrar";
+        route_enviar="{{url('/')}}/correo/enviar";
 
         var clases_grupales = <?php echo json_encode($clases_grupales);?>;  
 
@@ -340,7 +340,7 @@
 
           procesando()
 
-          var datos = $( "#form_mensaje" ).serialize();
+          var datos = $( "#form_correo" ).serialize();
           var token = $('input:hidden[name=_token]').val();
 
           $.ajax({
@@ -425,12 +425,12 @@
 
               procesando();
             
-              var datos = $( "#form_mensaje" ).serialize();
+              var datos = $( "#form_correo" ).serialize();
               var token = $('input:hidden[name=_token]').val();
 
               $.ajax({
                   headers: {'X-CSRF-TOKEN': token},
-                  url: route_mensaje,
+                  url: route_enviar,
                   type: 'POST',
                   dataType: 'json',
                   data: datos+"&usuarios="+usuarios,
@@ -449,7 +449,7 @@
                         var nAnimOut = "animated flipOutY"; 
                         var nType = 'success';
                         var nTitle="Ups! ";
-                        var nMensaje="Tu mensaje ha sido enviado exitósamente";
+                        var nMensaje="Tu correo ha sido enviado exitósamente";
 
                       }else{
                         var nTitle="Ups! ";

@@ -173,32 +173,33 @@ class MensajeController extends BaseController {
 
     	if($request->boolean_fecha){
 
-            $fecha = explode(' - ', $request->fecha2);
-            $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
-            $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->addDay()->toDateString();
+          $fecha = explode(' - ', $request->fecha2);
+          $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+          $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->addDay()->toDateString();
 
-        }else{
+      }else{
 
-            if($request->tipo){
-                if($request->fecha == 1){
-                    $start = Carbon::now()->toDateString();
-                    $end = Carbon::now()->addDay()->toDateString();  
-                }else if($request->fecha == 2){
-                    $start = Carbon::now()->startOfMonth()->toDateString();
-                    $end = Carbon::now()->endOfMonth()->toDateString();  
-                }else if($request->fecha == 3){
-                    $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
-                    $end = Carbon::now()->endOfMonth()->subMonth()->subDay()->toDateString();  
-                }
-            }
-        }
+          if($request->tipo){
+              if($request->fecha == 1){
+                  $start = Carbon::now()->toDateString();
+                  $end = Carbon::now()->addDay()->toDateString();  
+              }else if($request->fecha == 2){
+                  $start = Carbon::now()->startOfMonth()->toDateString();
+                  $end = Carbon::now()->endOfMonth()->toDateString();  
+              }else if($request->fecha == 3){
+                  $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
+                  $end = Carbon::now()->endOfMonth()->subMonth()->subDay()->toDateString();  
+              }
+          }
+      }
 
     	if($request->tipo == 1){
     		$query = Alumno::where('alumnos.academia_id',Auth::user()->academia_id)
     		->where('alumnos.celular', '!=', '')
     		->orderBy('alumnos.nombre', 'asc');
     	}else{
-    		$query = Visitante::where('academia_id',Auth::user()->academia_id)->where('celular', '!=', '')
+    		$query = Visitante::where('academia_id',Auth::user()->academia_id)
+        ->where('celular', '!=', '')
     		->whereBetween('created_at', [$start,$end])
     		->orderBy('nombre', 'asc');
     	}
@@ -222,9 +223,21 @@ class MensajeController extends BaseController {
     		}
     	}
 
-        $usuarios = $query->get();
+      $usuarios = $query->get();
+      $array = array();
 
-        return response()->json(['mensaje' => '¡Excelente! Los usuarios han sido filtrados exitosamente', 'status' => 'OK', 'usuarios' => $usuarios, 200]);
+      foreach ($usuarios as $usuario) {
+        $fecha = Carbon::createFromFormat('Y-m-d H:i:s',$usuario->created_at)->format('d-m-Y');
+
+        $collection=collect($usuario);     
+        $usuario_array = $collection->toArray();
+            
+        $usuario_array['fecha']=$fecha;
+        $array[$usuario->id] = $usuario_array;
+
+      }
+
+      return response()->json(['mensaje' => '¡Excelente! Los usuarios han sido filtrados exitosamente', 'status' => 'OK', 'usuarios' => $array, 200]);
     } 
 
 	public function Enviar(Request $request){
