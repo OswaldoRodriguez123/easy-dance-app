@@ -220,7 +220,11 @@
                             $fecha_end=explode('-',$cita->fecha);
                             $hora_start=explode(':',$cita->hora_inicio);
                             $hora_end=explode(':',$cita->hora_final);
-                            $titulo = $cita->alumno_nombre . ' ' . $cita->alumno_apellido; 
+                            if($cita->tipo_id != 5){
+                                $titulo = $cita->alumno_nombre . ' ' . $cita->alumno_apellido;
+                            }else{
+                                $titulo = $cita->alumno_nombre . ' ' . $cita->alumno_apellido . ' ★'; 
+                            }
                             ?>
                             id: 'cita-{{$cita->id}}',
                             title: "{{$titulo}}" ,
