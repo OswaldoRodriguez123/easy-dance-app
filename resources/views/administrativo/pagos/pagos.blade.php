@@ -1141,13 +1141,10 @@
                 ] ).draw(false).node();
                 $( rowNode )
                 .attr('id',rowId)
-                // .attr('data-precio',precio_neto)
                 .addClass('seleccion');
                 
                 var importe_neto = respuesta.array[0].importe_neto;
                 var impuesto = respuesta.array[0].impuesto;
-                // var preciostring = importe_neto.toString(); 
-                // precioint = preciostring.replace(",", "");
 
                 subtotalfinal = parseFloat(importe_neto);
                 impuestofinal = parseFloat(subtotalfinal) * (impuesto / 100);
@@ -1162,6 +1159,8 @@
                 $("#total").text(formatmoney(totalfinal));
 
                 $('input[name=servicio]').click();
+                $('#agregar_item')[0].reset()
+                $('.selectpicker').selectpicker('refresh')
 
               }else{
                 var nTitle="Ups! ";
@@ -1173,9 +1172,9 @@
               $("#guardar").removeAttr("disabled");
               $(".cancelar").removeAttr("disabled");
               $("#add").removeAttr("disabled");
-                $("#add").css({
-                  "opacity": ("1")
-                });
+              $("#add").css({
+                "opacity": ("1")
+              });
 
               notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
             }, 1000);

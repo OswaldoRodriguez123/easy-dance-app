@@ -193,7 +193,6 @@
               </div>
             </div>
             </div>
-            <!--<data ui-view></data>-->
         </div>
     </div>
 </div>
@@ -207,21 +206,11 @@
         
         <script src="{{url('/')}}/assets/js/rrssb.min.js" data-auto="false"></script>
 
-        <!-- Following is only for demo purpose. You may ignore this when you implement -->
         <script type="text/javascript">
-
-        function configuracion(){
-          window.location = "{{url('/')}}/perfil-evaluativo";
-          }
 
           $(".evaluaciones").click(function(){
             procesando();
             window.location = "{{url('/')}}/evaluaciones";
-          });
-
-          $(".regalos").click(function(){
-            procesando();
-            window.location = "{{url('/')}}/especiales/regalos/progreso/{{$academia->id}}";
           });
 
           $(".clase_grupal").click(function(){
@@ -239,25 +228,7 @@
             window.location = "{{url('/')}}/programacion";
           });
 
-          $(".instructor").click(function(){
-            procesando();
-            window.location = "{{url('/')}}/instructores";
-          });
-
-          $(".campana").click(function(){
-            procesando();
-            window.location = "{{url('/')}}/especiales/campañas";
-          });
-
-
-          $(".consulta_instructor").click(function(){
-            procesando();
-            window.location = "{{url('/')}}/sugerencias/generar";
-          });
-         
-         function atras(){
-          $("#modalConfiguracion").modal('hide');
-         }
+        
    
         </script>
 @stop        
