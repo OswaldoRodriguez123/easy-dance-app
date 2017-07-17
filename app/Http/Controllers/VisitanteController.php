@@ -439,11 +439,11 @@ class VisitanteController extends BaseController {
     public function storeImpresion(Request $request)
     {
 
-        $visitante = EncuestaVisitante::where('visitante_id', $request->visitante_id)->first();
+        $encuesta = EncuestaVisitante::where('visitante_id', $request->visitante_id)->first();
 
-        if(!$visitante){
+        if(!$encuesta){
             
-            $visitante = new EncuestaVisitante;
+            $encuesta = new EncuestaVisitante;
         }
 
         if($request->rapidez)
@@ -482,26 +482,24 @@ class VisitanteController extends BaseController {
             $disponibilidad =  '';
         }
 
+        $encuesta->visitante_id = $request->visitante_id;
+        $encuesta->rapidez = $rapidez;
+        $encuesta->calidad = $calidad;
+        $encuesta->satisfaccion = $satisfaccion;
+        $encuesta->disponibilidad = $disponibilidad;
 
+        if($encuesta->save()){
 
-        $visitante->visitante_id = $request->visitante_id;
-        $visitante->rapidez = $rapidez;
-        $visitante->calidad = $calidad;
-        $visitante->satisfaccion = $satisfaccion;
-        $visitante->disponibilidad = $disponibilidad;
+            $visitante = Visitante::find($request->visitante_id);
 
-        if($visitante->save()){
+            if($visitante->celular){
 
-            $visitante_presencial = Visitante::find($request->visitante_id);
-
-            if($visitante_presencial->celular){
-
-                $celular = getLimpiarNumero($visitante_presencial->celular);
+                $celular = getLimpiarNumero($visitante->celular);
                 $academia = Academia::find(Auth::user()->academia_id);
 
                 if($academia->pais_id == 11 && strlen($celular) == 10){
                     
-                    $mensaje = $visitante_presencial->nombre.'. Gracias por visitarnos, esperamos verte bailando pronto, somos “Tu Clase de Baile”.';
+                    $mensaje = $visitante->nombre.'. Gracias por visitarnos, esperamos verte bailando pronto, somos “Tu Clase de Baile”.';
 
                     $client = new Client(); //GuzzleHttp\Client
                     $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
