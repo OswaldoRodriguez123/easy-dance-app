@@ -724,6 +724,11 @@ class ClaseGrupalController extends BaseController {
                         $j = 1;
                     }
 
+                    if($id == 57){
+                        dd($array_dias);
+                    }
+                    
+
                     //EL INDEX INICIAL SE CREA PARA SABER DESDE DONDE SE COMENZARA A BUSCAR EN EL CICLO FOR DE ABAJO, YA DESCRITO EN LA NOTA 1.1
 
                     $index_inicial = array_search($dia_a_comparar, $array_dias_clases);
