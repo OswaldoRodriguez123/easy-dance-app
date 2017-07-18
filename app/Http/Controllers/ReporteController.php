@@ -1495,20 +1495,23 @@ class ReporteController extends BaseController
 
                             $index_inicial = 0;
                         }
-                        
-                    }
 
-                    if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
-                        $estatus="c-youtube";
-                        $inactivos = $inactivos + 1;
-                    }else if($inasistencias >= $asistencia_amarilla && $asistencia_amarilla != 0){
-                        $estatus="c-amarillo";
-                        $riesgo = $riesgo + 1;
+                        if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
+                            $estatus="c-youtube";
+                            $inactivos = $inactivos + 1;
+                        }else if($inasistencias >= $asistencia_amarilla && $asistencia_amarilla != 0){
+                            $estatus="c-amarillo";
+                            $riesgo = $riesgo + 1;
+                        }else{
+                            $estatus="c-verde";
+                            $activos = $activos + 1;
+                        }
+                        
                     }else{
                         $estatus="c-verde";
                         $activos = $activos + 1;
                     }
-
+                    
                     $collection=collect($alumno);     
                     $alumno_array = $collection->toArray();
                     $alumno_array['estatus'] = $estatus;
