@@ -1513,11 +1513,16 @@ class ReporteController extends BaseController
                     $inactivos = $inactivos + 1;
                 }
 
+                if($clase_grupal){
+                    $clase_nombre = $clase_grupal->clase_nombre;
+                }else{
+                    $clase_nombre = '';
+                }
 
                 $collection=collect($alumno);     
                 $alumno_array = $collection->toArray();
                 $alumno_array['estatus'] = $estatus;
-                $alumno_array['clase_nombre'] = $clase_grupal->clase_nombre;
+                $alumno_array['clase_nombre'] = $clase_nombre;
 
                 if($request->estatus_alumno_id == 1 && $estatus=="c-verde"){
                     $array[] = $alumno_array;
