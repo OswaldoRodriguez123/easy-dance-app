@@ -1514,24 +1514,22 @@ class ReporteController extends BaseController
                     $alumno_array['estatus'] = $estatus;
                     $alumno_array['clase_nombre'] = $clase_grupal->clase_nombre;
 
-                    if($request->estatus_alumno_id == 1 && $estatus=="c-verde"){
+                    if($request->estatus_alumno_id == 3 && $estatus=="c-youtube"){
                         $array[] = $alumno_array;
-                    }else if($request->estatus_alumno_id== 2 && $estatus=="c-amarillo"){
-                        $array[] = $alumno_array;
-                    }else if($request->estatus_alumno_id== 3 && $estatus=="c-youtube"){
-                        $array[] = $alumno_array;
-                    }else if(!$request->estatus_alumno_id){
+                    }else if($request->estatus_alumno_id == 2 && $estatus=="c-amarillo"){
                         $array[] = $alumno_array;
                     }
-               
+                    else if($request->estatus_alumno_id == 1 && $estatus=="c-verde"){
+                        $array[] = $alumno_array;
+                    }
                 }
             }
 
             $array_estatus = array();
 
-            $array_activos = array('I', $inactivos);
-            $array_riesgo = array('R', $riesgo);
-            $array_inactivos = array('A', $activos);
+            $array_activos = array('Inactivos', $inactivos);
+            $array_riesgo = array('Riesgo de Ausencia', $riesgo);
+            $array_inactivos = array('Activos', $activos);
 
             array_push($array_estatus, $array_activos);
             array_push($array_estatus, $array_riesgo);
