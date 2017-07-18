@@ -2028,7 +2028,6 @@ class ClaseGrupalController extends BaseController {
         $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
 
         if($fecha_inicio < Carbon::now()){
-
             return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de inicio no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
         }
 
@@ -2039,6 +2038,30 @@ class ClaseGrupalController extends BaseController {
         $clasegrupal->fecha_final = $fecha_final;
 
         if($clasegrupal->save()){
+
+            $horarios = HorarioClaseGrupal::where('clase_grupal_id',$request->id)->get();
+
+            foreach($horarios as $horario){
+
+                $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio);
+                $dia_de_semana = $fecha_inicio->dayOfWeek;
+
+                $fecha_horario = Carbon::createFromFormat('Y-m-d', $horario->fecha);
+                $dia_horario = $fecha_horario->dayOfWeek;
+
+                if($dia_horario >= $dia_de_semana){
+                    $dias = intval($dia_horario) - intval($dia_de_semana);
+                    $fecha_inicio->addDays($dias)->toDateString();
+                }else{
+                    $dias = intval($dia_de_semana) - intval($dia_horario);
+                    $fecha_inicio->addWeek();
+                    $fecha_inicio->subDays($dias)->toDateString();
+                }
+
+                $horario->fecha = $fecha_inicio;
+                $horario->save();
+            }
+
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
