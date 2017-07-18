@@ -17,7 +17,6 @@
 @stop
 @section('content')
 
-<!--<a href="{{url('/')}}/especiales/examenes/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>-->
             <section id="content">
                 <div class="container">
                 
@@ -25,9 +24,11 @@
                      @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                         @if(isset($id_evaluacion))
                             <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes/evaluar/{{$id_evaluacion}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
-                        @else
-
+                        @elseif(isset($id))
                             <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/alumno/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        @else
+                            <?php $url = "/especiales/examenes" ?>
+                            <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                         @endif
                         
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
@@ -48,7 +49,6 @@
                     
                     <div class="card">
                         <div class="card-header text-right">
-                            <!--<span class="f-16 p-t-0 text-success">Agregar un Examen <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>-->
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-examen f-25"></i> Sección de Evaluaciones</p>
                             <hr class="linea-morada">                                                        
