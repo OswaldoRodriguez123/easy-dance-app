@@ -25,6 +25,8 @@ use App\ConfigServicios;
 use App\ConfigProductos;
 use App\Comision;
 use App\ConfigComision;
+use App\Alumno;
+use App\Staff;
 
 class InstructorController extends BaseController {
 
@@ -1269,6 +1271,7 @@ class InstructorController extends BaseController {
                 $pago_array = $collection->toArray();
                 $pago_array['dia']=$dia;
                 $pago_array['id']='1-'.$pago->id;
+                $pago_array['cliente']='';
                 $array['1-'.$pago->id] = $pago_array;
                 
             }
@@ -1279,6 +1282,7 @@ class InstructorController extends BaseController {
                 ->where('comisiones.usuario_tipo',2)
                 ->limit(100)
             ->get();
+
             foreach($comisiones as $comision){
 
                 if($comision->servicio_producto_tipo == 1){
@@ -1286,7 +1290,20 @@ class InstructorController extends BaseController {
                 }else{
                     $servicio_producto = ConfigProductos::find($comision->servicio_producto_id);
                 }
+
                 if($servicio_producto){
+
+                    if($comision->cliente_tipo == 1){
+                        $usuario = Alumno::find($comision->cliente_id);
+                    }else{
+                        $usuario = Staff::find($comision->cliente_id);
+                    }
+
+                    if($usuario){
+                        $cliente = $usuario->nombre . ' ' . $usuario->apellido;
+                    }else{
+                        $cliente = '';
+                    }
 
                     $fecha = Carbon::createFromFormat('Y-m-d', $comision->fecha);
                     $i = $fecha->dayOfWeek;
@@ -1327,6 +1344,7 @@ class InstructorController extends BaseController {
                     $comision_array['servicio_producto']=$servicio_producto->nombre;
                     $comision_array['dia']=$dia;
                     $comision_array['id']='2-'.$comision->id;
+                    $comision_array['cliente']=$cliente;
                     $array['2-'.$comision->id] = $comision_array;
                 }
             }
@@ -1365,14 +1383,7 @@ class InstructorController extends BaseController {
 
         if ($validator->fails()){
 
-            // return redirect("/home")
-
-            // ->withErrors($validator)
-            // ->withInput();
-
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-            //dd($validator);
 
         }
 

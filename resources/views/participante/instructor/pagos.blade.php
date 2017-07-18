@@ -94,25 +94,26 @@
                                     <th class="text-center" data-column-id="hora" data-order="asc">Hora</th>
                                     <th class="text-center" data-column-id="hora" data-order="asc">Día</th>
                                     <th class="text-center" data-column-id="clase">Servicio / Producto</th>
+                                    <th class="text-center" data-column-id="cliente" data-order="asc">Cliente</th>
                                     <th class="text-center" data-column-id="monto">Monto</th>
                                 </tr>
                             </thead>
                             <tbody>
 
-                              @foreach($pagos_comisiones as $comision)
-                                <tr id="{{$comision['id']}}" class="seleccion" data-monto="{{$comision['monto']}}" >
-                                
-                                    <td class="text-center previa">
-                                      <span id="boolean_pago_{{$comision['id']}}" style="display: none">{{$comision['boolean_pago']}}</span>
-                                      @if($comision['boolean_pago'] == 0)
-                                        <input name="select_check" id="select_check_{{$comision['id']}}" type="checkbox" />
-                                      @endif
-                                    </td>
-                                    <td class="text-center previa">{{$comision['fecha']}}</td>
-                                    <td class="text-center previa">{{$comision['hora']}}</td>
-                                    <td class="text-center previa">{{$comision['dia']}}</td>
-                                    <td class="text-center previa">{{$comision['servicio_producto']}}</td>
-                                    <td class="text-center previa">{{ number_format($comision['monto'], 2, '.' , '.') }}</td>
+                              @foreach($pagos_comisiones as $pago)
+                                <tr id="{{$pago['id']}}" class="seleccion" data-monto="{{$pago['monto']}}" >
+                                  <td class="text-center previa">
+                                    <span id="boolean_pago_{{$pago['id']}}" style="display: none">{{$pago['boolean_pago']}}</span>
+                                    @if($pago['boolean_pago'] == 0)
+                                      <input name="select_check" id="select_check_{{$pago['id']}}" type="checkbox" />
+                                    @endif
+                                  </td>
+                                  <td class="text-center previa">{{$pago['fecha']}}</td>
+                                  <td class="text-center previa">{{$pago['hora']}}</td>
+                                  <td class="text-center previa">{{$pago['dia']}}</td>
+                                  <td class="text-center previa">{{$pago['servicio_producto']}}</td>
+                                  <td class="text-center previa">{{$pago['cliente']}}</td>
+                                  <td class="text-center previa">{{ number_format($pago['monto'], 2, '.' , '.') }}</td>
                                 </tr>
                               @endforeach
                                                            
