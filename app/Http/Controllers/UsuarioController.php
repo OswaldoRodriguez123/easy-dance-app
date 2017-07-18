@@ -530,22 +530,7 @@ class UsuarioController extends BaseController {
 
     public function index()
     {
-        $visitantes = Visitante::all();
-
-        foreach($visitantes as $visitante){
-
-            $encuesta = EncuestaVisitante::where('visitante_id',$visitante->id)->first();
-
-            if($encuesta){
-                $visitante->rapidez = $encuesta->rapidez;
-                $visitante->calidad = $encuesta->calidad;
-                $visitante->satisfaccion = $encuesta->satisfaccion;
-                $visitante->disponibilidad = $encuesta->disponibilidad;
-                $visitante->save();
-
-            }
-        }
-
+        
         $academia = Academia::find(Auth::user()->academia_id);
 
         $datos = $this->getDatosUsuario();
