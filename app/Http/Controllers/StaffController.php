@@ -240,6 +240,7 @@ class StaffController extends BaseController
                     $config_pago->tipo = $comision['tipo'];
                     $config_pago->monto = $comision['monto'];
                     $config_pago->monto_minimo = $comision['monto_minimo'];
+                    $config_pago->monto_porcentaje = $comision['monto_porcentaje'];
 
                     $config_pago->save();
                     
@@ -320,14 +321,7 @@ class StaffController extends BaseController
 
                 if($servicio_producto){
 
-                    if($pago->tipo == 1){
-                        $porcentaje = $pago->monto / 100;
-                        $monto_porcentaje = $servicio_producto->costo * $porcentaje;
-                    }else{
-                        $monto_porcentaje = '';
-                    }
-
-                    $tmp2[]=array('id' => $pago->id, 'nombre' => $servicio_producto->nombre , 'tipo' => $pago->tipo, 'monto' => $pago->monto, 'monto_porcentaje' => floatval($monto_porcentaje), 'servicio_producto_id' => $pago->servicio_producto_id, 'servicio_producto_tipo' => $pago->servicio_producto_tipo, 'monto_minimo' => $pago->monto_minimo);
+                    $tmp2[]=array('id' => $pago->id, 'nombre' => $servicio_producto->nombre , 'tipo' => $pago->tipo, 'monto' => $pago->monto, 'monto_porcentaje' => $pago->monto_porcentaje, 'servicio_producto_id' => $pago->servicio_producto_id, 'servicio_producto_tipo' => $pago->servicio_producto_tipo, 'monto_minimo' => $pago->monto_minimo);
                 }
 
             }
@@ -716,14 +710,15 @@ class StaffController extends BaseController
 
         else{
 
+            $monto = floatval(str_replace(',', '', $request->monto));
+
             if($request->tipo_pago == 1){
-                if($request->monto > 100){
+                if($monto > 100){
                     return response()->json(['errores' => ['monto' => [0, 'Ups! El porcentaje no puede ser mayor a 100']], 'status' => 'ERROR'],422);
                 }
             }
 
             $array = array();
-            $monto = floatval(str_replace(',', '', $request->monto));
 
             if($request->monto_minimo){
 
@@ -757,7 +752,14 @@ class StaffController extends BaseController
                         return response()->json(['errores' => ['monto_minimo' => [0, 'Ups! El monto mínimo no puede ser mayor al costo']], 'status' => 'ERROR'],422);
                     }
 
-                    $config_pagos=array('servicio_producto_id' => $servicio_producto_id, 'tipo' => $request->tipo_pago, 'monto' => $monto , 'servicio_producto_tipo' => $servicio_producto_tipo, 'nombre' => $servicio_producto->nombre, 'monto_minimo' => $monto_minimo);
+                    if($request->tipo_pago == 1){
+                        $porcentaje = $monto / 100;
+                        $monto_porcentaje = $servicio_producto->costo * $porcentaje;
+                    }else{
+                        $monto_porcentaje = '';
+                    }
+
+                    $config_pagos=array('servicio_producto_id' => $servicio_producto_id, 'tipo' => $request->tipo_pago, 'monto' => $monto , 'servicio_producto_tipo' => $servicio_producto_tipo, 'nombre' => $servicio_producto->nombre, 'monto_minimo' => $monto_minimo, 'monto_porcentaje' => $monto_porcentaje);
 
                     Session::push('comisiones', $config_pagos);
 
@@ -779,7 +781,14 @@ class StaffController extends BaseController
 
                 foreach($servicios as $servicio){
 
-                    $config_pagos=array('servicio_producto_id' => $servicio->id, 'tipo' => $request->tipo_pago, 'monto' => $monto , 'servicio_producto_tipo' => $servicio->tipo, 'nombre' => $servicio->nombre, 'monto_minimo' => $monto_minimo);
+                    if($request->tipo_pago == 1){
+                        $porcentaje = $monto / 100;
+                        $monto_porcentaje = $servicio->costo * $porcentaje;
+                    }else{
+                        $monto_porcentaje = '';
+                    }
+
+                    $config_pagos=array('servicio_producto_id' => $servicio->id, 'tipo' => $request->tipo_pago, 'monto' => $monto , 'servicio_producto_tipo' => $servicio->tipo, 'nombre' => $servicio->nombre, 'monto_minimo' => $monto_minimo, 'monto_porcentaje' => $monto_porcentaje);
 
                     Session::push('comisiones', $config_pagos);
 
@@ -799,7 +808,14 @@ class StaffController extends BaseController
 
                 foreach($productos as $producto){
 
-                    $config_pagos=array('servicio_producto_id' => $producto->id, 'tipo' => $request->tipo_pago, 'monto' => $monto , 'servicio_producto_tipo' => $producto->tipo, 'nombre' => $producto->nombre, 'monto_minimo' => $monto_minimo);
+                    if($request->tipo_pago == 1){
+                        $porcentaje = $monto / 100;
+                        $monto_porcentaje = $producto->costo * $porcentaje;
+                    }else{
+                        $monto_porcentaje = '';
+                    }
+
+                    $config_pagos=array('servicio_producto_id' => $producto->id, 'tipo' => $request->tipo_pago, 'monto' => $monto , 'servicio_producto_tipo' => $producto->tipo, 'nombre' => $producto->nombre, 'monto_minimo' => $monto_minimo, 'monto_porcentaje' => $monto_porcentaje);
 
                     Session::push('comisiones', $config_pagos);
 
@@ -867,6 +883,7 @@ class StaffController extends BaseController
 
             $servicio_producto_tipo = $explode[0];
             $servicio_producto_id = $explode[1];
+            $monto = floatval(str_replace(',', '', $request->monto));
 
             if($servicio_producto_tipo == 1){
                 $servicio_producto = ConfigServicios::find($servicio_producto_id);
@@ -875,7 +892,7 @@ class StaffController extends BaseController
             }
 
             if($request->tipo_pago == 1){
-                if($request->monto > 100){
+                if($monto > 100){
                     return response()->json(['errores' => ['monto' => [0, 'Ups! El porcentaje no puede ser mayor a 100']], 'status' => 'ERROR'],422);
                 }
             }
@@ -883,8 +900,6 @@ class StaffController extends BaseController
             if($request->servicio_producto_id == '0-0' || !$request->servicio_producto_id){
                 return response()->json(['errores' => ['servicio_producto_id' => [0, 'Ups! Debe seleccionar un servicio']], 'status' => 'ERROR'],422);
             }
-
-            $monto = floatval(str_replace(',', '', $request->monto));
 
             if($monto  > $servicio_producto->costo){
                 return response()->json(['errores' => ['monto' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
@@ -910,56 +925,30 @@ class StaffController extends BaseController
             ->first();
 
             if(!$config_pagos){
-
                 $config_pagos = new ConfigComision;
-
-                $config_pagos->servicio_producto_id = $servicio_producto_id;
-                $config_pagos->servicio_producto_tipo = $servicio_producto_tipo;
-                $config_pagos->usuario_id = $request->id;
-                $config_pagos->usuario_tipo = 1;
-                $config_pagos->tipo = $request->tipo_pago;
-                $config_pagos->monto = $monto;
-                $config_pagos->monto_minimo = $monto_minimo;
-
-                $config_pagos->save();
-
-                if($config_pagos->tipo == 1){
-                    $porcentaje = $config_pagos->monto / 100;
-                    $monto_porcentaje = $servicio_producto->costo * $porcentaje;
-                }else{
-                    $monto_porcentaje = '';
-                }
-                
-                $config_pagos['monto_porcentaje'] = $monto_porcentaje;
-                $config_pagos['nombre'] = $servicio_producto->nombre;
-
-                array_push($array, $config_pagos);
-
-
-            }else{
-
-                $config_pagos->servicio_producto_id = $servicio_producto_id;
-                $config_pagos->servicio_producto_tipo = $servicio_producto_tipo;
-                $config_pagos->usuario_id = $request->id;
-                $config_pagos->usuario_tipo = 1;
-                $config_pagos->tipo = $request->tipo_pago;
-                $config_pagos->monto = $monto;
-                $config_pagos->monto_minimo = $monto_minimo;
-
-                $config_pagos->save();
-
-                if($config_pagos->tipo == 1){
-                    $porcentaje = $config_pagos->monto / 100;
-                    $monto_porcentaje = $servicio_producto->costo * $porcentaje;
-                }else{
-                    $monto_porcentaje = '';
-                }
-                
-                $config_pagos['monto_porcentaje'] = $monto_porcentaje;
-                $config_pagos['nombre'] = $servicio_producto->nombre;
-
-                array_push($array, $config_pagos);
             }
+
+            if($request->tipo == 1){
+                $porcentaje = $monto / 100;
+                $monto_porcentaje = $servicio_producto->costo * $porcentaje;
+            }else{
+                $monto_porcentaje = '';
+            }
+
+            $config_pagos->servicio_producto_id = $servicio_producto_id;
+            $config_pagos->servicio_producto_tipo = $servicio_producto_tipo;
+            $config_pagos->usuario_id = $request->id;
+            $config_pagos->usuario_tipo = 1;
+            $config_pagos->tipo = $request->tipo_pago;
+            $config_pagos->monto = $monto;
+            $config_pagos->monto_porcentaje = $monto_porcentaje;
+            $config_pagos->monto_minimo = $monto_minimo;
+
+            $config_pagos->save();
+            
+            $config_pagos['nombre'] = $servicio_producto->nombre;
+
+            array_push($array, $config_pagos);
 
             // if($request->servicio_id != 'null'){
 

@@ -33,8 +33,9 @@ use App\ClasePersonalizada;
 use App\Regalo;
 use App\ItemsFacturaProforma;
 use App\Acuerdo;
-use App\Visitante;
-use App\EncuestaVisitante;
+use App\ConfigComision;
+use App\ConfigServicios;
+use App\ConfigProductos;
 use Validator;
 use Mail;
 use Carbon\Carbon;
@@ -530,6 +531,25 @@ class UsuarioController extends BaseController {
 
     public function index()
     {
+
+        $comisiones = ConfigComision::where('tipo',1)->get();
+
+        foreach($comisiones as $comision){
+
+            if($comision->servicio_producto_tipo == 1){
+                $servicio_producto = ConfigServicios::withTrashed()->find($comision->servicio_producto_id);
+            }else{
+                $servicio_producto = ConfigProductos::withTrashed()->find($comision->servicio_producto_id);
+            }
+            if($servicio_producto){
+                $porcentaje = $comision->monto / 100;
+                $monto_porcentaje = $servicio_producto->costo * $porcentaje;
+
+                $comision->monto_porcentaje = $monto_porcentaje;
+                $comision->save();
+            }
+            
+        }
         
         $academia = Academia::find(Auth::user()->academia_id);
 
