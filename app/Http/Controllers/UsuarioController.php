@@ -539,7 +539,7 @@ class UsuarioController extends BaseController {
             foreach($horarios as $horario){
                 $fecha_horario = Carbon::createFromFormat('Y-m-d',$horario->fecha);
 
-                if($fecha_inicio >= $fecha_horario){
+                if($fecha_inicio > $fecha_horario){
                     dd($clase_grupal);
                 }
             }
