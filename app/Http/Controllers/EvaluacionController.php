@@ -301,7 +301,7 @@ class EvaluacionController extends BaseController
                             ->join('examenes', 'evaluaciones.examen_id','=','examenes.id')
                             ->join('instructores', 'evaluaciones.instructor_id','=','instructores.id')
                             ->join('config_tipo_examenes', 'examenes.tipo','=','config_tipo_examenes.id')
-                            ->select('evaluaciones.*', 'examenes.genero','evaluaciones.porcentaje', 'config_tipo_examenes.nombre', 'examenes.proxima_fecha', 'instructores.nombre AS instructor_nombre', 'instructores.apellido AS instructor_apellido', 'instructores.telefono', 'instructores.celular', 'instructores.facebook', 'instructores.twitter', 'instructores.instagram', 'instructores.linkedin', 'instructores.youtube', 'instructores.pagina_web')
+                            ->select('evaluaciones.*', 'examenes.genero','evaluaciones.porcentaje', 'config_tipo_examenes.nombre', 'examenes.proxima_fecha', 'instructores.nombre AS instructor_nombre', 'instructores.apellido AS instructor_apellido', 'instructores.telefono', 'instructores.celular', 'instructores.facebook', 'instructores.twitter', 'instructores.instagram', 'instructores.linkedin', 'instructores.youtube', 'instructores.pagina_web', 'examenes.id as examen_id')
                             ->where('evaluaciones.id','=',$id)
                             ->first();
 
