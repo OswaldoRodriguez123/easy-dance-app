@@ -1215,7 +1215,7 @@ class ReporteController extends BaseController
 
             foreach($alumnos as $alumno){
 
-                $query = ClaseGrupal::join('inscripcion_clase_grupal', 'clases_grupales.id', '=', 'inscripcion_clase_grupal.clase_grupal_id')
+                $query = InscripcionClaseGrupal::join('clases_grupales', 'clases_grupales.id', '=', 'inscripcion_clase_grupal.clase_grupal_id')
                 ->join('config_clases_grupales','clases_grupales.clase_grupal_id','=','config_clases_grupales.id')
                 ->select('inscripcion_clase_grupal.id',
                          'inscripcion_clase_grupal.fecha_inscripcion',
@@ -1227,12 +1227,10 @@ class ReporteController extends BaseController
                          'config_clases_grupales.asistencia_amarilla'
                         )
                 ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
+                ->where('clases_grupales.deleted_at', null)
                 ->orderBy('inscripcion_clase_grupal.fecha_inscripcion', 'desc');
 
-
-                if(!$request->clase_grupal_id){
-                    $query->where('clases_grupales.academia_id', '=', Auth::user()->academia_id);
-                }else{
+                if($request->clase_grupal_id){
                     $query->where('clases_grupales.id', '=', $request->clase_grupal_id);
                 }
 
