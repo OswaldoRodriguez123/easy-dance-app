@@ -1236,7 +1236,7 @@ class ReporteController extends BaseController
                     $query->where('clases_grupales.id', '=', $request->clase_grupal_id);
                 }
 
-                $clase_grupal = $query->get();
+                $clase_grupal = $query->first();
 
                 if($clase_grupal){
 
