@@ -4408,8 +4408,8 @@ class ClaseGrupalController extends BaseController {
             ->orderBy('created_at', 'desc')
         ->get();
 
-        $riesgo = 0;
         $activos = 0;
+        $riesgo = 0;
         $inactivos = 0;
 
         //ARRAY DE BUSQUEDA EN ASISTENCIAS

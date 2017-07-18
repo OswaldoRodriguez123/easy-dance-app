@@ -1240,14 +1240,14 @@ class ReporteController extends BaseController
 
                 if($clase_grupal){
 
+                    //CONFIGURACIONES DE ASISTENCIAS
+
+                    $asistencia_amarilla = $clase_grupal->asistencia_amarilla;
+                    $asistencia_roja = $clase_grupal->asistencia_rojo;
+
                     $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
 
                     if(Carbon::now() > $fecha_inicio){
-
-                        //CONFIGURACIONES DE ASISTENCIAS
-
-                        $asistencia_amarilla = $clase_grupal->asistencia_amarilla;
-                        $asistencia_roja = $clase_grupal->asistencia_rojo;
 
                         $fecha_final = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_final);
 
