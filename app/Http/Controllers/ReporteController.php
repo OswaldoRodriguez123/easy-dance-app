@@ -11,6 +11,7 @@ use App\Alumno;
 use App\Factura;
 use App\ClaseGrupal;
 use App\HorarioClaseGrupal;
+use App\HorarioBloqueado;
 use App\Examen;
 use App\Instructor;
 use App\Staff;
