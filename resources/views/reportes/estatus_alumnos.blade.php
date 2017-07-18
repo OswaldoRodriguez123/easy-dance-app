@@ -170,6 +170,7 @@
         <script type="text/javascript">
 
         route_filtrar="{{url('/')}}/reportes/estatus-alumnos";
+        route_detalle="{{url('/')}}//agendar/clases-grupales/participantes/historial/";
 
         t=$('#tablelistar').DataTable({
         processing: true,
@@ -238,7 +239,7 @@
 
                       $.each(respuesta.reporte_datos, function (index, array) {
 
-                        var rowId=array.id;
+                        var rowId=array.inscripcion_id;
                         var rowNode=t.row.add( [
                         ''+array.nombre+ ' '+array.apellido+ '',
                         ''+array.identificacion+'',
@@ -378,6 +379,12 @@
         });       
 
     }
+
+    function previa(t){
+        var id = $(t).closest('tr').attr('id');
+        window.location=route_detalle+id;
+    }
+    
 </script>
 
 @stop

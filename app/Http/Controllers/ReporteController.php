@@ -1201,7 +1201,8 @@ class ReporteController extends BaseController
 
             $query = InscripcionClaseGrupal::join('clases_grupales', 'clases_grupales.id', '=', 'inscripcion_clase_grupal.clase_grupal_id')
             ->join('config_clases_grupales','clases_grupales.clase_grupal_id','=','config_clases_grupales.id')
-            ->select('inscripcion_clase_grupal.fecha_inscripcion',
+            ->select('inscripcion_clase_grupal.id as inscripcion_id',
+                    'inscripcion_clase_grupal.fecha_inscripcion',
                      'config_clases_grupales.nombre as clase_nombre',
                      'clases_grupales.id',
                      'clases_grupales.fecha_inicio',
