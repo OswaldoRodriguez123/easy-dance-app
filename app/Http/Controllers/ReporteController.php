@@ -1477,11 +1477,10 @@ class ReporteController extends BaseController
                                     if(!$horario_bloqueado){
                                         if($j != 0){
                                             $inasistencias++;
-                                            $fecha_a_comparar->addDays($array_dias[$i]);
-                                        }else{
-                                            $fecha_a_comparar->addDays($array_dias[$i]);
                                         }
                                     }
+
+                                    $fecha_a_comparar->addDays($array_dias[$i]);
 
                                     //PARA QUE LAS INASISTENCIAS SE EMPIECEN A CONTABILIZAR 
 
