@@ -1517,13 +1517,13 @@ class ReporteController extends BaseController
                     $alumno_array['clase_nombre'] = $clase_grupal->clase_nombre;
 
                     if($request->estatus_alumno_id == 1 && $estatus=="c-verde"){
-                        $array[$clase_grupal->inscripcion_id] = $alumno_array;
+                        $array[] = $alumno_array;
                     }else if($request->estatus_alumno_id== 2 && $estatus=="c-amarillo"){
-                        $array[$clase_grupal->inscripcion_id] = $alumno_array;
+                        $array[] = $alumno_array;
                     }else if($request->estatus_alumno_id== 3 && $estatus=="c-youtube"){
-                        $array[$clase_grupal->inscripcion_id] = $alumno_array;
+                        $array[] = $alumno_array;
                     }else if(!$request->estatus_alumno_id){
-                        $array[$clase_grupal->inscripcion_id] = $alumno_array;
+                        $array[] = $alumno_array;
                     }
                
                 }

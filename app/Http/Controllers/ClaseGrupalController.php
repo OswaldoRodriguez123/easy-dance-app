@@ -673,6 +673,8 @@ class ClaseGrupalController extends BaseController {
                 }
             }
 
+            $k = 0;
+
             foreach($alumnos_inscritos as $alumno){
 
                 $inasistencias = 0;
@@ -760,6 +762,7 @@ class ClaseGrupalController extends BaseController {
 
                         //EL INDEX VUELVE A 0 PARA PODER REALIZAR EL CICLO FOR DESDE EL PRINCIPIO HASTA QUE LA FECHA A COMPARAR SEA MAYOR A LA FECHA DE FINALIZACIÓN
 
+                        $k++;
                         $index_inicial = 0;
                     }
                     
@@ -4986,30 +4989,34 @@ class ClaseGrupalController extends BaseController {
                     // $cantidad_inasistencias = count($array_dias);
 
                     while($fecha_a_comparar < $fecha_de_finalizacion){
-                        for($i = $index_inicial; $i < count($array_dias); $i++){
+                        if($fecha_a_comparar < Carbon::now()->subDay()){
+                            for($i = $index_inicial; $i < count($array_dias); $i++){
 
-                            // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
-                            // $array_dias_tmp[] = $array_dias[$i];
+                                // $array_fecha_a_comparar[] = $fecha_a_comparar->toDateString();
+                                // $array_dias_tmp[] = $array_dias[$i];
 
-                            $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha_a_comparar)
-                                ->where('fecha_final', '>=', $fecha_a_comparar)
-                                ->where('tipo_id', $clase_grupal->id)
-                                ->where('tipo', 1)
-                            ->first();
+                                $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha_a_comparar)
+                                    ->where('fecha_final', '>=', $fecha_a_comparar)
+                                    ->where('tipo_id', $clase_grupal->id)
+                                    ->where('tipo', 1)
+                                ->first();
 
-                            if(!$horario_bloqueado){
-                                if($j != 0){
-                                    $inasistencias++;
+                                if(!$horario_bloqueado){
+                                    if($j != 0){
+                                        $inasistencias++;
+                                    }
                                 }
+
+                                $fecha_a_comparar->addDays($array_dias[$i]);
+
+                                //PARA QUE LAS INASISTENCIAS SE EMPIECEN A CONTABILIZAR 
+
+                                $j++;
                             }
-
-                            $fecha_a_comparar->addDays($array_dias[$i]);
-
-                            //PARA QUE LAS INASISTENCIAS SE EMPIECEN A CONTABILIZAR 
-
-                            $j++;
+                        }else{
+                            break;
                         }
-                        
+
                         //EL INDEX VUELVE A 0 PARA PODER REALIZAR EL CICLO FOR DESDE EL PRINCIPIO HASTA QUE LA FECHA A COMPARAR SEA MAYOR A LA FECHA DE FINALIZACIÓN
 
                         $index_inicial = 0;
