@@ -2870,15 +2870,18 @@ class ReporteController extends BaseController
                 ->where('clases_grupales.id','=',$reservacion->tipo_reservacion_id)
             ->first();
 
-            $collection=collect($reservacion);     
-            $reservacion_array = $collection->toArray();   
-            $reservacion_array['nombre'] = $alumno->nombre;
-            $reservacion_array['apellido'] = $alumno->apellido;
-            $reservacion_array['sexo'] = $alumno->sexo;
-            $reservacion_array['celular'] = $alumno->celular;
-            $reservacion_array['clase'] = $clase_grupal->nombre;
-            $reservacion_array['boolean_confirmacion'] = $boolean_confirmacion;
-            $array[$reservacion->id] = $reservacion_array;
+            if($clase_grupal){
+
+                $collection=collect($reservacion);     
+                $reservacion_array = $collection->toArray();   
+                $reservacion_array['nombre'] = $alumno->nombre;
+                $reservacion_array['apellido'] = $alumno->apellido;
+                $reservacion_array['sexo'] = $alumno->sexo;
+                $reservacion_array['celular'] = $alumno->celular;
+                $reservacion_array['clase'] = $clase_grupal->nombre;
+                $reservacion_array['boolean_confirmacion'] = $boolean_confirmacion;
+                $array[$reservacion->id] = $reservacion_array;
+            }
         }
 
         $array_reservacion = array();

@@ -88,14 +88,13 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
- 
-                                    <th style="width:7%;"><input style="margin-left:49%;" name="select_all" value="1" id="select_all" type="checkbox" /></th>
-                                    <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
-                                    <th class="text-center" data-column-id="hora" data-order="asc">Hora</th>
-                                    <th class="text-center" data-column-id="hora" data-order="asc">Día</th>
-                                    <th class="text-center" data-column-id="clase">Servicio / Producto</th>
-                                    <th class="text-center" data-column-id="cliente" data-order="asc">Cliente</th>
-                                    <th class="text-center" data-column-id="monto">Monto</th>
+                                  <th style="width:7%;"><input style="margin-left:49%;" name="select_all" value="1" id="select_all" type="checkbox" /></th>
+                                  <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
+                                  <th class="text-center" data-column-id="hora" data-order="asc">Hora</th>
+                                  <th class="text-center" data-column-id="hora" data-order="asc">Día</th>
+                                  <th class="text-center" data-column-id="clase">Servicio / Producto</th>
+                                  <th class="text-center" data-column-id="cliente" data-order="asc">Cliente</th>
+                                  <th class="text-center" data-column-id="monto">Monto</th>
                                 </tr>
                             </thead>
                             <tbody>
