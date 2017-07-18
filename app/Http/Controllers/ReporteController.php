@@ -1224,7 +1224,7 @@ class ReporteController extends BaseController
                          'clases_grupales.fecha_inicio',
                          'clases_grupales.fecha_final',
                          'config_clases_grupales.asistencia_rojo',
-                         'config_clases_grupales.asistencia_amarilla',
+                         'config_clases_grupales.asistencia_amarilla'
                         )
                 ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
                 ->orderBy('inscripcion_clase_grupal.fecha_inscripcion', 'desc');
