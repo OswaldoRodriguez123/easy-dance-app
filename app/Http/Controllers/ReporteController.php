@@ -1513,18 +1513,18 @@ class ReporteController extends BaseController
                     $activos = $activos + 1;
                 }
 
-                $collection=collect($inscritos);     
+                $collection=collect($clase_grupal);     
                 $alumno_array = $collection->toArray();
                 $alumno_array['estatus'] = $estatus;
 
                 if($request->estatus_alumno_id == 1 && $estatus=="c-verde"){
-                    $array[$inscritos->inscripcion_id] = $alumno_array;
+                    $array[$clase_grupal->inscripcion_id] = $alumno_array;
                 }else if($request->estatus_alumno_id== 2 && $estatus=="c-amarillo"){
-                    $array[$inscritos->inscripcion_id] = $alumno_array;
+                    $array[$clase_grupal->inscripcion_id] = $alumno_array;
                 }else if($request->estatus_alumno_id== 3 && $estatus=="c-youtube"){
-                    $array[$inscritos->inscripcion_id] = $alumno_array;
+                    $array[$clase_grupal->inscripcion_id] = $alumno_array;
                 }else if(!$request->estatus_alumno_id){
-                    $array[$inscritos->inscripcion_id] = $alumno_array;
+                    $array[$clase_grupal->inscripcion_id] = $alumno_array;
                 }
            
             }
