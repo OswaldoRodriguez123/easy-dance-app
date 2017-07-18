@@ -733,28 +733,31 @@ class ClaseGrupalController extends BaseController {
                     //1.2 -- EL $J != 0 ESTA ESTABLECIDO PARA QUE SI LA PERSONA POSEE ASISTENCIAS, ESTE NO CONTABILICE LAS INASISTENCIAS DESDE LA PRIMERA FECHA, SINO QUE REALICE UN SALTO AL SIGUIENTE INDEX
 
                     while($fecha_a_comparar < $fecha_de_finalizacion){
-                        for($i = $index_inicial; $i < count($array_dias); $i++){
+                        if($fecha_a_comparar < Carbon::now()->subDay()){
+                            for($i = $index_inicial; $i < count($array_dias); $i++){
 
-                            $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha_a_comparar)
-                                ->where('fecha_final', '>=', $fecha_a_comparar)
-                                ->where('tipo_id', $id)
-                                ->where('tipo', 1)
-                            ->first();
+                                $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha_a_comparar)
+                                    ->where('fecha_final', '>=', $fecha_a_comparar)
+                                    ->where('tipo_id', $id)
+                                    ->where('tipo', 1)
+                                ->first();
 
-                            if(!$horario_bloqueado){
-                                if($j != 0){
-                                    $inasistencias++;
-                                    $fecha_a_comparar->addDays($array_dias[$i]);
-                                }else{
-                                    $fecha_a_comparar->addDays($array_dias[$i]);
+                                if(!$horario_bloqueado){
+                                    if($j != 0){
+                                        $inasistencias++;
+                                    }
                                 }
+
+                                $fecha_a_comparar->addDays($array_dias[$i]);
+
+                                //PARA QUE LAS INASISTENCIAS SE EMPIECEN A CONTABILIZAR 
+
+                                $j++;
                             }
-
-                            //PARA QUE LAS INASISTENCIAS SE EMPIECEN A CONTABILIZAR 
-
-                            $j++;
+                        }else{
+                            break;
                         }
-                
+
                         //EL INDEX VUELVE A 0 PARA PODER REALIZAR EL CICLO FOR DESDE EL PRINCIPIO HASTA QUE LA FECHA A COMPARAR SEA MAYOR A LA FECHA DE FINALIZACIÓN
 
                         $index_inicial = 0;
