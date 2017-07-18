@@ -957,6 +957,7 @@ class AdministrativoController extends BaseController {
                 if($item_proforma){
 
                     $tipo = $item_proforma->tipo;
+                    $item_id = $item_proforma->item_id;
 
                     //ACUERDO DE PAGO
 
@@ -1131,7 +1132,7 @@ class AdministrativoController extends BaseController {
                 $item_factura = new ItemsFactura;
 
                 $item_factura->factura_id = $factura->id;
-                $item_factura->item_id = $factura->id;
+                $item_factura->item_id = $item_id;
                 $item_factura->nombre = 'Abono Factura ' . $numero_factura;
                 $item_factura->tipo = $tipo;
                 $item_factura->cantidad = 1;
@@ -1147,7 +1148,7 @@ class AdministrativoController extends BaseController {
                 $items_factura_proforma->usuario_tipo = $request->usuario_tipo;
                 $items_factura_proforma->academia_id = Auth::user()->academia_id;
                 $items_factura_proforma->fecha = Carbon::now()->toDateString();
-                $items_factura_proforma->item_id = $factura->id;
+                $items_factura_proforma->item_id = $item_id;
                 $items_factura_proforma->nombre = 'Remanente Factura ' . $numero_factura;
                 $items_factura_proforma->tipo = $tipo;
                 $items_factura_proforma->cantidad = 1;
