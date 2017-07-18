@@ -529,6 +529,22 @@ class UsuarioController extends BaseController {
     public function index()
     {
         
+        $clases_grupales = ClaseGrupal::where('academia_id',Auth::user()->academia_id)->get();
+
+        foreach($clases_grupales as $clase_grupal){
+            $fecha_inicio = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inicio);
+
+            $horarios = HorarioClaseGrupal::where('clase_grupal_id',$clase_grupal->id)->get();
+
+            foreach($horarios as $horario){
+                $fecha_horario = Carbon::createFromFormat('Y-m-d',$horario->fecha);
+
+                if($fecha_inicio >= $fecha_horario){
+                    dd($clase_grupal);
+                }
+            }
+        }
+
         $academia = Academia::find(Auth::user()->academia_id);
 
         $datos = $this->getDatosUsuario();
