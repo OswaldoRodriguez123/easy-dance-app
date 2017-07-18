@@ -1051,17 +1051,14 @@ class AdministrativoController extends BaseController {
 
                                 if($config_pago->tipo == 1){
 
-                                    $porcentaje = $config_pago->monto / 100;
-                                    $monto = $item_proforma->importe_neto * $porcentaje;
-
-                                    if($monto > 0 && $config_pago->monto_minimo <= $total_pago){
+                                    if($config_pago->monto_porcentaje > 0 && $config_pago->monto_minimo <= $total_pago){
 
                                         $pago = new Comision;
 
                                         $pago->usuario_id=$promotor_id[$i];
                                         $pago->usuario_tipo=$tipo_promotor[$i];
                                         $pago->tipo=$config_pago->tipo;
-                                        $pago->monto=$monto;
+                                        $pago->monto=$config_pago->monto_porcentaje;
                                         $pago->servicio_producto_id=$item_proforma->item_id;
                                         $pago->servicio_producto_tipo=$item_proforma->servicio_producto;
                                         $pago->fecha = Carbon::now()->toDateString();
