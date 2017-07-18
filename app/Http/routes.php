@@ -995,6 +995,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('asistencia/consulta/clases-personalizadas', 'AsistenciaController@consulta_clase_personalizadas_alumno');
 		Route::post('asistencia/consulta/citas', 'AsistenciaController@consulta_citas_alumno');
 		Route::get('asistencia/consulta/clases-grupales', 'AsistenciaController@consulta_clase_grupales');
+		Route::post('asistencia/consulta/estatus', 'AsistenciaController@consulta_estatus_alumno');
 		Route::post('asistencia/agregar', 'AsistenciaController@store');
 		Route::post('asistencia/agregar/otros', 'AsistenciaController@storeOtros');
 		Route::post('asistencia/agregar/instructor', 'AsistenciaController@storeInstructor');

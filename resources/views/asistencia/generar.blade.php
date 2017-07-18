@@ -437,8 +437,7 @@
       route_agregar_asistencia_instructor="{{url('/')}}/asistencia/agregar/instructor";
       route_agregar_asistencia_staff="{{url('/')}}/asistencia/agregar/staff";
       route_historial = "{{url('/')}}/participante/alumno/historial/";
-
-      var estatus = <?php echo json_encode($estatus);?>;
+      route_consulta_estatus="{{url('/')}}/asistencia/consulta/estatus";
 
       var tipo = 1;
 
@@ -695,23 +694,53 @@ $("#permitir_staff").on('click',function(){
 
       alumno_id = $('#asistencia_id_alumno').val();
       clase_grupal_id = $(this).val();
-      console.log(clase_grupal_id);
 
       $("#asistencia-estado_ausencia").removeClass('c-verde')
       $("#asistencia-estado_ausencia").removeClass('c-amarillo')
       $("#asistencia-estado_ausencia").removeClass('c-rojo')
 
-      $.each(estatus, function (index, array){
-        if(array.alumno_id == alumno_id && array.clase_grupal_id == clase_grupal_id){
-          $("#asistencia-estado_ausencia").addClass(array.estatus)
-        }
-      });
+      if(clase_grupal_id){
 
-      if ($(this).val()=='') {
-        $("#asistencia-horario").text("---");           
-      }else{
-        $var = valor=$(this).val().split('-');
-        $("#asistencia-horario").text(valor[1]);
+        var route = route_consulta_estatus;
+        var token = "{{ csrf_token() }}";
+
+        $.ajax({
+          url: route,
+          headers: {'X-CSRF-TOKEN': token},
+          type: 'POST',
+          dataType: 'json',
+          data:"&alumno_id="+alumno_id+"&clase_grupal_id="+clase_grupal_id,
+          success:function(respuesta){
+
+            $("#asistencia-estado_ausencia").addClass(respuesta.estatus)
+
+          },
+          error:function (msj, ajaxOptions, thrownError){
+            setTimeout(function(){ 
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
+              var nType = 'danger';
+              if(msj.responseJSON.status=="ERROR"){
+                errores(msj.responseJSON.errores);
+                var nTitle=" Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle=" Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                
+            }, 1000);             
+          }
+        });
+
+        if ($(this).val()=='') {
+          $("#asistencia-horario").text("---");           
+        }else{
+          $var = valor=$(this).val().split('-');
+          $("#asistencia-horario").text(valor[1]);
+        }
       }
     });
 
@@ -971,6 +1000,9 @@ $("#permitir_staff").on('click',function(){
         $("#main").removeClass("opacity-content");
         $("#chat").removeClass("toggled");
         $("#what_we_do").removeClass("opacity-content");
+        $("#asistencia-estado_ausencia").removeClass('c-verde')
+        $("#asistencia-estado_ausencia").removeClass('c-amarillo')
+        $("#asistencia-estado_ausencia").removeClass('c-rojo')
       })
 
       $('#modalAsistenciaInstructor').on('hidden.bs.modal', function (e) {
@@ -1180,7 +1212,7 @@ $("#permitir_staff").on('click',function(){
         window.location = route_historial + alumno_id;
       }
       
-  }); 
+  });
 
   </script>
 
