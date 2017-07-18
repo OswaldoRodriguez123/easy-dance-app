@@ -594,12 +594,15 @@ class UsuarioController extends BaseController {
                         $config_pagos = ConfigPagosInstructor::where('tipo', 2)->get();
 
                         foreach($config_pagos as $config_pago){
+                            
                             $pago = new PagoInstructor;
 
                             $pago->instructor_id=$config_pago->instructor_id;
                             $pago->tipo=$config_pago->tipo;
                             $pago->monto=$config_pago->monto;
                             $pago->clase_grupal_id=$config_pago->clase_grupal_id;
+                            $pago->fecha = Carbon::now()->toDateString();
+                            $pago->hora = Carbon::now()->toTimeString();
 
                             $pago->save();
                         }
