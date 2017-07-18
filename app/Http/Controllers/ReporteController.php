@@ -1231,6 +1231,7 @@ class ReporteController extends BaseController
 
             $clases_grupales = $query->get();
 
+            $tipo_clase = array(1,2);
             $array = array();
             $reporte_estatus = array();
             $hoy = Carbon::now();
@@ -1243,12 +1244,13 @@ class ReporteController extends BaseController
 
                 $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
 
-                //CONFIGURACIONES DE ASISTENCIAS
-
-                $asistencia_amarilla = $clase_grupal->asistencia_amarilla;
-                $asistencia_roja = $clase_grupal->asistencia_rojo;
-
                 if(Carbon::now() > $fecha_inicio){
+
+                    //CONFIGURACIONES DE ASISTENCIAS
+
+                    $asistencia_amarilla = $clase_grupal->asistencia_amarilla;
+                    $asistencia_roja = $clase_grupal->asistencia_rojo;
+                    $inasistencias = 0;
 
                     $fecha_final = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_final);
 
