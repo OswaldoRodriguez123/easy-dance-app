@@ -1206,6 +1206,7 @@ class ReporteController extends BaseController
                 ->join('alumnos','inscripcion_clase_grupal.alumno_id','=','alumnos.id')
                 ->select('inscripcion_clase_grupal.id as inscripcion_id',
                          'inscripcion_clase_grupal.alumno_id as alumno_id',
+                         'inscripcion_clase_grupal.fecha_inscripcion',
                          'config_clases_grupales.nombre as clase_nombre',
                          'clases_grupales.id as clase_grupal_id',
                          'clases_grupales.fecha_inicio_preferencial',
