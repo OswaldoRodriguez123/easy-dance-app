@@ -1524,11 +1524,15 @@ class ReporteController extends BaseController
                 $alumno_array['estatus'] = $estatus;
                 $alumno_array['clase_nombre'] = $clase_nombre;
 
-                if($request->estatus_alumno_id == 1 && $estatus=="c-verde"){
-                    $array[] = $alumno_array;
-                }else if($request->estatus_alumno_id == 2 && $estatus=="c-amarillo"){
-                    $array[] = $alumno_array;
-                }else if($request->estatus_alumno_id == 3 && $estatus=="c-youtube"){
+                if($request->estatus_alumno_id){
+                    if($request->estatus_alumno_id == 1 && $estatus=="c-verde"){
+                        $array[] = $alumno_array;
+                    }else if($request->estatus_alumno_id == 2 && $estatus=="c-amarillo"){
+                        $array[] = $alumno_array;
+                    }else if($request->estatus_alumno_id == 3 && $estatus=="c-youtube"){
+                        $array[] = $alumno_array;
+                    }
+                }else{
                     $array[] = $alumno_array;
                 }
             }
