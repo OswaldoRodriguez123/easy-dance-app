@@ -958,6 +958,7 @@ class AdministrativoController extends BaseController {
 
                     $tipo = $item_proforma->tipo;
                     $item_id = $item_proforma->item_id;
+                    $servicio_producto = $item_proforma->servicio_producto;
 
                     //ACUERDO DE PAGO
 
@@ -1139,6 +1140,7 @@ class AdministrativoController extends BaseController {
                 $item_factura->precio_neto = 0;
                 $item_factura->impuesto = 0;
                 $item_factura->importe_neto = $total_pago;
+                $item_factura->servicio_producto = $servicio_producto;
                 
                 $item_factura->save();
 
@@ -1155,6 +1157,7 @@ class AdministrativoController extends BaseController {
                 $items_factura_proforma->precio_neto = 0;
                 $items_factura_proforma->impuesto = 0;
                 $items_factura_proforma->importe_neto = $deuda;
+                $items_factura_proforma->servicio_producto = $servicio_producto;
                 $items_factura_proforma->fecha_vencimiento = Carbon::now()->toDateString();
                 
                 $items_factura_proforma->save();
