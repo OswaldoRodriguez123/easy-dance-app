@@ -422,96 +422,48 @@ class VisitanteController extends BaseController {
 
     public function impresion($id)
     {
-        $encuesta = EncuestaVisitante::where('visitante_id', $id)->first();
-
-
-        if(!$encuesta){
-            $encuesta = new EncuestaVisitante;
-            $encuesta->visitante_id = $id;
-            $encuesta->save();
-        }
-
         $visitante = Visitante::find($id);
 
-        return view('participante.visitante.planilla_encuesta')->with(['visitante' => $visitante, 'encuesta' => $encuesta]);
+        return view('participante.visitante.planilla_encuesta')->with(['visitante' => $visitante]);
     }
 
     public function storeImpresion(Request $request)
     {
 
-        $encuesta = EncuestaVisitante::where('visitante_id', $request->visitante_id)->first();
+        $visitante = Visitante::find($request->id);
 
-        if(!$encuesta){
-            
-            $encuesta = new EncuestaVisitante;
-        }
+        if($visitante){
 
-        if($request->rapidez)
-        {
+            $visitante->rapidez = $request->rapidez;
+            $visitante->calidad = $request->calidad;
+            $visitante->satisfaccion = $request->satisfaccion;
+            $visitante->disponibilidad = $request->disponibilidad;
 
-            $rapidez =  $request->rapidez;
+            if($visitante->save()){
 
-        }else{
-            $rapidez =  '';
-        }
+                if($visitante->celular){
 
-        if($request->calidad)
-        {
+                    $celular = getLimpiarNumero($visitante->celular);
+                    $academia = Academia::find(Auth::user()->academia_id);
 
-            $calidad =  $request->calidad;
+                    if($academia->pais_id == 11 && strlen($celular) == 10){
+                        
+                        $mensaje = $visitante->nombre.'. Gracias por visitarnos, esperamos verte bailando pronto, somos “Tu Clase de Baile”.';
 
-        }else{
-            $calidad =  '';
-        }
+                        $client = new Client(); //GuzzleHttp\Client
+                        $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
 
-        if($request->satisfaccion)
-        {
-
-            $satisfaccion =  $request->satisfaccion;
-
-        }else{
-            $satisfaccion =  '';
-        }
-
-        if($request->disponibilidad)
-        {
-
-            $disponibilidad =  $request->disponibilidad;
-
-        }else{
-            $disponibilidad =  '';
-        }
-
-        $encuesta->visitante_id = $request->visitante_id;
-        $encuesta->rapidez = $rapidez;
-        $encuesta->calidad = $calidad;
-        $encuesta->satisfaccion = $satisfaccion;
-        $encuesta->disponibilidad = $disponibilidad;
-
-        if($encuesta->save()){
-
-            $visitante = Visitante::find($request->visitante_id);
-
-            if($visitante->celular){
-
-                $celular = getLimpiarNumero($visitante->celular);
-                $academia = Academia::find(Auth::user()->academia_id);
-
-                if($academia->pais_id == 11 && strlen($celular) == 10){
-                    
-                    $mensaje = $visitante->nombre.'. Gracias por visitarnos, esperamos verte bailando pronto, somos “Tu Clase de Baile”.';
-
-                    $client = new Client(); //GuzzleHttp\Client
-                    $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
+                    }
 
                 }
 
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
             }
-
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
         }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }
 
     }

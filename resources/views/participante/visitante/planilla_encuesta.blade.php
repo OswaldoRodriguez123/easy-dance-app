@@ -13,7 +13,6 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<!--<script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.es.js"></script>-->
 <script src="{{url('/')}}/assets/vendors/farbtastic/farbtastic.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
@@ -24,15 +23,7 @@
 
             <section id="content">
                 <div class="container">
-                
-<!--                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/alumno" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Alumno</a>
-                        <h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>
-                    </div>  -->
-
-
-                   
-
+              
                       <div class="block-header">
                         <?php $url = "/participante/visitante/detalle/$visitante->id" ?>
                         <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
@@ -56,7 +47,7 @@
                         <div class="card-body p-b-20">
                           <form name="encuesta_evaluativa" id="encuesta_evaluativa"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                           <input type="hidden" name="visitante_id" value="{{ $visitante->id }}">
+                           <input type="hidden" name="id" id="id" value="{{ $visitante->id }}">
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
@@ -228,8 +219,6 @@
                             </div>
                             <div class="col-sm-12 text-left">                           
 
-                              <!-- <a class="btn-blanco m-r-10 f-18 guardar" href="#" id="guardar">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a> -->
-
                               <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
 
                             </div>
@@ -255,35 +244,26 @@
   
   $(document).ready(function(){
 
-
-    if("{{$encuesta->rapidez}}" != 0){
-
-      $("input[name=rapidez][value={{$encuesta->rapidez}}]").attr('checked', 'checked');
-      $("input[name=satisfaccion][value={{$encuesta->satisfaccion}}]").attr('checked', 'checked');
-      $("input[name=calidad][value={{$encuesta->calidad}}]").attr('checked', 'checked');
-      $("input[name=disponibilidad][value={{$encuesta->disponibilidad}}]").attr('checked', 'checked');
-
+    $("input[name=rapidez][value={{$visitante->rapidez}}]").attr('checked', 'checked');
+    $("input[name=satisfaccion][value={{$visitante->satisfaccion}}]").attr('checked', 'checked');
+    $("input[name=calidad][value={{$visitante->calidad}}]").attr('checked', 'checked');
+    $("input[name=disponibilidad][value={{$visitante->disponibilidad}}]").attr('checked', 'checked');
+    
+    $('body,html').animate({scrollTop : 0}, 500);
+    var animation = 'fadeInDownBig';
+    if (animation === "hinge") {
+    animationDuration = 3100;
     }
+    else {
+    animationDuration = 3200;
+    }
+    $(".container").addClass('animated '+animation);
 
-      
-        $('body,html').animate({scrollTop : 0}, 500);
-        var animation = 'fadeInDownBig';
-        //var cardImg = $(this).closest('#content').find('h1');
-        if (animation === "hinge") {
-        animationDuration = 3100;
-        }
-        else {
-        animationDuration = 3200;
-        }
-        //$("h1").removeAttr('class');
-        $(".container").addClass('animated '+animation);
+    setTimeout(function(){
+        $(".card-body").removeClass(animation);
+    }, animationDuration);
 
-            setTimeout(function(){
-                $(".card-body").removeClass(animation);
-            }, animationDuration);
-
-
-      });
+  });
 
 
   function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
@@ -371,22 +351,19 @@
                         $(".procesando").removeClass('show');
                         $(".procesando").addClass('hidden');
                         $("#guardar").removeAttr("disabled");
-                        // finprocesado();
                         $("#guardar").css({
                           "opacity": ("1")
                         });
-                        $(".cancelar").removeAttr("disabled");
-
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                      
+                        $(".cancelar").removeAttr("disabled");                   
                         
                       }, 1000);
                     },
                     error:function(msj){
                       setTimeout(function(){ 
 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
 
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
@@ -448,10 +425,10 @@
 
 
  $( "#cancelar" ).click(function() {
-  $("#perfil_evaluativo")[0].reset();
+  $("#encuesta_evaluativa")[0].reset();
   limpiarMensaje();
   $('html,body').animate({
-  scrollTop: $("#id-aprendizaje").offset().top-90,
+  scrollTop: $("#id-rapidez").offset().top-90,
   }, 1000);
 });
 
