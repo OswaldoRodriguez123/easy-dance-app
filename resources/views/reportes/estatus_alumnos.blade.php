@@ -382,9 +382,10 @@
 
     function previa(t){
         var id = $(t).closest('tr').attr('id');
-        window.location=route_detalle+id;
+        var route = route_detalle+"/"+id;
+        window.location = route;
     }
-    
+
 </script>
 
 @stop
