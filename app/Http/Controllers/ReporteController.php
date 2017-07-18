@@ -1215,6 +1215,8 @@ class ReporteController extends BaseController
 
             foreach($alumnos as $alumno){
 
+                $inasistencias = 0;
+
                 $query = InscripcionClaseGrupal::join('clases_grupales', 'clases_grupales.id', '=', 'inscripcion_clase_grupal.clase_grupal_id')
                 ->join('config_clases_grupales','clases_grupales.clase_grupal_id','=','config_clases_grupales.id')
                 ->select('inscripcion_clase_grupal.id',
@@ -1246,7 +1248,6 @@ class ReporteController extends BaseController
 
                         $asistencia_amarilla = $clase_grupal->asistencia_amarilla;
                         $asistencia_roja = $clase_grupal->asistencia_rojo;
-                        $inasistencias = 0;
 
                         $fecha_final = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_final);
 

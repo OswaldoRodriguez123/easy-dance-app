@@ -76,10 +76,7 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                
-
-
+                            
                                 <div class="col-sm-6">
                                     <label>Clase Grupal</label>
                                     <div class="fg-line">
