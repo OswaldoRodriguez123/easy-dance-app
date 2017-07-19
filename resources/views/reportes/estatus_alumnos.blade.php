@@ -170,7 +170,7 @@
         <script type="text/javascript">
 
         route_filtrar="{{url('/')}}/reportes/estatus-alumnos";
-        route_detalle="{{url('/')}}//agendar/clases-grupales/participantes/historial/";
+        route_detalle="{{url('/')}}/agendar/clases-grupales/participantes/historial/";
 
         t=$('#tablelistar').DataTable({
         processing: true,
