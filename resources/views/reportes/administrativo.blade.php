@@ -89,7 +89,7 @@
                                 </div>
 
                                 
-                                 <div class="col-md-4">
+                                <div class="col-md-4">
                                     <label>Fecha</label>
 
                                     <div class="select">
@@ -98,7 +98,7 @@
                                             <option value="2">Mes Actual</option>
                                             <option value="3">Mes Pasado</option>
                                         </select>
-                                      </div>
+                                    </div>
                                 </div>
 
                                 <div class="clearfix m-b-20"></div> 
@@ -321,101 +321,100 @@
 
 @section('js') 
             
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    route_filtrar = "{{url('/')}}/reportes/administrativo";
-    route_detalle="{{url('/')}}/administrativo/factura";
+        route_filtrar = "{{url('/')}}/reportes/administrativo";
+        route_detalle="{{url('/')}}/administrativo/factura";
 
-    var linea_servicio = <?php echo json_encode($linea_servicio);?>;
-    var config_egresos = <?php echo json_encode($config_egresos);?>;
+        var linea_servicio = <?php echo json_encode($linea_servicio);?>;
+        var config_egresos = <?php echo json_encode($config_egresos);?>;
 
-    tipo_dropdown = ''
-    tipo_servicio = ''
-    nombre_servicio = ''
-    servicio_id = ''
+        tipo_dropdown = ''
+        tipo_servicio = ''
+        nombre_servicio = ''
+        servicio_id = ''
 
-    var nFrom = $(this).attr('data-from');
-    var nAlign = $(this).attr('data-align');
-    var nIcons = $(this).attr('data-icon');
-    var nType = 'danger';
-    var nAnimIn = "animated flipInY";
-    var nAnimOut = "animated flipOutY"; 
+        var nFrom = $(this).attr('data-from');
+        var nAlign = $(this).attr('data-align');
+        var nIcons = $(this).attr('data-icon');
+        var nType = 'danger';
+        var nAnimIn = "animated flipInY";
+        var nAnimOut = "animated flipOutY"; 
 
-    $(document).ready(function(){
+        $(document).ready(function(){
 
+            //DateRangePicker
+            $('#fecha2').daterangepicker({
+                "autoApply" : false,
+                "opens": "right",
+                "applyClass": "bgm-morado waves-effect",
+                locale : {
+                    format: 'DD/MM/YYYY',
+                    applyLabel : 'Aplicar',
+                    cancelLabel : 'Cancelar',
+                    daysOfWeek : [
+                        "Dom",
+                        "Lun",
+                        "Mar",
+                        "Mie",
+                        "Jue",
+                        "Vie",
+                        "Sab"
+                    ],
 
-        //DateRangePicker
-        $('#fecha2').daterangepicker({
-            "autoApply" : false,
-            "opens": "right",
-            "applyClass": "bgm-morado waves-effect",
-            locale : {
-                format: 'DD/MM/YYYY',
-                applyLabel : 'Aplicar',
-                cancelLabel : 'Cancelar',
-                daysOfWeek : [
-                    "Dom",
-                    "Lun",
-                    "Mar",
-                    "Mie",
-                    "Jue",
-                    "Vie",
-                    "Sab"
-                ],
+                    monthNames: [
+                        "Enero",
+                        "Febrero",
+                        "Marzo",
+                        "Abril",
+                        "Mayo",
+                        "Junio",
+                        "Julio",
+                        "Agosto",
+                        "Septiembre",
+                        "Octubre",
+                        "Noviembre",
+                        "Diciembre"
+                    ],        
+                }
 
-                monthNames: [
-                    "Enero",
-                    "Febrero",
-                    "Marzo",
-                    "Abril",
-                    "Mayo",
-                    "Junio",
-                    "Julio",
-                    "Agosto",
-                    "Septiembre",
-                    "Octubre",
-                    "Noviembre",
-                    "Diciembre"
-                ],        
-            }
+            });
 
-        });
-
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 50,
-        order: [[0, 'desc'], [1, 'desc']],
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     " ",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+            t=$('#tablelistar').DataTable({
+            processing: true,
+            serverSide: false,
+            pageLength: 50,
+            order: [[0, 'desc'], [1, 'desc']],
+            fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
+            },
+            language: {
+                            processing:     "Procesando ...",
+                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                            searchPlaceholder: "BUSCAR",
+                            lengthMenu:     " ",
+                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                            infoPostFix:    "",
+                            loadingRecords: "...",
+                            zeroRecords:    "No se encontraron registros coincidentes",
+                            emptyTable:     "No hay datos disponibles en la tabla",
+                            paginate: {
+                                first:      "Primero",
+                                previous:   "Anterior",
+                                next:       "Siguiente",
+                                last:       "Ultimo"
+                            },
+                            aria: {
+                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                            }
                         }
-                    }
-        });
+            });
 
-        h=$('#table_egresos').DataTable({
+            h=$('#table_egresos').DataTable({
                 processing: true,
                 serverSide: false,
                 pageLength: 25, 
@@ -446,10 +445,8 @@
                         sortDescending: ": habilitado para ordenar la columna en orden descendente"
                     }
                 }
-
-
             });
-    });
+        });
 
         $("#guardar").click(function(){
             var token = $('input:hidden[name=_token]').val();
@@ -1021,6 +1018,6 @@
             return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
         }
 
-        </script>
+    </script>
 
 @stop

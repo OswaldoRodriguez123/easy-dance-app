@@ -87,21 +87,16 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label>Servicio / Producto</label>
+                                    <label>Linea de Servicio</label>
 
-
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" id="servicio_producto" name="servicio_producto" data-live-search="true">
-
-                                            <option value="0">Todos</option>
-
-                                            @foreach ( $servicios_productos as $servicio_producto )
-                                                <option value = "{{ $servicio_producto['id'] }}" data-content="{{ $servicio_producto['nombre'] }} {!!$servicio_producto['icono']!!}"></option>
-                                            @endforeach
-
+                                    <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="tipo_servicio" id="tipo_servicio" data-live-search="true">
+                                            <option value="0">Todo</option>
+                                            <option value="99">Academia Recepción</option>
+                                            <option value="14">Fiestas y Eventos</option>
+                                            <option value="5">Talleres</option>
+                                            <option value="11">Campañas</option>
                                         </select>
-                                      </div>
                                     </div>
                                 </div>
 
@@ -132,6 +127,20 @@
                                             <option value="3">Mes Pasado</option>
                                         </select>
                                       </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Detalle</label>
+
+                                    <div class="dropdown" id="dropdown_boton">
+                                        <a id="detalle_boton" role="button" data-toggle="dropdown" class="btn btn-blanco">
+                                            Todos <span class="caret"></span>
+                                        </a>
+                                        <ul id="dropdown_principal" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                        </ul>
+                                    </div>
+             
+
                                 </div>
 
                                 <div class="col-sm-4">
@@ -255,10 +264,17 @@
 
 @section('js') 
             
-        <script type="text/javascript">
+    <script type="text/javascript">
 
 
         route_filtrar="{{url('/')}}/reportes/comisiones";
+
+        tipo_dropdown = ''
+        servicio_producto_tipo = ''
+        nombre_servicio = ''
+        servicio_producto_id = ''
+
+        var linea_servicio = <?php echo json_encode($linea_servicio);?>;
 
         $(document).ready(function(){
 
@@ -356,7 +372,7 @@
                     headers: {'X-CSRF-TOKEN': token},
                     type: 'POST',
                     dataType: 'json',
-                    data:datos,
+                    data: datos+"&servicio_producto_tipo="+servicio_producto_tipo+"&tipo_dropdown="+tipo_dropdown+"&servicio_producto_id="+servicio_producto_id,
                 success:function(respuesta){
                   setTimeout(function(){ 
                     var nFrom = $(this).attr('data-from');
@@ -550,6 +566,149 @@
     function formatmoney(n) {
         return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     } 
+
+    $('body').on('click','.servicio_detalle',function(e){
+            
+        tipo_dropdown = $(this).data('tipo_dropdown')
+        servicio_producto_tipo = $(this).data('servicio_producto_tipo')
+        nombre_servicio = $(this).data('nombre_servicio')
+        servicio_producto_id = $(this).data('servicio_producto_id')
+
+        $('#detalle_boton').text(nombre_servicio)
+
+        $('#dropdown_boton').removeClass('open')
+        $('#detalle_boton').attr('aria-expanded',false);
+    });
+
+    $('#tipo_servicio').on('change', function(){
+       
+        tipo_servicio = $(this).val();
+        nombre = '';
+        tipo_dropdown = ''
+        servicio_producto_id = ''
+
+        $('#detalle_boton').text('Todos')
+
+        id = $(this).val();
+        $('#dropdown_principal').empty();
+
+        if(id == 99){
+
+            contenido = '';
+
+            contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-servicio_producto_tipo="3" data-nombre_servicio="Clases Grupales" data-servicio_producto_id ="3">'
+            contenido += '<a>Clases Grupales</a>'
+            contenido += '<ul class="dropdown-menu">'
+
+            $.each(linea_servicio, function (index, array) {  
+                if(array.tipo == 3 || array.tipo == 4){
+                    contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-servicio_producto_tipo="'+array.servicio_producto_tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
+                }                   
+            });
+
+            contenido += '</ul></li>'
+
+            $('#dropdown_principal').append(contenido);
+
+            contenido = '';
+        
+            contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-servicio_producto_tipo="9" data-nombre_servicio="Clases Personalizadas" data-servicio_producto_id ="9">'
+            contenido += '<a>Clases Personalizadas</a>'
+            contenido += '<ul class="dropdown-menu">'
+
+            $.each(linea_servicio, function (index, array) {  
+                if(array.tipo == 9){
+                    contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-servicio_producto_tipo="'+array.servicio_producto_tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
+                }                   
+            });
+
+            contenido += '</ul></li>'
+
+            $('#dropdown_principal').append(contenido);
+
+            contenido = '';
+
+            contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-servicio_producto_tipo="2" data-nombre_servicio="Productos" data-servicio_producto_id ="2">'
+            contenido += '<a>Productos</a>'
+            contenido += '<ul class="dropdown-menu">'
+
+            $.each(linea_servicio, function (index, array) {  
+                if(array.tipo == 2){
+                    contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-servicio_producto_tipo="'+array.servicio_producto_tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
+                }                   
+            });
+
+            contenido += '</ul></li>'
+
+            $('#dropdown_principal').append(contenido);
+
+            contenido = '';
+
+            contenido += '<li class="dropdown-submenu pointer servicio_detalle" data-tipo_dropdown="1" data-servicio_producto_tipo="1" data-nombre_servicio="Servicios" data-servicio_producto_id ="1">'
+            contenido += '<a>Servicios</a>'
+            contenido += '<ul class="dropdown-menu">'
+
+            $.each(linea_servicio, function (index, array) {  
+                if(array.tipo == 1){
+                    contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-servicio_producto_tipo="'+array.servicio_producto_tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>'
+                }                   
+            });
+
+            contenido += '</ul></li>'
+
+            $('#dropdown_principal').append(contenido);
+
+            contenido = '';
+        
+
+        }else if(id == 14){
+                
+
+            $.each(linea_servicio, function (index, array) {  
+
+                if(array.tipo == 14){
+
+                    contenido = '';
+
+                    contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-servicio_producto_tipo="'+array.servicio_producto_tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
+
+                    $('#dropdown_principal').append(contenido);
+
+                }                   
+            });
+            
+        }else if(id == 5){
+
+            $.each(linea_servicio, function (index, array) {  
+
+                if(array.tipo == 5){
+
+                    contenido = '';
+
+                    contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-servicio_producto_tipo="'+array.servicio_producto_tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
+
+                    $('#dropdown_principal').append(contenido);
+
+                }                   
+            });
+        }else if(id == 11){
+
+            $.each(linea_servicio, function (index, array) {  
+
+                if(array.tipo == 11){
+
+                    contenido = '';
+
+                    contenido += '<li class = "pointer servicio_detalle" data-tipo_dropdown="2" data-servicio_producto_tipo="'+array.servicio_producto_tipo+'" data-nombre_servicio="'+array.nombre+'" data-servicio_producto_id="'+array.id+'"><a>'+array.nombre+'</a></li>';
+
+                    $('#dropdown_principal').append(contenido);
+
+                }                   
+            });
+            
+        }
+        
+    });
 
 </script>
 

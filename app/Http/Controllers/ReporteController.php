@@ -1595,14 +1595,14 @@ class ReporteController extends BaseController
 
         foreach($config_servicio as $item){
 
-            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo']);
+            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => 1);
         }
 
         $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
         foreach($config_producto as $item){
 
-            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo']);
+            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => 2);
            
         }
 
@@ -1799,8 +1799,7 @@ class ReporteController extends BaseController
 
             if($request->tipo_servicio)
             {
-                if($request->tipo_servicio == 99)
-                {
+                if($request->tipo_servicio == 99){
                     $query->where('egresos.tipo', 1);
                 }else if($request->tipo_servicio == 14){
                     $query->where('egresos.tipo', 2);
@@ -1819,10 +1818,10 @@ class ReporteController extends BaseController
             //FECHA
 
             if($request->boolean_fecha){
-                    $fecha = explode(' - ', $request->fecha2);
-                    $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
-                    $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
-                    $query->whereBetween('egresos.fecha', [$start,$end]);
+                $fecha = explode(' - ', $request->fecha2);
+                $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
+                $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
+                $query->whereBetween('egresos.fecha', [$start,$end]);
             }else{
 
                 if($request->fecha){
@@ -3157,37 +3156,25 @@ class ReporteController extends BaseController
             $promotores['2-'.$instructor->id] = $promotor_array;
         }
 
-        $servicios_productos = array();
+        $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre','asc')->get();
+        foreach($config_servicio as $item){
 
-        foreach($config_servicio as $servicio){;
-
-            $collection=collect($servicio);     
-            $servicio_producto_array = $collection->toArray();
-
-            $servicio_producto_array['tipo']=1;
-            $servicio_producto_array['id']='1-'.$servicio->id;
-            $servicio_producto_array['icono']="<i class='icon_f-servicios'></i>";
-            $servicios_productos['1-'.$servicio->id] = $servicio_producto_array;
-
+            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo'], 'servicio_producto_tipo' => 1);
         }
 
-        $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre','asc')->get();
+        $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        foreach($config_producto as $producto){
+        foreach($config_producto as $item){
 
-            $collection=collect($producto);     
-            $servicio_producto_array = $collection->toArray();
-
-            $servicio_producto_array['tipo']=2;
-            $servicio_producto_array['id']='2-'.$producto->id;
-            $servicio_producto_array['icono']="<i class='icon_f-productos'></i>";
-            $servicios_productos['2-'.$producto->id] = $servicio_producto_array;
-
+            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo'], 'servicio_producto_tipo' => 2);
+           
         }
 
-        return view('reportes.comisiones')->with(['promotores' => $promotores, 'servicios_productos' => $servicios_productos]);
+        $collection=collect($tmp);   
+        $linea_servicio = $collection->toArray();
+
+        return view('reportes.comisiones')->with(['promotores' => $promotores, 'linea_servicio' => $linea_servicio]);
     }
 
     public function ComisionesFiltros(Request $request)
@@ -3224,11 +3211,19 @@ class ReporteController extends BaseController
             $query->where('usuario_id', $explode[1]);
         }
 
-        if($request->servicio_producto){
-            $explode = explode('-', $request->servicio_producto);
-            $query->where('servicio_producto_tipo', $explode[0]);
-            $query->where('servicio_producto_id', $explode[1]);
+        if($request->servicio_producto_tipo){
+            $query->where('servicio_producto_tipo', $request->servicio_producto_tipo);
         }
+
+        if($request->servicio_producto_id){
+            $query->where('servicio_producto_id', $request->servicio_producto_id);
+        }
+
+        // if($request->servicio_producto){
+        //     $explode = explode('-', $request->servicio_producto);
+        //     $query->where('servicio_producto_tipo', $explode[0]);
+        //     $query->where('servicio_producto_id', $explode[1]);
+        // }
 
         $comisiones = $query->get();
 
