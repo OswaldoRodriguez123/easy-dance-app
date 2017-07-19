@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Academia;
 use App\InscripcionClaseGrupal;
 use App\ClaseGrupal;
+use App\HorarioClaseGrupal;
 use App\Progreso;
 use App\ProgresoPaso;
 use App\Examen;
