@@ -1498,14 +1498,17 @@ class ReporteController extends BaseController
 
             if($clase_grupal){
                 $clase_nombre = $clase_grupal->clase_nombre;
+                $inscripcion_id = $clase_grupal->inscripcion_id;
             }else{
                 $clase_nombre = '';
+                $inscripcion_id = '';
             }
 
             $collection=collect($alumno);     
             $alumno_array = $collection->toArray();
             $alumno_array['estatus'] = $estatus;
             $alumno_array['clase_nombre'] = $clase_nombre;
+            $alumno_array['inscripcion_id'] = $inscripcion_id;
 
             if($request->estatus_alumno_id){
                 if($request->estatus_alumno_id == 1 && $estatus=="c-verde"){

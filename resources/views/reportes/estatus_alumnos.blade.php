@@ -241,12 +241,12 @@
 
                         var rowId=array.inscripcion_id;
                         var rowNode=t.row.add( [
-                        ''+array.nombre+ ' '+array.apellido+ '',
-                        ''+array.identificacion+'',
-                        ''+array.fecha_nacimiento+'',
-                        ''+"<i data-toggle='modal' href='#' class='zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal "+array.estatus+"'></i>",
-                        ''+array.clase_nombre+'',
-                        ''+array.celular+'',
+                            ''+array.nombre+ ' '+array.apellido+ '',
+                            ''+array.identificacion+'',
+                            ''+array.fecha_nacimiento+'',
+                            ''+"<i class='zmdi zmdi-label-alt-outline f-20 p-r-3 "+array.estatus+"'></i>",
+                            ''+array.clase_nombre+'',
+                            ''+array.celular+'',
                         ] ).draw(false).node();
                         $( rowNode )
                           .attr('id',rowId)
@@ -382,7 +382,7 @@
 
     function previa(t){
         var id = $(t).closest('tr').attr('id');
-        var route = route_detalle+"/"+id;
+        var route = route_detalle+id;
         window.location = route;
     }
 
