@@ -1422,12 +1422,31 @@ class AsistenciaController extends BaseController
 
           $clase_grupal = ClaseGrupal::find($clase);
 
-          $credencial_alumno = CredencialAlumno::where('alumno_id',$id_alumno)->where('instructor_id',$clase_grupal->instructor_id)->where('cantidad' ,'>', '0')->first();
+          $credencial_alumno = CredencialAlumno::where('alumno_id',$id_alumno)->where('instructor_id',$clase_grupal->instructor_id)
+            ->where('cantidad' ,'>', 0)
+          ->first();
 
           if(!$credencial_alumno){
-            $credencial_alumno = CredencialAlumno::where('alumno_id',$id_alumno)->where('instructor_id','0')->where('cantidad' ,'>', '0')->first();
+
+            $credencial_alumno = CredencialAlumno::where('alumno_id',$id_alumno)
+              ->whereNull('instructor_id')
+              ->where('cantidad' ,'>', 0)
+            ->first();
+
             if(!$credencial_alumno){
+
+              $credencial_otra_clase = CredencialAlumno::where('alumno_id',$id_alumno)
+                ->where('cantidad' ,'>', 0)
+              ->first();
+
+              if(!$credencial_otra_clase){
+                $credencial_mensaje = 'Ups! El alumno no posee las credenciales necesarias!';
+              }else{
+                $credencial_mensaje = 'Ups! El alumno posee credenciales pero no estan asociadas a esta clase grupal';
+              }
+              
               $boolean_credencial = 0;
+
             }else{
               $boolean_credencial = 1;
             }
@@ -1435,8 +1454,7 @@ class AsistenciaController extends BaseController
             $boolean_credencial = 1;
           }
 
-          if($estatu=="inscrito" OR $credencial_alumno OR $request->credencial)
-          {
+          if($estatu=="inscrito" OR $credencial_alumno OR $request->credencial){
 
             if(Session::has('pertenece')){
               $pertenece = 0;
@@ -1452,7 +1470,10 @@ class AsistenciaController extends BaseController
             $fecha_actual=$actual->toDateString();
             $hora_actual=$actual->toTimeString();
 
-            $asistencia = Asistencia::where('alumno_id',$id_alumno)->where('clase_grupal_id',$clase)->where('fecha',$fecha_actual)->first();
+            $asistencia = Asistencia::where('alumno_id',$id_alumno)
+              ->where('clase_grupal_id',$clase)
+              ->where('fecha',$fecha_actual)
+            ->first();
 
             if(!$asistencia)
             {
@@ -1471,7 +1492,11 @@ class AsistenciaController extends BaseController
 
             if($asistencia->save()){
         
-              $inscripcion_clase_grupal = InscripcionClaseGrupal::onlyTrashed()->where('alumno_id',$id_alumno)->where('clase_grupal_id',$clase)->whereNotNull('deleted_at')->first();
+              $inscripcion_clase_grupal = InscripcionClaseGrupal::onlyTrashed()
+                ->where('alumno_id',$id_alumno)
+                ->where('clase_grupal_id',$clase)
+                ->whereNotNull('deleted_at')
+              ->first();
 
               if($inscripcion_clase_grupal){
                 $inscripcion_clase_grupal->deleted_at = null;
@@ -1492,7 +1517,7 @@ class AsistenciaController extends BaseController
           }else{
 
             Session::put('pertenece',0);
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_CREDENCIAL','text' => "El alumno no posee las credenciales necesarias!", 'campo' => 'credencial'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_CREDENCIAL','text' => $credencial_mensaje, 'campo' => 'credencial'],422);
           }
           
         }elseif($estatu=="no_asociado") {

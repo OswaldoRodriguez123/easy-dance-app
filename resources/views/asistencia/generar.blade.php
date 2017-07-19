@@ -692,6 +692,9 @@ $("#permitir_staff").on('click',function(){
 
     $('#asistencia_clase_grupal_id').on('change', function(){
 
+      $('#pertenece').val('')
+      $('#credencial').val('')
+
       alumno_id = $('#asistencia_id_alumno').val();
       clase_grupal_id = $(this).val();
 
@@ -842,6 +845,9 @@ $("#permitir_staff").on('click',function(){
       function buscarAlumno(t){
         procesando();
         $('#clases_grupales_alumno').empty();
+
+        $('#pertenece').val('')
+        $('#credencial').val('')
 
         var row = $(t).closest('tr');
 
