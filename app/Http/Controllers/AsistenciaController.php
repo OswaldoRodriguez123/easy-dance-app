@@ -827,6 +827,8 @@ class AsistenciaController extends BaseController
       $grouped = $collection->groupBy('id');     
       $activacion = $grouped->toArray();
 
+      Session::forget('no_pertenece');
+      Session::forget('boolean_credencial');
 
       return view('asistencia.generar')->with(['alumnosacademia' => $array_alumno, 'instructores' => $array_instructor, 'activacion' => $activacion, 'staff' => $staff]);
 
@@ -1384,147 +1386,145 @@ class AsistenciaController extends BaseController
   public function store(Request $request){
 
     $rules = [
-
       'asistencia_clase_grupal_id' => 'required',
       'asistencia_id_alumno' => 'required',
     ];
 
     $messages = [
-
       'asistencia_clase_grupal_id.required' => 'Ups! La Clase Grupal es requerida',
       'asistencia_id_alumno.required' => 'Ups! El Alumno es requerido',
-        
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
 
     if ($validator->fails()){
-        
         return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);           
-
     }else{
 
-        $clase=$request->asistencia_clase_grupal_id;
-        $id_alumno=$request->asistencia_id_alumno;
+      $asistencia_clase_grupal_id=$request->asistencia_clase_grupal_id;
+      $explode_clase_grupal=explode('-', $asistencia_clase_grupal_id);
+      $clase_grupal_id = $explode_clase_grupal[0];
+      $clase_grupal = ClaseGrupal::find($clase_grupal_id);
+      $alumno_id=$request->asistencia_id_alumno;
+      $in_credencial = array(0,$clase_grupal->instructor_id);
 
-        $ClasesAsociadas=InscripcionClaseGrupal::where('alumno_id',$id_alumno)->get();
-        $clase_id=explode('-', $clase);
+      $inscripcion_clase_grupal=InscripcionClaseGrupal::where('alumno_id',$alumno_id)->where('clase_grupal_id',$clase_grupal_id)->first();
 
-        $estatu="no_asociado";
+      if($inscripcion_clase_grupal){
 
-        foreach ($ClasesAsociadas as $clasegrupal) {
-          if($clasegrupal->clase_grupal_id==$clase_id[0]){
-              $estatu="inscrito";
-          }
-        }
-          
-        if($estatu=="inscrito" OR $request->pertenece){
+        $estatu="inscrito";
 
-          $clase_grupal = ClaseGrupal::find($clase);
+      }else{
 
-          $credencial_alumno = CredencialAlumno::where('alumno_id',$id_alumno)->where('instructor_id',$clase_grupal->instructor_id)
+        $estatu="credencial";
+
+        $credencial_alumno = CredencialAlumno::where('alumno_id',$alumno_id)->whereIn('instructor_id',$in_credencial)
+          ->where('cantidad' ,'>', 0)
+        ->first();
+
+        if(!$credencial_alumno){
+
+          $credencial_otra_clase = CredencialAlumno::where('alumno_id',$alumno_id)
             ->where('cantidad' ,'>', 0)
           ->first();
 
-          if(!$credencial_alumno){
-
-            $credencial_alumno = CredencialAlumno::where('alumno_id',$id_alumno)
-              ->whereNull('instructor_id')
-              ->where('cantidad' ,'>', 0)
-            ->first();
-
-            if(!$credencial_alumno){
-
-              $credencial_otra_clase = CredencialAlumno::where('alumno_id',$id_alumno)
-                ->where('cantidad' ,'>', 0)
-              ->first();
-
-              if(!$credencial_otra_clase){
-                $credencial_mensaje = 'Ups! El alumno no posee las credenciales necesarias!';
-              }else{
-                $credencial_mensaje = 'Ups! El alumno posee credenciales pero no estan asociadas a esta clase grupal';
-              }
-              
-              $boolean_credencial = 0;
-
-            }else{
-              $boolean_credencial = 1;
-            }
+          if(!$credencial_otra_clase){
+            $estatu="no_asociado";
           }else{
-            $boolean_credencial = 1;
+            $credencial_mensaje = 'Ups! El alumno posee credenciales pero no estan asociadas a esta clase grupal';
           }
 
-          if($estatu=="inscrito" OR $credencial_alumno OR $request->credencial){
-
-            if(Session::has('pertenece')){
-              $pertenece = 0;
-            }else{
-              $pertenece = 1;
-            }
-
-            $actual = Carbon::now();
-            // $geoip = new GeoIP();
-            // $geoip->setIp($request->ip());
-            // $actual->tz = $geoip->getTimezone();
-
-            $fecha_actual=$actual->toDateString();
-            $hora_actual=$actual->toTimeString();
-
-            $asistencia = Asistencia::where('alumno_id',$id_alumno)
-              ->where('clase_grupal_id',$clase)
-              ->where('fecha',$fecha_actual)
-            ->first();
-
-            if(!$asistencia)
-            {
-
-              $asistencia = new Asistencia;
-              $asistencia->fecha=$fecha_actual;
-              $asistencia->hora=$hora_actual;
-              $asistencia->clase_grupal_id=$clase;
-              $asistencia->alumno_id=$id_alumno;
-              $asistencia->academia_id=Auth::user()->academia_id;
-              $asistencia->tipo = $clase_id[2];
-              $asistencia->tipo_id = $clase_id[3];
-              $asistencia->pertenece = $pertenece;
-              $asistencia->boolean_credencial = $boolean_credencial;
-            }
-
-            if($asistencia->save()){
-        
-              $inscripcion_clase_grupal = InscripcionClaseGrupal::onlyTrashed()
-                ->where('alumno_id',$id_alumno)
-                ->where('clase_grupal_id',$clase)
-                ->whereNotNull('deleted_at')
-              ->first();
-
-              if($inscripcion_clase_grupal){
-                $inscripcion_clase_grupal->deleted_at = null;
-                $inscripcion_clase_grupal->save();
-              }
-
-              if($credencial_alumno && $estatu!="inscrito")
-              {
-                $credencial_alumno->cantidad = $credencial_alumno->cantidad - 1;
-                $credencial_alumno->save();
-              }
-
-              Session::forget('pertenece');
-
-              return response()->json(['mensaje' => '¡Excelente! La Asistencia se han guardado satisfactoriamente','status' => 'OK', 200]);
-            }
-
-          }else{
-
-            Session::put('pertenece',0);
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_CREDENCIAL','text' => $credencial_mensaje, 'campo' => 'credencial'],422);
-          }
-          
-        }elseif($estatu=="no_asociado") {
-
-          return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_ASOCIADO', 'text' => "El alumno no se encuentra asociado a esta clase!", 'campo' => 'pertenece'],422);
-
+        }else{
+          $credencial_mensaje = 'El alumno no se encuentra asociado a esta clase pero posee credenciales, desea utilizar una ?';
         }
+      }
+        
+      if($estatu=="inscrito" OR $request->pertenece OR $request->credencial){
+
+        if(Session::has('no_pertenece')){
+          $pertenece = 0;
+        }else{
+          $pertenece = 1;
+        }
+
+        if(Session::has('boolean_credencial')){
+          $boolean_credencial = 1;
+        }else{
+          $boolean_credencial = 0;
+        }
+
+        $actual = Carbon::now();
+
+        $fecha_actual=$actual->toDateString();
+        $hora_actual=$actual->toTimeString();
+
+        $asistencia = Asistencia::where('alumno_id',$alumno_id)
+          ->where('clase_grupal_id',$clase_grupal_id)
+          ->where('fecha',$fecha_actual)
+        ->first();
+
+        if(!$asistencia){
+          $asistencia = new Asistencia;
+          $asistencia->fecha=$fecha_actual;
+          $asistencia->hora=$hora_actual;
+          $asistencia->clase_grupal_id=$clase_grupal_id;
+          $asistencia->alumno_id=$alumno_id;
+          $asistencia->academia_id=Auth::user()->academia_id;
+          $asistencia->tipo = $explode_clase_grupal[2];
+          $asistencia->tipo_id = $explode_clase_grupal[3];
+          $asistencia->pertenece = $pertenece;
+          $asistencia->boolean_credencial = $boolean_credencial;
+        }
+
+        if($asistencia->save()){
+    
+          $inscripcion_clase_grupal = InscripcionClaseGrupal::onlyTrashed()
+            ->where('alumno_id',$alumno_id)
+            ->where('clase_grupal_id',$clase_grupal_id)
+            ->whereNotNull('deleted_at')
+          ->first();
+
+          if($inscripcion_clase_grupal){
+            $inscripcion_clase_grupal->deleted_at = null;
+            $inscripcion_clase_grupal->save();
+          }
+
+          if($boolean_credencial && $estatu != "inscrito"){
+
+            $credencial_alumno = CredencialAlumno::where('alumno_id',$alumno_id)
+                ->whereIn('instructor_id', $in_credencial)
+            ->first();
+
+            if($credencial_alumno){
+
+              $cantidad = $credencial_alumno->cantidad - 1;
+
+              if($cantidad > 0){
+                $credencial_alumno->cantidad = $cantidad;
+                $credencial_alumno->save();
+              }else{
+                $credencial_alumno->delete();
+              }
+            }
+          }
+
+          Session::forget('no_pertenece');
+          Session::forget('boolean_credencial');
+
+          return response()->json(['mensaje' => '¡Excelente! La Asistencia se han guardado satisfactoriamente','status' => 'OK', 200]);
+        }
+
+      }else if($estatu=="credencial"){
+
+        Session::put('boolean_credencial',1);
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_CREDENCIAL','text' => $credencial_mensaje, 'campo' => 'credencial'],422);
+        
+      }else{
+
+        Session::put('no_pertenece',1);
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_ASOCIADO', 'text' => "El alumno no se encuentra asociado a esta clase!", 'campo' => 'pertenece'],422);
+
+      }
     }
   }
 
@@ -1814,7 +1814,8 @@ class AsistenciaController extends BaseController
     $inasistencias = 0;
     $explode=explode('-',$request->clase_grupal_id);
     $clase_grupal_id = $explode[0];
-    $instructor_id = array();
+    $in_credencial = array();
+    $in_credencial[] = 0;
 
     $tipo_clase = array(1,2);
 
@@ -1871,7 +1872,7 @@ class AsistenciaController extends BaseController
 
           $tipo_id = array();
           $tipo_id[] = intval($clase_grupal->id);
-          $instructor_id[] = intval($clase_grupal->instructor_id);
+          $in_credencial[] = intval($clase_grupal->instructor_id);
 
           // 1.1 -- ARRAY CREADO PARA ESTABLECER EL INDEX CON EL QUE SE COMENZARA A REALIZAR LA BUSQUEDA POR SI LA ULTIMA ASISTENCIA FUE REALIZADA EN UN MULTIHORARIO, ESTO CON LA FINALIDAD DE SABER QUE INDEX CORRESPONDE DESPUES EN LA CONSULTA
 
@@ -1888,7 +1889,7 @@ class AsistenciaController extends BaseController
           foreach($horarios_clases_grupales as $horario){
 
               $tipo_id[] = $horario->id;
-              $instructor_id[] = $horario->instructor_id;
+              $in_credencial[] = $horario->instructor_id;
 
               $fecha_horario = Carbon::createFromFormat('Y-m-d', $horario->fecha);
               $dia_horario = $fecha_horario->dayOfWeek;
@@ -2101,17 +2102,14 @@ class AsistenciaController extends BaseController
         $estatus="";
     }
 
-    $credenciales_clase_grupal = CredencialAlumno::where('alumno_id',$request->alumno_id)
-      ->whereIn('instructor_id', $instructor_id)
+    $credenciales = CredencialAlumno::where('alumno_id',$request->alumno_id)
+      ->whereIn('instructor_id', $in_credencial)
       ->where('cantidad' ,'>', 0)
     ->sum('cantidad');
 
-    $credenciales_generales = CredencialAlumno::where('alumno_id',$request->alumno_id)
-      ->whereNull('instructor_id')
-      ->where('cantidad' ,'>', 0)
-    ->sum('cantidad');
-
-    $credenciales = $credenciales_generales + $credenciales_clase_grupal;
+    if(!$credenciales){
+      $credenciales = 0;
+    }
 
     return response()->json(['mensaje' => '¡Excelente! Los datos se han generado satisfactoriamente', 'status' => 'OK', 'estatus' => $estatus, 'credenciales' => $credenciales, 200]);
 

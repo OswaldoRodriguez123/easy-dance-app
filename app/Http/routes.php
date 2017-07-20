@@ -1292,7 +1292,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('clases-grupales', 'ClaseGrupalController@clases_grupales_vista_instructor');
 		Route::get('clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
 		Route::get('agendar/clases-grupales/participantes/historial/{id}', 'ClaseGrupalController@historial_asistencia');
-		Route::post('agendar/clases-grupales/editarcredencial', 'ClaseGrupalController@editarcredencial');
+		Route::post('agendar/clases-grupales/agregar_credencial', 'ClaseGrupalController@agregar_credencial');
+		Route::delete('agendar/clases-grupales/eliminar_credencial/{id}', 'ClaseGrupalController@eliminar_credencial');
 		Route::get('agendar/clases-grupales/agenda/{id}', 'ClaseGrupalController@agenda');
 
 		//NIVELACIONES CLASES GRUPALES

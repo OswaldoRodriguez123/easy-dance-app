@@ -973,7 +973,7 @@ $("#permitir_staff").on('click',function(){
             success:function(respuesta){  
               console.log(respuesta)          
               if(respuesta.status=="OK"){
-                $('#modalAsistencia').modal('hidden');
+                $('#modalAsistencia').modal('hide');
                 
               }else{
                 var nType = 'danger';
@@ -1013,6 +1013,7 @@ $("#permitir_staff").on('click',function(){
         $("#asistencia-estado_ausencia").removeClass('c-verde')
         $("#asistencia-estado_ausencia").removeClass('c-amarillo')
         $("#asistencia-estado_ausencia").removeClass('c-rojo')
+        $('#asistencia-credenciales').text(0)
       })
 
       $('#modalAsistenciaInstructor').on('hidden.bs.modal', function (e) {
