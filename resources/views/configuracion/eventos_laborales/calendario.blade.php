@@ -126,7 +126,7 @@
                             className: '{{$actividad}}',
                             url: '{{$url}}',
                             cargo: '{{$evento->cargo}}',
-                            descripcion: '{{title_case($evento->descripcion)}}',
+                            descripcion: <?php echo json_encode(title_case($evento->descripcion)) ?>,
                         },
                         @endforeach 
             
