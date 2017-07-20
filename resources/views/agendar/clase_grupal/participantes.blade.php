@@ -1227,21 +1227,25 @@
 
                                                 <div class="dropup" dropdown-append-to-body>
                                                   <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
-                                                      <li class="hidden-xs">
-                                                          <a class="congelar_alumno"><i class="zmdi zmdi-close-circle-o f-20"></i>&nbsp;Congelar Alumno</a>
-                                                      </li>
 
-                                                      @if($alumno['activacion']) 
-                                                      
+                                                      @if($usuario_tipo != 3)
+
+                                                        @if($alumno['activacion']) 
+                                                        
+                                                          <li class="hidden-xs">
+                                                            <a class="activar"><i class="zmdi zmdi-alert-circle-o f-20"></i> Activar Cuenta</a>
+                                                          </li>
+
+                                                        @endif
+
                                                         <li class="hidden-xs">
-                                                          <a class="activar"><i class="zmdi zmdi-alert-circle-o f-20"></i> Activar Cuenta</a>
+                                                            <a class="congelar_alumno"><i class="zmdi zmdi-close-circle-o f-20"></i>&nbsp;Congelar Alumno</a>
                                                         </li>
 
+                                                        <li class="hidden-xs">
+                                                            <a class="modal_transferir"><i class="zmdi zmdi-trending-up f-20 p-r-10"></i> Transferir</a>
+                                                        </li>
                                                       @endif
-
-                                                      <li class="hidden-xs">
-                                                          <a class="modal_transferir"><i class="zmdi zmdi-trending-up f-20 p-r-10"></i> Transferir</a>
-                                                      </li>
 
                                                       <li class="hidden-xs">
                                                           <a class="credencial"><i class="zmdi icon_a-pagar f-20 p-r-10"></i> Credenciales</a>
@@ -1255,13 +1259,15 @@
                                                           <a href="{{url('/')}}/agendar/clases-grupales/participantes/historial/{{$id}}"><i class="zmdi zmdi-shield-check f-20"></i> Asistencia</a>
                                                       </li>
 
-                                                      <li class="hidden-xs">
-                                                          <a href="{{url('/')}}/participante/alumno/llamadas/{{$alumno_id}}"><i class="zmdi zmdi-phone f-20"></i> Llamadas</a>
-                                                      </li>
+                                                     @if($usuario_tipo != 3)
+                                                        <li class="hidden-xs">
+                                                            <a href="{{url('/')}}/participante/alumno/llamadas/{{$alumno_id}}"><i class="zmdi zmdi-phone f-20"></i> Llamadas</a>
+                                                        </li>
 
-                                                      <li class="hidden-xs">
-                                                          <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
-                                                      </li>
+                                                        <li class="hidden-xs">
+                                                            <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
+                                                        </li>
+                                                      @endif
 
 
                                                   </ul>
@@ -1362,77 +1368,6 @@
               }, 2000);
           }
 
-          t=$('#tablelistar').DataTable({
-          processing: true,
-          serverSide: false,
-          pageLength: 25,  
-          paging: false,
-          order: [[4, 'asc']],
-          fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).addClass( "text-center" );
-            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).attr( "onclick","previa(this)" );
-          },
-          language: {
-                          processing:     "Procesando ...",
-                          search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                          searchPlaceholder: "BUSCAR",
-                          lengthMenu:     "Mostrar _MENU_ Registros",
-                          info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                          infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                          infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                          infoPostFix:    "",
-                          loadingRecords: "...",
-                          zeroRecords:    "No se encontraron registros coincidentes",
-                          emptyTable:     "No hay datos disponibles en la tabla",
-                          paginate: {
-                              first:      "Primero",
-                              previous:   "Anterior",
-                              next:       "Siguiente",
-                              last:       "Ultimo"
-                          },
-                          aria: {
-                              sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                              sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                          }
-                      }
-          });
-
-          c=$('#tablecredencial').DataTable({
-            processing: true,
-            serverSide: false,
-            pageLength: 25,  
-            paging: false,
-            order: [[0, 'asc']],
-            fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-              $('td:eq(0),td:eq(1),td:eq(2)', nRow).addClass( "text-center" );
-              $('td:eq(0),td:eq(1)', nRow).addClass( "disabled" );
-            },
-            language: {
-                            processing:     "Procesando ...",
-                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                            searchPlaceholder: "BUSCAR",
-                            lengthMenu:     "Mostrar _MENU_ Registros",
-                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                            infoPostFix:    "",
-                            loadingRecords: "...",
-                            zeroRecords:    "No se encontraron registros coincidentes",
-                            emptyTable:     "No hay datos disponibles en la tabla",
-                            paginate: {
-                                first:      "Primero",
-                                previous:   "Anterior",
-                                next:       "Siguiente",
-                                last:       "Ultimo"
-                            },
-                            aria: {
-                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                            }
-                        }
-            });
-
-        });
 
           $('#fecha').daterangepicker({
             "autoApply" : false,
@@ -1466,14 +1401,87 @@
                     "Diciembre"
                 ],        
             }
+          });
+
+          $("#promociones").attr("checked", false); 
+          $("#ambas").attr("checked", true);
+          $("#boolean_franela").val('1'); 
+          $("#franela").attr("checked", true);
+          $("#boolean_programacion").val('1');
+          $("#programacion").attr("checked", true);
+
         });
 
-        $("#promociones").attr("checked", false); 
-        $("#ambas").attr("checked", true);
-        $("#boolean_franela").val('1'); 
-        $("#franela").attr("checked", true);
-        $("#boolean_programacion").val('1');
-        $("#programacion").attr("checked", true);
+
+        t=$('#tablelistar').DataTable({
+          processing: true,
+          serverSide: false,
+          pageLength: 25,  
+          paging: false,
+          order: [[4, 'asc']],
+          fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).addClass( "text-center" );
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).attr( "onclick","previa(this)" );
+          },
+          language: {
+                          processing:     "Procesando ...",
+                          search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                          searchPlaceholder: "BUSCAR",
+                          lengthMenu:     "Mostrar _MENU_ Registros",
+                          info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                          infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                          infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                          infoPostFix:    "",
+                          loadingRecords: "...",
+                          zeroRecords:    "No se encontraron registros coincidentes",
+                          emptyTable:     "No hay datos disponibles en la tabla",
+                          paginate: {
+                              first:      "Primero",
+                              previous:   "Anterior",
+                              next:       "Siguiente",
+                              last:       "Ultimo"
+                          },
+                          aria: {
+                              sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                              sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                          }
+                      }
+        });
+
+        c=$('#tablecredencial').DataTable({
+          processing: true,
+          serverSide: false,
+          pageLength: 25,  
+          paging: false,
+          order: [[0, 'asc']],
+          fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            $('td:eq(0),td:eq(1),td:eq(2)', nRow).addClass( "text-center" );
+            $('td:eq(0),td:eq(1)', nRow).addClass( "disabled" );
+          },
+          language: {
+                          processing:     "Procesando ...",
+                          search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                          searchPlaceholder: "BUSCAR",
+                          lengthMenu:     "Mostrar _MENU_ Registros",
+                          info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                          infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                          infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                          infoPostFix:    "",
+                          loadingRecords: "...",
+                          zeroRecords:    "No se encontraron registros coincidentes",
+                          emptyTable:     "No hay datos disponibles en la tabla",
+                          paginate: {
+                              first:      "Primero",
+                              previous:   "Anterior",
+                              next:       "Siguiente",
+                              last:       "Ultimo"
+                          },
+                          aria: {
+                              sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                              sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                          }
+                      }
+        });
 
         $("#franela").on('change', function(){
           if ($("#franela").is(":checked")){

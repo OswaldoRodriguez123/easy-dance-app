@@ -863,8 +863,8 @@ class ClaseGrupalController extends BaseController {
 
             if($usuario_tipo == 3){
                 $usuario_id = Session::get('easydance_usuario_id');
-                $credenciales = CredencialInstructor::where('instructor_id',$usuario_id)->first();
-                $total_credenciales = $credenciales->cantidad;
+                $credenciales_instructor = CredencialInstructor::where('instructor_id',$usuario_id)->first();
+                $total_credenciales = $credenciales_instructor->cantidad;
             }else{
                 $total_credenciales = 0;
             }
@@ -1933,7 +1933,10 @@ class ClaseGrupalController extends BaseController {
             $usuario_id = $datos[0]['usuario_id'];
             $usuario_tipo = $datos[0]['usuario_tipo'];
 
-            if($usuario_tipo == 3){
+            if($usuario_tipo != 3){
+                $instructor_id = '';
+            
+            }else{
 
                 $credencial_instructor = CredencialInstructor::where('instructor_id', $usuario_id)->first();
 
@@ -1958,8 +1961,7 @@ class ClaseGrupalController extends BaseController {
                 }else{
                     return response()->json(['error_mensaje'=> 'Ups! No posees la cantidad de credenciales necesarias' , 'status' => 'ERROR-CREDENCIAL1'],422);
                 }
-            }else{
-                $instructor_id = '';
+                
             }
             
             $credencial_alumno = new CredencialAlumno;
