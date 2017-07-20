@@ -311,5 +311,9 @@
 
         });
 
+        $('#tablelistar').on('draw.dt', function() {
+            $('[data-toggle="popover"]').popover();
+        });
+
     </script>
 @stop
