@@ -1940,7 +1940,7 @@ class ClaseGrupalController extends BaseController {
 
                 $credencial_instructor = CredencialInstructor::where('instructor_id', $usuario_id)->first();
 
-                if(!$credencial_instructor){
+                if($credencial_instructor){
 
                     $total = $credencial_instructor->cantidad - $request->cantidad;
 

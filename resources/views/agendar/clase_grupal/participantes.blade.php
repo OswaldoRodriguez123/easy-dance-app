@@ -884,7 +884,9 @@
                                         <tr>
                                             <th class="text-center" data-column-id="cantidad">Cantidad</th>
                                             <th class="text-center" data-column-id="fecha_vencimiento">Fecha de Vencimiento</th>
-                                            <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
+                                            @if($usuario_tipo != 3)
+                                              <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -2203,7 +2205,9 @@
                       var rowNode=c.row.add( [
                         ''+respuesta.credencial_alumno.cantidad+'',
                         ''+respuesta.fecha_vencimiento+'',
-                        '<i class="zmdi zmdi-delete f-20 p-r-10 pointer">'
+                        @if($usuario_tipo != 3)
+                          '<i class="zmdi zmdi-delete f-20 p-r-10 pointer">'
+                        @endif
                       ] ).draw(false).node();
                       $( rowNode )
                         .attr('id',rowId)
@@ -2212,7 +2216,7 @@
                       $('#form_credencial')[0].reset();
 
                       @if($usuario_tipo == 3)
-                        total = parseInt($('#total_credenciales').text()) - parseInt(respuesta.inscripcion.cantidad);
+                        total = parseInt($('#total_credenciales').text()) - parseInt(respuesta.credencial_alumno.cantidad);
                         $('#total_credenciales').text(total);
                       @endif
 
