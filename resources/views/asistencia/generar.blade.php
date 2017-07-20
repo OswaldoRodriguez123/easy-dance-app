@@ -53,7 +53,7 @@
                               
                        </div>
 
-                       <div class="col-sm-5">
+                       <div class="col-sm-4">
                          <div class="form-group fg-line">
 
                             <table class="table table-striped table-bordered historial">
@@ -65,12 +65,17 @@
                           </div>
                        </div>
 
-                       <div class="col-sm-4">
-                         <div class="form-group fg-line">
-                            <label for="asistencia-estado_ausencia" class="f-16">Estado de ausencia</label>
+                       <div class="col-sm-5">
+                          <div class="col-sm-6">
+                            <label for="asistencia-estado_ausencia" class="f-16">Estatus de C</label>
                             <div class="clearfix p-b-15"></div>
                             <span class="text-center"><i id="asistencia-estado_ausencia" class="zmdi zmdi-label-alt-outline f-20"></i></span>
-                         </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <label for="asistencia-credenciales" class="f-16">Credenciales</label>
+                            <div class="clearfix p-b-15"></div>
+                            <span class="text-center" id="asistencia-credenciales">0</span>
+                          </div>
                        </div>
                        
 
@@ -716,6 +721,7 @@ $("#permitir_staff").on('click',function(){
           success:function(respuesta){
 
             $("#asistencia-estado_ausencia").addClass(respuesta.estatus)
+            $("#asistencia-credenciales").text(respuesta.credenciales)
 
           },
           error:function (msj, ajaxOptions, thrownError){

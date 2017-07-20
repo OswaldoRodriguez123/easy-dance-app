@@ -656,7 +656,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('agendar/clases-grupales/alumnos/eliminar', 'ClaseGrupalController@eliminarAlumnos');
 		Route::post('agendar/clases-grupales/agregarhorario', 'ClaseGrupalController@agregarhorario');
 		Route::post('agendar/clases-grupales/eliminarhorario/{id}', 'ClaseGrupalController@eliminarhorario');
-		Route::get('agendar/clases-grupales/agenda/{id}', 'ClaseGrupalController@agenda');
 		Route::get('agendar/clases-grupales/riesgo-ausencia', 'ClaseGrupalController@riesgo_ausencia');
 		Route::get('agendar/clases-grupales/riesgo-ausencia/historial/{id}', 'ClaseGrupalController@historial_asistencia_general');
 		Route::post('agendar/clases-grupales/consulta-estatus-alumnos', 'ClaseGrupalController@consulta_estatus_alumnos');
@@ -1293,6 +1292,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
 		Route::get('agendar/clases-grupales/participantes/historial/{id}', 'ClaseGrupalController@historial_asistencia');
 		Route::post('agendar/clases-grupales/editarcredencial', 'ClaseGrupalController@editarcredencial');
+		Route::get('agendar/clases-grupales/agenda/{id}', 'ClaseGrupalController@agenda');
 
 		//NIVELACIONES CLASES GRUPALES
 

@@ -1814,12 +1814,13 @@ class AsistenciaController extends BaseController
     $inasistencias = 0;
     $explode=explode('-',$request->clase_grupal_id);
     $clase_grupal_id = $explode[0];
+    $instructor_id = array();
 
     $tipo_clase = array(1,2);
 
     $clase_grupal = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
         ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-        ->select('clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'config_clases_grupales.asistencia_rojo', 'config_clases_grupales.asistencia_amarilla', 'inscripcion_clase_grupal.fecha_inscripcion', 'clases_grupales.id')
+        ->select('clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'config_clases_grupales.asistencia_rojo', 'config_clases_grupales.asistencia_amarilla', 'inscripcion_clase_grupal.fecha_inscripcion', 'clases_grupales.id', 'clases_grupales.instructor_id')
         ->where('inscripcion_clase_grupal.alumno_id', $request->alumno_id)
         ->where('inscripcion_clase_grupal.clase_grupal_id', $clase_grupal_id)
         ->where('clases_grupales.deleted_at', null)
@@ -1870,6 +1871,7 @@ class AsistenciaController extends BaseController
 
           $tipo_id = array();
           $tipo_id[] = intval($clase_grupal->id);
+          $instructor_id[] = intval($clase_grupal->instructor_id);
 
           // 1.1 -- ARRAY CREADO PARA ESTABLECER EL INDEX CON EL QUE SE COMENZARA A REALIZAR LA BUSQUEDA POR SI LA ULTIMA ASISTENCIA FUE REALIZADA EN UN MULTIHORARIO, ESTO CON LA FINALIDAD DE SABER QUE INDEX CORRESPONDE DESPUES EN LA CONSULTA
 
@@ -1886,6 +1888,8 @@ class AsistenciaController extends BaseController
           foreach($horarios_clases_grupales as $horario){
 
               $tipo_id[] = $horario->id;
+              $instructor_id[] = $horario->instructor_id;
+
               $fecha_horario = Carbon::createFromFormat('Y-m-d', $horario->fecha);
               $dia_horario = $fecha_horario->dayOfWeek;
 
@@ -2097,7 +2101,19 @@ class AsistenciaController extends BaseController
         $estatus="";
     }
 
-    return response()->json(['mensaje' => '¡Excelente! Los datos se han generado satisfactoriamente', 'status' => 'OK', 'estatus' => $estatus, 200]);
+    $credenciales_clase_grupal = CredencialAlumno::where('alumno_id',$request->alumno_id)
+      ->whereIn('instructor_id', $instructor_id)
+      ->where('cantidad' ,'>', 0)
+    ->sum('cantidad');
+
+    $credenciales_generales = CredencialAlumno::where('alumno_id',$request->alumno_id)
+      ->whereNull('instructor_id')
+      ->where('cantidad' ,'>', 0)
+    ->sum('cantidad');
+
+    $credenciales = $credenciales_generales + $credenciales_clase_grupal;
+
+    return response()->json(['mensaje' => '¡Excelente! Los datos se han generado satisfactoriamente', 'status' => 'OK', 'estatus' => $estatus, 'credenciales' => $credenciales, 200]);
 
   }
 

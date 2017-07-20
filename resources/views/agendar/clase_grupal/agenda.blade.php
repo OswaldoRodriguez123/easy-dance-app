@@ -21,21 +21,23 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-grupales/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
-                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+                        <?php $url = "/agendar/clases-grupales/detalle/$id" ?>
+                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                            <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
-                            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
-                                            
-                            <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
-                                            
-                            <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
-                                            
-                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
-                                           
-                            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
-                            
-                        </ul>
+                                <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
+                                                
+                                <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
+                                                
+                                <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
+                                                
+                                <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
+                                               
+                                <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+                                
+                            </ul>
+                        @endif
                     </div> 
                     
                     <div class="card">
@@ -80,7 +82,9 @@
                                     <th class="text-center" data-column-id="horario" data-order="desc">Horario</th>
                                     <th class="text-center" data-column-id="especialidad" data-order="desc">Especialidad</th>
                                     <th class="text-center" data-column-id="instructor" data-order="desc">Instructor</th>
-                                    <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
+                                    @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                                        <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
@@ -92,21 +96,23 @@
                                     <td class="text-center previa">{{$fecha['hora_inicio']}} - {{$fecha['hora_final']}}</td>
                                     <td class="text-center previa">{{$fecha['especialidad']}}</td>
                                     <td class="text-center previa">{{$fecha['instructor']}}</td>
-                                    <td class="text-center disabled"> 
-                                        @if($fecha['tipo'] == 'activa')
-                                            <i name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>
+                                    @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                                        <td class="text-center disabled"> 
+                                            @if($fecha['tipo'] == 'activa')
+                                                <i name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>
+                                                
+                                            @else
+                                                <i name = "pop-activar" id = "pop-activar" aria-describedby="popoveractivar" class="zmdi zmdi-close-circle f-20 c-youtube p-r-10 disabled" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Esta clase ha sido cancelada, si desea activarla haga click en el siguiente enlace <br> 
+
+                                                <div class='text-center'>
+
+                                                    <span id = '{{$fecha['bloqueo_id']}}' class='activar pointer f-700 c-azul'>Activar</span>
+
+                                                </div>" title="" data-original-title="Ayuda" data-html="true"></i>
+                                            @endif
                                             
-                                        @else
-                                            <i name = "pop-activar" id = "pop-activar" aria-describedby="popoveractivar" class="zmdi zmdi-close-circle f-20 c-youtube p-r-10 disabled" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Esta clase ha sido cancelada, si desea activarla haga click en el siguiente enlace <br> 
-
-                                            <div class='text-center'>
-
-                                                <span id = '{{$fecha['bloqueo_id']}}' class='activar pointer f-700 c-azul'>Activar</span>
-
-                                            </div>" title="" data-original-title="Ayuda" data-html="true"></i>
-                                        @endif
-                                        
-                                    </td>
+                                        </td>
+                                    @endif
                                 </tr>
 
                             @endforeach  

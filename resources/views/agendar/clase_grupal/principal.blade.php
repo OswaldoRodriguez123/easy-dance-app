@@ -147,15 +147,11 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <!--<th class="text-center" data-column-id="id" data-type="numeric">Id</th>
-                                    <th class="text-center" data-column-id="sexo">Sexo</th>-->
                                     <th class="text-center" data-column-id="inicio" data-order="desc"></th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="instructor" data-order="desc">Instructor</th>
                                     <th class="text-center" data-column-id="especialidad" data-order="desc">Especialidad</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Final]</th>
-                                    <!--<th class="text-center" data-column-id="estatu_c" data-order="desc">Estatus C</th>
-                                    <th class="text-center" data-column-id="estatu_e" data-order="desc">Estatus E</th>-->
                                     <th class="text-center operacion" data-column-id="operacion" data-order="desc">Operaciones</th>
                                 </tr>
                             </thead>
@@ -198,6 +194,7 @@
 
         var i;
         var hoy;
+        var pagina = document.location.origin
 
         $(document).ready(function(){
 
@@ -364,75 +361,75 @@
                 
             });
 
-            var pagina = document.location.origin
-
             $.each(clase_grupal, function (index, array) {
 
-                    operacion = ''
-                    if(array.inicio == 0){
-                        inicio = '<i class="zmdi zmdi-star zmdi-hc-fw zmdi-hc-fw c-amarillo f-20" data-html="true" data-original-title="" data-content="Esta clase grupal no ha comenzado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
-                    }else{
-                        inicio = '';
-                    }
+                operacion = ''
+                if(array.inicio == 0){
+                    inicio = '<i class="zmdi zmdi-star zmdi-hc-fw zmdi-hc-fw c-amarillo f-20" data-html="true" data-original-title="" data-content="Esta clase grupal no ha comenzado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
+                }else{
+                    inicio = '';
+                }
 
-                    operacion += '<ul class="top-menu">'
-                    operacion += '<li id = dropdown_'+array.id+' class="dropdown">' 
-                    operacion += '<a id = dropdown_toggle_'+array.id+' href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">' 
-                    operacion += '<span class="f-15 f-700" style="color:black">'
-                    operacion += '<i class="zmdi zmdi-wrench f-20 mousedefault" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=""></i>'
-                    operacion += '</span></a>'
-                    operacion += '<div class="dropup">'
-                    operacion += '<ul class="dropdown-menu dm-icon pull-right" style="position:absolute;">'
-                    operacion += '<li class="hidden-xs">'
-                    operacion += '<a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/nivelaciones/'+array.id+'">'
-                    operacion += '<i class="icon_a-niveles f-16 m-r-10 boton blue"></i>'
-                    operacion += '&nbsp;Nivelaciones'
-                    operacion += '</a></li>'
-                    operacion += '<li class="hidden-xs">'
-                    operacion += '<a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/participantes/'+array.id+'">'
-                    operacion += '<i class="icon_a-participantes f-16 m-r-10 boton blue"></i>'
-                    operacion += 'Participantes'
-                    operacion += '</a></li>'
-                    operacion += '<li class="hidden-xs">'
-                    operacion += '<a onclick="procesando()" href="'+pagina+'/especiales/examenes/agregar/'+array.id+'">'
-                    operacion += '<i class="icon_a-examen f-16 m-r-10 boton blue"></i>'
-                    operacion += 'Valorar'
-                    operacion += '</a></li>'
-                    operacion += '<li class="hidden-xs">'
-                    operacion += '<a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/agenda/'+array.id+'">'
-                    operacion += '<i class="zmdi zmdi-eye f-16 boton blue"></i>'
-                    operacion += 'Ver Agenda'
-                    operacion += '</a></li>'
-                    operacion += '<li class="hidden-xs"> <a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/multihorario/'+array.id+'">'
-                    operacion += '<i class="zmdi zmdi-calendar-note f-16 boton blue"></i>'
-                    operacion += 'Multihorario'
-                    operacion += '</a></li>'
-                    operacion += '<li class="hidden-xs"> <a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/progreso/'+array.id+'">'
-                    operacion += '<i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i>' 
-                    operacion += 'Ver Progreso'
-                    operacion += '</a></li>'
-                    operacion += '<li class="hidden-xs"><a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/canceladas/'+array.id+'">'
-                    operacion += '<i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i>'
-                    operacion += 'Cancelar Clase'
-                    operacion += '</a></li>'
-                    operacion += '<li class="hidden-xs eliminar"><a class="pointer eliminar">'
-                    operacion += '<i class="zmdi zmdi-delete f-20 boton red sa-warning"></i>'
-                    operacion += 'Eliminar Clase'
-                    operacion += '</a></li>'
-                    operacion += '</ul></div></li></ul>'
-       
-                    var rowNode=t.row.add( [
-                    ''+inicio+'',
-                    ''+array.clase_grupal_nombre+'',
-                    ''+array.instructor_nombre+ ' ' +array.instructor_apellido+ '',
-                    ''+array.especialidad_nombre+'',
-                    ''+array.hora_inicio+ ' '+array.hora_final+'',
-                    ''+operacion+''
-                    ] ).draw(false).node();
-                    $( rowNode )
-                        .attr('id',array.id)
-                        .addClass('seleccion');
-                });
+                operacion += '<ul class="top-menu">'
+                operacion += '<li id = dropdown_'+array.id+' class="dropdown">' 
+                operacion += '<a id = dropdown_toggle_'+array.id+' href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">' 
+                operacion += '<span class="f-15 f-700" style="color:black">'
+                operacion += '<i class="zmdi zmdi-wrench f-20 mousedefault" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=""></i>'
+                operacion += '</span></a>'
+                operacion += '<div class="dropup">'
+                operacion += '<ul class="dropdown-menu dm-icon pull-right" style="position:absolute;">'
+                operacion += '<li class="hidden-xs">'
+                operacion += '<a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/nivelaciones/'+array.id+'">'
+                operacion += '<i class="icon_a-niveles f-16 m-r-10 boton blue"></i>'
+                operacion += '&nbsp;Nivelaciones'
+                operacion += '</a></li>'
+                operacion += '<li class="hidden-xs">'
+                operacion += '<a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/participantes/'+array.id+'">'
+                operacion += '<i class="icon_a-participantes f-16 m-r-10 boton blue"></i>'
+                operacion += 'Participantes'
+                operacion += '</a></li>'
+                operacion += '<li class="hidden-xs">'
+                operacion += '<a onclick="procesando()" href="'+pagina+'/especiales/examenes/agregar/'+array.id+'">'
+                operacion += '<i class="icon_a-examen f-16 m-r-10 boton blue"></i>'
+                operacion += 'Valorar'
+                operacion += '</a></li>'
+                operacion += '<li class="hidden-xs">'
+                operacion += '<a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/agenda/'+array.id+'">'
+                operacion += '<i class="zmdi zmdi-eye f-16 boton blue"></i>'
+                operacion += 'Ver Agenda'
+                operacion += '</a></li>'
+                operacion += '<li class="hidden-xs"> <a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/multihorario/'+array.id+'">'
+                operacion += '<i class="zmdi zmdi-calendar-note f-16 boton blue"></i>'
+                operacion += 'Multihorario'
+                operacion += '</a></li>'
+                operacion += '<li class="hidden-xs"> <a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/progreso/'+array.id+'">'
+                operacion += '<i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i>' 
+                operacion += 'Ver Progreso'
+                operacion += '</a></li>'
+                operacion += '<li class="hidden-xs"><a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/canceladas/'+array.id+'">'
+                operacion += '<i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i>'
+                operacion += 'Cancelar Clase'
+                operacion += '</a></li>'
+                operacion += '<li class="hidden-xs eliminar"><a class="pointer eliminar">'
+                operacion += '<i class="zmdi zmdi-delete f-20 boton red sa-warning"></i>'
+                operacion += 'Eliminar Clase'
+                operacion += '</a></li>'
+                operacion += '</ul></div></li></ul>'
+   
+                var rowNode=t.row.add( [
+                ''+inicio+'',
+                ''+array.clase_grupal_nombre+'',
+                ''+array.instructor_nombre+ ' ' +array.instructor_apellido+ '',
+                ''+array.especialidad_nombre+'',
+                ''+array.hora_inicio+ ' '+array.hora_final+'',
+                ''+operacion+''
+                ] ).draw(false).node();
+                $( rowNode )
+                    .attr('id',array.id)
+                    .addClass('seleccion');
+            });
+
+            $('[data-toggle="popover"]').popover(); 
         }
 
     function previa(t){
