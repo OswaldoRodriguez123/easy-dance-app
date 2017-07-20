@@ -96,7 +96,7 @@
 
                                         $contenido = '<p class="c-negro">' .
 
-                                        $evento['descripcion'].'</p>';
+                                        title_case($evento['descripcion']).'</p>';
                       
                                     ?>
 

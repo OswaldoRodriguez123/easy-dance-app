@@ -126,7 +126,7 @@
                             className: '{{$actividad}}',
                             url: '{{$url}}',
                             cargo: '{{$evento->cargo}}',
-                            descripcion: '{{$evento->descripcion}}',
+                            descripcion: '{{title_case($evento->descripcion)}}',
                         },
                         @endforeach 
             

@@ -280,7 +280,6 @@
 
   var staffs = <?php echo json_encode($staffs);?>;
 
-
   $(document).ready(function(){
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInDownBig';
@@ -304,7 +303,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["staff_id", "cargo", "fecha", "hora_inicio", "hora_final"];
+    var campo = ["staff_id", "cargo", "fecha", "hora_inicio", "hora_final", "descripcion"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -348,46 +347,46 @@
   }
 
   function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
-                $.growl({
-                    icon: icon,
-                    title: titulo,
-                    message: mensaje,
-                    url: ''
-                },{
-                        element: 'body',
-                        type: type,
-                        allow_dismiss: true,
-                        placement: {
-                                from: from,
-                                align: align
-                        },
-                        offset: {
-                            x: 20,
-                            y: 85
-                        },
-                        spacing: 10,
-                        z_index: 1070,
-                        delay: 2500,
-                        timer: 2000,
-                        url_target: '_blank',
-                        mouse_over: false,
-                        animate: {
-                                enter: animIn,
-                                exit: animOut
-                        },
-                        icon_type: 'class',
-                        template: '<div data-growl="container" class="alert" role="alert">' +
-                                        '<button type="button" class="close" data-growl="dismiss">' +
-                                            '<span aria-hidden="true">&times;</span>' +
-                                            '<span class="sr-only">Close</span>' +
-                                        '</button>' +
-                                        '<span data-growl="icon"></span>' +
-                                        '<span data-growl="title"></span>' +
-                                        '<span data-growl="message"></span>' +
-                                        '<a href="#" data-growl="url"></a>' +
-                                    '</div>'
-                });
-            };
+      $.growl({
+          icon: icon,
+          title: titulo,
+          message: mensaje,
+          url: ''
+      },{
+              element: 'body',
+              type: type,
+              allow_dismiss: true,
+              placement: {
+                      from: from,
+                      align: align
+              },
+              offset: {
+                  x: 20,
+                  y: 85
+              },
+              spacing: 10,
+              z_index: 1070,
+              delay: 2500,
+              timer: 2000,
+              url_target: '_blank',
+              mouse_over: false,
+              animate: {
+                      enter: animIn,
+                      exit: animOut
+              },
+              icon_type: 'class',
+              template: '<div data-growl="container" class="alert" role="alert">' +
+                              '<button type="button" class="close" data-growl="dismiss">' +
+                                  '<span aria-hidden="true">&times;</span>' +
+                                  '<span class="sr-only">Close</span>' +
+                              '</button>' +
+                              '<span data-growl="icon"></span>' +
+                              '<span data-growl="title"></span>' +
+                              '<span data-growl="message"></span>' +
+                              '<a href="#" data-growl="url"></a>' +
+                          '</div>'
+      });
+  };
 
   $("#guardar").click(function(){
 
@@ -453,7 +452,7 @@
      
 
       function limpiarMensaje(){
-        var campo = ["staff_id", "fecha", "hora_inicio", "hora_final", "cargo"];
+        var campo = ["staff_id", "fecha", "hora_inicio", "hora_final", "cargo", "descripcion"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
