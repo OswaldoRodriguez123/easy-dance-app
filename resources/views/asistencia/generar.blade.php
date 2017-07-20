@@ -719,10 +719,8 @@ $("#permitir_staff").on('click',function(){
           dataType: 'json',
           data:"&alumno_id="+alumno_id+"&clase_grupal_id="+clase_grupal_id,
           success:function(respuesta){
-
             $("#asistencia-estado_ausencia").addClass(respuesta.estatus)
             $("#asistencia-credenciales").text(respuesta.credenciales)
-
           },
           error:function (msj, ajaxOptions, thrownError){
             setTimeout(function(){ 
@@ -762,7 +760,7 @@ $("#permitir_staff").on('click',function(){
       }
     });
 
-     function buscarStaff(t){
+    function buscarStaff(t){
         procesando();
 
         var row = $(t).closest('tr');

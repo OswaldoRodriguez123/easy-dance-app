@@ -74,6 +74,7 @@ class EventoLaboralController extends BaseController
 	        'nombre' => 'required',
 	        'hora_inicio' => 'required',
 	        'hora_final' => 'required',
+	        'descripcion' => 'max:250',
 	    ];
 
 	    $messages = [
@@ -121,6 +122,7 @@ class EventoLaboralController extends BaseController
 	        $evento->hora_inicio = $request->hora_inicio;
 	        $evento->hora_final = $request->hora_final;
 	        $evento->color_etiqueta = $request->color_etiqueta;
+	        $evento->descripcion = $request->descripcion;
 
 	        if($evento->save()){
 	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
@@ -290,6 +292,17 @@ class EventoLaboralController extends BaseController
 	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
 	        }
 	    }
+    }
+
+    public function updateDescripcion(Request $request){
+        $evento = EventoLaboral::find($request->id);
+        $evento->descripcion = $request->descripcion;
+
+        if($evento->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
     public function destroy($id)

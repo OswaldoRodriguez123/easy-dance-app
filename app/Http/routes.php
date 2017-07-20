@@ -360,6 +360,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::put('configuracion/eventos-laborales/update/fecha', 'EventoLaboralController@updateFecha');
 		Route::put('configuracion/eventos-laborales/update/horario', 'EventoLaboralController@updateHorario');
 		Route::put('configuracion/eventos-laborales/update/etiqueta', 'EventoLaboralController@updateEtiqueta');
+		Route::put('configuracion/eventos-laborales/update/descripcion', 'EventoLaboralController@updateDescripcion');
 
 		//PAQUETES 
 

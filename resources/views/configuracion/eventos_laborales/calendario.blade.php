@@ -126,6 +126,7 @@
                             className: '{{$actividad}}',
                             url: '{{$url}}',
                             cargo: '{{$evento->cargo}}',
+                            descripcion: '{{$evento->descripcion}}',
                         },
                         @endforeach 
             
@@ -185,6 +186,18 @@
 
                     },
                     eventRender: function(event, eventElement) {
+
+                        var contenido = 'Evento: ' + event.title + '<br>'
+                        contenido += 'Descripción: ' + event.descripcion + '<br>'
+                       
+                        $(eventElement).attr('data-trigger','hover');
+                        $(eventElement).attr('data-toggle','popover');
+                        $(eventElement).attr('data-placement','top');
+                        $(eventElement).attr('data-content','<p class="c-negro">'+contenido+'</p>');
+                        $(eventElement).attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;');
+                        $(eventElement).attr('data-container','body');
+                        $(eventElement).attr('data-html','true');
+                        $(eventElement).attr('title','');
                         
                         cargo = $('#cargo').val();
 
@@ -324,6 +337,10 @@
                 $('.fc-toolbar').css('background-image',"url('{{url('/')}}/assets/img/eventos_laborales_header.jpg')");
 
 
-            });                        
+            }); 
+
+            $('body').click(function() {
+                $('[data-toggle="popover"]').popover(); 
+            });                       
         </script>
 @stop

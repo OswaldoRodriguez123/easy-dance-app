@@ -315,6 +315,60 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalDescripcion-Evento" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Evento<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_descripcion_evento" id="edit_descripcion_evento"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="fg-line">
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="250 Caracteres" maxlength="250" onkeyup="countChar(this)">{{$evento->descripcion}}</textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">250</span> Caracteres</div>
+                                    <div class="has-error" id="error-descripcion">
+                                      <span >
+                                          <small id="error-descripcion_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <input type="hidden" name="id" value="{{$evento->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_descripcion_evento" data-update="descripcion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+
             <section id="content">
                 <div class="container">
                 
@@ -424,6 +478,14 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="evento-hora_inicio">{{$evento->hora_inicio}}</span> - <span id="evento-hora_final">{{$evento->hora_final}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalDescripcion-Evento">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-descripcion" class="zmdi {{ empty($evento->descripcion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
+                               <span class="f-14"> Descripción </span>
+                             </td>
+                             <td id="evento-descripcion" class="f-14 m-l-15 capitalize" data-valor="{{$evento->descripcion}}" >{{ str_limit($evento->descripcion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-Evento">
                                <td>
                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-color_etiqueta" class="zmdi  {{ empty($evento->color_etiqueta) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -528,6 +590,9 @@
           }else if(c.name=='color_etiqueta'){
             $("#evento-"+c.name).text(c.value);
             $("#color_etiqueta_container").css('background-color',c.value);
+          }else if(c.name=='descripcion'){
+             $("#evento-"+c.name).data('valor',c.value);
+             $("#evento-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
           }else{
             $("#evento-"+c.name).text(c.value.toLowerCase());
           }
@@ -704,6 +769,15 @@
                                 }
                 });
       }
+
+  function countChar(val) {
+    var len = val.value.length;
+    if (len >= 250) {
+      val.value = val.value.substring(0, 250);
+    } else {
+      $('#charNum').text(250 - len);
+    }
+  };
     
    </script> 
 

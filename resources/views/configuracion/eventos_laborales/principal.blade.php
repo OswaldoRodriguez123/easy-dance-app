@@ -26,7 +26,7 @@
                     <div class="block-header">
                         @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
                             <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menú Principal</a>
-                            <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+
                             <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
                                 <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -89,22 +89,32 @@
                             <tbody class="text-center" >
 
                                 @foreach($eventos as $evento)
-                                    <?php $id = $evento['id']; ?>
+                                    <?php 
+                                        $id = $evento['id']; 
+
+                                        $contenido = '';
+
+                                        $contenido = '<p class="c-negro">' .
+
+                                        $evento['descripcion'].'</p>';
+                      
+                                    ?>
+
                                     @if($evento['tipo'] == 'A')
-                                        <tr id="{{$id}}" class="seleccion" data-tipo = "1">
+                                        <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion">
                                     @else
                                         <tr id="{{$id}}" class="seleccion seleccion_deleted" data-tipo = "2">
                                     @endif
 
-                                        <td class="text-center previa"><span style="display: none">{{$evento['tipo']}}</span></td>
-                                        <td class="text-center previa">{{$evento['staff_nombre']}} {{$evento['staff_apellido']}}</td>
-                                        <td class="text-center previa">{{$evento['nombre']}}</td>
-                                        <td class="text-center previa">{{$evento['fecha']}}</td>
-                                        <td class="text-center previa">
-                                            @if($evento['tipo'] == 'A')
-                                                <i class="zmdi zmdi-delete eliminar f-20 p-r-10"></i>
-                                            @endif
-                                        </td>
+                                    <td class="text-center previa"><span style="display: none">{{$evento['tipo']}}</span></td>
+                                    <td class="text-center previa">{{$evento['staff_nombre']}} {{$evento['staff_apellido']}}</td>
+                                    <td class="text-center previa">{{$evento['nombre']}}</td>
+                                    <td class="text-center previa">{{$evento['fecha']}}</td>
+                                    <td class="text-center previa">
+                                        @if($evento['tipo'] == 'A')
+                                            <i class="zmdi zmdi-delete eliminar f-20 p-r-10"></i>
+                                        @endif
+                                    </td>
                                         
 
                                     </tr>

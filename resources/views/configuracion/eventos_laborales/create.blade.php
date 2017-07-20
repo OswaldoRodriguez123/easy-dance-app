@@ -55,7 +55,7 @@
                             <div class="clearfix p-b-15"></div>
                                 <div class="col-sm-12">
                                  
-                                    <label for="cargo" id="id-cargo">Cargo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el cargo a supervisar" title="" data-original-title="Ayuda"></i>
+                                    <label for="cargo" id="id-cargo">Cargo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el cargo de la actividad" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
@@ -81,7 +81,7 @@
 
                               <div class="col-sm-12">
                                  
-                                    <label for="cargo" id="id-staff_id">Staff</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el supervisor" title="" data-original-title="Ayuda"></i>
+                                    <label for="cargo" id="id-staff_id">Staff</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el staff" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
@@ -126,7 +126,7 @@
 
                                 <div class="col-sm-12">
                                     
-                                      <label for="fecha" id="id-fecha">Fecha</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el día de la cita que vas a crear" title="" data-original-title="Ayuda"></i>
+                                      <label for="fecha" id="id-fecha">Fecha</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el día de la actividad que vas a crear" title="" data-original-title="Ayuda"></i>
                                       <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
                                       <div class="dtp-container fg-line">
@@ -150,7 +150,7 @@
 
                               <div class="col-xs-6">
                                  
-                                      <label for="fecha_inicio" id="id-hora_inicio">Horario</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Define la hora de la cita" title="" data-original-title="Ayuda"></i>
+                                      <label for="fecha_inicio" id="id-hora_inicio">Horario</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Define la hora de la actividad" title="" data-original-title="Ayuda"></i>
 
                                       <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
@@ -180,13 +180,29 @@
                                   </div>
                                </div>
 
-                              
+                               <div class="clearfix p-b-35"></div>
 
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="descripcion" id="id-descripcion">Descripción</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la descripción de la actividad" title="" data-original-title="Ayuda"></i>
+                                    <div class="fg-line">
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="250 Caracteres" maxlength="2000" onkeyup="countChar(this)"></textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">250</span> Caracteres</div>
+                                 </div>
+                                 <div class="has-error" id="error-descripcion">
+                                      <span >
+                                          <small class="help-block error-span" id="error-descripcion_mensaje"  ></small>                                           
+                                      </span>
+                                  </div>
+                               </div>
+
+                          
                             <div class="clearfix p-b-35"></div>
 
                              <div class="col-sm-12">
                                     <div class="cp-container">
-                                        <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un color de etiqueta para la cita que será visualizado por tus alumnos e instructores en el calendario de eventos" title="" data-original-title="Ayuda"></i>
+                                        <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un color de etiqueta para la actividad que será visualizado en el calendario de eventos" title="" data-original-title="Ayuda"></i>
                                         <div class="input-group form-group">
 
                                             <span class="input-group-addon"><i class="zmdi zmdi-invert-colors f-22"></i></span>
@@ -531,6 +547,15 @@
       $('#staff_id').selectpicker('refresh');
 
     });
+
+   function countChar(val) {
+    var len = val.value.length;
+    if (len >= 250) {
+      val.value = val.value.substring(0, 250);
+    } else {
+      $('#charNum').text(250 - len);
+    }
+  };
 
 </script> 
 @stop
