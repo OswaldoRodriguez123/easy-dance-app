@@ -916,7 +916,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar_credencial" name="guardar_credencial">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 dismiss pointer">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -3061,6 +3061,23 @@
           });
         }
       });
+    });
+
+    $(".dismiss").click(function(){
+      procesando()
+      setTimeout(function(){
+        var nFrom = $(this).attr('data-from');
+        var nAlign = $(this).attr('data-align');
+        var nIcons = $(this).attr('data-icon');
+        var nType = 'success';
+        var nAnimIn = $(this).attr('data-animation-in');
+        var nAnimOut = $(this).attr('data-animation-out')
+        var nMensaje="¡Excelente! Los cambios se han actualizado satisfactoriamente";
+        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
+        $('.modal').modal('hide');
+        finprocesado();
+      }, 3000);
     });
       
   </script>
