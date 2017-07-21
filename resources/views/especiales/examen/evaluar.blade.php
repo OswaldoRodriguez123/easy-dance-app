@@ -518,7 +518,7 @@
       var route = route_agregar;
       var token = $('input:hidden[name=_token]').val();
       var datos = $( "#agregar_evaluacion" ).serialize();
-      // procesando();
+      procesando();
       limpiarMensaje();
       $.ajax({
       	url: route,
