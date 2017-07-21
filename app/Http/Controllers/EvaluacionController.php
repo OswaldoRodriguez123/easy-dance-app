@@ -181,8 +181,6 @@ class EvaluacionController extends BaseController
         $messages = [
 
             'alumno_id.required' => 'Ups! Debe seleccionar un Alumno ',
-            //'alumno_id.unique' => 'Ups! Este alumno ya ha sido evaluado ',
-            //'alumno_id.in' => 'Error, usuario seleccionado no existe!',
             'total_nota.required' => 'Ups! Debe evaluar para poder guardar',
             'observacion.max' => 'Ups! no pueden ser mas de 1000 caracteres',
         ];
@@ -194,15 +192,15 @@ class EvaluacionController extends BaseController
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
         }else{
-            $detalle_nota=explode(",",$request->nota_detalle);
-            $detalle_nombre=explode(",",$request->nombre_detalle);
+
+            $notas=explode(",",$request->nota_detalle);
 
             $evaluacion = new Evaluacion;
 
-            $evaluacion->academia_id = $request->academia;
+            $evaluacion->academia_id = Auth::user()->academia_id;
             $evaluacion->alumno_id = $request->alumno_id;
-            $evaluacion->examen_id = $request->examen;
-            $evaluacion->instructor_id= $request->instructor;
+            $evaluacion->examen_id = $request->examen_id;
+            $evaluacion->instructor_id= $request->instructor_id;
             $evaluacion->total = $request->total_nota;
             $evaluacion->observacion = $request->observacion;
             $evaluacion->porcentaje = $request->barra_de_progreso;
@@ -214,15 +212,102 @@ class EvaluacionController extends BaseController
             $evaluacion->participacion_fiesta_social = $request->fiesta_formula;
 
             if($evaluacion->save()){
-                $items_examenes = ItemsExamenes::where('examen_id', '=' , $request->examen)->get();
 
-                for ($i=0; $i < count($detalle_nota)-1; $i++) {
-                    $detalles = new DetalleEvaluacion;
+                $examen = Examen::find($request->examen_id);
 
-                    $detalles->nombre = $detalle_nombre[$i];//$items_examenes[$i]->nombre;
-                    $detalles->nota = $detalle_nota[$i];
-                    $detalles->evaluacion_id = $evaluacion->id;
-                    $detalles->save();
+                $i = 0;
+
+                if($examen->tiempos_musicales == 1){
+                    $arrays_de_items[$i]="Tiempos musicales";
+                    $i++;
+                }
+                if($examen->compromiso == 1){
+                    $arrays_de_items[$i]="Compromiso";
+                    $i++;
+                }
+                if($examen->condicion == 1){
+                    $arrays_de_items[$i]="Condiciones";
+                    $i++;
+                }
+                if($examen->habilidades == 1){
+                    $arrays_de_items[$i]="Habilidades";
+                    $i++;
+                }
+                if($examen->disciplina == 1){
+                    $arrays_de_items[$i]="Disciplina";
+                    $i++;
+                }
+                if($examen->expresion_corporal == 1){
+                    $arrays_de_items[$i]="Expresion corporal";
+                    $i++;
+                }
+                if($examen->expresion_facial == 1){
+                    $arrays_de_items[$i]="Expresion facial";
+                    $i++;
+                }
+                if($examen->respeto == 1){
+                    $arrays_de_items[$i]="Respeto";
+                    $i++;
+                }
+                if($examen->destreza == 1){
+                    $arrays_de_items[$i]="Destreza";
+                    $i++;
+                }
+                if($examen->dedicacion == 1){
+                    $arrays_de_items[$i]="Dedicacion";
+                    $i++;
+                }
+                if($examen->oido_musical == 1){
+                    $arrays_de_items[$i]="Oido musical";
+                    $i++;
+                }
+                if($examen->postura == 1){
+                    $arrays_de_items[$i]="Postura";
+                    $i++;
+                }
+                if($examen->elasticidad == 1){
+                    $arrays_de_items[$i]="Elasticidad";
+                    $i++;
+                }
+                if($examen->complejidad_de_movimientos == 1){
+                    $arrays_de_items[$i]="Complejidad de movimientos";
+                    $i++;
+                }
+                if($examen->asistencia == 1){
+                    $arrays_de_items[$i]="Asistencia";
+                    $i++;
+                }
+                if($examen->estilo == 1){
+                    $arrays_de_items[$i]="Estilo";
+                    $i++;
+                }
+
+                $i = 0;
+
+                foreach($arrays_de_items as $item){
+
+                    $detalle = new DetalleEvaluacion;
+
+                    $detalle->nombre = $item;
+                    $detalle->nota = intval($notas[$i]);
+                    $detalle->evaluacion_id = $evaluacion->id;
+                    $detalle->save();
+
+                    $i++;
+                }
+
+                $items_a_evaluar = ItemsExamenes::where('examen_id', '=' , $request->examen_id)->get();
+
+                foreach($items_a_evaluar as $item){
+
+                    $detalle = new DetalleEvaluacion;
+
+                    $detalle->nombre = $item->nombre;
+                    $detalle->nota = intval($notas[$i]);
+                    $detalle->evaluacion_id = $evaluacion->id;
+                    $detalle->save();
+
+                    $i++;
                 }
 
                 $formulas = ConfigFormulaExito::where('academia_id','=',Auth::user()->academia_id)->get();

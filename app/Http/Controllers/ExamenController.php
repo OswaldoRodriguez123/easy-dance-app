@@ -631,8 +631,12 @@ class ExamenController extends BaseController {
 
     public function evaluar($id)
     {   
-
-        $examen = Examen::find($id);
+        
+        $examen = Examen::join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
+            ->join('config_tipo_examenes', 'examenes.tipo', '=', 'config_tipo_examenes.id')
+            ->select('examenes.*','instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'config_tipo_examenes.nombre as tipo_de_evaluacion')
+            ->where('examenes.id', '=', $id)
+        ->first();
 
         if($examen){
 
@@ -708,79 +712,72 @@ class ExamenController extends BaseController {
                 }
             }
 
-            //dd($alumnos);
             Session::put('id_evaluar', $id);
-            $examen_join = DB::table('examenes')
-                ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
-                ->join('config_tipo_examenes', 'examenes.tipo', '=', 'config_tipo_examenes.id')
-                ->select('instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'examenes.id as id', 'examenes.nombre as nombre', 'examenes.fecha as fecha', 'examenes.descripcion as descripcion', 'examenes.color_etiqueta as etiqueta', 'instructores.id as instructor_id', 'examenes.academia_id as academia_id','examenes.tiempos_musicales as tiempos_musicales','examenes.compromiso as compromiso','examenes.condicion as condicion','examenes.habilidades as habilidades','examenes.disciplina as disciplina','examenes.expresion_corporal as expresion_corporal','examenes.expresion_facial as expresion_facial','examenes.destreza as destreza','examenes.dedicacion as dedicacion','examenes.oido_musical as oido_musical','examenes.postura as postura','examenes.respeto as respeto','examenes.elasticidad as elasticidad','examenes.complejidad_de_movimientos as complejidad_de_movimientos','examenes.asistencia as asistencia', 'examenes.estilo as estilo', 'examenes.tipo as tipos', 'examenes.genero as generos', 'config_tipo_examenes.nombre as tipo_de_evaluacion')
-                ->where('examenes.id', '=', $id)
-            ->first();
 
             $arrays_de_items=array();
             $i=0;
 
-            if($examen_join->tiempos_musicales == 1){
+            if($examen->tiempos_musicales == 1){
                 $arrays_de_items[$i]="Tiempos musicales";
                 $i++;
             }
-            if($examen_join->compromiso == 1){
+            if($examen->compromiso == 1){
                 $arrays_de_items[$i]="Compromiso";
                 $i++;
             }
-            if($examen_join->condicion == 1){
+            if($examen->condicion == 1){
                 $arrays_de_items[$i]="Condiciones";
                 $i++;
             }
-            if($examen_join->habilidades == 1){
+            if($examen->habilidades == 1){
                 $arrays_de_items[$i]="Habilidades";
                 $i++;
             }
-            if($examen_join->disciplina == 1){
+            if($examen->disciplina == 1){
                 $arrays_de_items[$i]="Disciplina";
                 $i++;
             }
-            if($examen_join->expresion_corporal == 1){
+            if($examen->expresion_corporal == 1){
                 $arrays_de_items[$i]="Expresion corporal";
                 $i++;
             }
-            if($examen_join->expresion_facial == 1){
+            if($examen->expresion_facial == 1){
                 $arrays_de_items[$i]="Expresion facial";
                 $i++;
             }
-            if($examen_join->respeto == 1){
+            if($examen->respeto == 1){
                 $arrays_de_items[$i]="Respeto";
                 $i++;
             }
-            if($examen_join->destreza == 1){
+            if($examen->destreza == 1){
                 $arrays_de_items[$i]="Destreza";
                 $i++;
             }
-            if($examen_join->dedicacion == 1){
+            if($examen->dedicacion == 1){
                 $arrays_de_items[$i]="Dedicacion";
                 $i++;
             }
-            if($examen_join->oido_musical == 1){
+            if($examen->oido_musical == 1){
                 $arrays_de_items[$i]="Oido musical";
                 $i++;
             }
-            if($examen_join->postura == 1){
+            if($examen->postura == 1){
                 $arrays_de_items[$i]="Postura";
                 $i++;
             }
-            if($examen_join->elasticidad == 1){
+            if($examen->elasticidad == 1){
                 $arrays_de_items[$i]="Elasticidad";
                 $i++;
             }
-            if($examen_join->complejidad_de_movimientos == 1){
+            if($examen->complejidad_de_movimientos == 1){
                 $arrays_de_items[$i]="Complejidad de movimientos";
                 $i++;
             }
-            if($examen_join->asistencia == 1){
+            if($examen->asistencia == 1){
                 $arrays_de_items[$i]="Asistencia";
                 $i++;
             }
-            if($examen_join->estilo == 1){
+            if($examen->estilo == 1){
                 $arrays_de_items[$i]="Estilo";
                 $i++;
             }
@@ -790,8 +787,8 @@ class ExamenController extends BaseController {
 
             $items_examenes = ItemsExamenes::where('examen_id','=',$id)->get();
 
-            foreach ($items_examenes as $key) {
-                $arrays_de_items[$i]=$key->nombre;
+            foreach ($items_examenes as $item) {
+                $arrays_de_items[$i]=$item->nombre;
                 $i++;
             }
 
@@ -803,8 +800,7 @@ class ExamenController extends BaseController {
 
             $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-            return view('especiales.examen.evaluar')
-                   ->with(['alumnos' => $array_alumno, 'examen' => $examen_join, 'fecha' => $hoy, 'itemsExamenes' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $examen_join->tipo_de_evaluacion, 'numero_de_items'=>$i, 'alumno_id' => $alumno_id, 'formulas' => $formulas, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo]);
+            return view('especiales.examen.evaluar')->with(['alumnos' => $array_alumno, 'examen' => $examen, 'fecha' => $hoy, 'items_a_evaluar' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $examen->tipo_de_evaluacion, 'numero_de_items'=>$i, 'alumno_id' => $alumno_id, 'formulas' => $formulas, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo]);
         }else{
            return redirect("especiales/examenes"); 
         }

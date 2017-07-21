@@ -43,16 +43,18 @@
 
 	    <div class="card">
         <div class="card-header ch-alt text-center">
-            @if ($academia->imagen_academia)
-                <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen_academia}}" alt="">
+            @if ($academia->imagen)
+              <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen}}" alt="">
             @else
-                <img class="i-logo" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
+              <img class="i-logo" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
             @endif
         </div>
 		
 				<div class="card-body card-padding">
 					<form name="agregar_evaluacion" id="agregar_evaluacion">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+            <input type="hidden" id="instructor_id" name="instructor_id" value="{{$examen->instructor_id}}">
+            <input type="hidden" id="examen_id" name="examen_id" value="{{$examen->id}}">
             <div class="row m-b-25">
               <div class="col-xs-6">
                 <div class="text-left m-l-25">
@@ -95,42 +97,72 @@
               </div>
             </div>
 
-	                    <!-- SECCION ITEMS A EVALUAR --> 
+	         <!-- SECCION ITEMS A EVALUAR --> 
+
 						<div class="row">
 							
 							<hr>
-							{{--$itemsExamenes--}}
-							<?php $i=0 ?>
-							@foreach( $itemsExamenes as $items)
-							<?php $id = $i ?>
-							<div class="clearfix"></div>
-							<div class="col-md-4">
 
-								<div class="m-b-20 m-l-25">{{ $items }}</div>
-								<div class="clearfix">
-									<div class="input-slider m-b-25 m-l-25 slider-mov" id="slider{{$id}}"></div>
-									<strong class="pull-right text-muted slider-value" id="value-lower{{$id}}"></strong>
-				                </div>    
-							</div>
-							<?php $item[$i] = $i ?>
-							<?php $i++ ?>
-							@endforeach
+							<?php 
+                $i = 0;
+                $j = 1;
+                $sliders = array();
+              ?>
+
+              @foreach( $items_a_evaluar as $item)
+                <?php $id = $i ?>
+
+                <div class="col-md-4 m-b-25">
+
+                  <div class="m-b-20 m-l-25">
+                    @if(strlen($item) <= 30)
+                      {{$item}}
+                    @else
+                      {{ str_limit($item, $limit = 30, $end = '') }} <span class="mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{$item}}" title="" data-original-title="Ayuda">... <span class="c-azul">Ver mas</span></span> 
+                    @endif
+                  </div>
+                  <div class="clearfix"></div>  
+                  <div class="input-slider m-b-25 m-l-25 slider-mov div_{{$id}}" id="slider{{$id}}"></div>
+                  <strong class="pull-right text-muted slider-value slider-value-visible div_{{$id}}" id="value-lower{{$id}}"></strong>
+
+                  <div class="text-center p-t-10">
+                    <div class="checkbox">
+                      <span id="span_{{$id}}" style="margin-right: 5px">Deshabilitar el item a evaluar</span> <input class="item_checkbox" style="opacity: 1; position: relative" id="checkbox_{{$id}}" type="checkbox" checked>
+                    </div>
+                  </div>
+                </div>
+
+
+                <?php 
+
+                  if($j == 3){
+                    echo '<div class="clearfix"></div>';
+                    $j = 0;
+                  }
+
+                  $sliders[$i] = $i; 
+                  $i++;
+                  $j++;
+
+                ?>
+              @endforeach
 							
 						</div><!-- END ROW ITEMS -->
 
 						<hr>
+
 						<div class="row">
 							<div class="col-md-12">
 								<div class="text-right m-r-25 f-20 f-500">Total: 
-									<span class="f-30" id="eval_total">{{count($itemsExamenes)}}</span> acumulados de <span class="f-30">{{(count($itemsExamenes))*10}}</span>
-									<div class="text-right" id="id-total"></div>
-									<input type="hidden" name="total_nota" id="total_nota" value="{{count($itemsExamenes)}}">
-								</div>
+                  <span class="f-30" id="puntos_acumulados">0</span> acumulados de <span id="puntos_totales" class="f-30">{{$numero_de_items*10}}</span>
+                  <div class="text-right" id="id-total"></div>
+                  <input type="hidden" name="total_nota" id="total_nota" value="0">
+                </div>
 
                <div class="has-error" id="error-total_nota">
-                    <span >
-                        <small class="help-block error-span" id="error-total_nota_mensaje" ></small>                                
-                    </span>
+                  <span >
+                    <small class="help-block error-span" id="error-total_nota_mensaje" ></small>                
+                  </span>
                 </div>
 
 							</div>
@@ -138,179 +170,179 @@
 						<!-- observaciones -->
 						<div class="clearfix p-b-35"></div>
 
-                               <div class="col-sm-12">
-                                 
-                                    <label for="observacion" id="id-observacion">Observaciones</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="ingresa las observaciones y detalles correspondientes a la evaluación del alumno" title="" data-original-title="Ayuda"></i>
-                                    <br></br>
+             <div class="col-sm-12">
+               
+                  <label for="observacion" id="id-observacion">Observaciones</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="ingresa las observaciones y detalles correspondientes a la evaluación del alumno" title="" data-original-title="Ayuda"></i>
+                  <br></br>
 
-                                    <div class="fg-line">
-                                      <textarea class="form-control" id="observacion" name="observacion" rows="2" placeholder="1000 Caracteres"></textarea>
-                                    </div>
-                                    <div class="has-error" id="error-observacion">
-                                      <span >
-                                        <small class="help-block error-span" id="error-observacion_mensaje" ></small> 
-                                      </span>
-                                    </div>
-                                  </div>
-
-
-                                  <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="nombre">Fórmula</label>
-                                    <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
-                                    <div class="panel panel-collapse">
-                                    <div class="panel-heading" role="tab" id="headingTwo">
-                                        <h4 class="panel-title">
-                                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseAvanzado" aria-expanded="false" aria-controls="collapseAvanzado">
-                                              <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
-                                            </a>
-                                        </h4>
-                                    </div>
-                                    <div id="collapseAvanzado" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                    <div class="panel-body">
-                                    
-                                    <div class="clearfix p-b-35"></div>
-                                    <div class="clearfix p-b-35"></div>
-
-                           
-                              <div class="clearfix p-b-35"></div>
-
-                              <div class="col-sm-12">
-                                       <div class="form-group fg-line ">
-                                          <label id="id-cantidad_horas_practica" for="">Cantidad adicional de horas de práctica semanales</label>
-                                          
-		                                      <div class="fg-line">
-		                                      <input type="text" class="form-control input-sm input-mask" name="cantidad_horas_practica" id="cantidad_horas_practica" data-mask="0000" placeholder="Ej: 3">
-		                                      </div>
-
-                                          
-                                       </div>
-                                       <div class="has-error" id="error-cantidad_horas_practica">
-                                            <span >
-                                                <small class="help-block error-span" id="error-cantidad_horas_practica_mensaje" ></small>                                           
-                                            </span>
-                                        </div>
-                                     </div>
-
-                                     <div class="clearfix p-b-35"></div>
-
-                                     <div class="col-sm-12">
-                                       <div class="form-group fg-line ">
-                                          <label id="id-taller_formula" for="">Asistencia en taller de preparación especial</label>
-                                          
-                                          <br></br>
-                                          <input type="text" id="taller_formula" name="taller_formula" value="" hidden="hidden">
-                                          <div class="p-t-10">
-                                            <div class="toggle-switch" data-ts-color="purple">
-                                            <span class="p-r-10 f-700 f-16">No</span><input id="taller-switch" type="checkbox">
-                                            
-                                            <label for="taller-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                          </div>
-                                          
-                                       </div>
-                                     </div>
-
-                               
-                                    <div class="clearfix p-b-35"></div>
-
-                                    <div class="col-sm-12">
-                                       <div class="form-group fg-line ">
-                                          <label id="id-personalizada_formula">Práctica de horas personalizadas</label >
-                                          
-                                          <br></br>
-                                          <input type="text" id="personalizada_formula" name="personalizada_formula" value="" hidden="hidden">
-                                          <div class="p-t-10">
-                                            <div class="toggle-switch" data-ts-color="purple">
-                                            <span class="p-r-10 f-700 f-16">No</span><input id="personalizada-switch" type="checkbox">
-                                            
-                                            <label for="personalizada-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                          </div>
-                                          
-                                       </div>
-                                    </div>
-
-                               
-                            <div class="clearfix p-b-35"></div>
-
-                            <div class="col-sm-12">
-                                       <div class="form-group fg-line ">
-                                          <label id="id-evento_formula">Participación evento</label>
-                                          
-                                          <br></br>
-                                          <input type="text" id="evento_formula" name="evento_formula" value="" hidden="hidden">
-                                          <div class="p-t-10">
-                                            <div class="toggle-switch" data-ts-color="purple">
-                                            <span class="p-r-10 f-700 f-16">No</span><input id="evento-switch" type="checkbox">
-                                            
-                                            <label for="evento-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                          </div>
-                                          
-                                       </div>
-                                     </div>
-
-                               
-                            <div class="clearfix p-b-35"></div>
+                  <div class="fg-line">
+                    <textarea class="form-control" id="observacion" name="observacion" rows="2" placeholder="1000 Caracteres"></textarea>
+                  </div>
+                  <div class="has-error" id="error-observacion">
+                    <span >
+                      <small class="help-block error-span" id="error-observacion_mensaje" ></small> 
+                    </span>
+                  </div>
+                </div>
 
 
-                            <div class="col-sm-12">
-                                       <div class="form-group fg-line ">
-                                          <label  id="id-fiesta_formula">Participación en fiesta social</label>
-                                          
-                                          <br></br>
-                                          <input type="text" id="fiesta_formula" name="fiesta_formula" value="" hidden="hidden">
-                                          <div class="p-t-10">
-                                            <div class="toggle-switch" data-ts-color="purple">
-                                            <span class="p-r-10 f-700 f-16">No</span><input id="fiesta-switch" type="checkbox">
-                                            
-                                            <label for="fiesta-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                            </div>
-                                          </div>
-                                          
-                                       </div>
-                                     </div>
+                <div class="col-sm-12">
+               <div class="form-group fg-line">
+                  <label for="nombre">Fórmula</label>
+                  <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                  <div class="panel panel-collapse">
+                  <div class="panel-heading" role="tab" id="headingTwo">
+                      <h4 class="panel-title">
+                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseAvanzado" aria-expanded="false" aria-controls="collapseAvanzado">
+                            <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                          </a>
+                      </h4>
+                  </div>
+                  <div id="collapseAvanzado" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                  <div class="panel-body">
+                  
+                  <div class="clearfix p-b-35"></div>
+                  <div class="clearfix p-b-35"></div>
 
-                                     <div class="clearfix p-b-35"></div>
+         
+            <div class="clearfix p-b-35"></div>
+
+            <div class="col-sm-12">
+                     <div class="form-group fg-line ">
+                        <label id="id-cantidad_horas_practica" for="">Cantidad adicional de horas de práctica semanales</label>
+                        
+                        <div class="fg-line">
+                        <input type="text" class="form-control input-sm input-mask" name="cantidad_horas_practica" id="cantidad_horas_practica" data-mask="0000" placeholder="Ej: 3">
+                        </div>
+
+                        
+                     </div>
+                     <div class="has-error" id="error-cantidad_horas_practica">
+                          <span >
+                              <small class="help-block error-span" id="error-cantidad_horas_practica_mensaje" ></small>                                           
+                          </span>
+                      </div>
+                   </div>
+
+                   <div class="clearfix p-b-35"></div>
+
+                   <div class="col-sm-12">
+                     <div class="form-group fg-line ">
+                        <label id="id-taller_formula" for="">Asistencia en taller de preparación especial</label>
+                        
+                        <br></br>
+                        <input type="text" id="taller_formula" name="taller_formula" value="" hidden="hidden">
+                        <div class="p-t-10">
+                          <div class="toggle-switch" data-ts-color="purple">
+                          <span class="p-r-10 f-700 f-16">No</span><input class="formula_switch" id="taller-switch" type="checkbox">
+                          
+                          <label for="taller-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                          </div>
+                        </div>
+                        
+                     </div>
+                   </div>
+
+             
+                  <div class="clearfix p-b-35"></div>
+
+                  <div class="col-sm-12">
+                     <div class="form-group fg-line ">
+                        <label id="id-personalizada_formula">Práctica de horas personalizadas</label >
+                        
+                        <br></br>
+                        <input type="text" id="personalizada_formula" name="personalizada_formula" value="" hidden="hidden">
+                        <div class="p-t-10">
+                          <div class="toggle-switch" data-ts-color="purple">
+                          <span class="p-r-10 f-700 f-16">No</span><input class="formula_switch" id="personalizada-switch" type="checkbox">
+                          
+                          <label for="personalizada-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                          </div>
+                        </div>
+                        
+                     </div>
+                  </div>
+
+             
+          <div class="clearfix p-b-35"></div>
+
+          <div class="col-sm-12">
+                     <div class="form-group fg-line ">
+                        <label id="id-evento_formula">Participación evento</label>
+                        
+                        <br></br>
+                        <input type="text" id="evento_formula" name="evento_formula" value="" hidden="hidden">
+                        <div class="p-t-10">
+                          <div class="toggle-switch" data-ts-color="purple">
+                          <span class="p-r-10 f-700 f-16">No</span><input class="formula_switch" id="evento-switch" type="checkbox">
+                          
+                          <label for="evento-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                          </div>
+                        </div>
+                        
+                     </div>
+                   </div>
+
+             
+          <div class="clearfix p-b-35"></div>
 
 
-                                    @foreach( $formulas as $formula)
+          <div class="col-sm-12">
+                     <div class="form-group fg-line ">
+                        <label  id="id-fiesta_formula">Participación en fiesta social</label>
+                        
+                        <br></br>
+                        <input type="text" id="fiesta_formula" name="fiesta_formula" value="" hidden="hidden">
+                        <div class="p-t-10">
+                          <div class="toggle-switch" data-ts-color="purple">
+                          <span class="p-r-10 f-700 f-16">No</span><input class="formula_switch" id="fiesta-switch" type="checkbox">
+                          
+                          <label for="fiesta-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                          </div>
+                        </div>
+                        
+                     </div>
+                   </div>
 
-                                      <div class="col-sm-12">
-                                        <label>{{$formula->nombre}}</label>
-                                        
-                                        <br></br>
-                                        <input type="text" id="{{$formula->id}}_formula" name="{{$formula->id}}_formula" value="" hidden="hidden">
-                                        <div class="p-t-10">
-                                          <div class="toggle-switch" data-ts-color="purple">
-                                          <span class="p-r-10 f-700 f-16">No</span><input id="{{$formula->id}}-switch" type="checkbox">
-                                          
-                                          <label class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                          </div>
-                                        </div>
-                                      </div>
-
-                                      <div class="clearfix p-b-35"></div>
-
-                                    @endforeach
-                                          
-                               
-                            <div class="clearfix p-b-35"></div>
-                            <div class="clearfix p-b-35"></div>
-
-                            <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseAvanzado')" ></i></div>
-                            
-                            <div class="clearfix p-b-35"></div>
-                               <hr></hr>
+                   <div class="clearfix p-b-35"></div>
 
 
-                                        </div>
-                                    </div>
-                                    </div>
-                                    </div>
-                                 </div>
-                               </div>
+                  @foreach( $formulas as $formula)
+
+                    <div class="col-sm-12">
+                      <label>{{$formula->nombre}}</label>
+                      
+                      <br></br>
+                      <input type="text" id="{{$formula->id}}_formula" name="{{$formula->id}}_formula" value="" hidden="hidden">
+                      <div class="p-t-10">
+                        <div class="toggle-switch" data-ts-color="purple">
+                        <span class="p-r-10 f-700 f-16">No</span><input class="formula_switch" id="{{$formula->id}}-switch" type="checkbox">
+                        
+                        <label class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="clearfix p-b-35"></div>
+
+                  @endforeach
+                        
+             
+                  <div class="clearfix p-b-35"></div>
+                  <div class="clearfix p-b-35"></div>
+
+                  <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseAvanzado')" ></i></div>
+                  
+                  <div class="clearfix p-b-35"></div>
+                     <hr></hr>
+
+
+                      </div>
+                  </div>
+                  </div>
+                  </div>
+               </div>
+             </div>
 
 						<hr>
 						<!-- SECCION BOTONES --> 
@@ -370,305 +402,309 @@
 
 @section('js') 
 
-<script>
+  <script>
 
-route_agregar="{{url('/')}}/especiales/evaluaciones/agregar";
-route_principal="{{url('/')}}/especiales/evaluaciones";
+    route_agregar="{{url('/')}}/especiales/evaluaciones/agregar";
+    route_principal="{{url('/')}}/especiales/evaluaciones";
 
-var arrayNotas = new Array();
+    var arrayNotas = new Array();
+    var items_a_evaluar = <?php echo json_encode($items_a_evaluar);?>;
+    var sliders = <?php echo json_encode($sliders);?>;
+    var cantidad_items = parseInt("{{$numero_de_items}}");
+    var puntos_totales = parseInt("{{$numero_de_items*10}}")
+    var nota_actual = 0;
+    var puntos_acumulados = 0;
 
-$(document).ready(function() {
-	$("#agregar_evaluacion")[0].reset();
+    $(document).ready(function() {
 
-	alumno_id = "{{{ $alumno_id or 'Default' }}}";
+    	$("#agregar_evaluacion")[0].reset();
 
-    if(alumno_id != 'Default'){
-       $('#alumno_id').val(alumno_id)
-       $('#alumno_id').selectpicker('refresh')
-        
-    }
+    	alumno_id = "{{{ $alumno_id or 'Default' }}}";
 
-	@foreach( $item as $items)
-		loadId({{$items}});
-	@endforeach
+      if(alumno_id != 'Default'){
+         $('#alumno_id').val(alumno_id)
+         $('#alumno_id').selectpicker('refresh')
+          
+      }
+      $("#agregar_evaluacion")[0].reset();
 
-	$("#barra-progreso").css({
-	      "width": ({{$numero_de_items}} + "%")
-	   	});
-	
-	for (var i = 0; i < {{count($itemsExamenes)}}; i++) {
-		arrayNotas[i]=1;
-	}
-	$('.slider-mov').change(function() {
-		notas = $('.slider-value').text();
-		//Divido la cadena usando el separador
-		//punto (.) de las notas		
-		arrayNotas = notas.split(".");
-		var total = 0;
-		for (var i = 0; i < arrayNotas.length-1; i++) {
-		    total += arrayNotas[i] << 0;
-		}
-		$("#eval_total").html(total);
-		$("#total_nota").val(total);
-	});
+      $.each(sliders, function(index,id){
 
-});
-	//Aqui cargo las barra de Slide	
-	function loadId(id){
+        $('#slider'+id).noUiSlider ({
+          start: [ 0 ],
+            //connect: true,
+            //direction: 'rtl',
+            behaviour: 'tap-drag',
+            step: 1,
+          range: {
+            'min': 0,
+            'max': 10
+          }
+        });
 
-		$('#slider'+id).noUiSlider ({
-			start: [ 1 ],
-		    //connect: true,
-		    //direction: 'rtl',
-		    behaviour: 'tap-drag',
-		    step: 1,
-			range: {
-				'min': 1,
-				'max': 10
-			}
-		});
-	    $('#slider'+id).Link('lower').to($('#value-lower'+id));
-	}
+        $('#slider'+id).Link('lower').to($('#value-lower'+id));
+      });
+      
+      for (var i = 0; i < cantidad_items; i++) {
+        arrayNotas[i] = 0;
+      }
 
+      $('.slider-mov').change(function() {
+        notas = $('.slider-value-visible').text();
+        //Divido la cadena usando el separador
+        //punto (.) de las notas    
+        arrayNotas = notas.split(".");
+        puntos_acumulados = 0;
+        for (var i = 0; i < arrayNotas.length-1; i++) {
+            puntos_acumulados += arrayNotas[i] << 0;
+        }
 
-		/*$("#alumno_id").on('change',function(){
-			console.log($("#alumno_id").val());
-			console.log($(".sexo-alumno").html());
+        $("#puntos_acumulados").html(puntos_acumulados);
+        $("#total_nota").val(puntos_acumulados);
 
-		});*/
-
-	setInterval(porcentaje, 1000);
-
-  	function porcentaje(){
-
-  		var numero_items = {{$numero_de_items}};
-	    var nota_total = numero_items*10;
-	    var nota_actual =$("#total_nota").attr("value");
-	    
-	    porcetaje = (nota_actual*100)/nota_total;
-	    porcetaje = porcetaje.toFixed(2);
-	    $("#barra_de_progreso").attr("value",porcetaje);
-	    $("#text-progreso").text(porcetaje+"%");
-	    $("#barra-progreso").css({
-	      "width": (porcetaje + "%")
-	   	});
-	    
-	    if(porcetaje<="25"){
-	      $("#barra-progreso").removeClass('progress-bar-success');
-	      $("#barra-progreso").addClass('progress-bar-morado');
-	      $("#barra-progreso").css("background-color","red");
-	      $("#msj_porcentaje").html("Debe mejorar");
-	    }else if(porcetaje<="50"){
-	      $("#barra-progreso").removeClass('progress-bar-success');
-	      $("#barra-progreso").addClass('progress-bar-morado');
-	      $("#barra-progreso").css("background-color","orange");
-	      $("#msj_porcentaje").html("Regular");
-	    }else if(porcetaje<="75"){
-	      $("#barra-progreso").removeClass('progress-bar-success');
-	      $("#barra-progreso").addClass('progress-bar-morado');
-	      $("#barra-progreso").css("background-color","gold");
-	      $("#msj_porcentaje").html("Bueno");
-	    }else{
-	      $("#barra-progreso").removeClass('progress-bar-success');
-	      $("#barra-progreso").addClass('progress-bar-morado');
-	      $("#barra-progreso").css("background-color","greenyellow ");
-	      $("#msj_porcentaje").html("Muy bueno");
-	    }
-
-	    if(porcetaje=="100" || porcetaje=="100.00"){
-	      $("#barra-progreso").removeClass('progress-bar-morado');
-	      $("#barra-progreso").addClass('progress-bar-success');
-	      $("#barra-progreso").css("background-color","green");
-	      $("#msj_porcentaje").html("Excelente");
-	    }else{
-	      $("#barra-progreso").removeClass('progress-bar-success');
-	      $("#barra-progreso").addClass('progress-bar-morado');
-	    }
-
-	   	
-	    //$("#barra-progreso").s
-  	}
-
-	//GUARDAR EXAMEN
-  		$("#guardar").click(function(){
-  				//alert(items);
-                var route = route_agregar;
-                var instructor = "{{$examen->instructor_id}}"
-                var academia = "{{$examen->academia_id}}"
-                var examen = "{{$examen->id}}"
-                var itemsExamenes = <?php echo json_encode($itemsExamenes);?>;
-                var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_evaluacion" ).serialize()+'&academia='+academia+'&instructor='+instructor+'&examen='+examen+'&nota_detalle='+arrayNotas+'&nombre_detalle='+itemsExamenes; 
-                $("#guardar").attr("disabled","disabled");
-                procesando();
-                limpiarMensaje();
-                $.ajax({
-
-						url: route,
-						headers: {'X-CSRF-TOKEN': token},
-						type: 'POST',
-						dataType: 'json',
-						data: datos,
-
-
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          	finprocesado();
-                          	var nType = 'success';
-                          	$("#agregar_evaluacion")[0].reset();
-                          	var nTitle="Ups! ";
-                          	var nMensaje=respuesta.mensaje;
-                          	
-                          if("{{$usuario_tipo}}" != 3){
-                          	window.location = route_principal;
-                          }else{
-                          	window.location = "{{$_SERVER['HTTP_REFERER']}}"
-                          }
-                          	
-                          	
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-
-                          $(".procesando").removeClass('show');
-                          $(".procesando").addClass('hidden');
-                          $("#guardar").removeAttr("disabled");
-                          finprocesado();
-                          $("#guardar").css({
-                            "opacity": ("1")
-                          });
-                          $(".cancelar").removeAttr("disabled");
-
-                          
-                        } 
-
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                      
-                        
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        finprocesado();
-                        $("#guardar").css({
-                          "opacity": ("1")
-                        });
-                        $(".cancelar").removeAttr("disabled");
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-            });
-
-
-			function errores(merror){
-				var elemento="";
-				var contador=0;
-				$.each(merror, function (n, c) {
-					if(contador==0){
-					elemento=n;
-					}
-					contador++;
-
-					$.each(this, function (name, value) {              
-					  var error=value;
-					  $("#error-"+n+"_mensaje").html(error);             
-					});
-				});
-
-				$('html,body').animate({
-				    scrollTop: $("#id-"+elemento).offset().top-90,
-				}, 800);
-
-			}
-			$("#cancelar").click(function(){
-				var items_examen = <?php echo json_encode($item);?>;
-				$.each(items_examen,function(index,array){
-					$('#slider'+array).find('.noUi-origin').css('left','0%');
-					$('#value-lower'+array).text("1.00");
-					$("#eval_total").html(items_examen.length);
-					$("#total_nota").val(items_examen.length);
-					$("#agregar_evaluacion")[0].reset();
-					$("#alumno_id").selectpicker('render');
-				});
-				$('html,body').animate({scrollTop: $("#id-evaluacion").
-					offset().top-90,}, 800);
-			});
-
-			$("#alumno_id").change(function(){
-
-				imagen = $(this).find("option:selected").attr("data-imagen");
-
-		        if(imagen){
-		          $('#imagen_evaluar').attr('src', "{{url('/')}}/assets/uploads/usuario/"+imagen)
-		        }else{
-		        	sexo = $(this).find("option:selected").attr("data-sexo");
-		          if(sexo == 'M'){
-		            $('#imagen_evaluar').attr('src', "{{url('/')}}/assets/img/Hombre.jpg")
-		          }else{
-		            $('#imagen_evaluar').attr('src', "{{url('/')}}/assets/img/Mujer.jpg")
-		          }
-		        }
-			});
-
-	  $('#collapseAvanzado').on('show.bs.collapse', function () {
-        $("#guardar").attr("disabled","disabled");
-        $("#guardar").css({"opacity": ("0.2")});
-      })
-
-      $('#collapseAvanzado').on('hide.bs.collapse', function () {
-        $("#guardar").removeAttr("disabled");
-        $("#guardar").css({"opacity": ("1")});
-      })
-
-      $(":checkbox").on('change', function(){
-        id = $(this).attr('id')
-        split = id.split("-"); 
-        formula = '#'+split[0]+'_formula'
-        if ($(this).is(":checked")){
-          $(formula).val('1')
-          console.log(formula)
-        }else{
-          $(formula).val('0')
-        }     
       });
 
-      function collapse_minus(collaps){
-       $('#'+collaps).collapse('hide');
+    });
+
+  	setInterval(porcentaje, 1000);
+
+    function porcentaje(){
+
+      porcetaje = (puntos_acumulados*100)/puntos_totales;
+      porcetaje = porcetaje.toFixed(2);
+
+      $("#barra_de_progreso").attr("value",porcetaje);
+      $("#text-progreso").text(porcetaje+"%");
+      $("#barra-progreso").css({
+        "width": (porcetaje + "%")
+      });
+      
+      if(porcetaje<="25"){
+        $("#barra-progreso").removeClass('progress-bar-success');
+        $("#barra-progreso").addClass('progress-bar-morado');
+        $("#barra-progreso").css("background-color","red");
+        $("#msj_porcentaje").html("Debe mejorar");
+      }else if(porcetaje<="50"){
+        $("#barra-progreso").removeClass('progress-bar-success');
+        $("#barra-progreso").addClass('progress-bar-morado');
+        $("#barra-progreso").css("background-color","orange");
+        $("#msj_porcentaje").html("Regular");
+      }else if(porcetaje<="75"){
+        $("#barra-progreso").removeClass('progress-bar-success');
+        $("#barra-progreso").addClass('progress-bar-morado');
+        $("#barra-progreso").css("background-color","gold");
+        $("#msj_porcentaje").html("Bueno");
+      }else{
+        $("#barra-progreso").removeClass('progress-bar-success');
+        $("#barra-progreso").addClass('progress-bar-morado');
+        $("#barra-progreso").css("background-color","greenyellow ");
+        $("#msj_porcentaje").html("Muy bueno");
       }
 
-      function limpiarMensaje(){
-        var campo = ["alumno_id"];
-        fLen = campo.length;
-        for (i = 0; i < fLen; i++) {
-            $("#error-"+campo[i]+"_mensaje").html('');
+      if(porcetaje=="100" || porcetaje=="100.00"){
+        $("#barra-progreso").removeClass('progress-bar-morado');
+        $("#barra-progreso").addClass('progress-bar-success');
+        $("#barra-progreso").css("background-color","green");
+        $("#msj_porcentaje").html("Excelente");
+      }else{
+        $("#barra-progreso").removeClass('progress-bar-success');
+        $("#barra-progreso").addClass('progress-bar-morado');
+      }
+    }
+
+    //GUARDAR EXAMEN
+
+    $("#guardar").click(function(){
+      var route = route_agregar;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $( "#agregar_evaluacion" ).serialize();
+      // procesando();
+      limpiarMensaje();
+      $.ajax({
+      	url: route,
+      	headers: {'X-CSRF-TOKEN': token},
+      	type: 'POST',
+      	dataType: 'json',
+      	data: datos+'&nota_detalle='+arrayNotas+'&nombre_detalle='+items_a_evaluar,
+        success:function(respuesta){
+          setTimeout(function(){ 
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY"; 
+            if(respuesta.status=="OK"){
+            	finprocesado();
+            	var nType = 'success';
+            	$("#agregar_evaluacion")[0].reset();
+            	var nTitle="Ups! ";
+            	var nMensaje=respuesta.mensaje;
+              	
+              if("{{$usuario_tipo}}" != 3){
+              	window.location = route_principal;
+              }else{
+              	window.location = "{{$_SERVER['HTTP_REFERER']}}"
+              }
+            }else{
+              var nTitle="Ups! ";
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              var nType = 'danger';
+              finprocesado();
+            } 
+
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                      
+            
+          }, 1000);
+        },
+        error:function(msj){
+          setTimeout(function(){ 
+            if(msj.responseJSON.status=="ERROR"){
+              console.log(msj.responseJSON.errores);
+              errores(msj.responseJSON.errores);
+              var nTitle="    Ups! "; 
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+            }else{
+              var nTitle="   Ups! "; 
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+            }                        
+            finprocesado();
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'danger';
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY";                       
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+          }, 1000);
         }
+      });
+    });
+
+		function errores(merror){
+			var elemento="";
+			var contador=0;
+			$.each(merror, function (n, c) {
+				if(contador==0){
+				elemento=n;
+				}
+				contador++;
+
+				$.each(this, function (name, value) {              
+				  var error=value;
+				  $("#error-"+n+"_mensaje").html(error);             
+				});
+			});
+
+			$('html,body').animate({
+			    scrollTop: $("#id-"+elemento).offset().top-90,
+			}, 800);
+
+		}
+
+		$("#cancelar").click(function(){
+
+      $.each(sliders, function(index,id){
+        $('#slider'+id).find('.noUi-origin').css('left','0%');
+        $('#value-lower'+id).text("0.00");
+        $("#puntos_acumulados").html(0);
+        puntos_acumulados = 0;
+        $("#total_nota").val(0);
+        $("#agregar_evaluacion")[0].reset();
+      });
+
+      $('html,body').animate({scrollTop: $("#id-supervisor_id").
+        offset().top-90,}, 800);
+    });
+
+    $('.item_checkbox').change(function(){
+      id = $(this).attr('id')
+      explode = id.split('_')
+      id = explode[1];
+      valor = parseInt($("#value-lower"+id).text());
+
+      if($(this).is(':checked')){
+
+        $('#span_'+id).removeClass('text-success');
+        $('#span_'+id).text('Deshabilitar el item a evaluar');
+
+        $('.div_'+id).show()
+        $('#value-lower'+id).addClass('slider-value-visible')
+        $('#value-lower'+id).removeClass('slider-value-invisible')
+        
+        puntos_totales = puntos_totales + 10
+        puntos_acumulados =  parseInt(puntos_acumulados) + valor;
+        cantidad_items++
+        arrayNotas[id] = valor;
+
+      }else{
+
+        $('#span_'+id).addClass('text-success');
+        $('#span_'+id).text('Habilitar el item a evaluar');
+
+        $('.div_'+id).hide()
+        $('#value-lower'+id).removeClass('slider-value-visible')
+        $('#value-lower'+id).addClass('slider-value-invisible')
+
+        puntos_totales = puntos_totales - 10
+        puntos_acumulados = parseInt(puntos_acumulados) - valor;
+        cantidad_items--
+        arrayNotas[id] = 0;
       }
 
-</script>
+      $("#puntos_acumulados").html(puntos_acumulados);
+      $("#puntos_totales").html(puntos_totales);
+      $("#total_nota").val(puntos_totales);
+    })
+
+		$("#alumno_id").change(function(){
+
+			imagen = $(this).find("option:selected").attr("data-imagen");
+
+	        if(imagen){
+	          $('#imagen_evaluar').attr('src', "{{url('/')}}/assets/uploads/usuario/"+imagen)
+	        }else{
+	        	sexo = $(this).find("option:selected").attr("data-sexo");
+	          if(sexo == 'M'){
+	            $('#imagen_evaluar').attr('src', "{{url('/')}}/assets/img/Hombre.jpg")
+	          }else{
+	            $('#imagen_evaluar').attr('src', "{{url('/')}}/assets/img/Mujer.jpg")
+	          }
+	        }
+		});
+
+    $('#collapseAvanzado').on('show.bs.collapse', function () {
+      $("#guardar").attr("disabled","disabled");
+      $("#guardar").css({"opacity": ("0.2")});
+    })
+
+    $('#collapseAvanzado').on('hide.bs.collapse', function () {
+      $("#guardar").removeAttr("disabled");
+      $("#guardar").css({"opacity": ("1")});
+    })
+
+    $(".formula_switch").on('change', function(){
+      id = $(this).attr('id')
+      split = id.split("-"); 
+      formula = '#'+split[0]+'_formula'
+      if ($(this).is(":checked")){
+        $(formula).val('1')
+      }else{
+        $(formula).val('0')
+      }     
+    });
+
+    function collapse_minus(collaps){
+      $('#'+collaps).collapse('hide');
+    }
+
+    function limpiarMensaje(){
+      var campo = ["alumno_id"];
+      fLen = campo.length;
+      for (i = 0; i < fLen; i++) {
+          $("#error-"+campo[i]+"_mensaje").html('');
+      }
+    }
+
+  </script>
 
 @stop
