@@ -790,10 +790,6 @@ class ClaseGrupalController extends BaseController {
                 
                 // ----------
              
-                $total_credenciales_alumno = CredencialAlumno::where('alumno_id',$alumno->id)
-                    ->whereIn('instructor_id', $in_credencial)
-                    ->where('fecha_vencimiento','>=', Carbon::now()->toDateString())
-                ->sum('cantidad');
 
                 $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
                     ->where('usuario_id','=',$alumno->id)
@@ -840,7 +836,6 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['deuda']=$deuda;
                 $alumno_array['tipo'] = 1;
                 $alumno_array['llamadas'] = $llamadas;
-                $alumno_array['total_credenciales'] = $total_credenciales_alumno;
 
                 $array[$alumno->id] = $alumno_array;
 
