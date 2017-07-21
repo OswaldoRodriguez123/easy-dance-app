@@ -6,6 +6,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
 
 @stop
 
@@ -265,18 +266,55 @@
             });
 
             $.each(clase_grupal, function (index, array) {
+
                 if(array.inicio == 0){
                     inicio = '<i class="zmdi zmdi-star zmdi-hc-fw zmdi-hc-fw c-amarillo f-20" data-html="true" data-original-title="" data-content="Esta clase grupal no ha comenzado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
                 }else{
                     inicio = '';
                 }
+
+                operacion = '';
+
+                operacion += '<ul class="top-menu">'
+                operacion += '<li id = dropdown_'+array.id+' class="dropdown">' 
+                operacion += '<a id = dropdown_toggle_'+array.id+' href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">' 
+                operacion += '<span class="f-15 f-700" style="color:black">'
+                operacion += '<i class="zmdi zmdi-wrench f-20 mousedefault" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=""></i>'
+                operacion += '</span></a>'
+                operacion += '<div class="dropup">'
+                operacion += '<ul class="dropdown-menu dm-icon pull-right" style="position:absolute;">'
+                operacion += '<li class="hidden-xs">'
+                operacion += '<a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/nivelaciones/'+array.id+'">'
+                operacion += '<i class="icon_a-niveles f-16 m-r-10 boton blue"></i>'
+                operacion += '&nbsp;Nivelaciones'
+                operacion += '</a></li>'
+                operacion += '<li class="hidden-xs">'
+                operacion += '<a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/participantes/'+array.id+'">'
+                operacion += '<i class="icon_a-participantes f-16 m-r-10 boton blue"></i>'
+                operacion += 'Participantes'
+                operacion += '</a></li>'
+                operacion += '<li class="hidden-xs">'
+                operacion += '<a onclick="procesando()" href="'+pagina+'/especiales/examenes/agregar/'+array.id+'">'
+                operacion += '<i class="icon_a-examen f-16 m-r-10 boton blue"></i>'
+                operacion += 'Valorar'
+                operacion += '</a></li>'
+                operacion += '<li class="hidden-xs">'
+                operacion += '<a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/agenda/'+array.id+'">'
+                operacion += '<i class="zmdi zmdi-eye f-16 boton blue"></i>'
+                operacion += 'Ver Agenda'
+                operacion += '</a></li>'
+                operacion += '<li class="hidden-xs"> <a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/progreso/'+array.id+'">'
+                operacion += '<i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i>' 
+                operacion += 'Ver Progreso'
+                operacion += '</a></li>'
+                operacion += '</ul></div></li></ul>'
    
                 var rowNode=t.row.add( [
                 ''+inicio+'',
                 ''+array.clase_grupal_nombre+'',
                 ''+array.especialidad_nombre+'',
                 ''+array.hora_inicio+ ' '+array.hora_final+'',
-                ''+'<a data-original-title="" data-content="Agenda" data-toggle="popover" data-placement="top" title="" type="button" data-trigger="hover" onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/agenda/'+array.id+'"><i class="zmdi zmdi-eye f-20 p-r-10 pointer"></i></a>'+'',
+                ''+operacion+'',
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
@@ -293,10 +331,23 @@
             window.location=route;
         }
 
-        $('#tablelistar tbody').on( 'click', 'i.zmdi-wrench', function () {
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
+        $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+            var id = $(this).closest('tr').attr('id');
+            var dropdown = $('#dropdown_'+id)
+            var dropdown_toggle = $('#dropdown_toggle_'+id)
+
+            if(!dropdown.hasClass('open')){
+                dropdown.addClass('open')
+                dropdown_toggle.attr('aria-expanded','true')
+                $('.table-responsive').css( "overflow", "inherit" );
+            }
+         
         });
+
+        $('.table-responsive').on('hide.bs.dropdown', function () {
+          $('.table-responsive').css( "overflow", "auto" );
+        })
 
     </script>
 @stop

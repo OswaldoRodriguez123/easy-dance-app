@@ -828,7 +828,7 @@
             </div>
 
             <div class="modal fade" id="modalCredencial" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
                             <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Credenciales Alumno: <span id="credencial_alumno" name="credencial_alumno"></span><button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
@@ -869,10 +869,12 @@
                               <div class="clearfix m-b-30"></div>
 
                               <div class="col-sm-2">
-
-                                <button type="button" class="btn btn-blanco m-r-8 f-10" name= "agregar_credencial" id="agregar_credencial" > Agregar Linea <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
-
+                                <button type="button" class="btn btn-blanco f-10" name= "agregar_credencial" id="agregar_credencial" > Agregar Linea <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
                               </div>  
+
+                              <div class="col-sm-10" style="text-align: right;">
+                                Total Credenciales: <span id="total_credenciales_alumno">0</span>
+                              </div>
                                
 
                               <div class="clearfix p-b-35"></div>
@@ -884,9 +886,9 @@
                                         <tr>
                                             <th class="text-center" data-column-id="cantidad">Cantidad</th>
                                             <th class="text-center" data-column-id="fecha_vencimiento">Fecha de Vencimiento</th>
-                                            @if($usuario_tipo != 3)
-                                              <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
-                                            @endif
+                                            <th class="text-center" data-column-id="fecha_vencimiento">Dias de Vencimiento</th>
+                                            <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1174,6 +1176,7 @@
                                 	'Cantidad que adeuda: ' . number_format($deuda, 2, '.' , '.')  . '<br>'.
                                   'Modalidad de pago: <span id="tipo_pago_'.$id.'">' . $tipo_pago . '</span><br>'.
                                   'Registro de llamada: ' . $alumno['llamadas'] . '<br>'.
+                                  'Credenciales: ' . $alumno['total_credenciales'] . '<br>'.
                                   // 'Inasistencias: ' . $alumno['inasistencias'] . '<br>'.
                                   // 'Ultima Asistencia: ' . $alumno['ultima_asistencia'] . '<br>'.
                                 '</p>';
@@ -1345,14 +1348,15 @@
         route_examen="{{url('/')}}/especiales/examenes/agregar";
         route_alumno="{{url('/')}}/guardar-alumno";
         route_transferir="{{url('/')}}/agendar/clases-grupales/transferir";
+        route_consultar_credencial="{{url('/')}}/agendar/clases-grupales/consultar_credenciales";
+
+        var in_credencial = <?php echo json_encode($in_credencial);?>;
 
         var hombres = "{{$hombres}}";
         var mujeres = "{{$mujeres}}";
         var permitir = 0;
         var costo_inscripcion = "{{$clasegrupal->costo_inscripcion}}"
         var costo_mensualidad = "{{$clasegrupal->costo_mensualidad}}"
-        var credenciales = <?php echo json_encode($credenciales);?>;
-        var credencial_id;
 
         $(document).ready(function(){
 
@@ -1455,6 +1459,7 @@
           serverSide: false,
           pageLength: 25,  
           paging: false,
+          searching:false,
           order: [[0, 'asc']],
           fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
             $('td:eq(0),td:eq(1),td:eq(2)', nRow).addClass( "text-center" );
@@ -2171,86 +2176,18 @@
 
             });
 
-            $("#agregar_credencial").click(function(){
+          $(".congelar_alumno").on('click', function(){
 
-              $("#agregar_credencial").attr("disabled","disabled");
-              $("#agregar_credencial").css({
-                "opacity": ("0.2")
-              });
+            var id = $(this).closest('tr').attr('id');
+            var nombre = $(this).closest('tr').data('nombre');
 
-              var route = route_credencial;
-              var token = $('input:hidden[name=_token]').val();
-              var datos = $( "#form_credencial" ).serialize();         
-              limpiarMensaje();
-              $.ajax({
-                url: route,
-                headers: {'X-CSRF-TOKEN': token},
-                type: 'POST',
-                dataType: 'json',
-                data:datos,
-                success:function(respuesta){
-                  setTimeout(function(){ 
-                    var nFrom = $(this).attr('data-from');
-                    var nAlign = $(this).attr('data-align');
-                    var nIcons = $(this).attr('data-icon');
-                    var nAnimIn = "animated flipInY";
-                    var nAnimOut = "animated flipOutY"; 
-                    if(respuesta.status=="OK"){
 
-                      var nType = 'success';
-                      var nTitle="Ups! ";
-                      var nMensaje=respuesta.mensaje;
+            $('#inscripcion_clase_grupal_id').val(id);
+            $('.span_alumno').text(nombre);
+            
+            $('#modalCongelar').modal('show');
+        });
 
-                      var rowId=respuesta.credencial_alumno.id;
-                      var rowNode=c.row.add( [
-                        ''+respuesta.credencial_alumno.cantidad+'',
-                        ''+respuesta.fecha_vencimiento+'',
-                        @if($usuario_tipo != 3)
-                          '<i class="zmdi zmdi-delete f-20 p-r-10 pointer">'
-                        @endif
-                      ] ).draw(false).node();
-                      $( rowNode )
-                        .attr('id',rowId)
-                        .addClass('disabled');
-
-                      $('#form_credencial')[0].reset();
-
-                      @if($usuario_tipo == 3)
-                        total = parseInt($('#total_credenciales').text()) - parseInt(respuesta.credencial_alumno.cantidad);
-                        $('#total_credenciales').text(total);
-                      @endif
-
-                    }else{
-                      var nTitle="Ups! ";
-                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                      var nType = 'danger';
-                    }  
-
-                    $("#agregar_credencial").removeAttr("disabled");
-                    $("#agregar_credencial").css({
-                      "opacity": ("1")
-                    });
-
-                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                  }, 1000);
-                },
-                error:function(msj){
-                  setTimeout(function(){ 
-                    // if (typeof msj.responseJSON === "undefined") {
-                    //   window.location = "{{url('/')}}/error";
-                    // }
-
-                    $("#agregar_credencial").removeAttr("disabled");
-                    $("#agregar_credencial").css({
-                      "opacity": ("1")
-                    });
-
-                    swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-
-                  }, 1000);
-                }
-            });
-          });
 
           $("#congelar").click(function(){
             swal({   
@@ -2347,47 +2284,295 @@
 
         $(".credencial").on('click', function(){
 
-            var alumno_id = $(this).closest('tr').data('alumno_id');
-            var id = $(this).closest('tr').attr('id');
-            var nombre = $(this).closest('tr').data('nombre');
+          var alumno_id = $(this).closest('tr').data('alumno_id');
+          var id = $(this).closest('tr').attr('id');
+          var nombre = $(this).closest('tr').data('nombre');
+          total_credenciales_alumno = 0;
 
-            c.clear().draw();
+          c.clear().draw();
 
-            $.each(credenciales[alumno_id], function (index, array) {
+          var route = route_consultar_credencial;
+          var token = $('input:hidden[name=_token]').val();
+          procesando();    
+          limpiarMensaje();
+          $.ajax({
+              url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:'&alumno_id='+alumno_id+'&in_credencial='+in_credencial,
+              success:function(respuesta){
+                setTimeout(function(){ 
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY"; 
+                  if(respuesta.status=="OK"){
 
-              var rowId=array.id;
+                    $.each(respuesta.credenciales, function (index, array) {
 
-              if(rowId != credencial_id){
-                var rowNode=c.row.add( [
-                  ''+array.cantidad+'',
-                  ''+array.fecha_vencimiento+'',
-                  '<i class="zmdi zmdi-delete f-20 p-r-10 pointer">'
-                ] ).draw(false).node();
+                      if({{$usuario_tipo}} != 3){
 
-                $( rowNode )
-                  .attr('id',rowId)
-                  .addClass('disabled');
+                        accion = '<i class="zmdi zmdi-delete f-20 p-r-10 pointer">'
+
+                      }else{
+
+                        if(array.instructor_id == "{{$usuario_id}}"){
+                          accion = '<i class="zmdi zmdi-delete f-20 p-r-10 pointer">'
+                        }else{
+                          accion = '<i data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Esta credencial no puede ser eliminada porque fue asignada por un administrador" title="" data-original-title="Ayuda" class="zmdi zmdi-lock-outline f-20 p-r-10 disabled">'
+                        }
+                      }
+
+                      var rowId=array.id;
+                      var rowNode=c.row.add( [
+                        ''+array.cantidad+'',
+                        ''+array.fecha_vencimiento+'',
+                        ''+array.dias_vencimiento+'',
+                        ''+accion+''
+                      ] ).draw(false).node();
+
+                      $( rowNode )
+                        .attr('id',rowId)
+                        .addClass('disabled');
+                      
+
+                    });
+
+                    $('#total_credenciales_alumno').text(respuesta.total_credenciales)
+
+                    finprocesado();
+
+                  }else{
+                    var nTitle="Ups! ";
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    var nType = 'danger';
+
+                    finprocesado();
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
+                  }                       
+                  
+                }, 1000);
+              },
+              error:function(msj){
+                setTimeout(function(){ 
+                  // if (typeof msj.responseJSON === "undefined") {
+                  //   window.location = "{{url('/')}}/error";
+                  // }
+                  finprocesado();
+                  if(msj.responseJSON.status=="ERROR"){
+                    console.log(msj.responseJSON.errores);
+                    errores(msj.responseJSON.errores);
+                    var nTitle="    Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                  }else{
+                    var nTitle="   Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  }            
+
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nType = 'danger';
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY";                       
+                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                }, 1000);
+
               }
+          });
+ 
+          $('[data-toggle="popover"]').popover(); 
 
-            });
 
-
-            $('#alumno_id_credencial').val(alumno_id);
-            $('#credencial_alumno').text(nombre);
-            
+          $('#alumno_id_credencial').val(alumno_id);
+          $('#credencial_alumno').text(nombre);
+          
+          setTimeout(function(){ 
             $('#modalCredencial').modal('show');
+          }, 1000);
+
         });
 
-        $(".congelar_alumno").on('click', function(){
+        $("#agregar_credencial").click(function(){
 
-            var id = $(this).closest('tr').attr('id');
-            var nombre = $(this).closest('tr').data('nombre');
+              $("#agregar_credencial").attr("disabled","disabled");
+              $("#agregar_credencial").css({
+                "opacity": ("0.2")
+              });
 
+              var route = route_credencial;
+              var token = $('input:hidden[name=_token]').val();
+              var datos = $( "#form_credencial" ).serialize();         
+              limpiarMensaje();
+              $.ajax({
+                url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                data:datos,
+                success:function(respuesta){
+                  setTimeout(function(){ 
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY"; 
+                    if(respuesta.status=="OK"){
 
-            $('#inscripcion_clase_grupal_id').val(id);
-            $('.span_alumno').text(nombre);
-            
-            $('#modalCongelar').modal('show');
+                      if({{$usuario_tipo}} != 3)
+
+                        accion = '<i class="zmdi zmdi-delete f-20 p-r-10 pointer">'
+
+                      else{
+                        if(respuesta.credencial_alumno.instructor_id == "{{$usuario_id}}"){
+                          accion = '<i class="zmdi zmdi-delete f-20 p-r-10 pointer">'
+                        }else{
+                          accion = '<i data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Esta credencial no puede ser eliminada porque fue asignada por un administrador" title="" data-original-title="Ayuda" class="zmdi zmdi-lock-outline f-20 p-r-10 pointer">'
+                        }
+                      }
+
+                      $('[data-toggle="popover"]').popover(); 
+
+                      var nType = 'success';
+                      var nTitle="Ups! ";
+                      var nMensaje=respuesta.mensaje;
+
+                      var rowId=respuesta.credencial_alumno.id;
+                      var rowNode=c.row.add( [
+                        ''+respuesta.credencial_alumno.cantidad+'',
+                        ''+respuesta.fecha_vencimiento+'',
+                        ''+respuesta.credencial_alumno.dias_vencimiento+'',
+                        ''+accion+''
+                      ] ).draw(false).node();
+
+                      $( rowNode )
+                        .attr('id',rowId)
+                        .addClass('disabled');
+
+                      $('#form_credencial')[0].reset();
+
+                      if(respuesta.total_credenciales){
+                        $('#total_credenciales').text(respuesta.total_credenciales)
+                      }
+
+                      total_credenciales_alumno = parseInt($('#total_credenciales_alumno').text())
+                      total_credenciales_alumno = total_credenciales_alumno + parseInt(respuesta.cantidad)
+
+                      $('#total_credenciales_alumno').text(total_credenciales_alumno)
+                      
+                    }else{
+                      var nTitle="Ups! ";
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                      var nType = 'danger';
+                    }  
+
+                    $("#agregar_credencial").removeAttr("disabled");
+                    $("#agregar_credencial").css({
+                      "opacity": ("1")
+                    });
+
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                  }, 1000);
+                },
+                error:function(msj){
+                  setTimeout(function(){ 
+                    // if (typeof msj.responseJSON === "undefined") {
+                    //   window.location = "{{url('/')}}/error";
+                    // }
+
+                    $("#agregar_credencial").removeAttr("disabled");
+                    $("#agregar_credencial").css({
+                      "opacity": ("1")
+                    });
+
+                    swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+
+                  }, 1000);
+                }
+            });
+          });
+
+        $('#tablecredencial tbody').on( 'click', 'i.zmdi-delete', function () {
+
+          var id = $(this).closest('tr').attr('id');
+          element = this;
+
+          swal({   
+            title: '¿Seguro quieres eliminar la credencial?',   
+            text: "Confirmar eliminación!",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Eliminar!",  
+            cancelButtonText: "Cancelar",         
+            closeOnConfirm: true 
+          }, function(isConfirm){   
+            if (isConfirm) {
+
+              procesando()
+
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'success';
+              var nAnimIn = $(this).attr('data-animation-in');
+              var nAnimOut = $(this).attr('data-animation-out')
+              var route = route_eliminar_credencial + id;
+              var token = $('input:hidden[name=_token]').val();
+
+              $.ajax({
+                url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'DELETE',
+                dataType: 'json',
+                data: id,
+                success:function(respuesta){
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY"; 
+                  if(respuesta.status=="OK"){
+                    var nType = 'success';
+                    var nTitle="Ups! ";
+                    var nMensaje=respuesta.mensaje;
+
+                    c.row( $(element).parents('tr') )
+                      .remove()
+                      .draw();
+
+                    swal("Exito!","La credencial ha sido eliminada!","success");
+
+                    if(respuesta.total_credenciales){
+                      $('#total_credenciales').text(respuesta.total_credenciales)
+                    }
+
+                    total_credenciales_alumno = parseInt($('#total_credenciales_alumno').text())
+                    total_credenciales_alumno = total_credenciales_alumno - parseInt(respuesta.cantidad)
+
+                    $('#total_credenciales_alumno').text(total_credenciales_alumno)
+
+                    finprocesado()
+                  
+                  }
+                },
+                error:function(msj){
+                  $("#msj-danger").fadeIn(); 
+                  var text="";
+                  console.log(msj);
+                  var merror=msj.responseJSON;
+                  text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                  $("#msj-error").html(text);
+                  setTimeout(function(){
+                           $("#msj-danger").fadeOut();
+                  }, 3000);
+                }
+              });
+            }
+          });
         });
 
         function previa(t){
@@ -2989,79 +3174,6 @@
     $('.table-responsive').on('hide.bs.dropdown', function () {
       $('.table-responsive').css( "overflow", "auto" );
     })
-
-
-    $('#tablecredencial tbody').on( 'click', 'i.zmdi-delete', function () {
-
-      var id = $(this).closest('tr').attr('id');
-      element = this;
-
-      swal({   
-        title: '¿Seguro quieres eliminar la credencial?',   
-        text: "Confirmar eliminación!",   
-        type: "warning",   
-        showCancelButton: true,   
-        confirmButtonColor: "#DD6B55",   
-        confirmButtonText: "Eliminar!",  
-        cancelButtonText: "Cancelar",         
-        closeOnConfirm: true 
-      }, function(isConfirm){   
-        if (isConfirm) {
-
-          procesando()
-
-          var nFrom = $(this).attr('data-from');
-          var nAlign = $(this).attr('data-align');
-          var nIcons = $(this).attr('data-icon');
-          var nType = 'success';
-          var nAnimIn = $(this).attr('data-animation-in');
-          var nAnimOut = $(this).attr('data-animation-out')
-          var route = route_eliminar_credencial + id;
-          var token = $('input:hidden[name=_token]').val();
-
-          $.ajax({
-            url: route,
-            headers: {'X-CSRF-TOKEN': token},
-            type: 'DELETE',
-            dataType: 'json',
-            data: id,
-            success:function(respuesta){
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY"; 
-              if(respuesta.status=="OK"){
-                var nType = 'success';
-                var nTitle="Ups! ";
-                var nMensaje=respuesta.mensaje;
-
-                credencial_id = id;
-
-                c.row( $(element).parents('tr') )
-                  .remove()
-                  .draw();
-
-                swal("Exito!","La credencial ha sido eliminada!","success");
-                finprocesado()
-              
-              }
-            },
-            error:function(msj){
-              $("#msj-danger").fadeIn(); 
-              var text="";
-              console.log(msj);
-              var merror=msj.responseJSON;
-              text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-              $("#msj-error").html(text);
-              setTimeout(function(){
-                       $("#msj-danger").fadeOut();
-              }, 3000);
-            }
-          });
-        }
-      });
-    });
 
     $(".dismiss").click(function(){
       procesando()

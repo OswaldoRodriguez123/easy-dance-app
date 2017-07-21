@@ -1263,6 +1263,10 @@
                                             <li class="hidden-xs">
                                                 <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$clasegrupal->id}}"><i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i> Ver Progreso</a>
                                             </li>
+
+                                            <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/agenda/{{$clasegrupal->id}}"><i class="zmdi zmdi-eye f-16 boton blue"></i>Ver Agenda</a>
+                                              </li>
                                         
                                             @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
@@ -1270,9 +1274,6 @@
                                                 <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$clasegrupal->id}}"><i class="zmdi zmdi-calendar-note f-16 boton blue"></i>Multihorario</a>
                                               </li>
 
-                                              <li class="hidden-xs">
-                                                <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/agenda/{{$clasegrupal->id}}"><i class="zmdi zmdi-eye f-16 boton blue"></i>Ver Agenda</a>
-                                              </li>
 
                                               <li class="hidden-xs">
                                                   <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/canceladas/{{$clasegrupal->id}}"><i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i> Cancelar Clase</a>

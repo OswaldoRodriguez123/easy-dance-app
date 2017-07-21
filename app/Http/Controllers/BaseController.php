@@ -114,6 +114,7 @@ class BaseController extends Controller {
 
             View::share ('notificaciones', $array);
             View::share ('usuario_tipo', $usuario_tipo);
+            View::share ('usuario_id', $usuario_id);
             View::share ('sin_ver', $numero_de_notificaciones );
    		}
 

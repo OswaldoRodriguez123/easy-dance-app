@@ -1419,12 +1419,14 @@ class AsistenciaController extends BaseController
         $estatu="credencial";
 
         $credencial_alumno = CredencialAlumno::where('alumno_id',$alumno_id)->whereIn('instructor_id',$in_credencial)
+          ->where('fecha_vencimiento','>=', Carbon::now()->toDateString())
           ->where('cantidad' ,'>', 0)
         ->first();
 
         if(!$credencial_alumno){
 
           $credencial_otra_clase = CredencialAlumno::where('alumno_id',$alumno_id)
+            ->where('fecha_vencimiento','>=', Carbon::now()->toDateString())
             ->where('cantidad' ,'>', 0)
           ->first();
 

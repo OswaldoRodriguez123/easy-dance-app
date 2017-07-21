@@ -789,12 +789,11 @@ class ClaseGrupalController extends BaseController {
                 }
                 
                 // ----------
-
-                $credencial_alumno = CredencialAlumno::where('alumno_id',$alumno->id)
+             
+                $total_credenciales_alumno = CredencialAlumno::where('alumno_id',$alumno->id)
                     ->whereIn('instructor_id', $in_credencial)
-                ->get();
-
-                $credenciales[$alumno->id] = $credencial_alumno;
+                    ->where('fecha_vencimiento','>=', Carbon::now()->toDateString())
+                ->sum('cantidad');
 
                 $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
                     ->where('usuario_id','=',$alumno->id)
@@ -841,6 +840,7 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['deuda']=$deuda;
                 $alumno_array['tipo'] = 1;
                 $alumno_array['llamadas'] = $llamadas;
+                $alumno_array['total_credenciales'] = $total_credenciales_alumno;
 
                 $array[$alumno->id] = $alumno_array;
 
@@ -934,8 +934,8 @@ class ClaseGrupalController extends BaseController {
 
             $staffs = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
-            foreach($staffs as $staff)
-            {
+            foreach($staffs as $staff){
+
                 $collection=collect($staff);     
                 $promotor_array = $collection->toArray();
 
@@ -947,8 +947,8 @@ class ClaseGrupalController extends BaseController {
 
             $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
-            foreach($instructores as $instructor)
-            {
+            foreach($instructores as $instructor){
+
                 $collection=collect($instructor);     
                 $promotor_array = $collection->toArray();
 
@@ -960,7 +960,7 @@ class ClaseGrupalController extends BaseController {
 
             $tipologias = Tipologia::all();
 
-            return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'examen' => $examen, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal, 'promotores' => $promotores, 'promociones' => $promociones, 'usuario_tipo' => $usuario_tipo, 'tipologias' => $tipologias, 'credenciales' => $credenciales]);
+            return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'examen' => $examen, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal, 'promotores' => $promotores, 'promociones' => $promociones, 'usuario_tipo' => $usuario_tipo, 'tipologias' => $tipologias, 'credenciales' => $credenciales, 'in_credencial' => $in_credencial]);
 
         }else{
             return redirect("agendar/clases-grupales"); 
@@ -1935,6 +1935,7 @@ class ClaseGrupalController extends BaseController {
 
             if($usuario_tipo != 3){
                 $instructor_id = '';
+                $total_credenciales = 0;
             
             }else{
 
@@ -1949,7 +1950,10 @@ class ClaseGrupalController extends BaseController {
                         $credencial_instructor->cantidad = $total;
 
                         if($credencial_instructor->save()){
+
                             $instructor_id = $usuario_id;
+                            $total_credenciales = $credencial_instructor->cantidad;
+
                         }else{
                             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
                         }
@@ -1974,10 +1978,12 @@ class ClaseGrupalController extends BaseController {
 
             if($credencial_alumno->save()){
 
+                $cantidad = $credencial_alumno->cantidad;
+
                 $fecha_vencimiento = $credencial_alumno->fecha_vencimiento;
                 $fecha_vencimiento = $fecha_vencimiento->toDateString();
 
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'credencial_alumno' => $credencial_alumno, 'fecha_vencimiento' => $fecha_vencimiento, 200]);
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'credencial_alumno' => $credencial_alumno, 'total_credenciales' => $total_credenciales, 'fecha_vencimiento' => $fecha_vencimiento, 'cantidad' => $cantidad, 200]);
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
@@ -1989,9 +1995,38 @@ class ClaseGrupalController extends BaseController {
         $credencial_alumno = CredencialAlumno::find($id);
 
         if($credencial_alumno){
+
+            $datos = $this->getDatosUsuario();
+
+            $usuario_id = $datos[0]['usuario_id'];
+            $usuario_tipo = $datos[0]['usuario_tipo'];
+
+            $cantidad = $credencial_alumno->cantidad;
+
+            if($usuario_tipo == 3){
+
+                $cantidad = $credencial_alumno->cantidad;
+
+                $credenciales_instructor = CredencialInstructor::where('instructor_id',$usuario_id)->first();
+
+                if($credenciales_instructor){
+
+                    $credenciales_instructor->cantidad = $credenciales_instructor->cantidad + $cantidad;
+
+                    if($credenciales_instructor->save()){
+                        $total_credenciales = $credenciales_instructor->cantidad;
+
+                    }else{
+                        $total_credenciales = 0;
+                    }
+                }
+            }else{
+                $total_credenciales = 0;
+            }
+
             if($credencial_alumno->delete()){
 
-            return response()->json(['mensaje' => '¡Excelente! La credencial se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+                return response()->json(['mensaje' => '¡Excelente! La credencial se ha eliminado satisfactoriamente', 'status' => 'OK', 'total_credenciales' => $total_credenciales, 'cantidad' => $cantidad, 200]);
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
@@ -5048,6 +5083,27 @@ class ClaseGrupalController extends BaseController {
         }
 
         return view('agendar.clase_grupal.ausencia')->with(['alumnos' => $array, 'inasistencias' => $array_inasistencia]);
+
+    }
+
+    function consulta_credenciales_alumno(Request $request){
+
+        $total_credenciales = 0;
+
+        $credenciales = CredencialAlumno::where('alumno_id',$request->alumno_id)
+            ->whereIn('instructor_id', explode(',',$request->in_credencial))
+            ->where('fecha_vencimiento','>=', Carbon::now()->toDateString())
+        ->get();
+
+        foreach($credenciales as $credencial){
+            $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$credencial->fecha_vencimiento);
+            $dias_vencimiento = $fecha_vencimiento->diffInDays(Carbon::now());
+            $credencial['dias_vencimiento'] = $dias_vencimiento;
+
+            $total_credenciales += $credencial->cantidad; 
+        }
+
+        return response()->json(['mensaje' => '¡Excelente! Los datos se han generado satisfactoriamente', 'status' => 'OK', 'credenciales' => $credenciales, 'total_credenciales' => $total_credenciales, 200]);
 
     }
 }
