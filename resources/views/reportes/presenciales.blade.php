@@ -1088,7 +1088,7 @@
     $('#tablelistar tbody').on( 'click', 'i.encuesta', function () {
         var id = $(this).closest('tr').attr('id');
         var route =route_encuesta+id;
-        window.location=route;
+        window.open(route, '_blank');
     });
 
 </script>
