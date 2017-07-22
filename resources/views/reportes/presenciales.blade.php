@@ -747,7 +747,7 @@
                                     total = total + 1
                                 }
 
-                                if(array.rapidez || array.calidad || array.satisfaccion || array.disponibilidad){
+                                if(array.rapidez != 0 || array.calidad != 0 || array.satisfaccion != 0 || array.disponibilidad != 0){
                                     accion = '<i class="icon_a-examen f-20 boton blue sa-warning pointer encuesta" data-original-title="" data-content="Ver Encuesta" data-toggle="popover" data-placement="top" title="" type="button" data-trigger="hover"></i>'
                                 }else{
                                     accion = ''
