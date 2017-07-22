@@ -419,6 +419,7 @@
                                             <th class="text-center" data-column-id="sexo" data-order="desc">Sexo</th>
                                             <th class="text-center" data-column-id="celular">Contacto Móvil</th>
                                             <th class="text-center" data-column-id="especialidad">Especialidad</th>
+                                            <th class="text-center" data-column-id="acciones">Operaciones</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -463,10 +464,11 @@
 
 @section('js') 
             
-        <script type="text/javascript">
+    <script type="text/javascript">
 
         route_filtrar="{{url('/')}}/reportes/presenciales";
         route_detalle="{{url('/')}}/participante/visitante/detalle";
+        route_encuesta="{{url('/')}}/participante/visitante/encuesta/";
 
         $(document).ready(function(){
 
@@ -745,19 +747,28 @@
                                     total = total + 1
                                 }
 
+                                if(array.rapidez || array.calidad || array.satisfaccion || array.disponibilidad){
+                                    accion = '<i class="icon_a-examen f-20 boton blue sa-warning pointer encuesta" data-original-title="" data-content="Ver Encuesta" data-toggle="popover" data-placement="top" title="" type="button" data-trigger="hover"></i>'
+                                }else{
+                                    accion = ''
+                                }
+
                                 var rowNode=t.row.add( [
                                 ''+cliente+'',
-                                ''+array.fecha+'',
+                                ''+array.fecha_registro+'',
                                 ''+array.nombre+'',
                                 ''+array.apellido+'',
                                 ''+sexo+'',
                                 ''+array.celular+'',
                                 ''+array.especialidad+'',
+                                ''+accion+'',
                                 ] ).draw(false).node();
                                 $( rowNode )
                                     .attr('id',array.id)
                                     .addClass('seleccion');
                             });
+
+                            $('[data-toggle="popover"]').popover();
 
                             $.each(respuesta.promotores, function (index, array) {
 
@@ -1073,6 +1084,12 @@
         $("#tipo").selectpicker('refresh');
         $("#boolean_fecha").val('0');
     })
+
+    $('#tablelistar tbody').on( 'click', 'i.encuesta', function () {
+        var id = $(this).closest('tr').attr('id');
+        var route =route_encuesta+id;
+        window.location=route;
+    });
 
 </script>
 

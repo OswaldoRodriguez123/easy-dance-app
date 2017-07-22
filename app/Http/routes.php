@@ -611,6 +611,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('participante/visitante/impresion/{id}', 'VisitanteController@impresion');
 		Route::post('participante/visitante/impresion', 'VisitanteController@storeImpresion');
 		Route::post('participante/visitante/enviar-correo', 'VisitanteController@enviarCorreo');
+		Route::get('participante/visitante/encuesta/{id}', 'VisitanteController@getEncuesta');
 
 
 		Route::get('participante/visitante/llamadas/{id}', 'VisitanteController@indexLlamada');

@@ -424,7 +424,7 @@ class VisitanteController extends BaseController {
     {
         $visitante = Visitante::find($id);
 
-        return view('participante.visitante.planilla_encuesta')->with(['visitante' => $visitante]);
+        return view('participante.visitante.impresion')->with(['visitante' => $visitante]);
     }
 
     public function storeImpresion(Request $request)
@@ -466,6 +466,18 @@ class VisitanteController extends BaseController {
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }
 
+    }
+
+    public function getEncuesta($id)
+    {
+        $visitante = Visitante::find($id);
+
+        $academia = Academia::join('paises', 'academias.pais_id', '=', 'paises.id')
+            ->select('academias.*','paises.nombre as pais')
+            ->where('academias.id', $visitante->academia_id)
+        ->first();
+
+        return view('participante.visitante.encuesta')->with(['visitante' => $visitante, 'academia' => $academia]);
     }
 
     public function enviarCorreo(Request $request){

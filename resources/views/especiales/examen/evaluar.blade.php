@@ -612,7 +612,7 @@
         $("#agregar_evaluacion")[0].reset();
       });
 
-      $('html,body').animate({scrollTop: $("#id-supervisor_id").
+      $('html,body').animate({scrollTop: $("#id-alumno_id").
         offset().top-90,}, 800);
     });
 

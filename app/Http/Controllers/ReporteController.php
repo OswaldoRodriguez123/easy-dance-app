@@ -410,9 +410,8 @@ class ReporteController extends BaseController
     public function PresencialesFiltros(Request $request)
     {
 
-        $query = DB::table('visitantes_presenciales')
-            ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-            ->select('visitantes_presenciales.nombre', 'visitantes_presenciales.apellido', 'visitantes_presenciales.fecha_registro as fecha', 'config_especialidades.nombre as especialidad', 'visitantes_presenciales.celular', 'visitantes_presenciales.id', 'visitantes_presenciales.sexo', 'visitantes_presenciales.cliente', 'visitantes_presenciales.como_nos_conociste_id', 'visitantes_presenciales.interes_id', 'visitantes_presenciales.dias_clase_id', 'visitantes_presenciales.fecha_nacimiento', 'visitantes_presenciales.instructor_id', 'visitantes_presenciales.alumno_id')
+        $query = Visitante::Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
+            ->select('visitantes_presenciales.*', 'config_especialidades.nombre as especialidad')
             ->where('visitantes_presenciales.academia_id','=', Auth::user()->academia_id);
 
         if($request->instructor_id)
