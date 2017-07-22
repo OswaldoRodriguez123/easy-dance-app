@@ -696,59 +696,12 @@ $("#permitir_staff").on('click',function(){
     
 
     $('#asistencia_clase_grupal_id').on('change', function(){
-
-      $('#pertenece').val('')
-      $('#credencial').val('')
-
-      alumno_id = $('#asistencia_id_alumno').val();
-      clase_grupal_id = $(this).val();
-
-      $("#asistencia-estado_ausencia").removeClass('c-verde')
-      $("#asistencia-estado_ausencia").removeClass('c-amarillo')
-      $("#asistencia-estado_ausencia").removeClass('c-rojo')
-
-      if(clase_grupal_id){
-
-        var route = route_consulta_estatus;
-        var token = "{{ csrf_token() }}";
-
-        $.ajax({
-          url: route,
-          headers: {'X-CSRF-TOKEN': token},
-          type: 'POST',
-          dataType: 'json',
-          data:"&alumno_id="+alumno_id+"&clase_grupal_id="+clase_grupal_id,
-          success:function(respuesta){
-            $("#asistencia-estado_ausencia").addClass(respuesta.estatus)
-            $("#asistencia-credenciales").text(respuesta.credenciales)
-          },
-          error:function (msj, ajaxOptions, thrownError){
-            setTimeout(function(){ 
-              // if (typeof msj.responseJSON === "undefined") {
-              //   window.location = "{{url('/')}}/error";
-              // }
-              var nType = 'danger';
-              if(msj.responseJSON.status=="ERROR"){
-                errores(msj.responseJSON.errores);
-                var nTitle=" Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-              }else{
-                var nTitle=" Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              }
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                
-            }, 1000);             
-          }
-        });
-
         if ($(this).val()=='') {
           $("#asistencia-horario").text("---");           
         }else{
           $var = valor=$(this).val().split('-');
           $("#asistencia-horario").text(valor[1]);
         }
-      }
     });
 
     $('#asistencia_clase_grupal_id_instructor').on('change', function(){
@@ -848,14 +801,12 @@ $("#permitir_staff").on('click',function(){
 
       function buscarAlumno(t){
         procesando();
-        $('#clases_grupales_alumno').empty();
 
-        $('#pertenece').val('')
-        $('#credencial').val('')
+        $('#clases_grupales_alumno').empty();
 
         var row = $(t).closest('tr');
 
-        var id_alumno = $(row).data('id-participante');
+        var alumno_id = $(row).data('id-participante');
         var nombre_alumno = $(row).data('nombre-participante');
         var imagen = $(row).data('imagen');
         var sexo = $(row).data('sexo');
@@ -870,9 +821,9 @@ $("#permitir_staff").on('click',function(){
           }
         }
 
-        $('#asistencia_id_alumno').val(id_alumno);
+        $('#asistencia_id_alumno').val(alumno_id);
         $('#asistencia-nombre-alumno').text(nombre_alumno);
-        $("#url_pagar").attr("href", "{{url('/')}}/participante/alumno/deuda/"+id_alumno);
+        $("#url_pagar").attr("href", "{{url('/')}}/participante/alumno/deuda/"+alumno_id);
 
         $("#asistencia-horario").text("---");
 
@@ -884,13 +835,14 @@ $("#permitir_staff").on('click',function(){
           var route = route_consultar_ci;
         }
         
-        var token = $('input:hidden[name=_token]').val();
+        var token = "{{ csrf_token() }}";
+
         $.ajax({
           url: route,
           headers: {'X-CSRF-TOKEN': token},
           type: 'POST',
           dataType: 'json',
-          data: "&id="+id_alumno,
+          data: "&id="+alumno_id,
           success:function(respuesta){
             $.each(respuesta.inscripciones, function (index, array) { 
               if(array.diferencia > 1){
@@ -926,14 +878,12 @@ $("#permitir_staff").on('click',function(){
               opt.setAttribute('data-content', valor);
 
               $('#asistencia_clase_grupal_id').append(opt);    
-
-              // $('#asistencia-clase_grupal_id').append( new Option(valor,array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final+'-'+array.tipo+'-'+array.tipo_id));
             });
 
             $('#asistencia_clase_grupal_id').selectpicker('refresh')
 
-
             $('#asistencia-estado_economico').text(respuesta.deuda);
+
             if(respuesta.deuda > 0){
               $( "#url_pagar" ).show();
               $( "#acciones" ).show();
@@ -957,6 +907,43 @@ $("#permitir_staff").on('click',function(){
           } 
         });
 
+        $("#asistencia-estado_ausencia").removeClass('c-verde')
+        $("#asistencia-estado_ausencia").removeClass('c-amarillo')
+        $("#asistencia-estado_ausencia").removeClass('c-rojo')
+        $('#pertenece').val('')
+        $('#credencial').val('')
+
+        var route = route_consulta_estatus;
+
+        $.ajax({
+          url: route,
+          headers: {'X-CSRF-TOKEN': token},
+          type: 'POST',
+          dataType: 'json',
+          data:"&alumno_id="+alumno_id,
+          success:function(respuesta){
+            $("#asistencia-estado_ausencia").addClass(respuesta.estatus)
+            $("#asistencia-credenciales").text(respuesta.credenciales)
+          },
+          error:function (msj, ajaxOptions, thrownError){
+            setTimeout(function(){ 
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
+              var nType = 'danger';
+              if(msj.responseJSON.status=="ERROR"){
+                errores(msj.responseJSON.errores);
+                var nTitle=" Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle=" Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                
+            }, 1000);             
+          }
+        });
       }
 
 
