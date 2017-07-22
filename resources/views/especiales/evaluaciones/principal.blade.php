@@ -68,6 +68,7 @@
                                     <th class="text-center" data-column-id="examen">Valoración</th>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
                                     <th class="text-center" data-column-id="nota">Nota</th>
+                                    <th class="text-center" data-column-id="nota">Estatus</th>
 
                                 </tr>
                             </thead>
@@ -76,7 +77,7 @@
                             @foreach ($evaluacion as $evaluaciones)
                                 <?php $id = $evaluaciones->id; ?>
                                 <?php $alumno_id = $evaluaciones->alumno_id; ?>
-                                <tr id="row_{{$id}}" class="seleccion">
+                                <tr id="{{$id}}" class="seleccion" data-estatus="{{$evaluaciones->estatus}}">
                                     <td class="text-center previa"><span style="display: none">{{$evaluaciones->id}}</span></td>
 
                                     @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
@@ -88,8 +89,15 @@
                                     <td class="text-center previa">{{$evaluaciones->alumno_nombre}} {{$evaluaciones->alumno_apellido}}</td>
                                     <td class="text-center previa">{{$evaluaciones->instructor_nombre}} {{$evaluaciones->instructor_apellido}}</td>
                                     <td class="text-center previa">{{$evaluaciones->nombreExamen}}</td>
-                                    <td class="text-center previa">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$evaluaciones->fecha)->format('d-m-Y')}}</td>
-                                    <td class="text-center previa">{{$evaluaciones->nota_total}}</td>
+                                    <td class="text-center previa">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$evaluaciones->created_at)->format('d-m-Y')}}</td>
+                                    <td class="text-center previa">{{$evaluaciones->total}}</td>
+                                    <td class="text-center previa">
+                                        @if($evaluaciones->estatus == 1)
+                                            Finalizada
+                                        @else
+                                            En Proceso
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach  
                                                            
@@ -115,86 +123,70 @@
 
 @section('js')
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
         route_detalle="{{url('/')}}/especiales/evaluaciones/detalle";
         route_detalle2="{{url('/')}}/evaluaciones/detalle";
-        //route_operacion="{{url('/')}}/especiales/examenes/operaciones";
+        route_evaluar="{{url('/')}}/especiales/evaluaciones/evaluar";
 
         $(document).ready(function(){
 
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25,   
-        order: [[0, 'desc']],
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+            t=$('#tablelistar').DataTable({
+            processing: true,
+            serverSide: false,
+            pageLength: 25,   
+            order: [[0, 'desc']],
+            fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).attr( "onclick","previa(this)" );
+            },
+            language: {
+                            processing:     "Procesando ...",
+                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                            searchPlaceholder: "BUSCAR",
+                            lengthMenu:     "Mostrar _MENU_ Registros",
+                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                            infoPostFix:    "",
+                            loadingRecords: "...",
+                            zeroRecords:    "No se encontraron registros coincidentes",
+                            emptyTable:     "No hay datos disponibles en la tabla",
+                            paginate: {
+                                first:      "Primero",
+                                previous:   "Anterior",
+                                next:       "Siguiente",
+                                last:       "Ultimo"
+                            },
+                            aria: {
+                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                            }
                         }
-                    }
-        });
-    
-
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
             });
 
-    function previa(t){
+        });
 
-            var row = $(t).closest('tr').attr('id');
-            var id_alumno = row.split('_');
+        function previa(t){
+            var id = $(t).closest('tr').attr('id');
+            var estatus = $(t).closest('tr').data('estatus');
+
             if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6)
             {
-                var route =route_detalle+"/"+id_alumno[1];
+                if(estatus == 1){
+                    var route =route_detalle+"/"+id;
+                }else{
+                    var route =route_evaluar+"/"+id;
+                }
+                
             }else{
-                var route =route_detalle2+"/"+id_alumno[1];
+                var route =route_detalle2+"/"+id;
 
             }
             
             window.location=route;
         }
 
-        /*$("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-        });*/
 
     </script>
 @stop

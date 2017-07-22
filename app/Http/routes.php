@@ -1333,7 +1333,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		
 		Route::get('especiales/evaluaciones', 'EvaluacionController@index');
 		Route::get('especiales/evaluaciones/{id}', 'EvaluacionController@evaluaciones');
-		Route::post('especiales/evaluaciones/agregar', 'EvaluacionController@store');		
+		Route::post('especiales/evaluaciones/agregar', 'EvaluacionController@store');	
+		Route::get('especiales/evaluaciones/evaluar/{id}', 'EvaluacionController@evaluar');
+		Route::post('especiales/evaluaciones/evaluar', 'EvaluacionController@actualizar');	
 
 		Route::post('guardar-alumno/{id}','AlumnoController@guardarAlumno');
 

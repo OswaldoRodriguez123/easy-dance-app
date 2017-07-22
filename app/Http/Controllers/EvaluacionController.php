@@ -32,11 +32,11 @@ class EvaluacionController extends BaseController
     public function index()
     {
         $id_evaluacion=Session::get('id_evaluar');
-        $evaluacion_join = DB::table('evaluaciones')
-            ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
+
+        $evaluacion_join = Evaluacion::join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'evaluaciones.created_at as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion', 'alumnos.id as alumno_id')
+            ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen')
             ->where('evaluaciones.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
@@ -62,11 +62,10 @@ class EvaluacionController extends BaseController
 
     public function evaluaciones($id)
     {
-        $evaluacion_join = DB::table('evaluaciones')
-            ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
+        $evaluacion_join = Evaluacion::join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'evaluaciones.created_at as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion', 'alumnos.id as alumno_id')
+            ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen')
             ->where('evaluaciones.examen_id', '=' , $id)
         ->get();
 
@@ -99,7 +98,7 @@ class EvaluacionController extends BaseController
             ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'evaluaciones.created_at as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion', 'alumnos.id as alumno_id')
+            ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen')
             ->where('evaluaciones.alumno_id', '=' , $usuario_id)
         ->get();
 
@@ -129,7 +128,7 @@ class EvaluacionController extends BaseController
             ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-            ->select('evaluaciones.id as id' , 'examenes.nombre as nombreExamen', 'evaluaciones.created_at as fecha', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','evaluaciones.total as nota_total','alumnos.identificacion', 'alumnos.id as alumno_id')
+            ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen')
             ->where('evaluaciones.alumno_id', '=' , $id)
         ->get();
 
@@ -172,18 +171,36 @@ class EvaluacionController extends BaseController
     public function store(Request $request)
     {
 
-        $rules = [
-            'alumno_id' => 'required',
-            'total_nota' => 'required',
-            'observacion' => 'max:1000',
-        ];
+        if($request->estatus){
 
-        $messages = [
+            $rules = [
+                'alumno_id' => 'required',
+                'total_nota' => 'required',
+                'observacion' => 'max:1000',
+            ];
 
-            'alumno_id.required' => 'Ups! Debe seleccionar un Alumno ',
-            'total_nota.required' => 'Ups! Debe evaluar para poder guardar',
-            'observacion.max' => 'Ups! no pueden ser mas de 1000 caracteres',
-        ];
+            $messages = [
+                'alumno_id.required' => 'Ups! Debe seleccionar un Alumno',
+                'total_nota.required' => 'Ups! Debe evaluar para poder guardar',
+                'observacion.max' => 'Ups! no pueden ser mas de 1000 caracteres',
+            ];
+
+        }else{
+
+            $rules = [
+                'alumno_id' => 'required',
+                'fecha_vencimiento' => 'required',
+                'total_nota' => 'required',
+                'observacion' => 'max:1000',
+            ];
+
+            $messages = [
+                'alumno_id.required' => 'Ups! Debe seleccionar un Alumno',
+                'fecha_vencimiento.required' => 'Ups! La fecha de vencimiento es requerida',
+                'total_nota.required' => 'Ups! Debe evaluar para poder guardar',
+                'observacion.max' => 'Ups! no pueden ser mas de 1000 caracteres',
+            ];
+        }
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
@@ -192,6 +209,19 @@ class EvaluacionController extends BaseController
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
         }else{
+
+            if(!$request->estatus){
+
+                $fecha_vencimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_vencimiento);
+
+                if($fecha_vencimiento < Carbon::now()){
+                    return response()->json(['errores' => ['fecha_vencimiento' => [0, 'Ups! La fecha de vencimiento no puede ser menor a hoy']],  'status' => 'ERROR'],422);
+                }
+
+            }else{
+
+                $fecha_vencimiento = Carbon::now();
+            }
 
             $notas=explode(",",$request->nota_detalle);
 
@@ -210,6 +240,8 @@ class EvaluacionController extends BaseController
             $evaluacion->practica_horas_personalizadas = $request->personalizada_formula;
             $evaluacion->participacion_evento = $request->evento_formula;
             $evaluacion->participacion_fiesta_social = $request->fiesta_formula;
+            $evaluacion->fecha_vencimiento = $fecha_vencimiento;
+            $evaluacion->estatus = $request->estatus;
 
             if($evaluacion->save()){
 
@@ -313,7 +345,9 @@ class EvaluacionController extends BaseController
                 $formulas = ConfigFormulaExito::where('academia_id','=',Auth::user()->academia_id)->get();
 
                 foreach($formulas as $formula){
+
                     $config_formula = $formula->id."_formula";
+                    
                     if($request->$config_formula == 1){
 
                         $formula_evaluacion = new FormulaEvaluacion;
@@ -492,48 +526,180 @@ class EvaluacionController extends BaseController
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    public function evaluar($id)
+    {   
+        
+        $examen = Examen::join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
+            ->join('config_tipo_examenes', 'examenes.tipo', '=', 'config_tipo_examenes.id')
+            ->select('examenes.*','instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'config_tipo_examenes.nombre as tipo_de_evaluacion')
+            ->where('examenes.id', '=', $id)
+        ->first();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        if($examen){
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+            $array_alumno = array();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+            $array = array(2,4);
+
+            if($examen->boolean_grupal){
+
+                $alumnos = Alumno::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                  ->select('alumnos.*')
+                  ->where('inscripcion_clase_grupal.clase_grupal_id', '=' , $examen->clase_grupal_id)
+                  ->where('alumnos.deleted_at', '=', null)
+                  ->orderBy('nombre', 'asc')
+              ->get();
+
+              foreach($alumnos as $alumno){
+
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id',$alumno->id)
+                    ->whereIn('usuarios_tipo.tipo',$array)
+                ->first();
+
+
+                if($usuario){
+
+                  if($usuario->imagen){
+                    $imagen = $usuario->imagen;
+                  }else{
+                    $imagen = '';
+                  }
+
+                }
+
+                $collection=collect($alumno);     
+                $alumno_array = $collection->toArray();
+                    
+                $alumno_array['imagen']=$imagen;
+                $array_alumno[$alumno->id] = $alumno_array;
+
+
+              }
+
+            }else{
+
+                $alumnos = Alumno::where('alumnos.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->orderBy('nombre', 'asc')
+                ->get();
+
+                foreach($alumnos as $alumno){
+
+                    $usuario = User::where('usuario_id',$alumno->id)->whereIn('usuario_tipo',$array)->first();
+
+                    if($usuario){
+
+                      if($usuario->imagen){
+                        $imagen = $usuario->imagen;
+                      }else{
+                        $imagen = '';
+                      }
+
+                    }else{
+                        $imagen = '';
+                    }
+
+                    $collection=collect($alumno);     
+                    $alumno_array = $collection->toArray();
+                        
+                    $alumno_array['imagen']=$imagen;
+                    $array_alumno[$alumno->id] = $alumno_array;
+
+
+                }
+            }
+
+            Session::put('id_evaluar', $id);
+
+            $arrays_de_items=array();
+            $i=0;
+
+            if($examen->tiempos_musicales == 1){
+                $arrays_de_items[$i]="Tiempos musicales";
+                $i++;
+            }
+            if($examen->compromiso == 1){
+                $arrays_de_items[$i]="Compromiso";
+                $i++;
+            }
+            if($examen->condicion == 1){
+                $arrays_de_items[$i]="Condiciones";
+                $i++;
+            }
+            if($examen->habilidades == 1){
+                $arrays_de_items[$i]="Habilidades";
+                $i++;
+            }
+            if($examen->disciplina == 1){
+                $arrays_de_items[$i]="Disciplina";
+                $i++;
+            }
+            if($examen->expresion_corporal == 1){
+                $arrays_de_items[$i]="Expresion corporal";
+                $i++;
+            }
+            if($examen->expresion_facial == 1){
+                $arrays_de_items[$i]="Expresion facial";
+                $i++;
+            }
+            if($examen->respeto == 1){
+                $arrays_de_items[$i]="Respeto";
+                $i++;
+            }
+            if($examen->destreza == 1){
+                $arrays_de_items[$i]="Destreza";
+                $i++;
+            }
+            if($examen->dedicacion == 1){
+                $arrays_de_items[$i]="Dedicacion";
+                $i++;
+            }
+            if($examen->oido_musical == 1){
+                $arrays_de_items[$i]="Oido musical";
+                $i++;
+            }
+            if($examen->postura == 1){
+                $arrays_de_items[$i]="Postura";
+                $i++;
+            }
+            if($examen->elasticidad == 1){
+                $arrays_de_items[$i]="Elasticidad";
+                $i++;
+            }
+            if($examen->complejidad_de_movimientos == 1){
+                $arrays_de_items[$i]="Complejidad de movimientos";
+                $i++;
+            }
+            if($examen->asistencia == 1){
+                $arrays_de_items[$i]="Asistencia";
+                $i++;
+            }
+            if($examen->estilo == 1){
+                $arrays_de_items[$i]="Estilo";
+                $i++;
+            }
+            
+            $hoy = Carbon::now()->format('d-m-Y');
+
+
+            $items_examenes = ItemsExamenes::where('examen_id','=',$id)->get();
+
+            foreach ($items_examenes as $item) {
+                $arrays_de_items[$i]=$item->nombre;
+                $i++;
+            }
+
+            $alumno_id = Session::get('id_alumno');
+
+            $formulas = ConfigFormulaExito::where('academia_id','=',Auth::user()->academia_id)->get();
+
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            $usuario_tipo = Session::get('easydance_usuario_tipo');
+
+            return view('especiales.examen.evaluar')->with(['alumnos' => $array_alumno, 'examen' => $examen, 'fecha' => $hoy, 'items_a_evaluar' => $arrays_de_items, 'id' => $id, 'tipo_de_evaluacion' => $examen->tipo_de_evaluacion, 'numero_de_items'=>$i, 'alumno_id' => $alumno_id, 'formulas' => $formulas, 'academia' => $academia, 'usuario_tipo' => $usuario_tipo]);
+        }else{
+           return redirect("especiales/examenes"); 
+        }
     }
 }
