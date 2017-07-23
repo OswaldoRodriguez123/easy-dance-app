@@ -180,7 +180,7 @@
 
 @section('js') 
             
-        <script type="text/javascript">
+    <script type="text/javascript">
 
         route_detalle="{{url('/')}}/agendar/clases-grupales/detalle";
         route_operacion="{{url('/')}}/agendar/clases-grupales/operaciones";
@@ -415,6 +415,10 @@
                 operacion += 'Eliminar Clase'
                 operacion += '</a></li>'
                 operacion += '</ul></div></li></ul>'
+
+                var contenido = 'Salon: ' + array.salon + '<br>'
+                contenido += 'Cantidad de Participantes: ' + array.cantidad_participantes + '<br>'
+                contenido += 'Nivel: ' + array.nivel + '<br>'
    
                 var rowNode=t.row.add( [
                 ''+inicio+'',
@@ -425,6 +429,14 @@
                 ''+operacion+''
                 ] ).draw(false).node();
                 $( rowNode )
+                    .attr('data-trigger','hover')
+                    .attr('data-toggle','popover')
+                    .attr('data-placement','top')
+                    .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;&nbsp;')
+                    .attr('data-html','true')
+                    .attr('data-container','body')
+                    .attr('title','')
+                    .attr('data-content',contenido)
                     .attr('id',array.id)
                     .addClass('seleccion');
             });

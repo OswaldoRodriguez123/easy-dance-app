@@ -61,7 +61,8 @@ class ClaseGrupalController extends BaseController {
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga')
+            ->join('config_niveles_baile', 'clases_grupales.nivel_baile_id', '=', 'config_niveles_baile.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as salon', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga', 'config_niveles_baile.nombre as nivel')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
             ->OrderBy('clases_grupales.hora_inicio')
         ->get();
@@ -71,7 +72,8 @@ class ClaseGrupalController extends BaseController {
             ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
             ->join('clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as estudio_nombre', 'horarios_clases_grupales.hora_inicio','horarios_clases_grupales.hora_final', 'clases_grupales.id', 'horarios_clases_grupales.fecha as fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga', 'horarios_clases_grupales.id as horario_id')
+            ->join('config_niveles_baile', 'clases_grupales.nivel_baile_id', '=', 'config_niveles_baile.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as salon', 'horarios_clases_grupales.hora_inicio','horarios_clases_grupales.hora_final', 'clases_grupales.id', 'horarios_clases_grupales.fecha as fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga', 'horarios_clases_grupales.id as horario_id', 'config_niveles_baile.nombre as nivel')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
             ->OrderBy('horarios_clases_grupales.hora_inicio')
@@ -86,6 +88,9 @@ class ClaseGrupalController extends BaseController {
         if($usuario_tipo == 1 OR $usuario_tipo == 3 OR $usuario_tipo == 5 || $usuario_tipo == 6){
 
             foreach($clase_grupal_join as $clase_grupal){
+
+                $cantidad_participantes = InscripcionClaseGrupal::where('clase_grupal_id',$clase_grupal->id)->count();
+
                 $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
                 $dia_de_semana = $fecha->dayOfWeek;
 
@@ -101,13 +106,17 @@ class ClaseGrupalController extends BaseController {
 
                 $collection=collect($clase_grupal);     
                 $clase_grupal_array = $collection->toArray();
-                
+
+                $clase_grupal_array['cantidad_participantes']=$cantidad_participantes;
                 $clase_grupal_array['dia_de_semana']=$dia_de_semana;
                 $clase_grupal_array['inicio']=$inicio;
                 $array['1-'.$clase_grupal->id] = $clase_grupal_array;
             }
 
             foreach($horarios_clase_grupales as $clase_grupal){
+
+                $cantidad_participantes = InscripcionClaseGrupal::where('clase_grupal_id',$clase_grupal->id)->count();
+
                 $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
                 $dia_de_semana = $fecha->dayOfWeek;
 
@@ -124,6 +133,7 @@ class ClaseGrupalController extends BaseController {
                 $collection=collect($clase_grupal);     
                 $clase_grupal_array = $collection->toArray();
                 
+                $clase_grupal_array['cantidad_participantes']=$cantidad_participantes;
                 $clase_grupal_array['dia_de_semana']=$dia_de_semana;
                 $clase_grupal_array['inicio']=$inicio;
                 $array['2-'.$clase_grupal->horario_id] = $clase_grupal_array;
