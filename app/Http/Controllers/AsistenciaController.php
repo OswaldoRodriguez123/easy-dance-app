@@ -1509,6 +1509,21 @@ class AsistenciaController extends BaseController
                 }else{
                   $credencial_alumno->delete();
                 }
+              }else{
+                
+                $credencial_alumno = CredencialAlumno::where('alumno_id',$alumno_id)
+                ->first();
+
+                if($credencial_alumno){
+                  $cantidad = $credencial_alumno->cantidad - 1;
+
+                  if($cantidad > 0){
+                    $credencial_alumno->cantidad = $cantidad;
+                    $credencial_alumno->save();
+                  }else{
+                    $credencial_alumno->delete();
+                  }
+                }
               }
             }
 
