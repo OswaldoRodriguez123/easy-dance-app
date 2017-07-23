@@ -8,6 +8,7 @@
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')

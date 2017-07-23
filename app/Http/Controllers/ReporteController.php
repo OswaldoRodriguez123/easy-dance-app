@@ -784,13 +784,12 @@ class ReporteController extends BaseController
         return view('reportes.asistencias')->with(['clases_grupales' => $array]);
     }
 
-    public function AsistenciasFiltros(Request $request)
-    {
+    public function AsistenciasFiltros(Request $request){
         
         $query = Asistencia::join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
-            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'alumnos.identificacion as identificacion', 'asistencias.clase_grupal_id', 'asistencias.id', 'config_clases_grupales.nombre as clase_grupal_nombre')
+            ->select('alumnos.*', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'asistencias.clase_grupal_id', 'asistencias.id', 'config_clases_grupales.nombre as clase_grupal_nombre', 'asistencias.boolean_credencial')
             ->where('alumnos.deleted_at',null)
             ->where('clases_grupales.deleted_at',null);
 
@@ -858,10 +857,14 @@ class ReporteController extends BaseController
                 if($pertenece){
                     $pertenece = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
                 }else{
-                    if($asistencia->sexo == 'M'){
-                        $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                    if($asistencia->boolean_credencial){
+                        $pertenece = '<i class="icon_e-reglamentos c-amarillo" data-original-title="" data-content="Credencial" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                     }else{
-                        $pertenece = '<i class="icon_f-consultarle-al-instructor c-rosado" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                        if($asistencia->sexo == 'M'){
+                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                        }else{
+                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-rosado" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                        }
                     }
                     
                 }
@@ -1066,6 +1069,25 @@ class ReporteController extends BaseController
                     }else{
                         $pertenece = '<i class="icon_f-consultarle-al-instructor c-rosado" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
                         $mujeres = $mujeres + 1;
+                    }
+
+                    if($asistencia->boolean_credencial){
+
+                        $pertenece = '<i class="icon_e-reglamentos c-amarillo" data-original-title="" data-content="Credencial" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+
+                        if($asistencia->sexo == 'M'){
+                            $hombres = $hombres + 1;
+                        }else{
+                            $mujeres = $mujeres + 1;
+                        }
+                    }else{
+                        if($asistencia->sexo == 'M'){
+                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-azul" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                            $hombres = $hombres + 1;
+                        }else{
+                            $pertenece = '<i class="icon_f-consultarle-al-instructor c-rosado" data-original-title="" data-content="Invitado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                            $mujeres = $mujeres + 1;
+                        }
                     }
                         
                     if($deuda){
