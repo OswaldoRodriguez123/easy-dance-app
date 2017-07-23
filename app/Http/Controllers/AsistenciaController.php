@@ -1496,7 +1496,7 @@ class AsistenciaController extends BaseController
             if($boolean_credencial && $estatu != "inscrito"){
 
               $credencial_alumno = CredencialAlumno::where('alumno_id',$alumno_id)
-                  ->whereIn('instructor_id', $in_credencial)
+                ->whereIn('instructor_id', $in_credencial)
               ->first();
 
               if($credencial_alumno){
