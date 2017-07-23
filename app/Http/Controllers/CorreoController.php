@@ -117,14 +117,23 @@ class CorreoController extends BaseController {
 
 	}
 
+	public function Sesion(Request $request){
+
+		Session::put('tipo_usuario_correo', $request->usuario_tipo);
+		Session::put('id_usuario_correo', $request->usuario_id);
+
+		return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+	
+	}
+
+
 	public function indexconusuario($id){
 
-		$tipo = Session::get('tipo');
+		$tipo = Session::get('tipo_usuario_correo');
 
 		if($tipo){
 
-			if($tipo == 1)
-			{
+			if($tipo == 1){
 				$usuario = Alumno::withTrashed()->find($id);
 
 				if($usuario->correo){
@@ -140,26 +149,17 @@ class CorreoController extends BaseController {
 				}else{
 					$sin_confirmar = 0;
 				}
-			}
-
-			if($tipo == 2)
-			{
+			}else if($tipo == 2){
 				$usuario = Instructor::find($id);
 				$sin_confirmar = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
 		            ->where('usuarios_tipo.tipo_id', $id)
 		            ->where('users.confirmation_token', '!=', null)
 		            ->where('usuarios_tipo.tipo',3)
 		        ->count();
-			}
-
-			if($tipo == 3)
-			{
+			}else if($tipo == 3){
 				$usuario = Visitante::find($id);
 				$sin_confirmar = 0;
-			}
-
-			if($tipo == 4)
-			{
+			}else if($tipo == 4){
 				$usuario = Proveedor::find($id);
 				$sin_confirmar = 0;
 			}
@@ -244,18 +244,9 @@ class CorreoController extends BaseController {
 
 			return view('correo.index')->with(['usuario' => $usuario, 'id' => $id, 'sin_confirmar' => $sin_confirmar, 'tipo' => $tipo, 'correos' => $correos, 'alumnos' => $alumnos, 'visitantes' => $visitantes, 'clases_grupales' => $clases]);
 
-		}
-		else{
+		}else{
 			return redirect("inicio"); 
 		}
-	
-	}
-
-	public function Sesion($id){
-
-		Session::put('tipo', $id);
-
-		return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
 	
 	}
 
@@ -321,7 +312,41 @@ class CorreoController extends BaseController {
             $clases[$clase->id] = $clase_array;
         }
 
-        return view('correo.detalle')->with(['correo' => $correo, 'clases_grupales' => $clases]);
+        $tipo = Session::get('tipo_usuario_correo');
+
+		if($tipo){
+
+			$id = Session::get('id_usuario_correo');
+
+			if($tipo == 1){
+				$usuario = Alumno::withTrashed()->find($id);
+			}else if($tipo == 2){
+				$usuario = Instructor::withTrashed()->find($id);
+			}else if($tipo == 3){
+				$usuario = Visitante::withTrashed()->find($id);
+			}else if($tipo == 4){
+				$usuario = Proveedor::withTrashed()->find($id);
+			}
+
+			if($usuario){
+				if(!$usuario->correo){
+					$usuario = '';
+				}else{
+
+			        $fecha = Carbon::createFromFormat('Y-m-d H:i:s',$usuario->created_at)->format('d-m-Y');
+
+			        $collection=collect($usuario);    
+			        $usuario = '';
+			        $usuario_array = $collection->toArray();
+			            
+			        $usuario_array['fecha']=$fecha;
+			        $usuario[] = $usuario_array;
+
+				}
+			}
+		}
+
+        return view('correo.detalle')->with(['correo' => $correo, 'clases_grupales' => $clases, 'usuario' => $usuario]);
     }
 
 	public function Filtrar(Request $request){

@@ -162,12 +162,41 @@
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="nac" data-order="desc">Nacimiento</th>
                                     <th class="text-center" data-column-id="sexo" data-order="desc">Sexo</th>                    
-                                    <th class="text-center" data-column-id="celular">Contacto Móvil</th>
+                                    <th class="text-center" data-column-id="celular">Correo</th>
                                 </tr>
                             </thead>
                             <tbody>
+
+                              @if($usuario)
+
+                                <tr id="{{$usuario[0]['id']}}" class="seleccion" >
+                                  <td class="text-center previa"></td>
+                                  <td class="text-center previa">{{$usuario[0]['fecha']}}</td>
+
+                                  <?php 
+                                      $tmp = explode(" ", $usuario[0]['nombre']);
+                                      $nombre_alumno = $tmp[0];
+
+                                      $tmp = explode(" ", $usuario[0]['apellido']);
+                                      $apellido_alumno = $tmp[0];
+                                  ?>
+
+                                  <td class="text-center previa">{{$nombre_alumno}} {{$apellido_alumno}} </td>
+                                  <td class="text-center previa">{{$usuario[0]['fecha_nacimiento']}}</td>
+                                  <td class="text-center previa">
+                                     
+                                    @if($usuario[0]['sexo']=='F')
+                                        <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                    @else
+                                        <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                    @endif
+                               
+                                  </td>
+                                  <td class="text-center previa">{{$usuario[0]['correo']}}</td>
+                                </tr>
+                              @endif
                                                            
-                            </tbody>
+                          </tbody>
                         </table>
                          </div>
                         </div>
@@ -378,7 +407,7 @@
                       ''+array.nombre+ ' ' +array.apellido+'',
                       ''+array.fecha_nacimiento+'',
                       ''+sexo+'',
-                      ''+array.celular+'',
+                      ''+array.correo+'',
                     ] ).draw(false).node();
                     $( rowNode )
                         .attr('id',array.id)

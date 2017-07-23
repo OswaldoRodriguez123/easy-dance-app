@@ -30,8 +30,9 @@
             <div>
             
             <ul class="ca-menu-c col-sm-12" style="width: 1200px;">
+
                 <li data-ripplecator class ="dark-ripples">
-                        <a class="informacion">
+                        <a class="email">
                             <span class="ca-icon-c"><i class="zmdi zmdi-email f-35 boton blue sa-warning" data-original-title="Enviar Correo" type="button" data-toggle="tooltip" data-placement="bottom" title=""></i></span>
                             <div class="ca-content-c">
                                 <h2 class="ca-main-c f-20">Enviar Correo</h2>
@@ -103,6 +104,7 @@
     <script type="text/javascript">
 
     route_enviar="{{url('/')}}/participante/visitante/enviar-correo";
+    route_email="{{url('/')}}/correo/sesion";
 
     $(document).ready(function(){
 
@@ -194,6 +196,38 @@
                 }
             });
       });
+
+      $(".email").click(function(){
+         var route = route_email;
+         var token = '{{ csrf_token() }}';
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:"&usuario_tipo=3&usuario_id={{$id}}",
+                    success:function(respuesta){
+
+                        procesando();
+                        window.location="{{url('/')}}/correo/{{$id}}"  
+
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
+      });
+
 
 
     $(".reservar").click(function(){

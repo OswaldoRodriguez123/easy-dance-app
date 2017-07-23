@@ -976,7 +976,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		Route::get('/correo','CorreoController@index');
 		Route::get('/correo/{id}','CorreoController@indexconusuario');
-		Route::post('/correo/sesion/{id}', 'CorreoController@Sesion');
+		Route::post('/correo/sesion', 'CorreoController@Sesion');
 		Route::get('/correo/enviar/{id}', 'CorreoController@detalle');
 		Route::post('/correo/filtrar', 'CorreoController@Filtrar');
 		Route::post('/correo/enviar', 'CorreoController@Enviar');

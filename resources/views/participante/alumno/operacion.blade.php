@@ -147,7 +147,7 @@
 
     route_eliminar="{{url('/')}}/participante/alumno/eliminar/";
     route_principal="{{url('/')}}/participante/alumno";
-    route_email="{{url('/')}}/correo/sesion/";
+    route_email="{{url('/')}}/correo/sesion";
     route_agregar="{{url('/')}}/participante/alumno/crear_cuenta/";
     
     $(document).ready(function(){
@@ -255,7 +255,7 @@
 
 
     $(".email").click(function(){
-         var route = route_email + 1;
+         var route = route_email;
          var token = '{{ csrf_token() }}';
                 
                 $.ajax({
@@ -263,6 +263,7 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                     dataType: 'json',
+                    data:"&usuario_tipo=1&usuario_id={{$id}}",
                     success:function(respuesta){
 
                         procesando();

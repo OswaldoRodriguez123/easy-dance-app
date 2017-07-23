@@ -80,7 +80,7 @@
 
     route_eliminar="{{url('/')}}/configuracion/proveedor/eliminar/";
     route_principal="{{url('/')}}/configuracion/proveedor";
-    route_email="{{url('/')}}/correo/sesion/";
+    route_email="{{url('/')}}/correo/sesion";
 
     $(document).ready(function(){
 
@@ -174,7 +174,7 @@
       }
 
       $(".email").click(function(){
-         var route = route_email + 4;
+         var route = route_email;
          var token = '{{ csrf_token() }}';
                 
                 $.ajax({
@@ -182,6 +182,7 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                     dataType: 'json',
+                    data:"&usuario_tipo=4&usuario_id={{$id}}",
                     success:function(respuesta){
 
                         procesando();
