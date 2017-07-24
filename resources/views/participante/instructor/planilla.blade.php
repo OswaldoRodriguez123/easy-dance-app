@@ -58,16 +58,16 @@
 
                                              @foreach ( $clases_grupales as $clase_grupal )
                                               <?php $exist = false; ?>
-                                              @foreach ( $pagos_instructor as $pagos)
-                                                @if ($pagos->clase_grupal_id==$clase_grupal['id'] )
+                                              @foreach ( $pagos_instructor as $pago)
+                                                @if ($pago['clase_grupal_id']==$clase_grupal['id'] )
                                                   <?php $exist = true; ?>
                                                 @endif
                                               @endforeach
                                               @if ($exist)
 
-                                                  <option value = "{{ $clase_grupal['id'] }}" disabled="" data-icon="glyphicon-remove"> {{ $clase_grupal['clase_grupal_nombre'] }} - {{ $clase_grupal['hora_inicio'] }}  / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['dia'] }}</option>
+                                                  <option value = "{{ $clase_grupal['id'] }}" disabled="" data-icon="glyphicon-remove"> {{ $clase_grupal['nombre'] }} - {{ $clase_grupal['hora_inicio'] }}  / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['dia'] }}</option>
                                               @else
-                                                  <option value = "{{ $clase_grupal['id'] }}"> {{ $clase_grupal['clase_grupal_nombre'] }} - {{ $clase_grupal['hora_inicio'] }}  / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['dia'] }}</option>
+                                                  <option value = "{{ $clase_grupal['id'] }}"> {{ $clase_grupal['nombre'] }} - {{ $clase_grupal['hora_inicio'] }}  / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['dia'] }}</option>
                                               @endif
                                              @endforeach
                                             </select>
@@ -139,32 +139,33 @@
                                         <tr>
                                             
                                             <th class="text-center" data-column-id="clase_grupal">Clase Grupal</th>
+                                            <th class="text-center" data-column-id="clase_grupal">Día</th>
+                                            <th class="text-center" data-column-id="clase_grupal">Hora</th>
                                             <th class="text-center" data-column-id="tipo" data-type="numeric">Tipo</th>
                                             <th class="text-center" data-column-id="monto" data-type="numeric">Monto</th>
-                                            <th class="text-center" data-column-id="operaciones">Operaciones</th>
+                                            <th class="text-center" data-column-id="operaciones">Acciones</th>
 
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                    @foreach ($pagos_instructor as $pagos)
-                                        <?php $id = $pagos->id; ?>
+                                    @foreach ($pagos_instructor as $pago)
+                                        <?php $id = $pago['id']; ?>
                                         <tr id="{{$id}}" class="seleccion" >
-                                            <td class="text-center">{{$pagos->nombre}}</td>
+                                            <td class="text-center">{{$pago['nombre']}}</td>
+                                            <td class="text-center">{{$pago['dia']}}</td>
+                                            <td class="text-center">{{$pago['hora_inicio']}} / {{$pago['hora_final']}}</td>
                                             <td class="text-center">
 
-                                            @if($pagos->tipo == 1)
-
+                                            @if($pago['tipo'] == 1)
                                               Por Clase
                                             @else
-
                                               Mensual
-
                                             @endif
 
     
                                             </td>
-                                            <td class="text-center">{{$pagos->monto}}</td>
+                                            <td class="text-center">{{$pago['monto']}}</td>
                                             <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
                                           </tr>
                                     @endforeach 
@@ -288,7 +289,7 @@
                                           <th class="text-center" data-column-id="tipo" data-type="numeric">Tipo</th>
                                           <th class="text-center" data-column-id="monto" data-type="numeric">Monto</th>
                                           <th class="text-center" data-column-id="monto_porcentaje" data-type="numeric">Monto Porcentaje</th>
-                                          <th class="text-center" data-column-id="operaciones">Operaciones</th>
+                                          <th class="text-center" data-column-id="operaciones">Acciones</th>
 
                                       </tr>
                                   </thead>
@@ -2459,6 +2460,8 @@
                   var rowId=array.id;
                   var rowNode=h.row.add( [
                   ''+array.nombre+'',
+                  ''+array.dia+'',
+                  ''+array.hora+'',
                   ''+tipo+'',
                   ''+array.monto+'',
                   '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'

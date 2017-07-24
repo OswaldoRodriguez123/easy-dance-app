@@ -858,14 +858,9 @@ class InstructorController extends BaseController {
                 $credencial->save();
             }
 
-            $clase_grupal_join = DB::table('clases_grupales')
-                ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
-                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
-                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio')
+            $clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->select('clases_grupales.*','config_clases_grupales.nombre')
                 ->where('clases_grupales.instructor_id', $id)
-                ->where('clases_grupales.deleted_at', '=', null)
                 ->OrderBy('clases_grupales.hora_inicio')
             ->get();
 
@@ -873,7 +868,7 @@ class InstructorController extends BaseController {
 
             $academia = Academia::find($id);
 
-            foreach($clase_grupal_join as $clase_grupal){
+            foreach($clases_grupales as $clase_grupal){
 
                 $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
                 $i = $fecha->dayOfWeek;
@@ -916,15 +911,6 @@ class InstructorController extends BaseController {
                 $array[$clase_grupal->id] = $clase_grupal_array;
             }
 
-
-            $pagos_instructor = DB::table('configuracion_pagos_instructor')
-                ->join('clases_grupales', 'configuracion_pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
-                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('configuracion_pagos_instructor.id', 'configuracion_pagos_instructor.monto', 'config_clases_grupales.nombre as nombre', 'configuracion_pagos_instructor.clase_grupal_id as clase_grupal_id', 'configuracion_pagos_instructor.tipo as tipo')
-                ->where('instructores.id', $id)
-            ->get();
-
             $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                 ->where('usuarios_tipo.tipo_id',$id)
                 ->where('usuarios_tipo.tipo',3)
@@ -940,6 +926,57 @@ class InstructorController extends BaseController {
 
             }else{
                 $imagen = '';
+            }
+
+            $pagos_instructor = ConfigPagosInstructor::join('clases_grupales', 'configuracion_pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                ->select('configuracion_pagos_instructor.*', 'config_clases_grupales.nombre as nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio')
+                ->where('clases_grupales.instructor_id', $id)
+            ->get();
+
+            $pagos = array();
+
+            foreach($pagos_instructor as $pago){
+
+                $fecha = Carbon::createFromFormat('Y-m-d', $pago->fecha_inicio);
+                $i = $fecha->dayOfWeek;
+
+                if($i == 1){
+
+                  $dia = 'Lunes';
+
+                }else if($i == 2){
+
+                  $dia = 'Martes';
+
+                }else if($i == 3){
+
+                  $dia = 'Miercoles';
+
+                }else if($i == 4){
+
+                  $dia = 'Jueves';
+
+                }else if($i == 5){
+
+                  $dia = 'Viernes';
+
+                }else if($i == 6){
+
+                  $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
+
+                }
+
+
+                $collection=collect($pago);     
+                $pago_array = $collection->toArray();
+
+                $pago_array['dia']=$dia;
+                $pagos[] = $pago_array;
             }
 
             $comisiones = ConfigComision::where('config_comisiones.usuario_id', $id)
@@ -984,7 +1021,7 @@ class InstructorController extends BaseController {
             $collection=collect($tmp2);   
             $comisiones = $collection->toArray();
 
-            return view('participante.instructor.planilla')->with(['instructor' => $instructor, 'credencial' => $credencial, 'clases_grupales' => $array, 'pagos_instructor' => $pagos_instructor, 'imagen' => $imagen, 'comisiones' => $comisiones,  'linea_servicio' => $linea_servicio]);
+            return view('participante.instructor.planilla')->with(['instructor' => $instructor, 'credencial' => $credencial, 'clases_grupales' => $array, 'pagos_instructor' => $pagos, 'imagen' => $imagen, 'comisiones' => $comisiones,  'linea_servicio' => $linea_servicio]);
         }else{
            return redirect("participante/instructor"); 
         }
@@ -1397,10 +1434,8 @@ class InstructorController extends BaseController {
 
                 foreach($clases_grupales as $clase_grupal){
 
-                    $posee_pago = DB::table('configuracion_pagos_instructor')
-                        ->select('configuracion_pagos_instructor.*')
-                        ->where('configuracion_pagos_instructor.instructor_id', $request->id)
-                        ->where('configuracion_pagos_instructor.clase_grupal_id', $clase_grupal)
+                    $posee_pago = ConfigPagosInstructor::where('instructor_id', $request->id)
+                        ->where('clase_grupal_id', $clase_grupal)
                     ->first();
 
 
@@ -1415,13 +1450,47 @@ class InstructorController extends BaseController {
 
                         $config_pagos->save();
 
-                        $clase_grupal_join = DB::table('clases_grupales')
-                            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                            ->select('config_clases_grupales.nombre')
+                        $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                            ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio')
                             ->where('clases_grupales.id', $clase_grupal)
                         ->first();
 
+                        $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal_join->fecha_inicio);
+                        $i = $fecha->dayOfWeek;
+
+                        if($i == 1){
+
+                          $dia = 'Lunes';
+
+                        }else if($i == 2){
+
+                          $dia = 'Martes';
+
+                        }else if($i == 3){
+
+                          $dia = 'Miercoles';
+
+                        }else if($i == 4){
+
+                          $dia = 'Jueves';
+
+                        }else if($i == 5){
+
+                          $dia = 'Viernes';
+
+                        }else if($i == 6){
+
+                          $dia = 'Sabado';
+
+                        }else if($i == 0){
+
+                          $dia = 'Domingo';
+
+                        }
+
                         $config_pagos['nombre'] = $clase_grupal_join->nombre;
+                        $config_pagos['dia'] = $dia;
+                        $config_pagos['hora'] = $clase_grupal_join->hora_inicio . ' / ' . $clase_grupal_join->hora_final;
 
                         array_push($array, $config_pagos);
 
@@ -1433,16 +1502,14 @@ class InstructorController extends BaseController {
 
             }else{
 
-                $clases_grupales = ClaseGrupal::where('clases_grupales.instructor_id', $request->id)
-                    ->get();
+                $clases_grupales = ClaseGrupal::where('instructor_id', $request->id)->get();
 
                 foreach($clases_grupales as $clase_grupal){
 
-                    $posee_pago = DB::table('configuracion_pagos_instructor')
-                        ->select('configuracion_pagos_instructor.*')
-                        ->where('configuracion_pagos_instructor.instructor_id', $request->id)
-                        ->where('configuracion_pagos_instructor.clase_grupal_id', $clase_grupal->id)
+                    $posee_pago = ConfigPagosInstructor::where('instructor_id', $request->id)
+                        ->where('clase_grupal_id', $clase_grupal->id)
                     ->first();
+
 
                     if(!$posee_pago){
 
@@ -1455,13 +1522,47 @@ class InstructorController extends BaseController {
 
                         $config_pagos->save();
 
-                        $clase_grupal_join = DB::table('clases_grupales')
-                            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                            ->select('config_clases_grupales.nombre')
+                        $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+                            ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio')
                             ->where('clases_grupales.id', $clase_grupal->id)
                         ->first();
 
+                        $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal_join->fecha_inicio);
+                        $i = $fecha->dayOfWeek;
+
+                        if($i == 1){
+
+                          $dia = 'Lunes';
+
+                        }else if($i == 2){
+
+                          $dia = 'Martes';
+
+                        }else if($i == 3){
+
+                          $dia = 'Miercoles';
+
+                        }else if($i == 4){
+
+                          $dia = 'Jueves';
+
+                        }else if($i == 5){
+
+                          $dia = 'Viernes';
+
+                        }else if($i == 6){
+
+                          $dia = 'Sabado';
+
+                        }else if($i == 0){
+
+                          $dia = 'Domingo';
+
+                        }
+
                         $config_pagos['nombre'] = $clase_grupal_join->nombre;
+                        $config_pagos['dia'] = $dia;
+                        $config_pagos['hora'] = $clase_grupal_join->hora_inicio . ' / ' . $clase_grupal_join->hora_final;
 
                         array_push($array, $config_pagos);
 

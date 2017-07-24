@@ -1682,62 +1682,72 @@ class AsistenciaController extends BaseController
 
         }else{
 
-          $clase=$request->asistencia_clase_grupal_id_instructor;
-          $id_instructor=$request->asistencia_id_instructor;
+          $clase_grupal_id=$request->asistencia_clase_grupal_id_instructor;
+          $instructor_id=$request->asistencia_id_instructor;
 
-          $clase_id=explode('-', $clase);
+          $explode_clase_grupal=explode('-', $clase_grupal_id);
+          $tipo_clase = $explode_clase_grupal[2];
+          $clase_grupal_id = $explode_clase_grupal[0];
+          $horario_id = $explode_clase_grupal[3];
 
-          if($clase_id[2] == '2'){
-            $ClasesAsociadas=HorarioClaseGrupal::where('instructor_id',$id_instructor)
-              ->where('id',$clase_id[3])
-            ->get();
+          if($tipo_clase == 2){
+            $es_instructor = HorarioClaseGrupal::where('instructor_id',$instructor_id)
+              ->where('id',$horario_id)
+            ->first();
           }else{
-            $ClasesAsociadas=ClaseGrupal::where('instructor_id',$id_instructor)
-              ->where('id',$clase_id[0])
+            $es_instructor = ClaseGrupal::where('instructor_id',$instructor_id)
+              ->where('id',$clase_grupal_id)
             ->get();
           }
           
-          $estatu="no_asociado";
-          
-          if(count($ClasesAsociadas)>0){              
+          if($es_instructor){              
             $estatu="asociado";              
+          }else{
+            $estatu="no_asociado";
           }
             
           if($estatu=="asociado" OR $request->es_instructor) {
 
             $actual = Carbon::now();
-            // $geoip = new GeoIP();
-            // $geoip->setIp($request->ip());
-            // $actual->tz = $geoip->getTimezone();
 
             $fecha_actual=$actual->toDateString();
             $hora_actual=$actual->toTimeString();
 
-            $asistencia = AsistenciaInstructor::where('instructor_id', $id_instructor)->where('hora_salida', '00:00:00')->where('clase_grupal_id' , '=', $clase_id[0])->where('fecha',$fecha_actual)->first();
+            $asistencia = AsistenciaInstructor::where('instructor_id', $instructor_id)
+              ->where('hora_salida', '00:00:00')
+              ->where('clase_grupal_id' , '=', $clase_grupal_id)
+              ->where('fecha',$fecha_actual)
+            ->first();
 
             if($asistencia)
             {
+
               $asistencia->hora_salida = $hora_actual;
               $asistencia->save();
+
             }else{
 
-              $asistencia = AsistenciaInstructor::where('instructor_id', $id_instructor)->where('clase_grupal_id' , '=', $clase_id[0])->where('fecha',$fecha_actual)->first();
+              $asistencia = AsistenciaInstructor::where('instructor_id', $instructor_id)
+                ->where('clase_grupal_id' , '=', $clase_grupal_id)
+                ->where('fecha',$fecha_actual)
+              ->first();
 
-              if(!$asistencia)
-              {
+              if(!$asistencia){
 
                 $asistencia = new AsistenciaInstructor;
                 $asistencia->fecha=$fecha_actual;
                 $asistencia->hora=$hora_actual;
-                $asistencia->clase_grupal_id=$clase_id[0];
-                $asistencia->instructor_id=$id_instructor;
+                $asistencia->clase_grupal_id=$clase_grupal_id;
+                $asistencia->instructor_id=$instructor_id;
                 $asistencia->academia_id=Auth::user()->academia_id;
-                $asistencia->tipo = $clase_id[2];
-                $asistencia->tipo_id = $clase_id[3];
+                $asistencia->tipo = $tipo_clase;
+                $asistencia->tipo_id = $horario_id;
 
                 $asistencia->save();
 
-                $config_pago = ConfigPagosInstructor::where('clase_grupal_id', $clase_id[0])->where('instructor_id', $id_instructor)->first();
+                $config_pago = ConfigPagosInstructor::where('clase_grupal_id', $clase_grupal_id)
+                  ->where('instructor_id', $instructor_id)
+                ->first();
 
                 if($config_pago){
                   if($config_pago->tipo == 1)
@@ -1745,10 +1755,10 @@ class AsistenciaController extends BaseController
 
                     $pago = new PagoInstructor;
 
-                    $pago->instructor_id=$id_instructor;
+                    $pago->instructor_id=$instructor_id;
                     $pago->tipo=$config_pago->tipo;
                     $pago->monto=$config_pago->monto;
-                    $pago->clase_grupal_id=$clase_id[0];
+                    $pago->clase_grupal_id=$clase_grupal_id;
                     $pago->asistencia_id=$asistencia->id;
                     $pago->fecha = Carbon::now()->toDateString();
                     $pago->hora = Carbon::now()->toTimeString();
@@ -1762,7 +1772,7 @@ class AsistenciaController extends BaseController
             return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);
 
           }else{
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR_ASOCIADO', 'text' => "El instructor no se encuentra asociado a esta clase!", 'campo' => 'es_instructor'],422);
+            return response()->json(['status' => 'ERROR_ASOCIADO', 'text' => "El instructor no se encuentra asociado a esta clase!", 'campo' => 'es_instructor'],422);
           }
        }
 
