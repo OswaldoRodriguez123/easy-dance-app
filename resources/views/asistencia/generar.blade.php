@@ -567,6 +567,7 @@
       var route = route_agregar_asistencia_instructor;
       var token = $('input:hidden[name=_token]').val();
       var datos = $( "#agregar_asistencia_instructor" ).serialize(); 
+      procesando();
       $.ajax({
         url: route,
         headers: {'X-CSRF-TOKEN': token},
@@ -574,7 +575,7 @@
         dataType: 'json',
         data:datos,
           success:function(respuesta){  
-            console.log(respuesta)          
+            finprocesado();      
             if(respuesta.status=="OK"){
               var nType = 'success';
               $("#agregar_asistencia_instructor")[0].reset();
@@ -600,98 +601,87 @@
               notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
             }
           },
-           error:function(msj){
-          errores(msj.responseJSON.errores);
-          finprocesado();
+          error:function(msj){
+            errores(msj.responseJSON.errores);
+            finprocesado();
+            if(msj.responseJSON.status != 'ERROR'){
 
-          if(msj.responseJSON.status != 'ERROR'){
+              swal({   
+                  title: "¿Desea permitir la entrada como suplente?",   
+                  text: msj.responseJSON.text,   
+                  type: "warning",   
+                  showCancelButton: true,   
+                  confirmButtonColor: "#DD6B55",   
+                  confirmButtonText: "Permitir!",  
+                  cancelButtonText: "Cancelar",         
+                  closeOnConfirm: true 
+              }, function(isConfirm){   
+                if (isConfirm) {
+                  $('#'+msj.responseJSON.campo).val(1)
+                  $('#permitir_instructor').click();
+                  
+                }
+              });  
 
-            swal({   
-                title: "¿Desea permitir la entrada como suplente?",   
-                text: msj.responseJSON.text,   
-                type: "warning",   
-                showCancelButton: true,   
-                confirmButtonColor: "#DD6B55",   
-                confirmButtonText: "Permitir!",  
-                cancelButtonText: "Cancelar",         
-                closeOnConfirm: true 
-            }, function(isConfirm){   
-              if (isConfirm) {
-                $('#'+msj.responseJSON.campo).val(1)
-                $('#permitir_instructor').click();
-                
-              }
-            });  
-
-          }else{
-            var nType = 'danger';
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nAnimIn = "animated flipInY";
-            var nAnimOut = "animated flipOutY"; 
-            var nTitle="Ups! ";
-            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-
-            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-          } 
-        }
-     }); 
-  });
-
-$("#permitir_staff").on('click',function(){
-      var route = route_agregar_asistencia_staff;
-      var token = $('input:hidden[name=_token]').val();
-      var datos = $( "#agregar_asistencia_staff" ).serialize(); 
-      $.ajax({
-        url: route,
-        headers: {'X-CSRF-TOKEN': token},
-        type: 'POST',
-        dataType: 'json',
-        data:datos,
-          success:function(respuesta){  
-            console.log(respuesta)          
-            if(respuesta.status=="OK"){
-              var nType = 'success';
-              $("#agregar_asistencia_staff")[0].reset();
-              $("#asistencia-horario-staff").text("---");
+            }else{
+              var nType = 'danger';
               var nFrom = $(this).attr('data-from');
               var nAlign = $(this).attr('data-align');
               var nIcons = $(this).attr('data-icon');
               var nAnimIn = "animated flipInY";
               var nAnimOut = "animated flipOutY"; 
               var nTitle="Ups! ";
-              var nMensaje=respuesta.mensaje;
-              $('#modalAsistenciaStaff').modal('hide');
-              swal("Permitido!", respuesta.mensaje, "success");
-              $("#content").toggleClass("opacity-content");
-              $("header").toggleClass("abierto");
-              $("footer").toggleClass("opacity-content"); 
-            }else{
-              var nType = 'danger';
-              var nTitle="Ups! ";
               var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              var nType = 'danger';
-              console.log(msj);
+
               notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-            }
-          },
-          error:function(msj){
-            errores(msj.responseJSON.errores);
-            var nType = 'danger';
+            } 
+          }
+       }); 
+    });
+
+  $("#permitir_staff").on('click',function(){
+    var route = route_agregar_asistencia_staff;
+    var token = $('input:hidden[name=_token]').val();
+    var datos = $( "#agregar_asistencia_staff" ).serialize(); 
+    procesando();
+    $.ajax({
+      url: route,
+      headers: {'X-CSRF-TOKEN': token},
+      type: 'POST',
+      dataType: 'json',
+      data:datos,
+        success:function(respuesta){  
+          finprocesado();      
+          if(respuesta.status=="OK"){
+            var nType = 'success';
+            $("#agregar_asistencia_staff")[0].reset();
+            $("#asistencia-horario-staff").text("---");
             var nFrom = $(this).attr('data-from');
             var nAlign = $(this).attr('data-align');
             var nIcons = $(this).attr('data-icon');
             var nAnimIn = "animated flipInY";
             var nAnimOut = "animated flipOutY"; 
             var nTitle="Ups! ";
-            if(msj.responseJSON.status=="ERROR"){
-              var nTitle="    Ups! "; 
-              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";  
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);          
-            }
+            var nMensaje=respuesta.mensaje;
+            $('#modalAsistenciaStaff').modal('hide');
+            swal("Permitido!", respuesta.mensaje, "success");
+            $("#content").toggleClass("opacity-content");
+            $("header").toggleClass("abierto");
+            $("footer").toggleClass("opacity-content"); 
+          }else{
+            var nType = 'danger';
+            var nTitle="Ups! ";
+            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+            var nType = 'danger';
+            console.log(msj);
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
           }
-        });
+        },
+        error:function(msj){
+          finprocesado();
+          swal("Error!", msj.responseJSON.mensaje, "error");
+        }
+      });
     });
     
 

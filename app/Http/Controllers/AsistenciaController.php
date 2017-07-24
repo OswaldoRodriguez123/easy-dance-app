@@ -1779,62 +1779,70 @@ class AsistenciaController extends BaseController
     }
 
 
-    public function storeStaff(Request $request)
-    {
-      $rules = [
+    public function storeStaff(Request $request){
 
+      $rules = [
         'asistencia_id_staff' => 'required',
       ];
 
       $messages = [
-
         'asistencia_id_staff.required' => 'Ups! El Staff es requerido',
-          
       ];
 
       $validator = Validator::make($request->all(), $rules, $messages);
 
       if ($validator->fails()){
           
-          return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);           
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);           
 
       }else{
 
-        $id = $request->asistencia_id_staff;
-
-        $asistencia = AsistenciaStaff::where('staff_id', $id)->where('hora_salida', '00:00:00')->first();
-
+        $staff_id = $request->asistencia_id_staff;
+        
         $actual = Carbon::now();
-        // $geoip = new GeoIP();
-        // $geoip->setIp($request->ip());
-        // $actual->tz = $geoip->getTimezone();
         
         $fecha_actual=$actual->toDateString();
         $hora_actual=$actual->toTimeString();
+        $dia_actual = $actual->dayOfWeek;
 
-        if($asistencia)
-        {
+        if($dia_actual == 0){
+          $dia_actual = 7;
+        }
 
-          $asistencia->hora_salida = $hora_actual;
-          $asistencia->save();
+        $horario_staff = HorarioStaff::where('dia_de_semana_id',$dia_actual)
+        ->where('staff_id',$staff_id)
+        ->first();
 
-        }else{
+        if($horario_staff){
 
-          $asistencia = new AsistenciaStaff;
-          $asistencia->fecha=$fecha_actual;
-          $asistencia->hora=$hora_actual;
-          $asistencia->staff_id=$id;
-          $asistencia->academia_id=Auth::user()->academia_id;
+          $asistencia = AsistenciaStaff::where('staff_id', $staff_id)
+            ->where('fecha', $fecha_actual)
+          ->first();
 
-          $asistencia->save();
+          if(!$asistencia){
 
-          if($asistencia->save())
-          {
-            return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);
+            $asistencia = new AsistenciaStaff;
+            
+            $asistencia->fecha=$fecha_actual;
+            $asistencia->hora=$hora_actual;
+            $asistencia->staff_id=$staff_id;
+            $asistencia->academia_id=Auth::user()->academia_id;
+
           }else{
 
-          }
-        }            
+            if($asistencia->hora_salida == '00:00:00'){
+              $asistencia->hora_salida = $hora_actual;
+            }else{
+              return response()->json(['status' => 'ERROR', 'mensaje' => "Ups! El staff ya checkeo entrada y salida de asistencia el día de hoy"],422);
+            }
+          } 
+
+          if($asistencia->save()){
+            return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);
+          }else{
+            return response()->json(['status' => 'ERROR', 'mensaje' => "Ups! Ha ocurrido un error"],422);
+          }        
+        }
       }
     }
 
