@@ -499,7 +499,7 @@ class CampanaController extends BaseController {
 
     else{
 
-        $nombre = title_case($request->nombre);
+        $nombre = title_case($request->nombre_recompensa);
 
         $recompensa = New Recompensa;
 
