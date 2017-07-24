@@ -88,7 +88,7 @@
                                         <span class="fileinput-exists">Cambiar</span>
                                         <input type="file" name="imagen" id="imagen" >
                                     </span>
-                                    <a href="#" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                    <a href="#" id="eliminar_imagen" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">Eliminar</a>
                                 </div>
                             </div>
                               <div class="has-error" id="error-imagen">
@@ -284,18 +284,28 @@
     });
 
     function errores(merror){
-         $.each(merror, function (n, c) {
-             console.log(n);
-           $.each(this, function (name, value) {
-              var error=value;
-              $("#error-"+n+"_mensaje").html(error);
-              console.log(value);
-           });
-        });
-      }
+        var elemento="";
+        var contador=0;
+        $.each(merror, function (n, c) {
+        if(contador==0){
+        elemento=n;
+        }
+        contador++;
+
+         $.each(this, function (name, value) {              
+            var error=value;
+            $("#error-"+n+"_mensaje").html(error);             
+         });
+      });
+
+      $('html,body').animate({
+            scrollTop: $("#id-"+elemento).offset().top-90,
+      }, 1000);          
+
+    }
 
     function limpiarMensaje(){
-      var campo = ["titulo","contenido", "url"];
+      var campo = ["titulo","contenido", "url", "imagen"];
       fLen = campo.length;
       for (i = 0; i < fLen; i++) {
           $("#error-"+campo[i]+"_mensaje").html('');
@@ -305,21 +315,48 @@
     $("#imagen").bind("change", function() {
               
         setTimeout(function(){
-          var imagen = $("#imagena img").attr('src');
-          var canvas = document.createElement("canvas");
- 
-          var context=canvas.getContext("2d");
-          var img = new Image();
-          img.src = imagen;
-          
-          canvas.width  = img.width;
-          canvas.height = img.height;
 
-          context.drawImage(img, 0, 0);
-   
-          var newimage = canvas.toDataURL("image/jpeg", 0.8);
+          var imagenSrc = $("#imagena img").attr('src');
+
+          if (imagen = document.getElementById("imagen").files[0]) {
+
+            var imagenSize = Math.round(imagen.size / 1024);
+
+            if(imagenSize > 2000){
+
+              $('#eliminar_imagen').click()
+
+              $('#error-imagen_mensaje').text('Ups! La imagen no puede pesar mas de 2 MB')
+
+              $('html,body').animate({
+                scrollTop: $("#id-imagen").offset().top-90,
+              }, 1000);
+
+              newimagen = '';
+
+            }else{
+
+              var canvas = document.createElement("canvas");
+     
+              var context=canvas.getContext("2d");
+              var img = new Image();
+              img.src = imagenSrc;
+              
+              canvas.width  = img.width;
+              canvas.height = img.height;
+
+              context.drawImage(img, 0, 0);
+       
+              var newimage = canvas.toDataURL("image/jpeg", 0.8);
+
+            }
+          }else{
+            newimagen = '';
+          }
+
           var image64 = $("input:hidden[name=imageBase64]").val(newimage);
-        },500);
+
+        },1500);
 
     });
 
