@@ -88,9 +88,34 @@
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
-                               <div class="col-sm-12">
+
+                              <div class="col-sm-12">
+                                 <div class="form-group fg-line ">
+                                    <label for="">Boton de acción en el correo</label id="id-boolean_switch"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona si tendra o no un boton de accion el correo" title="" data-original-title="Ayuda"></i>
+                                    
+                                    <br></br>
+                                    <input type="text" id="boolean_switch" name="boolean_switch" value="" hidden="hidden">
+                                    <div class="p-t-10">
+                                      <div class="toggle-switch" data-ts-color="purple">
+                                      <span class="p-r-10 f-700 f-16">No</span><input id="accion_switch" type="checkbox">
+                                      
+                                      <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                      </div>
+                                    </div>
+                                    
+                                 </div>
+                                 <div class="has-error" id="error-boolean_switch">
+                                      <span >
+                                          <small class="help-block error-span" id="error-boolean_switch_mensaje" ></small>                                           
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12 url_accion" @if(!$correo->boolean_switch) style="display: none" @endif>
                                 <div class="form-group">
-                                    <label for="nombre">Ingresa url de la imagen</label>
+                                    <label for="nombre">Url del boton de acción</label>
                                     <input type="text" class="form-control caja input-sm" name="url" id="url" placeholder="Ingresa la url" value="{{$correo->url}}">
                                  </div>
                                     <div class="has-error" id="error-url">
@@ -331,11 +356,11 @@
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalUrl-Correo">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-url" class="zmdi {{ empty($correo->url) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-boolean_switch" class="zmdi {{ empty($correo->boolean_switch) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10">  <i class="zmdi zmdi-videocam f-22"></i> </span>
-                               <span class="f-14"> Url de la imagen </span>
+                               <span class="f-14"> Boton de acción en el correo </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="correo-url"><span>{{$correo->url}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalImagen-Correo">
                              <td>
@@ -652,6 +677,21 @@
           var image64 = $("input:hidden[name=imageBase64]").val(newimage);
         },500);
 
+    });
+
+    if("{{$correo->boolean_switch}}" == 1){
+      $("#accion_switch").val('1');  //VALOR POR DEFECTO
+      $("#accion_switch").attr("checked", true); //VALOR POR DEFECTO
+    }
+
+    $("#accion_switch").on('change', function(){
+      if ($("#accion_switch").is(":checked")){
+        $('.url_accion').show()
+        $("#boolean_switch").val('1');
+      }else{
+        $('.url_accion').hide()
+        $("#boolean_switch").val('0');
+      }    
     });
 
 
