@@ -497,6 +497,7 @@ class CorreoController extends BaseController {
 	        $array = [
 				'imagen' => $imagen,
 				'url' => $correo->url,
+				'boolean_switch' => $correo->boolean_switch,
 				'msj_html' => $correo->contenido,
 				'correos' => $correos,
 				'subj' => $correo->titulo

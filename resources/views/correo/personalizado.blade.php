@@ -61,26 +61,25 @@
                               </td>
                               </tr>
                               <tr>
-                                <td align="center" valign="top"><a href="{{$url}}"><img class="CToWUd" alt="Pocket-logo-email-original" src="{{$imagen}}" height="200" width="570"></a>
+                                <td align="center" valign="top"><img class="CToWUd" alt="Pocket-logo-email-original" src="{{$imagen}}" height="200" width="570">
                                 </td>
                               </tr>
                               <tr>
                                 <td style="font-size:2px" height="30">
                                 </td>
                               </tr>
-			<tr>
+			                        <tr>
                                 <td valign="top" style="text-align:center;">
                                   <font style="font-family:'HelveticaNeue',Arial,Helvetica,sans-serif;font-size:16px;line-height:18px;color:#000000;font-weight:bold;"> {{$subj}} <br><br>
                                   </font>
-                              </td></tr><tr>
-			</tr><tr>
+                                </td>
+                              </tr>
+                              <tr>
                                 <td valign="top">
 
                                     {!! $msj_html !!}
                                     
                                 </td>
-
-                              
                               </tr>
                        
                              
@@ -94,21 +93,23 @@
                                 </td>
                               </tr>
                             
-                                              <tr>
-                                <td style="font-size:2px" height="20">
-                                </td>
-                              </tr>
-                              
                               <tr>
                                 <td style="font-size:2px" height="20">
                                 </td>
                               </tr>
                               
                               <tr>
-                                
-                              <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold" align="center">
-                                  <a href="{{$url}}" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:160px" target="_blank">Ver Mas</a>
+                                <td style="font-size:2px" height="20">
                                 </td>
+                              </tr>
+                              
+                              <tr>
+
+                              @if($boolean_switch)
+                                <td style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:bold" align="center">
+                                    <a href="{{$url}}" style="background-color:#4E1E43;border-radius:2px;color:#ffffff;display:inline-block;line-height:40px;text-align:center;text-decoration:none;width:160px" target="_blank">Ver Mas</a>
+                                </td>
+                              @endif
                               </tr>
 
                               <tr>

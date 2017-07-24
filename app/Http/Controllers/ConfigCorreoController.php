@@ -30,21 +30,33 @@ class ConfigCorreoController extends BaseController {
 
     public function store(Request $request){
 
+    	if(!$request->boolean_switch){
 
-		$rules = [
-			'titulo' => 'required',
-	        'url' => 'required|active_url',
-	        'contenido' => 'required',
-	    ];
+			$rules = [
+				'titulo' => 'required',
+		        'contenido' => 'required',
+		    ];
 
-	    $messages = [
+		    $messages = [
+		        'titulo.required' => 'Ups! El titulo es requerido',
+		        'contenido.required' => 'Ups! El mensaje es requerido',
+		    ];
 
-	    	'url.required' => 'Ups! La URL es requerida',
-	        'url.active_url' => 'Ups! La URL no es valida',
-	        'titulo.required' => 'Ups! El titulo es requerido',
-	        'contenido.required' => 'Ups! El mensaje es requerido',
-	    ];
+    	}else{
 
+			$rules = [
+				'titulo' => 'required',
+		        'contenido' => 'required',
+		        'url' => 'required|active_url',
+		    ];
+
+		    $messages = [
+		        'titulo.required' => 'Ups! El titulo es requerido',
+		        'contenido.required' => 'Ups! El mensaje es requerido',
+		       	'url.required' => 'Ups! La URL es requerida',
+		        'url.active_url' => 'Ups! La URL no es valida',
+		    ];
+    	}
 
 	    $validator = Validator::make($request->all(), $rules, $messages);
 
@@ -60,11 +72,12 @@ class ConfigCorreoController extends BaseController {
 	        $correo->url = $request->url;
 	        $correo->contenido = $request->contenido;
 	        $correo->titulo = $request->titulo;
+	        $correo->boolean_switch = $request->boolean_switch;
 
 	        if($correo->save())
 	        {
 
-				if($request->imageBase64){
+				if($request->imageBase64 && $request->imageBase64 != "data:,"){
 
 	                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
 	                $path = storage_path();
@@ -143,15 +156,27 @@ class ConfigCorreoController extends BaseController {
 
     public function updateUrl(Request $request){
 
-    	$rules = [
-	        'url' => 'required|active_url',
-	    ];
+    	if($request->boolean_switch){
 
-	    $messages = [
+			$rules = [
+		        'url' => 'required|active_url',
+		    ];
 
-	    	'url.required' => 'Ups! La URL es requerida',
-	        'url.active_url' => 'Ups! La URL no es valida',
-	    ];
+		    $messages = [
+		       	'url.required' => 'Ups! La URL es requerida',
+		        'url.active_url' => 'Ups! La URL no es valida',
+		    ];
+
+    	}else{
+
+
+			$rules = [
+		    ];
+
+		    $messages = [
+		    ];
+
+    	}
 
 
 	    $validator = Validator::make($request->all(), $rules, $messages);
@@ -164,6 +189,7 @@ class ConfigCorreoController extends BaseController {
 
 	        $correo = Correo::find($request->id);
 	        $correo->url = $request->url;
+	        $correo->boolean_switch = $request->boolean_switch;
 
 	        if($correo->save()){
 	            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

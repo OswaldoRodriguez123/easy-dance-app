@@ -73,24 +73,7 @@
 
                                <div class="clearfix p-b-35"></div>
 
-                               <div class="col-sm-12">
-                                  <label for="id" id="id-url">Ingresa url de la imagen</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la url del correo" title="" data-original-title="Ayuda"></i>
-
-                                  <br><br>
-                                  
-                     
-                                  <input type="text" class="form-control caja input-sm" name="url" id="url" placeholder="Ingresa la url">
-                                   
-                                   
-                                   <div class="has-error" id="error-url">
-                                    <span >
-                                     <small id="error-url_mensaje" class="help-block error-span" ></small>                                           
-                                    </span>
-                                    </div>                                          
-                                </div>
-
-                               <div class="clearfix p-b-35"></div>
-
+                               
                           <div class="col-sm-12">
                             <label for="apellido" id="id-imagen">Cargar Imagen</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
                             
@@ -128,6 +111,49 @@
                                       </span>
                                   </div>
                                </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line ">
+                                    <label for="">Boton de acción en el correo</label id="id-boolean_switch"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona si tendra o no un boton de accion el correo" title="" data-original-title="Ayuda"></i>
+                                    
+                                    <br></br>
+                                    <input type="text" id="boolean_switch" name="boolean_switch" value="" hidden="hidden">
+                                    <div class="p-t-10">
+                                      <div class="toggle-switch" data-ts-color="purple">
+                                      <span class="p-r-10 f-700 f-16">No</span><input id="accion_switch" type="checkbox">
+                                      
+                                      <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                      </div>
+                                    </div>
+                                    
+                                 </div>
+                                 <div class="has-error" id="error-boolean_switch">
+                                      <span >
+                                          <small class="help-block error-span" id="error-boolean_switch_mensaje" ></small>                                           
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12 url_accion" style="display: none">
+                                  <label for="id" id="id-url">Url del boton de acción</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la url del boton de acción" title="" data-original-title="Ayuda"></i>
+
+                                  <br><br>
+                                  
+                     
+                                  <input type="text" class="form-control caja input-sm" name="url" id="url" placeholder="Ingresa la url">
+                                   
+                                   
+                                   <div class="has-error" id="error-url">
+                                    <span >
+                                     <small id="error-url_mensaje" class="help-block error-span" ></small>                                           
+                                    </span>
+                                    </div>                                          
+                                </div>
 
 
                           <div class="modal-footer p-b-20 m-b-20">
@@ -295,6 +321,16 @@
           var image64 = $("input:hidden[name=imageBase64]").val(newimage);
         },500);
 
+    });
+
+    $("#accion_switch").on('change', function(){
+      if ($("#accion_switch").is(":checked")){
+        $('.url_accion').show()
+        $("#boolean_switch").val('1');
+      }else{
+        $('.url_accion').hide()
+        $("#boolean_switch").val('0');
+      }    
     });
 
 </script> 
