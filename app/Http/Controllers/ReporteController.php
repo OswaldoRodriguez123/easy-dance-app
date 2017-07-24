@@ -2855,8 +2855,8 @@ class ReporteController extends BaseController
 
         foreach($staffs as $staff){
 
-            $fecha_inicio = Carbon::createFromFormat('Y-m-d H:i:s', $staff->created_at)->toDateString();
-            $fecha_inicio_limite = Carbon::createFromFormat('Y-m-d H:i:s', $fecha_inicio . " 00:00:00");
+            $fecha_creacion = Carbon::createFromFormat('Y-m-d H:i:s', $staff->created_at)->toDateString();
+            $fecha_inicio_limite = Carbon::createFromFormat('Y-m-d H:i:s', $fecha_creacion . " 00:00:00");
 
             $horarios = HorarioStaff::join('dias_de_semana', 'horarios_staff.dia_de_semana_id', '=', 'dias_de_semana.id')
                 ->select('horarios_staff.*', 'dias_de_semana.nombre as dia')
@@ -2866,6 +2866,28 @@ class ReporteController extends BaseController
             foreach($horarios as $horario){
 
                 $fecha_inicio = Carbon::createFromFormat('Y-m-d H:i:s', $start . " 00:00:00");
+                $dia_creacion = $fecha_inicio->dayOfWeek;
+                $dia_horario = $horario->dia_de_semana_id;
+                $dias_a_sumar = 0; 
+
+                if($dia_creacion == 0){
+                	$dia_creacion = 7;
+                }
+
+                if($dia_creacion  > $dia_horario){
+
+                    while ($dia_creacion != 7){
+                        $dias_a_sumar++;
+                        $dia_creacion++;
+                    }
+
+                    $dias = $dias_a_sumar + $dia_horario;
+                    $fecha_inicio->addDays($dias);
+
+                }else{
+                    $dias = abs(intval($dia_creacion) - intval($dia_horario));
+                    $fecha_inicio->addDays($dias);
+                }
 
                 $entrada_horario = Carbon::createFromFormat('H:i:s', $horario->hora_inicio);
                 $salida_horario = Carbon::createFromFormat('H:i:s', $horario->hora_final);
@@ -2874,7 +2896,9 @@ class ReporteController extends BaseController
 
                     if($fecha_inicio >= $fecha_inicio_limite){
 
-                        $asistencia = AsistenciaStaff::where('fecha',$fecha_inicio)->where('staff_id',$staff->id)->first();
+                        $asistencia = AsistenciaStaff::where('fecha', $fecha_inicio)
+                        ->where('staff_id',$staff->id)
+                        ->first();
 
                         if($asistencia){
 
