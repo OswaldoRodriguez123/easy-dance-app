@@ -422,42 +422,42 @@ class CampanaController extends BaseController {
 
     public function agregarrecompensa(Request $request){
         
-    $rules = [
+        $rules = [
 
-        'nombre_recompensa' => 'required',
-        'cantidad_recompensa' => 'required|numeric',
-        'descripcion_recompensa' => 'required',
-    ];
+            'nombre_recompensa' => 'required',
+            'cantidad_recompensa' => 'required|numeric',
+            'descripcion_recompensa' => 'required',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'nombre_recompensa.required' => 'Ups! La recompensa es  requerida',
-        'cantidad_recompensa.required' => 'Ups! La cantidad es  requerida',
-        'cantidad_recompensa.numeric' => 'Ups! La cantidad es inválida, debe contener sólo números',
-        'descripcion_recompensa.required' => 'Ups! La descripcion es  requerida',
-    ];
+            'nombre_recompensa.required' => 'Ups! La recompensa es  requerida',
+            'cantidad_recompensa.required' => 'Ups! La cantidad es  requerida',
+            'cantidad_recompensa.numeric' => 'Ups! La cantidad es inválida, debe contener sólo números',
+            'descripcion_recompensa.required' => 'Ups! La descripcion es  requerida',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
+        }
 
-    else{
+        else{
 
-        $array = array(['recompensa' => $request->nombre_recompensa, 'cantidad' => $request->cantidad_recompensa, 'descripcion' => $request->descripcion_recompensa]);
+            $array = array(['recompensa' => $request->nombre_recompensa, 'cantidad' => $request->cantidad_recompensa, 'descripcion' => $request->descripcion_recompensa]);
 
-        Session::push('recompensa', $array);
+            Session::push('recompensa', $array);
 
-        $items = Session::get('recompensa');
-        end( $items );
-        $contador = key( $items );
+            $items = Session::get('recompensa');
+            end( $items );
+            $contador = key( $items );
 
-        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
 
-    }
+        }
     }
 
     public function eliminarrecompensa($id){
