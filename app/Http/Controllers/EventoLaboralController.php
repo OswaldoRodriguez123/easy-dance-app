@@ -24,6 +24,8 @@ class EventoLaboralController extends BaseController
             ->where('staff.academia_id','=', Auth::user()->academia_id)
         ->get();
 
+        $array = array();
+
         foreach($eventos_laborales as $evento){
 
             $fecha = Carbon::createFromFormat('Y-m-d', $evento->fecha);
@@ -71,7 +73,7 @@ class EventoLaboralController extends BaseController
 
         $cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
 
-        return view('configuracion.eventos_laborales.calendario')->with(['eventos' => $eventos_laborales, 'cargos' => $cargos]);
+        return view('configuracion.eventos_laborales.calendario')->with(['eventos' => $array, 'cargos' => $cargos]);
     }
 
 	public function principal()
