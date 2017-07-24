@@ -209,8 +209,8 @@
 
                         var contenido = staff + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
 
-                        var contenido += 'Evento: ' + event.title + '<br>'
-                        var contenido += 'Dia de Semana: ' + dia + '<br>'
+                        contenido += 'Evento: ' + event.title + '<br>'
+                        contenido += 'Dia de Semana: ' + dia + '<br>'
                         contenido += 'Descripción: ' + event.descripcion + '<br>'
                        
                         $(eventElement).attr('data-trigger','hover');
