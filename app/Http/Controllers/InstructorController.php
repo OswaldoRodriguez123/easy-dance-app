@@ -1021,7 +1021,7 @@ class InstructorController extends BaseController {
             $collection=collect($tmp2);   
             $comisiones = $collection->toArray();
 
-            return view('participante.instructor.planilla')->with(['instructor' => $instructor, 'credencial' => $credencial, 'clases_grupales' => $array, 'pagos_instructor' => $pagos, 'imagen' => $imagen, 'comisiones' => $comisiones,  'linea_servicio' => $linea_servicio]);
+            return view('participante.instructor.planilla')->with(['instructor' => $instructor, 'credencial' => $credencial, 'clases_grupales' => $array, 'pagos_instructor' => $pagos, 'imagen' => $imagen, 'comisiones' => $comisiones,  'linea_servicio' => $linea_servicio, 'id' => $id]);
         }else{
            return redirect("participante/instructor"); 
         }
