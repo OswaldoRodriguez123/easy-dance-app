@@ -384,7 +384,7 @@
         procesando()
         var id = $(t).closest('tr').attr('id');
         var route = route_detalle+id;
-        window.location = route;
+        window.open(route, '_blank');
     }
 
 </script>
