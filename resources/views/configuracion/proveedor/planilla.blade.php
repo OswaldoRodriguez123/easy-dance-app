@@ -528,7 +528,7 @@
     route_update="{{url('/')}}/configuracion/proveedor/update";
     route_eliminar="{{url('/')}}/configuracion/proveedor/eliminar/";
     route_principal="{{url('/')}}/configuracion/proveedor";
-    route_email="{{url('/')}}/correo/sesion/";
+    route_email="{{url('/')}}/correo/sesion";
 
     $(document).ready(function(){
 
@@ -837,7 +837,7 @@
       }
 
       $(".email").click(function(){
-         var route = route_email + 4;
+         var route = route_email;
          var token = '{{ csrf_token() }}';
                 
                 $.ajax({
@@ -845,22 +845,15 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                     dataType: 'json',
+                    data:"&usuario_tipo=4&usuario_id={{$id}}",
                     success:function(respuesta){
 
                         procesando();
-                        window.location="{{url('/')}}/correo/{{$proveedor->id}}"  
+                        window.location="{{url('/')}}/correo/{{$id}}"  
 
                     },
                     error:function(msj){
-                                // $("#msj-danger").fadeIn(); 
-                                // var text="";
-                                // console.log(msj);
-                                // var merror=msj.responseJSON;
-                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                // $("#msj-error").html(text);
-                                // setTimeout(function(){
-                                //          $("#msj-danger").fadeOut();
-                                //         }, 3000);
+                          
                                 swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
                                 }
                 });

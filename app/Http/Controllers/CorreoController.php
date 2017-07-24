@@ -26,6 +26,16 @@ use GuzzleHttp\Client;
 
 class CorreoController extends BaseController {
 
+	
+	public function Sesion(Request $request){
+
+		Session::put('tipo_usuario_correo', $request->usuario_tipo);
+		Session::put('id_usuario_correo', $request->usuario_id);
+
+		return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+	
+	}
+
 	public function index(){
 
 		Session::put('tipo', 1);
@@ -116,16 +126,6 @@ class CorreoController extends BaseController {
 		return view('correo.index')->with(['alumnos' => $alumnos, 'visitantes' => $visitantes, 'clases_grupales' => $clases, 'correos' => $array]);
 
 	}
-
-	public function Sesion(Request $request){
-
-		Session::put('tipo_usuario_correo', $request->usuario_tipo);
-		Session::put('id_usuario_correo', $request->usuario_id);
-
-		return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-	
-	}
-
 
 	public function indexconusuario($id){
 

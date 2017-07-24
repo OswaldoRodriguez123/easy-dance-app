@@ -1761,7 +1761,7 @@
   route_update="{{url('/')}}/participante/instructor/update";
   route_eliminar="{{url('/')}}/participante/instructor/eliminar/";
   route_principal="{{url('/')}}/participante/instructor";
-  route_email="{{url('/')}}/correo/sesion/";
+  route_email="{{url('/')}}/correo/sesion";
 
   route_agregar_pago="{{url('/')}}/participante/instructor/agregarpago";
   route_eliminar_pago="{{url('/')}}/participante/instructor/eliminarpago/";
@@ -2273,33 +2273,25 @@
       }
 
       $(".email").click(function(){
-         var route = route_email + 2;
+         var route = route_email;
          var token = '{{ csrf_token() }}';
                 
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    success:function(respuesta){
+          $.ajax({
+              url: route,
+                  headers: {'X-CSRF-TOKEN': token},
+                  type: 'POST',
+              dataType: 'json',
+              data:"&usuario_tipo=2&usuario_id={{$id}}",
+              success:function(respuesta){
 
-                        procesando();
-                        window.location="{{url('/')}}/correo/{{$instructor->id}}"  
+                  procesando();
+                  window.location="{{url('/')}}/correo/{{$id}}"  
 
-                    },
-                    error:function(msj){
-                                // $("#msj-danger").fadeIn(); 
-                                // var text="";
-                                // console.log(msj);
-                                // var merror=msj.responseJSON;
-                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                // $("#msj-error").html(text);
-                                // setTimeout(function(){
-                                //          $("#msj-danger").fadeOut();
-                                //         }, 3000);
-                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                                }
-                });
+              },
+              error:function(msj){
+                          swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                          }
+          });
       });
 
       function countChar(val) {

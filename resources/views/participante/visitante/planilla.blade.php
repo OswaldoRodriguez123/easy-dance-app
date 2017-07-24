@@ -734,7 +734,7 @@
 
                                   <hr></hr>
                                   
-                                  <a class="informacion"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a class="impresion"><i class="icon_a-examen f-20 m-r-5 boton blue sa-warning" data-original-title="Realizar encuesta" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/participante/alumno/agregar/{{$visitante->id}}"><i class="zmdi zmdi-trending-up zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Transferir" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/participante/visitante/llamadas/{{$visitante->id}}"><i class="zmdi zmdi-phone zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Llamadas" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
@@ -886,7 +886,7 @@
 @section('js') 
    <script type="text/javascript">
     route_update="{{url('/')}}/participante/visitante/update";
-    route_email="{{url('/')}}/correo/sesion/";
+    route_email="{{url('/')}}/correo/sesion";
     route_impresion="{{url('/')}}/participante/visitante/impresion/";
     route_enviar="{{url('/')}}/participante/visitante/enviar-correo";
 
@@ -1206,7 +1206,7 @@
             });
 
     $(".email").click(function(){
-         var route = route_email + 3;
+         var route = route_email;
          var token = '{{ csrf_token() }}';
                 
                 $.ajax({
@@ -1214,22 +1214,14 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                     dataType: 'json',
+                    data:"&usuario_tipo=3&usuario_id={{$id}}",
                     success:function(respuesta){
 
                         procesando();
-                        window.location="{{url('/')}}/correo/{{$visitante->id}}"  
+                        window.location="{{url('/')}}/correo/{{$id}}"  
 
                     },
                     error:function(msj){
-                                // $("#msj-danger").fadeIn(); 
-                                // var text="";
-                                // console.log(msj);
-                                // var merror=msj.responseJSON;
-                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                // $("#msj-error").html(text);
-                                // setTimeout(function(){
-                                //          $("#msj-danger").fadeOut();
-                                //         }, 3000);
                                 swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
                                 }
                 });

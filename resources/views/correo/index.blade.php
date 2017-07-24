@@ -256,7 +256,7 @@
                                           </div>
                                       </div>
                                       <div class="tv-body">
-                                          {!!$correo['contenido']!!}
+                                          {!!$correo['contenido_cortado']!!}
                                       
                                           <div class="clearfix"></div>
                                           

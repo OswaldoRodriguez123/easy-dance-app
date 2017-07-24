@@ -1497,7 +1497,7 @@
     route_historial = "{{url('/')}}/participante/alumno/historial/";
     route_remuneracion = "{{url('/')}}/participante/alumno/puntos-acumulados/";
     route_credenciales = "{{url('/')}}/participante/alumno/credenciales/";
-    route_email="{{url('/')}}/correo/sesion/";
+    route_email="{{url('/')}}/correo/sesion";
     route_agregar_cantidad="{{url('/')}}/participante/alumno/agregar_cantidad";
     route_eliminar_cantidad="{{url('/')}}/participante/alumno/eliminar_cantidad/";
     route_cancelar_cantidad="{{url('/')}}/participante/alumno/cancelar_cantidad";
@@ -2022,26 +2022,28 @@
        
     })
 
-    $(".email").click(function(){
-       var route = route_email + 1;
-       var token = '{{ csrf_token() }}';
-              
-        $.ajax({
-            url: route,
-                headers: {'X-CSRF-TOKEN': token},
-                type: 'POST',
-            dataType: 'json',
-            success:function(respuesta){
+  $(".email").click(function(){
+     var route = route_email;
+     var token = '{{ csrf_token() }}';
+            
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                dataType: 'json',
+                data:"&usuario_tipo=1&usuario_id={{$id}}",
+                success:function(respuesta){
 
-                procesando();
-                window.location="{{url('/')}}/correo/{{$id}}"  
+                    procesando();
+                    window.location="{{url('/')}}/correo/{{$id}}"  
 
-            },
-            error:function(msj){
-              swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-            }
-        });
-    });
+                },
+                error:function(msj){
+                      
+                            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                            }
+            });
+  });
 
     $("i[name=eliminar]").click(function(){
                 id = this.id;
