@@ -86,6 +86,8 @@ class PaqueteController extends BaseController {
             $paquete->descripcion = $request->descripcion;
             $paquete->costo = $request->costo;
             $paquete->cantidad_clases_grupales = $request->cantidad_clases_grupales;
+            $paquete->dias_vencimiento = $request->dias_vencimiento;
+            $paquete->tipo_uso = $request->tipo_uso;
 
             if($paquete->save()){
 

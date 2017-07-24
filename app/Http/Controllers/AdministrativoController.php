@@ -1026,11 +1026,30 @@ class AdministrativoController extends BaseController {
 
                                 if($paquete){
 
+                                    $dias_vencimiento = $paquete->dias_vencimiento;
+
+                                    if($paquete->tipo_uso == 1){
+
+                                        if($paquete->dias_vencimiento){
+                                            $fecha_vencimiento = Carbon::now()->addDays($paquete->dias_vencimiento);
+                                        }else{
+                                            $fecha_vencimiento = Carbon::now()->addMonth();
+                                        }
+
+                                        $boolean_uso = 1;
+
+                                    }else{
+                                        $fecha_vencimiento = "2999-12-31";
+                                        $boolean_uso = 0;
+                                    }
+
                                     $credencial = new CredencialAlumno;
 
                                     $credencial->cantidad = $paquete->cantidad_clases_grupales;
                                     $credencial->alumno_id = $request->usuario_id;
-                                    $credencial->fecha_vencimiento = Carbon::now()->addYear();
+                                    $credencial->fecha_vencimiento = $fecha_vencimiento;
+                                    $credencial->boolean_uso = $boolean_uso;
+                                    $credencial->dias_vencimiento = $dias_vencimiento;
                                     $credencial->save();
                                 }
                             }
@@ -1195,9 +1214,9 @@ class AdministrativoController extends BaseController {
                     }
 
                 }else{
-                    $alumno = Alumno::find($request->usuario_id);
+                    $usuario = Alumno::find($request->usuario_id);
                     // $correo = $alumno->correo;
-                    $celular = getLimpiarNumero($alumno->celular);
+                    $celular = getLimpiarNumero($usuario->celular);
                 }
 
                 if($academia->pais_id == 11 && strlen($celular) == 10 && $tipo != 2){

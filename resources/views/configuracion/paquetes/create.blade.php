@@ -178,8 +178,49 @@
                                   </div>
                               </div>
 
-                               
-                          <div class="clearfix p-b-35"></div>
+                              <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="dias_vencimiento" id="dias_vencimiento">Días de caducidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de dias que estaran vigentes las credenciales" title="" data-original-title="Ayuda"></i>
+                                    <input type="text" class="form-control input-sm input-mask" name="dias_vencimiento" id="dias_vencimiento" data-mask="0000000" placeholder="Ej: 25">
+                                 </div>
+                                 <div class="has-error" id="error-dias_vencimiento">
+                                      <span >
+                                          <small class="help-block error-span" id="error-dias_vencimiento_mensaje"  ></small>                                           
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                 
+                                  <label for="tipo_uso" id="id-tipo_uso">Contabilizar a partir de</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona desde que momento correran los dias de caducidad" title="" data-original-title="Ayuda"></i>
+
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon_b-costo f-22"></i></span>
+                                    <div class="p-t-10">
+                                  <label class="radio radio-inline m-r-20">
+                                      <input name="tipo_uso" id="dia_compra" value="1" type="radio" checked>
+                                      <i class="input-helper"></i>  
+                                      El dia de la compra
+                                  </label>
+                                  <label class="radio radio-inline m-r-20 ">
+                                      <input name="tipo_uso" id="primer_uso" value="0" type="radio">
+                                      <i class="input-helper"></i>  
+                                      El primer uso
+                                  </label>
+                                  </div>
+                                  </div>
+                               <div class="has-error" id="error-tipo_uso">
+                                    <span >
+                                        <small class="help-block error-span" id="error-tipo_uso_mensaje" ></small>                                
+                                    </span>
+                                </div>
+                             </div>
+
+                             <div class="clearfix p-b-35"></div>
 
 
                           <div class="modal-footer p-b-20 m-b-20">

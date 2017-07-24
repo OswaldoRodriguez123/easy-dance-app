@@ -1499,30 +1499,30 @@ class AsistenciaController extends BaseController
                 ->whereIn('instructor_id', $in_credencial)
               ->first();
 
+              if(!$credencial_alumno){
+                $credencial_alumno = CredencialAlumno::where('alumno_id',$alumno_id)->first();
+              }
+
               if($credencial_alumno){
 
-                $cantidad = $credencial_alumno->cantidad - 1;
+                if($credencial_alumno->boolean_uso == 0){
 
-                if($cantidad > 0){
-                  $credencial_alumno->cantidad = $cantidad;
-                  $credencial_alumno->save();
-                }else{
-                  $credencial_alumno->delete();
-                }
-              }else{
-                
-                $credencial_alumno = CredencialAlumno::where('alumno_id',$alumno_id)
-                ->first();
-
-                if($credencial_alumno){
-                  $cantidad = $credencial_alumno->cantidad - 1;
-
-                  if($cantidad > 0){
-                    $credencial_alumno->cantidad = $cantidad;
-                    $credencial_alumno->save();
+                  if($credencial_alumno->dias_vencimiento){
+                    $fecha_vencimiento = Carbon::now()->addDays($credencial_alumno->dias_vencimiento);
                   }else{
-                    $credencial_alumno->delete();
+                    $fecha_vencimiento = Carbon::now()->addMonth();
                   }
+
+                  $credencial_alumno->boolean_uso = 1;
+                  $credencial_alumno->fecha_vencimiento = $fecha_vencimiento;
+                } 
+
+                $cantidad = $credencial_alumno->cantidad - 1;
+                $credencial_alumno->cantidad = $cantidad;
+                $credencial_alumno->save();
+
+                if($cantidad <= 0){
+                  $credencial_alumno->delete();
                 }
               }
             }
