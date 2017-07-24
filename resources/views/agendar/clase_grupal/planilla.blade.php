@@ -1430,7 +1430,7 @@
                                <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
                                <span class="f-14"> Instructor  </span>
                              </td>
-                             <td  class="f-14 m-l-15" id="clasegrupal-instructor_id" ><span id="clasegrupal-instructor_id">{{$clasegrupal->instructor_nombre}} {{$clasegrupal->instructor_apellido}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td  class="f-14 m-l-15"><span id="clasegrupal-instructor_id">{{$clasegrupal->instructor_nombre}} {{$clasegrupal->instructor_apellido}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                              
                             @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)

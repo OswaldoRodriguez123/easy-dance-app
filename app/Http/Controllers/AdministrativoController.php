@@ -1030,6 +1030,7 @@ class AdministrativoController extends BaseController {
 
                                     $credencial->cantidad = $paquete->cantidad_clases_grupales;
                                     $credencial->alumno_id = $request->usuario_id;
+                                    $credencial->fecha_vencimiento = Carbon::now()->addYear();
                                     $credencial->save();
                                 }
                             }
