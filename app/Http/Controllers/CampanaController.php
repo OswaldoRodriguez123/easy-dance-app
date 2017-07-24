@@ -803,7 +803,7 @@ class CampanaController extends BaseController {
                                 $boleta = 'Boletas';
                             }
 
-                            $mensaje = '¡Wow! '.$alumno->nombre.'. Que gran noticia saber que te has sumado a la campaña "'.$campana->nombre.'". Tu aporte de '.$request->cantidad.' '.$boleta.' nos hace crecer y nos motiva a seguir mejorando nuestro servicio para ti. ¡Nos encanta verte bailar!.';
+                            $mensaje = '¡Wow! '.$alumno->nombre.'. Que gran noticia saber que te has sumado a "'.$campana->nombre.'". Tu aporte de '.$request->cantidad.' '.$boleta.' nos hace crecer y nos motiva!.';
 
                             $client = new Client(); //GuzzleHttp\Client
                             $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
