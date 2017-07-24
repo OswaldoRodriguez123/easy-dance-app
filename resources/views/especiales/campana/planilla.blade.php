@@ -683,7 +683,7 @@
                                     <td class="text-center previa">{{$dato->numero_cuenta}}</td>
                                     <td class="text-center previa">{{$dato->rif}}</td>
                                     <td class="text-center previa">{{$dato->nombre}}</td>
-                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i></td>
                                   </tr>
                             @endforeach 
                                                            
@@ -822,7 +822,7 @@
                                     <td class="text-center previa">{{$recompensa->nombre}}</td>
                                     <td class="text-center previa">{{$recompensa->cantidad}}</td>
                                     <td class="text-center previa">{{$recompensa->descripcion}}</td>
-                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i></td>
                                   </tr>
                             @endforeach 
                                                            
@@ -1584,7 +1584,7 @@
                           ''+recompensa+'',
                           ''+cantidad+'',
                           ''+descripcion+'',
-                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
                           .attr('id',rowId)
@@ -1710,7 +1710,7 @@
                           ''+numero_cuenta+'',
                           ''+rif+'',
                           ''+nombre+'',
-                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
                           .attr('id',rowId)
