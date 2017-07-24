@@ -24,6 +24,51 @@ class EventoLaboralController extends BaseController
             ->where('staff.academia_id','=', Auth::user()->academia_id)
         ->get();
 
+        foreach($eventos_laborales as $evento){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $evento->fecha);
+
+            $i = $fecha->dayOfWeek;
+
+            if($i == 1){
+
+              $dia = 'Lunes';
+
+            }else if($i == 2){
+
+              $dia = 'Martes';
+
+            }else if($i == 3){
+
+              $dia = 'Miercoles';
+
+            }else if($i == 4){
+
+              $dia = 'Jueves';
+
+            }else if($i == 5){
+
+              $dia = 'Viernes';
+
+            }else if($i == 6){
+
+              $dia = 'Sabado';
+
+            }else if($i == 0){
+
+              $dia = 'Domingo';
+
+            }
+
+            $collection=collect($evento);     
+            $evento_array = $collection->toArray();
+
+            $evento['staff']=$evento->staff_nombre . ' ' . $evento->staff_apellido;
+            $evento['dia']=$dia;
+            $array[] = $evento;
+            
+        }
+
         $cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
 
         return view('configuracion.eventos_laborales.calendario')->with(['eventos' => $eventos_laborales, 'cargos' => $cargos]);

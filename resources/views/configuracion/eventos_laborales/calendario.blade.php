@@ -187,7 +187,26 @@
                     },
                     eventRender: function(event, eventElement) {
 
+                        var staff = event.staff
+                        var imagen = event.imagen
+                        var sexo = event.sexo
+                        var dia = event.dia
+
+                        if(imagen){
+                            imagen = '/assets/uploads/instructor/'+imagen
+
+                        }else{
+                            if(sexo == 'F'){
+                                imagen = '/assets/img/Mujer.jpg'
+                            }else{
+                                imagen = '/assets/img/Hombre.jpg'
+                            }
+                        }
+
+                        var contenido = staff + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
+
                         var contenido = 'Evento: ' + event.title + '<br>'
+                        var contenido = 'Dia de Semana: ' + dia + '<br>'
                         contenido += 'Descripción: ' + event.descripcion + '<br>'
                        
                         $(eventElement).attr('data-trigger','hover');

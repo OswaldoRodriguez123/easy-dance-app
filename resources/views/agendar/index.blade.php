@@ -705,7 +705,7 @@
                                 var tmp = id.split("!"); 
                     
                                 var tmp2 = tmp[0].split('-')
-                                var instructor = tmp2[1]
+                                var nombre = tmp2[1]
                                 var especialidad = tmp[1]
                                 var nivel = tmp[2]
                                 var imagen_instructor = tmp[3]
@@ -730,7 +730,7 @@
                                 }
 
 
-                                var contenido = sexo_instructor + ' ' + instructor + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
+                                var contenido = sexo_instructor + ' ' + nombre + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
                                 contenido += 'Especialidad: ' + especialidad + '<br>'
                                 contenido += 'Nivel: ' + nivel + '<br>'
                                 contenido += 'Hora: ' + hora + '<br>'
