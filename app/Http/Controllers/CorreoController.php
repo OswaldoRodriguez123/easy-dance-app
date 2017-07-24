@@ -26,7 +26,7 @@ use GuzzleHttp\Client;
 
 class CorreoController extends BaseController {
 
-	
+
 	public function Sesion(Request $request){
 
 		Session::put('tipo_usuario_correo', $request->usuario_tipo);
@@ -115,7 +115,7 @@ class CorreoController extends BaseController {
 
 		foreach($correos as $correo){
 
-			$contenido_cortado = $this->cut_html($correo->contenido, 150);
+			$contenido_cortado = $this->cut_html($correo->contenido, 300);
 
 			$collection=collect($correo);     
             $correo_array = $collection->toArray();
@@ -234,7 +234,7 @@ class CorreoController extends BaseController {
 
 			foreach($correos as $correo){
 
-				$contenido_cortado = $this->cut_html($correo->contenido, 150);
+				$contenido_cortado = $this->cut_html($correo->contenido, 300);
 
 				$collection=collect($correo);     
 	            $correo_array = $collection->toArray();
