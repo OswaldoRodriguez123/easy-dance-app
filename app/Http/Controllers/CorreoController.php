@@ -343,7 +343,11 @@ class CorreoController extends BaseController {
 			        $usuario[] = $usuario_array;
 
 				}
+			}else{
+				$usuario = '';
 			}
+		}else{
+			$usuario = '';
 		}
 
         return view('correo.detalle')->with(['correo' => $correo, 'clases_grupales' => $clases, 'usuario' => $usuario]);
