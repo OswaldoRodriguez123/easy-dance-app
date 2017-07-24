@@ -773,7 +773,6 @@ class CampanaController extends BaseController {
                 $item_factura->academia_id = Auth::user()->academia_id;
                 $item_factura->fecha = Carbon::now()->toDateString();
                 $item_factura->item_id = $request->recompensa_id;
-                // $item_factura->nombre = 'Campaña - Contribucion';
                 $item_factura->nombre = $recompensa->nombre;
                 $item_factura->tipo = 11;
                 $item_factura->cantidad = $request->cantidad;
@@ -791,8 +790,11 @@ class CampanaController extends BaseController {
 
                     if($alumno->celular){
 
+                        $campana = Campana::find($recompensa->campana_id);
+
                         $celular = getLimpiarNumero($alumno->celular);
                         $academia = Academia::find(Auth::user()->academia_id);
+
                         if($academia->pais_id == 11 && strlen($celular) == 10){
 
                             if($request->cantidad == 1){
@@ -801,7 +803,7 @@ class CampanaController extends BaseController {
                                 $boleta = 'Boletas';
                             }
 
-                            $mensaje = '¡Wow! '.$alumno->nombre.'. Que gran noticia saber que te has sumado al evento "Caminito". Tu aporte de '.$request->cantidad.' '.$boleta.' nos hace crecer y nos motiva a seguir mejorando nuestro servicio para ti. ¡Nos encanta verte bailar!.';
+                            $mensaje = '¡Wow! '.$alumno->nombre.'. Que gran noticia saber que te has sumado a la campaña "'.$campana->nombre.'". Tu aporte de '.$request->cantidad.' '.$boleta.' nos hace crecer y nos motiva a seguir mejorando nuestro servicio para ti. ¡Nos encanta verte bailar!.';
 
                             $client = new Client(); //GuzzleHttp\Client
                             $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));

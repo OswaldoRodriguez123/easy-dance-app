@@ -695,26 +695,25 @@
       }
 
       function errores(merror){
-      var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "telefono", "celular", "correo", "direccion"];
-      var elemento="";
-      var contador=0;
-      $.each(merror, function (n, c) {
-      if(contador==0){
-      elemento=n;
-      }
-      contador++;
+        var elemento="";
+        var contador=0;
+        $.each(merror, function (n, c) {
+        if(contador==0){
+        elemento=n;
+        }
+        contador++;
 
-       $.each(this, function (name, value) {              
-          var error=value;
-          $("#error-"+n+"_mensaje").html(error);             
-       });
-    });
+         $.each(this, function (name, value) {              
+            var error=value;
+            $("#error-"+n+"_mensaje").html(error);             
+         });
+      });
 
       $('html,body').animate({
             scrollTop: $("#id-"+elemento).offset().top-90,
       }, 1000);          
 
-  }
+    }
 
       function collapse_minus(collaps){
        $('#'+collaps).collapse('hide');
