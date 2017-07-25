@@ -1263,7 +1263,7 @@
                                   <table class="table table-striped table-bordered">
                                     <tr class="detalle credenciales">
                                       <td></td>
-                                      <td class="f-14 m-l-15" data-original-title="" data-content="Ver credenciales" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-12 f-700">Credenciales: </span><span class = "f-12 f-700" id="credenciales" name="credenciales"></span> <i id="estatus-credenciales" class="zmdi zmdi-money {{ empty($credenciales) ? 'c-youtube ' : 'c-verde' }} f-20 m-r-5"></i></td>
+                                      <td class="f-14 m-l-15" data-original-title="" data-content="Ver credenciales" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-12 f-700">Credenciales: </span><span class = "f-12 f-700" id="credenciales" name="credenciales">{{$credenciales}}</span></td>
                                     </tr>
                                   </table>
 
@@ -1505,7 +1505,6 @@
 
     total = "{{$total}}";
     puntos_referidos = "{{$puntos_referidos}}";
-    credenciales = "{{$credenciales}}";
     cantidad_actual = 0;
 
     $(document).ready(function(){
@@ -1554,13 +1553,6 @@
         $("#puntos_referidos").text(0);
       }
 
-      if(credenciales){
-        $("#credenciales").text(formatmoney(parseFloat(credenciales)));
-      }
-      else{
-        $("#credenciales").text(0);
-      }
-      
       if("{{$alumno->alergia}}" == 1){
           $("#alergia").val('1');  //VALOR POR DEFECTO
           $("#alergia-switch").attr("checked", true); //VALOR POR DEFECTO
