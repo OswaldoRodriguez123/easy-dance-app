@@ -1695,6 +1695,18 @@ class InstructorController extends BaseController {
                 return response()->json(['errores' => ['cantidad' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
             }
 
+
+            if($request->monto_minimo){
+
+                $monto_minimo = floatval(str_replace(',', '', $request->monto_minimo));
+
+                if($monto_minimo  > $servicio_producto->costo){
+                    return response()->json(['errores' => ['monto_minimo' => [0, 'Ups! El monto mínimo no puede ser mayor al costo']], 'status' => 'ERROR'],422);
+                }
+            }else{
+                $monto_minimo = '';
+            }
+
             $config_pagos = ConfigComision::where('usuario_id', $request->id)
                 ->where('usuario_tipo',2)
                 ->where('servicio_producto_id', $servicio_producto_id)

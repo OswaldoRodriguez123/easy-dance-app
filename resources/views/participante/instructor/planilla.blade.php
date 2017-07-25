@@ -270,6 +270,24 @@
                                     </span>
                                   </div>
 
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <div class="form-group">
+                                        <label for="monto_minimo" id="id-monto_minimo">Monto Mínimo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto mínimo que debe pagar para que la comisión se realice" title="" data-original-title="Ayuda"></i>
+                                        
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
+                                        <div class="fg-line">
+                                        <input type="text" class="form-control input-sm" name="monto_minimo" id="monto_minimo" placeholder="Ej. 2500">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-monto_minimo">
+                                      <span >
+                                          <small id="error-monto_minimo_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+
                                 <div class="clearfix p-b-35"></div>
 
                                
@@ -289,6 +307,7 @@
                                           <th class="text-center" data-column-id="tipo" data-type="numeric">Tipo</th>
                                           <th class="text-center" data-column-id="monto" data-type="numeric">Monto</th>
                                           <th class="text-center" data-column-id="monto_porcentaje" data-type="numeric">Monto Porcentaje</th>
+                                          <th class="text-center" data-column-id="monto_porcentaje" data-type="numeric">Monto Mínimo</th>
                                           <th class="text-center" data-column-id="operaciones">Acciones</th>
 
                                       </tr>
@@ -327,6 +346,7 @@
 
                                           </td>
                                           <td class="text-center">{{ number_format($comision['monto_porcentaje'], 2, '.' , '.') }}</td>
+                                          <td class="text-center">{{ number_format($comision['monto_minimo'], 2, '.' , '.') }}</td>
                                           <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
                                         </tr>
                                   @endforeach 
