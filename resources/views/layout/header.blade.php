@@ -62,6 +62,10 @@
                                 <li class="hidden-xs">
                                     <a href="{{url('blog')}}"><i class="zmdi glyphicon glyphicon-book f-16"></i> Blog</a>
                                 </li>
+
+                                <li class="hidden-xs">
+                                    <a href="{{url('llamadas')}}"><i class="zmdi zmdi-phone f-16"></i> Registro de llamadas</a>
+                                </li>
                             </ul>
                         </li>
 

@@ -192,6 +192,10 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::put('configuracion/blogeros/update/redes', 'BloggerController@updateRedes');
 		Route::delete('configuracion/blogeros/eliminar/{id}', 'BloggerController@destroy');
 
+		//LLAMADAS
+
+		Route::get('llamadas', 'LlamadaController@index');
+
 		// ---- CONFIGURACION ----
 
 		Route::get('configuracion', 'AcademiaController@principal');

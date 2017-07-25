@@ -90,23 +90,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="nombre">Tipología</label>
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" name="tipologia" id="tipologia" data-live-search="true">
-                                            <option value = "T">Todos</option>
-                                            <option value = "Paq">Paquetes de Clases</option>
-                                            <option value = "Per">Personalizadas</option>
-                                            <option value = "Tal">Talento Cuerpo de Formación</option>
-                                        </select>
-                                      </div>
-                                    </div>
-                                </div>
-                            </div> -->
-
                             
                             <div class="clearfix"></div> 
                                                          
