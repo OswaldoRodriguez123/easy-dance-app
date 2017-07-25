@@ -114,7 +114,7 @@
 
                                   @endif
                                   </td>
-                                  <td>{{$llamada->observacion}}</td>
+                                  <td>{{ str_limit(title_case($llamada->observacion), $limit = 30, $end = '...') }}</td>
                                   <td>{{$llamada->hora_llamada}}</td>
                                   <td>{{$llamada->fecha_siguiente}}</td>
                                   <td>{{$llamada->hora_siguiente}}</td>

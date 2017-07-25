@@ -108,7 +108,7 @@
 
                                     <td class="text-center previa"><span style="display: none">{{$evento['tipo']}}</span></td>
                                     <td class="text-center previa">{{$evento['staff_nombre']}} {{$evento['staff_apellido']}}</td>
-                                    <td class="text-center previa">{{$evento['nombre']}}</td>
+                                    <td class="text-center previa">{{ str_limit(title_case($evento['nombre']), $limit = 30, $end = '...') }}</td>
                                     <td class="text-center previa">{{$evento['fecha']}}</td>
                                     <td class="text-center previa">
                                         @if($evento['tipo'] == 'A')
