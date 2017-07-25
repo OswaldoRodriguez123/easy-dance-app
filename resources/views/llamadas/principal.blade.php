@@ -39,7 +39,7 @@
                     <div class="card">
                         <div class="card-header">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-phone" f-25"></i> Agenda de Llamadas</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-phone" f-25"></i> Sección de registro de llamadas</p>
                             <hr class="linea-morada">
 
                             <div class="col-sm-4">
@@ -49,8 +49,8 @@
                                       <div class="select">
                                         <select class="selectpicker" name="usuario_tipo" id="usuario_tipo" data-live-search="true">
                                             <option value = "">Todos</option>
-                                            <option value = "1">Alumnos</option>
-                                            <option value = "2">Visitantes</option>
+                                            <option value = "2">Alumnos</option>
+                                            <option value = "1">Visitantes</option>
                                         </select>
                                       </div>
                                     </div>
