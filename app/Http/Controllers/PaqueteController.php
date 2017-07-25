@@ -51,6 +51,7 @@ class PaqueteController extends BaseController {
             'costo' => 'required|numeric',
             'cantidad_clases_grupales' => 'required|numeric',
             'descripcion' => 'required|min:3|max:500',
+            'dias_vencimiento' => 'numeric',
         ];
 
         $messages = [
@@ -247,7 +248,7 @@ class PaqueteController extends BaseController {
 
         $rules = [
 
-            'cantidad_clases_grupales' => 'numeric',
+            'cantidad_clases_grupales' => 'required|numeric',
 
         ];
 
@@ -314,6 +315,56 @@ class PaqueteController extends BaseController {
 
         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
+
+    public function updateDias(Request $request){
+
+
+        $rules = [
+
+            'dias_vencimiento' => 'numeric',
+
+        ];
+
+        $messages = [
+
+            'dias_vencimiento.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
+
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }else{
+
+            $paquete = Paquete::find($request->id);
+
+            $paquete->dias_vencimiento = $request->dias_vencimiento;
+
+            if($paquete->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function updateTipo(Request $request){
+    
+        $paquete = Paquete::find($request->id);
+
+        $paquete->tipo_uso = $request->tipo_uso;
+
+        if($paquete->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        
+    }
+
 
     /**
      * Show the form for editing the specified resource.

@@ -379,6 +379,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::put('configuracion/paquetes/update/cantidad', 'PaqueteController@updateCantidad');
 		Route::put('configuracion/paquetes/update/descripcion', 'PaqueteController@updateDescripcion');
 		Route::put('configuracion/paquetes/update/imagen', 'PaqueteController@updateImagen');
+		Route::put('configuracion/paquetes/update/dias', 'PaqueteController@updateDias');
+		Route::put('configuracion/paquetes/update/tipo', 'PaqueteController@updateTipo');
 
 		// --- ADMINISTRATIVO --- 
 

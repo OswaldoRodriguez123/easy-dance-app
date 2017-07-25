@@ -299,6 +299,127 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalDias-Paquete" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_dias_paquete" id="edit_dias_paquete"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="dias_vencimiento">Días de caducidad</label>
+                                    <input type="text" class="form-control input-sm input-mask" name="dias_vencimiento" id="dias_vencimiento" data-mask="00000000" placeholder="Ej. 5000" value="{{$paquete->dias_vencimiento}}">
+                                 </div>
+                                 <div class="has-error" id="error-dias_vencimiento">
+                                      <span >
+                                          <small class="help-block error-span" id="error-dias_vencimiento_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <input type="hidden" name="id" value="{{$paquete->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_dias_paquete" data-update="dias" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalTipo-Paquete" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_tipo_paquete" id="edit_tipo_paquete"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                                <div class="col-sm-12">
+                                 
+                                  <label for="tipo_uso" id="id-tipo_uso">Contabilizar a partir de</label>
+                                  <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon_b-costo f-22"></i></span>
+                                    <div class="p-t-10">
+                                  <label class="radio radio-inline m-r-20">
+                                      <input name="tipo_uso" id="dia_compra" value="1" type="radio">
+                                      <i class="input-helper"></i>  
+                                      El dia de la compra
+                                  </label>
+                                  <label class="radio radio-inline m-r-20 ">
+                                      <input name="tipo_uso" id="primer_uso" value="0" type="radio">
+                                      <i class="input-helper"></i>  
+                                      El primer uso
+                                  </label>
+                                  </div>
+                                  </div>
+                                 <div class="has-error" id="error-tipo_uso">
+                                      <span >
+                                          <small class="help-block error-span" id="error-tipo_uso_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <input type="hidden" name="id" value="{{$paquete->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_tipo_paquete" data-update="tipo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <section id="content">
                 <div class="container">
                 
@@ -410,6 +531,28 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="paquete-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalDias-Paquete">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-dias_vencimiento" class="zmdi {{ empty($paquete->dias_vencimiento) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
+                               <span class="f-14"> Días de caducidad</span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="paquete-dias_vencimiento"><span>{{$paquete->dias_vencimiento}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalTipo-Paquete">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
+                               <span class="f-14"> Contabilizar a partir de</span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="paquete-tipo_uso" data-valor="{{$paquete->tipo_uso}}">
+                               @if($paquete->tipo_uso == 1)
+                                El dia de la compra
+                               @else
+                                El primer uso
+                               @endif
+                             </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
 
                            </table>
 
@@ -491,6 +634,17 @@
       //$("#direccion").val($("#alumno-direccion").text());
     })
 
+    $('#modalTipo-Paquete').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      var tipo=$("#paquete-tipo_uso").data('valor');
+      if(tipo=="1"){
+        $("#dia_compra").prop("checked", true);
+      }else{
+        $("#primer_uso").prop("checked", true);
+      }
+      
+    })
+
     function limpiarMensaje(){
         var campo = ["nombre", "costo", "cantidad_clases_grupales" , "descripcion"];
         fLen = campo.length;
@@ -514,7 +668,15 @@
 
       function campoValor(form){
         $.each(form, function (n, c) {
-          if(c.name=='descripcion' || c.name=='nombre'){
+          if(c.name=='tipo_uso'){
+            if(c.value=='1'){ 
+              var valor='El dia de la compra </span>';                              
+            }else if(c.value=='F'){
+              var valor='El primer uso </span>';
+            }
+            $("#paquete-"+c.name).data('valor',c.value);
+            $("#paquete-"+c.name).html(valor);
+          }else if(c.name=='descripcion' || c.name=='nombre'){
              $("#paquete-"+c.name).data('valor',c.value);
              $("#paquete-"+c.name).html(c.value.substr(0, 30) + "...");
             //$("#alumno-"+c.name).text(c.value.substr(0, 30));
