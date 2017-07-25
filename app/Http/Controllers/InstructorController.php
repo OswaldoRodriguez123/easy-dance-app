@@ -1686,9 +1686,9 @@ class InstructorController extends BaseController {
             $servicio_producto_id = $explode[1];
 
             if($servicio_producto_tipo == 1){
-                $servicio_producto = ConfigServicios::find($servicio_producto_id);
+                $servicio_producto = ConfigServicios::withTrashed()->find($servicio_producto_id);
             }else{
-                $servicio_producto = ConfigProductos::find($servicio_producto_id);
+                $servicio_producto = ConfigProductos::withTrashed()->find($servicio_producto_id);
             }
             
             if($monto  > $servicio_producto->costo){

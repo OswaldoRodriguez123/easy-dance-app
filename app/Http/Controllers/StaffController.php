@@ -739,9 +739,9 @@ class StaffController extends BaseController
                     $servicio_producto_tipo = $tmp[1];
 
                     if($servicio_producto_tipo == 1){
-                        $servicio_producto = ConfigServicios::find($servicio_producto_id);
+                        $servicio_producto = ConfigServicios::withTrashed()->find($servicio_producto_id);
                     }else{
-                        $servicio_producto = ConfigProductos::find($servicio_producto_id);
+                        $servicio_producto = ConfigProductos::withTrashed()->find($servicio_producto_id);
                     }
 
                     if($monto  > $servicio_producto->costo){
@@ -886,9 +886,9 @@ class StaffController extends BaseController
             $monto = floatval(str_replace(',', '', $request->monto));
 
             if($servicio_producto_tipo == 1){
-                $servicio_producto = ConfigServicios::find($servicio_producto_id);
+                $servicio_producto = ConfigServicios::withTrashed()->find($servicio_producto_id);
             }else{
-                $servicio_producto = ConfigProductos::find($servicio_producto_id);
+                $servicio_producto = ConfigProductos::withTrashed()->find($servicio_producto_id);
             }
 
             if($request->tipo_pago == 1){
