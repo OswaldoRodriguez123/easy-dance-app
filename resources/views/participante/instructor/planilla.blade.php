@@ -2852,6 +2852,8 @@
 
                 $.each(respuesta.array, function (index, array) {
 
+                  monto_minimo = formatmoney(parseFloat(array.monto_minimo));
+
                   if(array.tipo == 1){
                     tipo = 'Porcentaje'
                     monto = array.monto+"%"
@@ -2868,6 +2870,7 @@
                   ''+tipo+'',
                   ''+monto+'',
                   ''+monto_porcentaje+'',
+                  ''+monto_minimo+'',
                   '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
                   ] ).draw(false).node();
                   $( rowNode )
