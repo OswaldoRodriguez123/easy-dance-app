@@ -1011,7 +1011,7 @@ class InstructorController extends BaseController {
 
                 if($servicio_producto){
 
-                    $tmp2[]=array('id' => $pago->id, 'nombre' => $servicio_producto->nombre , 'tipo' => $pago->tipo, 'monto' => $pago->monto, 'monto_porcentaje' => $pago->monto_porcentaje, 'servicio_producto_id' => $pago->servicio_producto_id, 'servicio_producto_tipo' => $pago->servicio_producto_tipo);
+                    $tmp2[]=array('id' => $pago->id, 'nombre' => $servicio_producto->nombre , 'tipo' => $pago->tipo, 'monto' => $pago->monto, 'monto_porcentaje' => $pago->monto_porcentaje, 'servicio_producto_id' => $pago->servicio_producto_id, 'servicio_producto_tipo' => $pago->servicio_producto_tipo, 'monto_minimo' => $pago->monto_minimo);
                 }
 
             }
