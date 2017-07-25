@@ -641,7 +641,9 @@ class AlumnoController extends BaseController
 
             $tipologias = Tipologia::all();
 
-            return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $total, 'clases_grupales' => $array, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'edad' => $edad, 'tipo_pago' => $tipo_pago, 'credenciales' => $credenciales, 'usuario' => $usuario, 'tipologias' => $tipologias]);
+            $llamadas = Llamada::where('usuario_id', $id)->where('usuario_tipo',2)->count();
+
+            return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $total, 'clases_grupales' => $array, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'edad' => $edad, 'tipo_pago' => $tipo_pago, 'credenciales' => $credenciales, 'usuario' => $usuario, 'tipologias' => $tipologias, 'llamadas' => $llamadas]);
         }else{
            return redirect("participante/alumno"); 
         }

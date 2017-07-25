@@ -1268,11 +1268,12 @@
                                   </table>
 
 
-                                   <!-- <li class="dropdown" data-original-title="" data-content="Calendario" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover">
-                                  <a href="{{url('/')}}/participante/alumno/historial/{{$id}}">
-                                      <i class="tm-icon zmdi zmdi-money f-20"></i>
-                                      </a>
-                                  </li> -->
+                                  <table class="table table-striped table-bordered">
+                                    <tr class="detalle llamadas">
+                                      <td></td>
+                                      <td class="f-14 m-l-15" data-original-title="" data-content="Ver Llamadas" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-12 f-700">Llamadas: </span><span class = "f-12 f-700" id="llamadas" name="llamadas">{{$llamadas}}</span></td>
+                                    </tr>
+                                  </table>
 
                                   
 
@@ -1497,6 +1498,7 @@
     route_historial = "{{url('/')}}/participante/alumno/historial/";
     route_remuneracion = "{{url('/')}}/participante/alumno/puntos-acumulados/";
     route_credenciales = "{{url('/')}}/participante/alumno/credenciales/";
+    route_llamadas = "{{url('/')}}/participante/alumno/llamadas/";
     route_email="{{url('/')}}/correo/sesion";
     route_agregar_cantidad="{{url('/')}}/participante/alumno/agregar_cantidad";
     route_eliminar_cantidad="{{url('/')}}/participante/alumno/eliminar_cantidad/";
@@ -2136,22 +2138,30 @@
 
       $(".historial").click(function(){
 
-          var alumno = "{{$alumno->id}}";
-          window.location = route_historial + alumno;
+          var id = "{{$alumno->id}}";
+          window.location = route_historial + id;
           
       }); 
 
       $(".remuneracion").click(function(){
 
-          var alumno = "{{$alumno->id}}";
-          window.location = route_remuneracion + alumno;
+          var id = "{{$alumno->id}}";
+          window.location = route_remuneracion + id;
           
       }); 
 
       $(".credenciales").click(function(){
 
-          var alumno = "{{$alumno->id}}";
-          window.location = route_credenciales + alumno;
+          var id = "{{$alumno->id}}";
+          window.location = route_credenciales + id;
+          
+      }); 
+
+
+      $(".llamadas").click(function(){
+
+          var id = "{{$alumno->id}}";
+          window.location = route_llamadas + id;
           
       }); 
 
