@@ -1727,7 +1727,7 @@ class InstructorController extends BaseController {
             $config_pagos->servicio_producto_id = $servicio_producto_id;
             $config_pagos->servicio_producto_tipo = $servicio_producto_tipo;
             $config_pagos->usuario_id = $request->id;
-            $config_pagos->usuario_tipo = 1;
+            $config_pagos->usuario_tipo = 2;
             $config_pagos->tipo = $request->tipo_pago;
             $config_pagos->monto = $monto;
             $config_pagos->monto_porcentaje = $monto_porcentaje;
