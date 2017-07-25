@@ -14,6 +14,7 @@ use App\Llamada;
 use App\Academia;
 use App\Staff;
 use App\ClaseGrupal;
+use App\Tipologia;
 use Validator;
 use Carbon\Carbon;
 use DB;
@@ -73,8 +74,9 @@ class VisitanteController extends BaseController {
      */
     public function create()
     {
+        $tipologias = Tipologia::all();
 
-        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::all(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get()]);;
+        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::all(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(),'tipologias' => $tipologias]);;
     }
 
     public function operar($id)
@@ -94,86 +96,83 @@ class VisitanteController extends BaseController {
 
         $request->merge(array('correo' => trim($request->correo)));
 
+        $rules = [
+            'instructor_id' => 'required',
+            'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+            'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+            'fecha_nacimiento' => 'required',
+            'sexo' => 'required',
+            'como_nos_conociste_id' => 'required',
+            'correo' => 'email|max:255|unique:visitantes_presenciales,correo'
+        ];
 
-    $rules = [
-        'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'fecha_nacimiento' => 'required',
-        'sexo' => 'required',
-        'como_nos_conociste_id' => 'required',
-        'correo' => 'email|max:255|unique:visitantes_presenciales,correo, '.$request->id.'',
-        'instructor_id' => 'required'
-        
-    ];
+        $messages = [
+            'instructor_id.required' => 'Ups! El Promotor  es requerido ',
+            'nombre.required' => 'Ups! El Nombre  es requerido ',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+            'nombre.max' => 'El máximo de caracteres permitidos son 20',
+            'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
+            'apellido.required' => 'Ups! El Apellido  es requerido ',
+            'apellido.min' => 'El mínimo de caracteres permitidos son 3',
+            'apellido.max' => 'El máximo de caracteres permitidos son 20',
+            'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
+            'sexo.required' => 'Ups! El Sexo  es requerido ',
+            'fecha_nacimiento.required' => 'Ups! La fecha de nacimiento es requerida',
+            'como_nos_conociste_id.required' => 'Ups! La pregunta de ¿Cómo se enteró? es requerida ',
+            'correo.email' => 'Ups! El correo tiene una dirección inválida',
+            'correo.max' => 'El máximo de caracteres permitidos son 255',
+            'correo.unique' => 'Ups! Ya este correo ha sido registrado'
+        ];
 
-    $messages = [
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-        'nombre.required' => 'Ups! El Nombre  es requerido ',
-        'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre.max' => 'El máximo de caracteres permitidos son 20',
-        'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
-        'apellido.required' => 'Ups! El Apellido  es requerido ',
-        'apellido.min' => 'El mínimo de caracteres permitidos son 3',
-        'apellido.max' => 'El máximo de caracteres permitidos son 20',
-        'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
-        'sexo.required' => 'Ups! El Sexo  es requerido ',
-        'fecha_nacimiento.required' => 'Ups! La fecha de nacimiento es requerida',
-        'como_nos_conociste_id.required' => 'Ups! La pregunta de ¿Cómo se enteró? es requerida ',
-        'correo.email' => 'Ups! El correo tiene una dirección inválida',
-        'correo.max' => 'El máximo de caracteres permitidos son 255',
-        'correo.unique' => 'Ups! Ya este correo ha sido registrado',
-        'instructor_id.required' => 'Ups! El Promotor  es requerido ',
-    ];
+        if ($validator->fails()){
 
-    $validator = Validator::make($request->all(), $rules, $messages);
-
-    if ($validator->fails()){
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-    }
-
-    else{
-
-        $edad = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->diff(Carbon::now())->format('%y');
-
-
-        if($edad < 1){
-            return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
         }
 
-        $visitante = new Visitante;
+        else{
 
-        $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
-
-        $nombre = title_case($request->nombre);
-        $apellido = title_case($request->apellido);
-        $direccion = $request->direccion;
-
-        $correo = strtolower($request->correo);
-
-        $visitante->academia_id = Auth::user()->academia_id;
-        $visitante->nombre = $nombre;
-        $visitante->apellido = $apellido;
-        $visitante->sexo = $request->sexo;
-        $visitante->correo = $correo;
-        $visitante->telefono = $request->telefono;
-        $visitante->celular = $request->celular;
-        $visitante->como_nos_conociste_id = $request->como_nos_conociste_id;
-        $visitante->fecha_nacimiento = $fecha_nacimiento;
-        $visitante->direccion = $direccion;
-        $visitante->dias_clase_id = $request->dias_clase_id;
-        $visitante->especialidad_id = $request->especialidad_id;
-        $visitante->fecha_registro = Carbon::now();
-        $visitante->instructor_id = $request->instructor_id;
-        $visitante->interes_id = $request->interes_id;
+            $edad = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->diff(Carbon::now())->format('%y');
 
 
-        if($visitante->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            if($edad < 1){
+                return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
+            }
+
+            $visitante = new Visitante;
+
+            $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
+
+            $nombre = title_case($request->nombre);
+            $apellido = title_case($request->apellido);
+            $direccion = $request->direccion;
+
+            $correo = strtolower($request->correo);
+
+            $visitante->academia_id = Auth::user()->academia_id;
+            $visitante->nombre = $nombre;
+            $visitante->apellido = $apellido;
+            $visitante->sexo = $request->sexo;
+            $visitante->correo = $correo;
+            $visitante->telefono = $request->telefono;
+            $visitante->celular = $request->celular;
+            $visitante->como_nos_conociste_id = $request->como_nos_conociste_id;
+            $visitante->fecha_nacimiento = $fecha_nacimiento;
+            $visitante->direccion = $direccion;
+            $visitante->dias_clase_id = $request->dias_clase_id;
+            $visitante->especialidad_id = $request->especialidad_id;
+            $visitante->fecha_registro = Carbon::now();
+            $visitante->instructor_id = $request->instructor_id;
+            $visitante->interes_id = $request->interes_id;
+            $visitante->tipologia_id = $request->tipologia_id;
+
+            if($visitante->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
-    }
     }
 
     public function updateNombre(Request $request){
@@ -360,6 +359,17 @@ class VisitanteController extends BaseController {
         }
     }
 
+    public function updateTipologia(Request $request){
+        $visitante = Visitante::find($request->id);
+        $visitante->tipologia_id = $request->tipologia_id;
+
+        if($visitante->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
     /**
      * Display the specified resource.
      *
@@ -379,17 +389,14 @@ class VisitanteController extends BaseController {
      */
     public function edit($id)
     {
-        // $visitante_presencial_join = DB::table('visitantes_presenciales')
-        //     ->join('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-        //     ->select('config_especialidades.nombre as especialidad_nombre')
-        //     ->get();
 
         $visitante_join = DB::table('visitantes_presenciales')
             ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_como_nos_conociste', 'visitantes_presenciales.como_nos_conociste_id', '=', 'config_como_nos_conociste.id')
             ->Leftjoin('dias_de_interes', 'visitantes_presenciales.dias_clase_id', '=', 'dias_de_interes.id')
             ->Leftjoin('staff', 'visitantes_presenciales.instructor_id', '=', 'staff.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'visitantes_presenciales.especialidad_id as especialidades', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'visitantes_presenciales.id as id', 'visitantes_presenciales.nombre as nombre', 'visitantes_presenciales.apellido as apellido', 'visitantes_presenciales.fecha_nacimiento as fecha_nacimiento', 'visitantes_presenciales.sexo as sexo', 'visitantes_presenciales.correo as correo', 'visitantes_presenciales.telefono as telefono', 'visitantes_presenciales.celular as celular', 'visitantes_presenciales.direccion as direccion', 'staff.nombre as instructor_nombre', 'staff.apellido as instructor_apellido', 'dias_de_interes.nombre as dia_nombre', 'visitantes_presenciales.interes_id')
+            ->Leftjoin('tipologias', 'visitantes_presenciales.tipologia_id', '=', 'tipologias.id')
+            ->select('visitantes_presenciales.*','config_especialidades.nombre as especialidad_nombre', 'config_especialidades.id as especialidades', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'staff.nombre as instructor_nombre', 'staff.apellido as instructor_apellido', 'dias_de_interes.nombre as dia_nombre', 'tipologias.nombre as tipologia')
             ->where('visitantes_presenciales.id', '=', $id)
         ->first();
 
@@ -413,8 +420,10 @@ class VisitanteController extends BaseController {
             }else{
                 $especialidades = $visitante_join->especialidad_nombre;
             }
+
+            $tipologias = Tipologia::all();
  
-           return view('participante.visitante.planilla' , compact('map'))->with(['como_nos_conociste' => ComoNosConociste::all(), 'visitante' => $visitante_join, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'id' => $id]);
+            return view('participante.visitante.planilla' , compact('map'))->with(['como_nos_conociste' => ComoNosConociste::all(), 'visitante' => $visitante_join, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'tipologias' => $tipologias, 'id' => $id]);
         }else{
            return redirect("participante/visitante"); 
         }

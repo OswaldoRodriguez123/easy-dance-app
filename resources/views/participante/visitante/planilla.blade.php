@@ -680,6 +680,67 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalTipologia-Visitante" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Visitante<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_tipologia_visitante" id="edit_tipologia_visitante"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="tipologia_id">Perfil del Cliente</label>
+
+                                      <div class="select">
+                                          <select class="form-control" id="tipologia_id" name="tipologia_id">
+                                            <option value="">Selecciona</option>
+                                            @foreach ( $tipologias as $tipologia )
+                                              <option value = "{{ $tipologia['id'] }}">{{ $tipologia['nombre'] }}</option>
+                                            @endforeach 
+                                          </select>
+                                      </div> 
+
+                                 </div>
+                                 <div class="has-error" id="error-tipologia_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-tipologia_id_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <input type="hidden" name="id" value="{{$visitante->id}}"></input>
+                            
+
+                               <div class="clearfix"></div> 
+                              
+                          </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_tipologia_visitante" data-update="tipologia" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
     
     
             <section id="content">
@@ -860,6 +921,14 @@
                               @endif
                              </span></td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalTipologia-Visitante">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tipologia_id" class="zmdi {{ empty($visitante->tipologia) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-clases-grupales f-22"></i> </span>
+                               <span class="f-14"> Perfil del Cliente </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="visitante-tipologia_id" class="capitalize">{{$visitante->tipologia}}</span></td>
+                            </tr>
 
 
                            </table>
@@ -984,7 +1053,7 @@
     })
 
     function limpiarMensaje(){
-        var campo = ["nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "estatus"];
+        var campo = ["nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "estatus", 'tipologia_id'];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -992,8 +1061,6 @@
       }
 
       function errores(merror){
-        console.log(merror);
-        var campo = ["nombre", "apellido", "fecha_nacimiento", "sexo", "correo", "telefono", "celular", "direccion", "estatus"];
          $.each(merror, function (n, c) {
              console.log(n);
            $.each(this, function (name, value) {
@@ -1027,14 +1094,13 @@
           }else if(c.name=='direccion'){
              $("#visitante-"+c.name).data('valor',c.value);
              $("#visitante-"+c.name).html(c.value.substr(0, 30) + "...");
-            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
-          }else if(c.name=='como_nos_conociste_id' || c.name=='especialidad_id' || c.name=='dias_clase_id' | c.name=='instructor_id'){
+          }else if(c.name=='como_nos_conociste_id' || c.name=='especialidad_id' || c.name=='dias_clase_id' | c.name=='instructor_id' || c.name=='tipologia_id'){
             
             expresion = "#"+c.name+ " option[value="+c.value+"]";
             texto = $(expresion).text();
 
-             $("#visitante-"+c.name).text(texto);
-            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
+            $("#visitante-"+c.name).text(texto);
+
           }else{
             $("#visitante-"+c.name).text(c.value.toLowerCase());
           }

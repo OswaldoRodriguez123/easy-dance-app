@@ -386,7 +386,7 @@
                                  </div>
                                </div>
 
-                               <div class="clearfix p-b-35"></div>
+                              <div class="clearfix p-b-35"></div>
 
 
                              <div class="col-sm-12">
@@ -533,7 +533,7 @@
   setInterval(porcentaje, 1000);
 
    function porcentaje(){
-    var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion"];
+    var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion", "tipologia_id"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
