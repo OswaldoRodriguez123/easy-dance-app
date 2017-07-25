@@ -109,9 +109,9 @@
 
                                 ?>
                                 @if($llamada['tipo'] == 1)
-                                    <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo="1" data-usuario_tipo="{{$llamada['usuario_tipo']}}">
+                                    <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo="1" data-usuario_tipo="{{$llamada['usuario_tipo']}}" data-usuario_id="{{$llamada['usuario_id']}}">
                                 @else
-                                    <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion seleccion_deleted" data-tipo="0" data-usuario_tipo="{{$llamada['usuario_tipo']}}">
+                                    <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion seleccion_deleted" data-tipo="0" data-usuario_tipo="{{$llamada['usuario_tipo']}}" data-usuario_id="{{$llamada['usuario_id']}}">
                                 @endif
                                     
                                     <?php 
@@ -161,6 +161,9 @@
 
         $(document).ready(function(){
 
+            route_llamada_alumno="{{url('/')}}/participante/alumno/llamadas/";
+            route_llamada_visitante="{{url('/')}}/participante/visitante/llamadas/";
+
             t=$('#tablelistar').DataTable({
                 processing: true,
                 serverSide: false,
@@ -168,7 +171,7 @@
                 order: [[3, 'asc']],
                 fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                   $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).addClass( "text-center" );
-                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).addClass( "disabled" );
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
                 },
                 language: {
                                 processing:     "Procesando ...",
@@ -200,6 +203,21 @@
             .search(1)
             .draw();
         });
+
+        function previa(t){
+
+            var row = $(t).closest('tr');
+            var id = $(row).data('usuario_id');
+
+            if($(row).data('usuario_tipo') == '1'){
+                var route_detalle = route_llamada_visitante
+            }else{
+                var route_detalle = route_llamada_alumno
+            }
+
+            var route =route_detalle+id;
+            window.location=route;
+        }
 
 
         $('input[name=tipo]').on('change', function(){

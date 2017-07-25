@@ -20,7 +20,7 @@ class LlamadaController extends BaseController {
 
 		$llamadas = Llamada::join('visitantes_presenciales', 'llamadas.usuario_id', '=', 'visitantes_presenciales.id')
 			->leftJoin('tipologias', 'visitantes_presenciales.tipologia_id', '=', 'tipologias.id')
-		   	->select('llamadas.*','visitantes_presenciales.nombre','visitantes_presenciales.apellido','tipologias.nombre as tipologia', 'visitantes_presenciales.fecha_registro')
+		   	->select('llamadas.*','visitantes_presenciales.nombre','visitantes_presenciales.apellido','tipologias.nombre as tipologia', 'visitantes_presenciales.fecha_registro', 'visitantes_presenciales.id as usuario_id')
 		   	->where('llamadas.fecha_siguiente','!=','0000-00-00')
 			->where('llamadas.usuario_tipo',1)
 			->where('visitantes_presenciales.academia_id',Auth::user()->academia_id)
@@ -79,7 +79,7 @@ class LlamadaController extends BaseController {
 
 		$llamadas = Llamada::join('alumnos', 'llamadas.usuario_id', '=', 'alumnos.id')
 			->leftJoin('tipologias', 'alumnos.tipologia_id', '=', 'tipologias.id')
-		   	->select('llamadas.*','alumnos.nombre','alumnos.apellido','tipologias.nombre as tipologia')
+		   	->select('llamadas.*','alumnos.nombre','alumnos.apellido','tipologias.nombre as tipologia', 'alumnos.id as usuario_id')
 		   	->where('llamadas.fecha_siguiente','!=','0000-00-00')
 			->where('llamadas.usuario_tipo',2)
 			->where('alumnos.academia_id',Auth::user()->academia_id)
