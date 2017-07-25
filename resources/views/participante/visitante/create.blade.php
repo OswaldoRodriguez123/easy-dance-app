@@ -456,7 +456,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion", "como_nos_conociste_id", "dias_clase_id", "tipologia_id", "instructor_id", "especialidad_id"];
+    var campo = ["nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "correo", "direccion", "como_nos_conociste_id", "dias_clase_id", "tipologia_id", "instructor_id"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
