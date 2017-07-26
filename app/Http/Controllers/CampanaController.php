@@ -1629,7 +1629,7 @@ class CampanaController extends BaseController {
                     ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                     ->where('patrocinadores.tipo_evento_id', '=', $id)
                     ->where('patrocinadores.tipo_evento', '=', 1)
-                    ->whereNull('externo_id')
+                    ->where('patrocinadores.externo_id',null)
                     ->where('inscripcion_clase_grupal.clase_grupal_id',$clase_grupal->id)
                 ->sum('patrocinadores.monto');
 
