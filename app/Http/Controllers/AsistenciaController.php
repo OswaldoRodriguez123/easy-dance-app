@@ -1580,10 +1580,11 @@ class AsistenciaController extends BaseController
 
       }else{
 
-          $clase=$request->asistencia_clase_grupal_id;
           $alumno_id=$request->asistencia_id_alumno;
 
-          $clase_id=explode('-', $clase);
+          $explode = explode('-', $request->asistencia_clase_grupal_id);
+          $tipo = $explode[2];
+          $tipo_id = $explode[3];
 
           $actual = Carbon::now();
           // $geoip = new GeoIP();
@@ -1596,17 +1597,17 @@ class AsistenciaController extends BaseController
           $asistencia = new Asistencia;
           $asistencia->fecha=$fecha_actual;
           $asistencia->hora=$hora_actual;
-          $asistencia->clase_grupal_id=$clase_id[0];
+          $asistencia->clase_grupal_id=$tipo_id;
           $asistencia->alumno_id=$alumno_id;
           $asistencia->academia_id=Auth::user()->academia_id;
-          $asistencia->tipo = $clase_id[2];
-          $asistencia->tipo_id = $clase_id[3];
+          $asistencia->tipo = $tipo;
+          $asistencia->tipo_id = $tipo_id;
 
           if($asistencia->save()){
 
-            if($clase_id[2] == '3'){
+            if($tipo == 3){
 
-              $clase_personalizada = InscripcionClasePersonalizada::find($clase_id[3]);
+              $clase_personalizada = InscripcionClasePersonalizada::find($tipo_id);
 
               if($clase_personalizada){
 
@@ -1646,10 +1647,14 @@ class AsistenciaController extends BaseController
                 $clase_personalizada->save();
               }
               
-            }else if($clase_id[2] == '4'){
-              $clase_personalizada = Cita::find($clase_id[3]);
-              $clase_personalizada->estatus = '2';
-              $clase_personalizada->save();
+            }else if($tipo == 4){
+
+              $cita = Cita::find($tipo_id);
+              
+              if($cita){
+                $cita->estatus = 2;
+                $cita->save();
+              }
             }
 
             return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);
