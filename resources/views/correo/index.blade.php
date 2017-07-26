@@ -27,7 +27,7 @@
 
                         <form name="form_correo" id="form_correo"  >
                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                          <!-- <input type="hidden" name="correo_id" id="correo_id"> -->
+                          <input type="hidden" name="correo_id" id="correo_id">
                             <div class="modal-body">                           
                               <div class="row p-t-20 p-b-0">
 
@@ -358,7 +358,7 @@
   $(".correos").on("click", function(){
     // $('.fijo').show()
     // $('.personalizado').hide()
-    // $('#correo_id').val($(this).attr('id'))  
+    $('#correo_id').val($(this).attr('id'))  
     id = $(this).attr('id')
 
     $.each(correos, function (index, array) {              
@@ -397,7 +397,7 @@
   $("#personalizado").on("click", function(){
     // $('.personalizado').show()
     // $('.fijo').hide()
-    // $('#correo_id').val('')  
+    $('#correo_id').val('')  
     $("#accion_switch").prop('checked',false)
     $('.url_accion').hide()
     $("#boolean_switch").val('0');
@@ -738,6 +738,7 @@
 
   $('#modalCorreo').on('hidden.bs.modal', function (e) {
     $('#form_correo')[0].reset()
+    $('#correo_id').val('')
     $('#html-personalizado').summernote('code', '');
     $('#imagen_personalizada').attr('src','')
     $('#imageBase64').val('')

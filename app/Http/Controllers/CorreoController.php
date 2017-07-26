@@ -244,6 +244,7 @@ class CorreoController extends BaseController {
 	            $clase_array['dia']=$dia;
 	            $clases[$clase->id] = $clase_array;
 	        }
+
 			$correos = Correo::where('academia_id', '=', Auth::user()->academia_id)->get();
 
 			$array = array();
@@ -634,15 +635,98 @@ class CorreoController extends BaseController {
 			    }  
 			}
 
-	        $correos = array_unique($correos);
+	        if($request->correo_id){
+
+	        	$correo = Correo::find($request->correo_id);
+
+	        	if($correo){
+
+	        		if($request->imageBase64 && $request->imageBase64 != "data:,"){
+
+		                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+		                $path = storage_path();
+		                $split = explode( ';', $request->imageBase64 );
+		                $type =  explode( '/',  $split[0]);
+		                $ext = $type[1];
+		                
+		                if($ext == 'jpeg' || 'jpg'){
+		                    $extension = '.jpg';
+		                }
+
+		                if($ext == 'png'){
+		                    $extension = '.png';
+		                }
+
+		                $nombre_img = "correo-". $correo->id . $extension;
+		                $image = base64_decode($base64_string);
+
+		                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+		                $img = Image::make($image)->resize(1440, 500);
+		                $img->save('assets/uploads/correos/'.$nombre_img);
+
+		                $correo->imagen = $nombre_img;
+		                $correo->save();
+
+		                $imagen = "http://app.easydancelatino.com/assets/uploads/correos/".$correo->imagen;
+
+			        }else{
+			        	if($correo->imagen){
+	        				$imagen = "http://app.easydancelatino.com/assets/uploads/correos/".$correo->imagen;
+		        		}else{
+		        			$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
+		        		}
+			        }
+	        	}else{
+	        		$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
+	        	}
+	        }else{
+
+	        	$correo = new CorreoPersonalizado;
+
+				$correo->academia_id = Auth::user()->academia_id;
+		        $correo->url = $request->url;
+		        $correo->msj_html = $request->msj_html;
+		        $correo->titulo = $request->subj;
+
+		        if($correo->save()){
+
+		        	if($request->imageBase64 && $request->imageBase64 != "data:,"){
+
+		                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+		                $path = storage_path();
+		                $split = explode( ';', $request->imageBase64 );
+		                $type =  explode( '/',  $split[0]);
+		                $ext = $type[1];
+		                
+		                if($ext == 'jpeg' || 'jpg'){
+		                    $extension = '.jpg';
+		                }
+
+		                if($ext == 'png'){
+		                    $extension = '.png';
+		                }
+
+		                $nombre_img = "correo-". $correo->id . $extension;
+		                $image = base64_decode($base64_string);
+
+		                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+		                $img = Image::make($image)->resize(1440, 500);
+		                $img->save('assets/uploads/correos_personalizados/'.$nombre_img);
+
+		                $correo->imagen = $nombre_img;
+		                $correo->save();
+
+		                $imagen = "http://app.easydancelatino.com/assets/uploads/correos_personalizados/".$correo->imagen;
+
+			        }else{
+			        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
+			        }
+			    }
+	        }
+	        
+			$correos = array_unique($correos);
 
 	        if($correos){
-
-				if($request->imageBase64 && $request->imageBase64 != "data:,"){
-	                $imagen = $request->imageBase64;
-		        }else{
-		        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
-		        }
 
 				$array = [
 					'imagen' => $imagen,
