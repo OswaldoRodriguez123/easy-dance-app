@@ -19,6 +19,7 @@ use App\PatrocinadorProforma;
 use App\DatosBancarios;
 use App\Egreso;
 use App\ConfigEgreso;
+use App\ClaseGrupal;
 use App\InscripcionClaseGrupal;
 use Validator;
 use DB;
@@ -1612,12 +1613,12 @@ class CampanaController extends BaseController {
                 $activa = 0;
             }
 
-            $clases_grupales= DB::table('clases_grupales')
-                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            $clases_grupales= ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id')
-                ->where('clases_grupales.deleted_at', '=', null)
                 ->where('clases_grupales.academia_id', '=' ,  $campaña->academia_id)
+                ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
+                ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
                 ->orderBy('clases_grupales.hora_inicio', 'asc')
             ->get();   
 
