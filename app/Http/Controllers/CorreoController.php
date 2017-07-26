@@ -564,7 +564,6 @@ class CorreoController extends BaseController {
 	    ];
 
 	    $messages = [
-
 	    	'url.required' => 'Ups! La URL es requerida',
 	        'url.active_url' => 'Ups! La URL no es valida',
 	        'subj.required' => 'Ups! El titulo es requerido',
@@ -582,7 +581,7 @@ class CorreoController extends BaseController {
 	        if($request->tipo){
  				$tipo = $request->tipo;
 	 		}else{
-				$tipo = Session::get('tipo');
+				$tipo = Session::get('tipo_usuario_correo');
 			}
 
 			if(!$request->usuario_id){
@@ -603,6 +602,7 @@ class CorreoController extends BaseController {
 					->get();
 				}
 			}else{
+
 				if($tipo == 1){
 					$usuarios = Alumno::where('id',$request->usuario_id)->get();
 				}else if($tipo == 2){
@@ -636,53 +636,20 @@ class CorreoController extends BaseController {
 
 	        $correos = array_unique($correos);
 
-			$personalizado = new CorreoPersonalizado;
-
-			$personalizado->academia_id = Auth::user()->academia_id;
-	        $personalizado->url = $request->url;
-	        $personalizado->msj_html = $request->msj_html;
-	        $personalizado->titulo = $request->subj;
-
-	        if($personalizado->save()){
+	        if($correos){
 
 				if($request->imageBase64 && $request->imageBase64 != "data:,"){
-
-	                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-	                $path = storage_path();
-	                $split = explode( ';', $request->imageBase64 );
-	                $type =  explode( '/',  $split[0]);
-	                $ext = $type[1];
-	                
-	                if($ext == 'jpeg' || 'jpg'){
-	                    $extension = '.jpg';
-	                }
-
-	                if($ext == 'png'){
-	                    $extension = '.png';
-	                }
-
-	                $nombre_img = "correo-". $personalizado->id . $extension;
-	                $image = base64_decode($base64_string);
-
-	                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
-	                $img = Image::make($image)->resize(1440, 500);
-	                $img->save('assets/uploads/correos_personalizados/'.$nombre_img);
-
-	                $personalizado->imagen = $nombre_img;
-	                $personalizado->save();
-
-	                $imagen = "http://app.easydancelatino.com/assets/uploads/correos_personalizados/".$nombre_img;
-
+	                $imagen = $request->imageBase64;
 		        }else{
 		        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
 		        }
 
 				$array = [
 					'imagen' => $imagen,
-					'url' => $personalizado->url,
+					'url' => $request->url,
 					'msj_html' => $request->msj_html,
 					'correos' => $correos,
-					'subj' => $personalizado->titulo
+					'subj' => $request->subj
 				];
 
 				Mail::send('correo.personalizado', $array, function($msj) use ($array){
@@ -691,10 +658,9 @@ class CorreoController extends BaseController {
 				});
 
 				return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-
-		 	}else{
-	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-	        }
+			}else{
+				return response()->json(['errores' => ['usuario_id' => [0, 'Ups! Este usuario no posee correo electrónico configurado']], 'status' => 'ERROR'],422);
+			}
 	    }
 	}
 
@@ -793,94 +759,56 @@ class CorreoController extends BaseController {
 	          	}
 	        }
 
-	        $personalizado = new CorreoPersonalizado;
 
-	        $personalizado->url = $request->url;
-	        $personalizado->msj_html = $request->msj_html;
-	        $personalizado->subj = $request->subj;
+        	if($request->imageBase64 && $request->imageBase64 != "data:,"){
+                $imagen = $request->imageBase64;
+	        }else{
+	        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
+	        }
 
-	        if($personalizado->save()){
+	        $correos = array();
 
-	        	if($request->imageBase64){
+         	if($request->tipo == 1){
 
-		            $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-		            $path = storage_path();
-		            $split = explode( ';', $request->imageBase64 );
-		            $type =  explode( '/',  $split[0]);
-		            $ext = $type[1];
-		            
-		            if($ext == 'jpeg' || 'jpg'){
-		                $extension = '.jpg';
-		            }
+	            $interesados=Visitante::where('academia_id', Auth::user()->academia_id)->get();
 
-		            if($ext == 'png'){
-		                $extension = '.png';
-		            }
+	            foreach($interesados as $interesado){
+	            	if($interesado->correo){
+						$correos[] = $interesado->correo;
+	                }
+	            }
 
-		            $nombre_img = "correo-". $personalizado->id . $extension;
-		            $image = base64_decode($base64_string);
+	        }else{
 
-		            // \Storage::disk('correo')->put($nombre_img,  $image);
-		            $img = Image::make($image)->resize(1440, 500);
-		            $img->save('assets/uploads/correos/'.$nombre_img);
+	            $interesado=Visitante::find($request->visitante_id);
+	            if($interesado->correo){
+					$correos[] = $interesado->correo;
+                }
 
-		            $personalizado->imagen = $nombre_img;
-		            $personalizado->save();
+	        }
 
-		            $imagen = "http://app.easydancelatino.com/assets/uploads/correos/".$nombre_img;
+	        $correos = array_unique($correos);
 
-		        }else{
-		        	$imagen = "http://oi65.tinypic.com/v4cuuf.jpg";
-		        }
+	        if($correos){
 
-		          // $interesados=Interesado::where('id',120)->get();
-		        $subj = $request->subj;
-		        $msj_html = $request->msj_html;
-		        $url = $request->url;
+	            $array = [
+	                'msj_html' => $request->msj_html,
+	                'email' => $correos,
+	                'subj' => $request->subj,
+	                'url' => $request->url,
+	                'imagen' => $imagen
+	            ];
 
-	         	if($request->tipo == 1){
+	            Mail::send('correo.informacion', $array, function($msj) use ($array){
+	              	$msj->subject($array['subj']);
+	                $msj->to($array['email']);
+	            });
+        	}else{
 
-		            $interesados=Visitante::where('academia_id', Auth::user()->academia_id)->get();
+        	}
 
-		            foreach($interesados as $interesado)
-		            {
-		            	if($interesado->correo){
-			              
-				              $array = [
-				                'msj_html' => $request->msj_html,
-				                'email' => $interesado->correo,
-				                'subj' => $subj,
-				                'url' => $url,
-				                'imagen' => $imagen
-				              ];
-
-			                Mail::send('correo.informacion', $array, function($msj) use ($array){
-			                  $msj->subject($array['subj']);
-			                    $msj->to($array['email']);
-			                });
-		                }
-		            }
-
-		        }else{
-
-		            $interesado=Visitante::find($request->visitante_id);
-
-		            $array = [
-		                'msj_html' => $request->msj_html,
-		                'email' => $interesado->correo,
-		                'subj' => $subj,
-		                'url' => $url,
-		                'imagen' => $imagen
-		            ];
-
-		            Mail::send('correo.personalizado', $array, function($msj) use ($array){
-		              $msj->subject($array['subj']);
-		                $msj->to($array['email']);
-		            });
-		        }
-
-	         	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
-	      	}
-	    }
-	}
+         	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK',  200]);
+      	}
+    }
+	
 }
