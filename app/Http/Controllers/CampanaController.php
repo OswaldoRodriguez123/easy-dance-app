@@ -1618,6 +1618,8 @@ class CampanaController extends BaseController {
                 ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.sexo', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id', 'clases_grupales.instructor_id', 'config_clases_grupales.imagen')
                 ->where('clases_grupales.academia_id', '=' ,  $campaña->academia_id)
                 ->orderBy('clases_grupales.hora_inicio', 'asc')
+                ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
+                ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
             ->get();   
 
             $array_clase_grupal = array();
