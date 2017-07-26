@@ -602,13 +602,12 @@
             }
           },
           error:function(msj){
-            errores(msj.responseJSON.errores);
             finprocesado();
             if(msj.responseJSON.status != 'ERROR'){
 
               swal({   
                   title: "¿Desea permitir la entrada como suplente?",   
-                  text: msj.responseJSON.text,   
+                  text: msj.responseJSON.mensaje,   
                   type: "warning",   
                   showCancelButton: true,   
                   confirmButtonColor: "#DD6B55",   

@@ -1650,7 +1650,7 @@ class AsistenciaController extends BaseController
             }else if($tipo == 4){
 
               $cita = Cita::find($tipo_id);
-              
+
               if($cita){
                 $cita->estatus = 2;
                 $cita->save();
@@ -1701,16 +1701,12 @@ class AsistenciaController extends BaseController
           $horario_id = $explode_clase_grupal[3];
 
           if($tipo_clase == 2){
-            $es_instructor = HorarioClaseGrupal::where('instructor_id',$instructor_id)
-              ->where('id',$horario_id)
-            ->first();
+            $clase_grupal = HorarioClaseGrupal::find($horario_id);
           }else{
-            $es_instructor = ClaseGrupal::where('instructor_id',$instructor_id)
-              ->where('id',$clase_grupal_id)
-            ->get();
+            $clase_grupal = ClaseGrupal::find($clase_grupal_id);
           }
           
-          if($es_instructor){              
+          if($clase_grupal->instructor_id == $instructor_id){              
             $estatu="asociado";              
           }else{
             $estatu="no_asociado";
@@ -1782,7 +1778,7 @@ class AsistenciaController extends BaseController
             return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);
 
           }else{
-            return response()->json(['status' => 'ERROR_ASOCIADO', 'text' => "El instructor no se encuentra asociado a esta clase!", 'campo' => 'es_instructor'],422);
+            return response()->json(['status' => 'ERROR_ASOCIADO', 'mensaje' => "El instructor no se encuentra asociado a esta clase!", 'campo' => 'es_instructor'],422);
           }
        }
 
