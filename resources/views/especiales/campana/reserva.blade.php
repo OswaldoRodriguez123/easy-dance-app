@@ -377,7 +377,7 @@
                 <p class="text-left f-30 opaco-0-8 f-700">Rango de los grupos</p>
                 <hr class='linea-morada'>
               
-                @foreach(array_slice($array_progreso, 0, 5) as $key => $clase_grupal)
+                @foreach($array_progreso as $key => $clase_grupal)
                   
                   <div class="pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
 
