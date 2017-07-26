@@ -1749,9 +1749,11 @@ class CampanaController extends BaseController {
                 if($fecha_inicio <= Carbon::now()->toDateString() && $fecha_final >=  Carbon::now()->toDateString() && $clase_grupal->deleted_at == null){
                     $array_clase_grupal[$clase_grupal->id] = $clase_grupal_array;
                 }
-                
-                $array_progreso[] = $clase_grupal_array;
 
+                if($cantidad_recaudada > 0){
+                    $array_progreso[] = $clase_grupal_array;
+
+                }
             }
 
             usort($array_progreso, function($a, $b) {
