@@ -20,6 +20,7 @@ use App\DatosBancarios;
 use App\Egreso;
 use App\ConfigEgreso;
 use App\ClaseGrupal;
+use App\HorarioClaseGrupal;
 use App\InscripcionClaseGrupal;
 use Validator;
 use DB;
@@ -1443,11 +1444,10 @@ class CampanaController extends BaseController {
                 $link_video = '';
             }
 
-            $patrocinadores = DB::table('patrocinadores')
-                ->Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
+            $patrocinadores = Patrocinador::Leftjoin('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
                 ->Leftjoin('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
                  //->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido', 'alumnos.id')
-                ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo, patrocinadores.created_at, patrocinadores.monto, patrocinadores.tipo_moneda')
+                ->selectRaw('patrocinadores.*, IF(alumnos.nombre is null AND alumnos.apellido is null, usuario_externos.nombre, CONCAT(alumnos.nombre, " " , alumnos.apellido)) as Nombres, IF(alumnos.sexo is null, usuario_externos.sexo, alumnos.sexo) as sexo')
                 ->where('patrocinadores.tipo_evento_id', '=', $id)
                 ->where('patrocinadores.tipo_evento', '=', 1)
                 ->orderBy('patrocinadores.created_at', 'desc')
@@ -1615,7 +1615,7 @@ class CampanaController extends BaseController {
 
             $clases_grupales= ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id')
+                ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.sexo', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id', 'clases_grupales.instructor_id', 'config_clases_grupales.imagen')
                 ->where('clases_grupales.academia_id', '=' ,  $campaña->academia_id)
                 ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
                 ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
@@ -1623,8 +1623,26 @@ class CampanaController extends BaseController {
             ->get();   
 
             $array_clase_grupal = array();
+            $array_progreso = array();
 
             foreach($clases_grupales as $clase_grupal){
+
+                $cantidad_recaudada = Patrocinador::join('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
+                    ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                    ->where('patrocinadores.tipo_evento_id', '=', $id)
+                    ->where('patrocinadores.tipo_evento', '=', 1)
+                    ->whereNull('externo_id')
+                    ->where('inscripcion_clase_grupal.clase_grupal_id',$clase_grupal->id)
+                ->sum('patrocinadores.monto');
+
+                if(!$cantidad_recaudada){
+                    $cantidad_recaudada = 0;
+                }
+
+                $horarios = HorarioClaseGrupal::where('clase_grupal_id', $clase_grupal->id)->get();
+                $j = 0;
+                $len = count($horarios);
+                $dia_string = '';
 
                 $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
                 $i = $fecha->dayOfWeek;
@@ -1658,16 +1676,86 @@ class CampanaController extends BaseController {
                   $dia = 'Domingo';
 
                 }
+ 
+                $dia_string = $dia;
+                
+                foreach($horarios as $horario){
+
+                    $fecha = Carbon::createFromFormat('Y-m-d', $horario->fecha);
+                    $i = $fecha->dayOfWeek;
+
+                    if($i == 1){
+
+                      $dia = 'Lunes';
+
+                    }else if($i == 2){
+
+                      $dia = 'Martes';
+
+                    }else if($i == 3){
+
+                      $dia = 'Miercoles';
+
+                    }else if($i == 4){
+
+                      $dia = 'Jueves';
+
+                    }else if($i == 5){
+
+                      $dia = 'Viernes';
+
+                    }else if($i == 6){
+
+                      $dia = 'Sabado';
+
+                    }else if($i == 0){
+
+                      $dia = 'Domingo';
+
+                    }
+                    if ($j != $len - 1) {
+                        $dia_string = $dia_string . ' ' . $dia;
+                    }else{
+                        $dia_string = $dia_string . ' y ' . $dia;
+                    }
+
+                    $j++;
+
+                }
+
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id',$clase_grupal->instructor_id)
+                    ->where('usuarios_tipo.tipo',3)
+                ->first();
+
+                if($usuario){
+
+                    if($usuario->imagen){
+                        $imagen = $usuario->imagen;
+                    }else{
+                        $imagen = '';
+                    }
+
+                }else{
+                    $imagen = '';
+                }
 
                 $collection=collect($clase_grupal);     
                 $clase_grupal_array = $collection->toArray();
 
-                $clase_grupal_array['dia']=$dia;
+                $clase_grupal_array['cantidad_recaudada']=$cantidad_recaudada;
+                $clase_grupal_array['dia']=$dia_string;
+                $clase_grupal_array['instructor_imagen']=$imagen;
                 $array_clase_grupal[$clase_grupal->id] = $clase_grupal_array;
+                $array_progreso[] = $clase_grupal_array;
 
             }
 
-            return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $array_patrocinador, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'academia' => $academia, 'fecha_de_realizacion' => $array_fecha_de_realizacion, 'datos' => $datos, 'activa' => $activa, 'tipo_evento' => "Campaña", 'clases_grupales' => $array_clase_grupal]);
+            usort($array_progreso, function($a, $b) {
+                return $a['cantidad_recaudada'] - $b['cantidad_recaudada'];
+            });
+
+            return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $array_patrocinador, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'academia' => $academia, 'fecha_de_realizacion' => $array_fecha_de_realizacion, 'datos' => $datos, 'activa' => $activa, 'tipo_evento' => "Campaña", 'clases_grupales' => $array_clase_grupal, 'array_progreso' => $array_progreso]);
         }else{
             return redirect("especiales/campañas"); 
         }

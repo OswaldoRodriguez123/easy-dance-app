@@ -373,8 +373,90 @@
                     </table>
                   </div>
                 </div>
-              </div>
+
+                <p class="text-left f-30 opaco-0-8 f-700">Rango de los grupos</p>
+                <hr class='linea-morada'>
+              
+                @foreach(array_slice($array_progreso, 0, 5) as $key => $clase_grupal)
+                  
+                  <div class="pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
+
+                    @if($clase_grupal['imagen'])
+                    <div class="col-sm-2"><img src="{{url('/')}}/assets/uploads/clase_grupal/{{$clase_grupal['imagen']}}" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
+                    @else
+
+                    <div class="col-sm-2"><img src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
+
+                    @endif
+
+                    <div class="col-sm-7">
+
+                    <p class="f-25 f-700" style="color:#5e5e5e">{{$clase_grupal['nombre']}}</p>
+
+
+                    <p class="f-15 f-700">{{$clase_grupal['hora_inicio']}} - {{$clase_grupal['hora_final']}} / {{$clase_grupal['dia']}} / {{$clase_grupal['instructor_nombre']}} {{$clase_grupal['instructor_apellido']}} 
+
+                    @if($clase_grupal['instructor_imagen'])
+                      <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$clase_grupal['instructor_imagen']}}" alt="">
+                    @else
+                      @if($clase_grupal['sexo'] == 'F')
+                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/Mujer.jpg" alt="">
+                      @else
+                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/Hombre.jpg" alt="">
+                      @endif</p>
+                      <p class="f-15 f-700">Cantidad Recaudadada: {{ number_format($clase_grupal['cantidad_recaudada'], 2, '.' , '.') }}</p>
+                    @endif
+
+                    </div>
+
+                    <div class="col-sm-3 text-center">
+
+                    <div style="padding-top: 50px">
+                      <div class="rating-list text-center">
+                        <div class="rl-star">
+
+                          <span class="f-15 m-r-5">
+                            @if($key == 0)
+                              1er
+                            @elseif($key == 1)
+                              2do
+                            @elseif($key == 2)
+                              3er
+                            @elseif($key == 3)
+                              4to
+                            @elseif($key == 4)
+                              5to
+                            @endif
+                            Lugar
+                          </span>
+                          <br>
+                          @if($key <= 4)
+                            <i class="zmdi zmdi-star active"></i>
+                          @endif
+                          @if($key <= 3)
+                            <i class="zmdi zmdi-star active"></i>
+                          @endif
+                          @if($key <= 2)
+                            <i class="zmdi zmdi-star active"></i>
+                          @endif
+                          @if($key <= 1)
+                            <i class="zmdi zmdi-star active"></i>
+                          @endif
+                          @if($key <= 0)
+                            <i class="zmdi zmdi-star active"></i>
+                          @endif
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="clearfix"></div>
+                </div>
+
+              @endforeach
               <div class="clearfix p-b-35"></div>
+              </div>
 
               </div>
 
