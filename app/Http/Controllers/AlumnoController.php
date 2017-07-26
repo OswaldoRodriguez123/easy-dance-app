@@ -192,6 +192,8 @@ class AlumnoController extends BaseController
             ->where('inscripcion_clase_grupal.boolean_congelacion',1)
         ->get();
 
+        $array = array();
+
         foreach($alumnos as $alumno){
             $fecha_final = Carbon::createFromFormat('Y-m-d',$alumno->fecha_final);
 
