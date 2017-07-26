@@ -1754,6 +1754,8 @@ class CampanaController extends BaseController {
 
             }
 
+            dd($array_progreso);
+
             usort($array_progreso, function($a, $b) {
                 return $a['cantidad_recaudada'] - $b['cantidad_recaudada'];
             });
