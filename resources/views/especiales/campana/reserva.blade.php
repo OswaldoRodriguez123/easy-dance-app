@@ -1497,7 +1497,7 @@
 
       $(".progreso").click(function(){
         var id = $(this).attr('id');
-        var route = route_progreso_clase_grupal+id+'-{{$id}}';
+        var route = route_progreso_clase_grupal+id+'-{{$campana->id}}';
         window.open(route, '_blank');
       });
     @endif
