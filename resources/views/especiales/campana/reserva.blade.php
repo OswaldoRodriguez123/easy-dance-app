@@ -929,7 +929,7 @@
   route_agregar_invitacion="{{url('/')}}/especiales/campañas/invitar/agregar";
   route_eliminar_invitacion="{{url('/')}}/especiales/campañas/invitar/eliminar";
   route_enhorabuena_invitacion="{{url('/')}}/especiales/campañas/invitacion/enhorabuena/";
-  route_progreso="{{url('/')}}/especiales/campañas/progreso/clases-grupales/";
+  route_progreso_clase_grupal="{{url('/')}}/especiales/campañas/progreso/clases-grupales/";
 
   var recompensa = 0;
 
@@ -1497,7 +1497,7 @@
 
       $(".progreso").click(function(){
         var id = $(this).attr('id');
-        var route = route_progreso+id+'-{{$id}}';
+        var route = route_progreso_clase_grupal+id+'-{{$id}}';
         window.open(route, '_blank');
       });
     @endif
