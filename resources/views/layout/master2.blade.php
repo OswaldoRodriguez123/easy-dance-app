@@ -64,10 +64,11 @@
             @endif
             <li data-toggle="collapse" data-target=".nav-collapse" style="margin-top:5px"><a id = "tab_campana" href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px">{{$tipo_evento}}</span></a></li>
             <li data-toggle="collapse" data-target=".nav-collapse" style="margin-top:5px"><a id = "tab_patrocinador" href="#nuestro-equipo" aria-controls="nuestro-equipo" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px"> Patrocinadores</span></a></li>
+            <li data-toggle="collapse" data-target=".nav-collapse" style="margin-top:5px"><a id = "tab_grupo" href="#rango_grupos" aria-controls="rango_grupos" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px"> Rango de los grupos</span></a></li>
             @if($activa)
               <li data-toggle="collapse" data-target=".nav-collapse" style="margin-top:5px"><a id = "tab_invitar" href="#invitar" aria-controls="invitar" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px">Invitar</span></a></li>
               <li data-toggle="collapse" data-target=".nav-collapse" style="margin-top:5px"><a id = "tab_datos" href="#datos" aria-controls="datos" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px">Datos Bancarios</span></a></li>
-              <li data-toggle="collapse" data-target=".nav-collapse" style="margin-top:5px"><a id = "tab_pago" href="#pago" aria-controls="pago" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px">Confirma tu Aporte</span></a></li>
+              <!-- <li data-toggle="collapse" data-target=".nav-collapse" style="margin-top:5px"><a id = "tab_pago" href="#pago" aria-controls="pago" role="tab" data-toggle="tab"> <span style="color:#4E1E43; font-size:20px">Confirma tu Aporte</span></a></li> -->
             @endif
 
           </ul>

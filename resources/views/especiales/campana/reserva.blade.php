@@ -374,92 +374,96 @@
                   </div>
                 </div>
 
-                <p class="text-left f-30 opaco-0-8 f-700">Rango de los grupos</p>
-                <hr class='linea-morada'>
-              
-                @foreach($array_progreso as $key => $clase_grupal)
-                  
-                  <div class="pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
+                
+              </div>
+              </div>
+              <div role="tabpanel" class="tab-pane animated fadeInUp in" id="rango_grupos">
+                <div class="pmb-block m-t-0 p-t-0">
+                  <p class="text-left f-30 opaco-0-8 f-700" id="offset_grupo">Rango de los grupos</p>
+                  <hr class='linea-morada'>
+                
+                  @foreach($array_progreso as $key => $clase_grupal)
+                    
+                    <div class="pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
 
-                    @if($clase_grupal['imagen'])
-                    <div class="col-sm-2"><img src="{{url('/')}}/assets/uploads/clase_grupal/{{$clase_grupal['imagen']}}" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
-                    @else
-
-                    <div class="col-sm-2"><img src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
-
-                    @endif
-
-                    <div class="col-sm-7">
-
-                    <p class="f-25 f-700" style="color:#5e5e5e">{{$clase_grupal['nombre']}}</p>
-
-
-                    <p class="f-15 f-700">{{$clase_grupal['hora_inicio']}} - {{$clase_grupal['hora_final']}} / {{$clase_grupal['dia']}} / {{$clase_grupal['instructor_nombre']}} {{$clase_grupal['instructor_apellido']}} 
-
-                    @if($clase_grupal['instructor_imagen'])
-                      <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$clase_grupal['instructor_imagen']}}" alt="">
-                    @else
-                      @if($clase_grupal['sexo'] == 'F')
-                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/Mujer.jpg" alt="">
+                      @if($clase_grupal['imagen'])
+                      <div class="col-sm-2"><img src="{{url('/')}}/assets/uploads/clase_grupal/{{$clase_grupal['imagen']}}" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
                       @else
-                        <img class="lv-img-sm" src="{{url('/')}}/assets/img/Hombre.jpg" alt="">
+
+                      <div class="col-sm-2"><img src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
+
                       @endif
-                    @endif
-                    </p>
 
-                    <p class="f-15 f-700">Cantidad Recaudadada: {{ number_format($clase_grupal['cantidad_recaudada'], 2, '.' , '.') }}</p>
+                      <div class="col-sm-7">
+
+                      <p class="f-25 f-700" style="color:#5e5e5e">{{$clase_grupal['nombre']}}</p>
 
 
-                    </div>
+                      <p class="f-15 f-700">{{$clase_grupal['hora_inicio']}} - {{$clase_grupal['hora_final']}} / {{$clase_grupal['dia']}} / {{$clase_grupal['instructor_nombre']}} {{$clase_grupal['instructor_apellido']}} 
 
-                    <div class="col-sm-3 text-center">
+                      @if($clase_grupal['instructor_imagen'])
+                        <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$clase_grupal['instructor_imagen']}}" alt="">
+                      @else
+                        @if($clase_grupal['sexo'] == 'F')
+                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/Mujer.jpg" alt="">
+                        @else
+                          <img class="lv-img-sm" src="{{url('/')}}/assets/img/Hombre.jpg" alt="">
+                        @endif
+                      @endif
+                      </p>
 
-                    <div style="padding-top: 50px">
-                      <div class="rating-list text-center">
-                        <div class="rl-star">
+                      <p class="f-15 f-700">Cantidad Recaudadada: {{ number_format($clase_grupal['cantidad_recaudada'], 2, '.' , '.') }}</p>
 
-                          <span class="f-15 m-r-5">
-                            @if($key == 0)
-                              1er Lugar
-                            @elseif($key == 1)
-                              2do Lugar
-                            @elseif($key == 2)
-                              3er Lugar
-                            @elseif($key == 3)
-                              4to Lugar
-                            @elseif($key == 4)
-                              5to Lugar
+
+                      </div>
+
+                      <div class="col-sm-3 text-center">
+
+                      <div style="padding-top: 50px">
+                        <div class="rating-list text-center">
+                          <div class="rl-star">
+
+                            <span class="f-15 m-r-5">
+                              @if($key == 0)
+                                1er Lugar
+                              @elseif($key == 1)
+                                2do Lugar
+                              @elseif($key == 2)
+                                3er Lugar
+                              @elseif($key == 3)
+                                4to Lugar
+                              @elseif($key == 4)
+                                5to Lugar
+                              @endif
+                            </span>
+                            <br>
+                            @if($key <= 4)
+                              <i class="zmdi zmdi-star active"></i>
                             @endif
-                          </span>
-                          <br>
-                          @if($key <= 4)
-                            <i class="zmdi zmdi-star active"></i>
-                          @endif
-                          @if($key <= 3)
-                            <i class="zmdi zmdi-star active"></i>
-                          @endif
-                          @if($key <= 2)
-                            <i class="zmdi zmdi-star active"></i>
-                          @endif
-                          @if($key <= 1)
-                            <i class="zmdi zmdi-star active"></i>
-                          @endif
-                          @if($key <= 0)
-                            <i class="zmdi zmdi-star active"></i>
-                          @endif
+                            @if($key <= 3)
+                              <i class="zmdi zmdi-star active"></i>
+                            @endif
+                            @if($key <= 2)
+                              <i class="zmdi zmdi-star active"></i>
+                            @endif
+                            @if($key <= 1)
+                              <i class="zmdi zmdi-star active"></i>
+                            @endif
+                            @if($key <= 0)
+                              <i class="zmdi zmdi-star active"></i>
+                            @endif
+                          </div>
                         </div>
                       </div>
+
                     </div>
 
+                    <div class="clearfix"></div>
                   </div>
 
-                  <div class="clearfix"></div>
+                @endforeach
+                <div class="clearfix p-b-35"></div>
                 </div>
-
-              @endforeach
-              <div class="clearfix p-b-35"></div>
-              </div>
-
               </div>
 
               <div role="tabpanel" class="tab-pane animated fadeInUp in" id="invitar">
@@ -1245,6 +1249,14 @@
       setTimeout(function(){ 
         $('html,body').animate({
           scrollTop: $("#offset_patrocinador").offset().top-90,
+        }, 1000);
+      }, 1000);
+    })
+
+    $('#tab_grupo').click(function (){
+      setTimeout(function(){ 
+        $('html,body').animate({
+          scrollTop: $("#offset_grupo").offset().top-90,
         }, 1000);
       }, 1000);
     })
