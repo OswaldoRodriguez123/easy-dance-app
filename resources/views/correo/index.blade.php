@@ -27,7 +27,7 @@
 
                         <form name="form_correo" id="form_correo"  >
                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                          <input type="hidden" name="correo_id" id="correo_id">
+                          <!-- <input type="hidden" name="correo_id" id="correo_id"> -->
                             <div class="modal-body">                           
                               <div class="row p-t-20 p-b-0">
 
@@ -86,26 +86,6 @@
 
                               <div class="personalizado">
 
-                                <div class="clearfix p-b-35"></div>
-
-                                <div class="col-sm-12">
-                                    <label for="id" id="id-url">Ingresa url de la imagen</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Haz un video promocional no mayor a dos minutos, mientras mejor desarrolles tu video, tendrás  más oportunidad de persuadir a tus clientes a contribuir con el logro de tus objetivos" title="" data-original-title="Ayuda"></i>
-
-                                    <br><br>
-                                    
-                       
-                                    <input type="text" class="form-control caja input-sm" name="url" id="url" placeholder="Ingresa la url">
-                                     
-                                     
-                                     <div class="has-error" id="error-url">
-                                      <span >
-                                       <small id="error-url_mensaje" class="help-block error-span" ></small>                                           
-                                      </span>
-                                      </div>                                          
-                                  </div>
-
-                                  <div class="clearfix p-b-35"></div>
-
                                   <div class="col-sm-12">
 
                                   <br><br>
@@ -132,7 +112,9 @@
                                     
                                   <input type="hidden" name="imageBase64" id="imageBase64">
                                     <div class="fileinput fileinput-new" data-provides="fileinput">
-                                      <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px"></div>
+                                      <div id="imagena" class="fileinput-preview thumbnail" data-trigger="fileinput" style="width:450px">
+                                        <img id="imagen_personalizada" src="">
+                                      </div>
                                       <div>
                                           <span class="btn btn-info btn-file">
                                               <span class="fileinput-new">Seleccionar Imagen</span>
@@ -147,6 +129,49 @@
                                         <small class="help-block error-span" id="error-imagen_mensaje"  ></small>
                                     </span>
                                   </div>
+                                </div>
+
+                                <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line ">
+                                    <label for="">Boton de acción en el correo</label id="id-boolean_switch"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona si tendra o no un boton de accion el correo" title="" data-original-title="Ayuda"></i>
+                                    
+                                    <br></br>
+                                    <input type="text" id="boolean_switch" name="boolean_switch" value="" hidden="hidden">
+                                    <div class="p-t-10">
+                                      <div class="toggle-switch" data-ts-color="purple">
+                                      <span class="p-r-10 f-700 f-16">No</span><input id="accion_switch" type="checkbox">
+                                      
+                                      <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                      </div>
+                                    </div>
+                                    
+                                 </div>
+                                 <div class="has-error" id="error-boolean_switch">
+                                      <span >
+                                          <small class="help-block error-span" id="error-boolean_switch_mensaje" ></small>                                           
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12 url_accion" style="display: none">
+                                  <label for="id" id="id-url">Url del boton de acción</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la url del boton de acción" title="" data-original-title="Ayuda"></i>
+
+                                  <br><br>
+                                  
+                     
+                                  <input type="text" class="form-control caja input-sm" name="url" id="url" placeholder="Ingresa la url">
+                                   
+                                   
+                                   <div class="has-error" id="error-url">
+                                    <span >
+                                     <small id="error-url_mensaje" class="help-block error-span" ></small>                                           
+                                    </span>
+                                    </div>                                          
                                 </div>
 
                                 <div class="clearfix p-b-15"></div>
@@ -172,8 +197,8 @@
                         <div class="clearfix p-b-15"></div>
 
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-blanco m-r-10 f-14 fijo" id="enviar">Enviar</button>
-                          <button type="button" class="btn btn-blanco m-r-10 f-14 personalizado" id="EnviarPersonalizado">Enviar</button>
+                          <!-- <button type="button" class="btn btn-blanco m-r-10 f-14 fijo" id="enviar">Enviar</button> -->
+                          <button type="button" class="btn btn-blanco m-r-10 f-14" id="EnviarPersonalizado">Enviar</button>
                           <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
@@ -263,7 +288,11 @@
                                           <br>
 
                                           <div class="text-right">
-                                              <a href="{{url('/')}}/correo/enviar/{{$correo['id']}}"><span class="f-18 p-t-0 c-morado pointer">Enviar Correo</span></a>
+                                              @if(isset($id))
+                                                <span class="f-18 p-t-0 c-morado pointer correos" id="{{$correo['id']}}">Enviar Correo</span>
+                                              @else
+                                                <a href="{{url('/')}}/correo/enviar/{{$correo['id']}}"><span class="f-18 p-t-0 c-morado pointer">Enviar Correo</span></a>
+                                              @endif
                                           </div>
                                       </div>
                                   </div>
@@ -310,6 +339,7 @@
   var alumnos = <?php echo json_encode($alumnos);?>;  
   var visitantes = <?php echo json_encode($visitantes);?>;  
   var clases_grupales = <?php echo json_encode($clases_grupales);?>;  
+  var correos = <?php echo json_encode($correos);?>;  
 
   $(document).ready(function(){
 
@@ -326,17 +356,51 @@
   });
 
   $(".correos").on("click", function(){
-    $('.fijo').show()
-    $('.personalizado').hide()
-    $('#correo_id').val($(this).attr('id'))  
+    // $('.fijo').show()
+    // $('.personalizado').hide()
+    // $('#correo_id').val($(this).attr('id'))  
+    id = $(this).attr('id')
+
+    $.each(correos, function (index, array) {              
+      if(array.id == id){
+
+        $('#subj').val(array.titulo)
+        $('#span_correo').text(array.titulo)
+
+        if(array.base64_string){
+          $('#imagen_personalizada').attr('src',array.base64_string)
+          $('#imageBase64').val(array.base64_string)
+        }
+
+        if(array.boolean_switch){
+          $("#accion_switch").prop('checked',true)
+          $('.url_accion').show()
+          $("#boolean_switch").val('1');
+        }else{
+          $("#accion_switch").prop('checked',false)
+          $('.url_accion').hide()
+          $("#boolean_switch").val('0');
+        }    
+        
+        $('#url').val(array.url)
+        $('#html-personalizado').summernote('code', array.contenido);
+
+        return false;
+      }
+    });
+
+
     $('#span_correo').text($(this).data('titulo'))  
     $('#modalCorreo').modal('show')           
   }); 
 
   $("#personalizado").on("click", function(){
-    $('.personalizado').show()
-    $('.fijo').hide()
-    $('#correo_id').val('')  
+    // $('.personalizado').show()
+    // $('.fijo').hide()
+    // $('#correo_id').val('')  
+    $("#accion_switch").prop('checked',false)
+    $('.url_accion').hide()
+    $("#boolean_switch").val('0');
     $('#span_correo').text('Personalizado')  
     $('#modalCorreo').modal('show')           
   });
@@ -674,8 +738,21 @@
 
   $('#modalCorreo').on('hidden.bs.modal', function (e) {
     $('#form_correo')[0].reset()
+    $('#html-personalizado').summernote('code', '');
+    $('#imagen_personalizada').attr('src','')
+    $('#imageBase64').val('')
     $(".selectpicker").selectpicker("refresh");
   })
+
+  $("#accion_switch").on('change', function(){
+    if ($("#accion_switch").is(":checked")){
+      $('.url_accion').show()
+      $("#boolean_switch").val('1');
+    }else{
+      $('.url_accion').hide()
+      $("#boolean_switch").val('0');
+    }    
+  });
 
   </script>
 @stop        

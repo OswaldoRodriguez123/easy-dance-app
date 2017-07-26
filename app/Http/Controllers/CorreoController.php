@@ -18,6 +18,7 @@ use App\CorreoPersonalizado;
 use Validator;
 use DB;
 use Mail;
+use File;
 use Illuminate\Support\Facades\Auth;
 use Session;
 use Image;
@@ -115,11 +116,26 @@ class CorreoController extends BaseController {
 
 		foreach($correos as $correo){
 
+			if($correo->imagen){
+				$path = 'assets/uploads/correos/'.$correo->imagen;
+				$file = File::get($path);
+				$type = pathinfo($path, PATHINFO_EXTENSION);
+				
+				if($file){
+					$base64_string = 'data:image/' . $type . ';base64,' . base64_encode($file);
+				}else{
+					$base64_string = '';
+				}
+			}else{
+				$base64_string = '';
+			}
+
 			$contenido_cortado = $this->cut_html($correo->contenido, 300);
 
 			$collection=collect($correo);     
             $correo_array = $collection->toArray();
             $correo_array['contenido_cortado']=$contenido_cortado;
+            $correo_array['base64_string']=$base64_string;
             $array[$correo->id] = $correo_array;
 		}
 
@@ -234,15 +250,32 @@ class CorreoController extends BaseController {
 
 			foreach($correos as $correo){
 
+				if($correo->imagen){
+
+					$path = 'assets/uploads/correos/'.$correo->imagen;
+					$file = File::get($path);
+					$type = pathinfo($path, PATHINFO_EXTENSION);
+
+					if($file){
+						$base64_string = 'data:image/' . $type . ';base64,' . base64_encode($file);
+					}else{
+						$base64_string = '';
+					}
+				}else{
+					$base64_string = '';
+				}
+
 				$contenido_cortado = $this->cut_html($correo->contenido, 300);
 
 				$collection=collect($correo);     
 	            $correo_array = $collection->toArray();
 	            $correo_array['contenido_cortado']=$contenido_cortado;
+	            $correo_array['base64_string']=$base64_string;
 	            $array[$correo->id] = $correo_array;
 			}
 
-			return view('correo.index')->with(['usuario' => $usuario, 'id' => $id, 'sin_confirmar' => $sin_confirmar, 'tipo' => $tipo, 'correos' => $correos, 'alumnos' => $alumnos, 'visitantes' => $visitantes, 'clases_grupales' => $clases]);
+
+			return view('correo.index')->with(['usuario' => $usuario, 'id' => $id, 'sin_confirmar' => $sin_confirmar, 'tipo' => $tipo, 'correos' => $array, 'alumnos' => $alumnos, 'visitantes' => $visitantes, 'clases_grupales' => $clases]);
 
 		}else{
 			return redirect("inicio"); 
