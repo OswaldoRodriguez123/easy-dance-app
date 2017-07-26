@@ -420,17 +420,16 @@
 
                           <span class="f-15 m-r-5">
                             @if($key == 0)
-                              1er
+                              1er Lugar
                             @elseif($key == 1)
-                              2do
+                              2do Lugar
                             @elseif($key == 2)
-                              3er
+                              3er Lugar
                             @elseif($key == 3)
-                              4to
+                              4to Lugar
                             @elseif($key == 4)
-                              5to
+                              5to Lugar
                             @endif
-                            Lugar
                           </span>
                           <br>
                           @if($key <= 4)
