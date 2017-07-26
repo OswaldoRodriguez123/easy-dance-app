@@ -271,7 +271,7 @@
                   <hr class='linea-morada'>
 
                   <div class="col-sm-6 text-left">
-                    <label class="c-morado f-15">Filtro</label>
+                    <label class="c-morado f-15">Selecciona la clase grupal</label>
                     <div class="select">
                       <select class="selectpicker" name="clase_grupal_id" id="clase_grupal_id" data-live-search="true" data-container="body">
                           <option value = "0">Todas</option>
