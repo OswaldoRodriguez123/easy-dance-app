@@ -146,8 +146,7 @@ class AlumnoController extends BaseController
 
     public function inactivos()
     {
-        $alumnod = DB::table('alumnos')
-            ->join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
+        $alumnod = Alumno::join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
             ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
             ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
@@ -174,8 +173,7 @@ class AlumnoController extends BaseController
 
     public function congelados()
     {
-        $alumnod = DB::table('alumnos')
-            ->join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
+        $alumnod = Alumno::join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
             ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
             ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
@@ -185,8 +183,8 @@ class AlumnoController extends BaseController
         $collection=collect($alumnod);
         $grouped = $collection->groupBy('id');     
         $deuda = $grouped->toArray();
-        $alumno = InscripcionClaseGrupal::withTrashed()
-            ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+
+        $alumnos = InscripcionClaseGrupal::withTrashed()->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
             ->select('alumnos.*', 'config_clases_grupales.nombre as clase_grupal_nombre', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_inicio', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_final', 'inscripcion_clase_grupal.razon_congelacion')
@@ -194,8 +192,27 @@ class AlumnoController extends BaseController
             ->where('inscripcion_clase_grupal.boolean_congelacion',1)
         ->get();
 
+        foreach($alumnos as $alumno){
+            $fecha_final = Carbon::createFromFormat('Y-m-d',$alumno->fecha_final);
 
-        return view('participante.alumno.congelados')->with(['alumnos' => $alumno, 'deuda' => $deuda]);
+            if(Carbon::now() <= $fecha_final){
+                $dias_vencimiento = $fecha_final->diffInDays(Carbon::now());
+
+                $collection=collect($alumno);     
+                $alumno_array = $collection->toArray();
+                $alumno_array['dias_vencimiento']=$dias_vencimiento;
+                $array[] = $alumno_array;
+
+            }else{
+                $alumno->fecha_inicio = '0000-00-00';
+                $alumno->final = '0000-00-00';
+                $alumno->boolean_congelacion = 0;
+
+                $alumno->save();
+            }
+        }
+
+        return view('participante.alumno.congelados')->with(['alumnos' => $array, 'deuda' => $deuda]);
     }
 
 	public function store(Request $request)

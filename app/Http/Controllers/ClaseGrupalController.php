@@ -1031,49 +1031,49 @@ class ClaseGrupalController extends BaseController {
     public function congelarInscripcion(Request $request)
     {
 
-    $rules = [
-        'razon_congelacion' => 'required',
-        'fecha' => 'required',
-     
-    ];
+        $rules = [
+            'razon_congelacion' => 'required',
+            'fecha' => 'required',
+         
+        ];
 
-    $messages = [
+        $messages = [
 
-        'razon_congelacion.required' => 'Ups! El La razon de la congelación es requerida',
-        'fecha.required' => 'Ups! La fecha es requerida',
+            'razon_congelacion.required' => 'Ups! El La razon de la congelación es requerida',
+            'fecha.required' => 'Ups! La fecha es requerida',
 
-    ];
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
-
-    else{
-
-        $clasegrupal = InscripcionClaseGrupal::withTrashed()->find($request->inscripcion_clase_grupal_id);
-
-        $fecha = explode(" - ", $request->fecha);
-
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
-        $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
-        
-        $clasegrupal->razon_congelacion = $request->razon_congelacion;
-        $clasegrupal->fecha_inicio = $fecha_inicio;
-        $clasegrupal->fecha_final = $fecha_final;
-        $clasegrupal->boolean_congelacion = 1;
-       
-
-        if($clasegrupal->save()){
-           
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->inscripcion_clase_grupal_id, 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-    }
+
+        else{
+
+            $clasegrupal = InscripcionClaseGrupal::withTrashed()->find($request->inscripcion_clase_grupal_id);
+
+            $fecha = explode(" - ", $request->fecha);
+
+            $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+            $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
+            
+            $clasegrupal->razon_congelacion = $request->razon_congelacion;
+            $clasegrupal->fecha_inicio = $fecha_inicio;
+            $clasegrupal->fecha_final = $fecha_final;
+            $clasegrupal->boolean_congelacion = 1;
+           
+
+            if($clasegrupal->save()){
+               
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->inscripcion_clase_grupal_id, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
     }
 
 

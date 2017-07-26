@@ -101,6 +101,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="fecha">Fecha de Congelación</th>
+                                    <th class="text-center" data-column-id="fecha">Tiempo Restante</th>
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
@@ -112,21 +113,22 @@
                             <tbody>
 
                             @foreach ($alumnos as $alumno)
-                                <?php $id = $alumno->inscripcion_id; ?>
-                                <tr data-nombre="{{$alumno->nombre}} {{$alumno->apellido}}" data-fecha = "{{$alumno->fecha_inicio}} - {{$alumno->fecha_final}}" data-congelacion="{{$alumno->razon_congelacion}}" id="row_{{$id}}" class="seleccion" >
-                                    <td class="text-center">{{$alumno->fecha_inicio}} - {{$alumno->fecha_final}}</td>
-                                    <td class="text-center">{{$alumno->identificacion}}</td>
+                                <?php $id = $alumno['inscripcion_id']; ?>
+                                <tr data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-fecha = "{{$alumno['fecha_inicio']}} - {{$alumno['fecha_final']}}" data-congelacion="{{$alumno['razon_congelacion']}}" id="row_{{$id}}" class="seleccion" >
+                                    <td class="text-center">{{$alumno['fecha_inicio']}} - {{$alumno['fecha_final']}}</td>
+                                    <td class="text-center">{{$alumno['dias_vencimiento']}} Días</td>
+                                    <td class="text-center">{{$alumno['identificacion']}}</td>
                                     <td class="text-center">
-                                    @if($alumno->sexo=='F')
+                                    @if($alumno['sexo']=='F')
                                     <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
                                     @else
                                     <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
                                     @endif
                                     </td>
-                                    <td class="text-center">{{$alumno->nombre}} {{$alumno->apellido}}</td>
-                                    <td class="text-center">{{$alumno->clase_grupal_nombre}}</td>
+                                    <td class="text-center">{{$alumno['nombre']}} {{$alumno['apellido']}}</td>
+                                    <td class="text-center">{{$alumno['clase_grupal_nombre']}}</td>
                                     <td class="text-center">
-                                    <i data-toggle="modal" href="#" class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i>
+                                    <i class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
                                     </td>
                                     <td class="text-center"> 
 
