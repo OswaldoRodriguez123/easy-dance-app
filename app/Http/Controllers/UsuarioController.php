@@ -529,6 +529,17 @@ class UsuarioController extends BaseController {
     public function index()
     {
 
+        $congelados = InscripcionClaseGrupal::where('fecha_final','>',Carbon::now()->toDateString());
+
+        foreach($congelados as $congelado){
+            $congelado->fecha_inicio = '0000-00-00';
+            $congelado->final = '0000-00-00';
+            $congelado->boolean_congelacion = 0;
+
+            $congelado->save();
+        }
+
+
         $academia = Academia::find(Auth::user()->academia_id);
 
         $datos = $this->getDatosUsuario();
