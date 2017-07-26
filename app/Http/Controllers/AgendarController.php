@@ -18,6 +18,7 @@ use App\Fiesta;
 use App\Transmision;
 use App\Instructor;
 use App\User;
+use App\Asistencia;
 use DB;
 
 use Carbon\Carbon;
