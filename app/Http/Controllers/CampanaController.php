@@ -1613,9 +1613,9 @@ class CampanaController extends BaseController {
                 $activa = 0;
             }
 
-            $clases_grupales= ClaseGrupal::withTrashed()->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            $clases_grupales= ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.sexo', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id', 'clases_grupales.instructor_id', 'config_clases_grupales.imagen', 'clases_grupales.deleted_at')
+                ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.sexo', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id', 'clases_grupales.instructor_id', 'config_clases_grupales.imagen')
                 ->where('clases_grupales.academia_id', '=' ,  $campaña->academia_id)
                 ->orderBy('clases_grupales.hora_inicio', 'asc')
             ->get();   
@@ -1746,14 +1746,12 @@ class CampanaController extends BaseController {
                 $clase_grupal_array['dia']=$dia_string;
                 $clase_grupal_array['instructor_imagen']=$imagen;
 
-                if($fecha_inicio <= Carbon::now()->toDateString() && $fecha_final >=  Carbon::now()->toDateString() && $clase_grupal->deleted_at == null){
+                if($fecha_inicio <= Carbon::now()->toDateString() && $fecha_final >=  Carbon::now()->toDateString()){
                     $array_clase_grupal[$clase_grupal->id] = $clase_grupal_array;
                 }
 
-                if($cantidad_recaudada > 0){
-                    $array_progreso[] = $clase_grupal_array;
+                $array_progreso[] = $clase_grupal_array;
 
-                }
             }
 
             usort($array_progreso, function($a, $b) {
