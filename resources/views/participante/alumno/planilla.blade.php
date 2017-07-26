@@ -1490,7 +1490,8 @@
 
 
 @section('js') 
-   <script type="text/javascript">
+
+  <script type="text/javascript">
     route_update="{{url('/')}}/participante/alumno/update";
     route_eliminar="{{url('/')}}/participante/alumno/eliminar/";
     route_principal="{{url('/')}}/participante/alumno";

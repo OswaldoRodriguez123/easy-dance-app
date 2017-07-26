@@ -63,7 +63,7 @@ class AsistenciaController extends BaseController
 
     public function principal()
     {
-        // $alumnos = Asistencia::where('academia_id','=', Auth::user()->academia_id)->get();
+
       $usuario_tipo = Session::get('easydance_usuario_tipo');
       $usuario_id = Session::get('easydance_usuario_id');
 
@@ -165,8 +165,8 @@ class AsistenciaController extends BaseController
 
           }
 
-          if($clasegrupal)
-          {
+          if($clasegrupal){
+
             $collection=collect($asistencia);     
             $asistencia_array = $collection->toArray();
             
@@ -267,8 +267,6 @@ class AsistenciaController extends BaseController
           $asistencia_array['tipo']='A';
           $array[] = $asistencia_array;
         }
-
-
 
         foreach($instructores as $asistencia){
 
@@ -412,8 +410,6 @@ class AsistenciaController extends BaseController
         ->get();
 
         $alumno_id = $usuario_id;
-    
-
         $array = array();
 
         $j = 0;
@@ -480,12 +476,18 @@ class AsistenciaController extends BaseController
 
             $fecha_horario = Carbon::parse($horario->fecha);
 
-            while($fecha_horario < Carbon::now())
-            {
+            while($fecha_horario < Carbon::now()){
+
                 $fecha_a_comparar = $fecha_horario;
                 $fecha_a_comparar = $fecha_a_comparar->toDateString();
-                $asistencia = Asistencia::where('alumno_id',$alumno_id)->where('tipo',2)->where('tipo_id',$horario->id)->where('fecha',$fecha_a_comparar)->first();
+
+                $asistencia = Asistencia::where('alumno_id',$alumno_id)
+                  ->where('tipo',2)->where('tipo_id',$horario->id)
+                  ->where('fecha',$fecha_a_comparar)
+                ->first();
+
                 if($asistencia){
+
                     $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
                     $hora = $asistencia->hora;
 
@@ -551,8 +553,6 @@ class AsistenciaController extends BaseController
         ->get();
 
         $instructor_id = $usuario_id;
-    
-
         $array = array();
 
         $j = 0;
@@ -561,11 +561,16 @@ class AsistenciaController extends BaseController
 
           $fecha_inicio = Carbon::parse($clase_grupal->fecha_inicio);
 
-          while($fecha_inicio < Carbon::now())
-          {
+          while($fecha_inicio < Carbon::now()){
+
               $fecha_a_comparar = $fecha_inicio;
               $fecha_a_comparar = $fecha_a_comparar->toDateString();
-              $asistencia = AsistenciaInstructor::where('instructor_id',$instructor_id)->where('clase_grupal_id',$clase_grupal->id)->where('fecha',$fecha_a_comparar)->first();
+
+              $asistencia = AsistenciaInstructor::where('instructor_id',$instructor_id)
+                ->where('clase_grupal_id',$clase_grupal->id)
+                ->where('fecha',$fecha_a_comparar)
+              ->first();
+
               if($asistencia){
                   $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
                   $hora = $asistencia->hora;
@@ -815,12 +820,12 @@ class AsistenciaController extends BaseController
       $staff = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
       $in = array(2,4);
       $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
-          ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-          ->select('alumnos.id as id')
-          ->where('users.academia_id','=', Auth::user()->academia_id)
-          ->where('alumnos.deleted_at', '=', null)
-          ->whereIn('usuarios_tipo.tipo', $in)
-          ->where('users.confirmation_token', '!=', null)
+        ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+        ->select('alumnos.id as id')
+        ->where('users.academia_id','=', Auth::user()->academia_id)
+        ->where('alumnos.deleted_at', '=', null)
+        ->whereIn('usuarios_tipo.tipo', $in)
+        ->where('users.confirmation_token', '!=', null)
       ->get();
 
       $collection=collect($alumnoc);
@@ -836,26 +841,25 @@ class AsistenciaController extends BaseController
 
     private function deuda($id){
 
-        $alumnod = Alumno::join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
-            ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
-            ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-            ->where('items_factura_proforma.usuario_id', $id)
-        ->get();
+      $alumnod = Alumno::join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
+          ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
+          ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
+          ->where('items_factura_proforma.usuario_id', $id)
+      ->get();
 
-        if(count($alumnod)>0){
-            $collection = collect($alumnod);
-            $cuenta=$collection->sum('importe_neto');
-        }else{
-            $cuenta=0;
-        }
+      if(count($alumnod)>0){
+          $collection = collect($alumnod);
+          $cuenta=$collection->sum('importe_neto');
+      }else{
+          $cuenta=0;
+      }
 
-        return $cuenta;
+      return $cuenta;
 
     }
 
     public function consulta_clase_grupales(Request $request)
     {
-      //$ClaseGrupal=ClaseGrupal::all();
 
       $claseGrupal= ClaseGrupal::join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
@@ -874,10 +878,6 @@ class AsistenciaController extends BaseController
             ->where('clases_grupales.deleted_at', '=', null)
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
-
-
-
-     // dd($claseGrupal);
 
       $arrayClaseGrupal=array();
 
@@ -966,9 +966,7 @@ class AsistenciaController extends BaseController
         
       }
 
-      //dd($arrayClaseGrupal);
       return response()->json(['status' => 'OK', 'clases_grupales'=>$arrayClaseGrupal, 200]);
-
 
     }
 
@@ -1431,26 +1429,26 @@ class AsistenciaController extends BaseController
 
           $estatu="credencial";
 
-          $credencial_alumno = CredencialAlumno::where('alumno_id',$alumno_id)->whereIn('instructor_id',$in_credencial)
+          $credenciales = CredencialAlumno::where('alumno_id',$alumno_id)->whereIn('instructor_id',$in_credencial)
             ->where('fecha_vencimiento','>=', Carbon::now()->toDateString())
             ->where('cantidad' ,'>', 0)
-          ->first();
+          ->sum('cantidad');
 
-          if(!$credencial_alumno){
+          if(!$credenciales){
 
-            $credencial_otra_clase = CredencialAlumno::where('alumno_id',$alumno_id)
+            $credenciales = CredencialAlumno::where('alumno_id',$alumno_id)
               ->where('fecha_vencimiento','>=', Carbon::now()->toDateString())
               ->where('cantidad' ,'>', 0)
-            ->first();
+            ->sum('cantidad');
 
-            if(!$credencial_otra_clase){
+            if(!$credenciales){
               $estatu="no_asociado";
             }else{
-              $credencial_mensaje = 'Ups! El alumno posee credenciales pero no estan asociadas a esta clase grupal';
+              $credencial_mensaje = 'Ups! El alumno posee ' .$credenciales. ' credenciales pero no estan asociadas a esta clase grupal';
             }
 
           }else{
-            $credencial_mensaje = 'El alumno no se encuentra asociado a esta clase pero posee credenciales, desea utilizar una ?';
+            $credencial_mensaje = 'El alumno no se encuentra asociado a esta clase pero posee ' .$credenciales. ' credenciales, desea utilizar una ?';
           }
         }
           
