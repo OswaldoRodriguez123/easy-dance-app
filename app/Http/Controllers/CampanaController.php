@@ -1758,8 +1758,6 @@ class CampanaController extends BaseController {
                 return $a['cantidad_recaudada'] - $b['cantidad_recaudada'];
             });
 
-            dd($array_progreso);
-
             return view('especiales.campana.reserva')->with(['campana' => $campaña, 'id' => $id , 'link_video' => $link_video, 'recompensas' => $recompensas, 'patrocinadores' => $array_patrocinador, 'recaudado' => $recaudado, 'porcentaje' => $porcentaje, 'cantidad' => $cantidad, 'academia' => $academia, 'fecha_de_realizacion' => $array_fecha_de_realizacion, 'datos' => $datos, 'activa' => $activa, 'tipo_evento' => "Campaña", 'clases_grupales' => $array_clase_grupal, 'array_progreso' => $array_progreso]);
         }else{
             return redirect("especiales/campañas"); 
