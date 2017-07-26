@@ -61,7 +61,7 @@
                               </td>
                               </tr>
                               <tr>
-                                <td align="center" valign="top"><img class="CToWUd" alt="Pocket-logo-email-original" src="{{base64_decode($imagen)}}" height="200" width="570">
+                                <td align="center" valign="top"><img class="CToWUd" alt="Pocket-logo-email-original" src="{!!$imagen!!}" height="200" width="570">
                                 </td>
                               </tr>
                               <tr>
