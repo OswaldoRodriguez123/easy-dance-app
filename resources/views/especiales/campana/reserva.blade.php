@@ -403,9 +403,12 @@
                         <img class="lv-img-sm" src="{{url('/')}}/assets/img/Mujer.jpg" alt="">
                       @else
                         <img class="lv-img-sm" src="{{url('/')}}/assets/img/Hombre.jpg" alt="">
-                      @endif</p>
-                      <p class="f-15 f-700">Cantidad Recaudadada: {{ number_format($clase_grupal['cantidad_recaudada'], 2, '.' , '.') }}</p>
+                      @endif
                     @endif
+                    </p>
+
+                    <p class="f-15 f-700">Cantidad Recaudadada: {{ number_format($clase_grupal['cantidad_recaudada'], 2, '.' , '.') }}</p>
+
 
                     </div>
 
