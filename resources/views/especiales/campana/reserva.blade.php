@@ -384,7 +384,7 @@
                 
                   @foreach($array_progreso as $key => $clase_grupal)
                     
-                    <div class="pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
+                    <div id="{{$clase_grupal['id']}}" class="pointer opaco-0-8 progreso" style="border: 1px solid rgba(0, 0, 0, 0.1)">
 
                       @if($clase_grupal['imagen'])
                       <div class="col-sm-2"><img src="{{url('/')}}/assets/uploads/clase_grupal/{{$clase_grupal['imagen']}}" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
@@ -929,6 +929,7 @@
   route_agregar_invitacion="{{url('/')}}/especiales/campañas/invitar/agregar";
   route_eliminar_invitacion="{{url('/')}}/especiales/campañas/invitar/eliminar";
   route_enhorabuena_invitacion="{{url('/')}}/especiales/campañas/invitacion/enhorabuena/";
+  route_progreso="{{url('/')}}/especiales/campañas/progreso/clases-grupales/";
 
   var recompensa = 0;
 
@@ -1491,6 +1492,15 @@
         }
 
     });
+
+    @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
+
+      $(".progreso").click(function(){
+        var id = $(this).attr('id');
+        var route = route_progreso+id+'-{{$id}}';
+        window.open(route, '_blank');
+      });
+    @endif
 
   </script>
 @stop        

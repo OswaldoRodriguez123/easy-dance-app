@@ -911,6 +911,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('especiales/campañas/agregardatosfijos', 'CampanaController@agregardatosfijos');
 	    Route::post('especiales/campañas/eliminardatosfijos/{id}', 'CampanaController@eliminardatosfijos');
 
+	    Route::get('especiales/campañas/progreso/clases-grupales/{id}', 'CampanaController@progreso_clase_grupal');
 	    Route::get('especiales/campañas/egresos/{id}', 'CampanaController@egresos');
 
 	    //PATROCINADORES

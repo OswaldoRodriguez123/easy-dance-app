@@ -22,6 +22,7 @@ use App\ConfigEgreso;
 use App\ClaseGrupal;
 use App\HorarioClaseGrupal;
 use App\InscripcionClaseGrupal;
+use App\Llamada;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -2544,6 +2545,119 @@ class CampanaController extends BaseController {
         }else{
            return redirect("especiales/campañas"); 
         }
+    }
+
+    public function progreso_clase_grupal($id)
+    {
+
+        $explode = explode('-',$id);
+        $clase_grupal_id = $explode[0];
+        $campana_id = $explode[1];
+
+        $clasegrupal = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'clases_grupales.id as clase_grupal_id', 'instructores.id as instructor_id')
+            ->where('clases_grupales.id', '=', $clase_grupal_id)
+        ->first();
+
+        $campana = Campana::find($campana_id);
+
+        if($clasegrupal && $campana){
+
+            $array = array();
+
+            $mujeres = 0;
+            $hombres = 0;
+            $tipo_clase = array(1,2);
+            $in = array(2,4);
+            $in_credencial = array(0,$clasegrupal->instructor_id);
+
+            $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela', 'alumnos.tipo_pago', 'inscripcion_clase_grupal.fecha_inscripcion')
+                ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
+                ->where('inscripcion_clase_grupal.boolean_congelacion',0)
+                ->where('alumnos.deleted_at', '=', null)
+            ->get();
+
+            foreach($alumnos_inscritos as $alumno){
+
+                $contribucion = Patrocinador::join('alumnos', 'patrocinadores.usuario_id', '=', 'alumnos.id')
+                    ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                    ->where('patrocinadores.tipo_evento_id', '=', $campana_id)
+                    ->where('patrocinadores.tipo_evento', '=', 1)
+                    ->where('patrocinadores.usuario_id',$alumno->id)
+                ->sum('patrocinadores.monto');
+
+                if(!$contribucion){
+                    $contribucion = 0;
+                    $contribuyo = 0;
+                }else{
+                    $contribuyo = 1;
+                }
+            
+                $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                    ->where('usuario_id','=',$alumno->id)
+                    ->where('usuario_tipo',1)
+                ->sum('importe_neto');
+
+                $activacion = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id', $alumno->id)
+                    ->whereIn('usuarios_tipo.tipo', $tipo_clase)
+                    ->where('users.confirmation_token', '!=', null)
+                ->first();
+
+                if($activacion){
+                    $activacion = 1;
+                }else{
+                    $activacion = 0;
+                }
+
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id',$alumno->id)
+                    ->whereIn('usuarios_tipo.tipo',$in)
+                ->first();
+
+                if($usuario){
+
+                    if($usuario->imagen){
+                        $imagen = $usuario->imagen;
+                    }else{
+                        $imagen = '';
+                    }
+
+                }else{
+                    $imagen = '';
+                }
+
+                $llamadas = Llamada::where('usuario_id',$alumno->id)->where('usuario_tipo',2)->count();
+
+                $collection=collect($alumno);     
+                $alumno_array = $collection->toArray();
+
+                $alumno_array['contribucion'] = $contribucion;
+                $alumno_array['contribuyo'] = $contribuyo;
+                $alumno_array['imagen'] = $imagen;
+                $alumno_array['activacion']=$activacion;
+                $alumno_array['deuda']=$deuda;
+                $alumno_array['tipo'] = 1;
+                $alumno_array['llamadas'] = $llamadas;
+
+                $array[$alumno->id] = $alumno_array;
+
+                if($alumno->sexo == 'F'){
+                    $mujeres++;
+                }else{
+                    $hombres++;
+                }
+
+            }
+
+            return view('especiales.campana.progreso_clase_grupal')->with(['alumnos_inscritos' => $array, 'id' => $campana_id, 'clasegrupal' => $clasegrupal, 'mujeres' => $mujeres, 'hombres' => $hombres]);
+
+        }else{
+            return redirect("esppeciales/campañas"); 
+        }
+        
     }
 
 }
