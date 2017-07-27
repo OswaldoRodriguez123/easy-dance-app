@@ -529,14 +529,26 @@ class UsuarioController extends BaseController {
     public function index()
     {
 
-        $congelados = InscripcionClaseGrupal::where('fecha_final','>',Carbon::now()->toDateString());
+        $congelados = InscripcionClaseGrupal::where('fecha_final','<',Carbon::now()->toDateString())
+            ->where('boolean_congelacion',0)
+        ->get();
 
         foreach($congelados as $congelado){
             $congelado->fecha_inicio = '0000-00-00';
-            $congelado->final = '0000-00-00';
+            $congelado->fecha_final = '0000-00-00';
             $congelado->boolean_congelacion = 0;
 
             $congelado->save();
+        }
+
+        $evaluaciones_vencidas = Evaluacion::where('fecha_vencimiento','<',Carbon::now()->toDateString())
+            ->where('estatus',0)
+        ->get();
+
+        foreach($evaluaciones_vencidas as $evaluacion){
+            $evaluacion->estatus = 1;
+
+            $evaluacion->save();
         }
 
         $academia = Academia::find(Auth::user()->academia_id);

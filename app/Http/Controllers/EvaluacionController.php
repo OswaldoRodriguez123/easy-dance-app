@@ -534,7 +534,7 @@ class EvaluacionController extends BaseController
             ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
             ->join('config_tipo_examenes', 'examenes.tipo', '=', 'config_tipo_examenes.id')
             ->join('academias', 'examenes.academia_id', '=', 'academias.id')
-            ->select('evaluaciones.*', 'examenes.nombre', 'instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'config_tipo_examenes.nombre as tipo_de_evaluacion', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.id as alumno_id', 'academias.imagen', 'academias.id as academia_id')
+            ->select('evaluaciones.*', 'examenes.nombre', 'instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'config_tipo_examenes.nombre as tipo_de_evaluacion', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.id as alumno_id', 'alumnos.sexo', 'academias.imagen', 'academias.id as academia_id')
             ->where('evaluaciones.id', '=', $id)
         ->first();
 
@@ -571,7 +571,7 @@ class EvaluacionController extends BaseController
             }
             
 
-            return view('especiales.evaluaciones.evaluar')->with(['evaluacion' => $evaluacion, 'items_a_evaluar' => $items_a_evaluar, 'id' => $id, 'numero_de_items'=> $numero_de_items, 'formulas' => $formulas, 'formulas_evaluadas' => $array, 'total' => $total]);
+            return view('especiales.evaluaciones.evaluar')->with(['evaluacion' => $evaluacion, 'items_a_evaluar' => $items_a_evaluar, 'id' => $id, 'numero_de_items'=> $numero_de_items, 'formulas' => $formulas, 'formulas_evaluadas' => $array, 'total' => $total, 'imagen' => $imagen]);
         }else{
            return redirect("especiales/evaluaciones"); 
         }
@@ -616,6 +616,10 @@ class EvaluacionController extends BaseController
                 $evaluacion->participacion_fiesta_social = $request->fiesta_formula;
                 $evaluacion->estatus = $request->estatus;
 
+                if($request->estatus){
+                    $evaluacion->fecha_vencimiento = '0000-00-00';
+                }
+
                 if($evaluacion->save()){
 
                     $examen = Examen::find($request->examen_id);
@@ -654,7 +658,7 @@ class EvaluacionController extends BaseController
                     }
 
                     return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-                    
+
                 }else{
                     return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
                 }

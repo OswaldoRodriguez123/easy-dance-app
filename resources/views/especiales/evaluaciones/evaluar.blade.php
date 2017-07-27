@@ -81,7 +81,15 @@
                     <div class="clearfix p-b-35"></div>
                     <div class="clearfix p-b-35"></div>
 
-                    <img class="img-responsive img-circle" style="width:60px; height:60px" id="imagen_evaluar" src="" alt="">
+                    @if($imagen)
+                      <img id="imagen_perfil" class="img-circle" src="{{url('/')}}/assets/uploads/usuario/{{$imagen}}" alt="" width="70px" height="auto"> 
+                    @else
+                       @if($evaluacion->sexo=='F')
+                          <img id="imagen_perfil" class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="">        
+                       @else
+                          <img id="imagen_perfil" class="img-responsive img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
+                       @endif
+                    @endif
                   </div>
               </div>
             </div>
