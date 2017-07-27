@@ -25,7 +25,7 @@
 	<section id="content">
 		<div class="container">
 			<div class="block-header">
-        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/examenes/detalle/{{$id}}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/especiales/evaluaciones"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
 
         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -43,8 +43,8 @@
 
 	    <div class="card">
         <div class="card-header ch-alt text-center">
-            @if ($academia->imagen)
-              <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen}}" alt="">
+            @if ($evaluacion->imagen)
+              <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$evaluacion->imagen}}" alt="">
             @else
               <img class="i-logo" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
             @endif
@@ -53,52 +53,31 @@
 				<div class="card-body card-padding">
 					<form name="agregar_evaluacion" id="agregar_evaluacion">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <input type="hidden" id="instructor_id" name="instructor_id" value="{{$examen->instructor_id}}">
-            <input type="hidden" id="examen_id" name="examen_id" value="{{$examen->id}}">
+            <input type="hidden" name="evaluacion_id" value="{{$evaluacion->id}}">
             <div class="row m-b-25">
               <div class="col-xs-6">
                 <div class="text-left m-l-25">
   
-                  
-                  <h4 id="id-evaluacion">Evaluación: "{{ $examen->nombre }}"</h4>
+                  <h4 id="id-evaluacion">Evaluación: "{{ $evaluacion->nombre }}"</h4>
 
                   <div class="clearfix"></div>
-                	<h4>Instructor: {{ $examen->instructor_nombre }} {{ $examen->instructor_apellido }}</h4>
+                	<h4>Instructor: {{ $evaluacion->instructor_nombre }} {{ $evaluacion->instructor_apellido }}</h4>
                 	<div class="clearfix"></div>
-                	<h4>Tipo de Evaluación: {{ $tipo_de_evaluacion }}</h4>
+                	<h4>Tipo de Evaluación: {{ $evaluacion->tipo_evaluacion }}</h4>
                 	<div class="clearfix"></div>
-                	<h4>Generos: <div class="clearfix"></div> {{ $examen->generos }}</h4>
+                	<h4>Generos: <div class="clearfix"></div> {{ $evaluacion->generos }}</h4>
                 	<div class="clearfix"></div>
-                	<h5 id="id-alumno_id">Seleccione un Alumno: </h5>
+                	<h5 id="id-alumno_id">Alumno: </h5>
                 	<div class="clearfix"></div>
-                  <div class="select">
-                      <select class="form-control selectpicker" data-live-search="true" id="alumno_id" name="alumno_id">
-                        <option value="">Seleccione</option>
-                        @foreach ( $alumnos as $alumno )
-                        	<option data-imagen = "{{$alumno['imagen']}}" data-sexo = "{{$alumno['sexo']}}" value = "{!! $alumno['id'] !!}">{!! $alumno['nombre'] !!} {!! $alumno['apellido'] !!} {!! $alumno['identificacion'] !!}</option>
-                        @endforeach 
-                      </select>
-                  </div>
-
-                  <div class="has-error" id="error-alumno_id">
-                      <span >
-                          <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                
-                      </span>
-                  </div>				                    
-
+                  {{$evaluacion->alumno_nombre}} {{$evaluacion->alumno_apellido}}
+			                    
                 </div>
               </div>
                 
               <div class="col-xs-6">
                   <div class="i-to">
                     <h5 id="id-fecha_vencimiento">Fecha de Vencimiento</h5>
-                    <input name="fecha_vencimiento" id="fecha_vencimiento" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text">
-                    <div class="has-error" id="error-fecha_vencimiento">
-                      <span >
-                          <small class="help-block error-span" id="error-fecha_vencimiento_mensaje" ></small>                                
-                      </span>
-                    </div>  
-
+                    {{$evaluacion->fecha_vencimiento}}
                     <div class="clearfix p-b-35"></div>
                     <div class="clearfix p-b-35"></div>
 
@@ -119,16 +98,16 @@
                 $sliders = array();
               ?>
 
-              @foreach( $items_a_evaluar as $item)
+              @foreach($items_a_evaluar as $item)
                 <?php $id = $i ?>
 
                 <div class="col-md-4 m-b-25">
 
                   <div class="m-b-20 m-l-25">
-                    @if(strlen($item) <= 30)
-                      {{$item}}
+                    @if(strlen($item->nombre) <= 30)
+                      {{$item->nombre}}
                     @else
-                      {{ str_limit($item, $limit = 30, $end = '') }} <span class="mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{$item}}" title="" data-original-title="Ayuda">... <span class="c-azul">Ver mas</span></span> 
+                      {{ str_limit($item->nombre, $limit = 30, $end = '') }} <span class="mousedefault" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="{{$item}}" title="" data-original-title="Ayuda">... <span class="c-azul">Ver mas</span></span> 
                     @endif
                   </div>
                   <div class="clearfix"></div>  
@@ -150,7 +129,8 @@
                     $j = 0;
                   }
 
-                  $sliders[$i] = $i; 
+                  $sliders[$i]['id'] = $i; 
+                  $sliders[$i]['nota'] = $item->nota;
                   $i++;
                   $j++;
 
@@ -164,9 +144,9 @@
 						<div class="row">
 							<div class="col-md-12">
 								<div class="text-right m-r-25 f-20 f-500">Total: 
-                  <span class="f-30" id="puntos_acumulados">0</span> acumulados de <span id="puntos_totales" class="f-30">{{$numero_de_items*10}}</span>
+                  <span class="f-30" id="puntos_acumulados">{{$total}}</span> acumulados de <span id="puntos_totales" class="f-30">{{$numero_de_items*10}}</span>
                   <div class="text-right" id="id-total"></div>
-                  <input type="hidden" name="total_nota" id="total_nota" value="0">
+                  <input type="hidden" name="total_nota" id="total_nota" value="{{$total}}">
                 </div>
 
                <div class="has-error" id="error-total_nota">
@@ -186,7 +166,7 @@
                   <br></br>
 
                   <div class="fg-line">
-                    <textarea class="form-control" id="observacion" name="observacion" rows="2" placeholder="1000 Caracteres"></textarea>
+                    <textarea class="form-control" id="observacion" name="observacion" rows="2" placeholder="1000 Caracteres">{{$evaluacion->observacion}}</textarea>
                   </div>
                   <div class="has-error" id="error-observacion">
                     <span >
@@ -215,14 +195,14 @@
                   <div class="clearfix p-b-35"></div>
 
          
-            <div class="clearfix p-b-35"></div>
+                  <div class="clearfix p-b-35"></div>
 
-            <div class="col-sm-12">
+                  <div class="col-sm-12">
                      <div class="form-group fg-line ">
                         <label id="id-cantidad_horas_practica" for="">Cantidad adicional de horas de práctica semanales</label>
                         
                         <div class="fg-line">
-                        <input type="text" class="form-control input-sm input-mask" name="cantidad_horas_practica" id="cantidad_horas_practica" data-mask="0000" placeholder="Ej: 3">
+                        <input type="text" class="form-control input-sm input-mask" name="cantidad_horas_practica" id="cantidad_horas_practica" data-mask="0000" placeholder="Ej: 3" value="{{$evaluacion->cantidad_horas_practica}}">
                         </div>
 
                         
@@ -274,9 +254,9 @@
                   </div>
 
              
-          <div class="clearfix p-b-35"></div>
+                  <div class="clearfix p-b-35"></div>
 
-          <div class="col-sm-12">
+                  <div class="col-sm-12">
                      <div class="form-group fg-line ">
                         <label id="id-evento_formula">Participación evento</label>
                         
@@ -294,10 +274,10 @@
                    </div>
 
              
-          <div class="clearfix p-b-35"></div>
+                  <div class="clearfix p-b-35"></div>
 
 
-          <div class="col-sm-12">
+                  <div class="col-sm-12">
                      <div class="form-group fg-line ">
                         <label  id="id-fiesta_formula">Participación en fiesta social</label>
                         
@@ -326,7 +306,13 @@
                       <input type="text" id="{{$formula->id}}_formula" name="{{$formula->id}}_formula" value="" hidden="hidden">
                       <div class="p-t-10">
                         <div class="toggle-switch" data-ts-color="purple">
-                        <span class="p-r-10 f-700 f-16">No</span><input class="formula_switch" id="{{$formula->id}}-switch" type="checkbox">
+                        <span class="p-r-10 f-700 f-16">No</span><input class="formula_switch" id="{{$formula->id}}-switch" type="checkbox" 
+                        
+                        @if(isset($formulas_evaluadas[$formula->nombre]))
+                          checked
+                        @endif
+
+                        >
                         
                         <label class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
                         </div>
@@ -357,36 +343,21 @@
 						<hr>
 						<!-- SECCION BOTONES --> 
 						<div class="row">
-			                <div class="col-sm-12 text-right">  
-                        <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" data-estatus="0">Salvar</button>
-			                  <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" data-estatus="1">Guardar</button>
-			                  <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
-			                </div>
+              <div class="col-sm-12 text-right">  
+                <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" data-estatus="0">Salvar</button>
+                <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" data-estatus="1">Guardar</button>
+                <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
+              </div>
 						</div>
 
 						<div class="row">
-	                        <div class="col-sm-12 text-center">
-	                         
-	                          <!-- <i class="zmdi zmdi-cloud zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Guardar" data-toggle="tooltip" data-placement="bottom" title=""></i> -->
-	                          <a href="{{url('/')}}/especiales/evaluaciones"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
-	                          <br>
-	                          <span class="f-700 opaco-0-8 f-16">Sección Pruebas</span>
-		                    </div>						
+              <div class="col-sm-12 text-center">
+                 <a href="{{url('/')}}/especiales/evaluaciones"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
+                 <br>
+                 <span class="f-700 opaco-0-8 f-16">Sección Pruebas</span>
+              </div>						
 						</div>
 
-
-
-						<div class="clearfix"></div>
-						<div class="clearfix"></div>
-						<br><br>
-						<!-- <div class="row">
-							<div class="col-md-6">
-								<div class="f-20 f-500 text-right">Evaluado Por</div>
-							</div>
-							<div class="col-md-6">
-								<div class="f-20 f-500 text-left">Supervisado Por</div>
-							</div>
-						</div> -->
 						<nav class="navbar navbar-default navbar-fixed-bottom">
               				<div class="container">
                             	<div class="col-xs-1 p-t-15 f-700 text-center" id="text-progreso" >40%</div>
@@ -403,8 +374,7 @@
             			</nav>
 					</form>	
 				</div><!-- END CARD BODY -->
-	
-	        </div>
+	     </div>
 		</div>
 	</section>
 
@@ -415,7 +385,7 @@
 
   <script>
 
-    route_agregar="{{url('/')}}/especiales/evaluaciones/agregar";
+    route_agregar="{{url('/')}}/especiales/evaluaciones/evaluar";
     route_principal="{{url('/')}}/especiales/evaluaciones";
 
     var arrayNotas = new Array();
@@ -423,47 +393,50 @@
     var sliders = <?php echo json_encode($sliders);?>;
     var cantidad_items = parseInt("{{$numero_de_items}}");
     var puntos_totales = parseInt("{{$numero_de_items*10}}")
-    var nota_actual = 0;
-    var puntos_acumulados = 0;
+    var puntos_acumulados = parseInt("{{$total}}");
 
     $(document).ready(function() {
 
-    	$("#agregar_evaluacion")[0].reset();
-
-    	alumno_id = "{{{ $alumno_id or 'Default' }}}";
-
-      if(alumno_id != 'Default'){
-         $('#alumno_id').val(alumno_id)
-         $('#alumno_id').selectpicker('refresh')
-          
-      }
       $("#agregar_evaluacion")[0].reset();
 
-      $.each(sliders, function(index,id){
+      if("{{$evaluacion->asistencia_taller}}" == 1){
+        $("#taller_formula").val(1);  //VALOR POR DEFECTO
+        $("#taller-switch").attr("checked", true); //VALOR POR DEFECTO
+      }
 
-        $('#slider'+id).noUiSlider ({
-          start: [ 0 ],
-            //connect: true,
-            //direction: 'rtl',
-            behaviour: 'tap-drag',
-            step: 1,
+      if("{{$evaluacion->practica_horas_personalizadas}}" == 1){
+        $("#personalizada_formula").val(1);  //VALOR POR DEFECTO
+        $("#personalizada-switch").attr("checked", true); //VALOR POR DEFECTO
+      }
+
+      if("{{$evaluacion->participacion_evento}}" == 1){
+        $("#evento_formula").val(1);  //VALOR POR DEFECTO
+        $("#evento-switch").attr("checked", true); //VALOR POR DEFECTO
+      }
+
+      if("{{$evaluacion->participacion_fiesta_social}}" == 1){
+        $("#fiesta_formula").val(1);  //VALOR POR DEFECTO
+        $("#fiesta-switch").attr("checked", true); //VALOR POR DEFECTO
+      }
+
+      $.each(sliders, function(index,array){
+        $('#slider'+array.id).noUiSlider ({
+          start: [ array.nota ],
+          behaviour: 'tap-drag',
+          step: 1,
           range: {
             'min': 0,
             'max': 10
           }
         });
 
-        $('#slider'+id).Link('lower').to($('#value-lower'+id));
+        $('#slider'+array.id).Link('lower').to($('#value-lower'+array.id));
+
+        arrayNotas[index] = array.nota;
       });
       
-      for (var i = 0; i < cantidad_items; i++) {
-        arrayNotas[i] = 0;
-      }
-
       $('.slider-mov').change(function() {
         notas = $('.slider-value-visible').text();
-        //Divido la cadena usando el separador
-        //punto (.) de las notas    
         arrayNotas = notas.split(".");
         puntos_acumulados = 0;
         for (var i = 0; i < arrayNotas.length-1; i++) {
@@ -526,6 +499,7 @@
     //GUARDAR EXAMEN
 
     $(".guardar").click(function(){
+
       var route = route_agregar;
       var token = $('input:hidden[name=_token]').val();
       var datos = $( "#agregar_evaluacion" ).serialize();
@@ -538,7 +512,7 @@
       	headers: {'X-CSRF-TOKEN': token},
       	type: 'POST',
       	dataType: 'json',
-      	data: datos+'&nota_detalle='+arrayNotas+'&nombre_detalle='+items_a_evaluar+'&estatus='+estatus,
+      	data: datos+'&nota_detalle='+arrayNotas+'&estatus='+estatus,
         success:function(respuesta){
           setTimeout(function(){ 
             var nFrom = $(this).attr('data-from');
@@ -552,12 +526,9 @@
             	$("#agregar_evaluacion")[0].reset();
             	var nTitle="Ups! ";
             	var nMensaje=respuesta.mensaje;
-              	
-              if("{{$usuario_tipo}}" != 3){
-              	window.location = route_principal;
-              }else{
-              	window.location = "{{$_SERVER['HTTP_REFERER']}}"
-              }
+              
+              window.location = route_principal;
+              
             }else{
               var nTitle="Ups! ";
               var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
@@ -630,6 +601,7 @@
     });
 
     $('.item_checkbox').change(function(){
+
       id = $(this).attr('id')
       explode = id.split('_')
       id = explode[1];

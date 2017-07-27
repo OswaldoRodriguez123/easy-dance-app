@@ -629,8 +629,7 @@ class ExamenController extends BaseController {
         }       
     }
 
-    public function evaluar($id)
-    {   
+    public function evaluar($id){   
         
         $examen = Examen::join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
             ->join('config_tipo_examenes', 'examenes.tipo', '=', 'config_tipo_examenes.id')

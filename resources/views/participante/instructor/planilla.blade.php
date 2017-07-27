@@ -1843,10 +1843,10 @@
 
         });
 
-    if("{{$instructor->boolean_promocionar}}" == 1){
+      if("{{$instructor->boolean_promocionar}}" == 1){
           $("#boolean_promocionar").val('1');  //VALOR POR DEFECTO
           $("#promocionar").attr("checked", true); //VALOR POR DEFECTO
-        }
+      }
 
       $("#promocionar").on('change', function(){
           if ($("#promocionar").is(":checked")){
