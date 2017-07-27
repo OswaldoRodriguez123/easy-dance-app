@@ -60,6 +60,7 @@
                                 <tr>
                                     <th class="text-center" data-column-id="cliente"></th>
                                     <th class="text-center" data-column-id="fecha">Fecha de Registro</th>
+                                    <th class="text-center" data-column-id="hora">Hora de Registro</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
                                     <th class="text-center" data-column-id="como_se_entero" data-order="desc">Cómo se Enteró</th>
@@ -98,6 +99,7 @@
                                 <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="row_{{$id}}" class="seleccion" >
                                     <td class="text-center previa"> @if($visitante['cliente'])<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">{{$visitante['fecha_registro']}}</td>
+                                    <td class="text-center previa">{{$visitante['hora_registro']}}</td>
                                     <td class="text-center previa">
                                     @if($visitante['sexo']=='F')
                                     <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
@@ -157,7 +159,7 @@
           processing: true,
           serverSide: false,
           pageLength: 25,   
-          order: [[1, 'desc']],
+          order: [[1, 'desc'],[2, 'desc']],
           fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
             $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
             $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
