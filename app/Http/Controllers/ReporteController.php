@@ -1616,14 +1616,14 @@ class ReporteController extends BaseController
 
         foreach($config_servicio as $item){
 
-            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => 1);
+            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo']);
         }
 
         $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
         foreach($config_producto as $item){
 
-            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => 2);
+            $tmp[]=array('id' => $item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo']);
            
         }
 
