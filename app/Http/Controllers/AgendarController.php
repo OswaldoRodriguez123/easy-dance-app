@@ -297,9 +297,9 @@ class AgendarController extends BaseController
 
             $asistencia = Asistencia::where('tipo',3)->where('tipo_id',$clasepersonalizada->id)->where('fecha',$dt->toDateString());
 
-            if(!$asistencia){
+            // if(!$asistencia){
                 $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-            }
+            // }
 			
 			while($dt->timestamp<$df->timestamp){
 				$fecha="";
@@ -347,9 +347,9 @@ class AgendarController extends BaseController
 
             $asistencia = Asistencia::where('tipo',3)->where('tipo_id',$clasepersonalizada->id)->where('fecha',$dt->toDateString());
 
-            if(!$asistencia){
+            // if(!$asistencia){
                 $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-            }
+            // }
 
             while($dt->timestamp<$df->timestamp){
                 $fecha="";

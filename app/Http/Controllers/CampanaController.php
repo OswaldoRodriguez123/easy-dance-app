@@ -23,6 +23,7 @@ use App\ClaseGrupal;
 use App\HorarioClaseGrupal;
 use App\InscripcionClaseGrupal;
 use App\Llamada;
+use App\Observacion;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -2594,12 +2595,19 @@ class CampanaController extends BaseController {
                 }else{
                     $contribuyo = 1;
                 }
-            
-                $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
-                    ->where('usuario_id','=',$alumno->id)
-                    ->where('usuario_tipo',1)
-                ->sum('importe_neto');
 
+                $observacion = Observacion::where('tipo_evento_id', '=', $campana_id)
+                    ->where('tipo_evento', '=', 1)
+                    ->where('tipo_usuario_id',$alumno->id)
+                    ->where('tipo_usuario',1)
+                ->first();
+
+                if($observacion){
+                    $observacion = $observacion->observacion;
+                }else{
+                    $observacion = '';
+                }
+            
                 $activacion = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                     ->where('usuarios_tipo.tipo_id', $alumno->id)
                     ->whereIn('usuarios_tipo.tipo', $tipo_clase)
@@ -2638,9 +2646,9 @@ class CampanaController extends BaseController {
                 $alumno_array['contribuyo'] = $contribuyo;
                 $alumno_array['imagen'] = $imagen;
                 $alumno_array['activacion']=$activacion;
-                $alumno_array['deuda']=$deuda;
                 $alumno_array['tipo'] = 1;
                 $alumno_array['llamadas'] = $llamadas;
+                $alumno_array['observacion'] = $observacion;
 
                 $array[$alumno->id] = $alumno_array;
 

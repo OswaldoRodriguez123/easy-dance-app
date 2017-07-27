@@ -95,12 +95,11 @@
                                 <tr>
                                     <th class="text-center" data-column-id="iconos"></th>
                                     <th class="text-center" data-column-id="imagen">Imagen</th>
-                                    <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
-                                    <th class="text-center" data-column-id="estatu_e" data-order="desc">Balance E</th>
                                     <th class="text-center" data-column-id="estatu_c" data-order="desc">Contribuyo</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Contribución</th>
+                                    <th class="text-center" data-column-id="operacion" data-order="desc" >Operaciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -152,7 +151,6 @@
                                   }
 
 	                                $talla_franela = $alumno['talla_franela'];
-	                                $deuda = $alumno['deuda'];
 
                                 }else{
                               		$camiseta_programacion = '';
@@ -168,7 +166,6 @@
 
                                 	'Camiseta y Programación: ' . $camiseta_programacion . '<br>'.
                                 	'Talla: ' . $talla_franela . '<br>'.
-                                	'Cantidad que adeuda: ' . number_format($deuda, 2, '.' , '.')  . '<br>'.
                                   'Modalidad de pago: <span id="tipo_pago_'.$id.'">' . $tipo_pago . '</span><br>'.
                                   'Registro de llamada: ' . $alumno['llamadas'] . '<br>'.
                                 '</p>';
@@ -176,7 +173,7 @@
                               ;?>
 
 
-                              <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion">
+                              <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-observacion="{{$alumno['observacion']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}">
 
                                   
                                 <td class="text-center previa"> 
@@ -196,9 +193,7 @@
                                         <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
                                       @endif
                                   @endif
-                                </td>
-                                <td class="text-center previa">{{$alumno['identificacion']}}</td>
-                                <td class="text-center previa">
+                                </td>                                <td class="text-center previa">
                                 @if($alumno['sexo']=='F')
                                   <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> 
                                 @else
@@ -206,9 +201,6 @@
                                 @endif
                                 </td>
                                 <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
-                                <td class="text-center previa">
-                                  <span style="display: none">{{$alumno['deuda']}}</span><i class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
-                                </td>
                                 <td class="text-center previa">
                                   @if($alumno['contribuyo'])
                                     <i class="zmdi zmdi-mood c-verde zmdi-hc-fw f-20 p-r-3"></i>
@@ -219,6 +211,12 @@
                                 <td class="text-center"> 
                                   {{ number_format($alumno['contribucion'], 2, '.' , '.') }}
 
+                                </td>
+                                <td class="text-center previa">
+
+                                  <i data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" data-content = "Ver Observación" class="zmdi zmdi-search f-20 p-r-10 pointer"></i> 
+
+                                  <i id="estatus_{{$id}}" data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" class="zmdi {{ empty($alumno['observacion']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw" data-content = "{{ empty($alumno['observacion']) ? 'No Posee Observación' : 'Posee Observación' }}"></i>
                                 </td>
                               </tr>
   
@@ -258,8 +256,8 @@
           paging: false,
           order: [[4, 'asc']],
           fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).addClass( "text-center" );
-            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).attr( "onclick","previa(this)" );
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "disabled" );
           },
           language: {
                           processing:     "Procesando ...",

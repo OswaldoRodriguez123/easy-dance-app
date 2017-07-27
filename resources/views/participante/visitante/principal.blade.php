@@ -120,7 +120,7 @@
                                     <td class="text-center previa">{{$visitante['como_se_entero']}}</td>
                                     <td class="text-center previa">{{$visitante['instructor_nombre']}} {{$visitante['instructor_apellido']}}</td>
 
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> <i name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer"></i></td>
                                     
                                 </tr>
                             @endforeach 
