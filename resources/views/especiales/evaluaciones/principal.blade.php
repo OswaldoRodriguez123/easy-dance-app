@@ -87,7 +87,7 @@
                                     <td class="text-center previa">{{$evaluacion['alumno_nombre']}} {{$evaluacion['alumno_apellido']}}</td>
                                     <td class="text-center previa">{{$evaluacion['instructor_nombre']}} {{$evaluacion['instructor_apellido']}}</td>
                                     <td class="text-center previa">{{$evaluacion['nombreExamen']}}</td>
-                                    <td class="text-center previa">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$evaluacion['created_at'])->format('d-m-Y')}}</td>
+                                    <td class="text-center previa">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$evaluacion['created_at'])->format('Y-m-d')}}</td>
                                     <td class="text-center previa">{{$evaluacion['total']}}</td>
                                     <td class="text-center previa">
                                         @if($evaluacion['estatus'] == 1)
