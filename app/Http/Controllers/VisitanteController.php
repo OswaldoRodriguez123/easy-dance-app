@@ -163,6 +163,7 @@ class VisitanteController extends BaseController {
             $visitante->dias_clase_id = $request->dias_clase_id;
             $visitante->especialidad_id = $request->especialidad_id;
             $visitante->fecha_registro = Carbon::now();
+            $visitante->hora_registro = Carbon::now();
             $visitante->instructor_id = $request->instructor_id;
             $visitante->interes_id = $request->interes_id;
             $visitante->tipologia_id = $request->tipologia_id;
