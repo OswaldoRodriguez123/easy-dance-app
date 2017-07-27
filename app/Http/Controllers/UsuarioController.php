@@ -33,6 +33,7 @@ use App\ClasePersonalizada;
 use App\Regalo;
 use App\ItemsFacturaProforma;
 use App\Acuerdo;
+use App\Visitante;
 use Validator;
 use Mail;
 use Carbon\Carbon;
@@ -537,6 +538,15 @@ class UsuarioController extends BaseController {
             $congelado->boolean_congelacion = 0;
 
             $congelado->save();
+        }
+
+        $visitantes = Visitante::all();
+
+        foreach($visitantes as $visitante){
+            $hora_registro = Carbon::createFromFormat('Y-m-d H:i:s',$visitante->created_at)->toTimeString();
+            $visitante->hora_registro = $hora_registro;
+
+            $visitante->save();
         }
 
 
