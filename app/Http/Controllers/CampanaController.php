@@ -28,6 +28,7 @@ use Validator;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Session;
 use Image;
 use MP;
@@ -325,10 +326,18 @@ class CampanaController extends BaseController {
         }
     }
 
-    public function eliminarpatrocinador($id)
+    public function eliminarpatrocinador(Request $request)
     {
 
-        $patrocinador = Patrocinador::find($id);
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        if($academia->password_supervision){
+            if(!Hash::check($request->password_supervision, $academia->password_supervision)) {
+                return response()->json(['error_mensaje'=> 'Ups! La contraseña no coincide', 'status' => 'ERROR-PASSWORD'],422);
+            }
+        }
+
+        $patrocinador = Patrocinador::find($request->id);
         $usuario_externo = UsuarioExterno::find($patrocinador->externo_id);
 
         if($usuario_externo){
@@ -354,7 +363,7 @@ class CampanaController extends BaseController {
         
             
         if($patrocinador->delete()){
-            return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! El patrocinador se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
