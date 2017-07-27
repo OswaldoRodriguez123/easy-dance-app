@@ -58,11 +58,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="organizador"></th>
-                                    @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-                                        <th class="text-center" data-column-id="confirmacion" data-type="numeric"></th>
-                                    @endif
-                                    <th class="text-center" data-column-id="identificacion">Identificación</th>
+                                    <th class="text-center" data-column-id="imagen">Imagen</th>
                                     <th class="text-center" data-column-id="nombre">Nombre</th>
                                     <th class="text-center" data-column-id="instructor">Instructor</th>
                                     <th class="text-center" data-column-id="examen">Valoración</th>
@@ -74,28 +70,30 @@
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($evaluacion as $evaluaciones)
-                                <?php $id = $evaluaciones->id; ?>
-                                <?php $alumno_id = $evaluaciones->alumno_id; ?>
-                                <tr id="{{$id}}" class="seleccion" data-estatus="{{$evaluaciones->estatus}}">
-                                    <td class="text-center previa"><span style="display: none">{{$evaluaciones->id}}</span></td>
-
-                                    @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-                                        <td class="text-center previa"> @if(isset($activacion[$alumno_id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
-                                    @endif
+                            @foreach ($evaluaciones as $evaluacion)
+                                <?php $id = $evaluacion['id']; ?>
+                                <tr id="{{$id}}" class="seleccion" data-estatus="{{$evaluacion['estatus']}}">
                                     <td class="text-center previa">
-                                    {{$evaluaciones->identificacion}}
+                                        @if($evaluacion['imagen'])
+                                          <img class="lv-img" src="{{url('/')}}/assets/uploads/usuario/{{$evaluacion['imagen']}}" alt="">
+                                        @else
+                                            @if($evaluacion['sexo'] == 'M')
+                                              <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                            @else
+                                              <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                        @endif
+                                      @endif
                                     </td>
-                                    <td class="text-center previa">{{$evaluaciones->alumno_nombre}} {{$evaluaciones->alumno_apellido}}</td>
-                                    <td class="text-center previa">{{$evaluaciones->instructor_nombre}} {{$evaluaciones->instructor_apellido}}</td>
-                                    <td class="text-center previa">{{$evaluaciones->nombreExamen}}</td>
-                                    <td class="text-center previa">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$evaluaciones->created_at)->format('d-m-Y')}}</td>
-                                    <td class="text-center previa">{{$evaluaciones->total}}</td>
+                                    <td class="text-center previa">{{$evaluacion['alumno_nombre']}} {{$evaluacion['alumno_apellido']}}</td>
+                                    <td class="text-center previa">{{$evaluacion['instructor_nombre']}} {{$evaluacion['instructor_apellido']}}</td>
+                                    <td class="text-center previa">{{$evaluacion['nombreExamen']}}</td>
+                                    <td class="text-center previa">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$evaluacion['created_at'])->format('d-m-Y')}}</td>
+                                    <td class="text-center previa">{{$evaluacion['total']}}</td>
                                     <td class="text-center previa">
-                                        @if($evaluaciones->estatus == 1)
+                                        @if($evaluacion['estatus'] == 1)
                                             Finalizada
                                         @else
-                                            En Proceso
+                                            <span class="c-verde">En Proceso</span>
                                         @endif
                                     </td>
                                 </tr>
@@ -135,7 +133,7 @@
             processing: true,
             serverSide: false,
             pageLength: 25,   
-            order: [[0, 'desc']],
+            order: [[4, 'desc']],
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
               $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
               $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6),td:eq(7)', nRow).attr( "onclick","previa(this)" );

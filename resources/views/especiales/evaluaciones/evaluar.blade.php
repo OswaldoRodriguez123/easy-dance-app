@@ -352,8 +352,8 @@
 						<!-- SECCION BOTONES --> 
 						<div class="row">
               <div class="col-sm-12 text-right">  
-                <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" data-estatus="0">Salvar</button>
-                <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" data-estatus="1">Guardar</button>
+                <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" data-estatus="0">Salvar y Continuar</button>
+                <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" data-estatus="1">Guardar Definitivamente</button>
                 <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
               </div>
 						</div>

@@ -33,123 +33,169 @@ class EvaluacionController extends BaseController
     {
         $id_evaluacion=Session::get('id_evaluar');
 
-        $evaluacion_join = Evaluacion::join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
+        $evaluaciones = Evaluacion::join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-            ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen')
+            ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen', 'alumnos.sexo')
             ->where('evaluaciones.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
-        $array = array(2, 4);
+        $in = array(2, 4);
+        $array = array();
 
-        $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
-            ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-            ->select('alumnos.id as id')
-            ->where('users.academia_id','=', Auth::user()->academia_id)
-            ->where('alumnos.deleted_at', '=', null)
-            ->whereIn('usuarios_tipo.tipo', $array)
-            ->where('users.confirmation_token', '!=', null)
-        ->get();
+        foreach($evaluaciones as $evaluacion){
 
-        $collection=collect($alumnoc);
-        $grouped = $collection->groupBy('id');     
-        $activacion = $grouped->toArray();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$evaluacion->alumno_id)
+                ->whereIn('usuarios_tipo.tipo',$in)
+            ->first();
 
-        $usuario_tipo = Session::get('easydance_usuario_tipo');
+            if($usuario){
 
-        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join,'id_evaluacion'=>$id_evaluacion, 'activacion' => $activacion, 'usuario_tipo' => $usuario_tipo]);
+                if($usuario->imagen){
+                    $imagen = $usuario->imagen;
+                }else{
+                    $imagen = '';
+                }
+
+            }else{
+                $imagen = '';
+            }
+
+            $collection=collect($evaluacion);     
+            $evaluacion_array = $collection->toArray();
+            $evaluacion_array['imagen']=$imagen;
+            $array[$evaluacion->id] = $evaluacion_array;
+
+        }
+
+        return view('especiales.evaluaciones.principal')->with(['evaluaciones' => $array,'id_evaluacion'=>$id_evaluacion]);
     }
 
     public function evaluaciones($id)
     {
-        $evaluacion_join = Evaluacion::join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
+        $evaluaciones = Evaluacion::join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-            ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen')
+            ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen', 'alumnos.sexo')
             ->where('evaluaciones.examen_id', '=' , $id)
         ->get();
 
+        $in = array(2, 4);
+        $array = array();
 
-        $array = array(2, 4);
+        foreach($evaluaciones as $evaluacion){
 
-        $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
-            ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-            ->select('alumnos.id as id')
-            ->where('users.academia_id','=', Auth::user()->academia_id)
-            ->where('alumnos.deleted_at', '=', null)
-            ->whereIn('usuarios_tipo.tipo', $array)
-            ->where('users.confirmation_token', '!=', null)
-        ->get();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$evaluacion->alumno_id)
+                ->whereIn('usuarios_tipo.tipo',$in)
+            ->first();
 
-        $collection=collect($alumnoc);
-        $grouped = $collection->groupBy('id');     
-        $activacion = $grouped->toArray();
+            if($usuario){
 
-        $usuario_tipo = Session::get('easydance_usuario_tipo');
+                if($usuario->imagen){
+                    $imagen = $usuario->imagen;
+                }else{
+                    $imagen = '';
+                }
 
-        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join,'id_evaluacion'=>$id, 'activacion' => $activacion, 'usuario_tipo' => $usuario_tipo]);
+            }else{
+                $imagen = '';
+            }
+            
+            $collection=collect($evaluacion);     
+            $evaluacion_array = $collection->toArray();
+            $evaluacion_array['imagen']=$imagen;
+            $array[$evaluacion->id] = $evaluacion_array;
+
+        }
+
+
+        return view('especiales.evaluaciones.principal')->with(['evaluaciones' => $array,'id_evaluacion'=>$id]);
     }
 
-    public function evaluaciones_vista_alumno()
-    {
+    public function evaluaciones_vista_alumno(){
+
         $usuario_id = Session::get('easydance_usuario_id');
 
-        $evaluacion_join = DB::table('evaluaciones')
-            ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
+        $evaluaciones = Evaluacion::join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-            ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen')
+            ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen', 'alumnos.sexo')
             ->where('evaluaciones.alumno_id', '=' , $usuario_id)
         ->get();
 
-        $array = array(2, 4);
+        $in = array(2, 4);
+        $array = array();
 
-        $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
-            ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-            ->select('alumnos.id as id')
-            ->where('users.academia_id','=', Auth::user()->academia_id)
-            ->where('alumnos.deleted_at', '=', null)
-            ->whereIn('usuarios_tipo.tipo', $array)
-            ->where('users.confirmation_token', '!=', null)
-        ->get();
+        foreach($evaluaciones as $evaluacion){
 
-        $collection=collect($alumnoc);
-        $grouped = $collection->groupBy('id');     
-        $activacion = $grouped->toArray();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$evaluacion->alumno_id)
+                ->whereIn('usuarios_tipo.tipo',$in)
+            ->first();
 
-        $usuario_tipo = Session::get('easydance_usuario_tipo');
+            if($usuario){
 
-        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join, 'activacion' => $activacion, 'usuario_tipo' => $usuario_tipo]);
+                if($usuario->imagen){
+                    $imagen = $usuario->imagen;
+                }else{
+                    $imagen = '';
+                }
+
+            }else{
+                $imagen = '';
+            }
+
+            $collection=collect($evaluacion);     
+            $evaluacion_array = $collection->toArray();
+            $evaluacion_array['imagen']=$imagen;
+            $array[$evaluacion->id] = $evaluacion_array;
+
+        }
+
+        return view('especiales.evaluaciones.principal')->with(['evaluaciones' => $array]);
     }
 
-    public function evaluaciones_alumno($id)
-    {
-        $evaluacion_join = DB::table('evaluaciones')
-            ->join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
+    public function evaluaciones_alumno($id){
+
+        $evaluacion_join = Evaluacion::join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-            ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen')
+            ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen','alumnos.sexo')
             ->where('evaluaciones.alumno_id', '=' , $id)
         ->get();
 
-        $array = array(2, 4);
+        $in = array(2, 4);
+        $array = array();
 
-        $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
-            ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-            ->select('alumnos.id as id')
-            ->where('users.academia_id','=', Auth::user()->academia_id)
-            ->where('alumnos.deleted_at', '=', null)
-            ->whereIn('usuarios_tipo.tipo', $array)
-            ->where('users.confirmation_token', '!=', null)
-        ->get();
+        foreach($evaluaciones as $evaluacion){
 
-        $collection=collect($alumnoc);
-        $grouped = $collection->groupBy('id');     
-        $activacion = $grouped->toArray();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$evaluacion->alumno_id)
+                ->whereIn('usuarios_tipo.tipo',$in)
+            ->first();
 
-        $usuario_tipo = Session::get('easydance_usuario_tipo');
+            if($usuario){
 
-        return view('especiales.evaluaciones.principal')->with(['evaluacion' => $evaluacion_join, 'id' => $id, 'activacion' => $activacion, 'usuario_tipo' => $usuario_tipo]);
+                if($usuario->imagen){
+                    $imagen = $usuario->imagen;
+                }else{
+                    $imagen = '';
+                }
+
+            }else{
+                $imagen = '';
+            }
+            
+            $collection=collect($evaluacion);     
+            $evaluacion_array = $collection->toArray();
+            $evaluacion_array['imagen']=$imagen;
+            $array[$evaluacion->id] = $evaluacion_array;
+
+        }
+
+        return view('especiales.evaluaciones.principal')->with(['evaluaciones' => $array, 'id' => $id]);
     }
 
     /**
