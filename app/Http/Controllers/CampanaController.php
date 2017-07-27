@@ -2574,7 +2574,7 @@ class CampanaController extends BaseController {
             $in_credencial = array(0,$clasegrupal->instructor_id);
 
             $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela', 'alumnos.tipo_pago', 'inscripcion_clase_grupal.fecha_inscripcion')
+                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela', 'alumnos.tipo_pago', 'inscripcion_clase_grupal.fecha_inscripcion')
                 ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $clase_grupal_id)
                 ->where('inscripcion_clase_grupal.boolean_congelacion',0)
                 ->where('alumnos.deleted_at', '=', null)
@@ -2597,7 +2597,7 @@ class CampanaController extends BaseController {
                 }
 
                 $observacion = Observacion::where('tipo_evento_id', '=', $campana_id)
-                    ->where('tipo_evento', '=', 1)
+                    ->where('tipo_evento', 1)
                     ->where('tipo_usuario_id',$alumno->id)
                     ->where('tipo_usuario',1)
                 ->first();
@@ -2668,4 +2668,30 @@ class CampanaController extends BaseController {
         
     }
 
+    public function updateObservacion(Request $request){
+
+        $observacion = Observacion::where('tipo_evento_id', '=', $request->tipo_evento_id)
+            ->where('tipo_evento', '=', 1)
+            ->where('tipo_usuario_id',$request->tipo_usuario_id)
+            ->where('tipo_usuario',1)
+        ->first();
+
+        if(!$observacion){
+
+            $observacion = new Observacion;
+
+            $observacion->tipo_evento_id = $request->tipo_evento_id;
+            $observacion->tipo_evento = 1;
+            $observacion->tipo_usuario_id = $request->tipo_usuario_id;
+            $observacion->tipo_usuario = 1;
+        }
+
+        $observacion->observacion = $request->observacion;
+    
+        if($observacion->save()){
+            return response()->json(['mensaje' => '¡Excelente! La observación se ha guardado satisfactoriamente', 'status' => 'OK', 'observacion' => $observacion->observacion, 'id' => $request->tipo_usuario_id, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
 }

@@ -702,10 +702,10 @@
 @section('js') 
 <script type="text/javascript">
 
-    route_agregar="{{url('/')}}/agendar/clases-grupales/agregar";
-    route_principal="{{url('/')}}/agendar/clases-grupales";
-    route_horario="{{url('/')}}/agendar/clases-grupales/agregarhorario";
-    route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminarhorario";
+  route_agregar="{{url('/')}}/agendar/clases-grupales/agregar";
+  route_principal="{{url('/')}}/agendar/clases-grupales";
+  route_horario="{{url('/')}}/agendar/clases-grupales/agregarhorario";
+  route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminarhorario";
 
   $(document).ready(function(){
 

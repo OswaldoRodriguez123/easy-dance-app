@@ -20,6 +20,62 @@
 @stop
 @section('content')
 
+            <div class="modal fade" id="modalObservacion" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno: <span id="span_alumno"></span> <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="form_editar" id="form_editar"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                 <div class="form-group fg-line">
+                                    <label for="nombre">Observación</label>
+                                    <div class="fg-line">
+                                      <textarea class="form-control" id="observacion" name="observacion" rows="2" placeholder="500 Caracteres"></textarea>
+                                    </div>
+                                 </div>
+                                    <div class="has-error" id="error-observacion">
+                                      <span >
+                                          <small id="error-descripcion_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+
+                               <input type="hidden" id="tipo_usuario_id" name="tipo_usuario_id"></input>
+                               <input type="hidden" id="tipo_evento_id" name="tipo_evento_id" value="{{$id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12" href="#" id="editar">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
 
             <section id="content">
                 <div class="container">
@@ -109,8 +165,7 @@
                                 
                                 $contenido = '';
 
-                                $id = $alumno['inscripcion_id'];
-                                $alumno_id = $alumno['id'];
+                                $id = $alumno['id'];
 
                                 if($alumno['imagen']){
                                     $imagen = '/assets/uploads/usuario/'.$alumno['imagen'];
@@ -216,7 +271,7 @@
 
                                   <i data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" data-content = "Ver Observación" class="zmdi zmdi-search f-20 p-r-10 pointer"></i> 
 
-                                  <i id="estatus_{{$id}}" data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" class="zmdi {{ empty($alumno['observacion']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw" data-content = "{{ empty($alumno['observacion']) ? 'No Posee Observación' : 'Posee Observación' }}"></i>
+                                  <i id="estatus-{{$id}}" data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" class="zmdi {{ empty($alumno['observacion']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw" data-content = "{{ empty($alumno['observacion']) ? 'No Posee Observación' : 'Posee Observación' }}"></i>
                                 </td>
                               </tr>
   
@@ -245,6 +300,8 @@
 @section('js') 
             
       <script type="text/javascript">
+
+        route_editar="{{url('/')}}/especiales/campañas/progreso/clases-grupales/editar";
 
         var hombres = "{{$hombres}}";
         var mujeres = "{{$mujeres}}";
@@ -367,7 +424,93 @@
         }
 
     });
-      
+
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-search', function () {
+
+        var id = $(this).closest('tr').attr('id');
+        var nombre = $(this).closest('tr').data('nombre');
+        var observacion = $(this).closest('tr').data('observacion');
+
+        $('#tipo_usuario_id').val(id);
+        $('#span_alumno').text(nombre);
+        $('#observacion').val(observacion);
+        
+        $('#modalObservacion').modal('show');
+    });
+
+    $("#editar").click(function(){
+
+      var route = route_editar;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $( "#form_editar" ).serialize(); 
+      procesando();  
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:datos,
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+
+                $('#'+respuesta.id).data('observacion',respuesta.observacion)
+
+                if(respuesta.observacion){
+                  $("#estatus-"+respuesta.id).removeClass('c-amarillo zmdi-dot-circle');
+                  $("#estatus-"+respuesta.id).addClass('c-verde zmdi-check');
+                }else{
+                  $("#estatus-"+respuesta.id).removeClass('c-verde zmdi-check');
+                  $("#estatus-"+respuesta.id).addClass('c-amarillo zmdi-dot-circle');
+                }
+
+                $('.modal').modal('hide')
+
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;                                      
+          
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }  
+
+              finprocesado();
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                     
+              
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              if (typeof msj.responseJSON === "undefined") {
+                window.location = "{{url('/')}}/error";
+              }
+              if(msj.responseJSON.status=="ERROR"){
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }                        
+              finprocesado();
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
+  });
+
   </script>
 
 @stop
