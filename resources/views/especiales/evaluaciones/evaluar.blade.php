@@ -183,8 +183,8 @@
                   </div>
                 </div>
 
-
-                <div class="col-sm-12">
+    
+             <!--  <div class="col-sm-12">
                <div class="form-group fg-line">
                   <label for="nombre">Fórmula</label>
                   <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -346,7 +346,7 @@
                   </div>
                   </div>
                </div>
-             </div>
+             </div> -->
 
 						<hr>
 						<!-- SECCION BOTONES --> 

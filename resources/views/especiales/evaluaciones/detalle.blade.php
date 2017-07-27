@@ -209,7 +209,7 @@
                             <div class="clearfix p-b-20"></div>
                             <div class="clearfix p-b-20"></div>
 
-                            <span class="f-18 f-700 text-center c-morado"> Fórmula de éxito </span>
+                            <!-- <span class="f-18 f-700 text-center c-morado"> Fórmula de éxito </span>
 
 
                             <hr class="linea-morada">
@@ -256,7 +256,7 @@
                             @endforeach
 
 
-                            <br><br>
+                            <br><br> -->
 
                             Realizado por : {{$examen->instructor_nombre}} {{$examen->instructor_apellido}}
 

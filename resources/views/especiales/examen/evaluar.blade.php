@@ -196,7 +196,7 @@
                 </div>
 
 
-                <div class="col-sm-12">
+                <!-- <div class="col-sm-12">
                <div class="form-group fg-line">
                   <label for="nombre">Fórmula</label>
                   <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
@@ -352,7 +352,7 @@
                   </div>
                   </div>
                </div>
-             </div>
+             </div> -->
 
 						<hr>
 						<!-- SECCION BOTONES --> 
@@ -367,26 +367,12 @@
 						<div class="row">
 	                        <div class="col-sm-12 text-center">
 	                         
-	                          <!-- <i class="zmdi zmdi-cloud zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Guardar" data-toggle="tooltip" data-placement="bottom" title=""></i> -->
 	                          <a href="{{url('/')}}/especiales/evaluaciones"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
 	                          <br>
 	                          <span class="f-700 opaco-0-8 f-16">Sección Pruebas</span>
 		                    </div>						
 						</div>
 
-
-
-						<div class="clearfix"></div>
-						<div class="clearfix"></div>
-						<br><br>
-						<!-- <div class="row">
-							<div class="col-md-6">
-								<div class="f-20 f-500 text-right">Evaluado Por</div>
-							</div>
-							<div class="col-md-6">
-								<div class="f-20 f-500 text-left">Supervisado Por</div>
-							</div>
-						</div> -->
 						<nav class="navbar navbar-default navbar-fixed-bottom">
               				<div class="container">
                             	<div class="col-xs-1 p-t-15 f-700 text-center" id="text-progreso" >40%</div>

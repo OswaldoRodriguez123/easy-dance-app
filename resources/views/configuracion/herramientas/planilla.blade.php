@@ -810,14 +810,14 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="academia-administrativo"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalFormula-Academia">
+                            <!-- <tr class="detalle" data-toggle="modal" href="#modalFormula-Academia">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10">  <i class="zmdi zmdi-star-circle f-22"></i> </span>
                                <span class="f-14"> Formula de Exito </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="academia-administrativo"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
-                            </tr>
+                            </tr> -->
                             <tr class="detalle" data-toggle="modal" href="#modalValoracion-Academia">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
