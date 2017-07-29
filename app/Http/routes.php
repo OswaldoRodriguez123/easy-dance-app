@@ -140,6 +140,8 @@ Route::get('blog/directorio', 'BlogController@directorio');
 
 Route::group(['middleware' => ['auth','verified'] ], function () {
 
+	// DESDE AQUI NECESITAN ESTAR AUTENTICADO
+	
 	Route::get('/logout', 'LoginController@getLogout');
 	Route::get('/seleccionar-tipo', 'UsuarioController@seleccionar_tipo');
 	Route::post('/seleccionar-tipo/{id}', 'UsuarioController@postSeleccionar');
@@ -155,7 +157,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::post('notificacion_eliminadas', 'NotificacionController@eliminarNotificaciones');
 	Route::post('notificacion_nueva', 'NotificacionController@nuevaNotificaion');
 
-	// DESDE AQUI NECESITAN ESTAR AUTENTICADO
+	
 
 	/*------------------------------------------------------
 	//MIDDLEWARE ADMINISTRADOR

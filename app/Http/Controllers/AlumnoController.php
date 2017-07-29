@@ -197,21 +197,12 @@ class AlumnoController extends BaseController
         foreach($alumnos as $alumno){
             $fecha_final = Carbon::createFromFormat('Y-m-d',$alumno->fecha_final);
 
-            if(Carbon::now() <= $fecha_final){
-                $dias_vencimiento = $fecha_final->diffInDays(Carbon::now());
+            $dias_vencimiento = $fecha_final->diffInDays(Carbon::now());
 
-                $collection=collect($alumno);     
-                $alumno_array = $collection->toArray();
-                $alumno_array['dias_vencimiento']=$dias_vencimiento;
-                $array[] = $alumno_array;
-
-            }else{
-                $alumno->fecha_inicio = '0000-00-00';
-                $alumno->final = '0000-00-00';
-                $alumno->boolean_congelacion = 0;
-
-                $alumno->save();
-            }
+            $collection=collect($alumno);     
+            $alumno_array = $collection->toArray();
+            $alumno_array['dias_vencimiento']=$dias_vencimiento;
+            $array[] = $alumno_array;
         }
 
         return view('participante.alumno.congelados')->with(['alumnos' => $array, 'deuda' => $deuda]);
