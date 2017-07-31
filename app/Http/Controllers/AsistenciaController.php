@@ -1816,7 +1816,7 @@ class AsistenciaController extends BaseController
         }
 
         $horario_staff = HorarioStaff::where('dia_de_semana_id',$dia_actual)
-        ->where('staff_id',$staff_id)
+          ->where('staff_id',$staff_id)
         ->first();
 
         if($horario_staff){
@@ -1848,6 +1848,8 @@ class AsistenciaController extends BaseController
           }else{
             return response()->json(['status' => 'ERROR', 'mensaje' => "Ups! Ha ocurrido un error"],422);
           }        
+        }else{
+          return response()->json(['status' => 'ERROR', 'mensaje' => "Ups! El staff no posee un horario configurado para el dia de hoy"],422);
         }
       }
     }
