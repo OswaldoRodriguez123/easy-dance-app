@@ -1708,13 +1708,14 @@ class AdministrativoController extends BaseController {
         
         $rules = [
             'usuario_id' => 'required',
-            'combo' => 'required',
+            'combo' => 'required|min:1',
             'cantidad' => 'required|numeric|min:1',
         ];
 
         $messages = [
             'usuario_id.required' => 'Ups! El Cliente es requerido',
             'combo.required' => 'Ups! El Producto o Servicio es requerido',
+            'combo.min' => 'Ups! El Producto o Servicio es requerido',
             'cantidad.required' => 'Ups! El Cantidad es invalido, solo se aceptan numeros',
             'cantidad.numeric' => 'Ups! El Cantidad es requerido',
             'cantidad.min' => 'El mínimo de cantidad permitida es 1',
@@ -1727,6 +1728,10 @@ class AdministrativoController extends BaseController {
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
         }else{
+
+            if(!$request->combo){
+                return response()->json(['errores' => ['combo' => [0, 'Ups! El Producto o Servicio es requerido']], 'status' => 'ERROR'],422);
+            }
 
             $array = array();
             $explode = explode("-", $request->combo);

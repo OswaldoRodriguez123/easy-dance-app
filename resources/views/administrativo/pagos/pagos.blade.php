@@ -340,28 +340,6 @@
                                 <form name="agregar_item" id="agregar_item"  >
 
                                   <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                  <span class="f-20 text-center" id="id-producto-servicio">Producto o Servicio</span><i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Se refiere a todos aquellos servicios y productos que ofreces en tu academia, algunos ejemplos de estos  son, clases personalizadas,  clases  grupales,  secciones de asesoría, , franelas, gorras, gomas de baile entre otros,  los productos y  servicios  que deseas podrán ser agregados en la sección de configuración general en el campo llamado productos  y servicios" title="" data-original-title="Ayuda"></i>
-
-
-                                  <div class="clearfix p-b-35"></div>
-
-                                  <div class="col-sm-12">
-                                     <div class="form-group fg-line ">
-                                        <div class="p-t-10">
-                                        <label class="radio radio-inline m-r-20">
-                                            <input name="tipo" id="servicio" value="servicio" type="radio" checked >
-                                            <i class="input-helper"></i>  
-                                            Servicio <i id="servicio2" class="icon_f-servicios c-verde f-20"></i>
-                                        </label>
-                                        <label class="radio radio-inline m-r-20">
-                                            <input name="tipo" id="producto" value="producto" type="radio">
-                                            <i class="input-helper"></i>  
-                                            Producto <i id="producto2" class="icon_f-productos f-20"></i>
-                                        </label>
-                                        </div>
-                                        
-                                     </div>
-                                  </div>
                                                                   
                                   <div class="clearfix p-b-35"></div>
 
@@ -401,18 +379,94 @@
                               <div class="clearfix p-b-35"></div>
 
                               <div class="col-sm-2">
-                                <div class="fg-line">
+
+                                <div class="dropdown" id="dropdown_boton">
+                                  <a id="detalle_boton" role="button" data-toggle="dropdown" class="btn btn-blanco">
+                                      Seleccione <span class="caret"></span>
+                                  </a>
+                                  <ul id="dropdown_principal" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+
+                                    <li class="dropdown-submenu pointer">
+                                    <a>Clases Grupales</a>
+                                      <ul class="dropdown-menu">
+
+                                        @foreach ( $servicios_productos as $servicio_producto ) 
+                                          @if($servicio_producto['tipo'] == 3 || $servicio_producto['tipo']== 4)
+                                            <li class = "pointer servicio_detalle" data-nombre="{{$servicio_producto['nombre']}}" data-servicio_producto="{{$servicio_producto['servicio_producto']}}" id="{{$servicio_producto['id']}}-{{$servicio_producto['costo']}}-{{$servicio_producto['tipo']}}-{{$servicio_producto['servicio_producto']}}-{{$servicio_producto['incluye_iva']}}-{{$servicio_producto['disponibilidad']}}"><a>{{$servicio_producto['nombre']}}</a></li>
+                                          @endif                   
+                                        @endforeach
+
+                                      </ul>
+                                    </li>
+
+                                    <li class="dropdown-submenu pointer">
+                                      <a>Clases Personalizadas</a>
+                                      <ul class="dropdown-menu">'
+
+                                        @foreach ( $servicios_productos as $servicio_producto ) 
+                                          @if($servicio_producto['tipo'] == 9)
+                                            <li class = "pointer servicio_detalle" data-nombre="{{$servicio_producto['nombre']}}" data-servicio_producto="{{$servicio_producto['servicio_producto']}}" id="{{$servicio_producto['id']}}-{{$servicio_producto['costo']}}-{{$servicio_producto['tipo']}}-{{$servicio_producto['servicio_producto']}}-{{$servicio_producto['incluye_iva']}}-{{$servicio_producto['disponibilidad']}}"><a>{{$servicio_producto['nombre']}}</a></li>
+                                          @endif                   
+                                        @endforeach
+
+                                      </ul>
+                                    </li>
+
+                                    <li class="dropdown-submenu pointer">
+                                      <a>Productos</a>
+                                      <ul class="dropdown-menu">
+
+                                        @foreach ( $servicios_productos as $servicio_producto ) 
+                                          @if($servicio_producto['tipo'] == 2)
+                                            <li class = "pointer servicio_detalle" data-nombre="{{$servicio_producto['nombre']}}" data-servicio_producto="{{$servicio_producto['servicio_producto']}}" id="{{$servicio_producto['id']}}-{{$servicio_producto['costo']}}-{{$servicio_producto['tipo']}}-{{$servicio_producto['servicio_producto']}}-{{$servicio_producto['incluye_iva']}}-{{$servicio_producto['disponibilidad']}}"><a>{{$servicio_producto['nombre']}}</a></li>
+                                          @endif                   
+                                        @endforeach
+
+                                      </ul>
+                                    </li>
+
+                                    <li class="dropdown-submenu pointer">
+                                      <a>Servicios</a>
+                                      <ul class="dropdown-menu">'
+
+                                        @foreach ( $servicios_productos as $servicio_producto ) 
+                                          @if($servicio_producto['tipo'] == 1)
+                                            <li class = "pointer servicio_detalle" data-nombre="{{$servicio_producto['nombre']}}" data-servicio_producto="{{$servicio_producto['servicio_producto']}}" id="{{$servicio_producto['id']}}-{{$servicio_producto['costo']}}-{{$servicio_producto['tipo']}}-{{$servicio_producto['servicio_producto']}}-{{$servicio_producto['incluye_iva']}}-{{$servicio_producto['disponibilidad']}}"><a>{{$servicio_producto['nombre']}}</a></li>
+                                          @endif                   
+                                        @endforeach
+
+                                      </ul>
+                                    </li>
+
+                                    <li class="dropdown-submenu pointer">
+                                      <a>Paquetes</a>
+                                      <ul class="dropdown-menu">'
+
+                                        @foreach ( $servicios_productos as $servicio_producto ) 
+                                          @if($servicio_producto['tipo'] == 15)
+                                            <li class = "pointer servicio_detalle" data-nombre="{{$servicio_producto['nombre']}}" data-servicio_producto="{{$servicio_producto['servicio_producto']}}" id="{{$servicio_producto['id']}}-{{$servicio_producto['costo']}}-{{$servicio_producto['tipo']}}-{{$servicio_producto['servicio_producto']}}-{{$servicio_producto['incluye_iva']}}-{{$servicio_producto['disponibilidad']}}"><a>{{$servicio_producto['nombre']}}</a></li>
+                                          @endif                   
+                                        @endforeach
+
+                                      </ul>
+                                    </li>
+                                  </ul>
+                                </div>
+
+                                <!-- <div class="fg-line">
                                   <div class="select">
                                     <select class="form-control" name="combo" id="combo">
                                       <option value="">Selecciona</option>
                                       @foreach ( $servicios_productos as $servicio_producto )
+
+
                        
                                         <option @if($servicio_producto['tipo'] == '2') style="display:none" @endif value = "{{$servicio_producto['id']}}-{{$servicio_producto['costo']}}-{{$servicio_producto['tipo']}}-{{$servicio_producto['servicio_producto']}}-{{$servicio_producto['incluye_iva']}}-{{$servicio_producto['disponibilidad']}}">{{$servicio_producto['nombre']}}</option>
 
                                       @endforeach
                                     </select>
                                   </div>
-                                </div>
+                                </div> -->
                               </div>
 
                               <div class="col-sm-2 text-center">
@@ -601,8 +655,8 @@
     var checked = [];
     var itemlist = 0;
     var disponible = 0;
-    var servicios_productos = '';
     var promotores = <?php echo json_encode($promotores);?>;
+    var servicio_producto_id = 0
 
     route_agregar="{{url('/')}}/administrativo/pagos/agregaritem";
     route_factura="{{url('/')}}/administrativo/pagos/gestion";
@@ -615,8 +669,6 @@
     route_agregar_cliente="{{url('/')}}/administrativo/pagos/agregarcliente";
 
     $( document ).ready(function() {
-
-      servicios_productos = $('#combo option')
 
       $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
@@ -810,7 +862,6 @@
 
       });
 
-      $('input[name=servicio]').click();
     });
 
     function formatmoney(n) {
@@ -928,111 +979,20 @@
         });
     });
 
-    $('input[name="tipo"]').on('change', function(){
-
-      $('#combo').val('');
-
-      if($(this).val()=='servicio') {
-
-        $( "#producto2" ).removeClass( "c-verde" );
-        $( "#servicio2" ).addClass( "c-verde" );
-
-        $.each(servicios_productos, function (index, array) {
-          id = array.value
-          explode = id.split('-');
-          if(explode[3] == '1'){
-            $('#combo option[value="'+array.value+'"]').show();
-          }else{
-            $('#combo option[value="'+array.value+'"]').hide();
-          }
-        });
-
-        $('#disponibilidad_productos').hide();
-        $('#disponibilidad_productos_campo').hide();
-
-      }else{
-
-        $( "#servicio2" ).removeClass( "c-verde" );
-        $( "#producto2" ).addClass( "c-verde" );
-
-        $.each(servicios_productos, function (index, array) {
-          id = array.value
-          explode = id.split('-');
-          if(explode[3] == '2'){
-            $('#combo option[value="'+array.value+'"]').show();
-          }else{
-            $('#combo option[value="'+array.value+'"]').hide();
-          }
-        });
-
-        $('#disponibilidad_productos').show();
-        $('#disponibilidad_productos_campo').show();
-      }
-
-      $('input[name="cantidad"]').val(1)
-      $('input[name="importe_neto"]').val(0)
-      $('input[name="precio_neto"]').val(0)
-
-    });
-
-
-    $("#combo").change(function(){
-
-      $('#promotor_id').empty()
-
-      var combo = $(this).val();
-      var split = combo.split('-');  
-      var incluye_iva = split[4];
-      var disponibilidad = split[5];
-      var costo = parseFloat(split[1]);
-      var cantidad = 1
-      var tipo = split[3];
-      var id = split[0];
-
-      if(incluye_iva == 0){
-        $("#impuesto").val($('#impuesto option').first().val());
-      }
-      else{
-        $("#impuesto").val($('#impuesto option').last().val());
-      }
-
-      var total = costo * cantidad
-
-      $('input[name="precio_neto"]').val(formatmoney(costo))
-      $('input[name="importe_neto"]').val(formatmoney(total))
-      $('input[name="cantidad"]').val(1)
-      $('input[name="campo_disponibilidad"]').val(disponibilidad)
-
-      $.each(promotores, function (index, array) {
-        $.each(array.config_comisiones, function (i, comision) {
-          if(comision.servicio_producto_id == id && comision.servicio_producto_tipo == tipo){
-
-            explode = index.split('-')
-            tipo = explode[0]
-
-            if(tipo == 1){
-              icono = "<i class='icon_f-staff'></i>"
-            }else{
-              icono = "<i class='icon_a-instructor'></i>"
-            }
-
-            $('#promotor_id').append('<option value="'+array.id+'" data-content="'+ array.nombre + ' ' + array.apellido + ' ' + ' ' + icono +'"></option>');
-            return false;
-          }
-        });
-      });
-
-      $('#promotor_id').selectpicker('refresh');
-    });
-
     $("#cantidad").change(function(){
 
-      var combo = $("#combo option:selected" ).val();
-      var split = combo.split('-');
-      var incluye_iva = split[4];
-      var disponibilidad = split[5];
-      var costo = parseFloat(split[1]);
       var cantidad = parseFloat($(this).val())
+
+      if(servicio_producto_id){
+        var split = servicio_producto_id.split('-');
+        var incluye_iva = split[4];
+        var disponibilidad = split[5];
+        var costo = parseFloat(split[1]);
+      }else{
+        var incluye_iva = 0
+        var disponibilidad = 0
+        var costo = 0
+      }
 
       if(incluye_iva == 0){
         $("#impuesto").val($('#impuesto option').first().val());
@@ -1052,12 +1012,18 @@
 
     $("#impuesto").change(function(){
 
-      var combo = $("#combo option:selected" ).val();
-      var split = combo.split('-');  
-      var incluye_iva = split[4];
-      var disponibilidad = split[5];
-      var costo = parseFloat(split[1]);
-      var cantidad = parseFloat($('input[name="cantidad"]').val())
+      if(servicio_producto_id){
+        var split = servicio_producto_id.split('-');
+        var incluye_iva = split[4];
+        var disponibilidad = split[5];
+        var costo = parseFloat(split[1]);
+        var cantidad = parseFloat($('input[name="cantidad"]').val())
+      }else{
+        var incluye_iva = 0
+        var disponibilidad = 0
+        var costo = 0
+        var cantidad = 0
+      }
 
       var total = costo * cantidad
 
@@ -1086,6 +1052,7 @@
     // LINEA AGREGAR
 
     $("#add").click(function(){
+
       $('#disponibilidad_productos').hide();
       $('#disponibilidad_productos_campo').hide();
 
@@ -1114,7 +1081,7 @@
               headers: {'X-CSRF-TOKEN': token},
               type: 'POST',
               dataType: 'json',
-              data:datos + "&impuestoglobal="+impuestoglobal+"&usuario_id="+usuario_id+"&promotores="+promotores,
+              data:datos + "&impuestoglobal="+impuestoglobal+"&usuario_id="+usuario_id+"&promotores="+promotores+"&combo="+servicio_producto_id,
           success:function(respuesta){
             setTimeout(function(){ 
               var nFrom = $(this).attr('data-from');
@@ -1123,8 +1090,8 @@
               var nAnimIn = "animated flipInY";
               var nAnimOut = "animated flipOutY"; 
               if(respuesta.status=="OK"){
+
                 var nType = 'success';
-                $("#mujer").prop("checked", true);
                 var nTitle="Ups! ";
                 var nMensaje=respuesta.mensaje;
 
@@ -1158,19 +1125,18 @@
                 $("#impuestototal").text(formatmoney(impuestoglobal));
                 $("#total").text(formatmoney(totalfinal));
 
-                $('input[name=servicio]').click();
                 $('#agregar_item')[0].reset()
+                $('#promotor_id').empty()
                 $('.selectpicker').selectpicker('refresh')
+
+                $('#detalle_boton').text('Seleccione')
+                servicio_producto_id = ''
 
               }else{
                 var nTitle="Ups! ";
                 var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                 var nType = 'danger';
               }                       
-              $(".procesando").removeClass('show');
-              $(".procesando").addClass('hidden');
-              $("#guardar").removeAttr("disabled");
-              $(".cancelar").removeAttr("disabled");
               $("#add").removeAttr("disabled");
               $("#add").css({
                 "opacity": ("1")
@@ -1194,13 +1160,9 @@
                 var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
               }
               $("#add").removeAttr("disabled");
-                $("#add").css({
-                  "opacity": ("1")
-                });                        
-              $("#guardar").removeAttr("disabled");
-              $(".cancelar").removeAttr("disabled");
-              $(".procesando").removeClass('show');
-              $(".procesando").addClass('hidden');
+              $("#add").css({
+                "opacity": ("1")
+              });                        
               var nFrom = $(this).attr('data-from');
               var nAlign = $(this).attr('data-align');
               var nIcons = $(this).attr('data-icon');
@@ -1319,14 +1281,16 @@
           success: function (data) {
             if(data.status=='OK'){
 
-              $("#agregar_item")[0].reset();
-              $('#usuario_id').val('');
               usuario_id = '';
-              $('#usuario_id').selectpicker('render');
               limpiarMensaje();
               impuestoglobal = 0;
               subtotalglobal = 0;
-              $('input[name=servicio]').click();
+              $('#agregar_item')[0].reset()
+              $('#promotor_id').empty()
+              $('.selectpicker').selectpicker('refresh')
+
+              $('#detalle_boton').text('Seleccione')
+              servicio_producto_id = ''
 
               $("#subtotal").text(0);
               $("#impuestototal").text(0);
@@ -1350,7 +1314,7 @@
         })
 
       $('html,body').animate({
-      scrollTop: $("#id-usuario_id").offset().top-90,
+        scrollTop: $("#id-usuario_id").offset().top-90,
       }, 1000);
     });
 
@@ -1401,7 +1365,7 @@
 
               finprocesado();
               $('html,body').animate({
-                scrollTop: $("#id-producto-servicio").offset().top-90,
+                scrollTop: $("#id-combo").offset().top-90,
               }, 1000);
 
               total = 0;
@@ -1543,6 +1507,75 @@
           }, 1000);
         }
       });
+    });
+
+    $('body').on('click','.servicio_detalle', function(e){
+
+      var servicio_producto = $(this).data('servicio_producto')
+      var nombre = $(this).data('nombre')
+      if(nombre.length > 15){
+        nombre = nombre.substr(0, 15) + "..."
+      }
+
+      $('#detalle_boton').text(nombre)
+
+      $('#dropdown_boton').removeClass('open')
+      $('#detalle_boton').attr('aria-expanded',false);
+
+      if(servicio_producto == 1){
+        $('#disponibilidad_productos').hide();
+        $('#disponibilidad_productos_campo').hide();
+      }else{
+        $('#disponibilidad_productos').show();
+        $('#disponibilidad_productos_campo').show();
+      }
+
+      servicio_producto_id = $(this).attr('id')
+      var split = servicio_producto_id.split('-');  
+      var incluye_iva = split[4];
+      var disponibilidad = split[5];
+      var costo = parseFloat(split[1]);
+      var cantidad = 1
+      var tipo = split[3];
+      var id = split[0];
+
+      if(incluye_iva == 0){
+        $("#impuesto").val($('#impuesto option').first().val());
+      }
+      else{
+        $("#impuesto").val($('#impuesto option').last().val());
+      }
+
+      var total = costo * cantidad
+
+      $('input[name="precio_neto"]').val(formatmoney(costo))
+      $('input[name="importe_neto"]').val(formatmoney(total))
+      $('input[name="cantidad"]').val(1)
+      $('input[name="campo_disponibilidad"]').val(disponibilidad)
+
+      $('#promotor_id').empty()
+
+      $.each(promotores, function (index, array) {
+        $.each(array.config_comisiones, function (i, comision) {
+          if(comision.servicio_producto_id == id && comision.servicio_producto_tipo == tipo){
+
+            explode = index.split('-')
+            tipo = explode[0]
+
+            if(tipo == 1){
+              icono = "<i class='icon_f-staff'></i>"
+            }else{
+              icono = "<i class='icon_a-instructor'></i>"
+            }
+
+            $('#promotor_id').append('<option value="'+array.id+'" data-content="'+ array.nombre + ' ' + array.apellido + ' ' + ' ' + icono +'"></option>');
+            return false;
+          }
+        });
+      });
+
+      $('#promotor_id').selectpicker('refresh');
+
     });
 
   </script> 
