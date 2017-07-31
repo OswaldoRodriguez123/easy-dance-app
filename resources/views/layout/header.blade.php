@@ -123,55 +123,42 @@
                             <i class="tmn-counts" id="numero_actual">{{$sin_ver}}</i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg pull-right">
-                            @if(!empty($notificaciones))
-                                <div class="listview" id="notifications">
-                                    <div class="lv-header">Notificaciones
-                                        <ul class="actions">
-                                            <li class="dropdown">
-                                                <a href="#" data-clear="notification" id="limpiar_notificaciones">
-                                                    <i class="zmdi zmdi-check-all"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="lv-body">
-                                        @foreach( $notificaciones as $notificacion)
-                                            @if ($notificacion['tipo_evento'] == 1)
-                                                <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$notificacion['evento_id']}}">
-                                            @elseif ($notificacion['tipo_evento'] == 5)
-                                                <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/notificaciones">
-                                            @elseif($notificacion['tipo_evento'] == 6)
-                                                <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/evaluaciones/detalle/{{$notificacion['evento_id']}}">
-                                            @else
-                                                <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/incidencias">
-                                            @endif
-                                                <div class="media">
-                                                    <div class="pull-left">
-                                                        <!-- if($notificacion->imagen) -->
-                                                            <img class="img-circle" src="{{url('/')}}{{$notificacion['imagen']}}" alt="" width="45px" height="auto">
-                                                       <!--  else
-                                                            <img class="img-circle" src="{{url('/')}}/assets/img/asd_.jpg" alt="" width="45px" height="auto">
-                                                        endif -->
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <div class="lv-title">{{$notificacion['titulo']}}</div>
-                                                        <small class="lv-small">{{$notificacion['mensaje']}}</small>
-                                                    </div>
-                                                </div>
+                            <div class="listview {{ empty($notificaciones) ? 'empty' : ''}}" id="notifications">
+                                <div class="lv-header">Notificaciones
+                                    <ul class="actions">
+                                        <li class="dropdown">
+                                            <a href="#" data-clear="notification" id="limpiar_notificaciones">
+                                                <i class="zmdi zmdi-check-all"></i>
                                             </a>
-                                        @endforeach
-                                    </div>
+                                        </li>
+                                    </ul>
                                 </div>
-                            @else
-                                <div class="listview empty" id="notifications">
-                                    <div class="lv-header">Notificaciones
-                                        <ul class="actions">
-                                            <li class="dropdown"></li>
-                                        </ul>
-                                    </div>
-                                    <div class="lv-body"></div>
+                                <div class="lv-body">
+                                    @foreach( $notificaciones as $notificacion)
+                                        @if ($notificacion['tipo_evento'] == 1)
+                                            <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$notificacion['evento_id']}}">
+                                        @elseif ($notificacion['tipo_evento'] == 5)
+                                            <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/notificaciones">
+                                        @elseif($notificacion['tipo_evento'] == 6)
+                                            <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/evaluaciones">
+                                        @elseif($notificacion['tipo_evento'] == 7)
+                                            <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/incidencias">
+                                        @elseif($notificacion['tipo_evento'] == 8)
+                                            <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/supervision">
+                                        @endif
+                                            <div class="media">
+                                                <div class="pull-left">
+                                                    <img class="img-circle" src="{{url('/')}}{{$notificacion['imagen']}}" alt="" width="45px" height="auto">
+                                                </div>
+                                                <div class="media-body">
+                                                    <div class="lv-title">{{$notificacion['titulo']}}</div>
+                                                    <small class="lv-small">{{$notificacion['mensaje']}}</small>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    @endforeach
                                 </div>
-                            @endif
+                            </div>
                         </div>
                     </li>
       

@@ -72,6 +72,12 @@
                 <p class="m-t-5 m-b-5 f-22"><a class="usuario_tipo" id="6" href="#" >Entrar como Recepcionista <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i>  
                   <i class="zmdi zmdi-thumb-up f-50 padding"></i> </a>
                 </p>
+              @elseif($tipo->tipo == 8)
+                <hr>
+                <div class="clearfix"></div><br>
+                <p class="m-t-5 m-b-5 f-22"><a class="usuario_tipo" id="6" href="#" >Entrar como Staff <i class="zmdi zmdi-arrow-right zmdi-hc-fw"></i>  
+                  <i class="zmdi zmdi-thumb-up f-50 padding"></i> </a>
+                </p>
               @endif
             @endforeach 
 

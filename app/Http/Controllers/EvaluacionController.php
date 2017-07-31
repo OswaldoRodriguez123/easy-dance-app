@@ -116,16 +116,18 @@ class EvaluacionController extends BaseController
 
     public function evaluaciones_vista_alumno(){
 
-        $usuario_id = Session::get('easydance_usuario_id');
+        $in = array(2, 4);
 
         $evaluaciones = Evaluacion::join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
+            ->join('usuarios_tipo', 'usuarios_tipo.tipo_id', '=', 'alumnos.id')
+            ->join('users', 'usuarios_tipo.usuario_id', '=', 'users.id')
             ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen', 'alumnos.sexo')
-            ->where('evaluaciones.alumno_id', '=' , $usuario_id)
+            ->where('users.id', '=' ,  Auth::user()->id)
+            ->whereIn('usuarios_tipo.tipo',$in)
         ->get();
 
-        $in = array(2, 4);
         $array = array();
 
         foreach($evaluaciones as $evaluacion){
@@ -269,6 +271,18 @@ class EvaluacionController extends BaseController
                 $fecha_vencimiento = Carbon::now();
             }
 
+            $cantidad_horas_practica = 0;
+            $asistencia_taller = 0;
+            $practica_horas_personalizadas = 0;
+            $participacion_evento = 0;
+            $participacion_fiesta_social = 0;
+
+            // $cantidad_horas_practica = $request->cantidad_horas_practica;
+            // $asistencia_taller = $request->taller_formula;
+            // $practica_horas_personalizadas = $request->personalizada_formula;
+            // $participacion_evento = $request->evento_formula;
+            // $participacion_fiesta_social = $request->fiesta_formula;
+
             $notas=explode(",",$request->nota_detalle);
 
             $evaluacion = new Evaluacion;
@@ -281,11 +295,11 @@ class EvaluacionController extends BaseController
             $evaluacion->observacion = $request->observacion;
             $evaluacion->porcentaje = $request->barra_de_progreso;
 
-            $evaluacion->cantidad_horas_practica = $request->cantidad_horas_practica;
-            $evaluacion->asistencia_taller = $request->taller_formula;
-            $evaluacion->practica_horas_personalizadas = $request->personalizada_formula;
-            $evaluacion->participacion_evento = $request->evento_formula;
-            $evaluacion->participacion_fiesta_social = $request->fiesta_formula;
+            $evaluacion->cantidad_horas_practica = $cantidad_horas_practica;
+            $evaluacion->asistencia_taller = $asistencia_taller;
+            $evaluacion->practica_horas_personalizadas = $practica_horas_personalizadas;
+            $evaluacion->participacion_evento = $participacion_evento;
+            $evaluacion->participacion_fiesta_social = $participacion_fiesta_social;
             $evaluacion->fecha_vencimiento = $fecha_vencimiento;
             $evaluacion->estatus = $request->estatus;
 
@@ -404,29 +418,35 @@ class EvaluacionController extends BaseController
                     }
                 }
 
-                $notificacion = new Notificacion; 
+                if($request->estatus == 1){
 
-                $notificacion->tipo_evento = 6;
-                $notificacion->evento_id = $evaluacion->id;
-                $notificacion->mensaje = "Tienes una nueva valoración. Verifica los resultados";
-                $notificacion->titulo = "Nueva Valoración";
+                    $notificacion = new Notificacion; 
 
-                if($notificacion->save()){
-                    $in = array(2,4);
-                    $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                        ->where('usuarios_tipo.tipo_id',$request->alumno_id)
-                        ->whereIn('usuarios_tipo.tipo',$in)
-                    ->first();
+                    $notificacion->tipo_evento = 6;
+                    $notificacion->evento_id = $evaluacion->id;
+                    $notificacion->mensaje = "Tienes una nueva valoración. Verifica los resultados";
+                    $notificacion->titulo = "Nueva Valoración";
 
-                    if($usuario){
+                    if($notificacion->save()){
 
-                      $usuarios_notificados = new NotificacionUsuario;
-                      $usuarios_notificados->id_usuario = $usuario->id;
-                      $usuarios_notificados->id_notificacion = $notificacion->id;
-                      $usuarios_notificados->visto = 0;
-                      $usuarios_notificados->save();
+                        $in = array(2,4);
+                        $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                            ->select('users.id')
+                            ->where('usuarios_tipo.tipo_id',$request->alumno_id)
+                            ->whereIn('usuarios_tipo.tipo',$in)
+                        ->first();
+
+                        if($usuario){
+
+                          $usuarios_notificados = new NotificacionUsuario;
+                          $usuarios_notificados->id_usuario = $usuario->id;
+                          $usuarios_notificados->id_notificacion = $notificacion->id;
+                          $usuarios_notificados->visto = 0;
+                          $usuarios_notificados->save();
+                        }
+                        
                     }
-                    
+
                 }
 
                 Session::forget('id_alumno');
@@ -655,11 +675,23 @@ class EvaluacionController extends BaseController
                 $evaluacion->observacion = $request->observacion;
                 $evaluacion->porcentaje = $request->barra_de_progreso;
 
-                $evaluacion->cantidad_horas_practica = $request->cantidad_horas_practica;
-                $evaluacion->asistencia_taller = $request->taller_formula;
-                $evaluacion->practica_horas_personalizadas = $request->personalizada_formula;
-                $evaluacion->participacion_evento = $request->evento_formula;
-                $evaluacion->participacion_fiesta_social = $request->fiesta_formula;
+                $cantidad_horas_practica = 0;
+                $asistencia_taller = 0;
+                $practica_horas_personalizadas = 0;
+                $participacion_evento = 0;
+                $participacion_fiesta_social = 0;
+
+                // $cantidad_horas_practica = $request->cantidad_horas_practica;
+                // $asistencia_taller = $request->taller_formula;
+                // $practica_horas_personalizadas = $request->personalizada_formula;
+                // $participacion_evento = $request->evento_formula;
+                // $participacion_fiesta_social = $request->fiesta_formula;
+
+                $evaluacion->cantidad_horas_practica = $cantidad_horas_practica;
+                $evaluacion->asistencia_taller = $asistencia_taller;
+                $evaluacion->practica_horas_personalizadas = $practica_horas_personalizadas;
+                $evaluacion->participacion_evento = $participacion_evento;
+                $evaluacion->participacion_fiesta_social = $participacion_fiesta_social;
                 $evaluacion->estatus = $request->estatus;
 
                 if($request->estatus){
@@ -701,6 +733,37 @@ class EvaluacionController extends BaseController
                             $formula_evaluacion->save();
                             
                         }
+                    }
+
+                    if($request->estatus){
+
+                        $in = array(2,4);
+
+                        $notificacion = new Notificacion; 
+
+                        $notificacion->tipo_evento = 6;
+                        $notificacion->evento_id = $evaluacion->id;
+                        $notificacion->mensaje = "Tienes una nueva valoración. Verifica los resultados";
+                        $notificacion->titulo = "Nueva Valoración";
+
+                        if($notificacion->save()){
+                            $in = array(2,4);
+                            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                                ->where('usuarios_tipo.tipo_id',$evaluacion->alumno_id)
+                                ->whereIn('usuarios_tipo.tipo',$in)
+                            ->first();
+
+                            if($usuario){
+
+                              $usuarios_notificados = new NotificacionUsuario;
+                              $usuarios_notificados->id_usuario = $usuario->id;
+                              $usuarios_notificados->id_notificacion = $notificacion->id;
+                              $usuarios_notificados->visto = 0;
+                              $usuarios_notificados->save();
+                            }
+                            
+                        }
+
                     }
 
                     return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);

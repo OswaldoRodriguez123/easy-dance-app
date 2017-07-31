@@ -1296,7 +1296,7 @@
               $("#impuestototal").text(0);
               $("#total").text(0);
 
-                 t
+                t
                   .clear()
                   .draw();
                                  

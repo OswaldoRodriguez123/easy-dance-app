@@ -286,7 +286,7 @@
                                                 </a>
                                               </li>
                                               <li class="eos-item">
-                                                <a class="{{ empty($clase_1->clase_4) || empty($pasos['n2v5']) ? 'disabled' : 'video_url' }}" data-url="208048762">05. Enchufa y Pa´ Arriba
+                                                <a class="{{ empty($clase_1->clase_4) || empty($pasos['n2v5']) ? 'disabled' : 'video_url' }}" data-url="208048762">05. Enchufa y Arriba
 
                                                   @if($usuario_tipo == 3)
                                                     <input id="n2v5" class="pull-right checkbox {{ empty($pasos['n2v5']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n2v5']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">

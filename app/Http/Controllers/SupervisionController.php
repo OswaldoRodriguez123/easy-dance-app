@@ -22,6 +22,9 @@ use App\SupervisionEvaluacion;
 use App\ItemProcedimiento;
 use App\Academia;
 use App\Instructor;
+use App\User;
+use App\Notificacion;
+use App\NotificacionUsuario;
 use DB;
 use Session;
 
@@ -891,7 +894,46 @@ class SupervisionController extends BaseController {
                     $detalle->evaluacion_id = $evaluacion->id;
                     $detalle->save();
 
-                    $i++;
+                }
+
+                $supervision = Supervision::join('conceptos_supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
+        			->join('supervisiones_evaluaciones', 'supervisiones_evaluaciones.concepto_id', '=', 'conceptos_supervisiones.id')
+        			->select('supervisiones.*')
+        			->where('supervisiones_evaluaciones.id',$evaluacion->id)
+        		->first();
+
+        		if($supervision){
+
+        			if($supervision->tipo_staff == 1){
+        				$tipo = 8;
+        			}else{
+        				$tipo = 3;
+        			}
+
+        			$usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+        				->select('users.id')
+                        ->where('usuarios_tipo.tipo_id',$supervision->staff_id)
+                        ->where('usuarios_tipo.tipo',$tipo)
+                    ->first();
+
+                    if($usuario){
+
+		                $notificacion = new Notificacion; 
+
+		                $notificacion->tipo_evento = 8;
+		                $notificacion->evento_id = $evaluacion->id;
+		                $notificacion->mensaje = "Tienes una nueva supervisión. Verifica los resultados";
+		                $notificacion->titulo = "Nueva Supervisión";
+
+		                if($notificacion->save()){
+
+	                      	$usuarios_notificados = new NotificacionUsuario;
+	                      	$usuarios_notificados->id_usuario = $usuario->id;
+	                      	$usuarios_notificados->id_notificacion = $notificacion->id;
+	                      	$usuarios_notificados->visto = 0;
+	                      	$usuarios_notificados->save();
+		                }
+	                }
                 }
                 
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
@@ -932,6 +974,40 @@ class SupervisionController extends BaseController {
         }
 
         return view('supervisiones.evaluaciones')->with(['evaluaciones' => $array, 'id_evaluacion' => $id_evaluacion]);
+    }
+
+    public function evaluaciones_vista_staff(){
+
+        $evaluaciones = SupervisionEvaluacion::join('conceptos_supervisiones', 'supervisiones_evaluaciones.concepto_id', '=', 'conceptos_supervisiones.id')
+        	->join('supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
+            ->join('staff', 'supervisiones.staff_id', '=', 'staff.id')
+            ->join('usuarios_tipo', 'usuarios_tipo.tipo_id', '=', 'staff.id')
+            ->join('users', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->select('supervisiones_evaluaciones.*','staff.nombre', 'staff.apellido')
+            ->where('users.id', '=' ,  Auth::user()->id)
+            ->where('usuarios_tipo.tipo',8)
+        ->get();
+
+        $array = array();
+
+        foreach($evaluaciones as $evaluacion){
+
+        	$staff = Staff::find($evaluacion->supervisor_id);
+
+        	if($staff){
+        		$supervisor = $staff->nombre . ' ' . $staff->apellido;
+        	}else{
+        		$supervisor = '';
+        	}
+
+        	$collection=collect($evaluacion);   
+
+            $supervision_array = $collection->toArray();
+            $supervision_array['supervisor']=$supervisor;
+            $array[$evaluacion->id] = $supervision_array;
+        }
+
+        return view('supervisiones.evaluaciones')->with(['evaluaciones' => $array]);
     }
 
     public function evaluaciones_por_supervision($id)

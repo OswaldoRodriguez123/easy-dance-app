@@ -1066,15 +1066,15 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		//SUPERVISIONES
 
 		Route::get('supervisiones', 'SupervisionController@principal');
+		Route::get('supervisiones/detalle/{id}', 'SupervisionController@edit');
 		Route::get('supervisiones/agregar', 'SupervisionController@create');
 		Route::post('supervisiones/agregar', 'SupervisionController@store');
 		Route::delete('supervisiones/eliminar/{id}', 'SupervisionController@destroy');
-		Route::get('supervisiones/detalle/{id}', 'SupervisionController@edit');
 		Route::get('supervisiones/evaluar/{id}', 'SupervisionController@evaluar');
 		Route::get('supervisiones/agenda/{id}', 'SupervisionController@agenda');
 		Route::post('supervisiones/evaluar', 'SupervisionController@storeEvaluacion');
-		Route::get('supervisiones/evaluaciones', 'SupervisionController@evaluaciones');
 		Route::get('supervisiones/evaluaciones/{id}', 'SupervisionController@evaluaciones_por_supervision');
+		Route::get('supervisiones/evaluaciones', 'SupervisionController@evaluaciones');
 		Route::get('supervisiones/evaluaciones/detalle/{id}', 'SupervisionController@getDetalle');
 		Route::post('supervisiones/evaluaciones/eliminar','SupervisionController@eliminar_evaluacion');
 		Route::put('supervisiones/update/supervisor','SupervisionController@updateSupervisor');
@@ -1250,12 +1250,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		
 		Route::get('agendar/talleres', 'TallerController@index');
 
-		//EVALUACIONES
-		
-		Route::get('evaluaciones', 'EvaluacionController@evaluaciones_vista_alumno');
-		Route::get('evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
-		Route::get('especiales/evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
-
 		//PROGRESO TU CLASE DE BAILE
 		
 		Route::get('progreso','ProgresoController@index');
@@ -1309,6 +1303,15 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::delete('agendar/clases-grupales/eliminar_credencial/{id}', 'ClaseGrupalController@eliminar_credencial');
 		Route::get('agendar/clases-grupales/agenda/{id}', 'ClaseGrupalController@agenda');
 
+		Route::get('agendar/clases-grupales/detalle/{id}', 'ClaseGrupalController@edit');
+		Route::get('agendar/clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
+		Route::get('agendar/clases-grupales/reservaciones/vencidas/{id}', 'ClaseGrupalController@reservaciones_vencidas');
+		Route::get('agendar/clases-grupales/operaciones/{id}', 'ClaseGrupalController@operar');
+		Route::get('agendar/clases-grupales/canceladas/{id}', 'ClaseGrupalController@canceladas');
+		Route::post('agendar/clases-grupales/cancelar', 'ClaseGrupalController@cancelarClase');
+		Route::post('agendar/clases-grupales/actualizar-cancelacion', 'ClaseGrupalController@update_cancelacion');
+		Route::delete('agendar/clases-grupales/eliminar-cancelacion/{id}', 'ClaseGrupalController@eliminar_cancelacion');
+
 		//NIVELACIONES CLASES GRUPALES
 
 		Route::get('nivelaciones', 'ClaseGrupalController@principalnivelaciones');
@@ -1347,17 +1350,22 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('especiales/evaluaciones/agregar', 'EvaluacionController@store');	
 		Route::get('especiales/evaluaciones/evaluar/{id}', 'EvaluacionController@evaluar');
 		Route::post('especiales/evaluaciones/evaluar', 'EvaluacionController@update');	
+		Route::get('especiales/evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
 
 		Route::post('guardar-alumno/{id}','AlumnoController@guardarAlumno');
 
-		Route::get('agendar/clases-grupales/detalle/{id}', 'ClaseGrupalController@edit');
-		Route::get('agendar/clases-grupales/participantes/{id}', 'ClaseGrupalController@participantes');
-		Route::get('agendar/clases-grupales/reservaciones/vencidas/{id}', 'ClaseGrupalController@reservaciones_vencidas');
-		Route::get('agendar/clases-grupales/operaciones/{id}', 'ClaseGrupalController@operar');
-		Route::get('agendar/clases-grupales/canceladas/{id}', 'ClaseGrupalController@canceladas');
-		Route::post('agendar/clases-grupales/cancelar', 'ClaseGrupalController@cancelarClase');
-		Route::post('agendar/clases-grupales/actualizar-cancelacion', 'ClaseGrupalController@update_cancelacion');
-		Route::delete('agendar/clases-grupales/eliminar-cancelacion/{id}', 'ClaseGrupalController@eliminar_cancelacion');
+		//EVALUACIONES
+		
+		Route::get('evaluaciones', 'EvaluacionController@evaluaciones_vista_alumno');
+		Route::get('evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
+
+
+		//SUPERVISIONES
+
+		Route::get('supervision', 'SupervisionController@evaluaciones_vista_staff');
+		Route::get('supervision/detalle/{id}', 'SupervisionController@getDetalle');
+
+
 
 	});//END MIDDLEWARE INSTRUCTOR
 
