@@ -27,7 +27,6 @@
                 
                     <div class="block-header">
                         <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/staff" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Staff</a>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -145,6 +144,25 @@
                                  <div class="has-error" id="error-sexo">
                                       <span >
                                           <small class="help-block error-span" id="error-sexo_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+
+                               <label for="apellido" id="id-correo">Correo Electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico del participante" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="correo" id="correo" placeholder="Ej. easydance@gmail.com" value="{{ empty($visitante->correo) ? '' : $visitante->correo }}">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-correo">
+                                      <span >
+                                          <small class="help-block error-span" id="error-correo_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
@@ -644,7 +662,7 @@
   setInterval(porcentaje, 1000);
 
    function porcentaje(){
-    var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "direccion", "cargo"];
+    var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "telefono", "celular", "direccion", "cargo","correo"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;
@@ -734,16 +752,8 @@
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
                 var datos = $( "#agregar_staff" ).serialize();
-
-                
                 procesando();
-                // $("#guardar").attr("disabled","disabled");
-                // $("#guardar").css({
-                //   "opacity": ("0.2")
-                // });
-                // $(".cancelar").attr("disabled","disabled");
-                // $(".procesando").removeClass('hidden');
-                // $(".procesando").addClass('show');         
+    
                 limpiarMensaje();
                 $.ajax({
                     url: route,
@@ -759,24 +769,12 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          // finprocesado();
-                          // var nType = 'success';
                           $("#agregar_staff")[0].reset();
-                          // var nTitle="Ups! ";
-                          // var nMensaje=respuesta.mensaje;
                           window.location = route_enhorabuena;
                         }else{
                           var nTitle="Ups! ";
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                           var nType = 'danger';
-
-                          // $(".procesando").removeClass('show');
-                          // $(".procesando").addClass('hidden');
-                          // $("#guardar").removeAttr("disabled");
-                          // $("#guardar").css({
-                          //   "opacity": ("1")
-                          // });
-                          // $(".cancelar").removeAttr("disabled");
 
                           finprocesado();
 
@@ -801,13 +799,6 @@
                           var nTitle="   Ups! "; 
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                         }                        
-                        // $("#guardar").removeAttr("disabled");
-                        // $("#guardar").css({
-                        //   "opacity": ("1")
-                        // });
-                        // $(".cancelar").removeAttr("disabled");
-                        // $(".procesando").removeClass('show');
-                        // $(".procesando").addClass('hidden');
                         finprocesado();
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');
@@ -822,7 +813,7 @@
             });
 
       function limpiarMensaje(){
-      var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "telefono", "celular", "direccion", "hora_inicio", "hora_final"];
+      var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "telefono", "celular", "direccion", "hora_inicio", "hora_final", "correo"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');

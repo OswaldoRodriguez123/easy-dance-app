@@ -123,8 +123,7 @@ class StaffController extends BaseController
 	        $hora_inicio = strtotime($request->hora_inicio);
 	        $hora_final = strtotime($request->hora_final);
 
-	        if($hora_inicio > $hora_final)
-	        {
+	        if($hora_inicio > $hora_final){
 
 	            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
 	        }
@@ -135,17 +134,14 @@ class StaffController extends BaseController
 	        $apellido = title_case($request->apellido);
 	        $correo = trim(strtolower($request->correo));
 
-            $usuario = User::where('email',$correo)->first();
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->select('users.id')
+                ->where('users.email',$correo)
+                ->where('usuarios_tipo.tipo',8)
+            ->first();
 
             if($usuario){
-                $tipos_usuario = UsuarioTipo::where('usuario_id',$usuario->id);
-                foreach($tipos_usuario as $tipo){
-
-                    if($tipo == 8){
-
-                        return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
-                    }
-                }
+                return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
             }
 
 	        if($request->telefono)
@@ -228,28 +224,27 @@ class StaffController extends BaseController
 
                 $comisiones = Session::get('comisiones');
 
+                if($comisiones){
 
-                foreach ($comisiones as $comision) {
+                    foreach ($comisiones as $comision) {
 
-                    $config_pago = new ConfigComision;
+                        $config_pago = new ConfigComision;
 
-                    $config_pago->servicio_producto_id = $comision['servicio_producto_id'];
-                    $config_pago->servicio_producto_tipo = $comision['servicio_producto_tipo'];
-                    $config_pago->usuario_id = $staff->id;
-                    $config_pago->usuario_tipo = 1;
-                    $config_pago->tipo = $comision['tipo'];
-                    $config_pago->monto = $comision['monto'];
-                    $config_pago->monto_minimo = $comision['monto_minimo'];
-                    $config_pago->monto_porcentaje = $comision['monto_porcentaje'];
+                        $config_pago->servicio_producto_id = $comision['servicio_producto_id'];
+                        $config_pago->servicio_producto_tipo = $comision['servicio_producto_tipo'];
+                        $config_pago->usuario_id = $staff->id;
+                        $config_pago->usuario_tipo = 1;
+                        $config_pago->tipo = $comision['tipo'];
+                        $config_pago->monto = $comision['monto'];
+                        $config_pago->monto_minimo = $comision['monto_minimo'];
+                        $config_pago->monto_porcentaje = $comision['monto_porcentaje'];
 
-                    $config_pago->save();
-                    
-                    
+                        $config_pago->save();
+                    }
                 }
          
                 Session::forget('horarios_staff');
                 Session::forget('comisiones');
-
 
 	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 	           
@@ -424,25 +419,56 @@ class StaffController extends BaseController
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno/edit/{$request->id}");
     }
     public function updateSexo(Request $request){
 
         $alumno = Staff::withTrashed()->find($request->id);
         $alumno->sexo = $request->sexo;
 
-        // return redirect("alumno/edit/{$request->id}");
         if($alumno->save()){
 
-         
         	return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
             
-
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
 
+    public function updateCorreo(Request $request){
+
+        $rules = [
+            'correo' => 'required|email|max:255|unique:staff,correo,'.$request->id,
+        ];
+
+        $messages = [
+            'correo.required' => 'Ups! El correo es requerido',
+            'correo.email' => 'Ups! El correo tiene una dirección inválida',
+            'correo.max' => 'El máximo de caracteres permitidos son 255',
+            'correo.unique' => 'Ups! Ya este correo ha sido registrado',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $alumno = Staff::withTrashed()->find($request->id);
+            $correo = strtolower($request->correo);
+            $alumno->correo = $correo;
+
+            if($alumno->save()){
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
 
     public function updateTelefono(Request $request){
 

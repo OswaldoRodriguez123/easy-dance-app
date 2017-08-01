@@ -1050,6 +1050,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::put('configuracion/staff/update/nombre','StaffController@updateNombre');
 		Route::put('configuracion/staff/update/fecha_nacimiento','StaffController@updateFecha');
 		Route::put('configuracion/staff/update/sexo','StaffController@updateSexo');
+		Route::put('configuracion/staff/update/correo','StaffController@updateCorreo');
 		Route::put('configuracion/staff/update/telefono','StaffController@updateTelefono');
 		Route::put('configuracion/staff/update/direccion','StaffController@updateDireccion');
 		Route::put('configuracion/staff/update/cargo','StaffController@updateCargo');

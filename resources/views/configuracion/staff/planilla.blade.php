@@ -471,6 +471,58 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalCorreo-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Alumno<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_correo_alumno" id="edit_correo_alumno"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="correo">Correo</label>
+                                    <input type="text" class="form-control input-sm" name="correo" id="correo" placeholder="Ej. example@correo.com">
+                                 </div>
+                                 <div class="has-error" id="error-correo">
+                                      <span >
+                                          <small class="help-block error-span" id="error-correo_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+
+                               <input type="hidden" name="id" value="{{$alumno->id}}"></input>
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_correo_alumno" data-update="correo" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal fade" id="modalTelefono-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -898,6 +950,14 @@
                                @endif
                              </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalCorreo-Alumno">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($alumno->correo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-correo f-22"></i> </span>
+                               <span class="f-14"> Correo </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-correo"><span>{{$alumno->correo}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
                             <tr id ="tr_contacto" class="detalle" data-toggle="modal" href="#modalTelefono-Alumno" data-valor="{{$alumno->celular}}">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi {{ empty($alumno->telefono) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -1042,6 +1102,11 @@
         $("#mujer").prop("checked", true);
       }
       
+    })
+
+    $('#modalCorreo-Alumno').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $("#correo").val($("#alumno-correo").text()); 
     })
 
     $('#modalTelefono-Alumno').on('show.bs.modal', function (event) {
