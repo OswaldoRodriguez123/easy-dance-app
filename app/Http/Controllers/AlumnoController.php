@@ -1159,7 +1159,7 @@ class AlumnoController extends BaseController
             if($alumno->save()){
 
                 $in = array(2,4);
-                
+
                 $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                     ->select('users.id')
                     ->where('usuarios_tipo.tipo_id',$request->id)
@@ -1553,7 +1553,7 @@ class AlumnoController extends BaseController
 
     public function enhorabuena($id){
         Session::put('id_alumno', $id);
-        return view('guia.index');
+        return view('guia.enhorabuena');
     }
 
     public function eliminar_permanentemente($id){

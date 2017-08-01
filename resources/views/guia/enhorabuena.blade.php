@@ -32,7 +32,7 @@
 
             <div align="center"><i class="zmdi zmdi-mood zmdi-hc-5x c-morado"></i></div>
             <div class="c-morado f-50 text-center"> Enhorabuena! </div>
-            <div class="c-morado text-center f-25">has guardado un registro de manera exitosa</div>
+            <div class="c-morado text-center f-25">has guardado un participante de manera exitosa</div>
             
             <div class="clearfix"></div>
             <br>
