@@ -380,21 +380,23 @@ class TallerController extends BaseController {
         $taller->cantidad_mujeres = $cantidad_mujeres;
         $taller->boolean_promocionar = $request->boolean_promocionar;
 
-        // return redirect("/home");
         if($taller->save()){
 
-            $servicio = new ConfigServicios;
+            if($request->costo){
 
-            $servicio->academia_id = Auth::user()->academia_id;
-            $servicio->nombre = 'Inscripción ' . $nombre;
-            $servicio->costo = $request->costo;
-            $servicio->imagen = '';
-            $servicio->descripcion = $descripcion;
-            $servicio->incluye_iva = 1;
-            $servicio->tipo = 5;
-            $servicio->tipo_id = $taller->id;
+                $servicio = new ConfigServicios;
 
-            $servicio->save();
+                $servicio->academia_id = Auth::user()->academia_id;
+                $servicio->nombre = 'Inscripción ' . $nombre;
+                $servicio->costo = $request->costo;
+                $servicio->imagen = '';
+                $servicio->descripcion = $descripcion;
+                $servicio->incluye_iva = 1;
+                $servicio->tipo = 5;
+                $servicio->tipo_id = $taller->id;
+
+                $servicio->save();
+            }
 
             if($request->imageBase64){
 
