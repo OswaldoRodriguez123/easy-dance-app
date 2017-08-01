@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Taller;
 use App\HorarioClaseGrupal;
 use App\ClaseGrupal;
+use App\InscripcionClaseGrupal;
 use App\Alumno;
 use App\ClasePersonalizada;
 use App\InscripcionClasePersonalizada;
@@ -89,7 +90,7 @@ class AgendarController extends BaseController
             ->join('config_especialidades', 'config_especialidades.id', '=', 'horarios_clases_grupales.especialidad_id')
             ->join('config_niveles_baile', 'config_niveles_baile.id', '=', 'clases_grupales.nivel_baile_id')
             ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('clases_grupales.id', 'clases_grupales.fecha_final', 'horarios_clases_grupales.fecha as fecha_inicio', 'horarios_clases_grupales.hora_inicio', 'horarios_clases_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horarios_clases_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
+            ->select('clases_grupales.id', 'clases_grupales.fecha_final', 'clases_grupales.cantidad_hombres','clases_grupales.cantidad_mujeres', 'horarios_clases_grupales.fecha as fecha_inicio', 'horarios_clases_grupales.hora_inicio', 'horarios_clases_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horarios_clases_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
             ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
@@ -98,19 +99,46 @@ class AgendarController extends BaseController
 
         foreach ($clasegrupal as $clase) {
 
+
     		$fecha_start=explode('-',$clase->fecha_inicio);
     		$fecha_end=explode('-',$clase->fecha_final);
 
             $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
             $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
+            $nombre_principal = '';
+
+            if($usuario_tipo == 1 || $usuario_tipo == 3 ||  $usuario_tipo == 5 || $usuario_tipo == 6){
+
+                $cantidad_hombres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
+                ->where('alumnos.sexo','M')
+                    ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
+                ->count();
+
+                $cantidad_mujeres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
+                    ->where('alumnos.sexo','F')
+                    ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
+                ->count();
+
+                if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
+                    $nombre_principal = 'AGOTADA';
+                }
+            }
+
             if($dt <= Carbon::now()){
-                $nombre_principal = $clase->nombre;
+                if(!$nombre_principal){
+                    $nombre_principal = $clase->nombre;
+                }
+
                 $inicio = 1;
             }else{
-                $nombre_principal = $clase->nombre . ' ★'; 
+                if(!$nombre_principal){
+                    $nombre_principal = $clase->nombre . ' ★'; 
+                }
+
                 $inicio = 0;
             }
+          
 
     		$nombre=$nombre_principal;
     		$descripcion=$clase->descripcion;
@@ -178,7 +206,28 @@ class AgendarController extends BaseController
             $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
             $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
-            $nombre=$clase->nombre;
+            $nombre_principal = '';
+
+            if($usuario_tipo == 1 || $usuario_tipo == 3 ||  $usuario_tipo == 5 || $usuario_tipo == 6){
+
+                $cantidad_hombres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
+                ->where('alumnos.sexo','M')
+                    ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
+                ->count();
+
+                $cantidad_mujeres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
+                    ->where('alumnos.sexo','F')
+                    ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
+                ->count();
+
+                if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
+                    $nombre_principal = 'AGOTADA';
+                }
+            }else{
+                $nombre_principal = $clase->nombre;
+            }
+
+            $nombre=$nombre_principal;
             $descripcion=$clase->descripcion;
             $hora_inicio=$clase->hora_inicio;
             $hora_final=$clase->hora_final;

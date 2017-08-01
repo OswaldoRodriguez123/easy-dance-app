@@ -730,7 +730,8 @@
                                 }
 
 
-                                var contenido = sexo_instructor + ' ' + nombre + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
+                                var contenido = titulo + '<br>'
+                                contenido += sexo_instructor + ' ' + nombre + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
                                 contenido += 'Especialidad: ' + especialidad + '<br>'
                                 contenido += 'Nivel: ' + nivel + '<br>'
                                 contenido += 'Hora: ' + hora + '<br>'
