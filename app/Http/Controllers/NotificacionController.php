@@ -46,7 +46,7 @@ class NotificacionController extends BaseController
         foreach($notificaciones as $notificacion){
 
             if($notificacion->tipo_evento == 1){
-                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                $usuario = User::withTrashed()->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                     ->join('instructores', 'usuarios_tipo.tipo_id', '=', 'instructores.id')
                     ->join('clases_grupales', 'clases_grupales.instructor_id', '=', 'instructores.id')
                     ->select('users.*')
@@ -54,12 +54,12 @@ class NotificacionController extends BaseController
                     ->where('clases_grupales.id',$notificacion->evento_id)
                 ->first();
             }else if($notificacion->tipo_evento == 5){
-                $usuario = User::join('sugerencias', 'sugerencias.usuario_id', '=', 'users.id')
+                $usuario = User::withTrashed()->join('sugerencias', 'sugerencias.usuario_id', '=', 'users.id')
                     ->select('users.*','sugerencias.mensaje')
                     ->where('sugerencias.id',$notificacion->evento_id)
                 ->first();
             }else if($notificacion->tipo_evento == 6){
-                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                $usuario = User::withTrashed()->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                     ->join('instructores', 'usuarios_tipo.tipo_id', '=', 'instructores.id')
                     ->join('evaluaciones', 'evaluaciones.instructor_id', '=', 'instructores.id')
                     ->select('users.*')
@@ -67,12 +67,12 @@ class NotificacionController extends BaseController
                     ->where('evaluaciones.id',$notificacion->evento_id)
                 ->first();
             }else if($notificacion->tipo_evento == 7){
-                $usuario = User::join('incidencias', 'incidencias.administrador_id', '=', 'users.id')
+                $usuario = User::withTrashed()->join('incidencias', 'incidencias.administrador_id', '=', 'users.id')
                     ->select('users.*')
                     ->where('incidencias.id',$notificacion->evento_id)
                 ->first();
             }else if($notificacion->tipo_evento == 8){
-                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                $usuario = User::withTrashed()->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                     ->join('staff', 'usuarios_tipo.tipo_id', '=', 'staff.id')
                     ->join('supervisiones_evaluaciones', 'supervisiones_evaluaciones.supervisor_id', '=', 'staff.id')
                     ->select('users.*')
