@@ -135,17 +135,7 @@
                                 </div>
                                 <div class="lv-body">
                                     @foreach( $notificaciones as $notificacion)
-                                        @if ($notificacion['tipo_evento'] == 1)
-                                            <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$notificacion['evento_id']}}">
-                                        @elseif ($notificacion['tipo_evento'] == 5)
-                                            <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/notificaciones">
-                                        @elseif($notificacion['tipo_evento'] == 6)
-                                            <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/evaluaciones">
-                                        @elseif($notificacion['tipo_evento'] == 7)
-                                            <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/incidencias">
-                                        @elseif($notificacion['tipo_evento'] == 8)
-                                            <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/supervision">
-                                        @endif
+                                        <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/notificaciones">
                                             <div class="media">
                                                 <div class="pull-left">
                                                     <img class="img-circle" src="{{url('/')}}{{$notificacion['imagen']}}" alt="" width="45px" height="auto">

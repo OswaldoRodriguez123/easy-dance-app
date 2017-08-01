@@ -13,7 +13,6 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<!--<script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.es.js"></script>-->
 <script src="{{url('/')}}/assets/vendors/farbtastic/farbtastic.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
@@ -39,7 +38,6 @@
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                             
                         </ul>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
                     <div class="card">
@@ -302,19 +300,17 @@
         document.getElementById("nombre").focus();
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInDownBig';
-        //var cardImg = $(this).closest('#content').find('h1');
         if (animation === "hinge") {
         animationDuration = 3100;
         }
         else {
         animationDuration = 3200;
         }
-        //$("h1").removeAttr('class');
         $(".container").addClass('animated '+animation);
 
-            setTimeout(function(){
-                $(".card-body").removeClass(animation);
-            }, animationDuration);
+        setTimeout(function(){
+            $(".card-body").removeClass(animation);
+        }, animationDuration);
 
 
       });
@@ -347,7 +343,6 @@
 
     porcetaje=(cantidad/fLen)*100;
     porcetaje=porcetaje.toFixed(2);
-    //console.log(porcetaje);
     $("#text-progreso").text(porcetaje+"%");
     $("#barra-progreso").css({
       "width": (porcetaje + "%")
@@ -361,7 +356,6 @@
       $("#barra-progreso").removeClass('progress-bar-success');
       $("#barra-progreso").addClass('progress-bar-morado');
     }
-    //$("#barra-progreso").s
 
   }
 
@@ -407,19 +401,12 @@
                 });
             };
 
-  $("#guardar").click(function(){
+            $("#guardar").click(function(){
 
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
                 var datos = $( "#agregar_cita" ).serialize(); 
-                $("#guardar").attr("disabled","disabled");
-                procesando();
-                $("#guardar").css({
-                  "opacity": ("0.2")
-                });
-                $(".cancelar").attr("disabled","disabled");
-                $(".procesando").removeClass('hidden');
-                $(".procesando").addClass('show');         
+                procesando();        
                 limpiarMensaje();
                 $.ajax({
                     url: route,
@@ -435,11 +422,7 @@
                         var nAnimIn = "animated flipInY";
                         var nAnimOut = "animated flipOutY"; 
                         if(respuesta.status=="OK"){
-                          // finprocesado();
-                          // var nType = 'success';
-                          // $("#agregar_alumno")[0].reset();
-                          // var nTitle="Ups! ";
-                          // var nMensaje=respuesta.mensaje;
+                          $("#agregar_cita")[0].reset();
                           window.location = route_principal;
                         }else{
                           var nTitle="Ups! ";
@@ -462,9 +445,9 @@
                     },
                     error:function(msj){
                       setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
                         if(msj.responseJSON.status=="ERROR"){
                           console.log(msj.responseJSON.errores);
                           errores(msj.responseJSON.errores);
@@ -474,14 +457,7 @@
                           var nTitle="   Ups! "; 
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                         }                        
-                        $("#guardar").removeAttr("disabled");
                         finprocesado();
-                        $("#guardar").css({
-                          "opacity": ("1")
-                        });
-                        $(".cancelar").removeAttr("disabled");
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
                         var nFrom = $(this).attr('data-from');
                         var nAlign = $(this).attr('data-align');
                         var nIcons = $(this).attr('data-icon');

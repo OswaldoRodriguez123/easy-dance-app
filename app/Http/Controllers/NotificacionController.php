@@ -34,10 +34,8 @@ class NotificacionController extends BaseController
 
         $notificaciones = NotificacionUsuario::join('notificacion','notificacion_usuario.id_notificacion', '=','notificacion.id')
             ->join('users','notificacion_usuario.id_usuario','=','users.id')
-            ->join('sugerencias','notificacion.evento_id','=','sugerencias.id')
-            ->select('notificacion.*','notificacion_usuario.visto as visto', 'sugerencias.mensaje', 'sugerencias.usuario_id as usuario_id')
+            ->select('notificacion.*','notificacion_usuario.visto as visto')
             ->where('notificacion_usuario.id_usuario','=',Auth::user()->id)
-            ->where('notificacion.tipo_evento','=',5)
             ->orderBy('created_at','desc')
         ->get();
 
@@ -45,110 +43,153 @@ class NotificacionController extends BaseController
 
         $j = 0;
 
-
         foreach($notificaciones as $notificacion){
-            $collection=collect($notificacion);     
-            $notificacion_array = $collection->toArray();
 
-            $usuario = User::find($notificacion->usuario_id);
-        
-            $fecha_tmp = Carbon::createFromFormat('Y-m-d H:i:s', $notificacion->created_at, $timezone);
-
-            $dia = $fecha_tmp->format('d'); 
-
-            switch ($fecha_tmp->month) {
-                case 1:
-                    $mes = "Enero";
-                    break;
-                case 2:
-                    $mes = "Febrero";
-                    break;
-                case 3:
-                    $mes = "Marzo";
-                    break;
-                case 4:
-                    $mes = "Abril";
-                    break;
-                case 5:
-                    $mes = "Mayo";
-                    break;
-                case 6:
-                    $mes = "Junio";
-                    break;
-                case 7:
-                    $mes = "Julio";
-                    break;
-                case 8:
-                    $mes = "Agosto";
-                    break;
-                case 9:
-                    $mes = "Septiembre";
-                    break;
-                case 10:
-                    $mes = "Octubre";
-                    break;
-                case 11:
-                    $mes = "Noviembre";
-                    break;
-                case 12:
-                    $mes = "Diciembre";
-                    break;
+            if($notificacion->tipo_evento == 1){
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->join('instructores', 'usuarios_tipo.tipo_id', '=', 'instructores.id')
+                    ->join('clases_grupales', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                    ->select('users.*')
+                    ->where('usuarios_tipo.tipo',3)
+                    ->where('clases_grupales.id',$notificacion->evento_id)
+                ->first();
+            }else if($notificacion->tipo_evento == 5){
+                $usuario = User::join('sugerencias', 'sugerencias.usuario_id', '=', 'users.id')
+                    ->select('users.*','sugerencias.mensaje')
+                    ->where('sugerencias.id',$notificacion->evento_id)
+                ->first();
+            }else if($notificacion->tipo_evento == 6){
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->join('instructores', 'usuarios_tipo.tipo_id', '=', 'instructores.id')
+                    ->join('evaluaciones', 'evaluaciones.instructor_id', '=', 'instructores.id')
+                    ->select('users.*')
+                    ->where('usuarios_tipo.tipo',3)
+                    ->where('evaluaciones.id',$notificacion->evento_id)
+                ->first();
+            }else if($notificacion->tipo_evento == 7){
+                $usuario = User::join('incidencias', 'incidencias.administrador_id', '=', 'users.id')
+                    ->select('users.*')
+                    ->where('incidencias.id',$notificacion->evento_id)
+                ->first();
+            }else if($notificacion->tipo_evento == 8){
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->join('staff', 'usuarios_tipo.tipo_id', '=', 'staff.id')
+                    ->join('supervisiones_evaluaciones', 'supervisiones_evaluaciones.supervisor_id', '=', 'staff.id')
+                    ->select('users.*')
+                    ->where('usuarios_tipo.tipo',8)
+                    ->where('supervisiones_evaluaciones.id',$notificacion->evento_id)
+                ->first();
+            }else{
+                $usuario = '';
             }
 
-            $ano = $fecha_tmp->format('Y'); 
+            if($usuario){
 
-            $fecha = $dia . ' de ' . $mes . ' ' . $ano;
+                $collection=collect($notificacion);     
+                $notificacion_array = $collection->toArray();
+            
+                $fecha_tmp = Carbon::createFromFormat('Y-m-d H:i:s', $notificacion->created_at, $timezone);
 
-            $i = $fecha_tmp->dayOfWeek;
+                $dia = $fecha_tmp->format('d'); 
 
-            if($i == 1){
+                switch ($fecha_tmp->month) {
+                    case 1:
+                        $mes = "Enero";
+                        break;
+                    case 2:
+                        $mes = "Febrero";
+                        break;
+                    case 3:
+                        $mes = "Marzo";
+                        break;
+                    case 4:
+                        $mes = "Abril";
+                        break;
+                    case 5:
+                        $mes = "Mayo";
+                        break;
+                    case 6:
+                        $mes = "Junio";
+                        break;
+                    case 7:
+                        $mes = "Julio";
+                        break;
+                    case 8:
+                        $mes = "Agosto";
+                        break;
+                    case 9:
+                        $mes = "Septiembre";
+                        break;
+                    case 10:
+                        $mes = "Octubre";
+                        break;
+                    case 11:
+                        $mes = "Noviembre";
+                        break;
+                    case 12:
+                        $mes = "Diciembre";
+                        break;
+                }
 
-              $dia = 'Lunes';
+                $ano = $fecha_tmp->format('Y'); 
 
-            }else if($i == 2){
+                $fecha = $dia . ' de ' . $mes . ' ' . $ano;
 
-              $dia = 'Martes';
+                $i = $fecha_tmp->dayOfWeek;
 
-            }else if($i == 3){
+                if($i == 1){
 
-              $dia = 'Miercoles';
+                  $dia = 'Lunes';
 
-            }else if($i == 4){
+                }else if($i == 2){
 
-              $dia = 'Jueves';
+                  $dia = 'Martes';
 
-            }else if($i == 5){
+                }else if($i == 3){
 
-              $dia = 'Viernes';
+                  $dia = 'Miercoles';
 
-            }else if($i == 6){
+                }else if($i == 4){
 
-              $dia = 'Sabado';
+                  $dia = 'Jueves';
 
-            }else if($i == 0){
+                }else if($i == 5){
 
-              $dia = 'Domingo';
+                  $dia = 'Viernes';
 
+                }else if($i == 6){
+
+                  $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
+
+                }
+
+                $hora = Carbon::createFromFormat('Y-m-d H:i:s', $notificacion->created_at)->format('h:i:s A'); 
+
+                if($usuario->mensaje){
+                    $notificacion_array['mensaje']=$usuario->mensaje;
+                }
+                $notificacion_array['imagen']=$usuario->imagen;
+                $notificacion_array['usuario_nombre'] = $usuario->nombre;
+                $notificacion_array['usuario_apellido'] = $usuario->apellido;
+                $notificacion_array['usuario_id'] = $usuario->id;
+                $notificacion_array['sexo']=$usuario->sexo;
+                $notificacion_array['fecha']=$fecha;
+                $notificacion_array['dia']=$dia;
+                $notificacion_array['hora']=$hora;
+                $notificacion_array['contador'] = intval($j);
+
+                $array[$notificacion->id] = $notificacion_array;
+
+                $j = $j + 1;
             }
-
-            $hora = Carbon::createFromFormat('Y-m-d H:i:s', $notificacion->created_at)->format('h:i:s A'); 
-
-            $notificacion_array['imagen']=$usuario->imagen;
-            $notificacion_array['usuario_nombre']=$usuario->nombre;
-            $notificacion_array['usuario_apellido']=$usuario->apellido;
-            $notificacion_array['sexo']=$usuario->sexo;
-            $notificacion_array['fecha']=$fecha;
-            $notificacion_array['dia']=$dia;
-            $notificacion_array['hora']=$hora;
-            $notificacion_array['contador'] = intval($j);
-
-            $array[$notificacion->id] = $notificacion_array;
-
-            $j = $j + 1;
         }
 
         
-         return view('notificacion.principal')->with(['recomendaciones' => $array]);
+        return view('notificacion.principal')->with(['notificaciones' => $array]);
     }
 
 

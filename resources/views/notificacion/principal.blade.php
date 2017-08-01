@@ -120,21 +120,21 @@
 					           	<div class="col-sm-12">
 
                           <div class="col-sm-12">
-                           <table id="table_recomendacion" class="table table-striped table-bordered">
+                           <table id="tablelistar" class="table table-striped table-bordered">
                            
-                           @foreach(array_slice($recomendaciones, 0, 10) as $recomendacion)
+                           @foreach(array_slice($notificaciones, 0, 10) as $notificacion)
                             
-                            <tr class="detalle" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff" data-mensaje="{{$recomendacion['mensaje']}}" data-usuario="{{$recomendacion['usuario_id']}}">
+                            <tr class="detalle" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff" data-mensaje="{{$notificacion['mensaje']}}" data-usuario="{{$notificacion['usuario_id']}}" data-tipo_evento="{{$notificacion['tipo_evento']}}" data-evento_id="{{$notificacion['evento_id']}}">
                              <td width="10%"> 
-                              <span class="m-l-10 m-r-5 f-16">{{$recomendacion['dia']}}</span>
+                              <span class="m-l-10 m-r-5 f-16">{{$notificacion['dia']}}</span>
 
                               <br><br><br>
 
-                              <span class="m-l-10 m-r-5 f-16">{{$recomendacion['fecha']}}</span>
+                              <span class="m-l-10 m-r-5 f-16">{{$notificacion['fecha']}}</span>
 
                               <br><br><br>       
 
-                              <span class="m-l-10 m-r-5 f-16">{{$recomendacion['hora']}}</span>               
+                              <span class="m-l-10 m-r-5 f-16">{{$notificacion['hora']}}</span>               
                   
                              </td>
 
@@ -142,17 +142,17 @@
 
                               <br><br><br>
 
-                              @if($recomendacion['imagen'])
-                                <img class="img-circle" width="60px" height="auto" src="{{url('/')}}/assets/uploads/usuario/{{$recomendacion['imagen']}}" alt="">
+                              @if($notificacion['imagen'])
+                                <img class="img-circle" width="60px" height="auto" src="{{url('/')}}/assets/uploads/usuario/{{$notificacion['imagen']}}" alt="">
                                 @else
-                                    @if($recomendacion['sexo'] == 'M')
+                                    @if($notificacion['sexo'] == 'M')
                                       <img class="img-circle" width="45px" height="auto" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
                                     @else
                                       <img class="img-circle" width="45px" height="auto" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
                                 @endif
                               @endif   
 
-                               <span class="m-l-10 m-r-5 f-16 p-t-20">{{$recomendacion['usuario_nombre']}} {{$recomendacion['usuario_apellido']}}</span>         
+                               <span class="m-l-10 m-r-5 f-16 p-t-20">{{$notificacion['usuario_nombre']}} {{$notificacion['usuario_apellido']}}</span>         
                   
                              </td>
 
@@ -162,7 +162,7 @@
 
                               <span class="m-l-10 m-r-5 f-16">
 
-                              {{ str_limit($recomendacion['mensaje'], $limit = 50, $end = '...') }}
+                              {{ str_limit($notificacion['mensaje'], $limit = 50, $end = '...') }}
 
                               <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
 
@@ -178,7 +178,7 @@
                           
                           <div class="clearfix"></div>  
 
-                          @if(count($recomendaciones) > 10)
+                          @if(count($notificaciones) > 10)
 
                             <br> 
 
@@ -216,13 +216,17 @@
   <script type="text/javascript">
 
   route_enviar="{{url('/')}}/notificaciones";
+  route_clase_grupal="{{url('/')}}/agendar/clases-grupales/progreso/";
+  route_incidencia="{{url('/')}}/incidencias/detalle/";
+  route_valoracion="{{url('/')}}/evaluaciones/detalle/";
+  route_supervision="{{url('/')}}/supervision/detalle/";
 
   var total = 10;
-  var recomendaciones = <?php echo json_encode($recomendaciones);?>;
+  var notificaciones = <?php echo json_encode($notificaciones);?>;
 
   $(document).ready(function(){
 
-    var derecha = Object.keys(recomendaciones).length / 10;
+    var derecha = Object.keys(notificaciones).length / 10;
 
     if(derecha > parseInt(derecha)){
       derecha = parseInt(derecha) + 1
@@ -238,14 +242,32 @@
   });
    
    $(document).on( 'click', '.detalle', function () {
-      var usuario_id = $(this).closest('tr').data('usuario');
-      var mensaje = $(this).closest('tr').data('mensaje');
+      var tipo_evento = $(this).closest('tr').data('tipo_evento');
+      if(tipo_evento != 5 ){
+        var evento_id = $(this).closest('tr').data('evento_id');
+        if(tipo_evento == 1){
+          var route =route_clase_grupal+evento_id;
+        }else if(tipo_evento == 6){
+          var route =route_valoracion+evento_id;
+        }else if(tipo_evento == 7){
+          var route =route_incidencia+evento_id;
+        }else if(tipo_evento == 8){
+          var route =route_supervision+evento_id;
+        }
 
-      $('#usuario_id').val(usuario_id)
-      $('#usuario_id').val(usuario_id)
-      $('#mensaje_usuario').val(mensaje)
+        window.open(route, '_blank');
 
-      $('#modalRespuesta').modal('show');
+      }else{
+
+        var usuario_id = $(this).closest('tr').data('usuario');
+        var mensaje = $(this).closest('tr').data('mensaje');
+
+        $('#usuario_id').val(usuario_id)
+        $('#usuario_id').val(usuario_id)
+        $('#mensaje_usuario').val(mensaje)
+
+        $('#modalRespuesta').modal('show');
+      }
       
     });
 
@@ -362,7 +384,7 @@
 
   $(document).on( 'click', '.pagina', function () {
 
-    $('#table_recomendacion').empty();
+    $('#tablelistar').empty();
 
     valor = $('#span_izquierda').text()
 
@@ -386,7 +408,7 @@
     }else{
       $("#izquierda").removeAttr("disabled");
     }
-    if(total >= Object.keys(recomendaciones).length)
+    if(total >= Object.keys(notificaciones).length)
     {
       $("#derecha").attr("disabled","disabled");
     }else{
@@ -394,17 +416,16 @@
     }
 
     
-    $.each(recomendaciones, function (index, recomendacion) {
+    $.each(notificaciones, function (index, notificacion) {
 
-      if(recomendacion.contador >= total - 10 && recomendacion.contador<= total)
-      {
+      if(notificacion.contador >= total - 10 && notificacion.contador<= total){
 
-        mensaje = recomendacion.mensaje
+        mensaje = notificacion.mensaje
 
-        if(recomendacion.imagen){
-          imagen = '<img class="img-circle" width="60px" height="auto" src="{{url('/')}}/assets/uploads/usuario/'+recomendacion.imagen+'" alt="">'
+        if(notificacion.imagen){
+          imagen = '<img class="img-circle" width="60px" height="auto" src="{{url('/')}}/assets/uploads/usuario/'+notificacion.imagen+'" alt="">'
         }else{
-          if(recomendacion.sexo == 'M'){
+          if(notificacion.sexo == 'M'){
             imagen = '<img class="img-circle" width="45px" height="auto" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">'
           }else{
             imagen = '<img class="img-circle" width="45px" height="auto" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">'
@@ -412,7 +433,7 @@
         }  
 
 
-        $("#table_recomendacion").append('<tr class="detalle" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff" data-mensaje="'+recomendacion.mensaje+'" data-usuario="'+recomendacion.usuario_id+'"><td width="10%"><span class="m-l-10 m-r-5 f-16">'+recomendacion.dia+'</span><br><br><br><span class="m-l-10 m-r-5 f-16">'+recomendacion.fecha+'</span><br><br><br><span class="m-l-10 m-r-5 f-16">'+recomendacion.hora+'</span></td><td width="20%"><br><br><br>'+imagen+'<span class="m-l-10 m-r-5 f-16 p-t-20">'+recomendacion.usuario_nombre+' '+recomendacion.usuario_apellido+'</span></td><td width="20%"><br><br><br><span class="m-l-10 m-r-5 f-16">'+mensaje.substr(0, 50)+'...<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></span></tr>')
+        $("#tablelistar").append('<tr class="detalle" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff" data-mensaje="'+notificacion.mensaje+'" data-usuario="'+notificacion.usuario_id+' data-tipo_evento="'+notificacion.tipo_evento+' data-evento_id="'+notificacion.evento_id+'"><td width="10%"><span class="m-l-10 m-r-5 f-16">'+notificacion.dia+'</span><br><br><br><span class="m-l-10 m-r-5 f-16">'+notificacion.fecha+'</span><br><br><br><span class="m-l-10 m-r-5 f-16">'+notificacion.hora+'</span></td><td width="20%"><br><br><br>'+imagen+'<span class="m-l-10 m-r-5 f-16 p-t-20">'+notificacion.usuario_nombre+' '+notificacion.usuario_apellido+'</span></td><td width="20%"><br><br><br><span class="m-l-10 m-r-5 f-16">'+mensaje.substr(0, 50)+'...<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></span></tr>')
 
        }
 

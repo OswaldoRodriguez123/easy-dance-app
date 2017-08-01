@@ -253,18 +253,16 @@ class AlumnoController extends BaseController
         else{
 
             if($request->correo){
+                $in = array(2,4);
                 $correo = trim(strtolower($request->correo)); 
-                $usuario = User::where('email',$correo)->first();
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->select('users.id')
+                    ->where('users.email',$correo)
+                    ->whereIn('usuarios_tipo.tipo',$in)
+                ->first();
 
                 if($usuario){
-                    $tipos_usuario = UsuarioTipo::where('usuario_id',$usuario->id);
-                    foreach($tipos_usuario as $tipo){
-
-                        if($tipo == 2){
-
-                            return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
-                        }
-                    }
+                    return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
                 }
             }else{
                 $correo = '';
@@ -280,17 +278,14 @@ class AlumnoController extends BaseController
             $apellido = title_case($request->apellido);
             $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
            
-            if($request->telefono)
-            {
+            if($request->telefono){
                 $telefono = $request->telefono;
             }else{
                 $telefono = '';
             }
 
-            if($request->direccion)
-            {
+            if($request->direccion){
                 $direccion = $request->direccion;
-
             }else{
                 $direccion = '';
             }
@@ -421,8 +416,7 @@ class AlumnoController extends BaseController
 
                 //Envio de Sms
 
-                if($request->celular)
-                {
+                if($request->celular){
 
                     $celular = getLimpiarNumero($request->celular);
                     $academia = Academia::find(Auth::user()->academia_id);
@@ -430,7 +424,7 @@ class AlumnoController extends BaseController
 
                         $mensaje = $request->nombre.'. Subiste a bordo a la tripulacion de "Tu Clase de Baile", gracias por unirte a nosotros. ¡Nos encanta verte bailar!.';
 
-                        $client = new Client(); //GuzzleHttp\Client
+                        $client = new Client();
                         $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
 
                     }

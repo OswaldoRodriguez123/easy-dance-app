@@ -35,9 +35,6 @@ class VisitanteController extends BaseController {
     public function index(Request $request)
     {
 
-        // $geoip = new GeoIP();
-        // $geoip->setIp($request->ip());
-
         $visitantes = Visitante::Leftjoin('staff', 'visitantes_presenciales.instructor_id', '=', 'staff.id')
             ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
             ->Leftjoin('config_como_nos_conociste', 'visitantes_presenciales.como_nos_conociste_id', '=', 'config_como_nos_conociste.id')
@@ -50,7 +47,6 @@ class VisitanteController extends BaseController {
         foreach($visitantes as $visitante){
 
             $fecha = Carbon::createFromFormat('Y-m-d', $visitante->fecha_registro);
-            // $fecha->tz = $geoip->getTimezone();
 
             $collection=collect($visitante);     
             $visitante_array = $collection->toArray();
@@ -92,12 +88,10 @@ class VisitanteController extends BaseController {
      */
     public function store(Request $request)
     {
-        //dd($request->all());
 
         $request->merge(array('correo' => trim($request->correo)));
 
         $rules = [
-            'instructor_id' => 'required',
             'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
             'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
             'fecha_nacimiento' => 'required',
@@ -107,7 +101,6 @@ class VisitanteController extends BaseController {
         ];
 
         $messages = [
-            'instructor_id.required' => 'Ups! El Promotor  es requerido ',
             'nombre.required' => 'Ups! El Nombre  es requerido ',
             'nombre.min' => 'El mínimo de caracteres permitidos son 3',
             'nombre.max' => 'El máximo de caracteres permitidos son 20',
@@ -230,14 +223,12 @@ class VisitanteController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno/edit/{$request->id}");
     }
 
     public function updateSexo(Request $request){
         $visitante = Visitante::find($request->id);
         $visitante->sexo = $request->sexo;
 
-        // return redirect("alumno/edit/{$request->id}");
         if($visitante->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
@@ -391,8 +382,7 @@ class VisitanteController extends BaseController {
     public function edit($id)
     {
 
-        $visitante_join = DB::table('visitantes_presenciales')
-            ->Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
+        $visitante = Visitante::Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_como_nos_conociste', 'visitantes_presenciales.como_nos_conociste_id', '=', 'config_como_nos_conociste.id')
             ->Leftjoin('dias_de_interes', 'visitantes_presenciales.dias_clase_id', '=', 'dias_de_interes.id')
             ->Leftjoin('staff', 'visitantes_presenciales.instructor_id', '=', 'staff.id')
@@ -401,10 +391,9 @@ class VisitanteController extends BaseController {
             ->where('visitantes_presenciales.id', '=', $id)
         ->first();
 
-        if($visitante_join){
+        if($visitante){
 
-            $especialidad_id = explode(",", $visitante_join->especialidades);
-
+            $especialidad_id = explode(",", $visitante->especialidades);
 
             if($especialidad_id[0] != 0)
             {
@@ -419,14 +408,14 @@ class VisitanteController extends BaseController {
                 $especialidades = implode(",", $array);
 
             }else{
-                $especialidades = $visitante_join->especialidad_nombre;
+                $especialidades = $visitante->especialidad_nombre;
             }
 
             $tipologias = Tipologia::all();
  
-            return view('participante.visitante.planilla' , compact('map'))->with(['como_nos_conociste' => ComoNosConociste::all(), 'visitante' => $visitante_join, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'tipologias' => $tipologias, 'id' => $id]);
+            return view('participante.visitante.planilla' , compact('map'))->with(['como_nos_conociste' => ComoNosConociste::all(), 'visitante' => $visitante, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'tipologias' => $tipologias, 'id' => $id]);
         }else{
-           return redirect("participante/visitante"); 
+            return redirect("participante/visitante"); 
         }
     }
 
