@@ -35,7 +35,6 @@
                                            
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                         </ul>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
                     <div class="card">
@@ -53,22 +52,40 @@
                                  
                             <label class="c-morado f-15">Filtro</label>
 
-                            <div class="fg-line">
-                              <div class="select">
-                                <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
-                                    <option value = "0">Todos</option>
-                                    <option value = "A">Academia Recepción</option>
-                                    <option value = "T">Taller</option>
-                                    <option value = "C">Campaña</option>
-                                    <option value = "F">Fiesta y Eventos</option>
-                                
-                                </select>
-                              </div>
+                            <div class="dropdown" id="dropdown_boton">
+                              <a id="detalle_boton" role="button" data-toggle="dropdown" class="btn btn-blanco">
+                                  Todos <span class="caret"></span>
+                              </a>
+                              <ul id="dropdown_principal" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                <li class="servicio_detalle pointer" data-nombre="Todos">
+                                  <a>Todos</a>
+                                </li>
+                                <li class="dropdown-submenu pointer">
+                                <a>Academia Recepción</a>
+                                  <ul class="dropdown-menu">
+                                    <li class = "pointer servicio_detalle" data-nombre="Clases Grupales"><a>Clases Grupales</a></li>
+                                    <li class = "pointer servicio_detalle" data-nombre="Clases Personalizadas"><a>Clases Personalizadas</a></li>
+                                    <li class = "pointer servicio_detalle" data-nombre="Productos"><a>Productos</a></li>
+                                    <li class = "pointer servicio_detalle" data-nombre="Servicios"><a>Servicios</a></li>
+                                    <li class = "pointer servicio_detalle" data-nombre="Paquetes"><a>Paquetes</a></li>
+                                  </ul>
+                                </li>
+
+                                <li class="servicio_detalle pointer" data-nombre="Talleres">
+                                  <a>Talleres</a>
+                                </li>
+
+                                <li class="servicio_detalle pointer" data-nombre="Campañas">
+                                  <a>Campañas</a>
+                                </li>
+
+                                <li class="servicio_detalle pointer" data-nombre="Fiestas y Eventos">
+                                  <a>Fiestas y Eventos</a>
+                                </li>
+                              </ul>
                             </div>
-                            
-                           
-                          
                         </div>
+                        
                         <div class="clearfix"></div>                              
                         </div>
                         <div class="table-responsive row">
@@ -91,27 +108,22 @@
                                     <td class="text-center previa">
                                         {{$producto['nombre']}}
 
-                                        @if($producto['tipo'] == 'Servicio')
-                                            <?php $tipo = 'S' ?>
+                                        @if($producto['tipo'] == 'Servicios')
                                             <i class="icon_f-servicios f-20 p-r-10"></i>
-                                        @elseif($producto['tipo'] == 'Producto')
-                                            <?php $tipo = 'P' ?>
+                                        @elseif($producto['tipo'] == 'Productos')
                                             <i class="icon_f-productos f-20 p-r-10"></i>
-                                        @elseif($producto['tipo'] == 'Inscripción y Mensualidad')
-                                            <?php $tipo = 'I' ?>
+                                        @elseif($producto['tipo'] == 'Clases Grupales')
                                             <i class="icon_a-clases-grupales f-20 p-r-10"></i>
-                                        @elseif($producto['tipo'] == 'Taller')
-                                            <?php $tipo = 'T' ?>
+                                        @elseif($producto['tipo'] == 'Talleres')
                                             <i class="icon_a-talleres f-20 p-r-10"></i>
-                                        @elseif($producto['tipo'] == 'Clase Personalizada')
-                                            <?php $tipo = 'R' ?>
+                                        @elseif($producto['tipo'] == 'Clases Personalizadas')
                                             <i class="icon_a-clase-personalizada f-20 p-r-10"></i>
-                                        @elseif($producto['tipo'] == 'Campaña')
-                                            <?php $tipo = 'C' ?>
+                                        @elseif($producto['tipo'] == 'Campañas')
                                             <i class="icon_a-campana f-20 p-r-10"></i>
-                                        @elseif($producto['tipo'] == 'Fiesta y Eventos')
-                                            <?php $tipo = 'F' ?>
+                                        @elseif($producto['tipo'] == 'Fiestas y Eventos')
                                             <i class="icon_a-fiesta f-20 p-r-10"></i>
+                                        @elseif($producto['tipo'] == 'Paquetes')
+                                            <i class="icon_a-paquete f-20 p-r-10"></i>
                                         @endif
 
                                     </td>
@@ -120,11 +132,7 @@
                                     <td class="text-center previa">{{$producto['cantidad']}}</td>
                                     <td class="text-center disabled"> 
                                         <span style="display: none">
-                                            @if($tipo == 'P' OR $tipo == 'I' OR $tipo == 'R')
-                                                A
-                                            @else
-                                                {{$tipo}}
-                                            @endif
+                                            {{$producto['tipo']}}
                                         </span> 
                                         <i name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i>
                                     </td>
@@ -319,6 +327,32 @@
 
         }
 
+    });
+
+    $('body').on('click','.servicio_detalle',function(e){
+            
+        nombre = $(this).data('nombre')
+
+        $('#detalle_boton').text(nombre)
+
+        if(nombre == 'Todos'){
+
+            t
+            .columns(4)
+            .search('')
+            .draw(); 
+
+        }else{
+
+            t
+            .columns(4)
+            .search(nombre)
+            .draw();
+
+        }
+
+        $('#dropdown_boton').removeClass('open')
+        $('#detalle_boton').attr('aria-expanded',false);
     });
 
 

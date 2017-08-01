@@ -26,21 +26,20 @@ class ConfigServiciosController extends BaseController {
 
         foreach($tmp as $servicio){
             if($servicio->tipo == 14){
-                $tipo = 'Fiesta y Eventos';
+                $tipo = 'Fiestas y Eventos';
             }else if($servicio->tipo == 5){
-                $tipo = 'Taller';
+                $tipo = 'Talleres';
             }else if($servicio->tipo == 11){
-                $tipo = 'Campaña';
+                $tipo = 'Campañas';
             }else if($servicio->tipo == 9){
-                $tipo = "Clase Personalizada";
+                $tipo = "Clases Personalizadas";
             }else if($servicio->tipo == 3 OR $servicio->tipo == 4){
-                $tipo = "Inscripción y Mensualidad";
+                $tipo = "Clases Grupales";
             }else if($servicio->tipo == 15){
                 $tipo = "Paquetes";
             }else{
-                $tipo = 'Servicio';
+                $tipo = 'Servicios';
             }
-
 
             $collection=collect($servicio);     
             $array = $collection->toArray();

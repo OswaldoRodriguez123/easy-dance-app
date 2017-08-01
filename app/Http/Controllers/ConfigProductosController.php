@@ -19,18 +19,20 @@ class ConfigProductosController extends BaseController {
         $productos = array();
 
         foreach($tmp as $producto){
-            if($producto->tipo == 14){
-                $tipo = 'Fiesta y Eventos';
-            }else if($producto->tipo == 5){
-                $tipo = 'Taller';
-            }else if($producto->tipo == 11){
-                $tipo = 'Campaña';
-            }else if($producto->tipo == 9){
-                $tipo = "Clase Personalizada";
-            }else{
-                $tipo = 'Producto';
-            }
 
+            if($producto->tipo == 14){
+                $tipo = 'Fiestas y Eventos';
+            }else if($producto->tipo == 5){
+                $tipo = 'Talleres';
+            }else if($producto->tipo == 11){
+                $tipo = 'Campañas';
+            }else if($producto->tipo == 9){
+                $tipo = "Clases Personalizadas";
+            }else if($producto->tipo == 15){
+                $tipo = "Paquetes";
+            }else{
+                $tipo = 'Productos';
+            }
 
             $collection=collect($producto);     
             $array = $collection->toArray();

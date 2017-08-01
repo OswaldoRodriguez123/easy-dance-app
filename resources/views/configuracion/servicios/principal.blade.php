@@ -54,19 +54,39 @@
                                  
                             <label class="c-morado f-15">Filtro</label>
 
-                            <div class="fg-line">
-                              <div class="select">
-                                <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
-                                    <option value = "0">Todos</option>
-                                    <option value = "A">Academia Recepción</option>
-                                    <option value = "T">Taller</option>
-                                    <option value = "C">Campaña</option>
-                                    <option value = "F">Fiesta y Eventos</option>
-                                
-                                </select>
-                              </div>
+                            <div class="dropdown" id="dropdown_boton">
+                              <a id="detalle_boton" role="button" data-toggle="dropdown" class="btn btn-blanco">
+                                  Todos <span class="caret"></span>
+                              </a>
+                              <ul id="dropdown_principal" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                <li class="servicio_detalle pointer" data-nombre="Todos">
+                                  <a>Todos</a>
+                                </li>
+                                <li class="dropdown-submenu pointer">
+                                <a>Academia Recepción</a>
+                                  <ul class="dropdown-menu">
+                                    <li class = "pointer servicio_detalle" data-nombre="Clases Grupales"><a>Clases Grupales</a></li>
+                                    <li class = "pointer servicio_detalle" data-nombre="Clases Personalizadas"><a>Clases Personalizadas</a></li>
+                                    <li class = "pointer servicio_detalle" data-nombre="Productos"><a>Productos</a></li>
+                                    <li class = "pointer servicio_detalle" data-nombre="Servicios"><a>Servicios</a></li>
+                                    <li class = "pointer servicio_detalle" data-nombre="Paquetes"><a>Paquetes</a></li>
+                                  </ul>
+                                </li>
+
+                                <li class="servicio_detalle pointer" data-nombre="Talleres">
+                                  <a>Talleres</a>
+                                </li>
+
+                                <li class="servicio_detalle pointer" data-nombre="Campañas">
+                                  <a>Campañas</a>
+                                </li>
+
+                                <li class="servicio_detalle pointer" data-nombre="Fiestas y Eventos">
+                                  <a>Fiestas y Eventos</a>
+                                </li>
+                              </ul>
                             </div>
-                            
+
                         </div>
                         <div class="clearfix"></div>                               
                         </div>
@@ -89,26 +109,19 @@
                                     <td class="text-center previa">
                                         {{$servicio['nombre']}}
                                         
-                                        @if($servicio['tipo'] == 'Servicio')
-                                            <?php $tipo = 'S' ?>
+                                        @if($servicio['tipo'] == 'Servicios')
                                             <i class="icon_f-servicios f-20 p-r-10"></i>
-                                        @elseif($servicio['tipo'] == 'Inscripción y Mensualidad')
-                                            <?php $tipo = 'I' ?>
+                                        @elseif($servicio['tipo'] == 'Clases Grupales')
                                             <i class="icon_a-clases-grupales f-20 p-r-10"></i>
-                                        @elseif($servicio['tipo'] == 'Taller')
-                                            <?php $tipo = 'T' ?>
+                                        @elseif($servicio['tipo'] == 'Talleres')
                                             <i class="icon_a-talleres f-20 p-r-10"></i>
-                                        @elseif($servicio['tipo'] == 'Clase Personalizada')
-                                            <?php $tipo = 'R' ?>
+                                        @elseif($servicio['tipo'] == 'Clases Personalizadas')
                                             <i class="icon_a-clase-personalizada f-20 p-r-10"></i>
-                                        @elseif($servicio['tipo'] == 'Campaña')
-                                            <?php $tipo = 'C' ?>
+                                        @elseif($servicio['tipo'] == 'Campañas')
                                             <i class="icon_a-campana f-20 p-r-10"></i>
-                                        @elseif($servicio['tipo'] == 'Fiesta y Eventos')
-                                            <?php $tipo = 'F' ?>
+                                        @elseif($servicio['tipo'] == 'Fiestas y Eventos')
                                             <i class="icon_a-fiesta f-20 p-r-10"></i>
                                         @elseif($servicio['tipo'] == 'Paquetes')
-                                            <?php $tipo = 'P' ?>
                                             <i class="icon_a-paquete f-20 p-r-10"></i>
                                         @endif
                                     </td>
@@ -116,11 +129,7 @@
                                     <td class="text-center previa">{{ number_format($servicio['costo'], 2, '.' , '.') }} </td>
                                     <td class="text-center disabled"> 
                                         <span style="display: none">
-                                            @if($tipo == 'S' OR $tipo == 'I' OR $tipo == 'R' OR $tipo == 'P')
-                                                A
-                                            @else
-                                                {{$tipo}}
-                                            @endif
+                                            {{$servicio['tipo']}}
                                         </span> 
                                         <i name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i>
                                     </td>
@@ -284,11 +293,13 @@
                 });
       }
 
-      $('#tipo').on('change', function(){
+      $('body').on('click','.servicio_detalle',function(e){
+            
+        nombre = $(this).data('nombre')
 
-        tipo = $(this).val()
+        $('#detalle_boton').text(nombre)
 
-        if(tipo == '0'){
+        if(nombre == 'Todos'){
 
             t
             .columns(3)
@@ -299,11 +310,13 @@
 
             t
             .columns(3)
-            .search(tipo)
+            .search(nombre)
             .draw();
 
         }
 
+        $('#dropdown_boton').removeClass('open')
+        $('#detalle_boton').attr('aria-expanded',false);
     });
 
     </script>
