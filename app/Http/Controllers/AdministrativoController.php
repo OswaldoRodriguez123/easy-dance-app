@@ -950,7 +950,7 @@ class AdministrativoController extends BaseController {
 
             foreach($id_proforma as $id){
 
-                $item_proforma = ItemsFacturaProforma::where('id', '=', $id)->first();
+                $item_proforma = ItemsFacturaProforma::find($id);
 
                 //SI SE CONSIGUE LA PROFORMA, ENTRA, ESTA CONDICION DEBERIA CUMPLIRSE SIEMPRE
 
@@ -1073,6 +1073,13 @@ class AdministrativoController extends BaseController {
 
                                 if($config_pago->tipo == 1){
 
+                                    $porcentaje = $config_pago->monto / 100;
+                                    $monto_porcentaje = $item_proforma->importe_neto * $porcentaje;
+
+                                    if($monto_porcentaje < $config_pago->monto_porcentaje){
+                                        $monto_porcentaje = $config_pago->monto_porcentaje;
+                                    }
+
                                     if($config_pago->monto_porcentaje > 0 && $config_pago->monto_minimo <= $total_pago){
 
                                         $pago = new Comision;
@@ -1080,7 +1087,7 @@ class AdministrativoController extends BaseController {
                                         $pago->usuario_id=$promotor_id[$i];
                                         $pago->usuario_tipo=$tipo_promotor[$i];
                                         $pago->tipo=$config_pago->tipo;
-                                        $pago->monto=$config_pago->monto_porcentaje;
+                                        $pago->monto = $monto_porcentaje;
                                         $pago->servicio_producto_id=$item_proforma->item_id;
                                         $pago->servicio_producto_tipo=$item_proforma->servicio_producto;
                                         $pago->fecha = Carbon::now()->toDateString();
