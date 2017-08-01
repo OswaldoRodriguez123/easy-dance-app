@@ -224,7 +224,9 @@ class AgendarController extends BaseController
                 if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
                     $nombre_principal = 'AGOTADA';
                 }
-            }else{
+            }
+
+            if(!$nombre_principal){
                 $nombre_principal = $clase->nombre;
             }
 
