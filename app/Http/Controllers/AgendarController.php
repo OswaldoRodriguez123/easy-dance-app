@@ -120,23 +120,23 @@ class AgendarController extends BaseController
 
             if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
                 $nombre_principal = 'AGOTADA';
-            }else{
-
-                if($dt <= Carbon::now()){
-                    if(!$nombre_principal){
-                        $nombre_principal = $clase->nombre;
-                    }
-
-                    $inicio = 1;
-                }else{
-                    if(!$nombre_principal){
-                        $nombre_principal = $clase->nombre . ' ★'; 
-                    }
-
-                    $inicio = 0;
+            }
+      
+            if($dt <= Carbon::now()){
+                if(!$nombre_principal){
+                    $nombre_principal = $clase->nombre;
                 }
+
+                $inicio = 1;
+            }else{
+                if(!$nombre_principal){
+                    $nombre_principal = $clase->nombre . ' ★'; 
+                }
+
+                $inicio = 0;
             }
           
+
     		$nombre=$nombre_principal;
             $nombre_clase = $clase->nombre;
     		$descripcion=$clase->descripcion;
