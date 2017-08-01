@@ -486,7 +486,8 @@
                                 backgroundColor:'{{$etiqueta}}',
                                 className: '{{$actividad}}',
                                 url: '{{$url}}',
-                                tipo: '{{$tipo}}'
+                                tipo: '{{$tipo}}',
+                                nombre_clase: '{{$clase['nombre_clase']}}',
                             },
                         @endforeach
 
@@ -711,6 +712,7 @@
                                 var imagen_instructor = tmp[3]
                                 var sexo = tmp[4]
                                 var hora = tmp[5]
+                                var nombre_clase = event.nombre_clase
 
                                 if(imagen_instructor){
                                     imagen = '/assets/uploads/instructor/'+imagen_instructor
@@ -730,7 +732,7 @@
                                 }
 
 
-                                var contenido = titulo + '<br>'
+                                var contenido = nombre_clase + '<br>'
                                 contenido += sexo_instructor + ' ' + nombre + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
                                 contenido += 'Especialidad: ' + especialidad + '<br>'
                                 contenido += 'Nivel: ' + nivel + '<br>'

@@ -141,6 +141,7 @@ class AgendarController extends BaseController
           
 
     		$nombre=$nombre_principal;
+            $nombre_clase = $clase->nombre;
     		$descripcion=$clase->descripcion;
     		$hora_inicio=$clase->hora_inicio;
     		$hora_final=$clase->hora_final;
@@ -173,7 +174,7 @@ class AgendarController extends BaseController
                 $url = "/agendar/clases-grupales/progreso/".$clase->id;
             }
 
-    		$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$fecha_inicio,"fecha_final"=>$fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, 'inicio' => $inicio);
+    		$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$fecha_inicio,"fecha_final"=>$fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, 'inicio' => $inicio, "nombre_clase" => $nombre_clase);
 			
 			while($dt->timestamp<$df->timestamp){
                 $nombre = $clase->nombre;
@@ -188,7 +189,7 @@ class AgendarController extends BaseController
 
                 if(!$horario_bloqueado){
 
-                    $arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
+                    $arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "nombre_clase" => $nombre_clase);
                 }else{
                     if($horario_bloqueado->boolean_mostrar == 1)
                     {
@@ -228,6 +229,7 @@ class AgendarController extends BaseController
             }
 
             $nombre=$nombre_principal;
+            $nombre_clase = $clase->nombre;
             $descripcion=$clase->descripcion;
             $hora_inicio=$clase->hora_inicio;
             $hora_final=$clase->hora_final;
@@ -257,7 +259,7 @@ class AgendarController extends BaseController
                 $url = "/agendar/clases-grupales/progreso/".$clase->id;
             }
 
-            $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
+            $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "nombre_clase" => $nombre_clase);
 
             while($dt->timestamp<$df->timestamp){
                 $fecha="";
@@ -271,7 +273,7 @@ class AgendarController extends BaseController
 
                  if(!$horario_bloqueado){
 
-                    $arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
+                    $arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "nombre_clase" => $nombre_clase);
                 }else{
                     if($horario_bloqueado->boolean_mostrar == 1)
                     {
