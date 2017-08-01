@@ -108,38 +108,35 @@ class AgendarController extends BaseController
 
             $nombre_principal = '';
 
-            if($usuario_tipo == 1 || $usuario_tipo == 3 ||  $usuario_tipo == 5 || $usuario_tipo == 6){
+            $cantidad_hombres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
+            ->where('alumnos.sexo','M')
+                ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
+            ->count();
 
-                $cantidad_hombres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-                ->where('alumnos.sexo','M')
-                    ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
-                ->count();
+            $cantidad_mujeres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
+                ->where('alumnos.sexo','F')
+                ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
+            ->count();
 
-                $cantidad_mujeres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-                    ->where('alumnos.sexo','F')
-                    ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
-                ->count();
-
-                if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
-                    $nombre_principal = 'AGOTADA';
-                }
-            }
-
-            if($dt <= Carbon::now()){
-                if(!$nombre_principal){
-                    $nombre_principal = $clase->nombre;
-                }
-
-                $inicio = 1;
+            if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
+                $nombre_principal = 'AGOTADA';
             }else{
-                if(!$nombre_principal){
-                    $nombre_principal = $clase->nombre . ' ★'; 
-                }
 
-                $inicio = 0;
+                if($dt <= Carbon::now()){
+                    if(!$nombre_principal){
+                        $nombre_principal = $clase->nombre;
+                    }
+
+                    $inicio = 1;
+                }else{
+                    if(!$nombre_principal){
+                        $nombre_principal = $clase->nombre . ' ★'; 
+                    }
+
+                    $inicio = 0;
+                }
             }
           
-
     		$nombre=$nombre_principal;
             $nombre_clase = $clase->nombre;
     		$descripcion=$clase->descripcion;
@@ -209,27 +206,24 @@ class AgendarController extends BaseController
 
             $nombre_principal = '';
 
-            if($usuario_tipo == 1 || $usuario_tipo == 3 ||  $usuario_tipo == 5 || $usuario_tipo == 6){
 
-                $cantidad_hombres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-                ->where('alumnos.sexo','M')
-                    ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
-                ->count();
 
-                $cantidad_mujeres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-                    ->where('alumnos.sexo','F')
-                    ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
-                ->count();
+            $cantidad_hombres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
+            ->where('alumnos.sexo','M')
+                ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
+            ->count();
 
-                if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
-                    $nombre_principal = 'AGOTADA';
-                }
-            }
+            $cantidad_mujeres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
+                ->where('alumnos.sexo','F')
+                ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
+            ->count();
 
-            if(!$nombre_principal){
+            if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
+                $nombre_principal = 'AGOTADA';
+            }else{
                 $nombre_principal = $clase->nombre;
             }
-
+            
             $nombre=$nombre_principal;
             $nombre_clase = $clase->nombre;
             $descripcion=$clase->descripcion;
