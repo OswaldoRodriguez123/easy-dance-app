@@ -60,42 +60,29 @@ class SugerenciaController extends BaseController {
 
                 $usuario = User::find(Auth::user()->id);
 
-                $notificacion = new Notificacion; 
+                $instructor = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->select('users.id')
+                    ->where('usuarios_tipo.tipo_id',$request->instructor_id)
+                    ->where('usuarios_tipo.tipo',3)
+                ->first();
 
-                $notificacion->tipo_evento = 5;
-                $notificacion->evento_id = $sugerencia->id;
-                $notificacion->mensaje = $usuario->nombre . " " . $usuario->apellido . " ha creado una nueva consulta";
-                $notificacion->titulo = "Nueva Sugerencia";
+                if($instructor){
 
-                if($notificacion->save()){
+                    $notificacion = new Notificacion; 
 
-                    // $array = array(1, 5);
+                    $notificacion->tipo_evento = 5;
+                    $notificacion->evento_id = $sugerencia->id;
+                    $notificacion->mensaje = $usuario->nombre . " " . $usuario->apellido . " ha creado una nueva consulta";
+                    $notificacion->titulo = "Nueva Sugerencia";
 
-                    // $usuarios = DB::table('users')
-                    //     ->select('users.*')
-                    //     ->where('users.academia_id','=', Auth::user()->academia_id)
-                    //     ->whereIn('users.usuario_tipo', $array)
-                    //     ->orWhere('users.usuario_tipo', null)
-                    // ->get();
-                    
-                    // foreach ($usuarios as $usuario) {
-
-                    $instructor = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                        ->where('usuarios_tipo.tipo_id',$request->instructor_id)
-                        ->where('usuarios_tipo.tipo',3)
-                    ->first();
-
-                    if($instructor){
-
+                    if($notificacion->save()){
                         $usuarios_notificados = new NotificacionUsuario;
                         $usuarios_notificados->id_usuario = $instructor->id;
                         $usuarios_notificados->id_notificacion = $notificacion->id;
                         $usuarios_notificados->visto = 0;
                         $usuarios_notificados->save();
-
                     }
 
-                    // }
                 }
 
                 return response()->json(['mensaje' => '¡Excelente! La consulta ha sido enviada satisfactoriamente', 'status' => 'OK', 200]);
