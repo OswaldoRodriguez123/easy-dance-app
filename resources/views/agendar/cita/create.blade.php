@@ -297,23 +297,22 @@
 
 
   $(document).ready(function(){
-        document.getElementById("nombre").focus();
-        $('body,html').animate({scrollTop : 0}, 500);
-        var animation = 'fadeInDownBig';
-        if (animation === "hinge") {
-        animationDuration = 3100;
-        }
-        else {
-        animationDuration = 3200;
-        }
-        $(".container").addClass('animated '+animation);
+    $('body,html').animate({scrollTop : 0}, 500);
+    var animation = 'fadeInDownBig';
+    if (animation === "hinge") {
+    animationDuration = 3100;
+    }
+    else {
+    animationDuration = 3200;
+    }
+    $(".container").addClass('animated '+animation);
 
-        setTimeout(function(){
-            $(".card-body").removeClass(animation);
-        }, animationDuration);
+    setTimeout(function(){
+        $(".card-body").removeClass(animation);
+    }, animationDuration);
 
 
-      });
+  });
 
   setInterval(porcentaje, 1000);
 
@@ -360,117 +359,115 @@
   }
 
   function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
-                $.growl({
-                    icon: icon,
-                    title: titulo,
-                    message: mensaje,
-                    url: ''
-                },{
-                        element: 'body',
-                        type: type,
-                        allow_dismiss: true,
-                        placement: {
-                                from: from,
-                                align: align
-                        },
-                        offset: {
-                            x: 20,
-                            y: 85
-                        },
-                        spacing: 10,
-                        z_index: 1070,
-                        delay: 2500,
-                        timer: 2000,
-                        url_target: '_blank',
-                        mouse_over: false,
-                        animate: {
-                                enter: animIn,
-                                exit: animOut
-                        },
-                        icon_type: 'class',
-                        template: '<div data-growl="container" class="alert" role="alert">' +
-                                        '<button type="button" class="close" data-growl="dismiss">' +
-                                            '<span aria-hidden="true">&times;</span>' +
-                                            '<span class="sr-only">Close</span>' +
-                                        '</button>' +
-                                        '<span data-growl="icon"></span>' +
-                                        '<span data-growl="title"></span>' +
-                                        '<span data-growl="message"></span>' +
-                                        '<a href="#" data-growl="url"></a>' +
-                                    '</div>'
-                });
-            };
+          $.growl({
+              icon: icon,
+              title: titulo,
+              message: mensaje,
+              url: ''
+          },{
+                  element: 'body',
+                  type: type,
+                  allow_dismiss: true,
+                  placement: {
+                          from: from,
+                          align: align
+                  },
+                  offset: {
+                      x: 20,
+                      y: 85
+                  },
+                  spacing: 10,
+                  z_index: 1070,
+                  delay: 2500,
+                  timer: 2000,
+                  url_target: '_blank',
+                  mouse_over: false,
+                  animate: {
+                          enter: animIn,
+                          exit: animOut
+                  },
+                  icon_type: 'class',
+                  template: '<div data-growl="container" class="alert" role="alert">' +
+                                  '<button type="button" class="close" data-growl="dismiss">' +
+                                      '<span aria-hidden="true">&times;</span>' +
+                                      '<span class="sr-only">Close</span>' +
+                                  '</button>' +
+                                  '<span data-growl="icon"></span>' +
+                                  '<span data-growl="title"></span>' +
+                                  '<span data-growl="message"></span>' +
+                                  '<a href="#" data-growl="url"></a>' +
+                              '</div>'
+          });
+      };
 
-            $("#guardar").click(function(){
+      $("#guardar").click(function(){
 
-                var route = route_agregar;
-                var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_cita" ).serialize(); 
-                procesando();        
-                limpiarMensaje();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:datos,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          $("#agregar_cita")[0].reset();
-                          window.location = route_principal;
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
+          var route = route_agregar;
+          var token = $('input:hidden[name=_token]').val();
+          var datos = $( "#agregar_cita" ).serialize(); 
+          procesando();        
+          limpiarMensaje();
+          $.ajax({
+              url: route,
+                  headers: {'X-CSRF-TOKEN': token},
+                  type: 'POST',
+                  dataType: 'json',
+                  data:datos,
+              success:function(respuesta){
+                setTimeout(function(){ 
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY"; 
+                  if(respuesta.status=="OK"){
+                    $("#agregar_cita")[0].reset();
+                    window.location = route_principal;
+                  }else{
+                    var nTitle="Ups! ";
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    var nType = 'danger';
 
-                          $(".procesando").removeClass('show');
-                          $(".procesando").addClass('hidden');
-                          $("#guardar").removeAttr("disabled");
-                          finprocesado();
-                          $("#guardar").css({
-                            "opacity": ("1")
-                          });
-                          $(".cancelar").removeAttr("disabled");
+                    $(".procesando").removeClass('show');
+                    $(".procesando").addClass('hidden');
+                    $("#guardar").removeAttr("disabled");
+                    finprocesado();
+                    $("#guardar").css({
+                      "opacity": ("1")
+                    });
+                    $(".cancelar").removeAttr("disabled");
 
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                        }                       
-                        
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        finprocesado();
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-            });
-
-     
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                  }                       
+                  
+                }, 1000);
+              },
+              error:function(msj){
+                setTimeout(function(){ 
+                  // if (typeof msj.responseJSON === "undefined") {
+                  //   window.location = "{{url('/')}}/error";
+                  // }
+                  if(msj.responseJSON.status=="ERROR"){
+                    console.log(msj.responseJSON.errores);
+                    errores(msj.responseJSON.errores);
+                    var nTitle="    Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                  }else{
+                    var nTitle="   Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  }                        
+                  finprocesado();
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nType = 'danger';
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY";                       
+                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                }, 1000);
+              }
+          });
+      });
 
       function limpiarMensaje(){
         var campo = ["alumno_id", "fecha", "hora_inicio", "hora_final", "instructor_id",  "tipo_id"];
@@ -479,8 +476,6 @@
             $("#error-"+campo[i]+"_mensaje").html('');
         }
       }
-
-
 
     function errores(merror){
       var elemento="";
@@ -503,7 +498,7 @@
 
   }
 
-   $( "#cancelar" ).click(function() {
+  $( "#cancelar" ).click(function() {
     $("#agregar_cita")[0].reset();
     limpiarMensaje();
     $('html,body').animate({

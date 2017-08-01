@@ -155,147 +155,150 @@ class CitaController extends BaseController {
         return view('agendar.cita.create')->with([ 'alumnos' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_citas' => ConfigCitas::all()]);
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request){
 
-    $rules = [
-        'alumno_id' => 'required',
-        'fecha' => 'required',
-        'hora_inicio' => 'required',
-        'hora_final' => 'required',
-        'tipo_id' => 'required',
-        'instructor_id' => 'required',
-    ];
+        $rules = [
+            'alumno_id' => 'required',
+            'fecha' => 'required',
+            'hora_inicio' => 'required',
+            'hora_final' => 'required',
+            'tipo_id' => 'required',
+            'instructor_id' => 'required',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'alumno_id.required' => 'Ups! El Cliente es requerido',
-        'fecha.required' => 'Ups! La fecha es requerida',
-        'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
-        'hora_final.required' => 'Ups! La hora final es requerida',
-        'tipo_id.required' => 'Ups! El tipo es requerido',
-        'instructor_id.required' => 'Ups! El instructor es requerido',
-    ];
+            'alumno_id.required' => 'Ups! El Cliente es requerido',
+            'fecha.required' => 'Ups! La fecha es requerida',
+            'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
+            'hora_final.required' => 'Ups! La hora final es requerida',
+            'tipo_id.required' => 'Ups! El tipo es requerido',
+            'instructor_id.required' => 'Ups! El instructor es requerido',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
+        }else{
 
-    else{
+            $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha);
 
-        $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha);
+            if($fecha < Carbon::now()){
 
-        if($fecha < Carbon::now()){
-
-            return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de inicio no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
-        }
-
-        $fecha = $fecha->toDateString();
-
-        $hora_inicio = strtotime($request->hora_inicio);
-        $hora_final = strtotime($request->hora_final);
-
-        if($hora_inicio > $hora_final)
-        {
-
-            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
-        }
-
-        $boolean_mostrar = Session::get('boolean_mostrar');
-        if(!$boolean_mostrar){
-            $boolean_mostrar = 1;
-        }
-
-        $cita = new Cita;
-        
-        $cita->academia_id = Auth::user()->academia_id;
-        $cita->alumno_id = $request->alumno_id;
-        $cita->fecha = $fecha;
-        $cita->tipo_id = $request->tipo_id;
-        $cita->instructor_id = $request->instructor_id;
-        $cita->hora_inicio = $request->hora_inicio;
-        $cita->hora_final = $request->hora_final;
-        $cita->color_etiqueta = $request->color_etiqueta;
-        $cita->boolean_mostrar = $boolean_mostrar;
-        $cita->cita_llamada = $request->cita_llamada;
-
-        if($cita->save()){
-
-            $academia = Academia::find(Auth::user()->academia_id);
-            $alumno = Alumno::find($request->alumno_id);
-
-            if($cita->boolean_mostrar == 1){
-
-                $instructor = Instructor::find($request->instructor_id);
-
-                $subj = 'Han reservado una Cita';
-
-                $array = [
-                   'nombre_instructor' => $instructor->nombre,
-                   'apellido_instructor' => $instructor->apellido,
-                   'correo' => $academia->correo,
-                   'academia' => $academia->nombre,
-                   'nombre_alumno' => $alumno->nombre,
-                   'apellido_alumno' => $alumno->apellido,
-                   'cedula' => $alumno->identificacion,
-                   'hora_inicio' => $request->hora_inicio,
-                   'hora_final' => $request->hora_final,
-                   'fecha' => $fecha,
-                   'subj' => $subj
-                ];
-
-                Mail::send('correo.cita_academia', $array, function($msj) use ($array){
-                        $msj->subject($array['subj']);
-                        $msj->to($array['correo']);
-                });
-
-                $subj2 = 'Has reservado una Cita';
-
-                $array2 = [
-                   'nombre_instructor' => $instructor->nombre,
-                   'apellido_instructor' => $instructor->apellido,
-                   'correo' => $alumno->correo,
-                   'academia' => $academia->nombre,
-                   'nombre_alumno' => $alumno->nombre,
-                   'hora_inicio' => $request->hora_inicio,
-                   'hora_final' => $request->hora_final,
-                   'fecha' => $fecha,
-                   'subj' => $subj2
-                ];
-
-                Mail::send('correo.cita_alumno', $array2, function($msj) use ($array2){
-                        $msj->subject($array2['subj']);
-                        $msj->to($array2['correo']);
-                });
-
+                return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de inicio no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
             }
 
-            if($alumno->celular){
+            $fecha = $fecha->toDateString();
 
-                $celular = getLimpiarNumero($alumno->celular);
+            $hora_inicio = strtotime($request->hora_inicio);
+            $hora_final = strtotime($request->hora_final);
 
-                if($academia->pais_id == 11 && strlen($celular) == 10){
-                    
-                    $mensaje = $alumno->nombre.'. Hemos creado una cita para la fecha '.$fecha.'  a las  '.$request->hora_inicio.'  con el profesor '.$instructor->nombre.' '.$instructor->apellido.', te esperamos. ¡Nos encanta verte bailar!.';
+            if($hora_inicio > $hora_final)
+            {
 
-                    $client = new Client();
-                    $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
+                return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+            }
+
+            $boolean_mostrar = Session::get('boolean_mostrar');
+            if(!$boolean_mostrar){
+                $boolean_mostrar = 1;
+            }
+
+            $cita = new Cita;
+            
+            $cita->academia_id = Auth::user()->academia_id;
+            $cita->alumno_id = $request->alumno_id;
+            $cita->fecha = $fecha;
+            $cita->tipo_id = $request->tipo_id;
+            $cita->instructor_id = $request->instructor_id;
+            $cita->hora_inicio = $request->hora_inicio;
+            $cita->hora_final = $request->hora_final;
+            $cita->color_etiqueta = $request->color_etiqueta;
+            $cita->boolean_mostrar = $boolean_mostrar;
+            $cita->cita_llamada = $request->cita_llamada;
+
+            if($cita->save()){
+
+                $academia = Academia::find(Auth::user()->academia_id);
+                $alumno = Alumno::find($request->alumno_id);
+
+                if($cita->boolean_mostrar == 1){
+
+                    $instructor = Instructor::find($request->instructor_id);
+
+                    if($academia->correo){
+
+                        $subj = 'Han reservado una Cita';
+
+                        $array = [
+                           'nombre_instructor' => $instructor->nombre,
+                           'apellido_instructor' => $instructor->apellido,
+                           'correo' => $academia->correo,
+                           'academia' => $academia->nombre,
+                           'nombre_alumno' => $alumno->nombre,
+                           'apellido_alumno' => $alumno->apellido,
+                           'cedula' => $alumno->identificacion,
+                           'hora_inicio' => $request->hora_inicio,
+                           'hora_final' => $request->hora_final,
+                           'fecha' => $fecha,
+                           'subj' => $subj
+                        ];
+
+                        Mail::send('correo.cita_academia', $array, function($msj) use ($array){
+                                $msj->subject($array['subj']);
+                                $msj->to($array['correo']);
+                        });
+                    }
+
+                    if($alumno->correo){
+
+                        $subj2 = 'Has reservado una Cita';
+
+                        $array2 = [
+                           'nombre_instructor' => $instructor->nombre,
+                           'apellido_instructor' => $instructor->apellido,
+                           'correo' => $alumno->correo,
+                           'academia' => $academia->nombre,
+                           'nombre_alumno' => $alumno->nombre,
+                           'hora_inicio' => $request->hora_inicio,
+                           'hora_final' => $request->hora_final,
+                           'fecha' => $fecha,
+                           'subj' => $subj2
+                        ];
+
+                        Mail::send('correo.cita_alumno', $array2, function($msj) use ($array2){
+                                $msj->subject($array2['subj']);
+                                $msj->to($array2['correo']);
+                        });
+                    }
 
                 }
 
-            }
+                if($alumno->celular){
 
-            Session::forget('boolean_mostrar');
-        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-   	}
-   }
+                    $celular = getLimpiarNumero($alumno->celular);
+
+                    if($academia->pais_id == 11 && strlen($celular) == 10){
+                        
+                        $mensaje = $alumno->nombre.'. Hemos creado una cita para la fecha '.$fecha.'  a las  '.$request->hora_inicio.'  con el profesor '.$instructor->nombre.' '.$instructor->apellido.', te esperamos. ¡Nos encanta verte bailar!.';
+
+                        $client = new Client();
+                        $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
+
+                    }
+
+                }
+
+                Session::forget('boolean_mostrar');
+            	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+       	}
+    }
 
    public function edit($id)
     {
