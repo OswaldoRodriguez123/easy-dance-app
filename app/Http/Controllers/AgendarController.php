@@ -108,31 +108,29 @@ class AgendarController extends BaseController
 
             $nombre_principal = '';
 
-            $cantidad_hombres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-            ->where('alumnos.sexo','M')
-                ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
-            ->count();
-
-            $cantidad_mujeres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-                ->where('alumnos.sexo','F')
-                ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
-            ->count();
-
-            if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
-                $nombre_principal = 'AGOTADA';
-            }
-      
             if($dt <= Carbon::now()){
-                if(!$nombre_principal){
+
+                $cantidad_hombres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
+                ->where('alumnos.sexo','M')
+                    ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
+                ->count();
+
+                $cantidad_mujeres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
+                    ->where('alumnos.sexo','F')
+                    ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
+                ->count();
+
+                if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
+                    $nombre_principal = 'AGOTADA';
+                }else{
                     $nombre_principal = $clase->nombre;
                 }
 
                 $inicio = 1;
-            }else{
-                if(!$nombre_principal){
-                    $nombre_principal = $clase->nombre . ' ★'; 
-                }
 
+            }else{
+                
+                $nombre_principal = $clase->nombre . ' ★'; 
                 $inicio = 0;
             }
           
@@ -205,8 +203,6 @@ class AgendarController extends BaseController
             $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
             $nombre_principal = '';
-
-
 
             $cantidad_hombres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
             ->where('alumnos.sexo','M')
