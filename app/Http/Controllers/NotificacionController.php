@@ -9,6 +9,8 @@ use App\Taller;
 use App\Fiesta;
 use App\Campana;
 use App\ClaseGrupal;
+use App\Instructor;
+use App\Staff;
 use App\Notificacion;
 use App\NotificacionUsuario;
 use Session;
@@ -46,39 +48,49 @@ class NotificacionController extends BaseController
         foreach($notificaciones as $notificacion){
 
             if($notificacion->tipo_evento == 1){
-                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                    ->join('instructores', 'usuarios_tipo.tipo_id', '=', 'instructores.id')
+
+                $usuario = Instructor::leftjoin('usuarios_tipo', 'usuarios_tipo.tipo_id', '=', 'instructores.id')
+                    ->leftjoin('users', 'usuarios_tipo.usuario_id', '=', 'users.id')
                     ->join('clases_grupales', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                    ->select('users.*')
+                    ->select('instructores.*', 'users.imagen', 'users.id')
                     ->where('usuarios_tipo.tipo',3)
                     ->where('clases_grupales.id',$notificacion->evento_id)
                 ->first();
+
             }else if($notificacion->tipo_evento == 5){
+
                 $usuario = User::join('sugerencias', 'sugerencias.usuario_id', '=', 'users.id')
                     ->select('users.*','sugerencias.mensaje')
                     ->where('sugerencias.id',$notificacion->evento_id)
                 ->first();
+
             }else if($notificacion->tipo_evento == 6){
-                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                    ->join('instructores', 'usuarios_tipo.tipo_id', '=', 'instructores.id')
+
+                $usuario = Instructor::leftjoin('usuarios_tipo', 'usuarios_tipo.tipo_id', '=', 'instructores.id')
+                    ->leftjoin('users', 'usuarios_tipo.usuario_id', '=', 'users.id')
                     ->join('evaluaciones', 'evaluaciones.instructor_id', '=', 'instructores.id')
-                    ->select('users.*')
+                    ->select('instructores.*', 'users.imagen', 'users.id')
                     ->where('usuarios_tipo.tipo',3)
                     ->where('evaluaciones.id',$notificacion->evento_id)
                 ->first();
+
             }else if($notificacion->tipo_evento == 7){
+
                 $usuario = User::join('incidencias', 'incidencias.administrador_id', '=', 'users.id')
                     ->select('users.*')
                     ->where('incidencias.id',$notificacion->evento_id)
                 ->first();
+
             }else if($notificacion->tipo_evento == 8){
-                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                    ->join('staff', 'usuarios_tipo.tipo_id', '=', 'staff.id')
+
+                $usuario = Staff::leftjoin('usuarios_tipo', 'usuarios_tipo.tipo_id', '=', 'staff.id')
+                    ->leftjoin('users', 'usuarios_tipo.usuario_id', '=', 'users.id')
                     ->join('supervisiones_evaluaciones', 'supervisiones_evaluaciones.supervisor_id', '=', 'staff.id')
-                    ->select('users.*')
+                    ->select('staff.*','users.imagen', 'users.id')
                     ->where('usuarios_tipo.tipo',8)
                     ->where('supervisiones_evaluaciones.id',$notificacion->evento_id)
                 ->first();
+
             }else{
                 $usuario = '';
             }
@@ -172,6 +184,7 @@ class NotificacionController extends BaseController
                 if($usuario->mensaje){
                     $notificacion_array['mensaje']=$usuario->mensaje;
                 }
+
                 $notificacion_array['imagen']=$usuario->imagen;
                 $notificacion_array['usuario_nombre'] = $usuario->nombre;
                 $notificacion_array['usuario_apellido'] = $usuario->apellido;
