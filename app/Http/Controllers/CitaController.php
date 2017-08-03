@@ -224,69 +224,72 @@ class CitaController extends BaseController {
 
                 $academia = Academia::find(Auth::user()->academia_id);
                 $alumno = Alumno::find($request->alumno_id);
+                $instructor = Instructor::find($request->instructor_id);
 
-                if($cita->boolean_mostrar == 1){
+                if($alumno && $instructor){
 
-                    $instructor = Instructor::find($request->instructor_id);
+                    if($cita->boolean_mostrar == 1){
 
-                    if($academia->correo){
+                        if($academia->correo){
 
-                        $subj = 'Han reservado una Cita';
+                            $subj = 'Han reservado una Cita';
 
-                        $array = [
-                           'nombre_instructor' => $instructor->nombre,
-                           'apellido_instructor' => $instructor->apellido,
-                           'correo' => $academia->correo,
-                           'academia' => $academia->nombre,
-                           'nombre_alumno' => $alumno->nombre,
-                           'apellido_alumno' => $alumno->apellido,
-                           'cedula' => $alumno->identificacion,
-                           'hora_inicio' => $request->hora_inicio,
-                           'hora_final' => $request->hora_final,
-                           'fecha' => $fecha,
-                           'subj' => $subj
-                        ];
+                            $array = [
+                               'nombre_instructor' => $instructor->nombre,
+                               'apellido_instructor' => $instructor->apellido,
+                               'correo' => $academia->correo,
+                               'academia' => $academia->nombre,
+                               'nombre_alumno' => $alumno->nombre,
+                               'apellido_alumno' => $alumno->apellido,
+                               'cedula' => $alumno->identificacion,
+                               'hora_inicio' => $request->hora_inicio,
+                               'hora_final' => $request->hora_final,
+                               'fecha' => $fecha,
+                               'subj' => $subj
+                            ];
 
-                        Mail::send('correo.cita_academia', $array, function($msj) use ($array){
-                                $msj->subject($array['subj']);
-                                $msj->to($array['correo']);
-                        });
+                            Mail::send('correo.cita_academia', $array, function($msj) use ($array){
+                                    $msj->subject($array['subj']);
+                                    $msj->to($array['correo']);
+                            });
+                        }
+
+                        if($alumno->correo){
+
+                            $subj2 = 'Has reservado una Cita';
+
+                            $array2 = [
+                               'nombre_instructor' => $instructor->nombre,
+                               'apellido_instructor' => $instructor->apellido,
+                               'correo' => $alumno->correo,
+                               'academia' => $academia->nombre,
+                               'nombre_alumno' => $alumno->nombre,
+                               'hora_inicio' => $request->hora_inicio,
+                               'hora_final' => $request->hora_final,
+                               'fecha' => $fecha,
+                               'subj' => $subj2
+                            ];
+
+                            Mail::send('correo.cita_alumno', $array2, function($msj) use ($array2){
+                                    $msj->subject($array2['subj']);
+                                    $msj->to($array2['correo']);
+                            });
+                        }
+
                     }
 
-                    if($alumno->correo){
+                    if($alumno->celular){
 
-                        $subj2 = 'Has reservado una Cita';
+                        $celular = getLimpiarNumero($alumno->celular);
 
-                        $array2 = [
-                           'nombre_instructor' => $instructor->nombre,
-                           'apellido_instructor' => $instructor->apellido,
-                           'correo' => $alumno->correo,
-                           'academia' => $academia->nombre,
-                           'nombre_alumno' => $alumno->nombre,
-                           'hora_inicio' => $request->hora_inicio,
-                           'hora_final' => $request->hora_final,
-                           'fecha' => $fecha,
-                           'subj' => $subj2
-                        ];
+                        if($academia->pais_id == 11 && strlen($celular) == 10){
+                            
+                            $mensaje = $alumno->nombre.'. Hemos creado una cita para la fecha '.$fecha.'  a las  '.$request->hora_inicio.'  con el profesor '.$instructor->nombre.' '.$instructor->apellido.', te esperamos. ¡Nos encanta verte bailar!.';
 
-                        Mail::send('correo.cita_alumno', $array2, function($msj) use ($array2){
-                                $msj->subject($array2['subj']);
-                                $msj->to($array2['correo']);
-                        });
-                    }
+                            $client = new Client();
+                            $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
 
-                }
-
-                if($alumno->celular){
-
-                    $celular = getLimpiarNumero($alumno->celular);
-
-                    if($academia->pais_id == 11 && strlen($celular) == 10){
-                        
-                        $mensaje = $alumno->nombre.'. Hemos creado una cita para la fecha '.$fecha.'  a las  '.$request->hora_inicio.'  con el profesor '.$instructor->nombre.' '.$instructor->apellido.', te esperamos. ¡Nos encanta verte bailar!.';
-
-                        $client = new Client();
-                        $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
+                        }
 
                     }
 
