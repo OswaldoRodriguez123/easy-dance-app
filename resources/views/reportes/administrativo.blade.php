@@ -569,7 +569,7 @@
                             },
                             tooltip: true,
                             tooltipOpts: {
-                                content: "%n, %p.0%, %s", // show percentages, rounding to 2 decimal places
+                                content: "Monto total: %n ... Porcentaje: %p.0%, %s",
                                 shifts: {
                                     x: 20,
                                     y: 0
@@ -616,7 +616,7 @@
                             },
                             tooltip: true,
                             tooltipOpts: {
-                                content: "%n, %p.0%, %s", // show percentages, rounding to 2 decimal places
+                                content: "Monto total: %n ... Porcentaje: %p.0%, %s",
                                 shifts: {
                                     x: 20,
                                     y: 0
@@ -684,7 +684,7 @@
                             },
                             tooltip: true,
                             tooltipOpts: {
-                                content: "%n, %p.0%, %s", // show percentages, rounding to 2 decimal places
+                                content: "Monto total: %n ... Porcentaje: %p.0%, %s",
                                 shifts: {
                                     x: 20,
                                     y: 0
