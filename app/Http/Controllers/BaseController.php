@@ -73,7 +73,7 @@ class BaseController extends Controller {
                             $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/2.jpg";
                         }
                     }
-                }else if($notificacion->tipo_evento == 1{
+                }else if($notificacion->tipo_evento == 1){
 
                     $clase_grupal = ConfigClasesGrupales::join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
                         ->select('config_clases_grupales.imagen')
