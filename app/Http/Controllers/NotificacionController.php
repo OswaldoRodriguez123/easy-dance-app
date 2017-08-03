@@ -83,11 +83,16 @@ class NotificacionController extends BaseController
 
             }else if($notificacion->tipo_evento == 8){
 
-                $usuario = Staff::leftjoin('usuarios_tipo', 'usuarios_tipo.tipo_id', '=', 'staff.id')
-                    ->leftjoin('users', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                    ->join('supervisiones_evaluaciones', 'supervisiones_evaluaciones.supervisor_id', '=', 'staff.id')
-                    ->select('staff.*','users.imagen', 'users.id')
-                    ->where('usuarios_tipo.tipo',8)
+                // $usuario = Staff::leftjoin('usuarios_tipo', 'usuarios_tipo.tipo_id', '=', 'staff.id')
+                //     ->leftjoin('users', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                //     ->join('supervisiones_evaluaciones', 'supervisiones_evaluaciones.supervisor_id', '=', 'staff.id')
+                //     ->select('staff.*','users.imagen', 'users.id')
+                //     ->where('usuarios_tipo.tipo',8)
+                //     ->where('supervisiones_evaluaciones.id',$notificacion->evento_id)
+                // ->first();
+
+                $usuario = Staff::join('supervisiones_evaluaciones', 'supervisiones_evaluaciones.supervisor_id', '=', 'staff.id')
+                    ->select('staff.*')
                     ->where('supervisiones_evaluaciones.id',$notificacion->evento_id)
                 ->first();
 
