@@ -62,8 +62,7 @@ class BaseController extends Controller {
                 $collection=collect($notificacion);     
                 $notificacion_imagen_array = $collection->toArray();
 
-                if($notificacion->tipo_evento == 5)
-                {
+                if($notificacion->tipo_evento != 1){
                     if(Auth::user()->imagen){
                         $notificacion_imagen_array['imagen']= "/assets/uploads/usuario/".Auth::user()->imagen;
                     }else{
@@ -74,7 +73,7 @@ class BaseController extends Controller {
                             $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/2.jpg";
                         }
                     }
-                }else if($notificacion->tipo_evento == 1){
+                }else{
 
                     $clase_grupal = ConfigClasesGrupales::join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
                         ->select('config_clases_grupales.imagen')

@@ -159,11 +159,11 @@
                             @if(Auth::user()->imagen)
                                 <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" alt="" width="45px" height="auto">  
                             @else
-                             @if(Auth::user()->sexo=='F')
-                                  <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="" width="45px" height="auto">        
-                               @else
-                                  <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="" width="45px" height="auto">
-                               @endif
+                                @if(Auth::user()->sexo=='F')
+                                    <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="" width="45px" height="auto">        
+                                @else
+                                    <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="" width="45px" height="auto">
+                                @endif
                             @endif
 
                             <br>
