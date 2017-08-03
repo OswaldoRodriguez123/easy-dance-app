@@ -794,9 +794,10 @@ class ReporteController extends BaseController
             ->join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
             ->select('alumnos.*', 'asistencias.fecha as fecha', 'asistencias.hora as hora', 'alumnos.id as alumno_id', 'asistencias.clase_grupal_id', 'asistencias.id', 'config_clases_grupales.nombre as clase_grupal_nombre', 'asistencias.boolean_credencial')
             ->where('alumnos.deleted_at',null)
-            ->where('clases_grupales.deleted_at',null);
             ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
         	->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
+            ->where('clases_grupales.deleted_at',null);
+
 
 
         $query2 = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
@@ -804,9 +805,9 @@ class ReporteController extends BaseController
             ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
             ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'alumnos.sexo as sexo', 'alumnos.fecha_nacimiento as fecha_nacimiento', 'alumnos.sexo as sexo', 'alumnos.telefono as telefono', 'alumnos.celular as celular', 'alumnos.id as alumno_id', 'clases_grupales.id as clase_grupal_id', 'alumnos.identificacion as identificacion', 'inscripcion_clase_grupal.id', 'config_clases_grupales.nombre as clase_grupal_nombre')
             ->where('alumnos.deleted_at',null)
-            ->where('clases_grupales.deleted_at',null);
             ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
         	->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
+            ->where('clases_grupales.deleted_at',null);
 
 
         if($request->clase_grupal_id)
