@@ -1095,6 +1095,7 @@ class AdministrativoController extends BaseController {
                                         $pago->academia_id = Auth::user()->academia_id;
                                         $pago->cliente_id = $request->usuario_id;
                                         $pago->cliente_tipo = $request->usuario_tipo;
+                                        $pago->servicio_producto_costo = $item_proforma->importe_neto;
 
                                         $pago->save();
                                     }
@@ -1116,6 +1117,7 @@ class AdministrativoController extends BaseController {
                                         $pago->academia_id = Auth::user()->academia_id;
                                         $pago->cliente_id = $request->usuario_id;
                                         $pago->cliente_tipo = $request->usuario_tipo;
+                                        $pago->servicio_producto_costo = $item_proforma->importe_neto;
 
                                         $pago->save();
                                     }

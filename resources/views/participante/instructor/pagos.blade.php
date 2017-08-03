@@ -94,6 +94,7 @@
                                     <th class="text-center" data-column-id="hora" data-order="asc">Hora</th>
                                     <th class="text-center" data-column-id="hora" data-order="asc">Día</th>
                                     <th class="text-center" data-column-id="clase">Servicio / Producto</th>
+                                    <th class="text-center" data-column-id="costo">Costo</th>
                                     <th class="text-center" data-column-id="cliente" data-order="asc">Cliente</th>
                                     <th class="text-center" data-column-id="monto">Monto</th>
                                 </tr>
@@ -112,6 +113,7 @@
                                   <td class="text-center previa">{{$pago['hora']}}</td>
                                   <td class="text-center previa">{{$pago['dia']}}</td>
                                   <td class="text-center previa">{{$pago['servicio_producto']}}</td>
+                                  <td class="text-center previa">{{ number_format($pago['servicio_producto_costo'], 2, '.' , '.') }}</td>
                                   <td class="text-center previa">{{$pago['cliente']}}</td>
                                   <td class="text-center previa">{{ number_format($pago['monto'], 2, '.' , '.') }}</td>
                                 </tr>

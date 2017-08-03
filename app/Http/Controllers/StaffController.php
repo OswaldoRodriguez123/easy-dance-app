@@ -785,7 +785,7 @@ class StaffController extends BaseController
                         $monto_porcentaje = '';
                     }
 
-                    $config_pagos=array('servicio_producto_id' => $servicio_producto_id, 'tipo' => $request->tipo_pago, 'monto' => $monto , 'servicio_producto_tipo' => $servicio_producto_tipo, 'nombre' => $servicio_producto->nombre, 'monto_minimo' => $monto_minimo, 'monto_porcentaje' => $monto_porcentaje);
+                    $config_pagos=array('servicio_producto_id' => $servicio_producto_id, 'tipo' => $request->tipo_pago, 'monto' => $monto , 'servicio_producto_tipo' => $servicio_producto_tipo, 'nombre' => $servicio_producto->nombre, 'monto_minimo' => $monto_minimo, 'monto_porcentaje' => $monto_porcentaje, 'servicio_producto_costo' => $servicio_producto->costo);
 
                     Session::push('comisiones', $config_pagos);
 
@@ -814,7 +814,7 @@ class StaffController extends BaseController
                         $monto_porcentaje = '';
                     }
 
-                    $config_pagos=array('servicio_producto_id' => $servicio->id, 'tipo' => $request->tipo_pago, 'monto' => $monto , 'servicio_producto_tipo' => $servicio->tipo, 'nombre' => $servicio->nombre, 'monto_minimo' => $monto_minimo, 'monto_porcentaje' => $monto_porcentaje);
+                    $config_pagos=array('servicio_producto_id' => $servicio->id, 'tipo' => $request->tipo_pago, 'monto' => $monto , 'servicio_producto_tipo' => $servicio->tipo, 'nombre' => $servicio->nombre, 'monto_minimo' => $monto_minimo, 'monto_porcentaje' => $monto_porcentaje,'servicio_producto_costo' => $servicio->costo);
 
                     Session::push('comisiones', $config_pagos);
 
@@ -841,7 +841,7 @@ class StaffController extends BaseController
                         $monto_porcentaje = '';
                     }
 
-                    $config_pagos=array('servicio_producto_id' => $producto->id, 'tipo' => $request->tipo_pago, 'monto' => $monto , 'servicio_producto_tipo' => $producto->tipo, 'nombre' => $producto->nombre, 'monto_minimo' => $monto_minimo, 'monto_porcentaje' => $monto_porcentaje);
+                    $config_pagos=array('servicio_producto_id' => $producto->id, 'tipo' => $request->tipo_pago, 'monto' => $monto , 'servicio_producto_tipo' => $producto->tipo, 'nombre' => $producto->nombre, 'monto_minimo' => $monto_minimo, 'monto_porcentaje' => $monto_porcentaje, 'servicio_producto_costo' => $producto->costo);
 
                     Session::push('comisiones', $config_pagos);
 
