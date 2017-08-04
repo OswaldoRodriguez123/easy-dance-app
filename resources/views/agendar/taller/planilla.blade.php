@@ -1022,6 +1022,86 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalMultihorario-Taller" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Taller<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="form_multihorario" id="form_multihorario"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="table-responsive row">
+                                   <div class="col-md-12">
+                                    <table class="table table-striped table-bordered text-center " id="tablehorario" >
+                                    <thead>
+                                        <tr>
+                                          <th class="text-center" data-column-id="id" data-type="numeric">Instructor</th>
+                                          <th class="text-center" data-column-id="sexo">Especialidad</th>
+                                          <th class="text-center" data-column-id="sexo">Estudio</th>
+                                          <th class="text-center" data-column-id="nombre" data-order="desc">Fecha</th>
+                                          <th class="text-center" data-column-id="estatu_c" data-order="desc">Hora Inicio</th>
+                                          <th class="text-center" data-column-id="estatu_e" data-order="desc">Hora Final</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+
+                                      @foreach($arrayHorario as $horario)
+                                      
+                                        <tr id="{{$horario['id']}}" data-fecha="{{$horario['fecha']}}" class="odd seleccion text-center" role="row">
+                                          <td onclick="previa(this)" class="text-center">
+                                            {{$horario['instructor']}}
+                                          </td>
+                                          <td onclick="previa(this)" class="text-center">
+                                            {{$horario['especialidad']}}
+                                          </td>
+                                          <td onclick="previa(this)" class="text-center">
+                                            {{$horario['estudio']}}
+                                          </td>
+                                          <td onclick="previa(this)" class="text-center">
+                                            {{$horario['fecha']}}
+                                          </td>
+                                          <td onclick="previa(this)" class="text-center">
+                                            {{$horario['hora_inicio']}}
+                                          </td>
+                                          <td onclick="previa(this)" class="text-center">
+                                            {{$horario['hora_final']}}
+                                          </td>
+                                        </tr>
+
+                                      @endforeach                          
+                                                                   
+                                    </tbody>
+                                </table>
+                                 </div>
+                                </div>
+
+
+                               <input type="hidden" name="id" value="{{$taller->id}}"></input>
+                            
+
+                               <div class="clearfix"></div> 
+                              
+                          </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <section id="content">
                 <div class="container">
                 
@@ -1075,10 +1155,46 @@
 
                                   <hr></hr>
 
-                                  <a href="{{url('/')}}/agendar/talleres/participantes/{{$taller->id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <!-- <a href="{{url('/')}}/agendar/talleres/participantes/{{$taller->id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/agendar/talleres/progreso/{{$taller->id}}"><i class="icon_e-ver-progreso f-16 m-r-5 boton blue"  data-original-title="Ver Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/agendar/talleres/egresos/{{$taller->id}}"><i class="fa fa-money f-16 m-r-5 boton blue"  data-original-title="Egresos" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$taller->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$taller->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i> -->
+
+                                  <ul class="top-menu">
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                           <span class="f-15 f-700" style="color:black"> 
+                                                <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                           </span>
+                                        </a>
+                                        <ul class="dropdown-menu dm-icon pull-right">
+
+                                            <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/agendar/talleres/participantes/{{$taller->id}}"><i class="icon_a-participantes f-16 m-r-10 boton blue"></i> Participantes</a>
+                                            </li>
+
+                                            <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/agendar/talleres/progreso/{{$taller->id}}"><i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i> Ver Progreso</a>
+                                            </li>
+                                        
+                                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+
+                                              <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/agendar/talleres/egresos/{{$taller->id}}"><i class="fa fa-money f-16 m-r-10 boton blue"></i> Egresos</a>
+                                              </li>
+
+                                              <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/agendar/talleres/multihorario/{{$taller->id}}"><i class="zmdi zmdi-calendar-note f-16 boton blue"></i>Multihorario</a>
+                                              </li>
+
+                                              <li class="hidden-xs eliminar">
+                                                  <a class="pointer"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                              </li>
+
+                                            @endif
+                                        </ul>
+                                    </li>
+                                </ul>
                                   
                                   <br></br>
                                     
@@ -1242,6 +1358,30 @@
                                @endif
                              <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalMultihorario-Taller">
+                             <td width="50%"> 
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-multihorarios" class="zmdi {{ empty($arrayHorario) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                              
+                              <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar f-22"></i> </span>
+                              <span class="f-14">Multihorarios </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="taller-multihorarios">
+                               
+                              @if(count($arrayHorario) > 1)
+
+                                Varios
+                              @elseif(count($arrayHorario) == 1)
+
+                                Ver
+
+                              @else
+
+                                Ninguno
+
+                              @endif
+
+                             <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+
 
 
                            </table>
@@ -1266,12 +1406,48 @@
     route_update="{{url('/')}}/agendar/talleres/update";
     route_eliminar="{{url('/')}}/agendar/talleres/eliminar/";
     route_principal="{{url('/')}}/agendar/talleres";
+    route_detalle="{{url('/')}}/agendar/talleres/multihorario/detalle";
 
     function formatmoney(n) {
       return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
     } 
 
     $(document).ready(function(){
+
+      var h=$('#tablehorario').DataTable({
+      processing: true,
+      serverSide: false, 
+      bPaginate: false, 
+      bFilter:false, 
+      bSort:false, 
+      bInfo:false,
+      order: [[0, 'asc']],
+      fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+        $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+      },
+      language: {
+                      processing:     "Procesando ...",
+                      search:         "Buscar:",
+                      lengthMenu:     "Mostrar _MENU_ Registros",
+                      info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                      infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                      infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                      infoPostFix:    "",
+                      loadingRecords: "...",
+                      zeroRecords:    "No se encontraron registros coincidentes",
+                      emptyTable:     "No hay datos disponibles en la tabla",
+                      paginate: {
+                          first:      "Primero",
+                          previous:   "Anterior",
+                          next:       "Siguiente",
+                          last:       "Ultimo"
+                      },
+                      aria: {
+                          sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                          sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                      }
+                  }
+    });
 
       $('#fecha').daterangepicker({
             "autoApply" : false,
@@ -1698,9 +1874,15 @@
           $("#boolean_promocionar").val('0');
         }    
       });
+
+      function previa(t){
+        var row = $(t).closest('tr').attr('id');
+        var route =route_detalle+"/"+row;
+        
+        window.location=route;
+      }
     
    </script> 
-
-   <!--<script src="{{url('/')}}/assets/js/script/alumno-planilla.js"></script>-->        
+    
 		
 @stop

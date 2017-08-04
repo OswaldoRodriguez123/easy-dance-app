@@ -47,33 +47,107 @@ class AgendarController extends BaseController
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         $usuario_id = Session::get('easydance_usuario_id');
 
-    	$talleres=Taller::where('academia_id', '=' ,  Auth::user()->academia_id)
-            ->where('talleres.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'))
+    	$talleres = Taller::join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
+            ->join('config_especialidades', 'config_especialidades.id', '=', 'talleres.especialidad_id')
+            ->select('talleres.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad')
+            ->where('talleres.academia_id', '=' ,  Auth::user()->academia_id)
+            ->where('talleres.fecha_inicio', '>=', Carbon::now()->toDateString())
+        ->get();
+
+        $horarios_talleres = Taller::join('horarios_talleres', 'talleres.id', '=', 'horarios_talleres.taller_id')
+            ->join('instructores', 'horarios_talleres.instructor_id', '=', 'instructores.id')
+            ->join('config_especialidades', 'config_especialidades.id', '=', 'horarios_talleres.especialidad_id')
+            ->select('talleres.id','horarios_talleres.fecha as fecha_inicio', 'horarios_talleres.hora_inicio', 'horarios_talleres.hora_final', 'talleres.color_etiqueta as taller_etiqueta', 'horarios_talleres.color_etiqueta', 'talleres.nombre', 'talleres.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad')
+            ->where('talleres.academia_id', '=' ,  Auth::user()->academia_id)
+            ->where('talleres.fecha_inicio', '>=', Carbon::now()->toDateString())
         ->get();
 
     	foreach ($talleres as $taller) {
 
-    		$fecha_start=explode('-',$taller['fecha_inicio']);
-    		$fecha_end=explode('-',$taller['fecha_final']);
-    		$id=$taller['id'];
-    		$nombre=$taller['nombre'];
-    		$descripcion=$taller['descripcion'];
-    		$hora_inicio=$taller['hora_inicio'];
-    		$hora_final=$taller['hora_final'];
-    		$etiqueta=$taller['color_etiqueta'];
+    		$fecha_start=explode('-',$taller->fecha_inicio);
+            $fecha_end=explode('-',$taller->fecha_final);
 
-    		$dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+            $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+            $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
-    		$df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+            $nombre = $taller->nombre;
+            $descripcion=$taller->descripcion;
+            $hora_inicio=$taller->hora_inicio;
+            $hora_final=$taller->hora_final;
+            $fecha_inicio = $dt->toDateString();
+            $fecha_final = $df->toDateString();
+            $etiqueta=$taller->color_etiqueta;
+            $instructor = $taller->instructor_nombre . ' ' .$taller->instructor_apellido;
+            $sexo = $taller->sexo;
+            $especialidad = $taller->especialidad;
+            $instructor_imagen = Instructor::find($taller->instructor_id);               
+            
+            if($instructor_imagen->imagen){
+                $imagen = $instructor_imagen->imagen;
+            }else{
+                $imagen = '';
+            }
 
-    		$arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/talleres/operaciones/".$id);
+            $id=$instructor."!".$especialidad."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
+
+            $fecha_inicio = $dt->toDateString();
+            $fecha_final = $df->toDateString();
+
+            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
+                $url = "/agendar/talleres/operaciones/".$taller->id;
+            }else{
+                $url = "/agendar/talleres/progreso/".$taller->id;
+            }
+
+            $arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
 
 			while($dt->timestamp<$df->timestamp){
 				$fecha="";
 				$fecha=$dt->addWeek()->toDateString();
-				$arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>"/agendar/talleres/operaciones/".$id);
+				$arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
 			}
 		}
+
+        foreach ($horarios_talleres as $taller) {
+
+            $fecha_start=explode('-',$taller->fecha_inicio);
+            $fecha_end=explode('-',$taller->fecha_final);
+
+            $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+
+            $nombre = $taller->nombre;
+            $descripcion=$taller->descripcion;
+            $hora_inicio=$taller->hora_inicio;
+            $hora_final=$taller->hora_final;
+            $fecha_inicio = $dt->toDateString();
+            $fecha_final = $dt->toDateString();
+            $etiqueta=$taller->color_etiqueta;
+            $instructor = $taller->instructor_nombre . ' ' .$taller->instructor_apellido;
+            $sexo = $taller->sexo;
+            $especialidad = $taller->especialidad;
+            $instructor_imagen = Instructor::find($taller->instructor_id);               
+            
+            if($instructor_imagen->imagen){
+                $imagen = $instructor_imagen->imagen;
+            }else{
+                $imagen = '';
+            }
+
+            $id=$instructor."!".$especialidad."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
+
+            $fecha_inicio = $dt->toDateString();
+            $fecha_final = $df->toDateString();
+
+            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
+                $url = "/agendar/talleres/operaciones/".$taller->id;
+            }else{
+                $url = "/agendar/talleres/progreso/".$taller->id;
+            }
+
+            $arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
+
+            
+        }
 
 		$clasegrupal = ClaseGrupal::join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')

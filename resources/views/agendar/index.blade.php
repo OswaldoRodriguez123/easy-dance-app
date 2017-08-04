@@ -698,6 +698,45 @@
                             contenido += 'Presentador: ' + presentador + '<br>'
 
                             eventElement.find(".fc-title").append("  <i class='zmdi zmdi-camera-add'></i>");
+                        }else if (tipo[0] == 'taller'){
+
+                            titulo = eventElement.find(".fc-title").text()
+
+                            var tmp = id.split("!"); 
+                
+                            var tmp2 = tmp[0].split('-')
+                            var nombre = tmp2[1]
+                            var especialidad = tmp[1]
+                            var imagen_instructor = tmp[2]
+                            var sexo = tmp[3]
+                            var hora = tmp[4]
+
+                            if(imagen_instructor){
+                                imagen = '/assets/uploads/instructor/'+imagen_instructor
+
+                            }else{
+                                if(sexo == 'F'){
+                                    imagen = '/assets/img/Mujer.jpg'
+                                }else{
+                                    imagen = '/assets/img/Hombre.jpg'
+                                }
+                            }
+
+                            if(sexo == 'F'){
+                                sexo_instructor = 'Instructora:'
+                            }else{
+                                sexo_instructor = 'Instructor:'
+                            }
+
+
+                            var contenido = titulo + '<br>'
+                            contenido += sexo_instructor + ' ' + nombre + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
+                            contenido += 'Especialidad: ' + especialidad + '<br>'
+                            contenido += 'Hora: ' + hora + '<br>'
+
+                            eventElement.find(".fc-title").append("  <i class='icon_a-talleres'></i>");
+                            
+                            
                         }else if (tipo[0] == 'clase'){
                             titulo = eventElement.find(".fc-title").text()
 

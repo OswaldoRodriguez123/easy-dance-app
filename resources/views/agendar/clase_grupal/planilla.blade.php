@@ -1151,17 +1151,10 @@
                               </div>
                               </div>
                             </div>
-                            <!-- <div class="col-sm-12">                            
-
-                              <a class="btn-blanco m-r-5 f-12 trasladar" href="#">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
-                            </div> -->
                         </div></form>
                     </div>
                 </div>
             </div>
-
-            
 
             <section id="content">
                 <div class="container">
@@ -1754,39 +1747,39 @@
         });
 
     var h=$('#tablehorario').DataTable({
-        processing: true,
-        serverSide: false, 
-        bPaginate: false, 
-        bFilter:false, 
-        bSort:false, 
-        bInfo:false,
-        order: [[0, 'asc']],
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         "Buscar:",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
-        });
+      processing: true,
+      serverSide: false, 
+      bPaginate: false, 
+      bFilter:false, 
+      bSort:false, 
+      bInfo:false,
+      order: [[0, 'asc']],
+      fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+        $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+      },
+      language: {
+                      processing:     "Procesando ...",
+                      search:         "Buscar:",
+                      lengthMenu:     "Mostrar _MENU_ Registros",
+                      info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                      infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                      infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                      infoPostFix:    "",
+                      loadingRecords: "...",
+                      zeroRecords:    "No se encontraron registros coincidentes",
+                      emptyTable:     "No hay datos disponibles en la tabla",
+                      paginate: {
+                          first:      "Primero",
+                          previous:   "Anterior",
+                          next:       "Siguiente",
+                          last:       "Ultimo"
+                      },
+                      aria: {
+                          sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                          sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                      }
+                  }
+    });
 
     $('#modalNombre-ClaseGrupal').on('show.bs.modal', function (event) {
       limpiarMensaje();

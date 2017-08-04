@@ -780,6 +780,22 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::put('agendar/talleres/update/mostrar', 'TallerController@updateMostrar');
 		Route::post('agendar/talleres/update/costo_taller', 'TallerController@updateCostoTaller');
 
+		//MULTIHORARIO TALLERES
+
+		Route::get('agendar/talleres/multihorario/{id}', 'MultihorarioTallerController@principal');
+		Route::post('agendar/talleres/multihorario/agregarhorario', 'MultihorarioTallerController@agregar');
+		Route::post('agendar/talleres/multihorario/eliminarhorario/{id}', 'MultihorarioTallerController@eliminar');
+		Route::post('agendar/talleres/multihorario/cancelarhorarios', 'MultihorarioTallerController@CancelarHorarios');
+		Route::post('agendar/talleres/multihorario/guardarhorarios', 'MultihorarioTallerController@GuardarHorarios');
+		Route::get('agendar/talleres/multihorario/detalle/{id}', 'MultihorarioTallerController@edit');
+		Route::delete('agendar/talleres/multihorario/eliminar/{id}', 'MultihorarioTallerController@destroy');
+		Route::put('agendar/talleres/multihorario/update/especialidad', 'MultihorarioTallerController@updateEspecialidad');
+		Route::put('agendar/talleres/multihorario/update/instructor', 'MultihorarioTallerController@updateInstructor');
+		Route::put('agendar/talleres/multihorario/update/dia', 'MultihorarioTallerController@updateDia');
+		Route::put('agendar/talleres/multihorario/update/horario', 'MultihorarioTallerController@updateHorario');
+		Route::put('agendar/talleres/multihorario/update/estudio', 'MultihorarioTallerController@updateEstudio');
+		Route::put('agendar/talleres/multihorario/update/etiqueta', 'MultihorarioTallerController@updateEtiqueta');
+
 		//FIESTAS
 
 		Route::get('agendar/fiestas', 'FiestaController@index');

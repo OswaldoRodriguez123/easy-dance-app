@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Taller;
+use App\HorarioTaller;
 use App\Alumno;
 use App\Academia;
 use App\ConfigEstudios;
@@ -1263,21 +1264,62 @@ class TallerController extends BaseController {
     public function edit($id)
     {
 
-        $find = Taller::find($id);
+        $taller = Taller::join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_estudios', 'talleres.estudio_id', '=', 'config_estudios.id')
+            ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'talleres.fecha_inicio as fecha_inicio', 'talleres.fecha_final as fecha_final' , 'talleres.hora_inicio','talleres.hora_final', 'talleres.id', 'talleres.id', 'talleres.nombre', 'talleres.costo', 'talleres.descripcion', 'talleres.cupo_minimo', 'talleres.cupo_maximo' , 'talleres.cupo_reservacion', 'talleres.link_video', 'talleres.imagen', 'talleres.color_etiqueta', 'talleres.condiciones', 'talleres.cantidad_hombres', 'talleres.cantidad_mujeres', 'talleres.boolean_promocionar')
+            ->where('talleres.id', '=', $id)
+        ->first();
 
-        if($find){
+        if($taller){
 
-            $taller_join = DB::table('talleres')
-                ->join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
-                ->join('config_estudios', 'talleres.estudio_id', '=', 'config_estudios.id')
-                ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
-                ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'talleres.fecha_inicio as fecha_inicio', 'talleres.fecha_final as fecha_final' , 'talleres.hora_inicio','talleres.hora_final', 'talleres.id', 'talleres.id', 'talleres.nombre', 'talleres.costo', 'talleres.descripcion', 'talleres.cupo_minimo', 'talleres.cupo_maximo' , 'talleres.cupo_reservacion', 'talleres.link_video', 'talleres.imagen', 'talleres.color_etiqueta', 'talleres.condiciones', 'talleres.cantidad_hombres', 'talleres.cantidad_mujeres', 'talleres.boolean_promocionar')
-                ->where('talleres.id', '=', $id)
-                ->first();
+            $horarios = HorarioTaller::where('taller_id',$id)
+            ->join('config_especialidades', 
+                'horarios_talleres.especialidad_id',
+                '=', 
+                'config_especialidades.id'
+                )
+            ->join('instructores', 
+                'horarios_talleres.instructor_id',
+                '=',
+                'instructores.id'
+                 )
+            ->join('config_estudios', 
+                'horarios_talleres.estudio_id',
+                '=',
+                'config_estudios.id'
+                 )
+            ->select('horarios_talleres.*', 
+                'instructores.nombre as instructor_nombre',
+                'instructores.apellido as instructor_apellido',
+                'config_especialidades.nombre as especialidad_nombre', 
+                'config_estudios.nombre as estudio_nombre'
+                 )
+            ->get();
 
-                //dd($clase_grupal_join);
+            $arrayHorario = array();
 
-            return view('agendar.taller.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'taller' => $taller_join]);
+            foreach ($horarios as $horario) {
+                $instructor=$horario->instructor_nombre.' '.$horario->instructor_apellido;
+                $especialidad=$horario->especialidad_nombre;
+                $estudio = $horario->estudio_nombre;
+                $fecha=$horario->fecha;
+                $hora_inicio=$horario->hora_inicio;
+                $hora_final=$horario->hora_final;
+                $id_horario=$horario->id;
+
+                $arrayHorario[$id_horario] = array(
+                    'instructor' => $instructor,
+                    'especialidad' => $especialidad,
+                    'estudio' => $estudio,
+                    'hora_inicio' => $hora_inicio,
+                    'hora_final' => $hora_final,
+                    'fecha'=> $fecha,
+                    'id'=>$id_horario
+                );
+            }
+
+            return view('agendar.taller.planilla')->with(['config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'taller' => $taller, 'arrayHorario' => $arrayHorario]);
 
         }else{
            return redirect("agendar/talleres"); 
