@@ -1260,7 +1260,7 @@ class InstructorController extends BaseController {
             $pagos_instructor = PagoInstructor::join('clases_grupales', 'pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('pagos_instructor.*', 'config_clases_grupales.nombre as servicio_producto', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor')
+                ->select('pagos_instructor.*', 'config_clases_grupales.nombre as servicio_producto', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'config_clases_grupales.costo_mensualidad as servicio_producto_costo')
                 ->where('instructores.id', $id)
                 ->limit(100)
             ->get();
