@@ -106,7 +106,6 @@ class InstructorController extends BaseController {
      */
     public function store(Request $request)
     {
-        //dd($request->all());
 
         $request->merge(array('correo' => trim($request->correo)));
 
@@ -117,7 +116,7 @@ class InstructorController extends BaseController {
         'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento' => 'required',
         'sexo' => 'required',
-        'correo' => 'required|email|max:255',
+        'correo' => 'email|max:255|unique:users,email',
     ];
 
     $messages = [
@@ -140,21 +139,14 @@ class InstructorController extends BaseController {
         'correo.required' => 'Ups! El correo es requerido',
         'correo.email' => 'Ups! El correo tiene una dirección inválida',
         'correo.max' => 'El máximo de caracteres permitidos son 255',
-        // 'correo.unique' => 'Ups! Ya este correo ha sido registrado',
+        'correo.unique' => 'Ups! Ya este correo ha sido registrado',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
 
     if ($validator->fails()){
 
-        // return redirect("/home")
-
-        // ->withErrors($validator)
-        // ->withInput();
-
         return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
 
     }
 
@@ -375,66 +367,131 @@ class InstructorController extends BaseController {
 
     public function updateID(Request $request){
 
-    $rules = [
-        'identificacion' => 'required|min:7|numeric',
-    ];
+        $rules = [
+            'identificacion' => 'required|min:7|numeric',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'identificacion.required' => 'Ups! El identificador es requerido',
-        'identificacion.min' => 'El mínimo de numeros permitidos son 5',
-        'identificacion.max' => 'El maximo de numeros permitidos son 20',
-        'identificacion.numeric' => 'Ups! El identificador es inválido , debe contener sólo números',
-        'identificacion.unique' => 'Ups! Ya este usuario ha sido registrado',
-    ];
+            'identificacion.required' => 'Ups! El identificador es requerido',
+            'identificacion.min' => 'El mínimo de numeros permitidos son 5',
+            'identificacion.max' => 'El maximo de numeros permitidos son 20',
+            'identificacion.numeric' => 'Ups! El identificador es inválido , debe contener sólo números',
+            'identificacion.unique' => 'Ups! Ya este usuario ha sido registrado',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
-
-    else{
-
-        $instructor = Instructor::find($request->id);
-        $instructor->identificacion = $request->identificacion;
-        
-        if($instructor->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
+
+        else{
+
+            $instructor = Instructor::find($request->id);
+            $instructor->identificacion = $request->identificacion;
+            
+            if($instructor->save()){
+
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->select('users.id')
+                    ->where('usuarios_tipo.tipo_id',$request->id)
+                    ->where('usuarios_tipo.tipo',3)
+                ->first();
+
+                if($usuario){
+
+                    $usuario->identificacion = $request->identificacion;  
+
+                    if($usuario->save()){
+
+                        $usuarios_tipo = UsuarioTipo::where('usuario_id',$usuario->id)->get();
+
+                        foreach($usuarios_tipo as $tipo_usuario){
+
+                            if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                                $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                                if($usuario){
+
+                                    $usuario->identificacion = $request->identificacion;
+
+                                    $usuario->save();
+
+                                     
+                                }
+
+                            }else if($tipo_usuario->tipo == 3){
+
+                               $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                                if($usuario){
+
+                                    $usuario->identificacion = $request->identificacion;
+
+                                    $usuario->save();
+
+                                     
+                                } 
+                            }else if($tipo_usuario->tipo == 8){
+
+                               $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                                if($usuario){
+
+                                    $usuario->identificacion = $request->identificacion;
+
+                                    $usuario->save();
+
+                                     
+                                } 
+                            }            
+                        }
+                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+
+                }else{
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }
+
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
     }
 
     public function updateNombre(Request $request){
 
-    $rules = [
-        'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-        'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
-    ];
+        $rules = [
+            'nombre' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+            'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'nombre.required' => 'Ups! El Nombre  es requerido ',
-        'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre.max' => 'El máximo de caracteres permitidos son 20',
-        'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
-        'apellido.required' => 'Ups! El Apellido  es requerido ',
-        'apellido.min' => 'El mínimo de caracteres permitidos son 3',
-        'apellido.max' => 'El máximo de caracteres permitidos son 20',
-        'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
-    ];
+            'nombre.required' => 'Ups! El Nombre  es requerido ',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+            'nombre.max' => 'El máximo de caracteres permitidos son 20',
+            'nombre.regex' => 'Ups! El nombre es inválido ,debe ingresar sólo letras',
+            'apellido.required' => 'Ups! El Apellido  es requerido ',
+            'apellido.min' => 'El mínimo de caracteres permitidos son 3',
+            'apellido.max' => 'El máximo de caracteres permitidos son 20',
+            'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
+        }
+
         $instructor = Instructor::find($request->id);
 
         $nombre = title_case($request->nombre);
@@ -446,6 +503,7 @@ class InstructorController extends BaseController {
         if($instructor->save()){
 
             $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->select('users.id')
                 ->where('usuarios_tipo.tipo_id',$request->id)
                 ->where('usuarios_tipo.tipo',3)
             ->first();
@@ -456,6 +514,54 @@ class InstructorController extends BaseController {
                 $usuario->apellido = $apellido;
 
                 if($usuario->save()){
+
+                    $usuarios_tipo = UsuarioTipo::where('usuario_id',$usuario->id)->get();
+
+                    foreach($usuarios_tipo as $tipo_usuario){
+
+                        if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                            $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->nombre = $nombre;
+                                $usuario->apellido = $apellido;
+
+                                $usuario->save();
+
+                                 
+                            }
+
+                        }else if($tipo_usuario->tipo == 3){
+
+                           $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->nombre = $nombre;
+                                $usuario->apellido = $apellido;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }else if($tipo_usuario->tipo == 8){
+
+                           $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->nombre = $nombre;
+                                $usuario->apellido = $apellido;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }            
+                    }
+
                     return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
                 }else{
                     return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -478,19 +584,85 @@ class InstructorController extends BaseController {
         $instructor->fecha_nacimiento = $fecha_nacimiento;
 
         if($instructor->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->select('users.id')
+                ->where('usuarios_tipo.tipo_id',$request->id)
+                ->where('usuarios_tipo.tipo',3)
+            ->first();
+
+            if($usuario){
+
+                $usuario->fecha_nacimiento = $fecha_nacimiento;  
+
+                if($usuario->save()){
+
+                    $usuarios_tipo = UsuarioTipo::where('usuario_id',$usuario->id)->get();
+
+                    foreach($usuarios_tipo as $tipo_usuario){
+
+                        if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                            $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->fecha_nacimiento = $fecha_nacimiento;
+
+                                $usuario->save();
+
+                                 
+                            }
+
+                        }else if($tipo_usuario->tipo == 3){
+
+                           $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->fecha_nacimiento = $fecha_nacimiento;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }else if($tipo_usuario->tipo == 8){
+
+                           $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->fecha_nacimiento = $fecha_nacimiento;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }            
+                    }
+            
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
 
     public function updateSexo(Request $request){
+
         $instructor = Instructor::find($request->id);
         $instructor->sexo = $request->sexo;
 
         if($instructor->save()){
 
             $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->select('users.id')
                 ->where('usuarios_tipo.tipo_id',$request->id)
                 ->where('usuarios_tipo.tipo',3)
             ->first();
@@ -500,6 +672,51 @@ class InstructorController extends BaseController {
                 $usuario->sexo = $request->sexo;
 
                 if($usuario->save()){
+
+                    $usuarios_tipo = UsuarioTipo::where('usuario_id',$usuario->id)->get();
+
+                    foreach($usuarios_tipo as $tipo_usuario){
+
+                        if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                            $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->sexo = $request->sexo;
+
+                                $usuario->save();
+
+                                 
+                            }
+
+                        }else if($tipo_usuario->tipo == 3){
+
+                           $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->sexo = $request->sexo;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }else if($tipo_usuario->tipo == 8){
+
+                           $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->sexo = $request->sexo;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }            
+                    }
+
                     return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
                 }else{
                     return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -516,11 +733,11 @@ class InstructorController extends BaseController {
     public function updateCorreo(Request $request){
 
         $rules = [
-            'correo' => 'email|max:255|unique:instructores,correo, '.$request->id.'',
+            'correo' => 'required|email|max:255|unique:users,email',
         ];
 
         $messages = [
-
+            'correo.required' => 'Ups! El correo es requerido',
             'correo.email' => 'Ups! El correo tiene una dirección inválida',
             'correo.max' => 'El máximo de caracteres permitidos son 255',
             'correo.unique' => 'Ups! Ya este correo ha sido registrado',
@@ -541,7 +758,9 @@ class InstructorController extends BaseController {
             $instructor->correo = $correo;
 
             if($instructor->save()){
+
                 $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->select('users.id')
                     ->where('usuarios_tipo.tipo_id',$request->id)
                     ->where('usuarios_tipo.tipo',3)
                 ->first();
@@ -551,6 +770,51 @@ class InstructorController extends BaseController {
                     $instructor->correo = $correo;
 
                     if($usuario->save()){
+
+                        $usuarios_tipo = UsuarioTipo::where('usuario_id',$usuario->id)->get();
+
+                        foreach($usuarios_tipo as $tipo_usuario){
+
+                            if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                                $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                                if($usuario){
+
+                                    $usuario->correo = $correo;
+
+                                    $usuario->save();
+
+                                     
+                                }
+
+                            }else if($tipo_usuario->tipo == 3){
+
+                               $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                                if($usuario){
+
+                                    $usuario->correo = $correo;
+
+                                    $usuario->save();
+
+                                     
+                                } 
+                            }else if($tipo_usuario->tipo == 8){
+
+                               $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                                if($usuario){
+
+                                    $usuario->correo = $correo;
+
+                                    $usuario->save();
+
+                                     
+                                } 
+                            }
+                        }
+
                         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
                     }else{
                         return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -567,7 +831,6 @@ class InstructorController extends BaseController {
 
     public function updateTelefono(Request $request){
 
-
         $instructor = Instructor::find($request->id);
         $instructor->telefono = $request->telefono;
         $instructor->celular = $request->celular;
@@ -575,6 +838,7 @@ class InstructorController extends BaseController {
         if($instructor->save()){
 
             $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->select('users.id')
                 ->where('usuarios_tipo.tipo_id',$request->id)
                 ->where('usuarios_tipo.tipo',3)
             ->first();
@@ -585,6 +849,54 @@ class InstructorController extends BaseController {
                 $usuario->celular = $request->celular;
 
                 if($usuario->save()){
+
+                    $usuarios_tipo = UsuarioTipo::where('usuario_id',$usuario->id)->get();
+
+                    foreach($usuarios_tipo as $tipo_usuario){
+
+                        if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                            $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->telefono = $request->telefono;
+                                $usuario->celular = $request->celular;
+
+                                $usuario->save();
+
+                                 
+                            }
+
+                        }else if($tipo_usuario->tipo == 3){
+
+                           $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->telefono = $request->telefono;
+                                $usuario->celular = $request->celular;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }else if($tipo_usuario->tipo == 8){
+
+                           $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->telefono = $request->telefono;
+                                $usuario->celular = $request->celular;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }            
+                    }
+
                     return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
                 }else{
                     return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -606,7 +918,9 @@ class InstructorController extends BaseController {
         $instructor->direccion = $request->direccion;
 
         if($instructor->save()){
+
             $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->select('users.id')
                 ->where('usuarios_tipo.tipo_id',$request->id)
                 ->where('usuarios_tipo.tipo',3)
             ->first();
@@ -616,6 +930,51 @@ class InstructorController extends BaseController {
                 $usuario->direccion = $request->direccion;
 
                 if($usuario->save()){
+
+                    $usuarios_tipo = UsuarioTipo::where('usuario_id',$usuario->id)->get();
+
+                    foreach($usuarios_tipo as $tipo_usuario){
+
+                        if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                            $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->direccion = $direccion;
+
+                                $usuario->save();
+
+                                 
+                            }
+
+                        }else if($tipo_usuario->tipo == 3){
+
+                           $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->direccion = $direccion;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }else if($tipo_usuario->tipo == 8){
+
+                           $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->direccion = $direccion;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }
+                    } 
+
                     return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
                 }else{
                     return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -624,13 +983,13 @@ class InstructorController extends BaseController {
             }else{
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
             }
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
 
     public function updateDiagnostico(Request $request){
+
         $instructor = Instructor::find($request->id);
         $instructor->experiencia_artistica = $request->experiencia_artistica;
         $instructor->experiencia_laboral = $request->experiencia_laboral;
@@ -638,7 +997,7 @@ class InstructorController extends BaseController {
         $instructor->especialidad = $request->especialidad;
         $instructor->observacion = $request->observacion;
 
-       if($instructor->save()){
+        if($instructor->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -646,6 +1005,7 @@ class InstructorController extends BaseController {
     }
 
     public function updateFicha(Request $request){
+
         $instructor = Instructor::find($request->id);
         $instructor->asma = $request->asma;
         $instructor->alergia = $request->alergia;
@@ -654,7 +1014,7 @@ class InstructorController extends BaseController {
         $instructor->hipertension = $request->hipertension;
         $instructor->lesiones = $request->lesiones;
 
-       if($instructor->save()){
+        if($instructor->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -662,6 +1022,7 @@ class InstructorController extends BaseController {
     }
 
     public function updateEstatus(Request $request){
+
         $instructor = Instructor::find($request->id);
         $instructor->estatus = $request->estatus;
 
@@ -690,6 +1051,7 @@ class InstructorController extends BaseController {
     }
 
     public function updateAvanzado(Request $request){
+
         $instructor = Instructor::find($request->id);
 
         $instructor->descripcion = $request->descripcion;
@@ -823,16 +1185,6 @@ class InstructorController extends BaseController {
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -1045,8 +1397,7 @@ class InstructorController extends BaseController {
 
         $usuario_id = Session::get('easydance_usuario_id');
 
-        $instructores = DB::table('instructores')
-            ->Leftjoin('perfil_instructor', 'perfil_instructor.instructor_id', '=', 'instructores.id')
+        $instructores = Instructor::Leftjoin('perfil_instructor', 'perfil_instructor.instructor_id', '=', 'instructores.id')
             ->select('instructores.*' , 'perfil_instructor.*', 'instructores.id as id')
             ->where('instructores.id', $usuario_id)
         ->first();
@@ -1060,84 +1411,77 @@ class InstructorController extends BaseController {
     public function storeExperiencia(Request $request)
     {
         
-    $rules = [
-        'tiempo_experiencia_instructor' => 'numeric',
-        'genero_instructor' => 'numeric',
-        'cantidad_horas' => 'numeric',
-        'titulos_instructor' => 'numeric',
-        'invitacion_evento' => 'numeric',
-        'organizador' => 'numeric',
-        'tiempo_experiencia_bailador' => 'numeric',
-        'genero_bailador' => 'numeric',
-        'participacion_coreografia' => 'numeric',
-        'montajes' => 'numeric',
-        'titulos_bailador' => 'numeric',
-        'participacion_escenario' => 'numeric',
-        
-    ];
+        $rules = [
+            'tiempo_experiencia_instructor' => 'numeric',
+            'genero_instructor' => 'numeric',
+            'cantidad_horas' => 'numeric',
+            'titulos_instructor' => 'numeric',
+            'invitacion_evento' => 'numeric',
+            'organizador' => 'numeric',
+            'tiempo_experiencia_bailador' => 'numeric',
+            'genero_bailador' => 'numeric',
+            'participacion_coreografia' => 'numeric',
+            'montajes' => 'numeric',
+            'titulos_bailador' => 'numeric',
+            'participacion_escenario' => 'numeric',
+            
+        ];
 
-    $messages = [
+        $messages = [
 
-        'tiempo_experiencia_instructor.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
-        'genero_instructor.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
-        'cantidad_horas.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
-        'titulos_instructor.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
-        'invitacion_evento.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
-        'organizador.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
-        'tiempo_experiencia_bailador.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
-        'genero_bailador.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
-        'participacion_coreografia.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
-        'montajes.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
-        'titulos_bailador.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
-        'participacion_escenario.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+            'tiempo_experiencia_instructor.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+            'genero_instructor.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+            'cantidad_horas.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+            'titulos_instructor.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+            'invitacion_evento.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+            'organizador.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+            'tiempo_experiencia_bailador.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+            'genero_bailador.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+            'participacion_coreografia.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+            'montajes.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+            'titulos_bailador.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
+            'participacion_escenario.numeric' => 'Ups! El campo es inválido , debe contener sólo números',
 
- 
-    ];
+     
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        // return redirect("/home")
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-        // ->withErrors($validator)
-        // ->withInput();
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
-
-    }
-
-    else{
-
-        $instructor = PerfilInstructor::where('instructor_id' , $request->id)->first();
-
-        if(!$instructor){
-
-            $instructor = new PerfilInstructor;
         }
 
-        $instructor->instructor_id = $request->id;
-        $instructor->tiempo_experiencia_instructor = $request->tiempo_experiencia_instructor;
-        $instructor->genero_instructor = $request->genero_instructor;
-        $instructor->cantidad_horas = $request->cantidad_horas;
-        $instructor->titulos_instructor = $request->titulos_instructor;
-        $instructor->invitacion_evento = $request->invitacion_evento;
-        $instructor->organizador = $request->organizador;
-        $instructor->tiempo_experiencia_bailador = $request->tiempo_experiencia_bailador;
-        $instructor->genero_bailador = $request->genero_bailador;
-        $instructor->participacion_coreografia = $request->participacion_coreografia;
-        $instructor->montajes = $request->montajes;
-        $instructor->titulos_bailador = $request->titulos_bailador;
-        $instructor->participacion_escenario = $request->participacion_escenario;
+        else{
 
-        if($instructor->save()){
-            return response()->json(['mensaje' => '¡Excelente! El instructor se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            $instructor = PerfilInstructor::where('instructor_id' , $request->id)->first();
+
+            if(!$instructor){
+
+                $instructor = new PerfilInstructor;
+            }
+
+            $instructor->instructor_id = $request->id;
+            $instructor->tiempo_experiencia_instructor = $request->tiempo_experiencia_instructor;
+            $instructor->genero_instructor = $request->genero_instructor;
+            $instructor->cantidad_horas = $request->cantidad_horas;
+            $instructor->titulos_instructor = $request->titulos_instructor;
+            $instructor->invitacion_evento = $request->invitacion_evento;
+            $instructor->organizador = $request->organizador;
+            $instructor->tiempo_experiencia_bailador = $request->tiempo_experiencia_bailador;
+            $instructor->genero_bailador = $request->genero_bailador;
+            $instructor->participacion_coreografia = $request->participacion_coreografia;
+            $instructor->montajes = $request->montajes;
+            $instructor->titulos_bailador = $request->titulos_bailador;
+            $instructor->participacion_escenario = $request->participacion_escenario;
+
+            if($instructor->save()){
+                return response()->json(['mensaje' => '¡Excelente! El instructor se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
-    }
     }
 
     public function operar($id)
@@ -1150,8 +1494,7 @@ class InstructorController extends BaseController {
     public function progreso($id)
     {
 
-        $instructores = DB::table('instructores')
-            ->Leftjoin('perfil_instructor', 'perfil_instructor.instructor_id', '=', 'instructores.id')
+        $instructores = Instructor::Leftjoin('perfil_instructor', 'perfil_instructor.instructor_id', '=', 'instructores.id')
             ->select('instructores.*' , 'perfil_instructor.*', 'instructores.id as id')
             ->where('instructores.id', $id)
         ->first();
@@ -1187,7 +1530,6 @@ class InstructorController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno");
     }
 
     public function pagos_vista_instructor()
@@ -1199,8 +1541,7 @@ class InstructorController extends BaseController {
         if($instructor)
         {
 
-            $pagadas = DB::table('pagos_instructor')
-                ->join('clases_grupales', 'pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+            $pagadas = PagoInstructor::join('clases_grupales', 'pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('pagos_instructor.created_at as fecha', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'pagos_instructor.monto', 'pagos_instructor.tipo')
@@ -1210,8 +1551,7 @@ class InstructorController extends BaseController {
             ->get();
 
 
-            $por_pagar = DB::table('pagos_instructor')
-                ->join('clases_grupales', 'pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+            $por_pagar = PagoInstructor::join('clases_grupales', 'pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('pagos_instructor.created_at as fecha', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor',  'pagos_instructor.monto', 'pagos_instructor.id', 'pagos_instructor.tipo')
@@ -1220,22 +1560,19 @@ class InstructorController extends BaseController {
                 ->where('pagos_instructor.monto', '>', 0)
             ->get();
 
-            $total = DB::table('pagos_instructor')
-                ->select('pagos_instructor.*')
+            $total = PagoInstructor::select('pagos_instructor.*')
                 ->where('pagos_instructor.instructor_id', $usuario_id)
                 ->where('pagos_instructor.boolean_clase_pagada', 0)
             ->sum('pagos_instructor.monto');
 
-            $pagos_instructor = DB::table('configuracion_pagos_instructor')
-                ->join('clases_grupales', 'configuracion_pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+            $pagos_instructor = ConfigPagosInstructor::join('clases_grupales', 'configuracion_pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('configuracion_pagos_instructor.id', 'configuracion_pagos_instructor.monto', 'config_clases_grupales.nombre as nombre', 'configuracion_pagos_instructor.clase_grupal_id as clase_grupal_id', 'configuracion_pagos_instructor.tipo as tipo')
                 ->where('instructores.id', $usuario_id)
             ->get();
 
-            $clase_grupal_join = DB::table('clases_grupales')
-                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->select('clases_grupales.id', 'config_clases_grupales.nombre')
                 ->where('clases_grupales.instructor_id', $usuario_id)
             ->get();

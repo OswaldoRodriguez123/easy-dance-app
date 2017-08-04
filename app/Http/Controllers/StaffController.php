@@ -17,6 +17,7 @@ use App\User;
 use App\UsuarioTipo;
 use App\DiasDeSemana;
 use App\Alumno;
+use App\Instructor;
 use Mail;
 use DB;
 use Validator;
@@ -81,6 +82,7 @@ class StaffController extends BaseController
 	        'fecha_nacimiento' => 'required',
 	        'sexo' => 'required',
 	        'cargo' => 'required',
+            'correo' => 'email|max:255|unique:users,email',
 	    ];
 
 	    $messages = [
@@ -101,6 +103,10 @@ class StaffController extends BaseController
 	        'sexo.required' => 'Ups! El Sexo  es requerido ',
 	        'fecha_nacimiento.required' => 'Ups! La fecha de nacimiento es requerida',
 	        'cargo.required' => 'Ups! El cargo es requerido',
+            'correo.required' => 'Ups! El correo es requerido',
+            'correo.email' => 'Ups! El correo tiene una dirección inválida',
+            'correo.max' => 'El máximo de caracteres permitidos son 255',
+            'correo.unique' => 'Ups! Ya este correo ha sido registrado',
 	    ];
 
 	    $validator = Validator::make($request->all(), $rules, $messages);
@@ -333,6 +339,7 @@ class StaffController extends BaseController
     }
 
     public function updateID(Request $request){
+
         $rules = [
             'identificacion' => 'required|min:7|numeric',
         ];
@@ -350,10 +357,75 @@ class StaffController extends BaseController
         if ($validator->fails()){
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
         }else{
+
             $alumno = Staff::withTrashed()->find($request->id);
-            $alumno->identificacion = $request->identificacion;        
+            $alumno->identificacion = $request->identificacion;
+
             if($alumno->save()){
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->select('users.id')
+                    ->where('usuarios_tipo.tipo_id',$request->id)
+                    ->where('usuarios_tipo.tipo',8)
+                ->first();
+
+                if($usuario){
+
+                    $usuario->identificacion = $request->identificacion;  
+
+                    if($usuario->save()){
+
+                        $usuarios_tipo = UsuarioTipo::where('usuario_id',$usuario->id)->get();
+
+                        foreach($usuarios_tipo as $tipo_usuario){
+
+                            if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                                $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                                if($usuario){
+
+                                    $usuario->identificacion = $request->identificacion;
+
+                                    $usuario->save();
+
+                                     
+                                }
+
+                            }else if($tipo_usuario->tipo == 3){
+
+                               $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                                if($usuario){
+
+                                    $usuario->identificacion = $request->identificacion;
+
+                                    $usuario->save();
+
+                                     
+                                } 
+                            }else if($tipo_usuario->tipo == 8){
+
+                               $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                                if($usuario){
+
+                                    $usuario->identificacion = $request->identificacion;
+
+                                    $usuario->save();
+
+                                     
+                                } 
+                            }            
+                        }
+                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+
+                }else{
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
@@ -398,10 +470,75 @@ class StaffController extends BaseController
 
         if($alumno->save()){
 
-     
-        	return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
             
+        	$usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->select('users.id')
+                ->where('usuarios_tipo.tipo_id',$request->id)
+                ->where('usuarios_tipo.tipo',8)
+            ->first();
 
+            if($usuario){
+
+                $usuario->nombre = $nombre;
+                $usuario->apellido = $apellido;
+
+                if($usuario->save()){
+
+                    $usuarios_tipo = UsuarioTipo::where('usuario_id',$usuario->id)->get();
+
+                    foreach($usuarios_tipo as $tipo_usuario){
+
+                        if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                            $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->nombre = $nombre;
+                                $usuario->apellido = $apellido;
+
+                                $usuario->save();
+
+                                 
+                            }
+
+                        }else if($tipo_usuario->tipo == 3){
+
+                           $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->nombre = $nombre;
+                                $usuario->apellido = $apellido;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }else if($tipo_usuario->tipo == 8){
+
+                           $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->nombre = $nombre;
+                                $usuario->apellido = $apellido;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }            
+                    }
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }
+            
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -415,7 +552,70 @@ class StaffController extends BaseController
         $alumno->fecha_nacimiento = $fecha_nacimiento;
 
         if($alumno->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->select('users.id')
+                ->where('usuarios_tipo.tipo_id',$request->id)
+                ->where('usuarios_tipo.tipo',8)
+            ->first();
+
+            if($usuario){
+
+                $usuario->fecha_nacimiento = $fecha_nacimiento;  
+
+                if($usuario->save()){
+
+                    $usuarios_tipo = UsuarioTipo::where('usuario_id',$usuario->id)->get();
+
+                    foreach($usuarios_tipo as $tipo_usuario){
+
+                        if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                            $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->fecha_nacimiento = $fecha_nacimiento;
+
+                                $usuario->save();
+
+                                 
+                            }
+
+                        }else if($tipo_usuario->tipo == 3){
+
+                           $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->fecha_nacimiento = $fecha_nacimiento;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }else if($tipo_usuario->tipo == 8){
+
+                           $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->fecha_nacimiento = $fecha_nacimiento;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }            
+                    }
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -427,7 +627,69 @@ class StaffController extends BaseController
 
         if($alumno->save()){
 
-        	return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        	$usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->select('users.id')
+                ->where('usuarios_tipo.tipo_id',$request->id)
+                ->where('usuarios_tipo.tipo',8)
+            ->first();
+
+            if($usuario){
+
+                $usuario->sexo = $request->sexo; 
+
+                if($usuario->save()){
+
+                    $usuarios_tipo = UsuarioTipo::where('usuario_id',$usuario->id)->get();
+
+                    foreach($usuarios_tipo as $tipo_usuario){
+
+                        if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                            $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->sexo = $request->sexo;
+
+                                $usuario->save();
+
+                                 
+                            }
+
+                        }else if($tipo_usuario->tipo == 3){
+
+                           $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->sexo = $request->sexo;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }else if($tipo_usuario->tipo == 8){
+
+                           $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->sexo = $request->sexo;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }            
+                    }
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }
             
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -437,7 +699,7 @@ class StaffController extends BaseController
     public function updateCorreo(Request $request){
 
         $rules = [
-            'correo' => 'required|email|max:255|unique:staff,correo,'.$request->id,
+            'correo' => 'required|email|max:255|unique:users,email',
         ];
 
         $messages = [
@@ -463,7 +725,69 @@ class StaffController extends BaseController
 
             if($alumno->save()){
 
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->select('users.id')
+                    ->where('usuarios_tipo.tipo_id',$request->id)
+                    ->where('usuarios_tipo.tipo',8)
+                ->first();
+
+                if($usuario){
+
+                    $usuario->email = $correo; 
+
+                    if($usuario->save()){
+
+                        $usuarios_tipo = UsuarioTipo::where('usuario_id',$usuario->id)->get();
+
+                        foreach($usuarios_tipo as $tipo_usuario){
+
+                            if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                                $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                                if($usuario){
+
+                                    $usuario->correo = $correo;
+
+                                    $usuario->save();
+
+                                     
+                                }
+
+                            }else if($tipo_usuario->tipo == 3){
+
+                               $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                                if($usuario){
+
+                                    $usuario->correo = $correo;
+
+                                    $usuario->save();
+
+                                     
+                                } 
+                            }else if($tipo_usuario->tipo == 8){
+
+                               $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                                if($usuario){
+
+                                    $usuario->correo = $correo;
+
+                                    $usuario->save();
+
+                                     
+                                } 
+                            }            
+                        }
+                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
+
+                }else{
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
@@ -477,10 +801,75 @@ class StaffController extends BaseController
         $alumno->celular = $request->celular;
 
         if($alumno->save()){
-
            
-        	return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-            
+        	$usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->select('users.id')
+                ->where('usuarios_tipo.tipo_id',$request->id)
+                ->where('usuarios_tipo.tipo',8)
+            ->first();
+
+            if($usuario){
+
+                $usuario->telefono = $request->telefono;
+                $usuario->celular = $request->celular;
+
+                if($usuario->save()){
+
+                    $usuarios_tipo = UsuarioTipo::where('usuario_id',$usuario->id)->get();
+
+                    foreach($usuarios_tipo as $tipo_usuario){
+
+                        if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                            $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->telefono = $request->telefono;
+                                $usuario->celular = $request->celular;
+
+                                $usuario->save();
+
+                                 
+                            }
+
+                        }else if($tipo_usuario->tipo == 3){
+
+                           $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->telefono = $request->telefono;
+                                $usuario->celular = $request->celular;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }else if($tipo_usuario->tipo == 8){
+
+                           $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->telefono = $request->telefono;
+                                $usuario->celular = $request->celular;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }            
+                    }
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }
+        
 
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -488,6 +877,7 @@ class StaffController extends BaseController
     }
 
     public function updateDireccion(Request $request){
+
         $alumno = Staff::withTrashed()->find($request->id);
 
         $direccion = $request->direccion;
@@ -497,7 +887,69 @@ class StaffController extends BaseController
         if($alumno->save()){
 
 
-        	return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        	$usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->select('users.id')
+                ->where('usuarios_tipo.tipo_id',$request->id)
+                ->where('usuarios_tipo.tipo',8)
+            ->first();
+
+            if($usuario){
+
+                $usuario->direccion = $direccion;  
+
+                if($usuario->save()){
+
+                    $usuarios_tipo = UsuarioTipo::where('usuario_id',$usuario->id)->get();
+
+                    foreach($usuarios_tipo as $tipo_usuario){
+
+                        if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                            $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->direccion = $direccion;
+
+                                $usuario->save();
+
+                                 
+                            }
+
+                        }else if($tipo_usuario->tipo == 3){
+
+                           $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->direccion = $direccion;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }else if($tipo_usuario->tipo == 8){
+
+                           $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                            if($usuario){
+
+                                $usuario->direccion = $direccion;
+
+                                $usuario->save();
+
+                                 
+                            } 
+                        }            
+                    }
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+
+            }else{
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }
             
 
         }else{

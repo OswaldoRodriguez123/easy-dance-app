@@ -13,6 +13,59 @@
 @stop
 
 @section('content')
+
+          <div class="modal fade" id="modalID-Usuario" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Usuario<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_id_usuario" id="edit_id_usuario"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="form-group fg-line">
+                                        <label for="id">Id - Pasaporte</label>
+                                        <input type="text" class="form-control input-sm input-mask" name="identificacion" id="identificacion" data-mask="00000000000000000000" placeholder="Ej: 16133223">
+                                    </div>
+                                    <div class="has-error" id="error-identificacion">
+                                      <span >
+                                          <small id="error-identificacion_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                </div>
+                               </div>
+                              
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_id_usuario" data-update="identificacion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal fade" id="modalNombre-Usuario" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -77,6 +130,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="modal fade" id="modalFechaNacimiento-Usuario" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
@@ -126,6 +180,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="modal fade" id="modalSexo-Usuario" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
@@ -730,6 +785,14 @@
 
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
+                            <tr class="detalle" data-toggle="modal" href="#modalID-Usuario">
+                             <td width="50%"> 
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-identificacion" class="zmdi {{ empty(Auth::user()->identificacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      
+                              <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-account-box f-22"></i> </span>
+                              <span class="f-14">Id / pasaporte </span>
+                             </td>
+                             <td class="f-14 m-l-15" id="usuario-identificacion">{{Auth::user()->identificacion}}<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                            </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalNombre-Usuario">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty(Auth::user()->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -737,6 +800,14 @@
                                <span class="f-14"> Nombres </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="usuario-nombre" class="capitalize">{{Auth::user()->nombre}}</span> <span id="usuario-apellido" class="capitalize">{{Auth::user()->apellido}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                              <tr class="detalle" data-toggle="modal" href="#modalFechaNacimiento-Usuario">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_nacimiento" class="zmdi {{ empty(Auth::user()->fecha_nacimiento) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_b-fecha-de-nacimiento f-22"></i> </span>
+                               <span class="f-14"> Fecha de nacimiento  </span>
+                             </td>
+                             <td  class="f-14 m-l-15" id="usuario-fecha_nacimiento" >{{ \Carbon\Carbon::createFromFormat('Y-m-d',Auth::user()->fecha_nacimiento)->format('d/m/Y')}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                              <tr class="detalle" data-toggle="modal" href="#modalSexo-Usuario">
                              <td> 
@@ -866,10 +937,19 @@
 
       });
 
+    $('#modalID-Usuario').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $("#identificacion").val($("#usuario-identificacion").text()); 
+    })
+
     $('#modalNombre-Usuario').on('show.bs.modal', function (event) {
       limpiarMensaje();
       $("#nombre").val($("#usuario-nombre").text()); 
       $("#apellido").val($("#usuario-apellido").text());
+    })
+    $('#modalFechaNacimiento-Usuario').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      $("#fecha_nacimiento").val($("#usuario-fecha_nacimiento").text()); 
     })
     $('#modalSexo-Proveedor').on('show.bs.modal', function (event) {
       limpiarMensaje();

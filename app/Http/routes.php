@@ -1240,14 +1240,16 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('perfil', 'UsuarioController@perfil');
 		Route::get('perfil-evaluativo', 'UsuarioController@perfil_evaluativo');
 		Route::post('perfil-evaluativo', 'UsuarioController@store');			
-		Route::put('perfil/update/imagen', 'UsuarioController@updateImagen');
+		Route::put('perfil/update/identificacion','UsuarioController@updateID');
 		Route::put('perfil/update/nombre','UsuarioController@updateNombre');
+		Route::put('perfil/update/fecha_nacimiento','UsuarioController@updateFecha');
 		Route::put('perfil/update/sexo','UsuarioController@updateSexo');
 		Route::put('perfil/update/correo','UsuarioController@updateCorreo');
 		Route::put('perfil/update/telefono','UsuarioController@updateTelefono');
 		Route::put('perfil/update/direccion','UsuarioController@updateDireccion');
 		Route::put('perfil/update/redes','UsuarioController@updateRedes');
 		Route::put('perfil/update/password','UsuarioController@updatePassword');
+		Route::put('perfil/update/imagen', 'UsuarioController@updateImagen');
 
 		//CAMPAÑAS
 

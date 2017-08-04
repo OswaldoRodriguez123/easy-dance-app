@@ -33,6 +33,7 @@ use App\ClasePersonalizada;
 use App\Regalo;
 use App\ItemsFacturaProforma;
 use App\Acuerdo;
+use App\Staff;
 use Validator;
 use Mail;
 use Carbon\Carbon;
@@ -124,6 +125,81 @@ class UsuarioController extends BaseController {
      * @return Response
      */
 
+    public function updateID(Request $request){
+        $rules = [
+            'identificacion' => 'required|min:7|numeric',
+        ];
+
+        $messages = [
+            'identificacion.required' => 'Ups! El identificador es requerido',
+            'identificacion.min' => 'El mínimo de numeros permitidos son 5',
+            'identificacion.max' => 'El maximo de numeros permitidos son 20',
+            'identificacion.numeric' => 'Ups! El identificador es inválido , debe contener sólo números',
+            'identificacion.unique' => 'Ups! Ya este usuario ha sido registrado',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+        }else{
+
+
+            $usuario = User::find(Auth::user()->id);
+
+            $usuario->identificacion = $request->identificacion;
+
+            if($usuario->save()){
+
+                $usuarios_tipo = UsuarioTipo::where('usuario_id',Auth::user()->id)->get();
+
+                foreach($usuarios_tipo as $tipo_usuario){
+
+                    if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                        $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                        if($usuario){
+
+                            $usuario->identificacion = $request->identificacion;
+
+                            $usuario->save();
+
+                             
+                        }
+
+                    }else if($tipo_usuario->tipo == 3){
+
+                       $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                        if($usuario){
+
+                            $usuario->identificacion = $request->identificacion;
+
+                            $usuario->save();
+
+                             
+                        } 
+                    }else if($tipo_usuario->tipo == 8){
+
+                       $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                        if($usuario){
+
+                            $usuario->identificacion = $request->identificacion;
+
+                            $usuario->save();
+
+                             
+                        } 
+                    }            
+                }
+                
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }
+        }
+    }
+
     public function updateNombre(Request $request){
 
         $rules = [
@@ -150,6 +226,7 @@ class UsuarioController extends BaseController {
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
         }
+
         $usuario = User::find(Auth::user()->id);
 
         $nombre = title_case($request->nombre);
@@ -160,32 +237,114 @@ class UsuarioController extends BaseController {
 
         if($usuario->save()){
 
-            $datos = $this->getDatosUsuario();
+            $usuarios_tipo = UsuarioTipo::where('usuario_id',Auth::user()->id)->get();
 
-            $usuario_id = $datos[0]['usuario_id'];
-            $usuario_tipo = $datos[0]['usuario_tipo'];
+            foreach($usuarios_tipo as $tipo_usuario){
 
-            if($usuario_tipo == 2){
+                if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
 
-                $alumno = Alumno::find($usuario_id);
+                    $usuario = Alumno::find($tipo_usuario->tipo_id);
 
-                if($alumno){
+                    if($usuario){
 
-                    $alumno->nombre = $nombre;
-                    $alumno->apellido = $apellido;
+                        $usuario->nombre = $nombre;
+                        $usuario->apellido = $apellido;
 
-                    if($alumno->save()){
+                        $usuario->save();
 
-                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
-                    }else{
-                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                         
                     }
-                }
-            }
 
+                }else if($tipo_usuario->tipo == 3){
+
+                   $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                    if($usuario){
+
+                        $usuario->nombre = $nombre;
+                        $usuario->apellido = $apellido;
+
+                        $usuario->save();
+
+                         
+                    } 
+                }else if($tipo_usuario->tipo == 8){
+
+                   $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                    if($usuario){
+
+                        $usuario->nombre = $nombre;
+                        $usuario->apellido = $apellido;
+
+                        $usuario->save();
+
+                         
+                    } 
+                }            
+            }
+            
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
 
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateFecha(Request $request){
+
+
+        $usuario = User::find(Auth::user()->id);
+        $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
+        $usuario->fecha_nacimiento = $fecha_nacimiento;
+
+        if($usuario->save()){
+
+            $usuarios_tipo = UsuarioTipo::where('usuario_id',Auth::user()->id)->get();
+
+            foreach($usuarios_tipo as $tipo_usuario){
+
+                if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                    $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                    if($usuario){
+
+                        $usuario->fecha_nacimiento = $fecha_nacimiento;
+
+                        $usuario->save();
+
+                         
+                    }
+
+                }else if($tipo_usuario->tipo == 3){
+
+                   $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                    if($usuario){
+
+                        $usuario->fecha_nacimiento = $fecha_nacimiento;
+
+                        $usuario->save();
+
+                         
+                    } 
+                }else if($tipo_usuario->tipo == 8){
+
+                   $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                    if($usuario){
+
+                        $usuario->fecha_nacimiento = $fecha_nacimiento;
+
+                        $usuario->save();
+
+                         
+                    } 
+                }            
+            }
+            
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
@@ -195,30 +354,50 @@ class UsuarioController extends BaseController {
         $usuario = User::find(Auth::user()->id);
         $usuario->sexo = $request->sexo;
 
-        // return redirect("alumno/edit/{$request->id}");
         if($usuario->save()){
 
-            $datos = $this->getDatosUsuario();
+            $usuarios_tipo = UsuarioTipo::where('usuario_id',Auth::user()->id)->get();
 
-            $usuario_id = $datos[0]['usuario_id'];
-            $usuario_tipo = $datos[0]['usuario_tipo'];
+            foreach($usuarios_tipo as $tipo_usuario){
 
-            if($usuario_tipo == 2){
+                if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
 
-                $alumno = Alumno::find($usuario_id);
+                    $usuario = Alumno::find($tipo_usuario->tipo_id);
 
-                if($alumno){
+                    if($usuario){
 
-                    $alumno->sexo = $request->sexo;
+                        $usuario->sexo = $request->sexo;
 
-                    if($alumno->save()){
+                        $usuario->save();
 
-                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
-                    }else{
-                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                         
                     }
-                }
+
+                }else if($tipo_usuario->tipo == 3){
+
+                   $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                    if($usuario){
+
+                        $usuario->sexo = $request->sexo;
+
+                        $usuario->save();
+
+                         
+                    } 
+                }else if($tipo_usuario->tipo == 8){
+
+                   $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                    if($usuario){
+
+                        $usuario->sexo = $request->sexo;
+
+                        $usuario->save();
+
+                         
+                    } 
+                }            
             }
 
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -229,68 +408,82 @@ class UsuarioController extends BaseController {
 
     public function updateCorreo(Request $request){
 
-    $rules = [
-        'email' => 'email|max:255|unique:users,email, '.Auth::user()->id.'',
-    ];
+        $rules = [
+            'email' => 'email|max:255|unique:users,email, '.Auth::user()->id.'',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'email.email' => 'Ups! El correo tiene una dirección inválida',
-        'email.max' => 'El máximo de caracteres permitidos son 255',
-        'email.unique' => 'Ups! Ya este correo ha sido registrado',
-    ];
+            'email.email' => 'Ups! El correo tiene una dirección inválida',
+            'email.max' => 'El máximo de caracteres permitidos son 255',
+            'email.unique' => 'Ups! Ya este correo ha sido registrado',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        // return redirect("alumno/edit/{$request->id}")
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-        // ->withErrors($validator)
-        // ->withInput();
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
-
-    }
-
-    else{
-
-        $usuario = User::find(Auth::user()->id);
-        $email = strtolower($request->email);
-        $usuario->email = $email;
-
-        if($usuario->save()){
-
-            $datos = $this->getDatosUsuario();
-
-            $usuario_id = $datos[0]['usuario_id'];
-            $usuario_tipo = $datos[0]['usuario_tipo'];
-
-            if($usuario_tipo == 2){
-
-                $alumno = Alumno::find($usuario_id);
-
-                if($alumno){
-
-                    $alumno->correo = $email;
-
-                    if($alumno->save()){
-
-                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
-                    }else{
-                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-                    }
-                }
-            }
-
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-    }
+
+        else{
+
+            $usuario = User::find(Auth::user()->id);
+            $email = strtolower($request->email);
+            $usuario->email = $email;
+
+            if($usuario->save()){
+
+                $usuarios_tipo = UsuarioTipo::where('usuario_id',Auth::user()->id)->get();
+
+                foreach($usuarios_tipo as $tipo_usuario){
+
+                    if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
+
+                        $usuario = Alumno::find($tipo_usuario->tipo_id);
+
+                        if($usuario){
+
+                            $usuario->correo = $email;
+
+                            $usuario->save();
+
+                             
+                        }
+
+                    }else if($tipo_usuario->tipo == 3){
+
+                       $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                        if($usuario){
+
+                            $usuario->correo = $email;
+
+                            $usuario->save();
+
+                             
+                        } 
+                    }else if($tipo_usuario->tipo == 8){
+
+                       $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                        if($usuario){
+
+                            $usuario->correo = $email;
+
+                            $usuario->save();
+
+                             
+                        } 
+                    }
+                }            
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
     }
 
     public function updateTelefono(Request $request){
@@ -301,28 +494,51 @@ class UsuarioController extends BaseController {
 
         if($usuario->save()){
 
-            $datos = $this->getDatosUsuario();
+            $usuarios_tipo = UsuarioTipo::where('usuario_id',Auth::user()->id)->get();
 
-            $usuario_id = $datos[0]['usuario_id'];
-            $usuario_tipo = $datos[0]['usuario_tipo'];
+            foreach($usuarios_tipo as $tipo_usuario){
 
-            if($usuario_tipo == 2){
+                if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
 
-                $alumno = Alumno::find($usuario_id);
+                    $usuario = Alumno::find($tipo_usuario->tipo_id);
 
-                if($alumno){
+                    if($usuario){
 
-                    $alumno->telefono = $request->telefono;
-                    $alumno->celular = $request->celular;
+                        $usuario->telefono = $request->telefono;
+                        $usuario->celular = $request->celular;
 
-                    if($alumno->save()){
+                        $usuario->save();
 
-                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
-                    }else{
-                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                         
                     }
-                }
+
+                }else if($tipo_usuario->tipo == 3){
+
+                   $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                    if($usuario){
+
+                        $usuario->telefono = $request->telefono;
+                        $usuario->celular = $request->celular;
+
+                        $usuario->save();
+
+                         
+                    } 
+                }else if($tipo_usuario->tipo == 8){
+
+                   $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                    if($usuario){
+
+                        $usuario->telefono = $request->telefono;
+                        $usuario->celular = $request->celular;
+
+                        $usuario->save();
+
+                         
+                    } 
+                }            
             }
 
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -332,6 +548,7 @@ class UsuarioController extends BaseController {
     }
 
     public function updateDireccion(Request $request){
+
         $usuario = User::find(Auth::user()->id);
 
         $direccion = $request->direccion;
@@ -340,28 +557,49 @@ class UsuarioController extends BaseController {
         
         if($usuario->save()){
 
-            $datos = $this->getDatosUsuario();
+            $usuarios_tipo = UsuarioTipo::where('usuario_id',Auth::user()->id)->get();
 
-            $usuario_id = $datos[0]['usuario_id'];
-            $usuario_tipo = $datos[0]['usuario_tipo'];
-            
-            if($usuario_tipo == 2){
+            foreach($usuarios_tipo as $tipo_usuario){
 
-                $alumno = Alumno::find($usuario_id);
+                if($tipo_usuario->tipo == 2 OR $tipo_usuario->tipo == 4){
 
-                if($alumno){
+                    $usuario = Alumno::find($tipo_usuario->tipo_id);
 
-                    $alumno->direccion = $direccion;
+                    if($usuario){
 
-                    if($alumno->save()){
+                        $usuario->direccion = $direccion;
 
-                        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                        $usuario->save();
 
-                    }else{
-                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                         
                     }
+
+                }else if($tipo_usuario->tipo == 3){
+
+                   $usuario = Instructor::find($tipo_usuario->tipo_id);
+
+                    if($usuario){
+
+                        $usuario->direccion = $direccion;
+
+                        $usuario->save();
+
+                         
+                    } 
+                }else if($tipo_usuario->tipo == 8){
+
+                   $usuario = Staff::find($tipo_usuario->tipo_id);
+
+                    if($usuario){
+
+                        $usuario->direccion = $direccion;
+
+                        $usuario->save();
+
+                         
+                    } 
                 }
-            }
+            }  
             
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
