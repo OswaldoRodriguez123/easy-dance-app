@@ -136,12 +136,19 @@ class TallerController extends BaseController {
                       $dia = 'Domingo';
 
                     }
-                    if ($i != $len - 1 && $dia != $dia_string) {
-                        $dia_string = $dia_string  . ', ' . $dia;
+
+                    if($dia != $dia_string){
+                        if ($i != $len - 1) {
+                            $dia_string = $dia_string  . ', ' . $dia;
+                        }else{
+                            $dia_string = $dia_string . ' y ' . $dia;
+                        }
+                    }
+
+                    if ($i != $len - 1) {
                         $especialidad_string = $especialidad_string . $horario->especialidad;
                     }else{
-                        $dia_string = $dia_string . 'y ' . $dia;
-                        $especialidad_string = $especialidad_string . 'y ' . $horario->especialidad;
+                        $especialidad_string = $especialidad_string . ' y ' . $horario->especialidad;
                     }
 
                     $i++;
