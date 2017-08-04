@@ -1328,6 +1328,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('agendar/clases-grupales/cancelar', 'ClaseGrupalController@cancelarClase');
 		Route::post('agendar/clases-grupales/actualizar-cancelacion', 'ClaseGrupalController@update_cancelacion');
 		Route::delete('agendar/clases-grupales/eliminar-cancelacion/{id}', 'ClaseGrupalController@eliminar_cancelacion');
+		Route::post('agendar/clases-grupales/agregar-nota-administrativa', 'ClaseGrupalController@agregar_nota_administrativa');
 
 		//NIVELACIONES CLASES GRUPALES
 

@@ -383,7 +383,7 @@ class ClaseGrupalController extends BaseController {
         if($clasegrupal){
 
             $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela', 'alumnos.tipo_pago', 'inscripcion_clase_grupal.fecha_inscripcion')
+                ->select('alumnos.*', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.alumno_id', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.talla_franela', 'inscripcion_clase_grupal.fecha_inscripcion', 'inscripcion_clase_grupal.nota_administrativa')
                 ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $id)
                 ->where('inscripcion_clase_grupal.boolean_congelacion',0)
                 ->where('alumnos.deleted_at', '=', null)
@@ -1076,12 +1076,26 @@ class ClaseGrupalController extends BaseController {
         }
     }
 
+    public function agregar_nota_administrativa(Request $request)
+    {
+
+        $clasegrupal = InscripcionClaseGrupal::withTrashed()->find($request->nota_administrativa_inscripcion_clase_grupal_id);
+
+        $clasegrupal->nota_administrativa = $request->nota_administrativa;
+       
+        if($clasegrupal->save()){
+           
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $clasegrupal->id, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        
+    }
 
     public function progreso($id)
     {
 
-        $clase_grupal_join = DB::table('clases_grupales')
-            ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+        $clase_grupal_join = ClaseGrupal::join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
@@ -1090,101 +1104,106 @@ class ClaseGrupalController extends BaseController {
             ->where('clases_grupales.id','=', $id)
         ->first();
 
-        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal_join->fecha_inicio);
+        if($clase_grupal_join){
 
-        if(Carbon::now() > $fecha_inicio){
-            $inicio = 1;
-        }else{
-            $inicio = 0;
-        }
+            $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal_join->fecha_inicio);
 
-        $academia = Academia::find($clase_grupal_join->academia_id);
-
-        if($clase_grupal_join->link_video){
-
-            $parts = parse_url($clase_grupal_join->link_video);
-            $partes = explode( '=', $parts['query'] );
-            $link_video = $partes[1];
-
-        }else{
-            $link_video = '';
-        }
-
-        $cantidad_hombres_reserva = 0;
-        $cantidad_mujeres_reserva = 0;
-
-         $cantidad_hombres_inscripcion = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-            ->where('inscripcion_clase_grupal.clase_grupal_id',$id)
-            ->where('alumnos.sexo','M')
-        ->count();
-
-        $reservaciones = Reservacion::where('tipo_reservacion_id',$id)
-            ->where('tipo_reservacion','1')
-        ->get();
-
-        foreach($reservaciones as $reservacion){
-
-            if($reservacion->tipo_usuario == 1){
-                $usuario = Alumno::withTrashed()->find($reservacion->tipo_usuario_id);
-                if($usuario->sexo == 'M'){
-                    $cantidad_hombres_reserva++;
-                }else{
-                    $cantidad_mujeres_reserva++;
-                }
-            }else if($reservacion->tipo_usuario == 2){
-                $usuario = Visitante::withTrashed()->find($reservacion->tipo_usuario_id);
-                if($usuario->sexo == 'M'){
-                    $cantidad_hombres_reserva++;
-                }else{
-                    $cantidad_mujeres_reserva++;
-                }
+            if(Carbon::now() > $fecha_inicio){
+                $inicio = 1;
             }else{
-                $usuario = Participante::find($reservacion->tipo_usuario_id);
-                if($usuario->sexo == 'M'){
-                    $cantidad_hombres_reserva++;
+                $inicio = 0;
+            }
+
+            $academia = Academia::find($clase_grupal_join->academia_id);
+
+            if($clase_grupal_join->link_video){
+
+                $parts = parse_url($clase_grupal_join->link_video);
+                $partes = explode( '=', $parts['query'] );
+                $link_video = $partes[1];
+
+            }else{
+                $link_video = '';
+            }
+
+            $cantidad_hombres_reserva = 0;
+            $cantidad_mujeres_reserva = 0;
+
+             $cantidad_hombres_inscripcion = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                ->where('inscripcion_clase_grupal.clase_grupal_id',$id)
+                ->where('alumnos.sexo','M')
+            ->count();
+
+            $reservaciones = Reservacion::where('tipo_reservacion_id',$id)
+                ->where('tipo_reservacion','1')
+            ->get();
+
+            foreach($reservaciones as $reservacion){
+
+                if($reservacion->tipo_usuario == 1){
+                    $usuario = Alumno::withTrashed()->find($reservacion->tipo_usuario_id);
+                    if($usuario->sexo == 'M'){
+                        $cantidad_hombres_reserva++;
+                    }else{
+                        $cantidad_mujeres_reserva++;
+                    }
+                }else if($reservacion->tipo_usuario == 2){
+                    $usuario = Visitante::withTrashed()->find($reservacion->tipo_usuario_id);
+                    if($usuario->sexo == 'M'){
+                        $cantidad_hombres_reserva++;
+                    }else{
+                        $cantidad_mujeres_reserva++;
+                    }
                 }else{
-                    $cantidad_mujeres_reserva++;
+                    $usuario = Participante::find($reservacion->tipo_usuario_id);
+                    if($usuario->sexo == 'M'){
+                        $cantidad_hombres_reserva++;
+                    }else{
+                        $cantidad_mujeres_reserva++;
+                    }
                 }
             }
-        }
 
-        $cantidad_hombres = $cantidad_hombres_inscripcion + $cantidad_hombres_reserva;
-        $cantidad_hombres = $clase_grupal_join->cantidad_hombres - $cantidad_hombres;
+            $cantidad_hombres = $cantidad_hombres_inscripcion + $cantidad_hombres_reserva;
+            $cantidad_hombres = $clase_grupal_join->cantidad_hombres - $cantidad_hombres;
 
-        if($cantidad_hombres < 0){
-            $cantidad_hombres = 0;
-        }
+            if($cantidad_hombres < 0){
+                $cantidad_hombres = 0;
+            }
 
-        $cantidad_mujeres_inscripcion = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-            ->where('inscripcion_clase_grupal.clase_grupal_id',$id)
-            ->where('alumnos.sexo','F')
-        ->count();
+            $cantidad_mujeres_inscripcion = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                ->where('inscripcion_clase_grupal.clase_grupal_id',$id)
+                ->where('alumnos.sexo','F')
+            ->count();
 
-        $cantidad_mujeres = $cantidad_mujeres_inscripcion + $cantidad_mujeres_reserva;
-        $cantidad_mujeres = $clase_grupal_join->cantidad_mujeres - $cantidad_mujeres;
+            $cantidad_mujeres = $cantidad_mujeres_inscripcion + $cantidad_mujeres_reserva;
+            $cantidad_mujeres = $clase_grupal_join->cantidad_mujeres - $cantidad_mujeres;
 
-        if($cantidad_mujeres < 0){
-            $cantidad_mujeres = 0;
-        }
+            if($cantidad_mujeres < 0){
+                $cantidad_mujeres = 0;
+            }
 
-        $cupos_restantes = $clase_grupal_join->cupo_maximo - $cantidad_mujeres + $cantidad_hombres;
+            $cupos_restantes = $clase_grupal_join->cupo_maximo - $cantidad_mujeres + $cantidad_hombres;
 
-        $cupos_totales = $cantidad_mujeres_inscripcion + $cantidad_mujeres_reserva + $cantidad_hombres_inscripcion + $cantidad_hombres_reserva;
+            $cupos_totales = $cantidad_mujeres_inscripcion + $cantidad_mujeres_reserva + $cantidad_hombres_inscripcion + $cantidad_hombres_reserva;
 
-        // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
+            // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
-        $porcentaje = intval(($cupos_totales / $clase_grupal_join->cupo_maximo) * 100);
+            $porcentaje = intval(($cupos_totales / $clase_grupal_join->cupo_maximo) * 100);
 
-        if(Auth::check()){
+            if(Auth::check()){
 
-            $usuario_tipo = Session::get('easydance_usuario_tipo');
+                $usuario_tipo = Session::get('easydance_usuario_tipo');
 
+            }else{
+                $usuario_tipo = 0;
+            
+            }
+
+            return view('agendar.clase_grupal.reserva')->with(['clase_grupal' => $clase_grupal_join, 'id' => $id, 'porcentaje' => $porcentaje, 'link_video' => $link_video, 'academia' => $academia, 'cupos_restantes' => $cupos_restantes, 'usuario_tipo' => $usuario_tipo, 'inicio' => $inicio]);
         }else{
-            $usuario_tipo = 0;
-        
+            return redirect("agendar/clases-grupales"); 
         }
-
-        return view('agendar.clase_grupal.reserva')->with(['clase_grupal' => $clase_grupal_join, 'id' => $id, 'porcentaje' => $porcentaje, 'link_video' => $link_video, 'academia' => $academia, 'cupos_restantes' => $cupos_restantes, 'usuario_tipo' => $usuario_tipo, 'inicio' => $inicio]);
     }
 
     public function create()

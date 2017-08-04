@@ -380,7 +380,6 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <!-- <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_costo_mensualidad_clase_grupal" data-update="costomensualidad" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a> -->
                               <button type="button" class="btn btn-blanco m-r-10 f-12" id="guardar_mensualidad" name="guardar_mensualidad">Guardar</button>
 
                             </div>
@@ -433,8 +432,6 @@
                               </div>
                             </div>
                             <div class="col-sm-12">                            
-
-                              <!-- <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="fecha_inicio_preferencial" data-update="fechacobro" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a> -->
 
                               <button type="button" class="btn btn-blanco m-r-10 f-12" id="guardar_fecha" name="guardar_fecha">Guardar</button>
 
@@ -987,6 +984,56 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalNota" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                      <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                          <h4 class="modal-title c-negro"> Agregar una nota <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                      </div>
+                      <form name="agregar_nota" id="agregar_nota"  >
+                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                         <input type="hidden" name="nota_administrativa_inscripcion_clase_grupal_id" id="nota_administrativa_inscripcion_clase_grupal_id"></input>  
+                         <div class="modal-body">                           
+                         <div class="row p-t-20 p-b-0">
+
+                         <div class="col-sm-12">
+                   
+                          <label for="nota_administrativa" id="id-nota_administrativa">Nota Administrativa</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la nota administrativa" title="" data-original-title="Ayuda"></i>
+                          <br></br>
+
+                          <div class="fg-line">
+                            <textarea class="form-control" id="nota_administrativa" name="nota_administrativa" rows="2" placeholder="Ingresa la nota"></textarea>
+                            </div>
+                          <div class="has-error" id="error-nota_administrativa">
+                            <span >
+                              <small class="help-block error-span" id="error-nota_administrativa_mensaje" ></small>                                           
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                         
+                      </div>
+                      <div class="modal-footer p-b-20 m-b-20">
+                          <div class="col-sm-6 text-left">
+                            <div class="procesando hidden">
+                            <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                            <div class="preloader pls-purple">
+                                <svg class="pl-circular" viewBox="25 25 50 50">
+                                    <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                </svg>
+                            </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-6">                          
+                            <button type="button" class="btn-blanco btn m-r-10 f-16" id="add_nota" name="add_nota" > Guardar</button>
+                            <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
+                          </div>
+                      </div></form>
+                  </div>
+              </div>
+          </div>
+
 
             <section id="content">
                 <div class="container">
@@ -1183,7 +1230,7 @@
                               ;?>
 
                                 @if($alumno['tipo'] == 1)
-                                  <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo ="{{$alumno['tipo']}}" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-alumno_id="{{$alumno_id}}" data-fecha_nacimiento="{{$alumno['fecha_nacimiento']}}" data-celular="{{$alumno['celular']}}" data-telefono="{{$alumno['telefono']}}" data-identificacion="{{$alumno['identificacion']}}" data-tipologia_id="{{$alumno['tipologia_id']}}">
+                                  <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo ="{{$alumno['tipo']}}" data-id="{{$alumno['id']}}" data-fecha="{{$alumno['fecha_pago']}}" data-mensualidad="{{$alumno['costo_mensualidad']}}" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-sexo="{{$alumno['sexo']}}" data-correo="{{$alumno['correo']}}" data-alumno_id="{{$alumno_id}}" data-fecha_nacimiento="{{$alumno['fecha_nacimiento']}}" data-celular="{{$alumno['celular']}}" data-telefono="{{$alumno['telefono']}}" data-identificacion="{{$alumno['identificacion']}}" data-tipologia_id="{{$alumno['tipologia_id']}}" data-nota_administrativa="{{$alumno['nota_administrativa']}}">
 
                                       
                                     <td class="text-center previa"> 
@@ -1264,6 +1311,9 @@
                                                       </li>
 
                                                      @if($usuario_tipo != 3)
+                                                        <li class="hidden-xs">
+                                                            <a class="nota_administrativa"><i class="zmdi zmdi-assignment f-20"></i> Nota Administrativa</a>
+                                                        </li>
                                                         <li class="hidden-xs">
                                                             <a href="{{url('/')}}/participante/alumno/llamadas/{{$alumno_id}}"><i class="zmdi zmdi-phone f-20"></i> Llamadas</a>
                                                         </li>
@@ -1348,6 +1398,7 @@
         route_alumno="{{url('/')}}/guardar-alumno";
         route_transferir="{{url('/')}}/agendar/clases-grupales/transferir";
         route_consultar_credencial="{{url('/')}}/agendar/clases-grupales/consultar_credenciales";
+        route_nota_administrativa="{{url('/')}}/agendar/clases-grupales/agregar-nota-administrativa";
 
         var in_credencial = <?php echo json_encode($in_credencial);?>;
 
@@ -2109,83 +2160,83 @@
 
             });
 
-        $("#actualizar_participante").click(function(){
+            $("#actualizar_participante").click(function(){
 
-                procesando();
-                var route = route_actualizar;
-                var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#form_actualizar").serialize();         
-                limpiarMensaje();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:datos,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
+              procesando();
+              var route = route_actualizar;
+              var token = $('input:hidden[name=_token]').val();
+              var datos = $( "#form_actualizar").serialize();         
+              limpiarMensaje();
+              $.ajax({
+                  url: route,
+                      headers: {'X-CSRF-TOKEN': token},
+                      type: 'POST',
+                      dataType: 'json',
+                      data:datos,
+                  success:function(respuesta){
+                    setTimeout(function(){ 
+                      var nFrom = $(this).attr('data-from');
+                      var nAlign = $(this).attr('data-align');
+                      var nIcons = $(this).attr('data-icon');
+                      var nAnimIn = "animated flipInY";
+                      var nAnimOut = "animated flipOutY"; 
+                      if(respuesta.status=="OK"){
 
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
-                          var row = "#"+respuesta.id;
-                          $(row).data('tipologia_id', respuesta.tipologia_id)
+                        var nType = 'success';
+                        var nTitle="Ups! ";
+                        var nMensaje=respuesta.mensaje;
+                        var row = "#"+respuesta.id;
+                        $(row).data('tipologia_id', respuesta.tipologia_id)
 
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        finprocesado();
-                        $('#modalAlumno').modal('hide');
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        finprocesado();
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
+                      }else{
+                        var nTitle="Ups! ";
+                        var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                         var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
+                      }                       
+                      finprocesado();
+                      $('#modalAlumno').modal('hide');
+                      notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                    }, 1000);
+                  },
+                  error:function(msj){
+                    setTimeout(function(){ 
+                      // if (typeof msj.responseJSON === "undefined") {
+                      //   window.location = "{{url('/')}}/error";
+                      // }
+                      if(msj.responseJSON.status=="ERROR"){
+                        console.log(msj.responseJSON.errores);
+                        errores(msj.responseJSON.errores);
+                        var nTitle="    Ups! "; 
+                        var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                      }else{
+                        var nTitle="   Ups! "; 
+                        var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                      }                        
+                      finprocesado();
+                      var nFrom = $(this).attr('data-from');
+                      var nAlign = $(this).attr('data-align');
+                      var nIcons = $(this).attr('data-icon');
+                      var nType = 'danger';
+                      var nAnimIn = "animated flipInY";
+                      var nAnimOut = "animated flipOutY";                       
+                      notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                    }, 1000);
+                  }
+              });
 
-            });
+          });
 
           $(".congelar_alumno").on('click', function(){
 
-            var id = $(this).closest('tr').attr('id');
-            var nombre = $(this).closest('tr').data('nombre');
+              var id = $(this).closest('tr').attr('id');
+              var nombre = $(this).closest('tr').data('nombre');
 
 
-            $('#inscripcion_clase_grupal_id').val(id);
-            $('.span_alumno').text(nombre);
-            
-            $('#modalCongelar').modal('show');
-        });
+              $('#inscripcion_clase_grupal_id').val(id);
+              $('.span_alumno').text(nombre);
+              
+              $('#modalCongelar').modal('show');
+          });
 
 
           $("#congelar").click(function(){
@@ -2572,6 +2623,16 @@
               });
             }
           });
+        });
+
+        $(".nota_administrativa").on('click', function(){
+          var id = $(this).closest('tr').attr('id');
+          var nota_administrativa = $(this).closest('tr').data('nota_administrativa');
+
+          $('#nota_administrativa_inscripcion_clase_grupal_id').val(id);
+          $('#nota_administrativa').text(nota_administrativa);
+          
+          $('#modalNota').modal('show');
         });
 
         function previa(t){
@@ -3190,7 +3251,74 @@
         finprocesado();
       }, 3000);
     });
-      
+
+    $("#add_nota").click(function(){
+
+        procesando();
+        var route = route_nota_administrativa;
+        var token = $('input:hidden[name=_token]').val();
+        var datos = $( "#agregar_nota").serialize();         
+        limpiarMensaje();
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                data:datos,
+            success:function(respuesta){
+              setTimeout(function(){ 
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY"; 
+                if(respuesta.status=="OK"){
+
+                  var nType = 'success';
+                  var nTitle="Ups! ";
+                  var nMensaje=respuesta.mensaje;
+                  var row = "#"+respuesta.id;
+                  $(row).data('nota_administrativa', respuesta.nota_administrativa)
+                  $('#modalNota').modal('hide')
+
+                }else{
+                  var nTitle="Ups! ";
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  var nType = 'danger';
+                }                       
+                finprocesado();
+                $('#modalAlumno').modal('hide');
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              }, 1000);
+            },
+            error:function(msj){
+              setTimeout(function(){ 
+                // if (typeof msj.responseJSON === "undefined") {
+                //   window.location = "{{url('/')}}/error";
+                // }
+                if(msj.responseJSON.status=="ERROR"){
+                  console.log(msj.responseJSON.errores);
+                  errores(msj.responseJSON.errores);
+                  var nTitle="    Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                }else{
+                  var nTitle="   Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                }                        
+                finprocesado();
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nType = 'danger';
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY";                       
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+              }, 1000);
+            }
+        });
+
+    });
+
   </script>
 
 @stop

@@ -834,6 +834,13 @@
           data: "&id="+alumno_id,
           success:function(respuesta){
             $.each(respuesta.inscripciones, function (index, array) { 
+
+              if(array.nota_administrativa){
+                nota_administrativa = '<i class="zmdi zmdi-assignment f-20 m-l-15" data-original-title="" data-content="Nota Administrativa: '+array.nota_administrativa+'" data-toggle="popover" data-placement="top" title="" type="button" data-trigger="hover">'
+              }else{
+                nota_administrativa = '';
+              }
+
               if(array.diferencia > 1){
                 restan = 'Restan '
                 dias = ' dias'
@@ -841,13 +848,15 @@
                 restan = 'Resta '
                 dias = ' dia'
               }
-              $('#clases_grupales_alumno').append('<p>' + array.nombre + ' <br>' + array.hora_inicio + ' / ' + array.hora_final + ' <br> ' + array.dia)
+              $('#clases_grupales_alumno').append('<p>' + array.nombre + ' <br>' + array.hora_inicio + ' / ' + array.hora_final + ' <br> ' + array.dia + ' ' + nota_administrativa)
               if(array.fecha_pago){
                 $('#clases_grupales_alumno').append(' <br> ' + 'Fecha de Pago: ' + array.fecha_pago + ' <br> ' + restan + array.diferencia + dias + '</p>')
               }else{
                 $('#clases_grupales_alumno').append('</p>')
               }
             });
+
+            $('[data-toggle="popover"]').popover(); 
             
             $('#asistencia_clase_grupal_id').empty();   
             $('#asistencia_clase_grupal_id').append( new Option("Selecciona",""));
