@@ -158,7 +158,7 @@
                 id = this.id;
                 swal({   
                     title: "Desea eliminar el taller?",   
-                    text: "Confirmar eliminación!",   
+                    text: "Tenga en cuenta que los horarios creados para este taller tambien seran eliminados!",   
                     type: "warning",   
                     showCancelButton: true,   
                     confirmButtonColor: "#DD6B55",   

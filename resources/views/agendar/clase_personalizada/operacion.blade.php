@@ -155,20 +155,6 @@
                             </div>
                         </a>
                     </li>
-
-                    <!--<li>
-                        <a href="#">
-                            <span class="ca-icon-c">A</span>
-                            <div class="ca-content-c">
-                                <h2 class="ca-main-c">Exceptional Service</h2>
-                                <h3 class="ca-sub-c">Personalized to your needs</h3>
-                            </div>
-                        </a>
-                    </li>-->
-                    
-
-
-                    
                 </ul>
 
                 <div class = "col-sm-2"></div>
@@ -227,7 +213,7 @@
                 id = this.id;
                 swal({   
                     title: "Desea eliminar la clase personalizada?",   
-                    text: "Confirmar eliminación!",   
+                    text: "Tenga en cuenta que los horarios creados para esta clase personalizada tambien seran eliminados!",   
                     type: "warning",   
                     showCancelButton: true,   
                     confirmButtonColor: "#DD6B55",   

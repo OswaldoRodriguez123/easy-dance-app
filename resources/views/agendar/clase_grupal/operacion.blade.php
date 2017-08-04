@@ -244,7 +244,7 @@
                 id = this.id;
                 swal({   
                     title: "Desea eliminar la clase grupal?",   
-                    text: "Confirmar eliminación!",   
+                    text: "Tenga en cuenta que los horarios creados para esta clase grupal tambien seran eliminados!",   
                     type: "warning",   
                     showCancelButton: true,   
                     confirmButtonColor: "#DD6B55",   

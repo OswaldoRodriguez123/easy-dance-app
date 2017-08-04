@@ -1132,9 +1132,6 @@
                             <div class="text-center p-t-30">       
                               <div class="row p-b-15 ">
                                 <div class="col-md-12" data-src="/assets/img/ayuda-configuracion.jpg">
-                                  <!--<div class="text-center">
-                                    <img src="{{url('/')}}/assets/img/detalle_alumnos.jpg" class="img-responsive img-efecto text-center" alt="">
-                                  </div>-->
                                   <ul class="ca-menu-planilla">
                                     <li>
                                         <a href="#" class="disabled">
@@ -1201,14 +1198,13 @@
                                   <hr></hr>
 
                                   <br></br>
-<!--                                   <a class="btn-blanco m-r-10 f-18 guardar" id="guardar" href="#"> Ver Progreso <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a> -->
+
                                   
                                    
                                 </div>
 
                                 </div>                
                               </div>
-                              <!--<p class="text-justify">Desde esta área Easy Dance te brinda la oportunidad de actualizar los datos creados en tu planilla de registro.</p>-->
                                     
                           </div>
                      </div>
@@ -1792,7 +1788,7 @@
                 id = this.id;
                 swal({   
                     title: "Desea eliminar el taller",   
-                    text: "Confirmar eliminación!",   
+                    text: "Tenga en cuenta que los horarios creados para este taller tambien seran eliminados!",   
                     type: "warning",   
                     showCancelButton: true,   
                     confirmButtonColor: "#DD6B55",   

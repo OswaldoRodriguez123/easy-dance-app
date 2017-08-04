@@ -886,7 +886,7 @@
                 id = this.id;
                 swal({   
                     title: "Desea eliminar la clase personalizada",   
-                    text: "Confirmar eliminación!",   
+                    text: "Tenga en cuenta que los horarios creados para esta clase personalizada tambien seran eliminados!",   
                     type: "warning",   
                     showCancelButton: true,   
                     confirmButtonColor: "#DD6B55",   
