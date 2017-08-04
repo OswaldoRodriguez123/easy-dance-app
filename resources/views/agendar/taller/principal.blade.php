@@ -56,6 +56,7 @@
                                 <tr>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="fecha" data-order="desc">Fecha</th>
+                                    <th class="text-center" data-column-id="fecha" data-order="desc">Instructor</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Final]</th>
                                     <th class="text-center" data-column-id="status" data-type="numeric">Status</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Operaciones</th>
@@ -84,6 +85,7 @@
                                 <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" id="{{$id}}" class="seleccion">
                                     <td class="text-center previa">{{$taller['nombre']}}</td>
                                     <td class="text-center previa">{{$taller['fecha_inicio']}}</td>
+                                    <td class="text-center previa">{{$taller['instructor_nombre']}} {{$taller['instructor_apellido']}}</td>
                                     <td class="text-center previa">{{$taller['hora_inicio']}} - {{$taller['hora_final']}}</td>
                                     <td class="text-center previa">
                                         <span class="{{ empty($taller['dias_restantes']) ? 'c-youtube' : '' }}">{{$taller['status']}}</span>

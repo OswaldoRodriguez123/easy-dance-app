@@ -38,8 +38,9 @@ class TallerController extends BaseController {
     public function index(){
 
         $talleres = Taller::join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
-            ->select('talleres.*','config_especialidades.nombre as especialidad')
-            ->where('academia_id', '=' ,  Auth::user()->academia_id)
+            ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
+            ->select('talleres.*','config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
+            ->where('talleres.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
         $array = array();
