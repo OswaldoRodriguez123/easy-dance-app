@@ -127,13 +127,13 @@ class ClasePersonalizadaController extends BaseController {
                 $array[] = $personalizada_array;
             }
 
-            $horarios_clases_personalizadas = HorarioClasePersonalizada::join('inscripcion_clase_personalizada', 'inscripcion_clase_personalizada.id', '=', 'horarios_clases_personalizadas.clase_personalizada_id')
+            $horarios_clases_personalizadas = InscripcionClasePersonalizada::join('horarios_clases_personalizadas', 'inscripcion_clase_personalizada.id', '=', 'horarios_clases_personalizadas.clase_personalizada_id')
                 ->join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
                 ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
                 ->join('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
                 ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'horarios_clases_personalizadas.fecha as fecha_inicio', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final')
                 ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
-                ->where('clases_personalizadas.deleted_at','=', null)
+                ->where('horarios_clases_personalizadas.deleted_at','=', null)
             ->get();
             
             foreach($horarios_clases_personalizadas as $clase_personalizada){
@@ -779,19 +779,17 @@ class ClasePersonalizadaController extends BaseController {
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
-    {
-        $find = InscripcionClasePersonalizada::find($id);
+    public function edit($id){
 
-        if ($find) {
+        $clase_personalizada_join = InscripcionClasePersonalizada::join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
+            ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
+            ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
+            ->join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
+            ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'inscripcion_clase_personalizada.fecha_inicio as fecha_inicio', 'inscripcion_clase_personalizada.fecha_final as fecha_final', 'inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final',  'inscripcion_clase_personalizada.id', 'clases_personalizadas.tiempo_expiracion', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'clases_personalizadas.nombre')
+            ->where('inscripcion_clase_personalizada.id', '=', $id)
+        ->first();
 
-            $clase_personalizada_join = InscripcionClasePersonalizada::join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
-                ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
-                ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
-                ->join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
-                ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'inscripcion_clase_personalizada.fecha_inicio as fecha_inicio', 'inscripcion_clase_personalizada.fecha_final as fecha_final', 'inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final',  'inscripcion_clase_personalizada.id', 'clases_personalizadas.tiempo_expiracion', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'clases_personalizadas.nombre')
-                ->where('inscripcion_clase_personalizada.id', '=', $id)
-            ->first();
+        if ($clase_personalizada_join) {
 
             $hora_string = $find->fecha_inicio . ' ' . $find->hora_inicio;
         
@@ -829,78 +827,78 @@ class ClasePersonalizadaController extends BaseController {
                      )
             ->get();
 
-        $arrayHorario= array();
+            $arrayHorario= array();
 
-        foreach ($horario_clase_grupal as $horario) {
-            $instructor=$horario->instructor_nombre.' '.$horario->instructor_apellido;
-            $especialidad=$horario->especialidad_nombre;
-            $estudio = $horario->estudio_nombre;
-            $fecha=$horario->fecha;
-            $hora_inicio=$horario->hora_inicio;
-            $hora_final=$horario->hora_final;
-            $id_horario=$horario->id;
+            foreach ($horario_clase_grupal as $horario) {
+                $instructor=$horario->instructor_nombre.' '.$horario->instructor_apellido;
+                $especialidad=$horario->especialidad_nombre;
+                $estudio = $horario->estudio_nombre;
+                $fecha=$horario->fecha;
+                $hora_inicio=$horario->hora_inicio;
+                $hora_final=$horario->hora_final;
+                $id_horario=$horario->id;
 
-            $fc=explode('-',$fecha);
-            $fecha_curso=Carbon::create($fc[0], $fc[1], $fc[2], 00, 00, 00);
-            $dia_curso = $fecha_curso->format('l');
+                $fc=explode('-',$fecha);
+                $fecha_curso=Carbon::create($fc[0], $fc[1], $fc[2], 00, 00, 00);
+                $dia_curso = $fecha_curso->format('l');
 
-            $dia_de_semana="";
+                $dia_de_semana="";
 
-            $dia_curso=strtoupper($dia_curso);
+                $dia_curso=strtoupper($dia_curso);
 
-            if($dia_curso=="SUNDAY")
-            {
-                $dia="6";
-                $dia_de_semana="Domingo";
+                if($dia_curso=="SUNDAY")
+                {
+                    $dia="6";
+                    $dia_de_semana="Domingo";
+                }
+                elseif($dia_curso=="MONDAY")
+                {
+                    $dia="0";
+                    $dia_de_semana="Lunes";
+                }
+                elseif($dia_curso=="TUESDAY")
+                {
+                    $dia="1";
+                    $dia_de_semana="Martes";
+
+                }
+                elseif($dia_curso=="WEDNESDAY")
+                {
+                    $dia="2";
+                    $dia_de_semana="Míercoles";                
+                }
+                elseif($dia_curso=="THURSDAY")
+                {
+                    $dia="3";
+                    $dia_de_semana="Jueves";                
+                }
+                elseif($dia_curso=="FRIDAY")
+                {
+                    $dia="4";
+                    $dia_de_semana="Viernes";
+                }
+                elseif($dia_curso=="SATURDAY")
+                {
+                    $dia="5";
+                    $dia_de_semana="Sábado";
+                }
+
+                $dia_de_semana = $fecha;
+
+                $arrayHorario[$id_horario] = array(
+                        'instructor' => $instructor,
+                        'dia_de_semana' => $dia_de_semana,
+                        'new_dia_de_semama'=>$dia_curso,
+                        'especialidad' => $especialidad,
+                        'estudio' => $estudio,
+                        'hora_inicio' => $hora_inicio,
+                        'new_hora_inicio' => $hora_inicio,
+                        'hora_final' => $hora_final,
+                        'new_hora_final' => $hora_final,
+                        'fecha'=> $fecha,
+                        'id'=>$id_horario
+                );
             }
-            elseif($dia_curso=="MONDAY")
-            {
-                $dia="0";
-                $dia_de_semana="Lunes";
-            }
-            elseif($dia_curso=="TUESDAY")
-            {
-                $dia="1";
-                $dia_de_semana="Martes";
-
-            }
-            elseif($dia_curso=="WEDNESDAY")
-            {
-                $dia="2";
-                $dia_de_semana="Míercoles";                
-            }
-            elseif($dia_curso=="THURSDAY")
-            {
-                $dia="3";
-                $dia_de_semana="Jueves";                
-            }
-            elseif($dia_curso=="FRIDAY")
-            {
-                $dia="4";
-                $dia_de_semana="Viernes";
-            }
-            elseif($dia_curso=="SATURDAY")
-            {
-                $dia="5";
-                $dia_de_semana="Sábado";
-            }
-
-            $dia_de_semana = $fecha;
-
-            $arrayHorario[$id_horario] = array(
-                    'instructor' => $instructor,
-                    'dia_de_semana' => $dia_de_semana,
-                    'new_dia_de_semama'=>$dia_curso,
-                    'especialidad' => $especialidad,
-                    'estudio' => $estudio,
-                    'hora_inicio' => $hora_inicio,
-                    'new_hora_inicio' => $hora_inicio,
-                    'hora_final' => $hora_final,
-                    'new_hora_final' => $hora_final,
-                    'fecha'=> $fecha,
-                    'id'=>$id_horario
-            );
-        }
 
             return view('agendar.clase_personalizada.planilla')->with(['clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'clasepersonalizada' => $clase_personalizada_join, 'arrayHorario' => $arrayHorario]);
 
