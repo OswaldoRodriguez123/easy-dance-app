@@ -37,7 +37,10 @@ class TallerController extends BaseController {
 
     public function index(){
 
-        $talleres = Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->where('talleres.deleted_at', '=', null)->OrderBy('talleres.hora_inicio')->get();
+        $talleres = Taller::join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
+            ->select('talleres.*','config_especialidades.nombre as especialidad')
+            ->where('academia_id', '=' ,  Auth::user()->academia_id)
+        ->get();
 
         $array = array();
 
@@ -47,6 +50,108 @@ class TallerController extends BaseController {
         if($usuario_tipo == 1 OR $usuario_tipo == 3 OR $usuario_tipo == 5 || $usuario_tipo == 6){
 
             foreach($talleres as $taller){
+
+                $horarios = HorarioTaller::join('config_especialidades', 'horarios_talleres.especialidad_id', '=', 'config_especialidades.id')
+                    ->select('horarios_talleres.*','config_especialidades.nombre as especialidad')
+                    ->where('horarios_talleres.taller_id', $taller->id)
+                ->get();
+
+                $i = 0;
+                $len = count($horarios);
+                $dia_string = '';
+                $especialidad_string = '';
+
+                $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
+                $i = $fecha->dayOfWeek;
+
+                if($i == 1){
+
+                  $dia = 'Lunes';
+
+                }else if($i == 2){
+
+                  $dia = 'Martes';
+
+                }else if($i == 3){
+
+                  $dia = 'Miercoles';
+
+                }else if($i == 4){
+
+                  $dia = 'Jueves';
+
+                }else if($i == 5){
+
+                  $dia = 'Viernes';
+
+                }else if($i == 6){
+
+                  $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
+
+                }
+ 
+                $dia_string = $dia_string . $dia;
+                $especialidad_string = $especialidad_string . $taller->especialidad;
+                
+                foreach($horarios as $horario){
+
+                    if($dia_string != ''){
+                        $dia_string = $dia_string . ', ';
+                    }
+
+                    if($especialidad_string != ''){
+                        $especialidad_string = $especialidad_string . ', ';
+                    }
+
+                    $fecha = Carbon::createFromFormat('Y-m-d', $horario->fecha);
+                    $i = $fecha->dayOfWeek;
+
+                    if($i == 1){
+
+                      $dia = 'Lunes';
+
+                    }else if($i == 2){
+
+                      $dia = 'Martes';
+
+                    }else if($i == 3){
+
+                      $dia = 'Miercoles';
+
+                    }else if($i == 4){
+
+                      $dia = 'Jueves';
+
+                    }else if($i == 5){
+
+                      $dia = 'Viernes';
+
+                    }else if($i == 6){
+
+                      $dia = 'Sabado';
+
+                    }else if($i == 0){
+
+                      $dia = 'Domingo';
+
+                    }
+                    if ($i != $len - 1) {
+                        $dia_string = $dia_string . $dia;
+                        $especialidad_string = $especialidad_string . $horario->especialidad;
+                    }else{
+                        $dia_string = $dia_string . 'y ' . $dia;
+                        $especialidad_string = $especialidad_string . 'y ' . $horario->especialidad;
+                    }
+
+                    $i++;
+
+                }
+
+                $cantidad_participantes = InscripcionTaller::where('taller_id',$taller->id)->count();
 
                 $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
                 if($fecha >= Carbon::now()){
@@ -60,7 +165,10 @@ class TallerController extends BaseController {
                 }
 
                 $collection=collect($taller);  
-                $taller_array = $collection->toArray();   
+                $taller_array = $collection->toArray(); 
+                $taller_array['cantidad_participantes']=$cantidad_participantes;  
+                $taller_array['dias']=$dia_string;
+                $taller_array['especialidades']=$especialidad_string;
                 $taller_array['status']=$status;
                 $taller_array['dias_restantes']=$dias_restantes;
                 
@@ -1175,8 +1283,7 @@ class TallerController extends BaseController {
     public function progreso($id)
     {
 
-        $taller_join = DB::table('talleres')
-            ->join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
+        $taller_join = Taller::join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_estudios', 'talleres.estudio_id', '=', 'config_estudios.id')
             ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
             ->join('academias', 'talleres.academia_id', '=', 'academias.id')

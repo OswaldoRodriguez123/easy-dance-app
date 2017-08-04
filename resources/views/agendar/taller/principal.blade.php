@@ -6,6 +6,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -57,7 +58,6 @@
                                     <th class="text-center" data-column-id="fecha" data-order="desc">Fecha</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Final]</th>
                                     <th class="text-center" data-column-id="status" data-type="numeric">Status</th>
-                                    <th class="text-center" data-column-id="costo" data-order="desc">Costo</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Operaciones</th>
                                
                                 </tr>
@@ -65,8 +65,23 @@
                             <tbody class="text-center" >
 
                             @foreach ($talleres as $taller)
-                                <?php $id = $taller['id']; ?>
-                                <tr id="{{$id}}" class="seleccion">
+                                <?php $id = $taller['id']; 
+
+                                    $contenido = '';
+
+                                    $contenido = 
+                                    '<p class="c-negro">' .
+                                        'Costo: ' . number_format($taller['costo'], 2, '.' , '.')  . '<br>'.
+                                        'Cantidad de Participantes: ' . $taller['cantidad_participantes'] . '<br>'.
+                                        'Estilos de Baile: ' . $taller['especialidades'] . '<br>'.
+                                        'Dias de Semana: ' . $taller['dias'] . '<br>'.
+                                        'Estatus: ' . $taller['status'] . '<br>'.
+                                    '</p>';
+                    
+                                    
+
+                                ?>
+                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" id="{{$id}}" class="seleccion">
                                     <td class="text-center previa">{{$taller['nombre']}}</td>
                                     <td class="text-center previa">{{$taller['fecha_inicio']}}</td>
                                     <td class="text-center previa">{{$taller['hora_inicio']}} - {{$taller['hora_final']}}</td>
@@ -74,8 +89,47 @@
                                         <span class="{{ empty($taller['dias_restantes']) ? 'c-youtube' : '' }}">{{$taller['status']}}</span>
                                         Restan {{$taller['dias_restantes']}} Días
                                     </td>
-                                    <td class="text-center previa">{{ number_format($taller['costo'], 2, '.' , '.') }}</td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> 
+                                        <!-- <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i> -->
+
+                                        <ul class="top-menu">
+                                            <li class="dropdown" id="dropdown_{{$id}}">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                                   <span class="f-15 f-700" style="color:black"> 
+                                                        <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                   </span>
+                                                </a>
+                                                <div class="dropup">
+                                                    <ul class="dropdown-menu dm-icon pull-right">
+
+                                                        <li class="hidden-xs">
+                                                            <a onclick="procesando()" href="{{url('/')}}/agendar/talleres/participantes/{{$id}}"><i class="icon_a-participantes f-16 m-r-10 boton blue"></i> Participantes</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
+                                                            <a onclick="procesando()" href="{{url('/')}}/agendar/talleres/progreso/{{$id}}"><i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i> Ver Progreso</a>
+                                                        </li>
+                                                    
+                                                        @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+
+                                                          <li class="hidden-xs">
+                                                            <a onclick="procesando()" href="{{url('/')}}/agendar/talleres/egresos/{{$id}}"><i class="fa fa-money f-16 m-r-10 boton blue"></i> Egresos</a>
+                                                          </li>
+
+                                                          <li class="hidden-xs">
+                                                            <a onclick="procesando()" href="{{url('/')}}/agendar/talleres/multihorario/{{$id}}"><i class="zmdi zmdi-calendar-note f-16 boton blue"></i>Multihorario</a>
+                                                          </li>
+
+                                                          <li class="hidden-xs eliminar">
+                                                              <a class="pointer eliminar"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                                          </li>
+
+                                                        @endif
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </td>
                               
                                 </tr>
                             @endforeach  
@@ -108,6 +162,8 @@
         route_detalle="{{url('/')}}/agendar/talleres/detalle";
         route_operacion="{{url('/')}}/agendar/talleres/operaciones";
         route_progreso="{{url('/')}}/agendar/talleres/progreso";
+        route_eliminar="{{url('/')}}/agendar/talleres/eliminar/";
+        route_principal="{{url('/')}}/agendar/talleres";
 
         $(document).ready(function(){
 
@@ -154,10 +210,83 @@
         window.location=route;
       }
 
-      $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-         });
+    $("i[name=operacion").click(function(){
+        var route =route_operacion+"/"+this.id;
+        window.location=route;
+     });
+
+    $('#tablelistar tbody').on( 'click', 'a.eliminar', function () {
+        var id = $(this).closest('tr').attr('id');
+                swal({   
+                    title: "Desea eliminar el taller",   
+                    text: "Confirmar eliminación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Eliminar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+                        // swal("Done!","It was succesfully deleted!","success");
+                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                        eliminar(id);
+          }
+        });
+    });
+      function eliminar(id){
+         var route = route_eliminar + id;
+         var token = "{{ csrf_token() }}";
+         procesando();
+                
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'DELETE',
+            dataType: 'json',
+            success:function(respuesta){
+
+                window.location=route_principal; 
+
+            },
+            error:function(msj){
+                        // $("#msj-danger").fadeIn(); 
+                        // var text="";
+                        // console.log(msj);
+                        // var merror=msj.responseJSON;
+                        // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                        // $("#msj-error").html(text);
+                        // setTimeout(function(){
+                        //          $("#msj-danger").fadeOut();
+                        //         }, 3000);
+                        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                        }
+        });
+    }
+
+    $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+        var id = $(this).closest('tr').attr('id');
+        var dropdown = $('#dropdown_'+id)
+        var dropdown_toggle = $('#dropdown_toggle_'+id)
+
+        if(!dropdown.hasClass('open')){
+            dropdown.addClass('open')
+            dropdown_toggle.attr('aria-expanded','true')
+            $('.table-responsive').css( "overflow", "inherit" );
+        }
+     
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+      $('.table-responsive').css( "overflow", "auto" );
+    })   
 
     </script>
 @stop
