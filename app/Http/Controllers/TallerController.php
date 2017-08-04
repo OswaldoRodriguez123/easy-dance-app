@@ -100,10 +100,6 @@ class TallerController extends BaseController {
                 
                 foreach($horarios as $horario){
 
-                    if($dia_string != ''){
-                        $dia_string = $dia_string . ', ';
-                    }
-
                     if($especialidad_string != ''){
                         $especialidad_string = $especialidad_string . ', ';
                     }
@@ -141,7 +137,7 @@ class TallerController extends BaseController {
 
                     }
                     if ($i != $len - 1 && $dia != $dia_string) {
-                        $dia_string = $dia_string . $dia;
+                        $dia_string = $dia_string  . ', ' . $dia;
                         $especialidad_string = $especialidad_string . $horario->especialidad;
                     }else{
                         $dia_string = $dia_string . 'y ' . $dia;
