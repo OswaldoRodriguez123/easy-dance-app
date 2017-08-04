@@ -1161,13 +1161,14 @@ class AsistenciaController extends BaseController
       ->where('inscripcion_clase_personalizada.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'))
     ->get();
 
-    $horarios = HorarioClasePersonalizada::join('inscripcion_clase_personalizada', 'horarios_clases_personalizadas.clase_personalizada_id', '=', 'inscripcion_clase_personalizada.id')
+    $horarios = InscripcionClasePersonalizada::join('horarios_clases_personalizadas', 'horarios_clases_personalizadas.clase_personalizada_id', '=', 'inscripcion_clase_personalizada.id')
       ->join('config_especialidades', 'horarios_clases_personalizadas.especialidad_id', '=', 'config_especialidades.id')
       ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
       ->join('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
       ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','horarios_clases_personalizadas.hora_inicio','horarios_clases_personalizadas.hora_final', 'inscripcion_clase_personalizada.id', 'horarios_clases_personalizadas.fecha', 'inscripcion_clase_personalizada.boolean_alumno_aceptacion', 'clases_personalizadas.color_etiqueta', 'clases_personalizadas.descripcion')
       ->where('inscripcion_clase_personalizada.alumno_id','=', $request->id)
       ->where('horarios_clases_personalizadas.fecha', '>=', Carbon::now()->format('Y-m-d'))
+      ->where('horarios_clases_personalizadas.deleted_at','=', null)
     ->get();
 
       $array = array();
