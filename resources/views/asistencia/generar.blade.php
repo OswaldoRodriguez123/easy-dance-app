@@ -334,42 +334,39 @@
                             </thead>
                             <tbody>
 
-                            @foreach ($alumnosacademia as $alumno)
-                                <?php $id = $alumno['id']; 
-                                  $contenido = '<p class="c-negro">' .
+                            @foreach ($alumnos as $alumno)
+                              <?php $id = $alumno['id']; 
 
-                                    $alumno['nombre'] . ' ' . $alumno['apellido'] .'<br><br>' .
+                                $contenido = '<p class="c-negro">' .
 
-                                    'Clase Grupal: ' . $alumno['nombre_clase']  . '<br>'.
-                                    'Día: ' . $alumno['dia_clase'] . '<br>'.
-                                    'Hora: ' . $alumno['hora_clase'] . '<br>'.
-                                    'Instructor: ' . $alumno['instructor_clase'] . '<br>'.
+                                $alumno['nombre'] . ' ' . $alumno['apellido'] .'<br><br>' .
 
+                                'Clase Grupal: ' . $alumno['nombre_clase']  . '<br>'.
+                                'Día: ' . $alumno['dia_clase'] . '<br>'.
+                                'Hora: ' . $alumno['hora_clase'] . '<br>'.
+                                'Instructor: ' . $alumno['instructor_clase'] . '<br></p>';
 
-
-                                    '</p>';
-
-                                ?>
+                              ?>
 
 
-                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno['imagen']}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno['nombre']}} {{$alumno['apellido']}}" data-identificacion-participante = "{{$alumno['identificacion']}}" data-tipo-participante = "alumno" data-sexo = "{{$alumno['sexo']}}" >
+                              <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$alumno['imagen']}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno['nombre']}} {{$alumno['apellido']}}" data-identificacion-participante = "{{$alumno['identificacion']}}" data-tipo-participante = "alumno" data-sexo = "{{$alumno['sexo']}}" >
 
-                                    <td class="text-center previa"> @if(isset($activacion[$id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
-                                    <td class="text-center previa">
-                                        @if($alumno['imagen'])
-                                          <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
-                                        @else
-                                            @if($alumno['sexo'] == 'M')
-                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
-                                            @else
-                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
-                                        @endif
-                                      @endif
-                                    </td>
-                                    <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}}</td>
-                                    <td class="text-center previa">{{$alumno['identificacion']}}</td>
+                                <td class="text-center previa"> @if(isset($activacion[$id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
+                                <td class="text-center previa">
+                                  @if($alumno['imagen'])
+                                    <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
+                                  @else
+                                    @if($alumno['sexo'] == 'M')
+                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                    @else
+                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                    @endif
+                                  @endif
+                                </td>
+                                <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}}</td>
+                                <td class="text-center previa">{{$alumno['identificacion']}}</td>
 
-                                </tr>
+                              </tr>
                             @endforeach 
 
                             @foreach ($instructores as $instructor)
@@ -393,19 +390,23 @@
                                 </tr>
                             @endforeach 
 
-                            @foreach ($staff as $alumno)
-                                <?php $id = $alumno->id; ?>
-                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-id-participante = "{{$id}}" data-nombre-participante = "{{$alumno->nombre}} {{$alumno->apellido}}" data-identificacion-participante = "{{$alumno->identificacion}}" data-tipo-participante = "staff">
+                            @foreach ($staffs as $staff)
+                                <?php $id = $staff['id']; ?>
+                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-id-participante = "{{$id}}" data-nombre-participante = "{{$staff['nombre']}} {{$staff['apellido']}}" data-tipo-participante = "staff">
                                     <td class="text-center previa"></td>
                                     <td class="text-center previa">
-                                        <!-- if($alumno['imagen'])
-                                            <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/instructor/{{$alumno['imagen']}}" alt="">
-                                        else -->
-                                            <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
-                                        <!-- endif -->
+                                        @if($staff['imagen'])
+                                          <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$staff['imagen']}}" alt="">
+                                        @else
+                                            @if($staff['sexo'] == 'M')
+                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                            @else
+                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                            @endif
+                                        @endif
                                     </td>
-                                    <td class="text-center previa">{{$alumno->nombre}} {{$alumno->apellido}}</td>
-                                    <td class="text-center previa">{{$alumno->identificacion}} <i class="icon_f-staff"></i></td>
+                                    <td class="text-center previa">{{$staff['nombre']}} {{$staff['apellido']}}</td>
+                                    <td class="text-center previa">{{$staff['identificacion']}} <i class="icon_f-staff"></i></td>
 
                                 </tr>
                             @endforeach 
@@ -925,9 +926,9 @@
           },
           error:function (msj, ajaxOptions, thrownError){
             setTimeout(function(){ 
-              // if (typeof msj.responseJSON === "undefined") {
-              //   window.location = "{{url('/')}}/error";
-              // }
+              if (typeof msj.responseJSON === "undefined") {
+                window.location = "{{url('/')}}/error";
+              }
               var nType = 'danger';
               if(msj.responseJSON.status=="ERROR"){
                 errores(msj.responseJSON.errores);

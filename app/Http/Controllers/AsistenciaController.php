@@ -682,160 +682,180 @@ class AsistenciaController extends BaseController
       }        
     }
 
-    public function generarAsistencia(){
+	public function generarAsistencia(){
 
-      $array = array(2,4);
-
-      $alumnos = Alumno::where('academia_id','=', Auth::user()->academia_id)
-        ->orderBy('nombre', 'asc')
-      ->get();
-
-      $array_alumno = array();
-      $array_instructor = array();
-      $hoy = Carbon::now();
-
-      $alumnos_inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-        ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
-        ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-        ->select('alumnos.*', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.clase_grupal_id as clase_grupal_id', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'config_clases_grupales.asistencia_amarilla', 'config_clases_grupales.asistencia_rojo')
-        ->where('alumnos.academia_id', '=', Auth::user()->academia_id)
-        ->where('clases_grupales.deleted_at', '=', null)
-      ->get();
+		$array_alumno = array();
+      	$array_instructor = array();
+      	$array_staff = array();
     
-      foreach($alumnos as $alumno){
+      	$array = array(2,4);
 
-        $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-            ->where('usuarios_tipo.tipo_id',$alumno->id)
-            ->whereIn('usuarios_tipo.tipo',$array)
-        ->first();
+      	$alumnos = Alumno::where('academia_id','=', Auth::user()->academia_id)
+			->orderBy('nombre', 'asc')
+      	->get();
 
-        $inscripcion = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
-            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_clases_grupales.nombre', 'clases_grupales.fecha_inicio', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id')
-            ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
-            ->orderBy('inscripcion_clase_grupal.fecha_inscripcion', 'desc')
-          ->first();
+    	foreach($alumnos as $alumno){
 
-          if($inscripcion){
+	        $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+	            ->where('usuarios_tipo.tipo_id',$alumno->id)
+	            ->whereIn('usuarios_tipo.tipo',$array)
+	        ->first();
 
-            $fecha = Carbon::createFromFormat('Y-m-d', $inscripcion->fecha_inicio);
-            $i = $fecha->dayOfWeek;
+	        $inscripcion = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+	            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+	            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+	            ->select('instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_clases_grupales.nombre', 'clases_grupales.fecha_inicio', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id')
+	            ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
+	            ->orderBy('inscripcion_clase_grupal.fecha_inscripcion', 'desc')
+			->first();
 
-            if($i == 1){
+			if($inscripcion){
 
-              $dia_clase = 'Lunes';
+	            $fecha = Carbon::createFromFormat('Y-m-d', $inscripcion->fecha_inicio);
+	            $i = $fecha->dayOfWeek;
 
-            }else if($i == 2){
+	            if($i == 1){
 
-              $dia_clase = 'Martes';
+	              	$dia_clase = 'Lunes';
 
-            }else if($i == 3){
+	            }else if($i == 2){
 
-              $dia_clase = 'Miercoles';
+	              	$dia_clase = 'Martes';
 
-            }else if($i == 4){
+	            }else if($i == 3){
 
-              $dia_clase = 'Jueves';
+	              	$dia_clase = 'Miercoles';
 
-            }else if($i == 5){
+	            }else if($i == 4){
 
-              $dia_clase = 'Viernes';
+	              	$dia_clase = 'Jueves';
 
-            }else if($i == 6){
+	            }else if($i == 5){
 
-              $dia_clase = 'Sabado';
+	              	$dia_clase = 'Viernes';
 
-            }else if($i == 0){
+	            }else if($i == 6){
 
-              $dia_clase = 'Domingo';
+	              	$dia_clase = 'Sabado';
 
-            }
+	            }else if($i == 0){
 
-            $instructor_clase = $inscripcion->instructor_nombre . ' ' . $inscripcion->instructor_apellido;
-            $nombre_clase = $inscripcion->nombre;
-            $hora_clase = $inscripcion->hora_inicio . ' / ' . $inscripcion->hora_final;
+	              	$dia_clase = 'Domingo';
 
-          }else{
+	            }
 
-            $instructor_clase = '';
-            $nombre_clase = '';
-            $hora_clase = '';
-            $dia_clase = '';
-          }
+	            $instructor_clase = $inscripcion->instructor_nombre . ' ' . $inscripcion->instructor_apellido;
+	            $nombre_clase = $inscripcion->nombre;
+	            $hora_clase = $inscripcion->hora_inicio . ' / ' . $inscripcion->hora_final;
 
-        if($usuario){
+			}else{
 
-          if($usuario->imagen){
-            $imagen = $usuario->imagen;
-          }else{
-            $imagen = '';
-          }
+	            $instructor_clase = '';
+	            $nombre_clase = '';
+	            $hora_clase = '';
+	            $dia_clase = '';
+			}
 
-        }else{
-          $imagen = '';
-        }
+	        if($usuario){
 
-        $collection=collect($alumno);     
-        $alumno_array = $collection->toArray();
-        
-        $alumno_array['nombre_clase']=$nombre_clase;
-        $alumno_array['hora_clase']=$hora_clase;
-        $alumno_array['instructor_clase']=$instructor_clase;
-        $alumno_array['dia_clase']=$dia_clase;
-        $alumno_array['imagen']=$imagen;
-        $array_alumno[$alumno->id] = $alumno_array;
+	        	if($usuario->imagen){
+	            	$imagen = $usuario->imagen;
+	          	}else{
+	            	$imagen = '';
+	          	}
 
+	        }else{
+	          	$imagen = '';
+	        }
 
-      }
-
-      $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
-
-      foreach($instructores as $instructor){
-
-        $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-            ->where('usuarios_tipo.tipo',3)
-            ->where('usuarios_tipo.tipo_id',$instructor->id)
-        ->first();
-
-        if($usuario){
-
-          if($usuario->imagen){
-            $imagen = $usuario->imagen;
-          }else{
-            $imagen = '';
-          }
-
-        }
-
-        $collection=collect($instructor);     
-        $instructor_array = $collection->toArray();
-            
-        $instructor_array['imagen']=$imagen;
-        $array_instructor[$instructor->id] = $instructor_array;
+	        $collection=collect($alumno);     
+	        $alumno_array = $collection->toArray();
+	        
+	        $alumno_array['nombre_clase']=$nombre_clase;
+	        $alumno_array['hora_clase']=$hora_clase;
+	        $alumno_array['instructor_clase']=$instructor_clase;
+	        $alumno_array['dia_clase']=$dia_clase;
+	        $alumno_array['imagen']=$imagen;
+	        $array_alumno[$alumno->id] = $alumno_array;
 
 
-      }
+    	}
 
-      $staff = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-      $in = array(2,4);
-      $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
-        ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-        ->select('alumnos.id as id')
-        ->where('users.academia_id','=', Auth::user()->academia_id)
-        ->where('alumnos.deleted_at', '=', null)
-        ->whereIn('usuarios_tipo.tipo', $in)
-        ->where('users.confirmation_token', '!=', null)
-      ->get();
+	    $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
-      $collection=collect($alumnoc);
-      $grouped = $collection->groupBy('id');     
-      $activacion = $grouped->toArray();
+	    foreach($instructores as $instructor){
 
-      Session::forget('no_pertenece');
-      Session::forget('boolean_credencial');
+	        $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+	            ->where('usuarios_tipo.tipo',3)
+	            ->where('usuarios_tipo.tipo_id',$instructor->id)
+	        ->first();
 
-      return view('asistencia.generar')->with(['alumnosacademia' => $array_alumno, 'instructores' => $array_instructor, 'activacion' => $activacion, 'staff' => $staff]);
+	        if($usuario){
+
+	         	if($usuario->imagen){
+	            	$imagen = $usuario->imagen;
+	          	}else{
+	            	$imagen = '';
+	         	}
+	        }else{
+	        	$imagen = '';
+	        }
+
+	        $collection=collect($instructor);     
+	        $instructor_array = $collection->toArray();
+	            
+	        $instructor_array['imagen']=$imagen;
+	        $array_instructor[$instructor->id] = $instructor_array;
+
+
+	    }
+
+	    $staffs = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+	    foreach($staffs as $staff){
+
+	        $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+	            ->where('usuarios_tipo.tipo',8)
+	            ->where('usuarios_tipo.tipo_id',$staff->id)
+	        ->first();
+
+	        if($usuario){
+
+	         	if($usuario->imagen){
+	            	$imagen = $usuario->imagen;
+	          	}else{
+	            	$imagen = '';
+	         	}
+	        }else{
+	        	$imagen = '';
+	        }
+
+	        $collection=collect($staff);     
+	        $staff_array = $collection->toArray();
+	            
+	        $staff_array['imagen']=$imagen;
+	        $array_staff[$staff->id] = $staff_array;
+
+
+	    }
+
+	    $alumnoc = User::join('alumnos', 'alumnos.id', '=', 'users.usuario_id')
+	    	->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+	        ->select('alumnos.id as id')
+	        ->where('users.academia_id','=', Auth::user()->academia_id)
+	        ->where('alumnos.deleted_at', '=', null)
+	        ->whereIn('usuarios_tipo.tipo', $array)
+	        ->where('users.confirmation_token', '!=', null)
+	    ->get();
+
+	    $collection=collect($alumnoc);
+	    $grouped = $collection->groupBy('id');     
+	    $activacion = $grouped->toArray();
+
+	    Session::forget('no_pertenece');
+	    Session::forget('boolean_credencial');
+
+	    return view('asistencia.generar')->with(['alumnos' => $array_alumno, 'instructores' => $array_instructor, 'staffs' => $array_staff, 'activacion' => $activacion]);
 
     }
 
