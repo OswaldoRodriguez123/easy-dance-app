@@ -791,10 +791,10 @@ class ClasePersonalizadaController extends BaseController {
 
         if ($clase_personalizada_join) {
 
-            $hora_string = $find->fecha_inicio . ' ' . $find->hora_inicio;
+            $hora_string = $clase_personalizada_join->fecha_inicio . ' ' . $clase_personalizada_join->hora_inicio;
         
             $hora = Carbon::createFromFormat('Y-m-d H:i:s', $hora_string);
-            $hora_limite = $hora->subHours($find->tiempo_expiracion);
+            $hora_limite = $hora->subHours($clase_personalizada_join->tiempo_expiracion);
 
             if(Carbon::now() > $hora_limite)
             {
