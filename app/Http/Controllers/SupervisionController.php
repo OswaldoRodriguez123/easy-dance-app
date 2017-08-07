@@ -1065,7 +1065,7 @@ class SupervisionController extends BaseController {
         	->join('supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
     		->join('staff', 'supervisiones.supervisor_id','=','staff.id')
 	        ->join('config_staff', 'supervisiones.cargo','=','config_staff.id')
-	        ->select('supervisiones.*', 'config_staff.nombre as cargo', 'staff.nombre', 'staff.apellido', 'supervisiones_evaluaciones.total', 'supervisiones_evaluaciones.porcentaje')
+	        ->select('supervisiones.*', 'config_staff.nombre as cargo', 'staff.nombre', 'staff.apellido', 'supervisiones_evaluaciones.total', 'supervisiones_evaluaciones.porcentaje', 'supervisiones_evaluaciones.observacion')
 	        ->where('supervisiones_evaluaciones.id', $id)
         ->first();
         

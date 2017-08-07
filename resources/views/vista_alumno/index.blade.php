@@ -592,7 +592,7 @@
 
         $(document).on( 'click', '.enlace', function () {
           url = $(this).data('url');
-          window.location = "{{url('/')}}"+url;
+          window.open("{{url('/')}}"+url, '_blank');
         });
 
         $(document).on( 'click', '.mostrar', function () {
