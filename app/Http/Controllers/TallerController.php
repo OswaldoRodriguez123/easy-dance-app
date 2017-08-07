@@ -1145,90 +1145,74 @@ class TallerController extends BaseController {
     public function storeInscripcion(Request $request)
     {
 
-    Session::forget('id_alumno');
 
-    $rules = [
-        'taller_id' => 'required',
-        'alumno_id' => 'required',
-        'costo' => 'required|numeric',
-    ];
+        $rules = [
+            'taller_id' => 'required',
+            'alumno_id' => 'required',
+            'costo' => 'required|numeric',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'taller_id.required' => 'Ups! El Nombre es requerido',
-        'alumno_id.required' => 'Ups! El Alumno es requerido',
-        'costo.required' => 'Ups! El costo es requerido',
-        'costo.numeric' => 'Ups! El costo es inválido , debe contener sólo números',
-    ];
+            'taller_id.required' => 'Ups! El Nombre es requerido',
+            'alumno_id.required' => 'Ups! El Alumno es requerido',
+            'costo.required' => 'Ups! El costo es requerido',
+            'costo.numeric' => 'Ups! El costo es inválido , debe contener sólo números',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
+        }else{
 
-    else{
-
-            // $alumnos = explode('-',$request->alumno_id);
-
-        $alumnostaller = DB::table('inscripcion_taller') 
-            ->select('inscripcion_taller.*')
-            ->where('inscripcion_taller.alumno_id', '=', $request->alumno_id)
-            ->where('inscripcion_taller.taller_id', '=', $request->taller_id)
-            ->where('inscripcion_taller.deleted_at', '=', null)
+            $inscripcion = InscripcionTaller::where('inscripcion_taller.alumno_id', '=', $request->alumno_id)
+                ->where('inscripcion_taller.taller_id', '=', $request->taller_id)
             ->first(); 
 
-        // comprobar si esta inscrito
-        if(!$alumnostaller){ 
+            // comprobar si esta inscrito
+            if(!$inscripcion){ 
 
-            $taller = Taller::find($request->taller_id);
+                $taller = Taller::find($request->taller_id);
 
-            $array=array();
-
-            // for($i = 1 ; $i<count($alumnos) ; $i++)
-            // {
                 $inscripcion = new InscripcionTaller;
 
                 $inscripcion->taller_id = $request->taller_id;
                 $inscripcion->alumno_id = $request->alumno_id;
 
-                $inscripcion->save();
+                if($inscripcion->save()){
 
-                $item_factura = new ItemsFacturaProforma;
-                    
-                $item_factura->alumno_id = $request->alumno_id;
-                $item_factura->academia_id = Auth::user()->academia_id;
-                $item_factura->fecha = Carbon::now()->toDateString();
-                $item_factura->item_id = $request->taller_id;
-                $item_factura->nombre = 'Inscripcion ' . $taller->nombre;
-                $item_factura->tipo = 5;
-                $item_factura->cantidad = 1;
-                $item_factura->precio_neto = 0;
-                $item_factura->impuesto = 0;
-                $item_factura->importe_neto = $request->costo;
-                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
-                    
-                $item_factura->save();
+                    if($request->costo){
 
-                $alumno = Alumno::find($request->alumno_id);
+                        $item_factura = new ItemsFacturaProforma;
+                            
+                        $item_factura->usuario_id = $request->alumno_id;
+                        $item_factura->usuario_tipo = 1;
+                        $item_factura->academia_id = Auth::user()->academia_id;
+                        $item_factura->fecha = Carbon::now()->toDateString();
+                        $item_factura->item_id = $request->taller_id;
+                        $item_factura->nombre = 'Inscripcion ' . $taller->nombre;
+                        $item_factura->tipo = 5;
+                        $item_factura->cantidad = 1;
+                        $item_factura->precio_neto = 0;
+                        $item_factura->impuesto = 0;
+                        $item_factura->importe_neto = $request->costo;
+                        $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
+                            
+                        $item_factura->save();
+                    }
 
-                // $array[$i] = $alumno;
+                    Session::forget('id_alumno');
 
-            // }
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 'id' => $request->alumno_id, 200]);
+                }
 
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 'id' => $alumno->id, 200]);
-
-            // if(count($alumnos) > 2)
-            // {
-            //     return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
-            // }
-            // else{
-            //     return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 'id' => $array[1]->id, 200]);
-            // }
+            }else{
+                return response()->json(['errores' => ['alumno_id' => [0, 'Ya este alumno esta inscrito']], 'status' => 'ERROR'],422);
             }
-            return response()->json(['errores' => ['alumno_id' => [0, 'Ya este alumno esta inscrito']], 'status' => 'ERROR'],422);
+            
         }
     }
 
