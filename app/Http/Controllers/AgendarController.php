@@ -94,7 +94,7 @@ class AgendarController extends BaseController
             $fecha_final = $df->toDateString();
 
             if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/talleres/operaciones/".$taller->id;
+                $url = "/agendar/talleres/detalle/".$taller->id;
             }else{
                 $url = "/agendar/talleres/progreso/".$taller->id;
             }
@@ -139,7 +139,7 @@ class AgendarController extends BaseController
             $fecha_final = $df->toDateString();
 
             if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/talleres/operaciones/".$taller->id;
+                $url = "/agendar/talleres/detalle/".$taller->id;
             }else{
                 $url = "/agendar/talleres/progreso/".$taller->id;
             }
@@ -238,7 +238,7 @@ class AgendarController extends BaseController
  
 
             if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/clases-grupales/operaciones/".$clase->id;
+                $url = "/agendar/clases-grupales/detalle/".$clase->id;
             }else{
                 $url = "/agendar/clases-grupales/progreso/".$clase->id;
             }
@@ -320,7 +320,7 @@ class AgendarController extends BaseController
             $fecha_final = $df->toDateString();
 
             if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/clases-grupales/operaciones/".$clase->id;
+                $url = "/agendar/clases-grupales/detalle/".$clase->id;
             }else{
                 $url = "/agendar/clases-grupales/progreso/".$clase->id;
             }
@@ -405,7 +405,7 @@ class AgendarController extends BaseController
             }
 
             if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/clases-personalizadas/operaciones/".$clasepersonalizada->id;
+                $url = "/agendar/clases-personalizadas/detalle/".$clasepersonalizada->id;
             }else{
                 $url  = "/agendar/clases-personalizadas/progreso/".Auth::user()->academia_id;
             }
@@ -457,7 +457,7 @@ class AgendarController extends BaseController
             $id=$instructor."!".$especialidad."!".$clase_personalizada_nombre."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
 
             if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/clases-personalizadas/operaciones/".$clasepersonalizada->id;
+                $url = "/agendar/clases-personalizadas/detalle/".$clasepersonalizada->id;
             }else{
                 $url  = "/agendar/clases-personalizadas/progreso/".Auth::user()->academia_id;
             }
@@ -495,7 +495,7 @@ class AgendarController extends BaseController
     		$etiqueta=$fiesta->color_etiqueta;
 
             if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/fiestas/operaciones/".$fiesta->id;
+                $url = "/agendar/fiestas/detalle/".$fiesta->id;
             }else{
                 $url = "/agendar/fiestas/progreso/".$fiesta->id;
             }
@@ -569,7 +569,7 @@ class AgendarController extends BaseController
             $id=$instructor."!".$descripcion."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final."!".$tipo_pago;
 
             if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/citas/operaciones/".$cita->id;
+                $url = "/agendar/citas/detalle/".$cita->id;
             }else{
                 $url = "";
             }
