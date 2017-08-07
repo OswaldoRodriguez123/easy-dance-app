@@ -295,22 +295,22 @@
     function porcentaje(){
 
         
-        porcentaje ="{{$evaluacion->porcentaje}}";
+        porcentaje = parseInt("{{$evaluacion->porcentaje}}");
         $("#text-progreso").text(parseInt(porcentaje)+"%");
         $("#barra-progreso").css({
           "width": (porcentaje + "%")
         });        
         
-        if(porcentaje<="25"){
+        if(porcentaje<=25){
           $("#barra-progreso").css("background-color","red");
           $("#msj_porcentaje").html("Debe mejorar");
-        }else if(porcentaje<="50"){
+        }else if(porcentaje<=50){
           $("#barra-progreso").css("background-color","orange");
           $("#msj_porcentaje").html("Regular");
-        }else if(porcentaje<="75"){
+        }else if(porcentaje<=75){
           $("#barra-progreso").css("background-color","gold");
           $("#msj_porcentaje").html("Bueno");
-        }else if(porcentaje<"100"){
+        }else if(porcentaje<100){
           $("#barra-progreso").css("background-color","greenyellow ");
           $("#msj_porcentaje").html("Muy bueno");
         }else{

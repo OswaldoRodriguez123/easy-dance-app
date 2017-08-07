@@ -23,11 +23,9 @@
                     <div class="block-header">
 
                         @if(Auth::check())
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+                            <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
 
                         @endif
-
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
                     <div class="card">
@@ -36,10 +34,6 @@
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-taller f-25"></i> Sección de Talleres</p>
                             <hr class="linea-morada">                                                         
                         </div>
-
-
-
-
                         
                         <div class="card-body p-b-20">
                             <div class="row">
@@ -53,32 +47,40 @@
                                       <div class="pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
 
                                         @if($taller['imagen'])
-                                        <div class="col-sm-2"><img src="{{url('/')}}/assets/uploads/taller/{{$taller['imagen']}}" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
+                                            <div class="col-sm-2"><img src="{{url('/')}}/assets/uploads/taller/{{$taller['imagen']}}" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
                                         @else
 
-                                        <div class="col-sm-2"><img src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
+                                            <div class="col-sm-2"><img src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
 
                                         @endif
 
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-7">
 
                                         <p class="f-25 f-700" style="color:#5e5e5e">{{$taller['nombre']}}</p>
                                     
                                         <p class="f-15 f-700">{{ str_limit($taller['descripcion'], $limit = 250, $end = '...') }}</p>
 
-                                        <p class="f-15 f-700">Fecha de Inicio : {{ \Carbon\Carbon::createFromFormat('Y-m-d',$taller['fecha_inicio'])->format('d-m-Y')}}</p>
+                                        <p class="f-15 f-700">Fecha : {{ \Carbon\Carbon::createFromFormat('Y-m-d',$taller['fecha_inicio'])->format('d-m-Y')}}</p>
 
-                                        <p class="f-15 f-700">Dias de clase : {{$taller['dias_de_semana']}}</p>
+                                        <p class="f-15 f-700">Dias del taller : {{$taller['dias_de_semana']}}</p>
 
-                                        <p class="f-15 f-700">Costo : {{ number_format($taller['costo'], 2, '.' , '.') }}</p>
+                                        <p class="f-15 f-700">Especialidad : {{$taller['especialidad']}}</p>
+
+                                        <p class="f-15 f-700">Instructor : {{$taller['instructor_nombre']}} {{$taller['instructor_apellido']}}</p>
+                                        
+                                        <p class="f-15 f-700">Hora : {{$taller['hora_inicio']}} - {{$taller['hora_final']}}</p>
+
+                                        @if($taller['costo'])
+                                            <p class="f-15 f-700">Costo : {{ number_format($taller['costo'], 2, '.' , '.') }}</p>
+                                        @endif
 
                                         </div>
 
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-3">
 
-                                        <div style="padding-top: 50px">
-                                            <button type="button" class="btn btn-blanco m-r-10 f-18 previa" id="{{$taller['id']}}">Conocer más<i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
-                                        </div>
+                                            <div style="padding-top: 50px;margin-left: 15%">
+                                                <button type="button" class="btn btn-blanco m-r-10 f-18 previa" id="{{$taller['id']}}">Conocer más<i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
+                                            </div>
 
                                         </div>
 

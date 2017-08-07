@@ -242,7 +242,11 @@ class TallerController extends BaseController {
     public function indexconacademia($id)
     {
 
-        $talleres = Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->where('talleres.deleted_at', '=', null)->OrderBy('talleres.hora_inicio')->get();
+        $talleres = Taller::join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
+            ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
+            ->select('talleres.*','config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
+            ->where('talleres.academia_id', '=' ,  $id)
+        ->get();
 
         $array = array();
 

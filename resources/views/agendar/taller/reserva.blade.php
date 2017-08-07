@@ -323,27 +323,25 @@
 
                     <div class="pmb-block m-t-0 p-t-0">
 
-<!--                         <img class="img-responsive p-b-10" src="{{url('/')}}/assets/img/caracteristicas-principal.jpg"> -->
-
-                        <p class="text-center f-25 f-700 opaco-0-8">Es hora de bailar y participar en el nuevo taller de</p>
-                               <h2 class="text-center"> {{$taller->academia_nombre}} </h2>
-                               <div class="p-b-15"></div>
-                               <h4 class="text-center"> <i class="zmdi zmdi-pin zmdi-hc-fw c-morado-suave"></i> {{$taller->estado}} - {{$taller->direccion}}  </h4>
+                      <p class="text-center f-25 f-700 opaco-0-8">Es hora de bailar y participar en el nuevo taller de</p>
+                      <h2 class="text-center"> {{$taller->academia_nombre}} </h2>
+                      <div class="p-b-15"></div>
+                      <h4 class="text-center"> <i class="zmdi zmdi-pin zmdi-hc-fw c-morado-suave"></i> {{$taller->estado}} - {{$taller->direccion}}  </h4>
 
 
                         <div class="clearfix p-b-20"></div>
                         
                         @if($taller->imagen)
-                        <img src="{{url('/')}}/assets/uploads/taller/{{$taller->imagen}}" class="img-responsive opaco-0-8" alt="">
+                          <img src="{{url('/')}}/assets/uploads/taller/{{$taller->imagen}}" class="img-responsive opaco-0-8" alt="">
                         @endif
                         
                         <div class="clearfix p-b-20"></div>
 
                         @if($taller->descripcion)
 
-                        <div class="f-700 f-30">Descripción</div>
-                        <br>
-                        <p class="f-14">{!! nl2br($taller->descripcion) !!}</p>
+                          <div class="f-700 f-30">Descripción</div>
+                          <br>
+                          <p class="f-14">{!! nl2br($taller->descripcion) !!}</p>
 
                         @endif
 
