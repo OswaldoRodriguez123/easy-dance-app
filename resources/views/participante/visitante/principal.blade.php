@@ -228,9 +228,8 @@
 
 
       function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        var id = row.split('_');
-        var route =route_detalle+"/"+id[1];
+        var id = $(t).closest('tr').attr('id');
+        var route =route_detalle+"/"+id;
         window.location=route;
       }
 
