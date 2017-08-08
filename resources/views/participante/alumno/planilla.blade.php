@@ -1223,9 +1223,6 @@
           					        <div class="text-center p-t-30">       
           					          <div class="row p-b-15 ">
           					            <div class="col-md-12" data-src="/assets/img/ayuda-configuracion.jpg">
-          					              <!--<div class="text-center">
-          					                <img src="{{url('/')}}/assets/img/detalle_alumnos.jpg" class="img-responsive img-efecto text-center" alt="">
-          					              </div>-->
                                   <ul class="ca-menu-planilla">
                                     <li>
                                         <a href="#" class="mousehand disabled">
@@ -1241,9 +1238,6 @@
                                   <div class="col-sm-12 text-left"> 
 
                                   <br></br>
-
-                                   <!-- <span class="f-16 f-700">Balance Económico <a href="{{url('/')}}/participante/alumno/deuda/{{$id}}"><i class="zmdi zmdi-money {{ empty($alumno->importe_neto) ? 'c-verde ' : 'c-youtube' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i></a></span> -->
-
                                    
                                   
                                   <table class="table table-striped table-bordered">
@@ -1309,7 +1303,6 @@
 
           					            </div>                
           					          </div>
-          					          <!--<p class="text-justify">Desde esta área Easy Dance te brinda la oportunidad de actualizar los datos creados en tu planilla de registro.</p>-->
           					                
           					      </div>
 					           </div>
@@ -1420,11 +1413,11 @@
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalFicha-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-ficha_medica" class="zmdi zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_d-ficha-medica f-22"></i> </span>
                                <span class="f-14"> Ficha Médica </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-telefono"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-ficha_medica"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalClaseGrupal-Alumno">
                              <td>
@@ -1554,6 +1547,12 @@
       }
       else{
         $("#puntos_referidos").text(0);
+      }
+
+      if("{{$alumno->alergia}}" == 1|| "{{$alumno->alergia}}" == 1 || "{{$alumno->alergia}}" == 1 || "{{$alumno->alergia}}" == 1 || "{{$alumno->alergia}}" == 1 || "{{$alumno->alergia}}" == 1){
+        $('#estatus-ficha_medica').addClass('c-verde zmdi-check')
+      }else{
+        $('#estatus-ficha_medica').addClass('c-amarillo zmdi-dot-circle')
       }
 
       if("{{$alumno->alergia}}" == 1){
@@ -1845,10 +1844,9 @@
             $("#estatus-puntos_referidos").addClass('c-verde');
 
           }else{
-
             $("#alumno-"+c.name).text(c.value.toLowerCase());
-            
           }
+
           if(c.value == ''){
             $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
             $("#estatus-"+c.name).addClass('c-amarillo zmdi-dot-circle');
@@ -1931,7 +1929,6 @@
         var token = $('input:hidden[name=_token]').val();
         var datos = $( "#"+form ).serialize();
         var datos_array=  $( "#"+form ).serializeArray();
-        console.log(datos_array);
         
         var route = route_update+"/"+update;
         $.ajax({
@@ -1964,6 +1961,16 @@
                     }
                   }  
 
+                  checkbox = $('input:checkbox:checked')
+
+                  if(checkbox.length > 0){
+                    $("#estatus-ficha_medica").removeClass('c-amarillo zmdi-dot-circle');
+                    $("#estatus-ficha_medica").addClass('c-verde zmdi-check');
+                  }else{
+                    $("#estatus-ficha_medica").removeClass('c-verde zmdi-check');
+                    $("#estatus-ficha_medica").addClass('c-amarillo zmdi-dot-circle');
+                  }
+  
                   finprocesado(); 
                   campoValor(datos_array);            
                   var nType = 'success';

@@ -1700,7 +1700,7 @@
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalFicha-Instructor">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-ficha" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-ficha_medica" class="zmdi zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_d-ficha-medica f-22"></i> </span>
                                <span class="f-14"> Ficha Médica </span>
                              </td>
@@ -1800,26 +1800,26 @@
     $('#clase_grupal_id').selectpicker('refresh');
 
     $("#imagen").bind("change", function() {
-            //alert('algo cambio');
-            
-            setTimeout(function(){
-              var imagen = $("#imagena img").attr('src');
-              var canvas = document.createElement("canvas");
-     
-              var context=canvas.getContext("2d");
-              var img = new Image();
-              img.src = imagen;
-              
-              canvas.width  = img.width;
-              canvas.height = img.height;
+        //alert('algo cambio');
+        
+        setTimeout(function(){
+          var imagen = $("#imagena img").attr('src');
+          var canvas = document.createElement("canvas");
+ 
+          var context=canvas.getContext("2d");
+          var img = new Image();
+          img.src = imagen;
+          
+          canvas.width  = img.width;
+          canvas.height = img.height;
 
-              context.drawImage(img, 0, 0);
-       
-              var newimage = canvas.toDataURL("image/jpeg", 0.8);
-              var image64 = $("input:hidden[name=imageBase64]").val(newimage);
-            },500);
+          context.drawImage(img, 0, 0);
+   
+          var newimage = canvas.toDataURL("image/jpeg", 0.8);
+          var image64 = $("input:hidden[name=imageBase64]").val(newimage);
+        },500);
 
-        });
+    });
 
     $("#imagen_perfil").bind("change", function() {
             //alert('algo cambio');
@@ -1882,7 +1882,13 @@
         }    
       });
 
-    if("{{$instructor->alergia}}" == 1){
+      if("{{$instructor->alergia}}" == 1 || "{{$instructor->alergia}}" == 1 || "{{$instructor->alergia}}" == 1 || "{{$instructor->alergia}}" == 1 || "{{$instructor->alergia}}" == 1 || "{{$instructor->alergia}}" == 1){
+        $('#estatus-ficha_medica').addClass('c-verde zmdi-check')
+      }else{
+        $('#estatus-ficha_medica').addClass('c-amarillo zmdi-dot-circle')
+      }
+
+      if("{{$instructor->alergia}}" == 1){
           $("#alergia").val('1');  //VALOR POR DEFECTO
           $("#alergia-switch").attr("checked", true); //VALOR POR DEFECTO
         }
@@ -2189,7 +2195,18 @@
                   campoValor(datos_array);           
                   var nType = 'success';
                   var nTitle="Ups! ";
-                  var nMensaje=respuesta.mensaje;                                      
+                  var nMensaje=respuesta.mensaje;  
+
+                  checkbox = $('input:checkbox:checked')
+
+                  if(checkbox.length > 0){
+                    $("#estatus-ficha_medica").removeClass('c-amarillo zmdi-dot-circle');
+                    $("#estatus-ficha_medica").addClass('c-verde zmdi-check');
+                  }else{
+                    $("#estatus-ficha_medica").removeClass('c-verde zmdi-check');
+                    $("#estatus-ficha_medica").addClass('c-amarillo zmdi-dot-circle');
+                  }
+
                 }else{
                   var nTitle="Ups! ";
                   var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
