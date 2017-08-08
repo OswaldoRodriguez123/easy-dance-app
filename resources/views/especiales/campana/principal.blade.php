@@ -6,6 +6,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -90,7 +91,46 @@
                                     <td class="text-center previa">{{ number_format($campana['cantidad'], 2, '.' , '.') }} </td>
                                     <td class="text-center previa">{{ number_format($campana['total'], 2, '.' , '.') }}</td>
                                     @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
-                                        <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                        <td class="text-center disabled"> 
+
+                                            <!-- <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i> -->
+
+                                            <ul class="top-menu">
+                                                <li class="dropdown" id="dropdown_{{$id}}">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                                       <span class="f-15 f-700" style="color:black"> 
+                                                            <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                       </span>
+                                                    </a>
+                                                    <div class="dropup">
+                                                        <ul class="dropdown-menu dm-icon pull-right">
+
+                                                            <li class="hidden-xs">
+                                                                <a onclick="procesando()" href="{{url('/')}}/especiales/campañas/contribuciones/{{$id}}"><i class="icon_c-money f-16 m-r-10 boton blue"></i> Contribuciones</a>
+                                                            </li>
+
+                                                            <li class="hidden-xs">
+                                                                <a onclick="procesando()" href="{{url('/')}}/especiales/campañas/progreso/{{$id}}"><i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i> Progreso</a>
+                                                            </li>
+                   
+
+                                                            <li class="hidden-xs">
+                                                                <a onclick="procesando()" href="{{url('/')}}/especiales/campañas/egresos/{{$id}}"><i class="fa fa-money f-16 m-r-10 boton blue"></i> Egresos</a>
+                                                            </li>
+
+                                                            <li class="hidden-xs">
+                                                                <a onclick="procesando()" href="{{url('/')}}/especiales/campañas/patrocinadores/{{$id}}"><i class="zmdi icon_a-campana f-16 boton blue"></i>Patrocinadores</a>
+                                                            </li>
+
+                                                            <li class="hidden-xs eliminar">
+                                                                <a class="pointer eliminar"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </td>
                                     @endif
                                   </tr>
                             @endforeach 
@@ -114,7 +154,7 @@
 
 
 
-                            @endif
+                        @endif
                         <div class="card-body p-b-20">
                             <div class="row">
                               <div class="container">
@@ -133,11 +173,12 @@
 
 @section('js') 
             
-        <script type="text/javascript">
+    <script type="text/javascript">
 
         route_detalle="{{url('/')}}/especiales/campañas/detalle";
         route_operacion="{{url('/')}}/especiales/campañas/operaciones";
         route_eliminar="{{url('/')}}/especiales/campañas/eliminar/";
+        route_principal="{{url('/')}}/especiales/campañas";
         route_progreso="{{url('/')}}/especiales/campañas/progreso";
 
         $(document).ready(function(){
@@ -187,32 +228,16 @@
         });
     
 
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-            });
+    });
 
     function previa(t){
         var row = $(t).closest('tr').attr('id');
-        if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6)
-        {
+        if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6){
             var route =route_detalle+"/"+row;
         }else{
             var route =route_progreso+"/"+row;
         }
+
         window.location=route;
       }
 
@@ -221,84 +246,73 @@
             window.location=route;
         });
 
-      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+      $(".eliminar").click(function(){
+            var id = $(this).closest('tr').attr('id');
+            swal({   
+                title: "Desea eliminar la campaña?",   
+                text: "Confirmar eliminación!",      
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+      if (isConfirm) {
+        var route = route_eliminar + id;
+        var token = '{{ csrf_token() }}';
+            
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'DELETE',
+                dataType: 'json',
+                data:id,
+                success:function(respuesta){
 
-                var id = $(this).closest('tr').attr('id');
-                // var temp = row.split('_');
-                // var id = temp[1];
-                element = this;
+                    procesando();
+                    window.location=route_principal; 
 
-                swal({   
-                    title: "Desea eliminar la campaña?",   
-                    text: "Confirmar eliminación!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Eliminar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true 
-                }, function(isConfirm){   
-          if (isConfirm) {
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-                        
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar(id, element);
-          }
-                });
+                },
+                error:function(msj){
+                            // $("#msj-danger").fadeIn(); 
+                            // var text="";
+                            // console.log(msj);
+                            // var merror=msj.responseJSON;
+                            // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                            // $("#msj-error").html(text);
+                            // setTimeout(function(){
+                            //          $("#msj-danger").fadeOut();
+                            //         }, 3000);
+                            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                            }
             });
-      
-        function eliminar(id, element){
-         var route = route_eliminar + id;
-         var token = "{{ csrf_token() }}";
-         procesando();
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'DELETE',
-                    dataType: 'json',
-                    data:id,
-                    success:function(respuesta){
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          // finprocesado();
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
+            }
+        });
+    });
 
-                          t.row( $(element).parents('tr') )
-                            .remove()
-                            .draw();
-                            finprocesado();
+    $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
 
-                        swal("Exito!","La campaña ha sido eliminada!","success");
-                        
-                        }
-                    },
-                    error:function(msj){
-                                // $("#msj-danger").fadeIn(); 
-                                // var text="";
-                                // console.log(msj);
-                                // var merror=msj.responseJSON;
-                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                // $("#msj-error").html(text);
-                                // setTimeout(function(){
-                                //          $("#msj-danger").fadeOut();
-                                //         }, 3000);
-                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                                }
-                });
-      }
+        var id = $(this).closest('tr').attr('id');
+        var dropdown = $(this).closest('.dropdown')
+        var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+        $('.dropdown-toggle').attr('aria-expanded','false')
+        $('.dropdown').removeClass('open')
+        $('.table-responsive').css( "overflow", "auto" );
+
+        if(!dropdown.hasClass('open')){
+            dropdown.addClass('open')
+            dropdown_toggle.attr('aria-expanded','true')
+            $('.table-responsive').css( "overflow", "inherit" );
+        }
+     
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+        $('.table-responsive').css( "overflow", "auto" );
+    })
 
 
-        </script>
+    </script>
 @stop

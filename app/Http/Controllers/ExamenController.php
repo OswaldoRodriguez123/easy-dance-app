@@ -31,12 +31,12 @@ class ExamenController extends BaseController {
 
     public function principal()
     {
-        $examen_join = Examen::join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
+        $examenes = Examen::join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
             ->select('examenes.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id')
             ->where('examenes.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
 
-        return view('especiales.examen.principal')->with(['examen' => $examen_join]);
+        return view('especiales.examen.principal')->with(['examenes' => $examenes]);
     }
 
 	/**

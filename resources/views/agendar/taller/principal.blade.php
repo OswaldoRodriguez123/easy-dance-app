@@ -275,8 +275,12 @@
     $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
 
         var id = $(this).closest('tr').attr('id');
-        var dropdown = $('#dropdown_'+id)
-        var dropdown_toggle = $('#dropdown_toggle_'+id)
+        var dropdown = $(this).closest('.dropdown')
+        var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+        $('.dropdown-toggle').attr('aria-expanded','false')
+        $('.dropdown').removeClass('open')
+        $('.table-responsive').css( "overflow", "auto" );
 
         if(!dropdown.hasClass('open')){
             dropdown.addClass('open')
@@ -287,8 +291,8 @@
     });
 
     $('.table-responsive').on('hide.bs.dropdown', function () {
-      $('.table-responsive').css( "overflow", "auto" );
-    })   
+        $('.table-responsive').css( "overflow", "auto" );
+    })
 
     </script>
 @stop

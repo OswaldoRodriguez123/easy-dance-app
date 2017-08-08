@@ -77,7 +77,32 @@
                                     <td class="text-center previa">{{ number_format($regalo['costo'], 2, '.' , '.') }}</td>
                                     <td class="text-center previa">{{ str_limit($regalo['descripcion'], $limit = 50, $end = '...') }}</td>
                                     @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
-                                    <td class="text-center"> <i id="{{$id}}" class="zmdi zmdi-wrench operacion f-20 p-r-10"></i></td>
+                                        <td class="text-center"> 
+                                            <!-- <i id="{{$id}}" class="zmdi zmdi-wrench operacion f-20 p-r-10"></i> -->
+
+                                            <ul class="top-menu">
+                                                <li class="dropdown" id="dropdown_{{$id}}">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                                       <span class="f-15 f-700" style="color:black"> 
+                                                            <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                       </span>
+                                                    </a>
+                                                    <div class="dropup">
+                                                        <ul class="dropdown-menu dm-icon pull-right">
+
+                                                             <li class="hidden-xs">
+                                                                <a onclick="procesando()" href="{{url('/')}}/especiales/regalos/enviar/{{$id}}"><i class="zmdi icon_a-participantes f-16 boton blue"></i> Participantes</a>
+                                                            </li>
+
+                                                            <li class="hidden-xs eliminar">
+                                                                <a class="pointer eliminar"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </td>
                                     @endif
                                   </tr>
                             @endforeach 
@@ -106,6 +131,8 @@
 
         route_detalle="{{url('/')}}/especiales/regalos/detalle";
         route_operacion="{{url('/')}}/especiales/regalos/operaciones";
+        route_eliminar="{{url('/')}}/especiales/regalos/eliminar/";
+        route_principal="{{url('/')}}/especiales/regalos";
 
         $(document).ready(function(){
 
@@ -157,17 +184,85 @@
     });
 
     function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        var route =route_detalle+"/"+row;
+        var id = $(t).closest('tr').attr('id');
+        var route =route_detalle+"/"+id;
 
         window.location=route;
       }
 
-      $(".operacion").click(function(){
+        $(".operacion").click(function(){
             var route =route_operacion+"/"+this.id;
             window.location=route;
         });
+
+        $(".eliminar").click(function(){
+            var id = $(this).closest('tr').attr('id');
+            swal({   
+                title: "Desea eliminar el regalo?",   
+                text: "Confirmar eliminación!",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+      if (isConfirm) {
+        var route = route_eliminar + id;
+        var token = '{{ csrf_token() }}';
+            
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'DELETE',
+                dataType: 'json',
+                data:id,
+                success:function(respuesta){
+
+                    procesando();
+                    window.location=route_principal; 
+
+                },
+                error:function(msj){
+                            // $("#msj-danger").fadeIn(); 
+                            // var text="";
+                            // console.log(msj);
+                            // var merror=msj.responseJSON;
+                            // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                            // $("#msj-error").html(text);
+                            // setTimeout(function(){
+                            //          $("#msj-danger").fadeOut();
+                            //         }, 3000);
+                            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                            }
+            });
+            }
+        });
+    });
+
+
+    $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+        var id = $(this).closest('tr').attr('id');
+        var dropdown = $(this).closest('.dropdown')
+        var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+        $('.dropdown-toggle').attr('aria-expanded','false')
+        $('.dropdown').removeClass('open')
+        $('.table-responsive').css( "overflow", "auto" );
+
+        if(!dropdown.hasClass('open')){
+            dropdown.addClass('open')
+            dropdown_toggle.attr('aria-expanded','true')
+            $('.table-responsive').css( "overflow", "inherit" );
+        }
+     
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+        $('.table-responsive').css( "overflow", "auto" );
+    }) 
       
 
-        </script>
+    </script>
 @stop

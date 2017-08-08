@@ -59,13 +59,42 @@
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($examen as $examenes)
-                                <?php $id = $examenes->id; ?>
-                                <tr id="row_{{$id}}" class="seleccion"> 
-                                    <td class="text-center previa">{{$examenes->nombre}}</td>
-                                    <td class="text-center previa">{{$examenes->fecha}}</td>
-                                    <td class="text-center previa">{{$examenes->instructor_nombre}} {{$examenes->instructor_apellido}}</td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                            @foreach ($examenes as $examen)
+                                <?php $id = $examen->id; ?>
+                                <tr id="{{$id}}" class="seleccion"> 
+                                    <td class="text-center previa">{{$examen->nombre}}</td>
+                                    <td class="text-center previa">{{$examen->fecha}}</td>
+                                    <td class="text-center previa">{{$examen->instructor_nombre}} {{$examen->instructor_apellido}}</td>
+                                    <td class="text-center disabled"> 
+
+                                        <!-- <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i> -->
+
+                                         <ul class="top-menu">
+                                            <li class="dropdown" id="dropdown_{{$id}}">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                                   <span class="f-15 f-700" style="color:black"> 
+                                                        <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                   </span>
+                                                </a>
+                                                <div class="dropup">
+                                                    <ul class="dropdown-menu dm-icon pull-right">
+                                                        <li class="hidden-xs">
+                                                            <a onclick="procesando()" href="{{url('/')}}/especiales/examenes/evaluar/{{$id}}"><i class="zmdi icon_a-examen f-16 boton blue"></i> Evaluar</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
+                                                            <a onclick="procesando()" href="{{url('/')}}/especiales/evaluaciones/{{$id}}"><i class="zmdi zmdi-hourglass-alt f-16 boton blue"></i> Historial</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs eliminar">
+                                                            <a class="pointer eliminar"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </td>
                                 </tr>
                             @endforeach
                                                            
@@ -95,6 +124,8 @@
 
     route_detalle="{{url('/')}}/especiales/examenes/detalle";
     route_operacion="{{url('/')}}/especiales/examenes/operaciones";
+    route_eliminar="{{url('/')}}/especiales/examenes/eliminar/";
+    route_principal="{{url('/')}}/especiales/examenes";
 
     $(document).ready(function(){
 
@@ -134,9 +165,8 @@
     });
 
     function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        var id_examen = row.split('_');
-        var route =route_detalle+"/"+id_examen[1];
+        var id = $(t).closest('tr').attr('id');
+        var route =route_detalle+"/"+id;
         window.location=route;
     }
 
@@ -144,6 +174,73 @@
         var route =route_operacion+"/"+this.id;
         window.location=route;
     });
+
+    $(".eliminar").click(function(){
+            var id = $(this).closest('tr').attr('id');
+            swal({   
+                title: "Desea eliminar el examen?",   
+                text: "Confirmar eliminación!",      
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+      if (isConfirm) {
+        var route = route_eliminar + id;
+        var token = '{{ csrf_token() }}';
+            
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'DELETE',
+                dataType: 'json',
+                data:id,
+                success:function(respuesta){
+
+                    procesando();
+                    window.location=route_principal; 
+
+                },
+                error:function(msj){
+                            // $("#msj-danger").fadeIn(); 
+                            // var text="";
+                            // console.log(msj);
+                            // var merror=msj.responseJSON;
+                            // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                            // $("#msj-error").html(text);
+                            // setTimeout(function(){
+                            //          $("#msj-danger").fadeOut();
+                            //         }, 3000);
+                            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                            }
+            });
+            }
+        });
+    });
+
+    $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+        var id = $(this).closest('tr').attr('id');
+        var dropdown = $(this).closest('.dropdown')
+        var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+        $('.dropdown-toggle').attr('aria-expanded','false')
+        $('.dropdown').removeClass('open')
+        $('.table-responsive').css( "overflow", "auto" );
+
+        if(!dropdown.hasClass('open')){
+            dropdown.addClass('open')
+            dropdown_toggle.attr('aria-expanded','true')
+            $('.table-responsive').css( "overflow", "inherit" );
+        }
+     
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+        $('.table-responsive').css( "overflow", "auto" );
+    })
 
     </script>
 @stop
