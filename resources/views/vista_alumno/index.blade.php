@@ -111,8 +111,7 @@
 <div class="clearfix m-20 m-b-25"></div>
 
                 
-                               <div class="col-sm-12 col-sd-12 text-center"><br><br><br>
-                              <!-- <a class="btn-blanco2 btn-blanco1._largesubmit  m-r-5 f-16 " type="submit"   data-formulario="edit_cupo_taller" data-update="cupo" style=" margin-top: 20px; " >Enviar </a> -->
+                              <div class="col-sm-12 col-sd-12 text-center"><br><br><br>
 
                               <button type="submit" class="butp button5" onclick="configuracion()">Llévame</button>
                               <button type="submit" class="but2 button55" onclick="atras()"><span>Más Tarde</span></button><br><br><br>
@@ -154,14 +153,14 @@
                             </a>
                             </div>
 
-                          <div class ="detalle taller">
-                            <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-20"></i> Talleres <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$talleres}}</span></a>
+                            <div class ="detalle taller">
+                              <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-20"></i> Talleres <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$talleres}}</span></a>
                             </div>
 
                             <div class ="detalle instructor">
-                            <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-instructor f-15"></i> Instructores <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$instructor_contador}}</span>
+                              <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-instructor f-15"></i> Instructores <span style ="padding-right:5px" class ="pull-right opaco-0-8">{{$instructor_contador}}</span>
 
-                            </a>
+                              </a>
                             </div>
 
 
@@ -180,7 +179,7 @@
 
                     <div class="clearfix p-b-15"></div>
 
-                   <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff ">
+                    <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff ">
                         <div class="header_cuadro_alumno_borde_morado text-left f-16 f-700">Especiales</div>
 
                         <div class ="detalle regalos" style="margin-top:10px">
@@ -268,96 +267,73 @@
             @foreach(array_slice($enlaces, 0, 4) as $enlace)
               
               <div class="text-left pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
+                <div class= "enlace" id="enlace" name="enlace" data-url="{{$enlace['url']}}">
+                  <div style="padding: 10px">
+                    <p class="f-25 f-700" style="color:#5e5e5e">
+                      {{$enlace['nombre']}} 
+                      <span class="f-16 c-youtube">{{$enlace['disponible']}}</span>
+                    </p>
+                  
 
-              <div class= "enlace" id="enlace" name="enlace" data-url="{{$enlace['url']}}">
-
-                <div style="padding: 10px">
-
-                <p class="f-25 f-700" style="color:#5e5e5e">{{$enlace['nombre']}} 
-
-
-
-                <span class="f-16 c-youtube">{{$enlace['disponible']}}</span>
-
-
-
-
-                </p>
-              
-
-                @if($enlace['descripcion'])
-
-                  <p class="f-15 f-700">{{ str_limit($enlace['descripcion'], $limit = 150, $end = '...') }}</p>
-
-                @endif
+                    @if($enlace['descripcion'])
+                      <p class="f-15 f-700">{{ str_limit($enlace['descripcion'], $limit = 150, $end = '...') }}</p>
+                    @endif
                             
-                @if($enlace['imagen'])
-                  <img src="{{url('/')}}{{$enlace['imagen']}}" class="img-responsive" alt="">
+                    <p class="f-15 f-700">Fecha : {{$enlace['fecha']}}</p>
 
-                  <br>
+                    <p class="f-15 f-700">Dias : {{$enlace['dias']}}</p>
+                    
+                    @if($enlace['especialidad'])
+                      <p class="f-15 f-700">Especialidad : {{$enlace['especialidad']}}</p>
 
-                @else
+                      <p class="f-15 f-700">Instructor : {{$enlace['instructor']}}</p>
+                    @endif
+                    
+                    <p class="f-15 f-700">Hora : {{$enlace['hora']}}</p>
+   
+                    @if($enlace['imagen'])
+                      <img src="{{url('/')}}{{$enlace['imagen']}}" class="img-responsive" alt="">
+                      <br>
+                    @else
+                      <img src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" style="height:150px; width:350px" class="img-responsive" alt="">
+                      <br>
+                    @endif
 
-                  <img src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" style="height:150px; width:350px" class="img-responsive" alt="">
-
-                  <br>
-
-                @endif
-
-
-                @if($enlace['tipo'] == 1)
-
-                  <p class="f-15 f-700"> Fecha de Inicio : {{ $enlace['fecha_inicio']}}</p>
-
-                 
-
-                @endif
-                
+                  </div>
                 </div>
 
-              </div>
-
-              <hr style="margin-bottom:5px">
+                <hr style="margin-bottom:5px">
 
 
-              <div class="col-sm-3">
-              <span class="f-13 f-700">Comparte</span>
+                <div class="col-sm-3">
+                  <span class="f-13 f-700">Comparte</span>
                   <ul class="rrssb-buttons clearfix">
-
-                        <li class="rrssb-facebook">
-                          <!--  Replace with your URL. For best results, make sure you page has the proper FB Open Graph tags in header: https://developers.facebook.com/docs/opengraph/howtos/maximizing-distribution-media-content/ -->
-                          <a href="https://www.facebook.com/sharer/sharer.php?u={{url('/')}}{{$enlace['facebook']}}" class="popup">
-                            <span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29"><path d="M26.4 0H2.6C1.714 0 0 1.715 0 2.6v23.8c0 .884 1.715 2.6 2.6 2.6h12.393V17.988h-3.996v-3.98h3.997v-3.062c0-3.746 2.835-5.97 6.177-5.97 1.6 0 2.444.173 2.845.226v3.792H21.18c-1.817 0-2.156.9-2.156 2.168v2.847h5.045l-.66 3.978h-4.386V29H26.4c.884 0 2.6-1.716 2.6-2.6V2.6c0-.885-1.716-2.6-2.6-2.6z"/></svg></span>
-                            <span class="rrssb-text">facebook</span>
-                          </a>
-                        </li>
-                        <li class="rrssb-twitter">
-                          <!-- Replace href with your Meta and URL information  -->
-                          <a href="https://twitter.com/intent/tweet?text={{$enlace['twitter']}} {{url('/')}}{{$enlace['twitter_url']}}"
-                          class="popup">
-                            <span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><path d="M24.253 8.756C24.69 17.08 18.297 24.182 9.97 24.62a15.093 15.093 0 0 1-8.86-2.32c2.702.18 5.375-.648 7.507-2.32a5.417 5.417 0 0 1-4.49-3.64c.802.13 1.62.077 2.4-.154a5.416 5.416 0 0 1-4.412-5.11 5.43 5.43 0 0 0 2.168.387A5.416 5.416 0 0 1 2.89 4.498a15.09 15.09 0 0 0 10.913 5.573 5.185 5.185 0 0 1 3.434-6.48 5.18 5.18 0 0 1 5.546 1.682 9.076 9.076 0 0 0 3.33-1.317 5.038 5.038 0 0 1-2.4 2.942 9.068 9.068 0 0 0 3.02-.85 5.05 5.05 0 0 1-2.48 2.71z"/></svg></span>
-                            <span class="rrssb-text">twitter</span>
-                          </a>
-                        </li>
-                      </ul>
-
-                    </div>
-                    <br><br><br>
-                  </div>
-
-
+                    <li class="rrssb-facebook">
+                      <!--  Replace with your URL. For best results, make sure you page has the proper FB Open Graph tags in header: https://developers.facebook.com/docs/opengraph/howtos/maximizing-distribution-media-content/ -->
+                      <a href="https://www.facebook.com/sharer/sharer.php?u={{url('/')}}{{$enlace['facebook']}}" class="popup">
+                        <span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29"><path d="M26.4 0H2.6C1.714 0 0 1.715 0 2.6v23.8c0 .884 1.715 2.6 2.6 2.6h12.393V17.988h-3.996v-3.98h3.997v-3.062c0-3.746 2.835-5.97 6.177-5.97 1.6 0 2.444.173 2.845.226v3.792H21.18c-1.817 0-2.156.9-2.156 2.168v2.847h5.045l-.66 3.978h-4.386V29H26.4c.884 0 2.6-1.716 2.6-2.6V2.6c0-.885-1.716-2.6-2.6-2.6z"/></svg></span>
+                        <span class="rrssb-text">facebook</span>
+                      </a>
+                    </li>
+                    <li class="rrssb-twitter">
+                      <!-- Replace href with your Meta and URL information  -->
+                      <a href="https://twitter.com/intent/tweet?text={{$enlace['twitter']}} {{url('/')}}{{$enlace['twitter_url']}}"
+                      class="popup">
+                        <span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><path d="M24.253 8.756C24.69 17.08 18.297 24.182 9.97 24.62a15.093 15.093 0 0 1-8.86-2.32c2.702.18 5.375-.648 7.507-2.32a5.417 5.417 0 0 1-4.49-3.64c.802.13 1.62.077 2.4-.154a5.416 5.416 0 0 1-4.412-5.11 5.43 5.43 0 0 0 2.168.387A5.416 5.416 0 0 1 2.89 4.498a15.09 15.09 0 0 0 10.913 5.573 5.185 5.185 0 0 1 3.434-6.48 5.18 5.18 0 0 1 5.546 1.682 9.076 9.076 0 0 0 3.33-1.317 5.038 5.038 0 0 1-2.4 2.942 9.068 9.068 0 0 0 3.02-.85 5.05 5.05 0 0 1-2.48 2.71z"/></svg></span>
+                        <span class="rrssb-text">twitter</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <br><br><br>
+              </div>
             @endforeach
 
             @if(count($enlaces) > 4)
 
-            <div class="text-center mostrar_mas"> <!-- MOSTRAR MAS -->
-
-              <br><br>
-
-
-
-              <span class="mostrar f-16 c-morado f-700 pointer">Mostrar más</span>
-
+              <div class="text-center mostrar_mas"> <!-- MOSTRAR MAS -->
+                <br><br>
+                <span class="mostrar f-16 c-morado f-700 pointer">Mostrar más</span>
               </div>
             @endif
 

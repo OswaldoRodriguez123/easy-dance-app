@@ -27,6 +27,7 @@ use App\HorarioBloqueado;
 use App\Asistencia;
 use App\Evaluacion;
 use App\Taller;
+use App\HorarioTaller;
 use App\Fiesta;
 use App\Campana;
 use App\ClasePersonalizada;
@@ -890,7 +891,9 @@ class UsuarioController extends BaseController {
                 if(!$alumno){
                     return view('inicio.cuenta-deshabilitada');
                 }else{
+
                     if(Session::has('fecha_comprobacion')){
+
                         $fecha_comprobacion = Session::get('fecha_comprobacion');
                         $hoy = Carbon::now()->toDateString();
 
@@ -915,23 +918,18 @@ class UsuarioController extends BaseController {
                     $array=array();
 
                     $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                        ->select('config_clases_grupales.nombre','clases_grupales.id', 'config_clases_grupales.descripcion', 'clases_grupales.imagen', 'clases_grupales.created_at', 'clases_grupales.fecha_inicio', 'clases_grupales.dias_prorroga')
+                        ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+                        ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                        ->select('clases_grupales.*','config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_clases_grupales.nombre','config_clases_grupales.descripcion')
                         ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
                         ->where('clases_grupales.boolean_promocionar','=', 1)
                         ->where('clases_grupales.deleted_at', '=', null)
                     ->get();
 
-                    $alumno_examenes = Evaluacion::join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
-                        ->join('examenes','evaluaciones.examen_id','=','examenes.id')
-                        ->select('examenes.nombre','evaluaciones.id')
-                        ->where('evaluaciones.alumno_id','=',$usuario_id)
-                    ->get();
+                    foreach($clase_grupal_join as $clase_grupal){
 
-
-                    foreach($clase_grupal_join as $clase){
-
-                        $fecha = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
-                        $fecha->addDays($clase->dias_prorroga);
+                        $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                        $fecha->addDays($clase_grupal->dias_prorroga);
                         if($fecha >= Carbon::now()){
                             $contador_clase = $contador_clase + 1;
                             $disponible = '';
@@ -939,27 +937,117 @@ class UsuarioController extends BaseController {
                             $disponible = ' ( No disponible )';
                         }
 
-                        
-                        if($clase->imagen){
+                        if($clase_grupal->imagen){
                             $imagen = "/assets/uploads/clase_grupal/{$clase->imagen}";
                         }else{
                             $imagen = '';
                         }
 
-                        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio)->format('d-m-Y');
+                        $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio)->format('d-m-Y');
+
+                        $horarios = HorarioClaseGrupal::where('clase_grupal_id', $clase_grupal->id)->get();
+                        $i = 0;
+                        $len = count($horarios);
+                        $dia_string = '';
+                        $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                        $i = $fecha->dayOfWeek;
+
+                        if($i == 1){
+
+                          $dia = 'Lunes';
+
+                        }else if($i == 2){
+
+                          $dia = 'Martes';
+
+                        }else if($i == 3){
+
+                          $dia = 'Miercoles';
+
+                        }else if($i == 4){
+
+                          $dia = 'Jueves';
+
+                        }else if($i == 5){
+
+                          $dia = 'Viernes';
+
+                        }else if($i == 6){
+
+                          $dia = 'Sabado';
+
+                        }else if($i == 0){
+
+                          $dia = 'Domingo';
+
+                        }
+         
+                        $dia_string = $dia_string . $dia;
+                        
+                        foreach($horarios as $horario){
+
+                            if($dia_string != ''){
+                                $dia_string = $dia_string . ', ';
+                            }
+
+                            $fecha = Carbon::createFromFormat('Y-m-d', $horario->fecha);
+                            $i = $fecha->dayOfWeek;
+
+                            if($i == 1){
+
+                              $dia = 'Lunes';
+
+                            }else if($i == 2){
+
+                              $dia = 'Martes';
+
+                            }else if($i == 3){
+
+                              $dia = 'Miercoles';
+
+                            }else if($i == 4){
+
+                              $dia = 'Jueves';
+
+                            }else if($i == 5){
+
+                              $dia = 'Viernes';
+
+                            }else if($i == 6){
+
+                              $dia = 'Sabado';
+
+                            }else if($i == 0){
+
+                              $dia = 'Domingo';
+
+                            }
+                            if ($i != $len - 1) {
+                                $dia_string = $dia_string . $dia;
+                            }else{
+                                $dia_string = $dia_string . 'y ' . $dia;
+                            }
+
+                            $i++;
+
+                        }
 
 
-                        $array[]=array('nombre' => $clase->nombre , 'descripcion' => $clase->descripcion ,'imagen' => $imagen , 'url' => "/agendar/clases-grupales/progreso/{$clase->id}", 'facebook' => "/agendar/clases-grupales/progreso/{$clase->id}", 'twitter' => "Participa en la clase grupal {$clase->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/clases-grupales/progreso/{$clase->id}", 'creacion' => $clase->created_at, 'tipo' => 1, 'fecha_inicio' => $fecha_inicio, 'disponible' => $disponible);
+                        $array[]=array('nombre' => $clase_grupal->nombre , 'descripcion' => $clase_grupal->descripcion ,'imagen' => $imagen , 'url' => "/agendar/clases-grupales/progreso/{$clase_grupal->id}", 'facebook' => "/agendar/clases-grupales/progreso/{$clase_grupal->id}", 'twitter' => "Participa en la clase grupal {$clase_grupal->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/clases-grupales/progreso/{$clase_grupal->id}", 'creacion' => $clase_grupal->created_at, 'tipo' => 1, 'fecha_inicio' => $fecha_inicio, 'disponible' => $disponible, 'dias' => $dia_string, 'instructor' => $clase_grupal->instructor_nombre . ' ' . $clase_grupal->instructor_apellido, 'hora' => $clase_grupal->hora_inicio . ' - ' . $clase_grupal->hora_final, 'especialidad' => $clase_grupal->especialidad, 'fecha' => $fecha_inicio);
 
                     }
 
-                    $talleres = Taller::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+                    $talleres = Taller::join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
+                        ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
+                        ->select('talleres.*','config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
+                        ->where('talleres.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->get();
 
                     foreach($talleres as $taller){
 
                         $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
 
-                       if($fecha >= Carbon::now() && $taller->boolean_promocionar == 1){
+                        if($fecha >= Carbon::now() && $taller->boolean_promocionar == 1){
 
                             if($taller->imagen){
                                 $imagen = "/assets/uploads/taller/{$taller->imagen}";
@@ -967,7 +1055,96 @@ class UsuarioController extends BaseController {
                                 $imagen = '';
                             }
 
-                            $array[]=array('nombre' => $taller->nombre , 'descripcion' => $taller->descripcion ,'imagen' => $imagen , 'url' => "/agendar/talleres/progreso/{$taller->id}", 'facebook' => "/agendar/talleres/progreso/{$taller->id}", 'twitter' => "Participa en el taller {$taller->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/talleres/progreso/{$taller->id}" , 'creacion' => $taller->created_at, 'tipo' => 2, 'fecha_inicio' => $taller->fecha_inicio, 'disponible' => '');
+                            $fecha_inicio = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio)->format('d-m-Y');
+
+                            $horarios = HorarioTaller::where('taller_id', $taller->id)->get();
+                            $i = 0;
+                            $len = count($horarios);
+                            $dia_string = '';
+                            $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
+                            $i = $fecha->dayOfWeek;
+
+                            if($i == 1){
+
+                              $dia = 'Lunes';
+
+                            }else if($i == 2){
+
+                              $dia = 'Martes';
+
+                            }else if($i == 3){
+
+                              $dia = 'Miercoles';
+
+                            }else if($i == 4){
+
+                              $dia = 'Jueves';
+
+                            }else if($i == 5){
+
+                              $dia = 'Viernes';
+
+                            }else if($i == 6){
+
+                              $dia = 'Sabado';
+
+                            }else if($i == 0){
+
+                              $dia = 'Domingo';
+
+                            }
+             
+                            $dia_string = $dia_string . $dia;
+                            
+                            foreach($horarios as $horario){
+
+                                if($dia_string != ''){
+                                    $dia_string = $dia_string . ', ';
+                                }
+
+                                $fecha = Carbon::createFromFormat('Y-m-d', $horario->fecha);
+                                $i = $fecha->dayOfWeek;
+
+                                if($i == 1){
+
+                                  $dia = 'Lunes';
+
+                                }else if($i == 2){
+
+                                  $dia = 'Martes';
+
+                                }else if($i == 3){
+
+                                  $dia = 'Miercoles';
+
+                                }else if($i == 4){
+
+                                  $dia = 'Jueves';
+
+                                }else if($i == 5){
+
+                                  $dia = 'Viernes';
+
+                                }else if($i == 6){
+
+                                  $dia = 'Sabado';
+
+                                }else if($i == 0){
+
+                                  $dia = 'Domingo';
+
+                                }
+                                if ($i != $len - 1) {
+                                    $dia_string = $dia_string . $dia;
+                                }else{
+                                    $dia_string = $dia_string . 'y ' . $dia;
+                                }
+
+                                $i++;
+
+                            }
+
+                            $array[]=array('nombre' => $taller->nombre , 'descripcion' => $taller->descripcion ,'imagen' => $imagen , 'url' => "/agendar/talleres/progreso/{$taller->id}", 'facebook' => "/agendar/talleres/progreso/{$taller->id}", 'twitter' => "Participa en el taller {$taller->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/talleres/progreso/{$taller->id}" , 'creacion' => $taller->created_at, 'tipo' => 2, 'fecha_inicio' => $taller->fecha_inicio, 'disponible' => '', 'dias' => $dia_string, 'instructor' => $taller->instructor_nombre . ' ' . $taller->instructor_apellido, 'hora' => $taller->hora_inicio . ' - ' . $taller->hora_final, 'especialidad' => $taller->especialidad, 'fecha' => $fecha_inicio);
 
                             $contador_taller = $contador_taller + 1;
                         }
@@ -988,7 +1165,39 @@ class UsuarioController extends BaseController {
                                 $imagen = '';
                             }
 
-                            $array[]=array('nombre' => $fiesta->nombre , 'descripcion' => $fiesta->descripcion ,'imagen' => $imagen , 'url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'facebook' => "/agendar/fiesta/progreso/{$fiesta->id}", 'twitter' => "Participa en la fiesta {$fiesta->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'creacion' => $fiesta->created_at, 'tipo' => 3, 'fiesta' => $fiesta->fecha_inicio, 'disponible' => '');
+                            $i = $fecha->dayOfWeek;
+
+                            if($i == 1){
+
+                              $dia = 'Lunes';
+
+                            }else if($i == 2){
+
+                              $dia = 'Martes';
+
+                            }else if($i == 3){
+
+                              $dia = 'Miercoles';
+
+                            }else if($i == 4){
+
+                              $dia = 'Jueves';
+
+                            }else if($i == 5){
+
+                              $dia = 'Viernes';
+
+                            }else if($i == 6){
+
+                              $dia = 'Sabado';
+
+                            }else if($i == 0){
+
+                              $dia = 'Domingo';
+
+                            }
+
+                            $array[]=array('nombre' => $fiesta->nombre , 'descripcion' => $fiesta->descripcion ,'imagen' => $imagen , 'url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'facebook' => "/agendar/fiesta/progreso/{$fiesta->id}", 'twitter' => "Participa en la fiesta {$fiesta->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'creacion' => $fiesta->created_at, 'tipo' => 3, 'fiesta' => $fiesta->fecha_inicio, 'disponible' => '', 'dias' => $dia, 'instructor' => '', 'hora' => $fiesta->hora_inicio . ' - ' . $fiesta->hora_final, 'especialidad' => '', 'fecha' => $fecha->format('d-m-Y'));
 
                             $contador_fiesta = $contador_fiesta + 1;
                         }
@@ -1017,11 +1226,9 @@ class UsuarioController extends BaseController {
                     $arreglo=array();
 
                     foreach($sorted as $tmp){
-
                         $tmp['contador'] = $i;
                         $arreglo[$i] = $tmp;
                         $i = $i + 1;
-
                     }
 
                     $instructor_contador = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('instructores.boolean_promocionar', 1)->count();
@@ -1077,6 +1284,13 @@ class UsuarioController extends BaseController {
                     }
 
                     $puntos_referidos = AlumnoRemuneracion::where('alumno_id',$usuario_id)->sum('remuneracion');
+
+                    $alumno_examenes = Evaluacion::join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
+                        ->join('examenes','evaluaciones.examen_id','=','examenes.id')
+                        ->select('examenes.nombre','evaluaciones.id')
+                        ->where('evaluaciones.alumno_id','=',$usuario_id)
+                    ->get();
+
                     
                     return view('vista_alumno.index')->with(['academia' => $academia, 'enlaces' => $arreglo , 'clases_grupales' => $contador_clase, 'talleres' => $contador_taller , 'fiestas' =>  $contador_fiesta ,'contador_campana' => $contador_campana ,'regalos' => Regalo::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'perfil' => $tiene_perfil, 'instructor_contador' => $instructor_contador, 'clase_personalizada_contador' => $clase_personalizada_contador, 'alumno_examenes' => $alumno_examenes, 'alumno' => $alumno, 'credenciales_alumno' => $array_credencial, 'total_credenciales' => $total_credenciales, 'campanas' => $campanas, 'puntos_referidos' => $puntos_referidos]);  
                     
