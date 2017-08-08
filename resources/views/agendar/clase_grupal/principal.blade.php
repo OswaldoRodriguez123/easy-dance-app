@@ -604,30 +604,6 @@
                 });
       }
 
-
-
-    // $('.table-responsive').on('show.bs.dropdown', function () {
-    //   $('.table-responsive').css( "overflow", "inherit" );
-    // });
-
-    $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
-
-        var id = $(this).closest('tr').attr('id');
-        var dropdown = $('#dropdown_'+id)
-        var dropdown_toggle = $('#dropdown_toggle_'+id)
-
-        if(!dropdown.hasClass('open')){
-            dropdown.addClass('open')
-            dropdown_toggle.attr('aria-expanded','true')
-            $('.table-responsive').css( "overflow", "inherit" );
-        }
-     
-    });
-
-    $('.table-responsive').on('hide.bs.dropdown', function () {
-      $('.table-responsive').css( "overflow", "auto" );
-    })
-
     function consulta_estatus_alumnos(){
       var route = route_consulta;
       var token = "{{ csrf_token() }}";
@@ -664,6 +640,28 @@
           }
       });
     }
+
+    $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+        var id = $(this).closest('tr').attr('id');
+        var dropdown = $(this).closest('.dropdown')
+        var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+        $('.dropdown-toggle').attr('aria-expanded','false')
+        $('.dropdown').removeClass('open')
+        $('.table-responsive').css( "overflow", "auto" );
+
+        if(!dropdown.hasClass('open')){
+            dropdown.addClass('open')
+            dropdown_toggle.attr('aria-expanded','true')
+            $('.table-responsive').css( "overflow", "inherit" );
+        }
+     
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+        $('.table-responsive').css( "overflow", "auto" );
+    })
 
     </script>
 @stop
