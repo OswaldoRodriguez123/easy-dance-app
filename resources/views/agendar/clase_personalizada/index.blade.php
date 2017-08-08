@@ -193,7 +193,36 @@
                                   <td class="text-center previa">{{$clase_personalizada['hora_inicio']}} - {{$clase_personalizada['hora_final']}}</td>
                                   @if($tipo == 'A')
                                     <td class="text-center previa">
-                                      <i data-toggle="modal" name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>
+
+                                      <!-- <i data-toggle="modal" name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i> -->
+
+                                      <ul class="top-menu">
+                                          <li class="dropdown" id="dropdown_{{$id}}">
+                                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                                 <span class="f-15 f-700" style="color:black"> 
+                                                      <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                 </span>
+                                              </a>
+                                              <div class="dropup">
+                                                  <ul class="dropdown-menu dm-icon pull-right">
+
+                                                      <li class="hidden-xs">
+                                                          <a onclick="procesando()" href="{{url('/')}}/agendar/clases-personalizadas/multihorario/{{$id}}"><i class="zmdi zmdi-calendar-note f-16 boton blue"></i> Multihorario</a>
+                                                      </li>
+
+                                                      <li class="hidden-xs">
+                                                          <a onclick="procesando()" href="{{url('/')}}/agendar/clases-personalizadas/agenda/{{$id}}"><i class="zmdi zmdi-eye f-16 boton blue"></i> Agenda</a>
+                                                      </li>
+
+                                                      <li class="hidden-xs eliminar">
+                                                          <a class="pointer eliminar"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                                      </li>
+
+                                                  </ul>
+                                              </div>
+                                          </li>
+                                      </ul>
+
                                     </td>
 
                                   @else
@@ -232,6 +261,8 @@
         route_detalle="{{url('/')}}/agendar/clases-personalizadas/detalle"
         route_operacion="{{url('/')}}/agendar/clases-personalizadas/operaciones"
         route_configuracion="{{url('/')}}/agendar/clases-personalizadas/configurar"
+        route_eliminar="{{url('/')}}/agendar/clases-personalizadas/eliminar/";
+        route_principal="{{url('/')}}/agendar/clases-personalizadas";
             
         $(document).ready(function(){
 
@@ -542,6 +573,73 @@
         }
 
     });
+
+     $(".eliminar").click(function(){
+            var id = $(this).closest('tr').attr('id');
+            swal({   
+                title: "Desea eliminar la clase personalizada?",   
+                text: "Tenga en cuenta que los horarios creados para esta clase personalizada tambien seran eliminados!",    
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+      if (isConfirm) {
+        var route = route_eliminar + id;
+        var token = '{{ csrf_token() }}';
+            
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'DELETE',
+                dataType: 'json',
+                data:id,
+                success:function(respuesta){
+
+                    procesando();
+                    window.location=route_principal; 
+
+                },
+                error:function(msj){
+                            // $("#msj-danger").fadeIn(); 
+                            // var text="";
+                            // console.log(msj);
+                            // var merror=msj.responseJSON;
+                            // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                            // $("#msj-error").html(text);
+                            // setTimeout(function(){
+                            //          $("#msj-danger").fadeOut();
+                            //         }, 3000);
+                            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                            }
+            });
+            }
+        });
+    });
+
+     $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+        var id = $(this).closest('tr').attr('id');
+        var dropdown = $(this).closest('.dropdown')
+        var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+        $('.dropdown-toggle').attr('aria-expanded','false')
+        $('.dropdown').removeClass('open')
+        $('.table-responsive').css( "overflow", "auto" );
+
+        if(!dropdown.hasClass('open')){
+            dropdown.addClass('open')
+            dropdown_toggle.attr('aria-expanded','true')
+            $('.table-responsive').css( "overflow", "inherit" );
+        }
+     
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+        $('.table-responsive').css( "overflow", "auto" );
+     }) 
 
 		</script>
 @stop

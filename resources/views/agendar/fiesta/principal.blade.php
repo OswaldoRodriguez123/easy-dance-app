@@ -6,6 +6,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -23,7 +24,7 @@
                 
                     <div class="block-header">
                         <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menú Principal</a>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -70,7 +71,38 @@
                                         <span class="{{ empty($fiesta['dias_restantes']) ? 'c-youtube' : '' }}">{{$fiesta['status']}}</span>
                                         Restan {{$fiesta['dias_restantes']}} Días
                                     </td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> 
+
+                                       <!--  <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i> -->
+
+                                       <ul class="top-menu">
+                                            <li class="dropdown" id="dropdown_{{$id}}">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                                   <span class="f-15 f-700" style="color:black"> 
+                                                        <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                   </span>
+                                                </a>
+                                                <div class="dropup">
+                                                    <ul class="dropdown-menu dm-icon pull-right">
+
+                                                        <li class="hidden-xs">
+                                                            <a onclick="procesando()" href="{{url('/')}}/agendar/fiestas/progreso/{{$id}}"><i class="zmdi icon_e-ver-progreso f-16 boton blue"></i> Progreso</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
+                                                            <a onclick="procesando()" href="{{url('/')}}/agendar/fiestas/egresos/{{$id}}"><i class="zmdi fa fa-money f-16 boton blue"></i> Egresos</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs eliminar">
+                                                            <a class="pointer eliminar"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+
+                                    </td>
                                 </tr>
                             @endforeach  
                                                            
@@ -96,7 +128,7 @@
 
 @section('js')
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
         route_detalle="{{url('/')}}/agendar/fiestas/detalle";
         route_operacion="{{url('/')}}/agendar/fiestas/operaciones";
@@ -104,71 +136,52 @@
 
         $(document).ready(function(){
 
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25,   
-        order: [[0, 'asc']],
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+            t=$('#tablelistar').DataTable({
+            processing: true,
+            serverSide: false,
+            pageLength: 25,   
+            order: [[0, 'asc']],
+            fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+              $('td:eq(0),td:eq(1),td:eq(2)', nRow).attr( "onclick","previa(this)" );
+            },
+            language: {
+                            processing:     "Procesando ...",
+                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                            searchPlaceholder: "BUSCAR",
+                            lengthMenu:     "Mostrar _MENU_ Registros",
+                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                            infoPostFix:    "",
+                            loadingRecords: "...",
+                            zeroRecords:    "No se encontraron registros coincidentes",
+                            emptyTable:     "No hay datos disponibles en la tabla",
+                            paginate: {
+                                first:      "Primero",
+                                previous:   "Anterior",
+                                next:       "Siguiente",
+                                last:       "Ultimo"
+                            },
+                            aria: {
+                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                            }
                         }
-                    }
-        });
-    
-
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
             });
+        
+
+    });
 
     function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        var id_fiesta = row.split('_');
-        var route =route_detalle+"/"+row;
+        var id = $(t).closest('tr').attr('id');
+        var route =route_detalle+"/"+id;
         window.location=route;
       }
 
-      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+      $('#tablelistar tbody').on( 'click', '.eliminar', function () {
 
                 var id = $(this).closest('tr').attr('id');
-                // var temp = row.split('_');
-                // var id = temp[1];
                 element = this;
 
                 swal({   
@@ -241,6 +254,28 @@
         var route =route_operacion+"/"+this.id;
         window.location=route;
     });
+
+    $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+        var id = $(this).closest('tr').attr('id');
+        var dropdown = $(this).closest('.dropdown')
+        var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+        $('.dropdown-toggle').attr('aria-expanded','false')
+        $('.dropdown').removeClass('open')
+        $('.table-responsive').css( "overflow", "auto" );
+
+        if(!dropdown.hasClass('open')){
+            dropdown.addClass('open')
+            dropdown_toggle.attr('aria-expanded','true')
+            $('.table-responsive').css( "overflow", "inherit" );
+        }
+     
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+        $('.table-responsive').css( "overflow", "auto" );
+     }) 
 
     </script>
 @stop
