@@ -90,7 +90,8 @@
                             <tbody class="text-center" >
 
                             @foreach ($activas as $fecha)
-                                <tr id="{{$fecha['id']}}" class="disabled" data-fecha="{{$fecha['fecha_inicio']}}">
+
+                                <tr id = "{{$fecha['id']}}" class="disabled" data-fecha="{{$fecha['fecha_inicio']}}">
                                     <td class="text-center previa">{{$fecha['fecha_inicio']}}</td>
                                     <td class="text-center previa">{{$fecha['dia']}}</td>
                                     <td class="text-center previa">{{$fecha['hora_inicio']}} - {{$fecha['hora_final']}}</td>
@@ -99,7 +100,7 @@
                                     @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                                         <td class="text-center disabled"> 
                                             @if($fecha['tipo'] == 'activa')
-                                                <i name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>
+                                                <i class="zmdi zmdi-close-circle-o f-20 p-r-10 pointer cancelar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Cancelar Clase" title="" data-original-title="Ayuda" data-html="true"></i>
                                                 
                                             @else
                                                 <i name = "pop-activar" id = "pop-activar" aria-describedby="popoveractivar" class="zmdi zmdi-close-circle f-20 c-youtube p-r-10 disabled" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Esta clase ha sido cancelada, si desea activarla haga click en el siguiente enlace <br> 
@@ -143,6 +144,7 @@
 
     route_operacion="{{url('/')}}/agendar/clases-grupales/operaciones/";
     route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminar-cancelacion/";
+    route_cancelar="{{url('/')}}/agendar/clases-grupales/canceladas/";
 
     var finalizadas = <?php echo json_encode($finalizadas);?>;
     var activas = <?php echo json_encode($activas);?>;
@@ -187,9 +189,10 @@
     });
 
 
-    $('#tablelistar tbody').on( 'click', 'i.zmdi-wrench', function () {
+    $('#tablelistar tbody').on( 'click', '.cancelar', function () {
 
         fecha = $(this).closest('tr').data('fecha')
+        id = $(this).closest('tr').attr('id')
 
         $.ajax({
 
@@ -200,7 +203,7 @@
             data:"fecha_inicio="+fecha,
             success:function(respuesta){
 
-                window.location = route_operacion + "{{$id}}"
+                window.location = route_cancelar + id
 
             }
         });        
@@ -229,18 +232,27 @@
 
             $.each(activas, function (index, array) {
 
+                if(array.tipo == 'activa'){
+                    opcion = '<i class="zmdi zmdi-close-circle-o f-20 p-r-10 pointer cancelar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Cancelar Clase" title="" data-original-title="Ayuda" data-html="true"></i>'
+                }else{
+                    opcion = '<i name = "pop-activar" id = "pop-activar" aria-describedby="popoveractivar" class="zmdi zmdi-close-circle f-20 c-youtube p-r-10 disabled" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Esta clase ha sido cancelada, si desea activarla haga click en el siguiente enlace <br> <div class="text-center"><span id = '+array.bloqueo_id+' class="activar pointer f-700 c-azul">Activar</span></div>" title="" data-original-title="Ayuda" data-html="true"></i>'
+                }
+
                 var rowNode=t.row.add( [
                 ''+array.fecha_inicio+'',
                 ''+array.dia+'',
                 ''+array.hora_inicio+' - '+array.hora_final+'' ,
                 ''+array.especialidad+'',
                 ''+array.instructor+'' ,
-                '<i name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>'
+                ''+opcion+''
                 ] ).draw(false).node();
                 $( rowNode )
                     .addClass('disabled')
+                    .attr('id', array.id)
                     .attr('data-fecha', array.fecha_inicio);
             });
+
+            $('[data-toggle="popover"]').popover(); 
 
             if($('#fecha').hasClass('sorting_desc')){
                 $('#fecha').click();
@@ -268,6 +280,7 @@
                 ''
                 ] ).draw(false).node();
                 $( rowNode )
+                    .attr('id', array.id)
                     .addClass('disabled')
                     .addClass('seleccion_deleted');
             });
@@ -278,7 +291,6 @@
         }
 
         function clear(){
-
             t.clear().draw();
         }
 
@@ -360,7 +372,9 @@
           swal("Hecho!","Activada con éxito!","success");
 
           $("#"+id).find("td").eq(4).empty();   
-          $("#"+id).find("td").eq(4).html('<i name="operacion" class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>');
+          $("#"+id).find("td").eq(4).html('<i class="zmdi zmdi-close-circle-o f-20 p-r-10 pointer cancelar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Cancelar Clase" title="" data-original-title="Ayuda" data-html="true"></i>');
+
+          $('[data-toggle="popover"]').popover(); 
 
           finprocesado();
 
@@ -378,10 +392,6 @@
         }
       });
     }
-
-    // $("html").click(function (e){
-    //     console.log(e.target)
-    // });
 
     </script>
 @stop
