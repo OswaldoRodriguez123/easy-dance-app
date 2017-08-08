@@ -23,7 +23,7 @@
                 
                     <div class="block-header">
                         <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menú Principal</a>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -63,25 +63,25 @@
                             @foreach ($instructores as $instructor)
                                 <?php $id = $instructor['id']; ?>
                                 
-                                <tr id="row_{{$id}}" class="seleccion" >
+                                <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">
                                         @if($instructor['imagen'])
-                                          <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$instructor['imagen']}}" alt="">
+                                            <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$instructor['imagen']}}" alt="">
                                         @else
                                             @if($instructor['sexo'] == 'M')
-                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                                <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
                                             @else
-                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                                <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
                                         @endif
                                       @endif
                                     </td>
                                     <td class="text-center previa">{{$instructor['identificacion']}}</td>
                                     <td class="text-center previa">
-                                    @if($instructor['sexo']=='F')
-                                    <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
-                                    @else
-                                    <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
-                                    @endif
+                                        @if($instructor['sexo']=='F')
+                                            <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                        @else
+                                            <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                        @endif
                                     </td>
                                     <?php $tmp = explode(" ", $instructor['nombre']);
                                     $nombre_instructor = $tmp[0];
@@ -92,9 +92,40 @@
                                     ?>
 
                                     <td class="text-center previa">{{$nombre_instructor}} {{$apellido_instructor}} </td>
-                                    <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
-                                    <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> 
+
+                                        <!-- <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i> -->
+
+                                        <ul class="top-menu">
+                                            <li class="dropdown" id="dropdown_{{$id}}">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                                   <span class="f-15 f-700" style="color:black"> 
+                                                        <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                   </span>
+                                                </a>
+                                                <div class="dropup">
+                                                    <ul class="dropdown-menu dm-icon pull-right">
+
+                                                        @if($instructor['usuario'])
+                                                            <li class="hidden-xs email">
+                                                                <a onclick="procesando()"><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
+                                                            </li>
+                                                        @endif
+
+                                                        <li class="hidden-xs">
+                                                            <a onclick="procesando()" href="{{url('/')}}/participante/instructor/pagos/{{$id}}"><i class="zmdi fa fa-money f-16 boton blue"></i> Pagos</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs eliminar">
+                                                            <a class="pointer eliminar"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+
+                                    </td>
                                 </tr>
 
                             @endforeach 
@@ -121,10 +152,13 @@
 
 @section('js') 
 
-        <script type="text/javascript">
+    <script type="text/javascript">
             
-            route_detalle="{{url('/')}}/participante/instructor/detalle";
-            route_operacion="{{url('/')}}/participante/instructor/operaciones";
+        route_detalle="{{url('/')}}/participante/instructor/detalle";
+        route_operacion="{{url('/')}}/participante/instructor/operaciones";
+        route_eliminar="{{url('/')}}/participante/instructor/eliminar/";
+        route_principal="{{url('/')}}/participante/instructor";
+        route_email="{{url('/')}}/correo/sesion";
             
         $(document).ready(function(){
 
@@ -173,35 +207,118 @@
         });
     
 
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
+    });
 
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
+    function previa(t){
+        var id = $(t).closest('tr').attr('id');
+        var route =route_detalle+"/"+id;
+        window.location=route;
+    }
 
+    $("i[name=operacion").click(function(){
+        var route =route_operacion+"/"+this.id;
+        window.location=route;
+    });
+
+    $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+            var id = $(this).closest('tr').attr('id');
+            var dropdown = $(this).closest('.dropdown')
+            var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+            $('.dropdown-toggle').attr('aria-expanded','false')
+            $('.dropdown').removeClass('open')
+            $('.table-responsive').css( "overflow", "auto" );
+
+            if(!dropdown.hasClass('open')){
+                dropdown.addClass('open')
+                dropdown_toggle.attr('aria-expanded','true')
+                $('.table-responsive').css( "overflow", "inherit" );
+            }
+         
+        });
+
+        $('.table-responsive').on('hide.bs.dropdown', function () {
+            $('.table-responsive').css( "overflow", "auto" );
+        }) 
+
+        $(".email").click(function(){
+
+            var route = route_email;
+            var token = '{{ csrf_token() }}';
+            var id = $(this).closest('tr').attr('id');
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:"&usuario_tipo=2&usuario_id="+id,
+                    success:function(respuesta){
+
+                        procesando();
+                        window.location="{{url('/')}}/correo/"+id   
+
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
       });
 
-      function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        var id_instructor = row.split('_');
-        var route =route_detalle+"/"+id_instructor[1];
-        window.location=route;
-      }
+    $(".eliminar").click(function(){
+            var id = $(this).closest('tr').attr('id');
+            swal({   
+                title: "Desea eliminar al instructor?",   
+                text: "Confirmar eliminación!",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+      if (isConfirm) {
+        var route = route_eliminar + id;
+        var token = '{{ csrf_token() }}';
+            
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'DELETE',
+                dataType: 'json',
+                data:id,
+                success:function(respuesta){
 
-      $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-         });
+                    procesando();
+                    window.location=route_principal; 
+
+                },
+                error:function(msj){
+                            // $("#msj-danger").fadeIn(); 
+                            // var text="";
+                            // console.log(msj);
+                            // var merror=msj.responseJSON;
+                            // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                            // $("#msj-error").html(text);
+                            // setTimeout(function(){
+                            //          $("#msj-danger").fadeOut();
+                            //         }, 3000);
+                            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                            }
+            });
+            }
+        });
+    });
 
 
     </script>

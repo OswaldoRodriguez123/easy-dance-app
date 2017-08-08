@@ -92,7 +92,7 @@
                             
                             <div class="clearfix p-b-20"></div>
 
-                            <div class="col-sm-12 text-center">
+                            <div class="col-sm-12">
                                 {!! nl2br($incidencia->mensaje) !!}
                             </div>
                             

@@ -46,10 +46,10 @@
 
 		        <div class="card-header ch-alt text-center">
 
-		            @if ($academia->imagen_academia)
-		                <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen_academia}}" alt="">
+		            @if ($academia->imagen)
+		               <img class="i-logo" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen}}" alt="">
 		            @else
-		                <img class="i-logo" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
+		               <img class="i-logo" src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" alt="">
 		            @endif
 		        </div>
 		
@@ -165,9 +165,10 @@
                             <label for="observacion" id="id-observacion">Observaciones</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="ingresa las observaciones y detalles correspondientes a la evaluación del alumno" title="" data-original-title="Ayuda"></i>
                             <br></br>
 
-                            <div class="fg-line">
-                              <textarea class="form-control" id="observacion" name="observacion" rows="2" placeholder="1000 Caracteres"></textarea>
-                            </div>
+
+                            <textarea class="form-control caja" id="observacion" style="height: 100%" name="observacion" rows="8" placeholder="5000 Caracteres" maxlength="5000" onkeyup="countChar(this)"></textarea>
+                        
+                            <div class="opaco-0-8 text-right">Resta <span id="charNum">5000</span> Caracteres</div>
                             <div class="has-error" id="error-observacion">
                               <span >
                                 <small class="help-block error-span" id="error-observacion_mensaje" ></small> 
@@ -175,6 +176,7 @@
                             </div>
                        	</div>
 
+						<div class="clearfix p-b-35"></div>
 
 						<hr>
 						<!-- SECCION BOTONES --> 
@@ -488,6 +490,15 @@
 	  		$("#puntos_totales").html(puntos_totales);
 			$("#total_nota").val(puntos_totales);
 	  	})
+
+	  	function countChar(val) {
+	        var len = val.value.length;
+	        if (len >= 5000) {
+	          val.value = val.value.substring(0, 5000);
+	        } else {
+	          $('#charNum').text(5000 - len);
+	        }
+	     };
 
 	</script>
 

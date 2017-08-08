@@ -23,7 +23,7 @@
                 
                     <div class="block-header">
                         <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menú Principal</a>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -63,7 +63,7 @@
                             @foreach ($familias as $familia)
                                 <?php $id = $familia['id']; ?>
                                 
-                                <tr id="row_{{$id}}" class="seleccion" >
+                                <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$familia['apellido']}}</td>
 
                                     <?php $tmp = explode(" ", $familia['representante_nombre']);
@@ -77,9 +77,32 @@
                                     <td class="text-center previa">{{$representante_nombre}} {{$representante_apellido}} </td>
                                     <td class="text-center previa">{{$familia['total']}}</td>
                                     <td class="text-center previa"><i data-toggle="modal" href="#" class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i></td>
-                                    <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
-                                    <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> 
+                                        <!-- <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i> -->
+
+                                        <ul class="top-menu">
+                                            <li class="dropdown" id="dropdown_{{$id}}">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                                   <span class="f-15 f-700" style="color:black"> 
+                                                        <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                   </span>
+                                                </a>
+                                                <div class="dropup">
+                                                    <ul class="dropdown-menu dm-icon pull-right">
+
+                                                         <li class="hidden-xs">
+                                                            <a onclick="procesando()" href="{{url('/')}}/participante/familia/participantes/{{$id}}"><i class="zmdi icon_a-participantes f-16 boton blue"></i> Participantes</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs eliminar">
+                                                            <a class="pointer eliminar"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </td>
                                 </tr>
 
                             @endforeach 
@@ -108,8 +131,10 @@
 
         <script type="text/javascript">
             
-            route_detalle="{{url('/')}}/participante/familia/detalle";
-            route_operacion="{{url('/')}}/participante/familia/operaciones";
+        route_detalle="{{url('/')}}/participante/familia/detalle";
+        route_operacion="{{url('/')}}/participante/familia/operaciones";
+        route_eliminar="{{url('/')}}/participante/familia/eliminar/";
+        route_principal="{{url('/')}}/participante/familia";
             
         $(document).ready(function(){
 
@@ -160,35 +185,87 @@
         });
     
 
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
       });
 
       function previa(t){
-        var row = $(t).closest('tr').attr('id');
-        var id_instructor = row.split('_');
-        var route =route_detalle+"/"+id_instructor[1];
+        var id = $(t).closest('tr').attr('id');
+        var route =route_detalle+"/"+id;
         window.location=route;
       }
 
       $("i[name=operacion").click(function(){
-            var route =route_operacion+"/"+this.id;
-            window.location=route;
-         });
+        var route =route_operacion+"/"+this.id;
+        window.location=route;
+     });
+
+
+      $(".eliminar").click(function(){
+            var id = $(this).closest('tr').attr('id');
+            swal({   
+                title: "Desea eliminar la familia?",   
+                text: "Confirmar eliminación!",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+      if (isConfirm) {
+        var route = route_eliminar + id;
+        var token = '{{ csrf_token() }}';
+            
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'DELETE',
+                dataType: 'json',
+                data:id,
+                success:function(respuesta){
+
+                    procesando();
+                    window.location=route_principal; 
+
+                },
+                error:function(msj){
+                            // $("#msj-danger").fadeIn(); 
+                            // var text="";
+                            // console.log(msj);
+                            // var merror=msj.responseJSON;
+                            // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                            // $("#msj-error").html(text);
+                            // setTimeout(function(){
+                            //          $("#msj-danger").fadeOut();
+                            //         }, 3000);
+                            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                            }
+            });
+            }
+        });
+    });
+
+      $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+        var id = $(this).closest('tr').attr('id');
+        var dropdown = $(this).closest('.dropdown')
+        var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+        $('.dropdown-toggle').attr('aria-expanded','false')
+        $('.dropdown').removeClass('open')
+        $('.table-responsive').css( "overflow", "auto" );
+
+        if(!dropdown.hasClass('open')){
+            dropdown.addClass('open')
+            dropdown_toggle.attr('aria-expanded','true')
+            $('.table-responsive').css( "overflow", "inherit" );
+        }
+     
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+        $('.table-responsive').css( "overflow", "auto" );
+    }) 
+
 
 
     </script>

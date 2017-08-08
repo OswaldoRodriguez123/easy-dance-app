@@ -6,7 +6,6 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
-<link href="{{url('/')}}/assets/vendors/summernote/dist/summernote.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -15,9 +14,6 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
-<script src="{{url('/')}}/assets/vendors/summernote/dist/summernote.js"></script>
-<!--<script src="{{url('/')}}/assets/vendors/summernote/dist/summernote-updated.min.js"></script>-->
-<script src="{{url('/')}}/assets/vendors/summernote/dist/lang/summernote-es-ES.js"></script>
 @stop
 @section('content')
 
@@ -96,15 +92,15 @@
 
                                 ?>
 
-                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="row_{{$id}}" class="seleccion" >
+                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa"> @if($visitante['cliente'])<i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">{{$visitante['fecha_registro']}}</td>
                                     <td class="text-center previa">{{$visitante['hora_registro']}}</td>
                                     <td class="text-center previa">
                                     @if($visitante['sexo']=='F')
-                                    <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                      <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
                                     @else
-                                    <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                      <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
                                     @endif
                                     </td>
 
@@ -120,7 +116,46 @@
                                     <td class="text-center previa">{{$visitante['como_se_entero']}}</td>
                                     <td class="text-center previa">{{$visitante['instructor_nombre']}} {{$visitante['instructor_apellido']}}</td>
 
-                                    <td class="text-center disabled"> <i name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer"></i></td>
+                                    <td class="text-center disabled"> 
+                                      <!-- <i name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer"></i> -->
+
+                                      <ul class="top-menu">
+                                            <li class="dropdown" id="dropdown_{{$id}}">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                                   <span class="f-15 f-700" style="color:black"> 
+                                                        <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                   </span>
+                                                </a>
+                                                <div class="dropup">
+                                                    <ul class="dropdown-menu dm-icon pull-right">
+
+                                                        @if($visitante['correo'])
+                                                            <li class="hidden-xs email">
+                                                                <a onclick="procesando()"><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
+                                                            </li>
+                                                        @endif
+
+                                                        <li class="hidden-xs">
+                                                            <a onclick="procesando()" href="{{url('/')}}/participante/visitante/impresion/{{$id}}"><i class="zmdi icon_a-examen f-16 boton blue"></i> Realizar encuesta</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
+                                                            <a onclick="procesando()" href="{{url('/')}}/participante/alumno/agregar/{{$id}}"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
+                                                            <a onclick="procesando()" href="{{url('/')}}/participante/visitante/llamadas/{{$id}}"><i class="zmdi zmdi-phone f-16 boton blue"></i> Llamadas</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs reservar">
+                                                            <a onclick="procesando()"><i class="zmdi icon_a-reservaciones f-16 boton blue"></i>Reservar</a>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </td>
                                     
                                 </tr>
                             @endforeach 
@@ -192,17 +227,104 @@
     });
 
 
-    function previa(t){
+      function previa(t){
         var row = $(t).closest('tr').attr('id');
-        var id_visitante = row.split('_');
-        var route =route_detalle+"/"+id_visitante[1];
+        var id = row.split('_');
+        var route =route_detalle+"/"+id[1];
         window.location=route;
       }
 
       $("i[name=operacion").click(function(){
-          var route =route_operacion+"/"+this.id;
-          window.location=route;
-       });
+        var route =route_operacion+"/"+this.id;
+        window.location=route;
+     });
+
+      $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+            var id = $(this).closest('tr').attr('id');
+            var dropdown = $(this).closest('.dropdown')
+            var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+            $('.dropdown-toggle').attr('aria-expanded','false')
+            $('.dropdown').removeClass('open')
+            $('.table-responsive').css( "overflow", "auto" );
+
+            if(!dropdown.hasClass('open')){
+                dropdown.addClass('open')
+                dropdown_toggle.attr('aria-expanded','true')
+                $('.table-responsive').css( "overflow", "inherit" );
+            }
+         
+        });
+
+        $('.table-responsive').on('hide.bs.dropdown', function () {
+            $('.table-responsive').css( "overflow", "auto" );
+        }) 
+
+        $(".email").click(function(){
+
+            var route = route_email;
+            var token = '{{ csrf_token() }}';
+            var id = $(this).closest('tr').attr('id');
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:"&usuario_tipo=3&usuario_id="+id,
+                    success:function(respuesta){
+
+                        procesando();
+                        window.location="{{url('/')}}/correo/"+id   
+
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
+      });
+
+      $(".reservar").click(function(){
+
+        procesando();
+        var route = "{{url('/')}}/reservacion/guardar-tipo-usuario/2";
+        var token = '{{ csrf_token() }}';
+        var id = $(this).closest('tr').attr('id');
+            
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+            dataType: 'json',
+            success:function(respuesta){
+                window.location = "{{url('/')}}/agendar/reservaciones/actividades/"+id
+
+            },
+            error:function(msj){
+                        // $("#msj-danger").fadeIn(); 
+                        // var text="";
+                        // console.log(msj);
+                        // var merror=msj.responseJSON;
+                        // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                        // $("#msj-error").html(text);
+                        // setTimeout(function(){
+                        //          $("#msj-danger").fadeOut();
+                        //         }, 3000);
+                        finprocesado();
+                        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                        }
+        });
+    })
 
     </script>
 @stop

@@ -96,12 +96,15 @@ class AlumnoController extends BaseController
 
                 if($usuario->imagen){
                     $imagen = $usuario->imagen;
+                    $usuario = 1;
                 }else{
                     $imagen = '';
+                    $usuario = 0;
                 }
 
             }else{
                 $imagen = '';
+                $usuario = 0;
             }
 
             if($activacion){
@@ -115,6 +118,7 @@ class AlumnoController extends BaseController
             $alumno_array['activacion']=$activacion;
             $alumno_array['deuda']=$deuda;
             $alumno_array['imagen']=$imagen;
+            $alumno_array['usuario']=$usuario;
             $alumno_array['edad']=$edad;
             $array[$alumno->id] = $alumno_array;
 

@@ -81,16 +81,6 @@
                             </div>
                         </a>
                     </li>
-
-                    <!--<li>
-                        <a href="#">
-                            <span class="ca-icon-c">A</span>
-                            <div class="ca-content-c">
-                                <h2 class="ca-main-c">Exceptional Service</h2>
-                                <h3 class="ca-sub-c">Personalized to your needs</h3>
-                            </div>
-                        </a>
-                    </li>-->
                     
                 </ul>
 

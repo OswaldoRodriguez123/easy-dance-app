@@ -140,9 +140,9 @@
 
                                 ?>
                                 @if($alumno['deleted_at'] == null)
-                                    <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="row_{{$id}}" class="seleccion" data-tipo = "1">
+                                    <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo = "1">
                                 @else
-                                    <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="row_{{$id}}" class="seleccion seleccion_deleted" data-tipo = "2">
+                                    <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion seleccion_deleted" data-tipo = "2">
                                 @endif
                                     <td class="text-center previa"> @if($alumno['activacion']) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">
@@ -187,7 +187,51 @@
                                     </td>
                                     <td class="text-center disabled"> 
                                         @if($alumno['deleted_at'] == null)
-                                            <i name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>
+                                            <!-- <i name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i> -->
+
+                                            <ul class="top-menu">
+                                                <li class="dropdown" id="dropdown_{{$id}}">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                                       <span class="f-15 f-700" style="color:black"> 
+                                                            <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                       </span>
+                                                    </a>
+                                                    <div class="dropup">
+                                                        <ul class="dropdown-menu dm-icon pull-right">
+
+                                                            @if($alumno['deuda'])
+                                                                <li class="hidden-xs">
+                                                                    <a onclick="procesando()" href="{{url('/')}}/participante/alumno/deuda/{{$id}}"><i class="icon_a-pagar f-16 m-r-10 boton blue"></i> Pagar</a>
+                                                                </li>
+                                                            @endif
+
+                                                            @if($alumno['usuario'])
+                                                                <li class="hidden-xs email">
+                                                                    <a onclick="procesando()"><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
+                                                                </li>
+                                                            @endif
+
+
+                                                            <li class="hidden-xs">
+                                                                <a onclick="procesando()" href="{{url('/')}}/participante/alumno/transferir/{{$id}}"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>
+                                                            </li>
+
+                                                            <li class="hidden-xs">
+                                                                <a onclick="procesando()" href="{{url('/')}}/participante/alumno/evaluaciones/{{$id}}"><i class="zmdi glyphicon glyphicon-search f-16 boton blue"></i>Valoración</a>
+                                                            </li>
+
+                                                            <li class="hidden-xs reservar">
+                                                                <a onclick="procesando()"><i class="zmdi icon_a-reservaciones f-16 boton blue"></i>Reservar</a>
+                                                            </li>
+
+                                                            <li class="hidden-xs eliminar">
+                                                                <a class="pointer eliminar"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         @endif
                                     </td>
                                 </tr>
@@ -220,6 +264,9 @@
 
         route_detalle="{{url('/')}}/participante/alumno/detalle";
         route_operacion="{{url('/')}}/participante/alumno/operaciones";
+        route_email="{{url('/')}}/correo/sesion";
+        route_eliminar="{{url('/')}}/participante/alumno/eliminar/";
+        route_principal="{{url('/')}}/participante/alumno";
 
         $(document).ready(function(){
 
@@ -263,10 +310,10 @@
         function previa(t){
             var row = $(t).closest('tr');
             var tipo = row.data('tipo');
+
             if(tipo == '1'){
-                var tmp = row.attr('id');
-                var id_alumno = tmp.split('_');
-                var route =route_detalle+"/"+id_alumno[1];
+                var id = row.attr('id');
+                var route =route_detalle+"/"+id;
                 window.location=route;
             }
         }
@@ -297,25 +344,137 @@
     
         });
 
-        $('#tipologia').on('change', function(){
+        $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
 
-            if($(this).val() == 'T'){
+            var id = $(this).closest('tr').attr('id');
+            var dropdown = $(this).closest('.dropdown')
+            var dropdown_toggle = $(this).closest('.dropdown-toggle')
 
-                t
-                .columns(5)
-                .search('')
-                .draw(); 
+            $('.dropdown-toggle').attr('aria-expanded','false')
+            $('.dropdown').removeClass('open')
+            $('.table-responsive').css( "overflow", "auto" );
 
-            }else{
-
-                t
-                .columns(5)
-                .search($(this).val())
-                .draw();
-
+            if(!dropdown.hasClass('open')){
+                dropdown.addClass('open')
+                dropdown_toggle.attr('aria-expanded','true')
+                $('.table-responsive').css( "overflow", "inherit" );
             }
-    
+         
         });
+
+        $('.table-responsive').on('hide.bs.dropdown', function () {
+            $('.table-responsive').css( "overflow", "auto" );
+        }) 
+
+        $(".email").click(function(){
+
+            var route = route_email;
+            var token = '{{ csrf_token() }}';
+            var id = $(this).closest('tr').attr('id');
+                
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:"&usuario_tipo=1&usuario_id="+id,
+                    success:function(respuesta){
+
+                        procesando();
+                        window.location="{{url('/')}}/correo/"+id  
+
+                    },
+                    error:function(msj){
+                                // $("#msj-danger").fadeIn(); 
+                                // var text="";
+                                // console.log(msj);
+                                // var merror=msj.responseJSON;
+                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                // $("#msj-error").html(text);
+                                // setTimeout(function(){
+                                //          $("#msj-danger").fadeOut();
+                                //         }, 3000);
+                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                }
+                });
+      });
+
+    $(".reservar").click(function(){
+
+        procesando();
+        var route = "{{url('/')}}/reservacion/guardar-tipo-usuario/1";
+        var token = '{{ csrf_token() }}';
+        var id = $(this).closest('tr').attr('id');
+            
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+            dataType: 'json',
+            success:function(respuesta){
+                window.location = "{{url('/')}}/agendar/reservaciones/actividades/"+id
+
+            },
+            error:function(msj){
+                        // $("#msj-danger").fadeIn(); 
+                        // var text="";
+                        // console.log(msj);
+                        // var merror=msj.responseJSON;
+                        // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                        // $("#msj-error").html(text);
+                        // setTimeout(function(){
+                        //          $("#msj-danger").fadeOut();
+                        //         }, 3000);
+                        finprocesado();
+                        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                        }
+        });
+    })
+
+    $(".eliminar").click(function(){
+            var id = $(this).closest('tr').attr('id');
+            swal({   
+                title: "Desea eliminar al alumno?",   
+                text: "Confirmar eliminación!",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+      if (isConfirm) {
+        var route = route_eliminar + id;
+        var token = '{{ csrf_token() }}';
+            
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'DELETE',
+                dataType: 'json',
+                data:id,
+                success:function(respuesta){
+
+                    procesando();
+                    window.location=route_principal; 
+
+                },
+                error:function(msj){
+                            // $("#msj-danger").fadeIn(); 
+                            // var text="";
+                            // console.log(msj);
+                            // var merror=msj.responseJSON;
+                            // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                            // $("#msj-error").html(text);
+                            // setTimeout(function(){
+                            //          $("#msj-danger").fadeOut();
+                            //         }, 3000);
+                            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                            }
+            });
+            }
+        });
+    });
 
     </script>
 

@@ -58,29 +58,34 @@ class InstructorController extends BaseController {
 
                     if($usuario->imagen){
                         $imagen = $usuario->imagen;
+                        $usuario = 1;
                     }else{
                         $imagen = '';
+                        $usuario = 0;
                     }
 
                 }else{
                     $imagen = '';
+                    $usuario = 0;
                 }
 
 
                 $collection=collect($instructor);     
                 $instructor_array = $collection->toArray();
 
+                $instructor_array['usuario']=$usuario;
                 $instructor_array['imagen']=$imagen;
                 $array[$instructor->id] = $instructor_array;
 
             }
 
             return view('participante.instructor.principal')->with('instructores', $array);
+
         }else{
 
-             $academia = Academia::find(Auth::user()->academia_id);
+            $academia = Academia::find(Auth::user()->academia_id);
 
-             $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('instructores.boolean_promocionar', 1)->get();
+            $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('instructores.boolean_promocionar', 1)->get();
 
             return view('participante.instructor.principal_alumno')->with(['instructor_reserva' => $instructores, 'academia' => $academia]);
 
