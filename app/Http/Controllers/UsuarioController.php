@@ -938,7 +938,7 @@ class UsuarioController extends BaseController {
                         }
 
                         if($clase_grupal->imagen){
-                            $imagen = "/assets/uploads/clase_grupal/{$clase->imagen}";
+                            $imagen = "/assets/uploads/clase_grupal/{$clase_grupal->imagen}";
                         }else{
                             $imagen = '';
                         }
