@@ -32,6 +32,7 @@ use App\Paquete;
 use App\CredencialAlumno;
 use App\InscripcionClaseGrupal;
 use App\InscripcionClasePersonalizada;
+use App\CostoClasePersonalizada;
 //use MP;
 use Validator;
 use Carbon\Carbon;
@@ -278,6 +279,18 @@ class AdministrativoController extends BaseController {
 
             $servicios_productos['1-'.$servicio->id]=array('id' => $servicio['id'], 'nombre' => $servicio['nombre'] , 'costo' => $servicio['costo'], 'iva' => $iva, 'incluye_iva' => $servicio['incluye_iva'], 'tipo' => $servicio['tipo'], 'disponibilidad' => 0, 'servicio_producto' => 1);
 
+            if($servicio->tipo == 9){
+
+                $costos = CostoClasePersonalizada::where('clase_personalizada_id',$servicio->tipo_id)->get();
+
+                foreach($costos as $costo){
+
+                    $iva = $costo->precio * ($academia->porcentaje_impuesto / 100);
+
+                    $servicios_productos[]=array('id' => $servicio['id'], 'nombre' => $servicio['nombre'] . ' - '  . $costo->participantes . ' Participantes', 'costo' => $costo->precio, 'iva' => $iva, 'incluye_iva' => $servicio['incluye_iva'], 'tipo' => $servicio['tipo'], 'disponibilidad' => 0, 'servicio_producto' => 1);
+                }
+            }
+
         }
 
         $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre','asc')->get();
@@ -288,12 +301,6 @@ class AdministrativoController extends BaseController {
             $servicios_productos['2-'.$producto->id]=array('id' => $producto['id'], 'nombre' => $producto['nombre'] , 'costo' => $producto['costo'], 'iva' => $iva, 'incluye_iva' => $producto['incluye_iva'], 'disponibilidad' => $producto['cantidad'], 'tipo' => $producto['tipo'], 'servicio_producto' => 2);
 
         }
-
-        $proforma_join = ItemsFacturaProforma::join('alumnos', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
-            ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'items_factura_proforma.fecha_vencimiento as fecha_vencimiento', 'items_factura_proforma.id', 'items_factura_proforma.importe_neto as total', 'items_factura_proforma.nombre as concepto', 'items_factura_proforma.cantidad')
-            ->where('items_factura_proforma.academia_id' , '=' , Auth::user()->academia_id)
-            ->where('alumnos.deleted_at' , '=' , null)
-        ->get();
 
         $array = array();
 
@@ -1745,6 +1752,7 @@ class AdministrativoController extends BaseController {
             $array = array();
             $explode = explode("-", $request->combo);
             $item_id = $explode[0];
+            $costo = $explode[1];
             $tipo = $explode[2];
             $servicio_producto = $explode[3];
 
@@ -1776,10 +1784,19 @@ class AdministrativoController extends BaseController {
 
             if($servicio_producto == 1){
                 $producto_servicio = ConfigServicios::find($item_id);
-                $importe_neto = $producto_servicio->costo * $request->cantidad;
+
+                if($producto_servicio->tipo != 9){
+                    $importe_neto = $producto_servicio->costo * $request->cantidad;
+                    $precio_neto = $producto_servicio->costo;
+                }else{
+                    $importe_neto = $costo * $request->cantidad;
+                    $precio_neto = $costo;
+                }
+                
             }else{
                 $producto_servicio = ConfigProductos::find($item_id);
                 $importe_neto = $producto_servicio->costo * $request->cantidad;
+                $precio_neto = $producto_servicio->costo;
             }
 
             if($request->impuesto == 0 and $producto_servicio->incluye_iva == 1){
@@ -1799,7 +1816,7 @@ class AdministrativoController extends BaseController {
             $item_factura->nombre = $producto_servicio->nombre;
             $item_factura->tipo = $tipo;
             $item_factura->cantidad = $request->cantidad;
-            $item_factura->precio_neto = $producto_servicio->costo;
+            $item_factura->precio_neto = $precio_neto;
             $item_factura->impuesto = $request->impuesto;
             $item_factura->importe_neto = $importe_neto;
             $item_factura->fecha_vencimiento = Carbon::now()->addDay()->toDateString();
@@ -1824,7 +1841,7 @@ class AdministrativoController extends BaseController {
                     }
                 }
 
-                $array = array(['id' => $item_factura->id, 'item_id' => $item_id , 'nombre' => $producto_servicio->nombre , 'tipo' => $tipo, 'cantidad' => $request->cantidad, 'precio_neto' => $producto_servicio->costo, 'impuesto' => intval($request->impuesto), 'importe_neto' => $importe_neto, 'operacion' => '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>']);
+                $array = array(['id' => $item_factura->id, 'item_id' => $item_id , 'nombre' => $producto_servicio->nombre , 'tipo' => $tipo, 'cantidad' => $request->cantidad, 'precio_neto' => $precio_neto, 'impuesto' => intval($request->impuesto), 'importe_neto' => $importe_neto, 'operacion' => '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>']);
 
                 $last_proforma = ItemsFacturaProforma::where('fecha' , '=', Carbon::now()->toDateString())
                     ->where('academia_id' , '=', Auth::user()->academia_id)

@@ -1327,7 +1327,6 @@ class StaffController extends BaseController
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
     }
-
       
 
     public function agregarpagofijo(Request $request)
@@ -1406,7 +1405,7 @@ class StaffController extends BaseController
                 $config_pagos = new ConfigComision;
             }
 
-            if($request->tipo == 1){
+            if($request->tipo_pago == 1){
                 $porcentaje = $monto / 100;
                 $monto_porcentaje = $servicio_producto->costo * $porcentaje;
             }else{

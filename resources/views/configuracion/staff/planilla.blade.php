@@ -75,7 +75,7 @@
                                       <div class="clearfix p-b-35"></div>
 
                                    
-                                      <label for="apellido" id="id-tipo">Tipo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de pago" title="" data-original-title="Ayuda"></i>
+                                      <label for="apellido" id="id-tipo_pago">Tipo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de pago" title="" data-original-title="Ayuda"></i>
 
                                       <div class="form-group fg-line ">
                                         <div class="p-t-10">
@@ -91,9 +91,9 @@
                                           </label>
                                       </div>
                                       </div>
-                                   <div class="has-error" id="error-tipo">
+                                   <div class="has-error" id="error-tipo_pago">
                                         <span >
-                                            <small class="help-block error-span" id="error-tipo_mensaje" ></small>                                
+                                            <small class="help-block error-span" id="error-tipo_pago_mensaje" ></small>                                
                                         </span>
                                     </div>
 
