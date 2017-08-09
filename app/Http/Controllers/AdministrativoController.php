@@ -270,6 +270,7 @@ class AdministrativoController extends BaseController {
         }
 
         $servicios_productos = array();
+        $costos_clases_personalizadas = array();
 
         $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre','asc')->get();
 
@@ -277,9 +278,11 @@ class AdministrativoController extends BaseController {
 
             $iva = $servicio['costo'] * ($academia->porcentaje_impuesto / 100);
 
-            $servicios_productos['1-'.$servicio->id]=array('id' => $servicio['id'], 'nombre' => $servicio['nombre'] , 'costo' => $servicio['costo'], 'iva' => $iva, 'incluye_iva' => $servicio['incluye_iva'], 'tipo' => $servicio['tipo'], 'disponibilidad' => 0, 'servicio_producto' => 1);
+            $servicios_productos['1-'.$servicio->id]=array('id' => $servicio['id'], 'nombre' => $servicio['nombre'] , 'costo' => $servicio['costo'], 'iva' => $iva, 'incluye_iva' => $servicio['incluye_iva'], 'tipo' => $servicio['tipo'], 'disponibilidad' => 0, 'servicio_producto' => 1, 'tipo_id' => $servicio['tipo_id']);
 
             if($servicio->tipo == 9){
+
+                $costos_clases_personalizadas[]=array('id' => $servicio['id'], 'nombre' => '1 Participante' , 'costo' => $servicio['costo'], 'iva' => $iva, 'incluye_iva' => $servicio['incluye_iva'], 'tipo' => $servicio['tipo'], 'disponibilidad' => 0, 'servicio_producto' => 1,'clase_personalizada_id' => $servicio['tipo_id']);
 
                 $costos = CostoClasePersonalizada::where('clase_personalizada_id',$servicio->tipo_id)->get();
 
@@ -287,7 +290,7 @@ class AdministrativoController extends BaseController {
 
                     $iva = $costo->precio * ($academia->porcentaje_impuesto / 100);
 
-                    $servicios_productos[]=array('id' => $servicio['id'], 'nombre' => $servicio['nombre'] . ' - '  . $costo->participantes . ' Participantes', 'costo' => $costo->precio, 'iva' => $iva, 'incluye_iva' => $servicio['incluye_iva'], 'tipo' => $servicio['tipo'], 'disponibilidad' => 0, 'servicio_producto' => 1);
+                    $costos_clases_personalizadas[]=array('id' => $servicio['id'], 'nombre' => $costo->participantes . ' Participantes', 'costo' => $costo->precio, 'iva' => $iva, 'incluye_iva' => $servicio['incluye_iva'], 'tipo' => $servicio['tipo'], 'disponibilidad' => 0, 'servicio_producto' => 1,'clase_personalizada_id' => $costo->clase_personalizada_id);
                 }
             }
 
@@ -298,7 +301,7 @@ class AdministrativoController extends BaseController {
         foreach($config_producto as $producto){
 
             $iva = $producto['costo'] * ($academia->porcentaje_impuesto / 100);
-            $servicios_productos['2-'.$producto->id]=array('id' => $producto['id'], 'nombre' => $producto['nombre'] , 'costo' => $producto['costo'], 'iva' => $iva, 'incluye_iva' => $producto['incluye_iva'], 'disponibilidad' => $producto['cantidad'], 'tipo' => $producto['tipo'], 'servicio_producto' => 2);
+            $servicios_productos['2-'.$producto->id]=array('id' => $producto['id'], 'nombre' => $producto['nombre'] , 'costo' => $producto['costo'], 'iva' => $iva, 'incluye_iva' => $producto['incluye_iva'], 'disponibilidad' => $producto['cantidad'], 'tipo' => $producto['tipo'], 'servicio_producto' => 2, 'tipo_id' => $producto['tipo_id']);
 
         }
 
@@ -383,7 +386,7 @@ class AdministrativoController extends BaseController {
             $promotores['2-'.$instructor->id] = $promotor_array;
         }
 
-		return view('administrativo.pagos.pagos')->with(['usuarios' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto, 'promotores' => $promotores]);
+		return view('administrativo.pagos.pagos')->with(['usuarios' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto, 'promotores' => $promotores, 'costos_clases_personalizadas' => $costos_clases_personalizadas]);
 	}
 
     public function generarpagoscondeuda($id)

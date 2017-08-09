@@ -387,7 +387,7 @@
                                   <ul id="dropdown_principal" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
 
                                     <li class="dropdown-submenu pointer">
-                                    <a>Clases Grupales</a>
+                                      <a>Clases Grupales</a>
                                       <ul class="dropdown-menu">
 
                                         @foreach ( $servicios_productos as $servicio_producto ) 
@@ -401,11 +401,22 @@
 
                                     <li class="dropdown-submenu pointer">
                                       <a>Clases Personalizadas</a>
-                                      <ul class="dropdown-menu">'
+                                      <ul class="dropdown-menu">
 
                                         @foreach ( $servicios_productos as $servicio_producto ) 
                                           @if($servicio_producto['tipo'] == 9)
-                                            <li class = "pointer servicio_detalle" data-nombre="{{$servicio_producto['nombre']}}" data-servicio_producto="{{$servicio_producto['servicio_producto']}}" id="{{$servicio_producto['id']}}-{{$servicio_producto['costo']}}-{{$servicio_producto['tipo']}}-{{$servicio_producto['servicio_producto']}}-{{$servicio_producto['incluye_iva']}}-{{$servicio_producto['disponibilidad']}}"><a>{{$servicio_producto['nombre']}}</a></li>
+                                          
+                                            <li class = "dropdown-submenu pointer">
+                                              <a>{{$servicio_producto['nombre']}}</a>
+                                              <ul class="dropdown-menu">
+
+                                                @foreach ( $costos_clases_personalizadas as $costo ) 
+                                                  @if($servicio_producto['tipo_id'] == $costo['clase_personalizada_id'])
+                                                    <li class = "pointer servicio_detalle" data-nombre="{{$costo['nombre']}}" data-servicio_producto="{{$costo['servicio_producto']}}" id="{{$costo['id']}}-{{$costo['costo']}}-{{$costo['tipo']}}-{{$costo['servicio_producto']}}-{{$costo['incluye_iva']}}-{{$costo['disponibilidad']}}"><a>{{$costo['nombre']}}</a></li>
+                                                  @endif                   
+                                                @endforeach
+                                              </ul>
+                                            </li>
                                           @endif                   
                                         @endforeach
 
