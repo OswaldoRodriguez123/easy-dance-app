@@ -39,6 +39,7 @@ use App\Staff;
 use App\Cita;
 use App\Transmision;
 use App\Visitante;
+use App\Egreso;
 use Validator;
 use Mail;
 use Carbon\Carbon;
@@ -1366,7 +1367,46 @@ class UsuarioController extends BaseController {
             ->whereBetween('fecha_registro', [$start,$end])
         ->count();
 
-        return view('inicio.index-con-reportes')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas, 'transmisiones' => $arrayTransmisiones, 'mujeres' => $mujeres, 'hombres' => $hombres]);
+        $egresos_generales = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',1)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
+
+        if(!$egresos_generales){
+            $egresos_generales = 0;
+        }
+
+        $egresos_eventos = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',2)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
+
+        if(!$egresos_eventos){
+            $egresos_eventos = 0;
+        }
+
+        $egresos_talleres = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',3)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
+
+        if(!$egresos_talleres){
+            $egresos_talleres = 0;
+        }
+
+        $egresos_campanas = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',4)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
+
+        if(!$egresos_campanas){
+            $egresos_campanas = 0;
+        }
+
+        $egresos_totales = $egresos_generales + $egresos_eventos + $egresos_talleres + $egresos_campanas;
+
+        if($egresos_totales){
+            $porcentaje_general = intval(($egresos_generales / $egresos_totales) * 100);
+            $porcentaje_evento = intval(($egresos_eventos / $egresos_totales) * 100);
+            $porcentaje_taller = intval(($egresos_talleres / $egresos_totales) * 100);
+            $porcentaje_campana = intval(($egresos_campanas / $egresos_totales) * 100);
+        }else{
+            $porcentaje_general = 0;
+            $porcentaje_evento = 0;
+            $porcentaje_taller = 0;
+            $porcentaje_campana = 0;
+        }
+        
+
+        return view('inicio.index-con-reportes')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas, 'transmisiones' => $arrayTransmisiones, 'mujeres' => $mujeres, 'hombres' => $hombres, 'egresos_generales' => $egresos_generales, 'egresos_eventos' => $egresos_eventos, 'egresos_talleres' => $egresos_talleres, 'egresos_campanas' => $egresos_campanas, 'porcentaje_general' => $porcentaje_general, 'porcentaje_evento' => $porcentaje_evento, 'porcentaje_taller' => $porcentaje_taller, 'porcentaje_campana' => $porcentaje_campana]);
     }
 
     public function index()
