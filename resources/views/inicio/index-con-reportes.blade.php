@@ -79,7 +79,9 @@
 			        </div>
 			    </div>
 			</div> -->
-
+			
+			<div class="block-header"></div>
+	
 			<div class="mini-charts">
 			    <div class="row">
 			        <div class="col-sm-6 col-md-3">
@@ -488,6 +490,7 @@
 
         //Generate the Calendar
         cId.fullCalendar({
+        	lang: 'es',
         	contentHeight: 'auto',
             header: {
                 right: '',
@@ -499,7 +502,6 @@
             selectable: true,
             selectHelper: true,
             editable: false,
-            lang: 'es',
 
             //Add Events
 
