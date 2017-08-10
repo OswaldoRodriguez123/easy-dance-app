@@ -775,680 +775,7 @@ class UsuarioController extends BaseController {
     public function index_con_reportes()
     {
 
-        $arrayTalleres=array();
-        $arrayClases=array();
-        $arrayClasespersonalizadas=array();
-        $arrayFiestas=array();
-        $arrayCitas=array();
-        $arrayTransmisiones=array();
-
-        $usuario_tipo = Session::get('easydance_usuario_tipo');
-        $usuario_id = Session::get('easydance_usuario_id');
-
-        $talleres = Taller::join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
-            ->join('config_especialidades', 'config_especialidades.id', '=', 'talleres.especialidad_id')
-            ->select('talleres.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad')
-            ->where('talleres.academia_id', '=' ,  Auth::user()->academia_id)
-            ->where('talleres.fecha_inicio', '>=', Carbon::now()->toDateString())
-        ->get();
-
-        $horarios_talleres = Taller::join('horarios_talleres', 'talleres.id', '=', 'horarios_talleres.taller_id')
-            ->join('instructores', 'horarios_talleres.instructor_id', '=', 'instructores.id')
-            ->join('config_especialidades', 'config_especialidades.id', '=', 'horarios_talleres.especialidad_id')
-            ->select('talleres.id','horarios_talleres.fecha as fecha_inicio', 'horarios_talleres.hora_inicio', 'horarios_talleres.hora_final', 'talleres.color_etiqueta as taller_etiqueta', 'horarios_talleres.color_etiqueta', 'talleres.nombre', 'talleres.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad')
-            ->where('talleres.academia_id', '=' ,  Auth::user()->academia_id)
-            ->where('talleres.fecha_inicio', '>=', Carbon::now()->toDateString())
-        ->get();
-
-        foreach ($talleres as $taller) {
-
-            $fecha_start=explode('-',$taller->fecha_inicio);
-            $fecha_end=explode('-',$taller->fecha_final);
-
-            $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-            $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
-
-            $nombre = $taller->nombre;
-            $descripcion=$taller->descripcion;
-            $hora_inicio=$taller->hora_inicio;
-            $hora_final=$taller->hora_final;
-            $fecha_inicio = $dt->toDateString();
-            $fecha_final = $df->toDateString();
-            $etiqueta=$taller->color_etiqueta;
-            $instructor = $taller->instructor_nombre . ' ' .$taller->instructor_apellido;
-            $sexo = $taller->sexo;
-            $especialidad = $taller->especialidad;
-            $instructor_imagen = Instructor::find($taller->instructor_id);               
-            
-            if($instructor_imagen){
-                if($instructor_imagen->imagen){
-                    $imagen = $instructor_imagen->imagen;
-                }else{
-                    $imagen = '';
-                }
-            }else{
-                $imagen = '';
-            }
-            
-
-            $id=$instructor."!".$especialidad."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
-
-            $fecha_inicio = $dt->toDateString();
-            $fecha_final = $df->toDateString();
-
-            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/talleres/detalle/".$taller->id;
-            }else{
-                $url = "/agendar/talleres/progreso/".$taller->id;
-            }
-
-            $arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-
-            while($dt->timestamp<$df->timestamp){
-                $fecha="";
-                $fecha=$dt->addWeek()->toDateString();
-                $arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-            }
-        }
-
-        foreach ($horarios_talleres as $taller) {
-
-            $fecha_start=explode('-',$taller->fecha_inicio);
-            $fecha_end=explode('-',$taller->fecha_final);
-
-            $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-
-            $nombre = $taller->nombre;
-            $descripcion=$taller->descripcion;
-            $hora_inicio=$taller->hora_inicio;
-            $hora_final=$taller->hora_final;
-            $fecha_inicio = $dt->toDateString();
-            $fecha_final = $dt->toDateString();
-            $etiqueta=$taller->color_etiqueta;
-            $instructor = $taller->instructor_nombre . ' ' .$taller->instructor_apellido;
-            $sexo = $taller->sexo;
-            $especialidad = $taller->especialidad;
-            $instructor_imagen = Instructor::find($taller->instructor_id);               
-            
-            if($instructor_imagen){
-                if($instructor_imagen->imagen){
-                    $imagen = $instructor_imagen->imagen;
-                }else{
-                    $imagen = '';
-                }
-            }else{
-                $imagen = '';
-            }
-
-            $id=$instructor."!".$especialidad."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
-
-            $fecha_inicio = $dt->toDateString();
-            $fecha_final = $df->toDateString();
-
-            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/talleres/detalle/".$taller->id;
-            }else{
-                $url = "/agendar/talleres/progreso/".$taller->id;
-            }
-
-            $arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-
-            
-        }
-
-        $clasegrupal = ClaseGrupal::join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->join('config_especialidades', 'config_especialidades.id', '=', 'clases_grupales.especialidad_id')
-            ->join('config_niveles_baile', 'config_niveles_baile.id', '=', 'clases_grupales.nivel_baile_id')
-            ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
-            ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
-            ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
-            ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
-        ->get();
-
-        $horarios_clasegrupal = HorarioClaseGrupal::join('clases_grupales', 'clases_grupales.id', '=', 'horarios_clases_grupales.clase_grupal_id')
-            ->join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-            ->join('config_especialidades', 'config_especialidades.id', '=', 'horarios_clases_grupales.especialidad_id')
-            ->join('config_niveles_baile', 'config_niveles_baile.id', '=', 'clases_grupales.nivel_baile_id')
-            ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('clases_grupales.id', 'clases_grupales.fecha_final', 'clases_grupales.cantidad_hombres','clases_grupales.cantidad_mujeres', 'horarios_clases_grupales.fecha as fecha_inicio', 'horarios_clases_grupales.hora_inicio', 'horarios_clases_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horarios_clases_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
-            ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
-            ->where('clases_grupales.deleted_at', '=', null)
-            ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
-            ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
-        ->get();
-
-        foreach ($clasegrupal as $clase) {
-
-
-            $fecha_start=explode('-',$clase->fecha_inicio);
-            $fecha_end=explode('-',$clase->fecha_final);
-
-            $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-            $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
-
-            $nombre_principal = '';
-
-            if($dt <= Carbon::now()){
-
-                $cantidad_hombres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-                ->where('alumnos.sexo','M')
-                    ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
-                ->count();
-
-                $cantidad_mujeres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-                    ->where('alumnos.sexo','F')
-                    ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
-                ->count();
-
-                if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
-                    $nombre_principal = 'AGOTADA';
-                }else{
-                    $nombre_principal = $clase->nombre;
-                }
-
-                $inicio = 1;
-
-            }else{
-                
-                $nombre_principal = $clase->nombre . ' ★'; 
-                $inicio = 0;
-            }
-          
-
-            $nombre=$nombre_principal;
-            $nombre_clase = $clase->nombre;
-            $descripcion=$clase->descripcion;
-            $hora_inicio=$clase->hora_inicio;
-            $hora_final=$clase->hora_final;
-            $fecha_inicio = $dt->toDateString();
-            $fecha_final = $df->toDateString();
-            $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
-            $sexo = $clase->sexo;
-            $especialidad = $clase->especialidad;
-            $nivel = $clase->nivel;
-            $instructor_imagen = Instructor::find($clase->instructor_id);               
-            
-            if($instructor_imagen){
-                if($instructor_imagen->imagen){
-                    $imagen = $instructor_imagen->imagen;
-                }else{
-                    $imagen = '';
-                }
-            }else{
-                $imagen = '';
-            }
-
-            $id=$instructor."!".$especialidad."!".$nivel."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
-
-            if($clase->color_etiqueta){
-                $etiqueta=$clase->color_etiqueta;
-            }else{
-                $etiqueta=$clase->clase_etiqueta;
-            }
- 
-
-            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/clases-grupales/detalle/".$clase->id;
-            }else{
-                $url = "/agendar/clases-grupales/progreso/".$clase->id;
-            }
-
-            $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$fecha_inicio,"fecha_final"=>$fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, 'inicio' => $inicio, "nombre_clase" => $nombre_clase);
-            
-            while($dt->timestamp<$df->timestamp){
-                $nombre = $clase->nombre;
-                $fecha="";
-                $fecha=$dt->addWeek()->toDateString();
-
-                $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha)
-                    ->where('fecha_final', '>=', $fecha)
-                    ->where('tipo_id', $clase->id)
-                    ->where('tipo', 1)
-                ->first();
-
-                if(!$horario_bloqueado){
-
-                    $arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "nombre_clase" => $nombre_clase);
-                }else{
-                    if($horario_bloqueado->boolean_mostrar == 1)
-                    {
-                        $arrayClases[]=array("id"=>$clase->id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo, "nombre_clase" => $nombre_clase);
-                     }
-                }
-            }
-        }
-
-        foreach ($horarios_clasegrupal as $clase) {
-
-            $fecha_start=explode('-',$clase->fecha_inicio);
-            $fecha_end=explode('-',$clase->fecha_final);
-
-            $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-            $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
-
-            $nombre_principal = '';
-
-            $cantidad_hombres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-            ->where('alumnos.sexo','M')
-                ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
-            ->count();
-
-            $cantidad_mujeres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-                ->where('alumnos.sexo','F')
-                ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
-            ->count();
-
-            if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
-                $nombre_principal = 'AGOTADA';
-            }else{
-                $nombre_principal = $clase->nombre;
-            }
-            
-            $nombre=$nombre_principal;
-            $nombre_clase = $clase->nombre;
-            $descripcion=$clase->descripcion;
-            $hora_inicio=$clase->hora_inicio;
-            $hora_final=$clase->hora_final;
-            $fecha_inicio = $dt->toDateString();
-            $fecha_final = $df->toDateString();
-            $etiqueta=$clase->color_etiqueta;
-            $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
-            $sexo = $clase->sexo;
-            $especialidad = $clase->especialidad;
-            $nivel = $clase->nivel;
-            $instructor_imagen = Instructor::find($clase->instructor_id);               
-            
-            if($instructor_imagen){
-                if($instructor_imagen->imagen){
-                    $imagen = $instructor_imagen->imagen;
-                }else{
-                    $imagen = '';
-                }
-            }else{
-                $imagen = '';
-            }
-
-            $id=$instructor."!".$especialidad."!".$nivel."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
-
-            $fecha_inicio = $dt->toDateString();
-            $fecha_final = $df->toDateString();
-
-            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/clases-grupales/detalle/".$clase->id;
-            }else{
-                $url = "/agendar/clases-grupales/progreso/".$clase->id;
-            }
-
-            $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "nombre_clase" => $nombre_clase);
-
-            while($dt->timestamp<$df->timestamp){
-                $fecha="";
-                $fecha=$dt->addWeek()->toDateString();
-
-                $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha)
-                    ->where('fecha_final', '>=', $fecha)
-                    ->where('tipo_id', $clase->id)
-                    ->where('tipo', 1)
-                ->first();
-
-                 if(!$horario_bloqueado){
-
-                    $arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "nombre_clase" => $nombre_clase);
-                }else{
-                    if($horario_bloqueado->boolean_mostrar == 1)
-                    {
-                        $arrayClases[]=array("id"=>$clase->id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo, "nombre_clase" => $nombre_clase);
-                     }
-                }
-            }
-        }
-
-        $config_clases_personalizadas = ConfigClasesPersonalizadas::where('academia_id',Auth::user()->academia_id)->first();
-
-        $query = InscripcionClasePersonalizada::join('clases_personalizadas', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
-            ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
-            ->join('config_especialidades', 'config_especialidades.id', '=', 'inscripcion_clase_personalizada.especialidad_id')
-            ->join('instructores', 'instructores.id', '=', 'inscripcion_clase_personalizada.instructor_id')
-            ->select('inscripcion_clase_personalizada.*','clases_personalizadas.color_etiqueta', 'alumnos.nombre', 'alumnos.apellido', 'config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.id as instructor_id', 'instructores.sexo')
-            ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
-            ->where('inscripcion_clase_personalizada.fecha_inicio', '>=', Carbon::now()->toDateString());
-
-        if($usuario_tipo == 2 || $usuario_tipo == 4){
-            $query->where('inscripcion_clase_personalizada.alumno_id', '=', $usuario_id);
-        }
-
-        $clasespersonalizadas = $query->get();
-
-        $query = InscripcionClasePersonalizada::join('clases_personalizadas', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
-            ->join('horarios_clases_personalizadas', 'inscripcion_clase_personalizada.id', '=', 'horarios_clases_personalizadas.clase_personalizada_id')
-            ->join('config_especialidades', 'config_especialidades.id', '=', 'horarios_clases_personalizadas.especialidad_id')
-            ->join('instructores', 'instructores.id', '=', 'horarios_clases_personalizadas.instructor_id')
-            ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
-            ->select('inscripcion_clase_personalizada.fecha_final', 'horarios_clases_personalizadas.fecha as fecha_inicio', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final', 'clases_personalizadas.color_etiqueta as clase_etiqueta', 'horarios_clases_personalizadas.color_etiqueta', 'clases_personalizadas.nombre', 'clases_personalizadas.descripcion', 'inscripcion_clase_personalizada.id', 'alumnos.nombre', 'alumnos.apellido', 'config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.id as instructor_id', 'instructores.sexo')
-            ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
-            ->where('horarios_clases_personalizadas.fecha', '>=', Carbon::now()->toDateString());
-
-        if($usuario_tipo == 2 || $usuario_tipo == 4){
-            $query->where('inscripcion_clase_personalizada.alumno_id', '=', $usuario_id);
-        }
-
-        $horarios_clasespersonalizadas = $query->get();
-
-        foreach ($clasespersonalizadas as $clasepersonalizada) {
-
-            $fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
-            $fecha_end=explode('-',$clasepersonalizada->fecha_inicio);
-            $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-            $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
-
-            $nombre= 'Clase P ' . $clasepersonalizada->nombre . ' ' . $clasepersonalizada->apellido;
-            $descripcion=$config_clases_personalizadas->descripcion;
-            $hora_inicio=$clasepersonalizada->hora_inicio;
-            $hora_final=$clasepersonalizada->hora_final;
-            $etiqueta=$clasepersonalizada->color_etiqueta;
-            $instructor = $clasepersonalizada->instructor_nombre . ' ' .$clasepersonalizada->instructor_apellido;
-            $especialidad = $clasepersonalizada->especialidad;    
-            $clase_personalizada_nombre = $clasepersonalizada->clase_personalizada_nombre;
-            $sexo = $clasepersonalizada->sexo;
-            $instructor_imagen = Instructor::find($clasepersonalizada->instructor_id);               
-            
-            if($instructor_imagen->imagen){
-                $imagen = $instructor_imagen->imagen;
-            }else{
-                $imagen = '';
-            }
-
-            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/clases-personalizadas/detalle/".$clasepersonalizada->id;
-            }else{
-                $url  = "/agendar/clases-personalizadas/progreso/".Auth::user()->academia_id;
-            }
-
-            $id=$instructor."!".$especialidad."!".$clase_personalizada_nombre."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
-
-            $asistencia = Asistencia::where('tipo',3)->where('tipo_id',$clasepersonalizada->id)->where('fecha',$dt->toDateString());
-
-            // if(!$asistencia){
-                $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-            // }
-            
-            while($dt->timestamp<$df->timestamp){
-                $fecha="";
-                $fecha=$dt->addWeek()->toDateString();
-                $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-            }
-        }
-
-        foreach ($horarios_clasespersonalizadas as $clasepersonalizada) {
-
-            $fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
-            $fecha_end=explode('-',$clasepersonalizada->fecha_inicio);
-            $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-            $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
-
-            $nombre= 'Clase P ' . $clasepersonalizada->nombre . ' ' . $clasepersonalizada->apellido;
-            $descripcion=$config_clases_personalizadas->descripcion;
-            $hora_inicio=$clasepersonalizada->hora_inicio;
-            $hora_final=$clasepersonalizada->hora_final;
-            if($clasepersonalizada->color_etiqueta){
-                $etiqueta=$clasepersonalizada->color_etiqueta;
-            }else{
-                $etiqueta=$clasepersonalizada->clase_etiqueta;
-            }
-            $instructor = $clasepersonalizada->instructor_nombre . ' ' .$clasepersonalizada->instructor_apellido;
-            $especialidad = $clasepersonalizada->especialidad;    
-            $clase_personalizada_nombre = $clasepersonalizada->clase_personalizada_nombre;
-            $sexo = $clasepersonalizada->sexo;
-            
-            $instructor_imagen = Instructor::find($clasepersonalizada->instructor_id);               
-            
-            if($instructor_imagen->imagen){
-                $imagen = $instructor_imagen->imagen;
-            }else{
-                $imagen = '';
-            }
-
-            $id=$instructor."!".$especialidad."!".$clase_personalizada_nombre."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
-
-            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/clases-personalizadas/detalle/".$clasepersonalizada->id;
-            }else{
-                $url  = "/agendar/clases-personalizadas/progreso/".Auth::user()->academia_id;
-            }
-
-            $asistencia = Asistencia::where('tipo',3)->where('tipo_id',$clasepersonalizada->id)->where('fecha',$dt->toDateString());
-
-            // if(!$asistencia){
-                $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-            // }
-
-            while($dt->timestamp<$df->timestamp){
-                $fecha="";
-                $fecha=$dt->addWeek()->toDateString();
-                $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-            }
-
-        }
-
-        $fiestas = Fiesta::where('fiestas.academia_id', '=' ,  Auth::user()->academia_id)
-            ->where('fiestas.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'))
-        ->get();
-
-        foreach ($fiestas as $fiesta) {
-            $fecha_start=explode('-',$fiesta->fecha_inicio);
-            $fecha_end=explode('-',$fiesta->fecha_final);
-
-            $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-            $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
-
-            $id=$fiesta->id;
-            $nombre= $fiesta->nombre;
-            $descripcion=$fiesta->descripcion;
-            $hora_inicio=$fiesta->hora_inicio;
-            $hora_final=$fiesta->hora_final;
-            $etiqueta=$fiesta->color_etiqueta;
-
-            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/fiestas/detalle/".$fiesta->id;
-            }else{
-                $url = "/agendar/fiestas/progreso/".$fiesta->id;
-            }
-
-            $arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-
-            while($dt->timestamp<$df->timestamp){
-                $fecha="";
-                $fecha=$dt->addWeek()->toDateString();
-                $arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-            }
-
-        }
-
-        $query = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
-            ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
-            ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
-            ->select('citas.*','alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.id as alumno_id', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_citas.nombre as nombre', 'instructores.id as instructor_id', 'instructores.sexo')
-            ->where('citas.academia_id','=', Auth::user()->academia_id)
-            ->where('citas.estatus','=','1')
-            ->where('citas.fecha', '>=', Carbon::now()->format('Y-m-d'));
-
-        if($usuario_tipo == 2 || $usuario_tipo == 4){
-            $query->where('citas.alumno_id', '=', $usuario_id);
-        }else{
-            $query->where('citas.boolean_mostrar','=','2');
-        }
-
-        $citas = $query->get();
-
-        foreach ($citas as $cita) {
-
-            if($cita->tipo_id != 5){
-                $nombre = $cita->alumno_nombre . ' ' . $cita->alumno_apellido;
-            }else{
-                $nombre = $cita->alumno_nombre . ' ' . $cita->alumno_apellido . ' ★'; 
-            }
-
-            $fecha_start=explode('-',$cita->fecha);
-            $fecha_end=explode('-',$cita->fecha);
-
-            $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-            $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
-            
-            $descripcion=$cita->nombre;
-            $hora_inicio=$cita->hora_inicio;
-            $hora_final=$cita->hora_final;
-            $etiqueta=$cita->color_etiqueta;
-            $etiqueta=$cita->color_etiqueta;
-            $instructor = $cita->instructor_nombre . ' ' .$cita->instructor_apellido;
-            $sexo = $cita->sexo;
-            $instructor_imagen = Instructor::find($cita->instructor_id);               
-            
-            if($instructor_imagen->imagen){
-                $imagen = $instructor_imagen->imagen;
-            }else{
-                $imagen = '';
-            }
-
-
-            $alumno = Alumno::find($cita->alumno_id);
-
-            if($alumno->tipo_pago == 1){
-                $tipo_pago = 'Contado';
-            }else if($alumno->tipo_pago == 2){
-                $tipo_pago = 'Credito';
-            }else{
-                $tipo_pago = 'Sin Confirmar';
-            }
-
-            $id=$instructor."!".$descripcion."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final."!".$tipo_pago;
-
-            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/citas/detalle/".$cita->id;
-            }else{
-                $url = "";
-            }
-
-            $arrayCitas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-
-        }
-
-        $transmisiones = Transmision::where('academia_id', Auth::user()->academia_id)->where('fecha', '>=', Carbon::now()->format('Y-m-d'))->get();
-
-        foreach ($transmisiones as $transmision) {
-
-            $fecha=explode('-',$transmision->fecha);
-            $fecha = Carbon::createFromFormat('Y-m-d', $transmision->fecha)->toDateString();
-            $tema=$transmision->tema;
-            $hora=$transmision->hora;
-            $presentador=$transmision->presentador;
-            $etiqueta=$transmision->color_etiqueta;
-
-            $id=$tema."!".$fecha."!".$hora."!".$presentador;
-
-            if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
-                $url = "/agendar/transmisiones/detalle/".$transmision->id;
-            }else{
-                $url = "";
-            }
-
-            $arrayTransmisiones[]=array("id"=>$id,"nombre"=>'Transmisión', "fecha"=> $fecha, "hora"=>$hora, "etiqueta"=>$etiqueta,"url"=>$url);
-        }
-
-
-        $start = Carbon::now()->startOfMonth()->toDateString();
-        $end = Carbon::now()->endOfMonth()->toDateString();  
-
-        $mujeres = Visitante::where('academia_id','=', Auth::user()->academia_id)
-            ->where('sexo','F')
-            ->whereBetween('fecha_registro', [$start,$end])
-        ->count();
-
-        $hombres = Visitante::where('academia_id','=', Auth::user()->academia_id)
-            ->where('sexo','M')
-            ->whereBetween('fecha_registro', [$start,$end])
-        ->count();
-
-        $egresos_generales = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',1)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
-
-        if(!$egresos_generales){
-            $egresos_generales = 0;
-        }
-
-        $egresos_eventos = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',2)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
-
-        if(!$egresos_eventos){
-            $egresos_eventos = 0;
-        }
-
-        $egresos_talleres = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',3)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
-
-        if(!$egresos_talleres){
-            $egresos_talleres = 0;
-        }
-
-        $egresos_campanas = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',4)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
-
-        if(!$egresos_campanas){
-            $egresos_campanas = 0;
-        }
-
-        $egresos_totales = $egresos_generales + $egresos_eventos + $egresos_talleres + $egresos_campanas;
-
-        if($egresos_totales){
-            $porcentaje_general = intval(($egresos_generales / $egresos_totales) * 100);
-            $porcentaje_evento = intval(($egresos_eventos / $egresos_totales) * 100);
-            $porcentaje_taller = intval(($egresos_talleres / $egresos_totales) * 100);
-            $porcentaje_campana = intval(($egresos_campanas / $egresos_totales) * 100);
-        }else{
-            $porcentaje_general = 0;
-            $porcentaje_evento = 0;
-            $porcentaje_taller = 0;
-            $porcentaje_campana = 0;
-        }
-
-        $ingresos_generales = 0;
-        $ingresos_eventos = 0;
-        $ingresos_talleres = 0;
-        $ingresos_campanas = 0;
-
-        $ingresos = Factura::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->get();
-
-        foreach($ingresos as $ingreso){
-            $facturas = ItemsFactura::where('factura_id', $ingreso->id)->get();
-            foreach($facturas as $factura){
-                if($factura->tipo == 5){
-
-                    $ingresos_talleres += floatval($factura->importe_neto);
-
-                }else if($factura->tipo == 14){
-
-                    $ingresos_eventos += floatval($factura->importe_neto);
-
-                }else if($factura->tipo == 11 OR $factura->tipo == 12){
-
-                    $ingresos_campanas += floatval($factura->importe_neto);
-
-                }else{
-                    $ingresos_generales += floatval($factura->importe_neto);
-                }
-            }
-        }
-
-
-        $ingresos_totales = $ingresos_generales + $ingresos_eventos + $ingresos_talleres + $ingresos_campanas;
-
-        if($ingresos_totales){
-            $porcentaje_ingreso_general = intval(($ingresos_generales / $ingresos_totales) * 100);
-            $porcentaje_ingreso_evento = intval(($ingresos_eventos / $ingresos_totales) * 100);
-            $porcentaje_ingreso_taller = intval(($ingresos_talleres / $ingresos_totales) * 100);
-            $porcentaje_ingreso_campana = intval(($ingresos_campanas / $ingresos_totales) * 100);
-        }else{
-            $porcentaje_ingreso_general = 0;
-            $porcentaje_ingreso_evento = 0;
-            $porcentaje_ingreso_taller = 0;
-            $porcentaje_ingreso_campana = 0;
-        }
+        
         
 
         return view('inicio.index-con-reportes')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas, 'transmisiones' => $arrayTransmisiones, 'mujeres' => $mujeres, 'hombres' => $hombres, 'egresos_generales' => $egresos_generales, 'egresos_eventos' => $egresos_eventos, 'egresos_talleres' => $egresos_talleres, 'egresos_campanas' => $egresos_campanas, 'porcentaje_general' => $porcentaje_general, 'porcentaje_evento' => $porcentaje_evento, 'porcentaje_taller' => $porcentaje_taller, 'porcentaje_campana' => $porcentaje_campana, 'ingresos_generales' => $ingresos_generales, 'ingresos_eventos' => $ingresos_eventos, 'ingresos_talleres' => $ingresos_talleres, 'ingresos_campanas' => $ingresos_campanas, 'porcentaje_ingreso_general' => $porcentaje_ingreso_general, 'porcentaje_ingreso_evento' => $porcentaje_ingreso_evento, 'porcentaje_ingreso_taller' => $porcentaje_ingreso_taller, 'porcentaje_ingreso_campana' => $porcentaje_ingreso_campana]);
@@ -1571,7 +898,684 @@ class UsuarioController extends BaseController {
                     ->where('vencimiento_clases_grupales.usuario_id','=', Auth::user()->id)
                 ->first();
 
-                return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia, 'vencimiento' => $vencimiento]); 
+                $arrayTalleres=array();
+                $arrayClases=array();
+                $arrayClasespersonalizadas=array();
+                $arrayFiestas=array();
+                $arrayCitas=array();
+                $arrayTransmisiones=array();
+
+                $usuario_tipo = Session::get('easydance_usuario_tipo');
+                $usuario_id = Session::get('easydance_usuario_id');
+
+                $talleres = Taller::join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
+                    ->join('config_especialidades', 'config_especialidades.id', '=', 'talleres.especialidad_id')
+                    ->select('talleres.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad')
+                    ->where('talleres.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->where('talleres.fecha_inicio', '>=', Carbon::now()->toDateString())
+                ->get();
+
+                $horarios_talleres = Taller::join('horarios_talleres', 'talleres.id', '=', 'horarios_talleres.taller_id')
+                    ->join('instructores', 'horarios_talleres.instructor_id', '=', 'instructores.id')
+                    ->join('config_especialidades', 'config_especialidades.id', '=', 'horarios_talleres.especialidad_id')
+                    ->select('talleres.id','horarios_talleres.fecha as fecha_inicio', 'horarios_talleres.hora_inicio', 'horarios_talleres.hora_final', 'talleres.color_etiqueta as taller_etiqueta', 'horarios_talleres.color_etiqueta', 'talleres.nombre', 'talleres.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad')
+                    ->where('talleres.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->where('talleres.fecha_inicio', '>=', Carbon::now()->toDateString())
+                ->get();
+
+                foreach ($talleres as $taller) {
+
+                    $fecha_start=explode('-',$taller->fecha_inicio);
+                    $fecha_end=explode('-',$taller->fecha_final);
+
+                    $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                    $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
+                    $nombre = $taller->nombre;
+                    $descripcion=$taller->descripcion;
+                    $hora_inicio=$taller->hora_inicio;
+                    $hora_final=$taller->hora_final;
+                    $fecha_inicio = $dt->toDateString();
+                    $fecha_final = $df->toDateString();
+                    $etiqueta=$taller->color_etiqueta;
+                    $instructor = $taller->instructor_nombre . ' ' .$taller->instructor_apellido;
+                    $sexo = $taller->sexo;
+                    $especialidad = $taller->especialidad;
+                    $instructor_imagen = Instructor::find($taller->instructor_id);               
+                    
+                    if($instructor_imagen){
+                        if($instructor_imagen->imagen){
+                            $imagen = $instructor_imagen->imagen;
+                        }else{
+                            $imagen = '';
+                        }
+                    }else{
+                        $imagen = '';
+                    }
+                    
+
+                    $id=$instructor."!".$especialidad."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
+
+                    $fecha_inicio = $dt->toDateString();
+                    $fecha_final = $df->toDateString();
+
+                    if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
+                        $url = "/agendar/talleres/detalle/".$taller->id;
+                    }else{
+                        $url = "/agendar/talleres/progreso/".$taller->id;
+                    }
+
+                    $arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
+
+                    while($dt->timestamp<$df->timestamp){
+                        $fecha="";
+                        $fecha=$dt->addWeek()->toDateString();
+                        $arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
+                    }
+                }
+
+                foreach ($horarios_talleres as $taller) {
+
+                    $fecha_start=explode('-',$taller->fecha_inicio);
+                    $fecha_end=explode('-',$taller->fecha_final);
+
+                    $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+
+                    $nombre = $taller->nombre;
+                    $descripcion=$taller->descripcion;
+                    $hora_inicio=$taller->hora_inicio;
+                    $hora_final=$taller->hora_final;
+                    $fecha_inicio = $dt->toDateString();
+                    $fecha_final = $dt->toDateString();
+                    $etiqueta=$taller->color_etiqueta;
+                    $instructor = $taller->instructor_nombre . ' ' .$taller->instructor_apellido;
+                    $sexo = $taller->sexo;
+                    $especialidad = $taller->especialidad;
+                    $instructor_imagen = Instructor::find($taller->instructor_id);               
+                    
+                    if($instructor_imagen){
+                        if($instructor_imagen->imagen){
+                            $imagen = $instructor_imagen->imagen;
+                        }else{
+                            $imagen = '';
+                        }
+                    }else{
+                        $imagen = '';
+                    }
+
+                    $id=$instructor."!".$especialidad."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
+
+                    $fecha_inicio = $dt->toDateString();
+                    $fecha_final = $df->toDateString();
+
+                    if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
+                        $url = "/agendar/talleres/detalle/".$taller->id;
+                    }else{
+                        $url = "/agendar/talleres/progreso/".$taller->id;
+                    }
+
+                    $arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
+
+                    
+                }
+
+                $clasegrupal = ClaseGrupal::join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+                    ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                    ->join('config_especialidades', 'config_especialidades.id', '=', 'clases_grupales.especialidad_id')
+                    ->join('config_niveles_baile', 'config_niveles_baile.id', '=', 'clases_grupales.nivel_baile_id')
+                    ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
+                    ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
+                    ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
+                ->get();
+
+                $horarios_clasegrupal = HorarioClaseGrupal::join('clases_grupales', 'clases_grupales.id', '=', 'horarios_clases_grupales.clase_grupal_id')
+                    ->join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
+                    ->join('config_especialidades', 'config_especialidades.id', '=', 'horarios_clases_grupales.especialidad_id')
+                    ->join('config_niveles_baile', 'config_niveles_baile.id', '=', 'clases_grupales.nivel_baile_id')
+                    ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
+                    ->select('clases_grupales.id', 'clases_grupales.fecha_final', 'clases_grupales.cantidad_hombres','clases_grupales.cantidad_mujeres', 'horarios_clases_grupales.fecha as fecha_inicio', 'horarios_clases_grupales.hora_inicio', 'horarios_clases_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horarios_clases_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
+                    ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->where('clases_grupales.deleted_at', '=', null)
+                    ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
+                    ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
+                ->get();
+
+                foreach ($clasegrupal as $clase) {
+
+
+                    $fecha_start=explode('-',$clase->fecha_inicio);
+                    $fecha_end=explode('-',$clase->fecha_final);
+
+                    $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                    $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
+                    $nombre_principal = '';
+
+                    if($dt <= Carbon::now()){
+
+                        $cantidad_hombres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
+                        ->where('alumnos.sexo','M')
+                            ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
+                        ->count();
+
+                        $cantidad_mujeres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
+                            ->where('alumnos.sexo','F')
+                            ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
+                        ->count();
+
+                        if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
+                            $nombre_principal = 'AGOTADA';
+                        }else{
+                            $nombre_principal = $clase->nombre;
+                        }
+
+                        $inicio = 1;
+
+                    }else{
+                        
+                        $nombre_principal = $clase->nombre . ' ★'; 
+                        $inicio = 0;
+                    }
+                  
+
+                    $nombre=$nombre_principal;
+                    $nombre_clase = $clase->nombre;
+                    $descripcion=$clase->descripcion;
+                    $hora_inicio=$clase->hora_inicio;
+                    $hora_final=$clase->hora_final;
+                    $fecha_inicio = $dt->toDateString();
+                    $fecha_final = $df->toDateString();
+                    $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
+                    $sexo = $clase->sexo;
+                    $especialidad = $clase->especialidad;
+                    $nivel = $clase->nivel;
+                    $instructor_imagen = Instructor::find($clase->instructor_id);               
+                    
+                    if($instructor_imagen){
+                        if($instructor_imagen->imagen){
+                            $imagen = $instructor_imagen->imagen;
+                        }else{
+                            $imagen = '';
+                        }
+                    }else{
+                        $imagen = '';
+                    }
+
+                    $id=$instructor."!".$especialidad."!".$nivel."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
+
+                    if($clase->color_etiqueta){
+                        $etiqueta=$clase->color_etiqueta;
+                    }else{
+                        $etiqueta=$clase->clase_etiqueta;
+                    }
+         
+
+                    if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
+                        $url = "/agendar/clases-grupales/detalle/".$clase->id;
+                    }else{
+                        $url = "/agendar/clases-grupales/progreso/".$clase->id;
+                    }
+
+                    $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$fecha_inicio,"fecha_final"=>$fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, 'inicio' => $inicio, "nombre_clase" => $nombre_clase);
+                    
+                    while($dt->timestamp<$df->timestamp){
+                        $nombre = $clase->nombre;
+                        $fecha="";
+                        $fecha=$dt->addWeek()->toDateString();
+
+                        $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha)
+                            ->where('fecha_final', '>=', $fecha)
+                            ->where('tipo_id', $clase->id)
+                            ->where('tipo', 1)
+                        ->first();
+
+                        if(!$horario_bloqueado){
+
+                            $arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "nombre_clase" => $nombre_clase);
+                        }else{
+                            if($horario_bloqueado->boolean_mostrar == 1)
+                            {
+                                $arrayClases[]=array("id"=>$clase->id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo, "nombre_clase" => $nombre_clase);
+                             }
+                        }
+                    }
+                }
+
+                foreach ($horarios_clasegrupal as $clase) {
+
+                    $fecha_start=explode('-',$clase->fecha_inicio);
+                    $fecha_end=explode('-',$clase->fecha_final);
+
+                    $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                    $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
+                    $nombre_principal = '';
+
+                    $cantidad_hombres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
+                    ->where('alumnos.sexo','M')
+                        ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
+                    ->count();
+
+                    $cantidad_mujeres = InscripcionClaseGrupal::join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
+                        ->where('alumnos.sexo','F')
+                        ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
+                    ->count();
+
+                    if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
+                        $nombre_principal = 'AGOTADA';
+                    }else{
+                        $nombre_principal = $clase->nombre;
+                    }
+                    
+                    $nombre=$nombre_principal;
+                    $nombre_clase = $clase->nombre;
+                    $descripcion=$clase->descripcion;
+                    $hora_inicio=$clase->hora_inicio;
+                    $hora_final=$clase->hora_final;
+                    $fecha_inicio = $dt->toDateString();
+                    $fecha_final = $df->toDateString();
+                    $etiqueta=$clase->color_etiqueta;
+                    $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
+                    $sexo = $clase->sexo;
+                    $especialidad = $clase->especialidad;
+                    $nivel = $clase->nivel;
+                    $instructor_imagen = Instructor::find($clase->instructor_id);               
+                    
+                    if($instructor_imagen){
+                        if($instructor_imagen->imagen){
+                            $imagen = $instructor_imagen->imagen;
+                        }else{
+                            $imagen = '';
+                        }
+                    }else{
+                        $imagen = '';
+                    }
+
+                    $id=$instructor."!".$especialidad."!".$nivel."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
+
+                    $fecha_inicio = $dt->toDateString();
+                    $fecha_final = $df->toDateString();
+
+                    if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
+                        $url = "/agendar/clases-grupales/detalle/".$clase->id;
+                    }else{
+                        $url = "/agendar/clases-grupales/progreso/".$clase->id;
+                    }
+
+                    $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "nombre_clase" => $nombre_clase);
+
+                    while($dt->timestamp<$df->timestamp){
+                        $fecha="";
+                        $fecha=$dt->addWeek()->toDateString();
+
+                        $horario_bloqueado = HorarioBloqueado::where('fecha_inicio', '<=', $fecha)
+                            ->where('fecha_final', '>=', $fecha)
+                            ->where('tipo_id', $clase->id)
+                            ->where('tipo', 1)
+                        ->first();
+
+                         if(!$horario_bloqueado){
+
+                            $arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "nombre_clase" => $nombre_clase);
+                        }else{
+                            if($horario_bloqueado->boolean_mostrar == 1)
+                            {
+                                $arrayClases[]=array("id"=>$clase->id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo, "nombre_clase" => $nombre_clase);
+                             }
+                        }
+                    }
+                }
+
+                $config_clases_personalizadas = ConfigClasesPersonalizadas::where('academia_id',Auth::user()->academia_id)->first();
+
+                $query = InscripcionClasePersonalizada::join('clases_personalizadas', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
+                    ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
+                    ->join('config_especialidades', 'config_especialidades.id', '=', 'inscripcion_clase_personalizada.especialidad_id')
+                    ->join('instructores', 'instructores.id', '=', 'inscripcion_clase_personalizada.instructor_id')
+                    ->select('inscripcion_clase_personalizada.*','clases_personalizadas.color_etiqueta', 'alumnos.nombre', 'alumnos.apellido', 'config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.id as instructor_id', 'instructores.sexo')
+                    ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->where('inscripcion_clase_personalizada.fecha_inicio', '>=', Carbon::now()->toDateString());
+
+                if($usuario_tipo == 2 || $usuario_tipo == 4){
+                    $query->where('inscripcion_clase_personalizada.alumno_id', '=', $usuario_id);
+                }
+
+                $clasespersonalizadas = $query->get();
+
+                $query = InscripcionClasePersonalizada::join('clases_personalizadas', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
+                    ->join('horarios_clases_personalizadas', 'inscripcion_clase_personalizada.id', '=', 'horarios_clases_personalizadas.clase_personalizada_id')
+                    ->join('config_especialidades', 'config_especialidades.id', '=', 'horarios_clases_personalizadas.especialidad_id')
+                    ->join('instructores', 'instructores.id', '=', 'horarios_clases_personalizadas.instructor_id')
+                    ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
+                    ->select('inscripcion_clase_personalizada.fecha_final', 'horarios_clases_personalizadas.fecha as fecha_inicio', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final', 'clases_personalizadas.color_etiqueta as clase_etiqueta', 'horarios_clases_personalizadas.color_etiqueta', 'clases_personalizadas.nombre', 'clases_personalizadas.descripcion', 'inscripcion_clase_personalizada.id', 'alumnos.nombre', 'alumnos.apellido', 'config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.id as instructor_id', 'instructores.sexo')
+                    ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->where('horarios_clases_personalizadas.fecha', '>=', Carbon::now()->toDateString());
+
+                if($usuario_tipo == 2 || $usuario_tipo == 4){
+                    $query->where('inscripcion_clase_personalizada.alumno_id', '=', $usuario_id);
+                }
+
+                $horarios_clasespersonalizadas = $query->get();
+
+                foreach ($clasespersonalizadas as $clasepersonalizada) {
+
+                    $fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
+                    $fecha_end=explode('-',$clasepersonalizada->fecha_inicio);
+                    $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                    $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
+                    $nombre= 'Clase P ' . $clasepersonalizada->nombre . ' ' . $clasepersonalizada->apellido;
+                    $descripcion=$config_clases_personalizadas->descripcion;
+                    $hora_inicio=$clasepersonalizada->hora_inicio;
+                    $hora_final=$clasepersonalizada->hora_final;
+                    $etiqueta=$clasepersonalizada->color_etiqueta;
+                    $instructor = $clasepersonalizada->instructor_nombre . ' ' .$clasepersonalizada->instructor_apellido;
+                    $especialidad = $clasepersonalizada->especialidad;    
+                    $clase_personalizada_nombre = $clasepersonalizada->clase_personalizada_nombre;
+                    $sexo = $clasepersonalizada->sexo;
+                    $instructor_imagen = Instructor::find($clasepersonalizada->instructor_id);               
+                    
+                    if($instructor_imagen->imagen){
+                        $imagen = $instructor_imagen->imagen;
+                    }else{
+                        $imagen = '';
+                    }
+
+                    if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
+                        $url = "/agendar/clases-personalizadas/detalle/".$clasepersonalizada->id;
+                    }else{
+                        $url  = "/agendar/clases-personalizadas/progreso/".Auth::user()->academia_id;
+                    }
+
+                    $id=$instructor."!".$especialidad."!".$clase_personalizada_nombre."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
+
+                    $asistencia = Asistencia::where('tipo',3)->where('tipo_id',$clasepersonalizada->id)->where('fecha',$dt->toDateString());
+
+                    // if(!$asistencia){
+                        $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
+                    // }
+                    
+                    while($dt->timestamp<$df->timestamp){
+                        $fecha="";
+                        $fecha=$dt->addWeek()->toDateString();
+                        $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
+                    }
+                }
+
+                foreach ($horarios_clasespersonalizadas as $clasepersonalizada) {
+
+                    $fecha_start=explode('-',$clasepersonalizada->fecha_inicio);
+                    $fecha_end=explode('-',$clasepersonalizada->fecha_inicio);
+                    $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                    $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
+                    $nombre= 'Clase P ' . $clasepersonalizada->nombre . ' ' . $clasepersonalizada->apellido;
+                    $descripcion=$config_clases_personalizadas->descripcion;
+                    $hora_inicio=$clasepersonalizada->hora_inicio;
+                    $hora_final=$clasepersonalizada->hora_final;
+                    if($clasepersonalizada->color_etiqueta){
+                        $etiqueta=$clasepersonalizada->color_etiqueta;
+                    }else{
+                        $etiqueta=$clasepersonalizada->clase_etiqueta;
+                    }
+                    $instructor = $clasepersonalizada->instructor_nombre . ' ' .$clasepersonalizada->instructor_apellido;
+                    $especialidad = $clasepersonalizada->especialidad;    
+                    $clase_personalizada_nombre = $clasepersonalizada->clase_personalizada_nombre;
+                    $sexo = $clasepersonalizada->sexo;
+                    
+                    $instructor_imagen = Instructor::find($clasepersonalizada->instructor_id);               
+                    
+                    if($instructor_imagen->imagen){
+                        $imagen = $instructor_imagen->imagen;
+                    }else{
+                        $imagen = '';
+                    }
+
+                    $id=$instructor."!".$especialidad."!".$clase_personalizada_nombre."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final;
+
+                    if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
+                        $url = "/agendar/clases-personalizadas/detalle/".$clasepersonalizada->id;
+                    }else{
+                        $url  = "/agendar/clases-personalizadas/progreso/".Auth::user()->academia_id;
+                    }
+
+                    $asistencia = Asistencia::where('tipo',3)->where('tipo_id',$clasepersonalizada->id)->where('fecha',$dt->toDateString());
+
+                    // if(!$asistencia){
+                        $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
+                    // }
+
+                    while($dt->timestamp<$df->timestamp){
+                        $fecha="";
+                        $fecha=$dt->addWeek()->toDateString();
+                        $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
+                    }
+
+                }
+
+                $fiestas = Fiesta::where('fiestas.academia_id', '=' ,  Auth::user()->academia_id)
+                    ->where('fiestas.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'))
+                ->get();
+
+                foreach ($fiestas as $fiesta) {
+                    $fecha_start=explode('-',$fiesta->fecha_inicio);
+                    $fecha_end=explode('-',$fiesta->fecha_final);
+
+                    $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                    $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+
+                    $id=$fiesta->id;
+                    $nombre= $fiesta->nombre;
+                    $descripcion=$fiesta->descripcion;
+                    $hora_inicio=$fiesta->hora_inicio;
+                    $hora_final=$fiesta->hora_final;
+                    $etiqueta=$fiesta->color_etiqueta;
+
+                    if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
+                        $url = "/agendar/fiestas/detalle/".$fiesta->id;
+                    }else{
+                        $url = "/agendar/fiestas/progreso/".$fiesta->id;
+                    }
+
+                    $arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
+
+                    while($dt->timestamp<$df->timestamp){
+                        $fecha="";
+                        $fecha=$dt->addWeek()->toDateString();
+                        $arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
+                    }
+
+                }
+
+                $query = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
+                    ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
+                    ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
+                    ->select('citas.*','alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.id as alumno_id', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_citas.nombre as nombre', 'instructores.id as instructor_id', 'instructores.sexo')
+                    ->where('citas.academia_id','=', Auth::user()->academia_id)
+                    ->where('citas.estatus','=','1')
+                    ->where('citas.fecha', '>=', Carbon::now()->format('Y-m-d'));
+
+                if($usuario_tipo == 2 || $usuario_tipo == 4){
+                    $query->where('citas.alumno_id', '=', $usuario_id);
+                }else{
+                    $query->where('citas.boolean_mostrar','=','2');
+                }
+
+                $citas = $query->get();
+
+                foreach ($citas as $cita) {
+
+                    if($cita->tipo_id != 5){
+                        $nombre = $cita->alumno_nombre . ' ' . $cita->alumno_apellido;
+                    }else{
+                        $nombre = $cita->alumno_nombre . ' ' . $cita->alumno_apellido . ' ★'; 
+                    }
+
+                    $fecha_start=explode('-',$cita->fecha);
+                    $fecha_end=explode('-',$cita->fecha);
+
+                    $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
+                    $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+                    
+                    $descripcion=$cita->nombre;
+                    $hora_inicio=$cita->hora_inicio;
+                    $hora_final=$cita->hora_final;
+                    $etiqueta=$cita->color_etiqueta;
+                    $etiqueta=$cita->color_etiqueta;
+                    $instructor = $cita->instructor_nombre . ' ' .$cita->instructor_apellido;
+                    $sexo = $cita->sexo;
+                    $instructor_imagen = Instructor::find($cita->instructor_id);               
+                    
+                    if($instructor_imagen->imagen){
+                        $imagen = $instructor_imagen->imagen;
+                    }else{
+                        $imagen = '';
+                    }
+
+
+                    $alumno = Alumno::find($cita->alumno_id);
+
+                    if($alumno->tipo_pago == 1){
+                        $tipo_pago = 'Contado';
+                    }else if($alumno->tipo_pago == 2){
+                        $tipo_pago = 'Credito';
+                    }else{
+                        $tipo_pago = 'Sin Confirmar';
+                    }
+
+                    $id=$instructor."!".$descripcion."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final."!".$tipo_pago;
+
+                    if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
+                        $url = "/agendar/citas/detalle/".$cita->id;
+                    }else{
+                        $url = "";
+                    }
+
+                    $arrayCitas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
+
+                }
+
+                $transmisiones = Transmision::where('academia_id', Auth::user()->academia_id)->where('fecha', '>=', Carbon::now()->format('Y-m-d'))->get();
+
+                foreach ($transmisiones as $transmision) {
+
+                    $fecha=explode('-',$transmision->fecha);
+                    $fecha = Carbon::createFromFormat('Y-m-d', $transmision->fecha)->toDateString();
+                    $tema=$transmision->tema;
+                    $hora=$transmision->hora;
+                    $presentador=$transmision->presentador;
+                    $etiqueta=$transmision->color_etiqueta;
+
+                    $id=$tema."!".$fecha."!".$hora."!".$presentador;
+
+                    if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6){
+                        $url = "/agendar/transmisiones/detalle/".$transmision->id;
+                    }else{
+                        $url = "";
+                    }
+
+                    $arrayTransmisiones[]=array("id"=>$id,"nombre"=>'Transmisión', "fecha"=> $fecha, "hora"=>$hora, "etiqueta"=>$etiqueta,"url"=>$url);
+                }
+
+
+                $start = Carbon::now()->startOfMonth()->toDateString();
+                $end = Carbon::now()->endOfMonth()->toDateString();  
+
+                $mujeres = Visitante::where('academia_id','=', Auth::user()->academia_id)
+                    ->where('sexo','F')
+                    ->whereBetween('fecha_registro', [$start,$end])
+                ->count();
+
+                $hombres = Visitante::where('academia_id','=', Auth::user()->academia_id)
+                    ->where('sexo','M')
+                    ->whereBetween('fecha_registro', [$start,$end])
+                ->count();
+
+                $egresos_generales = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',1)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
+
+                if(!$egresos_generales){
+                    $egresos_generales = 0;
+                }
+
+                $egresos_eventos = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',2)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
+
+                if(!$egresos_eventos){
+                    $egresos_eventos = 0;
+                }
+
+                $egresos_talleres = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',3)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
+
+                if(!$egresos_talleres){
+                    $egresos_talleres = 0;
+                }
+
+                $egresos_campanas = Egreso::where('egresos.academia_id', Auth::user()->academia_id)->where('tipo',4)->whereBetween('egresos.fecha', [$start,$end])->sum('egresos.cantidad');
+
+                if(!$egresos_campanas){
+                    $egresos_campanas = 0;
+                }
+
+                $egresos_totales = $egresos_generales + $egresos_eventos + $egresos_talleres + $egresos_campanas;
+
+                if($egresos_totales){
+                    $porcentaje_general = intval(($egresos_generales / $egresos_totales) * 100);
+                    $porcentaje_evento = intval(($egresos_eventos / $egresos_totales) * 100);
+                    $porcentaje_taller = intval(($egresos_talleres / $egresos_totales) * 100);
+                    $porcentaje_campana = intval(($egresos_campanas / $egresos_totales) * 100);
+                }else{
+                    $porcentaje_general = 0;
+                    $porcentaje_evento = 0;
+                    $porcentaje_taller = 0;
+                    $porcentaje_campana = 0;
+                }
+
+                $ingresos_generales = 0;
+                $ingresos_eventos = 0;
+                $ingresos_talleres = 0;
+                $ingresos_campanas = 0;
+
+                $ingresos = Factura::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->get();
+
+                foreach($ingresos as $ingreso){
+                    $facturas = ItemsFactura::where('factura_id', $ingreso->id)->get();
+                    foreach($facturas as $factura){
+                        if($factura->tipo == 5){
+
+                            $ingresos_talleres += floatval($factura->importe_neto);
+
+                        }else if($factura->tipo == 14){
+
+                            $ingresos_eventos += floatval($factura->importe_neto);
+
+                        }else if($factura->tipo == 11 OR $factura->tipo == 12){
+
+                            $ingresos_campanas += floatval($factura->importe_neto);
+
+                        }else{
+                            $ingresos_generales += floatval($factura->importe_neto);
+                        }
+                    }
+                }
+
+
+                $ingresos_totales = $ingresos_generales + $ingresos_eventos + $ingresos_talleres + $ingresos_campanas;
+
+                if($ingresos_totales){
+                    $porcentaje_ingreso_general = intval(($ingresos_generales / $ingresos_totales) * 100);
+                    $porcentaje_ingreso_evento = intval(($ingresos_eventos / $ingresos_totales) * 100);
+                    $porcentaje_ingreso_taller = intval(($ingresos_talleres / $ingresos_totales) * 100);
+                    $porcentaje_ingreso_campana = intval(($ingresos_campanas / $ingresos_totales) * 100);
+                }else{
+                    $porcentaje_ingreso_general = 0;
+                    $porcentaje_ingreso_evento = 0;
+                    $porcentaje_ingreso_taller = 0;
+                    $porcentaje_ingreso_campana = 0;
+                }
+
+                // return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia, 'vencimiento' => $vencimiento]); 
+
+                return view('inicio.index-con-reportes')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia, 'vencimiento' => $vencimiento, 'talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas, 'transmisiones' => $arrayTransmisiones, 'mujeres' => $mujeres, 'hombres' => $hombres, 'egresos_generales' => $egresos_generales, 'egresos_eventos' => $egresos_eventos, 'egresos_talleres' => $egresos_talleres, 'egresos_campanas' => $egresos_campanas, 'porcentaje_general' => $porcentaje_general, 'porcentaje_evento' => $porcentaje_evento, 'porcentaje_taller' => $porcentaje_taller, 'porcentaje_campana' => $porcentaje_campana, 'ingresos_generales' => $ingresos_generales, 'ingresos_eventos' => $ingresos_eventos, 'ingresos_talleres' => $ingresos_talleres, 'ingresos_campanas' => $ingresos_campanas, 'porcentaje_ingreso_general' => $porcentaje_ingreso_general, 'porcentaje_ingreso_evento' => $porcentaje_ingreso_evento, 'porcentaje_ingreso_taller' => $porcentaje_ingreso_taller, 'porcentaje_ingreso_campana' => $porcentaje_ingreso_campana]);
                 
             }else if($usuario_tipo == 2 || $usuario_tipo == 4){
 
