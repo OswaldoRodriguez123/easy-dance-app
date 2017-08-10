@@ -82,8 +82,12 @@ class AgendarController extends BaseController
             $especialidad = $taller->especialidad;
             $instructor_imagen = Instructor::find($taller->instructor_id);               
             
-            if($instructor_imagen->imagen){
-                $imagen = $instructor_imagen->imagen;
+            if($instructor_imagen){
+                if($instructor_imagen->imagen){
+                    $imagen = $instructor_imagen->imagen;
+                }else{
+                    $imagen = '';
+                }
             }else{
                 $imagen = '';
             }
@@ -127,8 +131,12 @@ class AgendarController extends BaseController
             $especialidad = $taller->especialidad;
             $instructor_imagen = Instructor::find($taller->instructor_id);               
             
-            if($instructor_imagen->imagen){
-                $imagen = $instructor_imagen->imagen;
+            if($instructor_imagen){
+                if($instructor_imagen->imagen){
+                    $imagen = $instructor_imagen->imagen;
+                }else{
+                    $imagen = '';
+                }
             }else{
                 $imagen = '';
             }
@@ -222,8 +230,12 @@ class AgendarController extends BaseController
             $nivel = $clase->nivel;
             $instructor_imagen = Instructor::find($clase->instructor_id);               
             
-            if($instructor_imagen->imagen){
-                $imagen = $instructor_imagen->imagen;
+            if($instructor_imagen){
+                if($instructor_imagen->imagen){
+                    $imagen = $instructor_imagen->imagen;
+                }else{
+                    $imagen = '';
+                }
             }else{
                 $imagen = '';
             }
@@ -308,8 +320,12 @@ class AgendarController extends BaseController
             $nivel = $clase->nivel;
             $instructor_imagen = Instructor::find($clase->instructor_id);               
             
-            if($instructor_imagen->imagen){
-                $imagen = $instructor_imagen->imagen;
+            if($instructor_imagen){
+                if($instructor_imagen->imagen){
+                    $imagen = $instructor_imagen->imagen;
+                }else{
+                    $imagen = '';
+                }
             }else{
                 $imagen = '';
             }
@@ -398,8 +414,12 @@ class AgendarController extends BaseController
             $sexo = $clasepersonalizada->sexo;
             $instructor_imagen = Instructor::find($clasepersonalizada->instructor_id);               
             
-            if($instructor_imagen->imagen){
-                $imagen = $instructor_imagen->imagen;
+            if($instructor_imagen){
+                if($instructor_imagen->imagen){
+                    $imagen = $instructor_imagen->imagen;
+                }else{
+                    $imagen = '';
+                }
             }else{
                 $imagen = '';
             }
@@ -448,8 +468,12 @@ class AgendarController extends BaseController
             
             $instructor_imagen = Instructor::find($clasepersonalizada->instructor_id);               
             
-            if($instructor_imagen->imagen){
-                $imagen = $instructor_imagen->imagen;
+            if($instructor_imagen){
+                if($instructor_imagen->imagen){
+                    $imagen = $instructor_imagen->imagen;
+                }else{
+                    $imagen = '';
+                }
             }else{
                 $imagen = '';
             }
@@ -549,8 +573,12 @@ class AgendarController extends BaseController
             $sexo = $cita->sexo;
             $instructor_imagen = Instructor::find($cita->instructor_id);               
             
-            if($instructor_imagen->imagen){
-                $imagen = $instructor_imagen->imagen;
+            if($instructor_imagen){
+                if($instructor_imagen->imagen){
+                    $imagen = $instructor_imagen->imagen;
+                }else{
+                    $imagen = '';
+                }
             }else{
                 $imagen = '';
             }

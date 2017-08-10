@@ -147,6 +147,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	Route::post('/seleccionar-tipo/{id}', 'UsuarioController@postSeleccionar');
 	Route::post('/confirmar-vencimiento/{id}', 'UsuarioController@confirmarVencimiento');
 	Route::get('/inicio', 'UsuarioController@index');
+	Route::get('/index', 'UsuarioController@index_con_reportes');
 
 	//NOTIFICACIONES
 	
