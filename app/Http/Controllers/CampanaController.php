@@ -24,6 +24,7 @@ use App\HorarioClaseGrupal;
 use App\InscripcionClaseGrupal;
 use App\Llamada;
 use App\Observacion;
+use App\ConfigServicios;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -142,9 +143,8 @@ class CampanaController extends BaseController {
 
     public function principalpatrocinadores($id){
 
-        $patrocinadores = DB::table('patrocinadores')
+        $patrocinadores = Patrocinador::join('alumnos','patrocinadores.usuario_id', '=', 'alumnos.id')
             // ->join('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
-            ->join('alumnos','patrocinadores.usuario_id', '=', 'alumnos.id')
             ->select('patrocinadores.*', 'alumnos.nombre', 'alumnos.apellido')
             ->where('patrocinadores.tipo_evento_id', '=', $id)
             ->where('patrocinadores.tipo_evento', '=', 1)
@@ -157,8 +157,7 @@ class CampanaController extends BaseController {
     public function detallepatrocinador($id)
     {
 
-        $patrocinador = DB::table('patrocinadores')
-             ->join('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
+        $patrocinador = Patrocinador::join('usuario_externos','patrocinadores.externo_id', '=', 'usuario_externos.id')
              ->select('patrocinadores.*', 'usuario_externos.nombre')
              ->where('patrocinadores.id', '=', $id)
          ->first();
@@ -476,8 +475,6 @@ class CampanaController extends BaseController {
     public function eliminarrecompensa($id){
 
         $arreglo = Session::get('recompensa');
-
-        // unset($arreglo[$id]);
         unset($arreglo[$id]);
         Session::put('recompensa', $arreglo);
 
@@ -487,44 +484,64 @@ class CampanaController extends BaseController {
 
     public function agregarrecompensafija(Request $request){
         
-    $rules = [
+        $rules = [
 
-        'nombre_recompensa' => 'required',
-        'cantidad_recompensa' => 'required|numeric',
-        'descripcion_recompensa' => 'required',
-    ];
+            'nombre_recompensa' => 'required',
+            'cantidad_recompensa' => 'required|numeric',
+            'descripcion_recompensa' => 'required',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'nombre_recompensa.required' => 'Ups! La recompensa es  requerida',
-        'cantidad_recompensa.required' => 'Ups! La cantidad es  requerida',
-        'cantidad_recompensa.numeric' => 'Ups! La cantidad es inválida, debe contener sólo números',
-        'descripcion_recompensa.required' => 'Ups! La descripcion es  requerida',
-    ];
+            'nombre_recompensa.required' => 'Ups! La recompensa es  requerida',
+            'cantidad_recompensa.required' => 'Ups! La cantidad es  requerida',
+            'cantidad_recompensa.numeric' => 'Ups! La cantidad es inválida, debe contener sólo números',
+            'descripcion_recompensa.required' => 'Ups! La descripcion es  requerida',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
+        }
 
-    else{
+        else{
 
-        $nombre = title_case($request->nombre_recompensa);
+            $nombre = title_case($request->nombre_recompensa);
 
-        $recompensa = New Recompensa;
+            $recompensa = New Recompensa;
 
-        $recompensa->academia_id = Auth::user()->academia_id;
-        $recompensa->campana_id = $request->id;
-        $recompensa->nombre = $nombre;
-        $recompensa->cantidad = $request->cantidad_recompensa;
-        $recompensa->descripcion = $request->descripcion_recompensa;
+            $recompensa->academia_id = Auth::user()->academia_id;
+            $recompensa->campana_id = $request->id;
+            $recompensa->nombre = $nombre;
+            $recompensa->cantidad = $request->cantidad_recompensa;
+            $recompensa->descripcion = $request->descripcion_recompensa;
 
-        $recompensa->save();
+            if($recompensa->save()){
 
-        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $recompensa, 'id' => $recompensa->id, 200]);
+                $campana = Campana::find($request->id);
+
+                $servicio = new ConfigServicios;
+
+                $servicio->academia_id = Auth::user()->academia_id;
+                $servicio->nombre = $nombre . ' - ' . $campana->nombre;
+                $servicio->costo = $request->cantidad_recompensa;
+                $servicio->imagen = '';
+                $servicio->descripcion = $request->descripcion_recompensa;
+                $servicio->incluye_iva = 1;
+                $servicio->tipo = 11;
+                $servicio->tipo_id = $recompensa->id;
+
+                if($servicio->save()){
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $recompensa, 'id' => $recompensa->id, 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
 
         }
     }
@@ -533,10 +550,12 @@ class CampanaController extends BaseController {
 
         $recompensa = Recompensa::find($id);
 
-        $recompensa->delete();
+        if($recompensa->delete()){
+            
+            $servicio = ConfigServicios::where('tipo',11)->where('tipo_id',$id)->delete();
 
-        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+        }
     }
 
     /**

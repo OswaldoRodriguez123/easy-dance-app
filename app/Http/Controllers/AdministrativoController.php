@@ -33,6 +33,7 @@ use App\CredencialAlumno;
 use App\InscripcionClaseGrupal;
 use App\InscripcionClasePersonalizada;
 use App\CostoClasePersonalizada;
+use App\Campana;
 //use MP;
 use Validator;
 use Carbon\Carbon;
@@ -271,8 +272,9 @@ class AdministrativoController extends BaseController {
 
         $servicios_productos = array();
         $costos_clases_personalizadas = array();
+        $recompensas_array = array();
 
-        $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre','asc')->get();
+        $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre','asc')->where('tipo', '!=', 11)->get();
 
         foreach($config_servicio as $servicio){
 
@@ -295,6 +297,23 @@ class AdministrativoController extends BaseController {
             }
 
         }
+
+        $campanas = Campana::where('academia_id',Auth::user()->academia_id)->get();
+
+        foreach($campanas as $campana){
+
+            $servicios_productos[]=array('id' => $campana->id, 'nombre' => $campana->nombre , 'costo' => $campana->id, 'iva' => $iva, 'incluye_iva' => 0, 'tipo' => 11, 'disponibilidad' => 0, 'servicio_producto' => 1, 'tipo_id' => $campana->id);
+
+            $config_servicios = ConfigServicios::where('tipo', 11)->where('tipo_id',$campana->id)->get();
+
+            foreach($config_servicios as $servicio){
+
+                $iva = $servicio['costo'] * ($academia->porcentaje_impuesto / 100);
+
+                $recompensas_array[]=array('id' => $servicio['id'], 'nombre' => $servicio['nombre'] , 'costo' => $servicio['costo'], 'iva' => $iva, 'incluye_iva' => $servicio['incluye_iva'], 'tipo' => $servicio['tipo'], 'disponibilidad' => 0, 'servicio_producto' => 1, 'tipo_id' => $servicio['tipo_id'], 'campana_id' => $campana->id);
+
+            }
+        }   
 
         $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre','asc')->get();
 
@@ -386,7 +405,7 @@ class AdministrativoController extends BaseController {
             $promotores['2-'.$instructor->id] = $promotor_array;
         }
 
-		return view('administrativo.pagos.pagos')->with(['usuarios' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto, 'promotores' => $promotores, 'costos_clases_personalizadas' => $costos_clases_personalizadas]);
+		return view('administrativo.pagos.pagos')->with(['usuarios' => $array, 'servicios_productos' => $servicios_productos, 'impuesto' => $academia->porcentaje_impuesto, 'promotores' => $promotores, 'costos_clases_personalizadas' => $costos_clases_personalizadas, 'recompensas' => $recompensas_array]);
 	}
 
     public function generarpagoscondeuda($id)

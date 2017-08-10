@@ -461,6 +461,31 @@
 
                                       </ul>
                                     </li>
+
+                                    <li class="dropdown-submenu pointer">
+                                      <a>Campañas</a>
+                                      <ul class="dropdown-menu">
+
+                                        @foreach ( $servicios_productos as $servicio_producto ) 
+                                          @if($servicio_producto['tipo'] == 11)
+                                          
+                                            <li class = "dropdown-submenu pointer">
+                                              <a>{{$servicio_producto['nombre']}}</a>
+                                              <ul class="dropdown-menu">
+
+                                                @foreach ( $recompensas as $recompensa ) 
+                                                  @if($servicio_producto['tipo_id'] == $recompensa['campana_id'])
+                                                    <li class = "pointer servicio_detalle" data-nombre="{{$recompensa['nombre']}}" data-servicio_producto="{{$recompensa['servicio_producto']}}" id="{{$recompensa['id']}}-{{$recompensa['costo']}}-{{$recompensa['tipo']}}-{{$costo['servicio_producto']}}-{{$recompensa['incluye_iva']}}-{{$recompensa['disponibilidad']}}"><a>{{$recompensa['nombre']}}</a></li>
+                                                  @endif                   
+                                                @endforeach
+                                              </ul>
+                                            </li>
+                                          @endif                   
+                                        @endforeach
+
+                                      </ul>
+                                    </li>
+
                                   </ul>
                                 </div>
 
