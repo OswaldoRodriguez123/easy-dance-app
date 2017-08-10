@@ -1639,32 +1639,47 @@
         var padre=$(this).parents('tr');
         var token = $('input:hidden[name=_token]').val();
         var id = $(this).closest('tr').attr('id');
+        var row = $(this).closest('tr')
+        swal({   
+            title: "Desea eliminar la recompensa?",   
+            text: "El servicio asociado tambien sera eliminado!",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Eliminar!",  
+            cancelButtonText: "Cancelar",         
+            closeOnConfirm: true 
+        }, function(isConfirm){   
+          if (isConfirm) {
               $.ajax({
-                   url: route_eliminarrecompensa+"/"+id,
-                   headers: {'X-CSRF-TOKEN': token},
-                   type: 'POST',
-                   dataType: 'json',                
-                  success: function (data) {
-                    if(data.status=='OK'){
-                        
-                                         
-                    }else{
-                      swal(
-                        'Solicitud no procesada',
-                        'Ha ocurrido un error, intente nuevamente por favor',
-                        'error'
-                      );
-                    }
-                  },
-                  error:function (xhr, ajaxOptions, thrownError){
-                    swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-                  }
-                })
+                 url: route_eliminarrecompensa+"/"+id,
+                 headers: {'X-CSRF-TOKEN': token},
+                 type: 'POST',
+                 dataType: 'json',                
+                success: function (data) {
+                  if(data.status=='OK'){
 
-                t.row( $(this).parents('tr') )
-                  .remove()
-                  .draw();
-            });
+                    swal("Exito!","La recompensa ha sido eliminada!","success");
+
+                    t.row(row)
+                      .remove()
+                      .draw();
+                                       
+                  }else{
+                    swal(
+                      'Solicitud no procesada',
+                      'Ha ocurrido un error, intente nuevamente por favor',
+                      'error'
+                    );
+                  }
+                },
+                error:function (xhr, ajaxOptions, thrownError){
+                  swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                }
+              })
+            }
+          });   
+        });
 
     $("#adddatos").click(function(){
 
