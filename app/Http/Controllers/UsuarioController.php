@@ -40,6 +40,8 @@ use App\Cita;
 use App\Transmision;
 use App\Visitante;
 use App\Egreso;
+use App\Factura;
+use App\ItemsFactura;
 use Validator;
 use Mail;
 use Carbon\Carbon;
@@ -1404,9 +1406,52 @@ class UsuarioController extends BaseController {
             $porcentaje_taller = 0;
             $porcentaje_campana = 0;
         }
+
+        $ingresos_generales = 0;
+        $ingresos_eventos = 0;
+        $ingresos_talleres = 0;
+        $ingresos_campanas = 0;
+
+        $ingresos = Factura::where('academia_id', Auth::user()->academia_id)->whereBetween('created_at', [$start,$end])->get();
+
+        foreach($ingresos as $ingreso){
+            $facturas = ItemsFactura::where('factura_id', $ingreso->id)->get();
+            foreach($facturas as $factura){
+                if($factura->tipo == 5){
+
+                    $ingresos_talleres += floatval($factura->importe_neto);
+
+                }else if($factura->tipo == 14){
+
+                    $ingresos_eventos += floatval($factura->importe_neto);
+
+                }else if($factura->tipo == 11 OR $factura->tipo == 12){
+
+                    $ingresos_campanas += floatval($factura->importe_neto);
+
+                }else{
+                    $ingresos_generales += floatval($factura->importe_neto);
+                }
+            }
+        }
+
+
+        $ingresos_totales = $ingresos_generales + $ingresos_eventos + $ingresos_talleres + $ingresos_campanas;
+
+        if($ingresos_totales){
+            $porcentaje_ingreso_general = intval(($ingresos_generales / $ingresos_totales) * 100);
+            $porcentaje_ingreso_evento = intval(($ingresos_eventos / $ingresos_totales) * 100);
+            $porcentaje_ingreso_taller = intval(($ingresos_talleres / $ingresos_totales) * 100);
+            $porcentaje_ingreso_campana = intval(($ingresos_campanas / $ingresos_totales) * 100);
+        }else{
+            $porcentaje_ingreso_general = 0;
+            $porcentaje_ingreso_evento = 0;
+            $porcentaje_ingreso_taller = 0;
+            $porcentaje_ingreso_campana = 0;
+        }
         
 
-        return view('inicio.index-con-reportes')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas, 'transmisiones' => $arrayTransmisiones, 'mujeres' => $mujeres, 'hombres' => $hombres, 'egresos_generales' => $egresos_generales, 'egresos_eventos' => $egresos_eventos, 'egresos_talleres' => $egresos_talleres, 'egresos_campanas' => $egresos_campanas, 'porcentaje_general' => $porcentaje_general, 'porcentaje_evento' => $porcentaje_evento, 'porcentaje_taller' => $porcentaje_taller, 'porcentaje_campana' => $porcentaje_campana]);
+        return view('inicio.index-con-reportes')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas, 'transmisiones' => $arrayTransmisiones, 'mujeres' => $mujeres, 'hombres' => $hombres, 'egresos_generales' => $egresos_generales, 'egresos_eventos' => $egresos_eventos, 'egresos_talleres' => $egresos_talleres, 'egresos_campanas' => $egresos_campanas, 'porcentaje_general' => $porcentaje_general, 'porcentaje_evento' => $porcentaje_evento, 'porcentaje_taller' => $porcentaje_taller, 'porcentaje_campana' => $porcentaje_campana, 'ingresos_generales' => $ingresos_generales, 'ingresos_eventos' => $ingresos_eventos, 'ingresos_talleres' => $ingresos_talleres, 'ingresos_campanas' => $ingresos_campanas, 'porcentaje_ingreso_general' => $porcentaje_ingreso_general, 'porcentaje_ingreso_evento' => $porcentaje_ingreso_evento, 'porcentaje_ingreso_taller' => $porcentaje_ingreso_taller, 'porcentaje_ingreso_campana' => $porcentaje_ingreso_campana]);
     }
 
     public function index()

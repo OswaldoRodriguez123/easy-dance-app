@@ -193,23 +193,23 @@
 			                    <div class="clearfix"></div>
 			                    
 			                    <div class="text-center p-20 m-t-25">
-			                        <div class="easy-pie main-pie" data-percent="75">
-			                            <div class="percent">45</div>
+			                        <div class="easy-pie main-pie" data-percent="{{$porcentaje_ingreso_general}}">
+			                            <div class="percent">{{$porcentaje_ingreso_general}}</div>
 			                            <div class="pie-title">Academia</div>
 			                        </div>
 			                    </div>
 			                			                
 				                <div class="p-t-20 p-b-20 text-center">
-				                    <div class="easy-pie sub-pie-2" data-percent="56">
-				                        <div class="percent">56</div>
+				                    <div class="easy-pie sub-pie-2" data-percent="{{$porcentaje_ingreso_evento}}">
+				                        <div class="percent">{{$porcentaje_ingreso_evento}}</div>
 				                        <div class="pie-title">Eventos</div>
 				                    </div>
-				                    <div class="easy-pie sub-pie-2" data-percent="84">
-				                        <div class="percent">84</div>
+				                    <div class="easy-pie sub-pie-2" data-percent="{{$porcentaje_ingreso_taller}}">
+				                        <div class="percent">{{$porcentaje_ingreso_taller}}</div>
 				                        <div class="pie-title">Talleres</div>
 				                    </div>
-				                    <div class="easy-pie sub-pie-2" data-percent="30">
-				                        <div class="percent">84</div>
+				                    <div class="easy-pie sub-pie-2" data-percent="{{$porcentaje_ingreso_campana}}">
+				                        <div class="percent">{{$porcentaje_ingreso_campana}}</div>
 				                        <div class="pie-title">Campañas</div>
 				                    </div>
 				                </div>
