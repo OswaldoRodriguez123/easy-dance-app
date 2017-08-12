@@ -481,7 +481,7 @@
 
                                 <div class="col-sm-12">
                                  
-                                     <label for="alumno" class="c-morado f-22">Seleccionar Alumno</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un participante al cual deseas asignar a la clase grupal" title="" data-original-title="Ayuda"></i>
+                                     <label for="alumno" class="c-morado f-22" id="id-alumno_id">Seleccionar Alumno</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un participante al cual deseas asignar a la clase grupal" title="" data-original-title="Ayuda"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-alumnos f-22"></i></span>
@@ -1614,195 +1614,189 @@
 
         $("#agregar").click(function(){
 
-                var values = $('#promotor').val();
-                
-                var promotores = '';
+            var values = $('#promotor').val();
+            
+            var promotores = '';
 
-                if(values){
-                  for(var i = 0; i < values.length; i += 1) {
-                    promotores = promotores + ',' + values[i];
-                  }
-                }
+            if(values){
+              for(var i = 0; i < values.length; i += 1) {
+                promotores = promotores + ',' + values[i];
+              }
+            }
 
-                procesando();
-                var route = route_agregar;
-                var token = $('input:hidden[name=_token]').val();    
-                var costo_inscripcion = $("#clasegrupal-costo_inscripcion").text();
-                var costo_mensualidad = $("#clasegrupal-costo_mensualidad").text();
-                var fecha_pago = $("#clasegrupal-fecha_inicio_preferencial").text();
-                var datos = $("#agregar_inscripcion").serialize();      
-                limpiarMensaje();
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        data: datos+"&costo_inscripcion="+costo_inscripcion+"&costo_mensualidad="+costo_mensualidad+"&fecha_pago="+fecha_pago+"&permitir="+permitir+"&promotores="+promotores,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
+            procesando();
+            var route = route_agregar;
+            var token = $('input:hidden[name=_token]').val();    
+            var costo_inscripcion = $("#clasegrupal-costo_inscripcion").text();
+            var costo_mensualidad = $("#clasegrupal-costo_mensualidad").text();
+            var fecha_pago = $("#clasegrupal-fecha_inicio_preferencial").text();
+            var datos = $("#agregar_inscripcion").serialize();      
+            limpiarMensaje();
+            
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                    data: datos+"&costo_inscripcion="+costo_inscripcion+"&costo_mensualidad="+costo_mensualidad+"&fecha_pago="+fecha_pago+"&permitir="+permitir+"&promotores="+promotores,
+                success:function(respuesta){
+                  setTimeout(function(){ 
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY"; 
+                    if(respuesta.status=="OK"){
 
-                          //SI SE ESTA INSCRIBIENDO MAS DE UNA PERSONA
-                          // if(respuesta.array){
-                            finprocesado();
-                            var nType = 'success';
-                            var nTitle="Ups! ";
-                            var nMensaje=respuesta.mensaje;
-
-                            $("#modalAgregar").modal("hide");
-
-                            alumno = respuesta.alumno;
-                            inscripcion = respuesta.inscripcion
-
-                            // $.each(respuesta.array, function (index, array) {
-                      
-
-                            if(inscripcion.boolean_franela == 1 && inscripcion.boolean_programacion == 1){
-
-                              iconos = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i>'
-                              
-                            }else{
-
-                              if(inscripcion.boolean_franela == 0 && inscripcion.boolean_programacion == 0)
-                              {
-                                iconos = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>' + ' ' + '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>'
-                              }else{
-                                if(inscripcion.boolean_franela == 1){
-                                  iconos = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>'
-                                }else{
-                                  iconos = '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>'
-                                }
-                              }
-                            }
-
-                              var identificacion = alumno.identificacion;    
-                              var nombre = alumno.nombre;
-                              var apellido = alumno.apellido;
-
-                              var talla_franela = inscripcion.talla_franela;
-                              
-                              if(alumno.sexo=='F')
-                              {
-                                imagen = '<img class="lv-img-sm" src="/assets/img/profile-pics/5.jpg" alt="">'
-                                valor = $('#span_mujeres').html()
-                                valor = parseInt(valor) + 1;
-                                $('#span_mujeres').html(valor)
-                                sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
-                              }
-                              else
-                              {
-                                imagen = '<img class="lv-img-sm" src="/assets/img/profile-pics/4.jpg" alt="">'
-                                valor = $('#span_hombres').html()
-                                valor = parseInt(valor) + 1;
-                                $('#span_hombres').html(valor)
-                                sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
-                              }
-                             
-                          
-                              if(respuesta.deuda > 0){
-                                deuda = '<i class="zmdi zmdi-money f-20 p-r-3 c-youtube"></i>'
-                              }else{
-                                deuda = '<i class="zmdi zmdi-money f-20 p-r-3 c-verde"></i>'
-                              }
-
-                              var rowId=inscripcion.id;
-                              var rowNode=t.row.add( [
-                              '',
-                              ''+imagen+'',
-                              ''+identificacion+'',
-                              ''+sexo+'',
-                              ''+nombre+ ' ' +apellido+'',
-                              '<i class="zmdi zmdi-label-alt-outline f-20 p-r-3 c-verde"></i>',
-                              ''+deuda+'',
-                              ''
-                              ] ).draw(false).node();
-                              $( rowNode )
-                              .attr('id',rowId)
-                              .data('tipo',1)
-                              .data('tipo_pago',inscripcion.tipo_pago)
-                              .addClass('seleccion');
-
-                              $('#razon_entrega').val('')
-                              $('#talla_franela').val('')
-
-                              // });
-                            // }
-
-
-                            //SOLO UNA PERSONA
-                            // else{
-
-                              window.location = route_enhorabuena + respuesta.id;
-
-                            // }
-
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else if(msj.responseJSON.status=="CANTIDAD-FULL"){
-                          swal({   
-                          title: msj.responseJSON.mensaje,   
-                          text: "Confirmar inscripción!",   
-                          type: "warning",   
-                          showCancelButton: true,   
-                          confirmButtonColor: "#DD6B55",   
-                          confirmButtonText: "Inscribir!",  
-                          cancelButtonText: "Cancelar",         
-                          closeOnConfirm: true 
-                          }, function(isConfirm){   
-                          if (isConfirm) {
-                            permitir = 1;
-                            $('#agregar').click();  
-                            }
-                          });
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
+                      //SI SE ESTA INSCRIBIENDO MAS DE UNA PERSONA
+                      // if(respuesta.array){
                         finprocesado();
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
+                        var nType = 'success';
+                        var nTitle="Ups! ";
+                        var nMensaje=respuesta.mensaje;
+
+                        $("#modalAgregar").modal("hide");
+
+                        alumno = respuesta.alumno;
+                        inscripcion = respuesta.inscripcion
+
+                        // $.each(respuesta.array, function (index, array) {
                   
-                      }, 1000);
-                    }
-                });
-              // }
-              // else{
 
-              //   $("#error-alumno_id_mensaje").html("Debe seleccionar un alumno primero");
+                        if(inscripcion.boolean_franela == 1 && inscripcion.boolean_programacion == 1){
 
-              // }
+                          iconos = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i>'
+                          
+                        }else{
+
+                          if(inscripcion.boolean_franela == 0 && inscripcion.boolean_programacion == 0)
+                          {
+                            iconos = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>' + ' ' + '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>'
+                          }else{
+                            if(inscripcion.boolean_franela == 1){
+                              iconos = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>'
+                            }else{
+                              iconos = '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>'
+                            }
+                          }
+                        }
+
+                          var identificacion = alumno.identificacion;    
+                          var nombre = alumno.nombre;
+                          var apellido = alumno.apellido;
+
+                          var talla_franela = inscripcion.talla_franela;
+                          
+                          if(alumno.sexo=='F')
+                          {
+                            imagen = '<img class="lv-img-sm" src="/assets/img/profile-pics/5.jpg" alt="">'
+                            valor = $('#span_mujeres').html()
+                            valor = parseInt(valor) + 1;
+                            $('#span_mujeres').html(valor)
+                            sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
+                          }
+                          else
+                          {
+                            imagen = '<img class="lv-img-sm" src="/assets/img/profile-pics/4.jpg" alt="">'
+                            valor = $('#span_hombres').html()
+                            valor = parseInt(valor) + 1;
+                            $('#span_hombres').html(valor)
+                            sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
+                          }
+                          
+                      
+                          if(respuesta.deuda > 0){
+                            deuda = '<i class="zmdi zmdi-money f-20 p-r-3 c-youtube"></i>'
+                          }else{
+                            deuda = '<i class="zmdi zmdi-money f-20 p-r-3 c-verde"></i>'
+                          }
+
+                          var rowId=inscripcion.id;
+                          var rowNode=t.row.add( [
+                          '',
+                          ''+imagen+'',
+                          ''+identificacion+'',
+                          ''+sexo+'',
+                          ''+nombre+ ' ' +apellido+'',
+                          '<i class="zmdi zmdi-label-alt-outline f-20 p-r-3 c-verde"></i>',
+                          ''+deuda+'',
+                          ''
+                          ] ).draw(false).node();
+                          $( rowNode )
+                          .attr('id',rowId)
+                          .data('tipo',1)
+                          .data('tipo_pago',inscripcion.tipo_pago)
+                          .addClass('seleccion');
+
+                          $('#razon_entrega').val('')
+                          $('#talla_franela').val('')
+
+                          // });
+                        // }
+
+
+                        //SOLO UNA PERSONA
+                        // else{
+
+                          window.location = route_enhorabuena + respuesta.id;
+
+                        // }
+
+                    }else{
+                      var nTitle="Ups! ";
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                      var nType = 'danger';
+                    }                       
+
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                  }, 1000);
+                },
+                error:function(msj){
+                  setTimeout(function(){ 
+                    // if (typeof msj.responseJSON === "undefined") {
+                    //   window.location = "{{url('/')}}/error";
+                    // }
+                    if(msj.responseJSON.status=="ERROR"){
+                      console.log(msj.responseJSON.errores);
+                      errores(msj.responseJSON.errores);
+                      var nTitle="    Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";   
+                      var nType = 'danger';         
+                    }else if(msj.responseJSON.status=="CANTIDAD-FULL"){
+                      swal({   
+                      title: msj.responseJSON.mensaje,   
+                      text: "Confirmar inscripción!",   
+                      type: "warning",   
+                      showCancelButton: true,   
+                      confirmButtonColor: "#DD6B55",   
+                      confirmButtonText: "Inscribir!",  
+                      cancelButtonText: "Cancelar",         
+                      closeOnConfirm: true 
+                      }, function(isConfirm){   
+                      if (isConfirm) {
+                        permitir = 1;
+                        $('#agregar').click();  
+                        }
+                      });
+                    }                        
+                    finprocesado();
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY";    
+
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                   
+              
+                  }, 1000);
+                }
             });
+          // }
+          // else{
+
+          //   $("#error-alumno_id_mensaje").html("Debe seleccionar un alumno primero");
+
+          // }
+        });
 
         $("#guardar_inscripcion").click(function(){
             swal({   
@@ -2826,17 +2820,25 @@
       }
 
       function errores(merror){
-        console.log(merror);
-         $.each(merror, function (n, c) {
-             console.log(n);
-           $.each(this, function (name, value) {
-              //console.log(this);
-              var error=value;
-              $("#error-"+n+"_mensaje").html(error);
-              console.log(value);
-           });
-        });
-       }
+        var elemento="";
+        var contador=0;
+        $.each(merror, function (n, c) {
+        if(contador==0){
+        elemento=n;
+        }
+        contador++;
+
+         $.each(this, function (name, value) {              
+            var error=value;
+            $("#error-"+n+"_mensaje").html(error);             
+         });
+      });
+
+      $('.modal').animate({
+            scrollTop: 0,
+      }, 1000);          
+
+    }
 
     $('#modalCostoInscripcion-ClaseGrupal').on('show.bs.modal', function (event) {
       limpiarMensaje();
