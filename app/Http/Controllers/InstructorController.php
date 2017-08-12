@@ -1136,6 +1136,7 @@ class InstructorController extends BaseController {
         $instructor->save();
 
         $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->select('users.id')
             ->where('usuarios_tipo.tipo_id',$request->id)
             ->where('usuarios_tipo.tipo',3)
         ->first();
