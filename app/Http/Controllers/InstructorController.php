@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Instructor;
 use App\ClaseGrupal;
+use App\HorarioClaseGrupal;
 use App\Academia;
 use App\User;
 use App\UsuarioTipo;
@@ -1379,7 +1380,13 @@ class InstructorController extends BaseController {
             $collection=collect($tmp2);   
             $comisiones = $collection->toArray();
 
-            return view('participante.instructor.planilla')->with(['instructor' => $instructor, 'credencial' => $credencial, 'clases_grupales' => $array, 'pagos_instructor' => $pagos, 'imagen' => $imagen, 'comisiones' => $comisiones,  'linea_servicio' => $linea_servicio, 'id' => $id]);
+            $cantidad_clases = ClaseGrupal::where('instructor_id',$instructor->id)->count();
+
+            $cantidad_horarios = HorarioClaseGrupal::where('instructor_id',$instructor->id)->count();
+
+            $cantidad_clases = $cantidad_clases + $cantidad_horarios;
+
+            return view('participante.instructor.planilla')->with(['instructor' => $instructor, 'credencial' => $credencial, 'clases_grupales' => $array, 'pagos_instructor' => $pagos, 'imagen' => $imagen, 'comisiones' => $comisiones,  'linea_servicio' => $linea_servicio, 'id' => $id, 'cantidad_clases' => $cantidad_clases]);
         }else{
            return redirect("participante/instructor"); 
         }

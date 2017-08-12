@@ -1624,6 +1624,7 @@
 
                          <div class="col-sm-12">
                               <p class="text-center opaco-0-8 f-22">Datos del Instructor</p>
+                              <p class="text-center opaco-0-8 f-12">Cantidad de Clases Semanales: {{$cantidad_clases}}</p>
                           </div>
 
                           <div class="col-sm-12">
