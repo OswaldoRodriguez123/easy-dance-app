@@ -1741,63 +1741,54 @@ class AsistenciaController extends BaseController
             $hora_actual=$actual->toTimeString();
 
             $asistencia = AsistenciaInstructor::where('instructor_id', $instructor_id)
-              ->where('hora_salida', '00:00:00')
               ->where('clase_grupal_id' , '=', $clase_grupal_id)
               ->where('fecha',$fecha_actual)
             ->first();
 
-            if($asistencia)
-            {
+            if(!$asistencia){
 
-              $asistencia->hora_salida = $hora_actual;
-              $asistencia->save();
+              $asistencia = new AsistenciaInstructor;
+              $asistencia->fecha=$fecha_actual;
+              $asistencia->hora=$hora_actual;
+              $asistencia->clase_grupal_id=$clase_grupal_id;
+              $asistencia->instructor_id=$instructor_id;
+              $asistencia->academia_id=Auth::user()->academia_id;
+              $asistencia->tipo = $tipo_clase;
+              $asistencia->tipo_id = $horario_id;
 
-            }else{
-
-              $asistencia = AsistenciaInstructor::where('instructor_id', $instructor_id)
-                ->where('clase_grupal_id' , '=', $clase_grupal_id)
-                ->where('fecha',$fecha_actual)
+              $config_pago = ConfigPagosInstructor::where('clase_grupal_id', $clase_grupal_id)
+                ->where('instructor_id', $instructor_id)
               ->first();
 
-              if(!$asistencia){
+              if($config_pago){
+                if($config_pago->tipo == 1){
 
-                $asistencia = new AsistenciaInstructor;
-                $asistencia->fecha=$fecha_actual;
-                $asistencia->hora=$hora_actual;
-                $asistencia->clase_grupal_id=$clase_grupal_id;
-                $asistencia->instructor_id=$instructor_id;
-                $asistencia->academia_id=Auth::user()->academia_id;
-                $asistencia->tipo = $tipo_clase;
-                $asistencia->tipo_id = $horario_id;
+                  $pago = new PagoInstructor;
 
-                $asistencia->save();
+                  $pago->instructor_id=$instructor_id;
+                  $pago->tipo=$config_pago->tipo;
+                  $pago->monto=$config_pago->monto;
+                  $pago->clase_grupal_id=$clase_grupal_id;
+                  $pago->asistencia_id=$asistencia->id;
+                  $pago->fecha = Carbon::now()->toDateString();
+                  $pago->hora = Carbon::now()->toTimeString();
 
-                $config_pago = ConfigPagosInstructor::where('clase_grupal_id', $clase_grupal_id)
-                  ->where('instructor_id', $instructor_id)
-                ->first();
-
-                if($config_pago){
-                  if($config_pago->tipo == 1)
-                  {
-
-                    $pago = new PagoInstructor;
-
-                    $pago->instructor_id=$instructor_id;
-                    $pago->tipo=$config_pago->tipo;
-                    $pago->monto=$config_pago->monto;
-                    $pago->clase_grupal_id=$clase_grupal_id;
-                    $pago->asistencia_id=$asistencia->id;
-                    $pago->fecha = Carbon::now()->toDateString();
-                    $pago->hora = Carbon::now()->toTimeString();
-
-                    $pago->save();
-                  }
+                  $pago->save();
                 }
+              }
+            }else{
+              if($asistencia->hora_salida == '00:00:00'){
+                $asistencia->hora_salida = $hora_actual;
+              }else{
+                return response()->json(['status' => 'ERROR', 'mensaje' => "Ups! El instructor ya checkeo entrada y salida en esta clase grupal"],422);
               }
             }
 
-            return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);
-
+            if($asistencia->save()){
+              return response()->json(['mensaje' => '¡Excelente! La Asistencia se ha guardado satisfactoriamente','status' => 'OK', 200]);
+            }else{
+              return response()->json(['status' => 'ERROR', 'mensaje' => "ERROR"],422);
+            }
           }else{
             return response()->json(['status' => 'ERROR_ASOCIADO', 'mensaje' => "El instructor no se encuentra asociado a esta clase!", 'campo' => 'es_instructor'],422);
           }
