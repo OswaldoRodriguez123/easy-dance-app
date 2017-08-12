@@ -624,16 +624,7 @@
               });  
 
             }else{
-              var nType = 'danger';
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY"; 
-              var nTitle="Ups! ";
-              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              swal("Error!", msj.responseJSON.mensaje, "error");
             } 
           }
        }); 
