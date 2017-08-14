@@ -104,12 +104,6 @@ class AgendarController extends BaseController
             }
 
             $arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-
-			while($dt->timestamp<$df->timestamp){
-				$fecha="";
-				$fecha=$dt->addWeek()->toDateString();
-				$arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url);
-			}
 		}
 
         foreach ($horarios_talleres as $taller) {
