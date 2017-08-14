@@ -1769,7 +1769,6 @@ class AsistenciaController extends BaseController
                   $pago->tipo=$config_pago->tipo;
                   $pago->monto=$config_pago->monto;
                   $pago->clase_grupal_id=$clase_grupal_id;
-                  $pago->asistencia_id=$asistencia->id;
                   $pago->fecha = Carbon::now()->toDateString();
                   $pago->hora = Carbon::now()->toTimeString();
 

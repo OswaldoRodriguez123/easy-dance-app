@@ -1614,6 +1614,11 @@
 
     });
 
+    $(document).on('change', 'input[type=checkbox]', function() {
+      if($(this).is(":checked")) {
+      }
+    });
+
   </script> 
 @stop
 
