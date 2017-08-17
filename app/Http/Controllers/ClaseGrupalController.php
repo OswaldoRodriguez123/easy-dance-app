@@ -104,11 +104,22 @@ class ClaseGrupalController extends BaseController {
                     $inicio = 1;
                 }
 
+                $academia = Academia::find(Auth::user()->academia_id);
+                if($academia->tipo_horario == 1){
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
+                    $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
+                }else{
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->format('g:i a');
+                    $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->format('g:i a');
+                }
+
                 $collection=collect($clase_grupal);     
                 $clase_grupal_array = $collection->toArray();
 
                 $clase_grupal_array['cantidad_participantes']=$cantidad_participantes;
                 $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+                $clase_grupal_array['hora_inicio']=$hora_inicio;
+                $clase_grupal_array['hora_final']=$hora_final;
                 $clase_grupal_array['inicio']=$inicio;
                 $array['1-'.$clase_grupal->id] = $clase_grupal_array;
             }
@@ -130,11 +141,22 @@ class ClaseGrupalController extends BaseController {
                     $inicio = 1;
                 }
 
+                $academia = Academia::find(Auth::user()->academia_id);
+                if($academia->tipo_horario == 1){
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
+                    $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
+                }else{
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->format('g:i a');
+                    $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->format('g:i a');
+                }
+
                 $collection=collect($clase_grupal);     
                 $clase_grupal_array = $collection->toArray();
                 
                 $clase_grupal_array['cantidad_participantes']=$cantidad_participantes;
                 $clase_grupal_array['dia_de_semana']=$dia_de_semana;
+                $clase_grupal_array['hora_inicio']=$hora_inicio;
+                $clase_grupal_array['hora_final']=$hora_final;
                 $clase_grupal_array['inicio']=$inicio;
                 $array['2-'.$clase_grupal->horario_id] = $clase_grupal_array;
             }

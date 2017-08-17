@@ -702,14 +702,14 @@ class AsistenciaController extends BaseController
 	        ->first();
 
 	        $inscripcion = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
-	            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-	            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-	            ->select('instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_clases_grupales.nombre', 'clases_grupales.fecha_inicio', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id')
-	            ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
-	            ->orderBy('inscripcion_clase_grupal.fecha_inscripcion', 'desc')
-			->first();
+    	            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+    	            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+    	            ->select('instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_clases_grupales.nombre', 'clases_grupales.fecha_inicio', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id')
+    	            ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
+    	            ->orderBy('inscripcion_clase_grupal.fecha_inscripcion', 'desc')
+    			->first();
 
-			if($inscripcion){
+			     if($inscripcion){
 
 	            $fecha = Carbon::createFromFormat('Y-m-d', $inscripcion->fecha_inicio);
 	            $i = $fecha->dayOfWeek;

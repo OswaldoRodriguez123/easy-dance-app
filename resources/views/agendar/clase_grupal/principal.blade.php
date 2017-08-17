@@ -425,7 +425,7 @@
                 ''+array.clase_grupal_nombre+'',
                 ''+array.instructor_nombre+ ' ' +array.instructor_apellido+ '',
                 ''+array.especialidad_nombre+'',
-                ''+array.hora_inicio+ ' '+array.hora_final+'',
+                ''+array.hora_inicio+ ' - '+array.hora_final+'',
                 ''+operacion+''
                 ] ).draw(false).node();
                 $( rowNode )
