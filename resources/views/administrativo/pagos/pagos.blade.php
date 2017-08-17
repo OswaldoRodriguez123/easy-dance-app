@@ -689,10 +689,9 @@
     var totalfinal = 0;
     var usuario_id = '';
     var checked = [];
-    var itemlist = 0;
-    var disponible = 0;
     var promotores = <?php echo json_encode($promotores);?>;
-    var servicio_producto_id = 0
+    var servicio_producto_id = 0;
+    var items_factura_proforma = []
 
     route_agregar="{{url('/')}}/administrativo/pagos/agregaritem";
     route_factura="{{url('/')}}/administrativo/pagos/gestion";
@@ -767,10 +766,11 @@
               var nAnimOut = "animated flipOutY"; 
               if(respuesta.status=="OK"){
 
+                items_factura_proforma = respuesta.items
+
                 $.each(respuesta.items, function (index, array) {
 
                   var rowId=array[0].id;
-                  itemlist=array.length;
                   var rowNode=t.row.add( [
                   ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',  
                   ''+array[0].nombre+'',
@@ -782,6 +782,8 @@
                   ] ).draw(false).node();
                   $( rowNode )
                   .attr('id',rowId)
+                  .attr('fecha_vencimiento',array[0].fecha_vencimiento)
+                  .attr('tipo',array[0].tipo)
                   .addClass('seleccion');
 
                 });
@@ -1406,6 +1408,8 @@
 
               total = 0;
 
+              items_factura_proforma = respuesta.items
+
               $.each(respuesta.items, function (index, array) {
 
                 if(array[0].estatus == 0){
@@ -1427,6 +1431,8 @@
                 ] ).draw(false).node();
                 $( rowNode )
                 .attr('id',rowId)
+                .attr('fecha_vencimiento',array[0].fecha_vencimiento)
+                .attr('tipo',array[0].tipo)
                 .addClass('seleccion');
            
               });
@@ -1615,7 +1621,25 @@
     });
 
     $(document).on('change', 'input[type=checkbox]', function() {
-      if($(this).is(":checked")) {
+
+      checkbox = $(this)
+      var tipo = $(this).closest('tr').attr('tipo');
+      var id = $(this).closest('tr').attr('id');
+      var fecha_vencimiento = $(this).closest('tr').attr('fecha_vencimiento');
+
+      if($(this).is(":checked") && tipo == 6) {
+        $.each(items_factura_proforma, function (index, array) {
+
+          if(id != array[0].id && array[0].tipo == 6){
+            fecha_vencimiento_checkbox = new Date(fecha_vencimiento)
+            fecha_vencimiento_array = new Date(array[0].fecha_vencimiento)
+
+            if(fecha_vencimiento_checkbox > fecha_vencimiento_array){
+              $(checkbox).attr('checked', false);
+              swal("Ups!","No puede seleccionar esta cuota sin haber pagado la anterior!","error");
+            }
+          }
+        })
       }
     });
 
