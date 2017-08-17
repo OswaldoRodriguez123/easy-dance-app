@@ -616,6 +616,71 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalHorario-Academia" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Academia<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_horario_academia" id="edit_horario_academia"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                  <div class="form-group fg-line ">
+                                    <label for="tipo_horario p-t-10">Tipo de Horario</label>
+                                    <div class="p-t-10">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo_horario" id="24_horas" value="1" type="radio">
+                                        <i class="input-helper"></i>  
+                                        24 Horas
+                                    </label>
+                                    <label class="radio radio-inline m-r-20 ">
+                                        <input name="tipo_horario" id="12_horas" value="2" type="radio">
+                                        <i class="input-helper"></i>  
+                                        12 Horas
+                                    </label>
+                                    </div>
+                                    
+                                  </div>
+                                  <div class="has-error" id="error-tipo_horario">
+                                        <span >
+                                            <small class="help-block error-span" id="error-tipo_horario_mensaje" ></small>                                           
+                                        </span>
+                                  </div>
+                                </div>
+
+                               <input type="hidden" name="id" value="{{$academia->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_horario_academia" data-update="horario" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                             
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
 
             <section id="content">
                 <div class="container">
@@ -647,9 +712,6 @@
           					        <div class="text-center p-t-30">       
           					          <div class="row p-b-15 ">
           					            <div class="col-md-12" data-src="/assets/img/ayuda-configuracion.jpg">
-          					              <!--<div class="text-center">
-          					                <img src="{{url('/')}}/assets/img/detalle_alumnos.jpg" class="img-responsive img-efecto text-center" alt="">
-          					              </div>-->
                                   <ul class="ca-menu-planilla">
                                     <li>
                                         <a href="#" class="disabled">
@@ -664,8 +726,6 @@
 
           					            </div>                
           					          </div>
-          					          <!--<p class="text-justify">Desde esta área Easy Dance te brinda la oportunidad de actualizar los datos creados en tu planilla de registro.</p>-->
-          					                
           					      </div>
 					           </div>
 
@@ -762,6 +822,20 @@
                                <span class="f-14"> Contraseña </span>
                              </td>
                              <td class="f-14 m-l-15" > <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalHorario-Academia">
+                             <td> 
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tipo_horario" class="zmdi {{ empty($academia->tipo_horario) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                              <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-time f-22"></i> </span>
+                              <span class="f-14"> Tipo de Horario </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="academia-tipo_horario" data-valor="{{$academia->tipo_horario}}">
+                               @if($academia->tipo_horario=='1')
+                                 24 Horas </span>
+                               @else
+                                 12 Horas </span>
+                               @endif
+                             </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                            </table>
                           </div>
@@ -912,6 +986,16 @@
 
       });
 
+    $('#modalHorario-Academia').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      var valor=$("#academia-tipo_horario").data('valor');
+      if(valor=="1"){
+        $("#24_horas").prop("checked", true);
+      }else{
+        $("#12_horas").prop("checked", true);
+      }
+    })
+
     function limpiarMensaje(){
         var campo = ["correo", "telefono", "celular", "direccion"];
         fLen = campo.length;
@@ -936,11 +1020,11 @@
 
       function campoValor(form){
         $.each(form, function (n, c) {
-          if(c.name=='sexo'){
-            if(c.value=='M'){              
-              var valor='<i class="zmdi zmdi-male f-25 c-azul"></i> </span>';                              
+          if(c.name=='tipo_horario'){
+            if(c.value=='1'){              
+              var valor='24 Horas </span>';                              
             }else if(c.value=='F'){
-              var valor='<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>';
+              var valor='12 Horas </span>';
             }
             $("#academia-"+c.name).data('valor',c.value);
             $("#academia-"+c.name).html(valor);

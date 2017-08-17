@@ -193,12 +193,17 @@ class CitaController extends BaseController {
 
             $fecha = $fecha->toDateString();
 
-            $hora_inicio = strtotime($request->hora_inicio);
-            $hora_final = strtotime($request->hora_final);
+            $academia = Academia::find(Auth::user()->academia_id);
 
-            if($hora_inicio > $hora_final)
-            {
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+            }
 
+            if($hora_inicio > $hora_final){
                 return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
             }
 
@@ -214,8 +219,8 @@ class CitaController extends BaseController {
             $cita->fecha = $fecha;
             $cita->tipo_id = $request->tipo_id;
             $cita->instructor_id = $request->instructor_id;
-            $cita->hora_inicio = $request->hora_inicio;
-            $cita->hora_final = $request->hora_final;
+            $cita->hora_inicio = $hora_inicio;
+            $cita->hora_final = $hora_final;
             $cita->color_etiqueta = $request->color_etiqueta;
             $cita->boolean_mostrar = $boolean_mostrar;
             $cita->cita_llamada = $request->cita_llamada;
@@ -417,47 +422,52 @@ class CitaController extends BaseController {
 
     public function updateHorario(Request $request){
 
-    $rules = [
-        'hora_inicio' => 'required',
-        'hora_final' => 'required',
-    ];
+        $rules = [
+            'hora_inicio' => 'required',
+            'hora_final' => 'required',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
-        'hora_final.required' => 'Ups! La hora final es requerida',
-    ];
+            'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
+            'hora_final.required' => 'Ups! La hora final es requerida',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
-
-    else{
-
-        $hora_inicio = strtotime($request->hora_inicio);
-        $hora_final = strtotime($request->hora_final);
-
-        if($hora_inicio > $hora_final)
-        {
-
-            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
         }
 
-        $cita = Cita::find($request->id);
+        else{
 
-        $cita->hora_inicio = $request->hora_inicio;
-        $cita->hora_final = $request->hora_final;
+            $academia = Academia::find(Auth::user()->academia_id);
 
-        if($cita->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+            }
+
+            if($hora_inicio > $hora_final){
+                return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+            }
+
+            $cita = Cita::find($request->id);
+
+            $cita->hora_inicio = $hora_inicio;
+            $cita->hora_final = $hora_final;
+
+            if($cita->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
-    }
     }
 
     public function destroy($id)

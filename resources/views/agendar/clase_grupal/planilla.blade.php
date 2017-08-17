@@ -1456,7 +1456,27 @@
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-alarm f-22"></i> </span>
                                <span class="f-14"> Horario </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="clasegrupal-hora_inicio">{{$clasegrupal->hora_inicio}}</span> - <span id="clasegrupal-hora_final">{{$clasegrupal->hora_final}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" >
+
+                             <span id="clasegrupal-hora_inicio">
+                                @if($tipo_horario == 1)
+                                    {{\Carbon\Carbon::createFromFormat('H:i:s',$clasegrupal->hora_inicio)->format('H:i')}}
+                                @else
+                                    {{\Carbon\Carbon::createFromFormat('H:i:s',$clasegrupal->hora_inicio)->format('g:i a')}}
+                                @endif
+                              </span> 
+
+                              - 
+
+                              <span id="clasegrupal-hora_final">
+
+                              @if($tipo_horario == 1)
+                                  {{\Carbon\Carbon::createFromFormat('H:i:s',$clasegrupal->hora_final)->format('H:i')}}
+                              @else
+                                  {{\Carbon\Carbon::createFromFormat('H:i:s',$clasegrupal->hora_final)->format('g:i a')}}
+                              @endif
+
+                              </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
@@ -1811,8 +1831,8 @@
 
     $('#modalHorario-ClaseGrupal').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#hora_inicio").val($("#clasegrupal-hora_inicio").text());
-      $("#hora_final").val($("#clasegrupal-hora_final").text());
+      $("#hora_inicio").val($("#clasegrupal-hora_inicio").text().trim());
+      $("#hora_final").val($("#clasegrupal-hora_final").text().trim());
     })
 
     $('#modalEstudio-ClaseGrupal').on('show.bs.modal', function (event) {

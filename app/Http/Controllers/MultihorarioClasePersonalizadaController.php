@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use DB;
+use App\Academia;
 use App\DiasDeSemana;
 use App\ConfigEspecialidades;
 use App\ConfigEstudios;
@@ -27,7 +28,7 @@ class MultihorarioClasePersonalizadaController extends BaseController
     	Session::forget('horarios');
 
         $clasepersonalizada = ClasePersonalizada::join('inscripcion_clase_personalizada', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
-            ->select('clases_personalizadas.cantidad_horas as horas_asignadas', 'inscripcion_clase_personalizada.*')
+            ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.cantidad_horas as horas_asignadas', 'clases_personalizadas.nombre')
             ->where('inscripcion_clase_personalizada.id', $id)
         ->first();
 
@@ -116,178 +117,21 @@ class MultihorarioClasePersonalizadaController extends BaseController
 
         }else{
 
-                $hora_inicio = strtotime($request->hora_inicio_acordeon);
-                $hora_final = strtotime($request->hora_final_acordeon);
+                $academia = Academia::find(Auth::user()->academia_id);
+                if($academia->tipo_horario == 1){
+                    $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio_acordeon)->toTimeString();
+                    $hora_final = Carbon::createFromFormat('H:i',$request->hora_final_acordeon)->toTimeString();
+                }else{
+                    $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio_acordeon);
+                    $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final_acordeon);
+                }
 
-                if($hora_inicio > $hora_final)
-                {
-
+                if($hora_inicio > $hora_final){
                     return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
                 }
 
-                // $comparacion_instructor_clase = ClaseGrupal::where('instructor_id', $request->instructor_acordeon_id)->get();
-
-                // foreach($comparacion_instructor_clase as $comparacion){
-                //     $fecha_inicio = Carbon::createFromFormat('Y-m-d', $comparacion->fecha_inicio);
-                //     $dia_de_semana = $fecha_inicio->dayOfWeek;
-
-                //     if(intval($request->dia_de_semana_id) == $dia_de_semana){
-
-                //         $hora_inicio = Carbon::createFromFormat('H:i:s', $comparacion->hora_inicio);
-                //         $hora_final = Carbon::createFromFormat('H:i:s', $comparacion->hora_final);
-
-                        
-                //         $hora_inicio_ingresada = Carbon::createFromFormat('H:i', $request->hora_inicio_acordeon);
-                //         $hora_final_ingresada = Carbon::createFromFormat('H:i', $request->hora_final_acordeon);
-
-                //         // dd($hora_inicio->toTimeString() . ' ' . $hora_final->toTimeString() . ' ' . $hora_inicio_ingresada->toTimeString());
-
-                //         if($hora_inicio_ingresada->between($hora_inicio, $hora_final) OR $hora_final_ingresada->between($hora_inicio, $hora_final)){
-                //             return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El instructor tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422);
-                //         }
-
-                //         if($hora_inicio->between($hora_inicio_ingresada, $hora_final_ingresada) OR $hora_final->between($hora_inicio_ingresada, $hora_final_ingresada)){
-                //             return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El instructor tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422);
-                //         }            
-                //     }
-                // }
-
-                // $comparacion_instructor_horario = HorarioClaseGrupal::where('instructor_id', $request->instructor_acordeon_id)->get();
-
-                // foreach($comparacion_instructor_horario as $comparacion){
-                //     $fecha_inicio = Carbon::createFromFormat('Y-m-d', $comparacion->fecha);
-                //     $dia_de_semana = $fecha_inicio->dayOfWeek;
-
-                //     if(intval($request->dia_de_semana_id) == $dia_de_semana){
-
-                //         $hora_inicio = Carbon::createFromFormat('H:i:s', $comparacion->hora_inicio);
-                //         $hora_final = Carbon::createFromFormat('H:i:s', $comparacion->hora_final);
-
-                        
-                //         $hora_inicio_ingresada = Carbon::createFromFormat('H:i', $request->hora_inicio_acordeon);
-                //         $hora_final_ingresada = Carbon::createFromFormat('H:i', $request->hora_final_acordeon);
-
-                //         if($hora_inicio_ingresada->between($hora_inicio, $hora_final) OR $hora_final_ingresada->between($hora_inicio, $hora_final)){
-                //             return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El instructor tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422);
-                //         } 
-
-                //         if($hora_inicio->between($hora_inicio_ingresada, $hora_final_ingresada) OR $hora_final->between($hora_inicio_ingresada, $hora_final_ingresada)){
-                //             return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El instructor tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422);
-                //         }         
-                //     }
-                // }
-
-                // $comparacion_estudio_clase = ClaseGrupal::where('estudio_id', $request->estudio_id)->get();
-
-                // foreach($comparacion_estudio_clase as $comparacion){
-                //     $fecha_inicio = Carbon::createFromFormat('Y-m-d', $comparacion->fecha_inicio);
-                //     $dia_de_semana = $fecha_inicio->dayOfWeek;
-
-                //     if(intval($request->dia_de_semana_id) == $dia_de_semana){
-
-                //         $hora_inicio = Carbon::createFromFormat('H:i:s', $comparacion->hora_inicio);
-                //         $hora_final = Carbon::createFromFormat('H:i:s', $comparacion->hora_final);
-
-                        
-                //         $hora_inicio_ingresada = Carbon::createFromFormat('H:i', $request->hora_inicio_acordeon);
-                //         $hora_final_ingresada = Carbon::createFromFormat('H:i', $request->hora_final_acordeon);
-
-                //         if($hora_inicio_ingresada->between($hora_inicio, $hora_final) OR $hora_final_ingresada->between($hora_inicio, $hora_final)){
-                //             return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El estudio tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422);
-                //         }
-
-                //         if($hora_inicio->between($hora_inicio_ingresada, $hora_final_ingresada) OR $hora_final->between($hora_inicio_ingresada, $hora_final_ingresada)){
-                //             return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El estudio tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422);
-                //         }          
-                //     }
-                // }
-
-                // $comparacion_estudio_horario = HorarioClaseGrupal::where('estudio_id', $request->estudio_id)->get();
-
-                // foreach($comparacion_estudio_horario as $comparacion){
-                //     $fecha_inicio = Carbon::createFromFormat('Y-m-d', $comparacion->fecha);
-                //     $dia_de_semana = $fecha_inicio->dayOfWeek;
-
-                //     if(intval($request->dia_de_semana_id) == $dia_de_semana){
-
-                //         $hora_inicio = Carbon::createFromFormat('H:i:s', $comparacion->hora_inicio);
-                //         $hora_final = Carbon::createFromFormat('H:i:s', $comparacion->hora_final);
-
-                        
-                //         $hora_inicio_ingresada = Carbon::createFromFormat('H:i', $request->hora_inicio_acordeon);
-                //         $hora_final_ingresada = Carbon::createFromFormat('H:i', $request->hora_final_acordeon);
-
-                //         if($hora_inicio_ingresada->between($hora_inicio, $hora_final) OR $hora_final_ingresada->between($hora_inicio, $hora_final)){
-                //             return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El estudio tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422);
-                //         }
-
-                //         if($hora_inicio->between($hora_inicio_ingresada, $hora_final_ingresada) OR $hora_final->between($hora_inicio_ingresada, $hora_final_ingresada)){
-                //             return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El estudio tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422);
-                //         }          
-                //     }
-                // }
-
                 $horarios = Session::get('horarios');
-
-                // if($horarios)
-                // {
-                //     foreach($horarios as $tmp){
-                //         foreach($tmp as $horario){
-
-                //             $fecha_inicio = $horario['fecha_inicio'];
-                //             $dia_de_semana = $fecha_inicio->dayOfWeek;
-
-                //             if(intval($request->dia_de_semana_id) == $dia_de_semana){
-
-                //                 $hora_inicio = Carbon::createFromFormat('H:i', $horario['hora_inicio']);
-                //                 $hora_final = Carbon::createFromFormat('H:i', $horario['hora_final']);
-
-                //                 $hora_inicio_ingresada = Carbon::createFromFormat('H:i', $request->hora_inicio_acordeon);
-                //                 $hora_final_ingresada = Carbon::createFromFormat('H:i', $request->hora_final_acordeon);
-
-
-                //                 if($hora_inicio_ingresada->between($hora_inicio, $hora_final) OR $hora_final_ingresada->between($hora_inicio, $hora_final)){
-
-                //                     if($request->estudio_id == $horario['estudio']){
-                //                        return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El estudio tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422); 
-                //                     }
-
-                //                     if($request->instructor_acordeon_id == $horario['instructor']){
-                //                        return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El instructor tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422); 
-                //                     }
-                //                 }
-
-                //                 if($hora_inicio->between($hora_inicio_ingresada, $hora_final_ingresada) OR $hora_final->between($hora_inicio_ingresada, $hora_final_ingresada)){
-
-                //                     if($request->estudio_id == $horario['estudio']){
-                //                        return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El estudio tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422); 
-                //                     }
-
-                //                     if($request->instructor_acordeon_id == $horario['instructor']){
-                //                        return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El instructor tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422); 
-                //                     }
-                //                 }  
-                //             }        
-                //         }
-                //     }
-                // }
-
-
-                //FECHA
-
-                // $fecha_inicio = Carbon::now();
-                // $dia_de_semana = $fecha_inicio->dayOfWeek;
-
-                // if(intval($request->dia_de_semana_id) >= $dia_de_semana){
-                //     $dias = intval($request->dia_de_semana_id) - intval($dia_de_semana);
-                //     $fecha_inicio->addDays($dias)->toDateString();
-                // }else{
-                //     $dias = intval($dia_de_semana) - intval($request->dia_de_semana_id);
-                //     $fecha_inicio->addWeek();
-                //     $fecha_inicio->subDays($dias)->toDateString();
-                    
-                // }
-
+                
                 $fecha_inicio = Carbon::createFromFormat('d/m/Y', $request->fecha);
 
                 $comparacion_clase = InscripcionClasePersonalizada::find($request->id);
@@ -296,12 +140,6 @@ class MultihorarioClasePersonalizadaController extends BaseController
                 $fecha_final_clase = Carbon::createFromFormat('Y-m-d', $comparacion_clase->fecha_final);
 
                 if($fecha_inicio->between($fecha_inicio_clase, $fecha_final_clase)){
-
-                    $hie = explode(':',$request->hora_inicio_acordeon);
-                    $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], '00');
-
-                    $hfe = explode(':',$request->hora_final_acordeon);
-                    $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], '00');
 
                     $hora_asignada = $hora_inicio->diffInHours($hora_final);
 
@@ -315,9 +153,6 @@ class MultihorarioClasePersonalizadaController extends BaseController
 
                         $find = Instructor::find($request->instructor_acordeon_id);
                         $instructor = $find->nombre . " " . $find->apellido;
-
-                        // $find = DiasDeSemana::find($request->dia_de_semana_id);
-                        // $dia_de_semana = $find->nombre;
                         $dia_de_semana = $fecha_inicio->toDateString();
 
                         $find = ConfigEspecialidades::find($request->especialidad_acordeon_id);
@@ -395,11 +230,21 @@ class MultihorarioClasePersonalizadaController extends BaseController
             foreach($horarios as $tmp){
                 foreach($tmp as $horario){
 
+                    $academia = Academia::find(Auth::user()->academia_id);
+                    
+                    if($academia->tipo_horario == 1){
+                        $hora_inicio = Carbon::createFromFormat('H:i',$horario['hora_inicio'])->toTimeString();
+                        $hora_final = Carbon::createFromFormat('H:i',$horario['hora_final'])->toTimeString();
+                    }else{
+                        $hora_inicio = Carbon::createFromFormat('H:i a',$horario['hora_inicio'])->toTimeString();
+                        $hora_final = Carbon::createFromFormat('H:i a',$horario['hora_final'])->toTimeString();
+                    }
+
                     $horario_clase_grupal = new HorarioClasePersonalizada();
 
                     $horario_clase_grupal->fecha=$horario['fecha_inicio'];
-                    $horario_clase_grupal->hora_inicio=$horario['hora_inicio'];
-                    $horario_clase_grupal->hora_final=$horario['hora_final'];
+                    $horario_clase_grupal->hora_inicio=$hora_inicio;
+                    $horario_clase_grupal->hora_final=$hora_final;
                     $horario_clase_grupal->instructor_id=$horario['instructor'];
                     $horario_clase_grupal->especialidad_id=$horario['especialidad'];
                     $horario_clase_grupal->estudio_id=$horario['estudio'];
@@ -577,46 +422,53 @@ class MultihorarioClasePersonalizadaController extends BaseController
 
     public function updateHorario(Request $request){
 
-    $rules = [
-        'hora_inicio' => 'required',
-        'hora_final' => 'required',
-    ];
+        $rules = [
+            'hora_inicio' => 'required',
+            'hora_final' => 'required',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
-        'hora_final.required' => 'Ups! La hora final es requerida',
-    ];
+            'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
+            'hora_final.required' => 'Ups! La hora final es requerida',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
-
-    else{
-
-        $clasegrupal = HorarioClasePersonalizada::find($request->id);
-
-        $hora_inicio = strtotime($request->hora_inicio);
-        $hora_final = strtotime($request->hora_final);
-
-        if($hora_inicio > $hora_final)
-        {
-            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
         }
 
-        $clasegrupal->hora_inicio = $request->hora_inicio;
-        $clasegrupal->hora_final = $request->hora_final;
+        else{
 
-        if($clasegrupal->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            $clasegrupal = HorarioClasePersonalizada::find($request->id);
+
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+            }
+
+            if($hora_inicio > $hora_final)
+            {
+                return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+            }
+
+            $clasegrupal->hora_inicio = $hora_inicio;
+            $clasegrupal->hora_final = $hora_final;
+
+            if($clasegrupal->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
-    }
     }
 
 }

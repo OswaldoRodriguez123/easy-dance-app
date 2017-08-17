@@ -494,13 +494,6 @@ $(document).ready(function(){
 	   $('.date-time-picker').datetimepicker();
     }
 
-    //Time
-    if ($('.time-picker')[0]) {
-    	$('.time-picker').datetimepicker({
-    	    format: 'LT'
-    	});
-    }
-
     //Date
     if ($('.date-picker')[0]) {
     	$('.date-picker').datetimepicker({

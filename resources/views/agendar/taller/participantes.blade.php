@@ -156,8 +156,17 @@
                                  
                                </div>
 
+                               <div class="col-sm-12 p-20" id="textarea_observacion" style="display:none">
 
-                             
+                                    <div class="clearfix p-b-10"></div>
+                                   
+                                    <label for="observacion_cambio_costo" id="id-observacion_cambio_costo">Explique las razones por las que el costo fue cambiado</label>
+                                    <br></br>
+
+                                    <div class="fg-line">
+                                      <textarea class="form-control" id="observacion_cambio_costo" name="observacion_cambio_costo" rows="2"></textarea>
+                                    </div>
+                                </div>
                                     
                                 <div class="clearfix p-b-35"></div>
                               
@@ -455,7 +464,7 @@
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
                 var taller_id = $('input:hidden[name=taller_id]').val();
-                var datos = $( "#agregar_inscripcion" ).serialize(); 
+                var observacion_cambio_costo = $('#observacion_cambio_costo').val();
                 $("#guardar").attr("disabled","disabled");
                 $(".cancelar").attr("disabled","disabled");
                 $(".procesando").removeClass('hidden');
@@ -466,7 +475,7 @@
                         headers: {'X-CSRF-TOKEN': token},
                         type: 'POST',
                         dataType: 'json',
-                        data:"&taller_id="+taller_id+"&alumno_id="+values+"&costo="+costo,
+                        data:"&taller_id="+taller_id+"&alumno_id="+values+"&costo="+costo+"&observacion_cambio_costo="+observacion_cambio_costo,
                     success:function(respuesta){
                       setTimeout(function(){ 
                         var nFrom = $(this).attr('data-from');
@@ -524,7 +533,11 @@
                               .attr('id',rowId)
                               .addClass('seleccion');
 
-                              });
+                            });
+
+                            $('#observacion_cambio_costo').text('')
+                            $('#textarea_observacion').hide();
+
                             }else{
 
                               window.location = route_enhorabuena + respuesta.id;
@@ -623,6 +636,7 @@
                           
                           var costo = $("#costo").val();
                           $("#taller-costo").text(costo)
+                          $('#textarea_observacion').show();
 
                           finprocesado();
                           $(".procesando").removeClass('show');

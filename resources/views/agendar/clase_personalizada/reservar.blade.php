@@ -669,11 +669,11 @@
           var id = $("#alumno_id").val();
           var values = $('#promotor').val();
           var promotores = '';
-          
-          for(var i = 0; i < values.length; i += 1) {
 
-            promotores = promotores + ',' + values[i];
-
+          if(values){
+            for(var i = 0; i < values.length; i += 1) {
+              promotores = promotores + ',' + values[i];
+            }
           }
           
           if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6 ){
@@ -732,9 +732,9 @@
               },
               error:function(msj){
                 setTimeout(function(){ 
-                  if (typeof msj.responseJSON === "undefined") {
-                    window.location = "{{url('/')}}/error";
-                  }
+                  // if (typeof msj.responseJSON === "undefined") {
+                  //   window.location = "{{url('/')}}/error";
+                  // }
                   if(msj.responseJSON.status=="ERROR"){
                     $(".modal").modal('hide');
                     console.log(msj.responseJSON.errores);

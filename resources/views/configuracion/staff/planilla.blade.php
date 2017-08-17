@@ -1101,7 +1101,6 @@
       }else{
         $("#mujer").prop("checked", true);
       }
-      
     })
 
     $('#modalCorreo-Alumno').on('show.bs.modal', function (event) {

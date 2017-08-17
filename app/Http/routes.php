@@ -221,6 +221,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('configuracion/academia/update/especiales', 'AcademiaController@updateEspeciales');
 		Route::put('configuracion/academia/update/administrativo', 'AcademiaController@updateAdministrativo');
 		Route::put('configuracion/academia/update/password', 'AcademiaController@updatePassword');
+		Route::put('configuracion/academia/update/horario', 'AcademiaController@updateHorario');
 
 		// MANUALES DE PROCEDIMIENTOS
 

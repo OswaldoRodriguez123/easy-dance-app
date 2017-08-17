@@ -107,14 +107,15 @@ class ClasePersonalizadaController extends BaseController {
             foreach($clases_personalizadas as $clase_personalizada){
                 $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_personalizada->fecha_inicio);
 
-                if($fecha_inicio >= Carbon::now()->format('Y-m-d') && $clase_personalizada->estatus != 0){
-                    $hora_final = Carbon::createFromFormat('H:i:s', $clase_personalizada->hora_final);
+                if($fecha_inicio > Carbon::now()->format('Y-m-d') && $clase_personalizada->estatus != 0){
 
-                    if($hora_final > Carbon::now()->format('H:i:s')){
+                    // $hora_final = Carbon::createFromFormat('H:i:s', $clase_personalizada->hora_final);
+
+                    // if($hora_final > Carbon::now()->format('H:i:s')){
                         $tipo = 'A';
-                    }else{
-                        $tipo = 'F';
-                    }
+                    // }else{
+                    //     $tipo = 'F';
+                    // }
                 }else if($fecha_inicio <= Carbon::now() && $clase_personalizada->estatus != 0){
                     $tipo = 'F';
                 }else{
@@ -139,14 +140,14 @@ class ClasePersonalizadaController extends BaseController {
             foreach($horarios_clases_personalizadas as $clase_personalizada){
                 $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_personalizada->fecha_inicio);
 
-                if($fecha_inicio >= Carbon::now()->format('Y-m-d') && $clase_personalizada->estatus != 0){
-                    $hora_final = Carbon::createFromFormat('H:i:s', $clase_personalizada->hora_final);
+                if($fecha_inicio > Carbon::now()->format('Y-m-d') && $clase_personalizada->estatus != 0){
+                    // $hora_final = Carbon::createFromFormat('H:i:s', $clase_personalizada->hora_final);
 
-                    if($hora_final > Carbon::now()->format('H:i:s')){
+                    // if($hora_final > Carbon::now()->format('H:i:s')){
                         $tipo = 'A';
-                    }else{
-                        $tipo = 'F';
-                    }
+                    // }else{
+                    //     $tipo = 'F';
+                    // }
                 }else if($fecha_inicio <= Carbon::now() && $clase_personalizada->estatus != 0){
                     $tipo = 'F';
                 }else{
@@ -708,51 +709,52 @@ class ClasePersonalizadaController extends BaseController {
 
     public function updateHorario(Request $request){
 
-    $rules = [
+        $rules = [
 
-        'hora_inicio' => 'required',
-        'hora_final' => 'required',
+            'hora_inicio' => 'required',
+            'hora_final' => 'required',
 
-    ];
+        ];
 
-    $messages = [
+        $messages = [
 
-        'hora_inicio.required' => 'Ups! El horario es requerido',
-        'hora_final.required' => 'Ups! El horario es requerido',
+            'hora_inicio.required' => 'Ups! El horario es requerido',
+            'hora_final.required' => 'Ups! El horario es requerido',
 
-    ];
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        // return redirect("/home")
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-        // ->withErrors($validator)
-        // ->withInput();
+        }
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+        else{
 
-        //dd($validator);
+            $academia = Academia::find(Auth::user()->academia_id);
 
-    }
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+            }
 
-    else{
-
-            $hora_inicio = strtotime($request->hora_inicio);
-            $hora_final = strtotime($request->hora_final);
-
-            if($hora_inicio > $hora_final)
-            {
-
+            if($hora_inicio > $hora_final){
                 return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
             }
 
             $clasepersonalizada = InscripcionClasePersonalizada::find($request->id);
-            $clasepersonalizada->hora_inicio = $request->hora_inicio;
-            $clasepersonalizada->hora_final = $request->hora_final;
+            $clasepersonalizada->hora_inicio = $hora_inicio;
+            $clasepersonalizada->hora_final = $hora_final;
 
             if($clasepersonalizada->save()){
+
+                dd($clasepersonalizada);
+
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
@@ -785,7 +787,7 @@ class ClasePersonalizadaController extends BaseController {
             ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
             ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
             ->join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'inscripcion_clase_personalizada.fecha_inicio as fecha_inicio', 'inscripcion_clase_personalizada.fecha_final as fecha_final', 'inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final',  'inscripcion_clase_personalizada.id', 'clases_personalizadas.tiempo_expiracion', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'clases_personalizadas.nombre')
+            ->select('inscripcion_clase_personalizada.*','config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_personalizadas.tiempo_expiracion', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'clases_personalizadas.nombre')
             ->where('inscripcion_clase_personalizada.id', '=', $id)
         ->first();
 
@@ -796,8 +798,7 @@ class ClasePersonalizadaController extends BaseController {
             $hora = Carbon::createFromFormat('Y-m-d H:i:s', $hora_string);
             $hora_limite = $hora->subHours($clase_personalizada_join->tiempo_expiracion);
 
-            if(Carbon::now() > $hora_limite)
-            {
+            if(Carbon::now() > $hora_limite){
                 $cancelacion = 'Cancelación Tardia';
             }else{
                 $cancelacion = 'Cancelación Temprana';
@@ -953,12 +954,20 @@ class ClasePersonalizadaController extends BaseController {
 
         else{
 
-            $hora_inicio = strtotime($request->hora_inicio);
-            $hora_final = strtotime($request->hora_final);
             $fecha = explode(" - ", $request->fecha);
 
             $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
             $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
+
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+            }
 
             if($hora_inicio > $hora_final){
                 return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
@@ -968,10 +977,7 @@ class ClasePersonalizadaController extends BaseController {
                 return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de la clase no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
             }
 
-            $clase_personalizada = ClasePersonalizada::join('config_servicios', 'clases_personalizadas.servicio_id', '=', 'config_servicios.id')
-                ->select('clases_personalizadas.*', 'config_servicios.id as servicio_id')
-                ->where('clases_personalizadas.id', '=', $request->clase_personalizada_id)
-            ->first();
+            $clase_personalizada = ClasePersonalizada::find($request->clase_personalizada_id);
 
             $fecha_inicio = $fecha_inicio->toDateString();
             $fecha_final = $fecha_final->toDateString();
@@ -982,8 +988,8 @@ class ClasePersonalizadaController extends BaseController {
             $inscripcion_clase_personalizada->fecha_inicio = $fecha_inicio;
             $inscripcion_clase_personalizada->fecha_final = $fecha_final;
             $inscripcion_clase_personalizada->instructor_id = $request->instructor_id;
-            $inscripcion_clase_personalizada->hora_inicio = $request->hora_inicio;
-            $inscripcion_clase_personalizada->hora_final = $request->hora_final;
+            $inscripcion_clase_personalizada->hora_inicio = $hora_inicio;
+            $inscripcion_clase_personalizada->hora_final = $hora_final;
             $inscripcion_clase_personalizada->alumno_id = $request->alumno_id;
             $inscripcion_clase_personalizada->especialidad_id = $request->especialidad_id;
             $inscripcion_clase_personalizada->estudio_id = $request->estudio_id;

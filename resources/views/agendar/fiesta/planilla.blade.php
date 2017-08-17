@@ -1175,7 +1175,28 @@
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-alarm f-22"></i> </span>
                                <span class="f-14"> Horario </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="fiesta-hora_inicio">{{$fiesta->hora_inicio}}</span> - <span id="fiesta-hora_final">{{$fiesta->hora_final}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" >
+
+                             <span id="fiesta-hora_inicio">
+                                @if($tipo_horario == 1)
+                                    {{\Carbon\Carbon::createFromFormat('H:i:s',$fiesta->hora_inicio)->format('H:i')}}
+                                @else
+                                    {{\Carbon\Carbon::createFromFormat('H:i:s',$fiesta->hora_inicio)->format('g:i a')}}
+                                @endif
+                              </span> 
+
+                              - 
+
+                              <span id="fiesta-hora_final">
+
+                              @if($tipo_horario == 1)
+                                  {{\Carbon\Carbon::createFromFormat('H:i:s',$fiesta->hora_final)->format('H:i')}}
+
+                              @else
+                                  {{\Carbon\Carbon::createFromFormat('H:i:s',$fiesta->hora_final)->format('g:i a')}}
+                              @endif
+
+                              </span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalLugar-Fiesta">
                              <td>
@@ -1456,8 +1477,8 @@
     })
     $('#modalHorario-Fiesta').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#hora_inicio").val($("#fiesta-hora_inicio").text()); 
-      $("#hora_final").val($("#fiesta-hora_final").text()); 
+      $("#hora_inicio").val($("#fiesta-hora_inicio").text().trim()); 
+      $("#hora_final").val($("#fiesta-hora_final").text().trim()); 
     })
     $('#modalDescripcion-Fiesta').on('show.bs.modal', function (event) {
       limpiarMensaje();

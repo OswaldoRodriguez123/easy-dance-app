@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 
 use App\Http\Requests;
+use App\Academia;
 use App\ConfigStaff;
 use App\Staff;
 use App\EventoLaboral;
@@ -153,11 +154,17 @@ class EventoLaboralController extends BaseController
 
 	        $fecha = $fecha->toDateString();
 
-	        $hora_inicio = strtotime($request->hora_inicio);
-	        $hora_final = strtotime($request->hora_final);
+	        $academia = Academia::find(Auth::user()->academia_id);
 
-	        if($hora_inicio > $hora_final)
-	        {
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+            }
+
+	        if($hora_inicio > $hora_final){
 	            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
 	        }
 
@@ -166,8 +173,8 @@ class EventoLaboralController extends BaseController
 	        $evento->staff_id = $request->staff_id;
 	        $evento->fecha = $fecha;
 	        $evento->nombre = $request->nombre;
-	        $evento->hora_inicio = $request->hora_inicio;
-	        $evento->hora_final = $request->hora_final;
+	        $evento->hora_inicio = $hora_inicio;
+	        $evento->hora_final = $hora_final;
 	        $evento->color_etiqueta = $request->color_etiqueta;
 	        $evento->descripcion = $request->descripcion;
 
@@ -319,19 +326,24 @@ class EventoLaboralController extends BaseController
 
 	    else{
 
-	        $hora_inicio = strtotime($request->hora_inicio);
-	        $hora_final = strtotime($request->hora_final);
+	        $academia = Academia::find(Auth::user()->academia_id);
 
-	        if($hora_inicio > $hora_final)
-	        {
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+            }
 
+	        if($hora_inicio > $hora_final){
 	            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
 	        }
 
 	        $evento = EventoLaboral::find($request->id);
 
-	        $evento->hora_inicio = $request->hora_inicio;
-	        $evento->hora_final = $request->hora_final;
+	        $evento->hora_inicio = $hora_inicio;
+	        $evento->hora_final = $hora_final;
 
 	        if($evento->save()){
 	            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use DB;
+use App\Academia;
 use App\DiasDeSemana;
 use App\ConfigEspecialidades;
 use App\ConfigEstudios;
@@ -74,8 +75,14 @@ class MultihorarioTallerController extends BaseController
 
         }else{
 
-            $hora_inicio = strtotime($request->hora_inicio_acordeon);
-            $hora_final = strtotime($request->hora_final_acordeon);
+            $academia = Academia::find(Auth::user()->academia_id);
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio_acordeon)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final_acordeon)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio_acordeon)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final_acordeon)->toTimeString();
+            }
 
             if($hora_inicio > $hora_final)
             {
@@ -92,7 +99,6 @@ class MultihorarioTallerController extends BaseController
 
             $find = ConfigEstudios::find($request->estudio_id);
             $estudio = $find->nombre;
-
 
             $array = array(['instructor' => $request->instructor_acordeon_id , 'fecha' => $fecha, 'especialidad' => $request->especialidad_acordeon_id, 'estudio' => $request->estudio_id, 'hora_inicio' => $request->hora_inicio_acordeon, 'hora_final' => $request->hora_final_acordeon, 'color_etiqueta' => $request->color_etiqueta]);
 
@@ -130,15 +136,12 @@ class MultihorarioTallerController extends BaseController
 
     }
 
-    public function CancelarHorarios()
-    {   
+    public function CancelarHorarios(){   
         if (Session::has('horarios')) {
 
             Session::forget('horarios');
             return response()->json(['status' => 'OK', 200]);  
-        }
-        else
-        {
+        }else{
             return response()->json(['status' => 'OK', 200]);
         }
     }
@@ -151,11 +154,21 @@ class MultihorarioTallerController extends BaseController
             foreach($horarios as $tmp){
                 foreach($tmp as $horario){
 
+                    $academia = Academia::find(Auth::user()->academia_id);
+                    
+                    if($academia->tipo_horario == 1){
+                        $hora_inicio = Carbon::createFromFormat('H:i',$horario['hora_inicio'])->toTimeString();
+                        $hora_final = Carbon::createFromFormat('H:i',$horario['hora_final'])->toTimeString();
+                    }else{
+                        $hora_inicio = Carbon::createFromFormat('H:i a',$horario['hora_inicio'])->toTimeString();
+                        $hora_final = Carbon::createFromFormat('H:i a',$horario['hora_final'])->toTimeString();
+                    }
+
                     $horario_taller = new HorarioTaller();
 
                     $horario_taller->fecha=$horario['fecha'];
-                    $horario_taller->hora_inicio=$horario['hora_inicio'];
-                    $horario_taller->hora_final=$horario['hora_final'];
+                    $horario_taller->hora_inicio=$hora_inicio;
+                    $horario_taller->hora_final=$hora_final;
                     $horario_taller->instructor_id=$horario['instructor'];
                     $horario_taller->especialidad_id=$horario['especialidad'];
                     $horario_taller->estudio_id=$horario['estudio'];
@@ -281,16 +294,23 @@ class MultihorarioTallerController extends BaseController
 
             $horario = HorarioTaller::find($request->id);
 
-            $hora_inicio = strtotime($request->hora_inicio);
-            $hora_final = strtotime($request->hora_final);
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+            }
 
             if($hora_inicio > $hora_final)
             {
                 return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
             }
 
-            $horario->hora_inicio = $request->hora_inicio;
-            $horario->hora_final = $request->hora_final;
+            $horario->hora_inicio = $hora_inicio;
+            $horario->hora_final = $hora_final;
 
             if($horario->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

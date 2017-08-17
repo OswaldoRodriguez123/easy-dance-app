@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use App\Academia;
 use App\Transmision;
 use Validator;
 use DB;
@@ -88,14 +89,20 @@ class TransmisionController extends BaseController {
 	        }
 
 	        $fecha = $fecha->toDateString();
-	        // $hora = strtotime($request->hora);
+
+	        $academia = Academia::find(Auth::user()->academia_id);
+            if($academia->tipo_horario == 1){
+                $hora = Carbon::createFromFormat('H:i',$request->hora)->toTimeString();
+            }else{
+                $hora = Carbon::createFromFormat('H:i a',$request->hora)->toTimeString();
+            }
 
 	        $transmision = new Transmision;
 
 	        $transmision->academia_id = Auth::user()->academia_id;
 	        $transmision->tema = $request->tema;
 	        $transmision->fecha = $fecha;
-	        $transmision->hora = $request->hora;
+	        $transmision->hora = $hora;
 	        $transmision->color_etiqueta = $request->color_etiqueta;
 	        $transmision->presentador = $request->presentador;
 	        $transmision->invitado = $request->invitado;
@@ -244,7 +251,15 @@ class TransmisionController extends BaseController {
 
 	        $transmision = Transmision::find($request->id);
 
-	        $transmision->hora = $request->hora;
+	        $academia = Academia::find(Auth::user()->academia_id);
+
+	        if($academia->tipo_horario == 1){
+                $hora = Carbon::createFromFormat('H:i',$request->hora)->toTimeString();
+            }else{
+                $hora = Carbon::createFromFormat('H:i a',$request->hora)->toTimeString();
+            }
+
+	        $transmision->hora = $hora;
 
 	        if($transmision->save()){
 	            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

@@ -1289,274 +1289,276 @@ class ClaseGrupalController extends BaseController {
     public function store(Request $request)
     {
 
-    $rules = [
-        'clase_grupal_id' => 'required',
-        'fecha' => 'required',
-        'hora_inicio' => 'required',
-        'hora_final' => 'required',
-        'color_etiqueta' => 'required',
-        'especialidad_id' => 'required',
-        'nivel_baile_id' => 'required',
-        'instructor_id' => 'required',
-        'estudio_id' => 'required',
-        'cupo_minimo' => 'required|numeric',
-        'cupo_maximo' => 'required|numeric',
-        'cupo_reservacion' => 'required|numeric',
-        'cantidad_hombres' => 'numeric',
-        'cantidad_mujeres' => 'numeric',
-    ];
+        $rules = [
+            'clase_grupal_id' => 'required',
+            'fecha' => 'required',
+            'hora_inicio' => 'required',
+            'hora_final' => 'required',
+            'color_etiqueta' => 'required',
+            'especialidad_id' => 'required',
+            'nivel_baile_id' => 'required',
+            'instructor_id' => 'required',
+            'estudio_id' => 'required',
+            // 'cupo_minimo' => 'required|numeric',
+            // 'cupo_maximo' => 'required|numeric',
+            // 'cupo_reservacion' => 'required|numeric',
+            // 'cantidad_hombres' => 'numeric',
+            // 'cantidad_mujeres' => 'numeric',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'clase_grupal_id.required' => 'Ups! El Nombre  es requerido',
-        'fecha.required' => 'Ups! La fecha es requerida',
-        'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
-        'hora_final.required' => 'Ups! La hora final es requerida',
-        'color_etiqueta.required' => 'Ups! La etiqueta es requerida',
-        'especialidad_id.required' => 'Ups! La especialidad es requerida ',
-        'nivel_baile_id.required' => 'Ups! El nivel de baile es requerido ',
-        'instructor_id.required' => 'Ups! El instructor es requerido',
-        'estudio_id.required' => 'Ups! El estudio o salón es requerido',
-        'cupo_minimo.required' => 'Ups! La cantidad de cupos es requerida',
-        'cupo_maximo.required' => 'Ups! La cantidad de cupos es requerida',
-        'cupo_reservacion.required' => 'Ups! La cantidad de cupos de reservacion es requerida',
-        'cupo_minimo.numeric' => 'Ups! La cantidad de cupos es inválido , debe contener sólo números',
-        'cupo_maximo.numeric' => 'Ups! La cantidad de cupos es inválido , debe contener sólo números',
-        'cupo_reservacion.numeric' => 'Ups! La cantidad de cupos es inválido , debe contener sólo números',
-        'cantidad_hombres.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
-        'cantidad_mujeres.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
-    ];
+            'clase_grupal_id.required' => 'Ups! El Nombre  es requerido',
+            'fecha.required' => 'Ups! La fecha es requerida',
+            'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
+            'hora_final.required' => 'Ups! La hora final es requerida',
+            'color_etiqueta.required' => 'Ups! La etiqueta es requerida',
+            'especialidad_id.required' => 'Ups! La especialidad es requerida ',
+            'nivel_baile_id.required' => 'Ups! El nivel de baile es requerido ',
+            'instructor_id.required' => 'Ups! El instructor es requerido',
+            'estudio_id.required' => 'Ups! El estudio o salón es requerido',
+            // 'cupo_minimo.required' => 'Ups! La cantidad de cupos es requerida',
+            // 'cupo_maximo.required' => 'Ups! La cantidad de cupos es requerida',
+            // 'cupo_reservacion.required' => 'Ups! La cantidad de cupos de reservacion es requerida',
+            // 'cupo_minimo.numeric' => 'Ups! La cantidad de cupos es inválido , debe contener sólo números',
+            // 'cupo_maximo.numeric' => 'Ups! La cantidad de cupos es inválido , debe contener sólo números',
+            // 'cupo_reservacion.numeric' => 'Ups! La cantidad de cupos es inválido , debe contener sólo números',
+            // 'cantidad_hombres.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
+            // 'cantidad_mujeres.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
+        }
 
-    else{
+        else{
 
-        if($request->link_video){
+            if($request->link_video){
 
-            $parts = parse_url($request->link_video);
+                $parts = parse_url($request->link_video);
 
-            if(isset($parts['host']))
-            {
-                if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+                if(isset($parts['host']))
+                {
+                    if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
 
-                
+                    
+                    }else{
+                        return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                    }
                 }else{
-                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                        return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                    }
+                
                 }
+
+            $fecha = explode(" - ", $request->fecha);
+
+            $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+            $fechatmp = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+            $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
+
+            // $diferencia = $fecha_inicio->diffInDays($fecha_final)->format('%d');
+
+            $diferencia = $fecha_inicio->diffInDays($fecha_final);
+
+            // if($diferencia > 30)
+            // {
+            $fecha_inicio_preferencial = $fechatmp->addMonth()->toDateString();
+
+            // }else{
+
+            //     $fecha_inicio_preferencial = "0000-00-00";
+
+            // }
+
+            if($fecha_inicio < Carbon::now()){
+
+                return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de inicio no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+            }
+
+            $fecha_inicio = $fecha_inicio->toDateString();
+            $fecha_final = $fecha_final->toDateString();
+
+            if($fecha_inicio > $fecha_final){
+                return response()->json(['errores' => ['fecha' => [0, 'Ups! La fecha de inicio es mayor a la fecha final']], 'status' => 'ERROR'],422);
+            }
+
+            $academia = Academia::find(Auth::user()->academia_id);
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
             }else{
-                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
-                }
+                $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+            }
+
+            if($hora_inicio > $hora_final){
+                return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+            }
+
+
+            // $fecha_inicio_preferencial = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio_preferencial)->toDateString();
+
+            //     if($fecha_inicio_preferencial < $fecha_inicio)
+            //     {
+            //         return response()->json(['errores' => ['fecha_inicio_preferencial' => [0, 'Ups! La fecha de primer cobro automático es menor a la fecha de inicio']], 'status' => 'ERROR'],422);
+            //     }
+            //     else{
+            //         if( $fecha_inicio_preferencial > $fecha_final)
+            //             {
+            //                 return response()->json(['errores' => ['fecha_inicio_preferencial' => [0, 'Ups! La fecha de primer cobro automático es mayor a la fecha final']], 'status' => 'ERROR'],422);
+            //             }
+            // }
+            // 
+
+            if(trim($request->cantidad_hombres) == '')
+            {
+                $cantidad_hombres = null;
+            }else{
+                $cantidad_hombres = $request->cantidad_hombres;
+            }
+
+            if(trim($request->cantidad_mujeres) == '')
+            {
+                $cantidad_mujeres = null;
+            }else{
+                $cantidad_mujeres = $request->cantidad_mujeres;
+            }
+
+            $cupos = $cantidad_mujeres + $cantidad_hombres;
+
+            if($request->cupo_minimo > $request->cupo_maximo)
+            {
+
+                return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo es mayor al cupo maximo']], 'status' => 'ERROR'],422);
+            }
+
+            if($cupos < $request->cupo_minimo)
+            {
+                return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo sobrepasa la suma de los cupos de hombres y mujeres']], 'status' => 'ERROR'],422);
+            }
+
+            if($cupos > $request->cupo_maximo)
+            {
+                return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! La suma de los cupos de hombres y mujeres sobrepasa el cupo maximo']], 'status' => 'ERROR'],422);
+            }
+
+            $clasegrupal = new ClaseGrupal;
             
-            }
+            $clasegrupal->academia_id = Auth::user()->academia_id;
+            $clasegrupal->clase_grupal_id = $request->clase_grupal_id;
+            $clasegrupal->fecha_inicio = $fecha_inicio;
+            $clasegrupal->fecha_final = $fecha_final;
+            $clasegrupal->fecha_inicio_preferencial = $fecha_inicio_preferencial;
+            $clasegrupal->especialidad_id = $request->especialidad_id;
+            $clasegrupal->instructor_id = $request->instructor_id;
+            $clasegrupal->estudio_id = $request->estudio_id;
+            $clasegrupal->hora_inicio = $hora_inicio;
+            $clasegrupal->hora_final = $hora_final;
+            $clasegrupal->color_etiqueta = $request->color_etiqueta;
+            $clasegrupal->nivel_baile_id = $request->nivel_baile_id;
+            $clasegrupal->cupo_minimo = $request->cupo_minimo;
+            $clasegrupal->cupo_maximo = $request->cupo_maximo;
+            $clasegrupal->cupo_reservacion = $request->cupo_reservacion;
+            $clasegrupal->link_video = $request->link_video;
+            $clasegrupal->titulo_video = $request->titulo_video;
+            $clasegrupal->boolean_promocionar = $request->boolean_promocionar;
+            $clasegrupal->dias_prorroga = $request->dias_prorroga;
+            $clasegrupal->cantidad_hombres = $cantidad_hombres;
+            $clasegrupal->cantidad_mujeres = $cantidad_mujeres;
 
-        $fecha = explode(" - ", $request->fecha);
+            if($clasegrupal->save()){
 
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
-        $fechatmp = Carbon::createFromFormat('d/m/Y', $fecha[0]);
-        $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
+                $config_clase_grupal = ConfigClasesGrupales::join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
+                    ->select('config_clases_grupales.nombre')
+                    ->where('clases_grupales.clase_grupal_id','=',$request->clase_grupal_id)
+                ->first();
 
-        // $diferencia = $fecha_inicio->diffInDays($fecha_final)->format('%d');
+                $notificacion = new Notificacion; 
 
-        $diferencia = $fecha_inicio->diffInDays($fecha_final);
+                $notificacion->tipo_evento = 1;
+                $notificacion->evento_id = $clasegrupal->id;
+                $notificacion->mensaje = "Tu academia a creado una nueva clase grupal llamada ".$config_clase_grupal->nombre;
+                $notificacion->titulo = "Nueva Clase Grupal";
 
-        // if($diferencia > 30)
-        // {
-        $fecha_inicio_preferencial = $fechatmp->addMonth()->toDateString();
+                if($notificacion->save()){
 
-        // }else{
+                    $in = array(2,4);
 
-        //     $fecha_inicio_preferencial = "0000-00-00";
-
-        // }
-
-        if($fecha_inicio < Carbon::now()){
-
-            return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de inicio no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
-        }
-
-        $fecha_inicio = $fecha_inicio->toDateString();
-        $fecha_final = $fecha_final->toDateString();
-
-
-        if($fecha_inicio > $fecha_final)
-        {
-            return response()->json(['errores' => ['fecha' => [0, 'Ups! La fecha de inicio es mayor a la fecha final']], 'status' => 'ERROR'],422);
-        }
-
-        $hora_inicio = strtotime($request->hora_inicio);
-        $hora_final = strtotime($request->hora_final);
-
-        if($hora_inicio > $hora_final)
-        {
-
-            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
-        }
-
-
-        // $fecha_inicio_preferencial = Carbon::createFromFormat('d/m/Y', $request->fecha_inicio_preferencial)->toDateString();
-
-        //     if($fecha_inicio_preferencial < $fecha_inicio)
-        //     {
-        //         return response()->json(['errores' => ['fecha_inicio_preferencial' => [0, 'Ups! La fecha de primer cobro automático es menor a la fecha de inicio']], 'status' => 'ERROR'],422);
-        //     }
-        //     else{
-        //         if( $fecha_inicio_preferencial > $fecha_final)
-        //             {
-        //                 return response()->json(['errores' => ['fecha_inicio_preferencial' => [0, 'Ups! La fecha de primer cobro automático es mayor a la fecha final']], 'status' => 'ERROR'],422);
-        //             }
-        // }
-        // 
-
-        if(trim($request->cantidad_hombres) == '')
-        {
-            $cantidad_hombres = null;
-        }else{
-            $cantidad_hombres = $request->cantidad_hombres;
-        }
-
-        if(trim($request->cantidad_mujeres) == '')
-        {
-            $cantidad_mujeres = null;
-        }else{
-            $cantidad_mujeres = $request->cantidad_mujeres;
-        }
-
-        $cupos = $cantidad_mujeres + $cantidad_hombres;
-
-        if($request->cupo_minimo > $request->cupo_maximo)
-        {
-
-            return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo es mayor al cupo maximo']], 'status' => 'ERROR'],422);
-        }
-
-        if($cupos < $request->cupo_minimo)
-        {
-            return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo sobrepasa la suma de los cupos de hombres y mujeres']], 'status' => 'ERROR'],422);
-        }
-
-        if($cupos > $request->cupo_maximo)
-        {
-            return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! La suma de los cupos de hombres y mujeres sobrepasa el cupo maximo']], 'status' => 'ERROR'],422);
-        }
-
-        $clasegrupal = new ClaseGrupal;
-        
-        $clasegrupal->academia_id = Auth::user()->academia_id;
-        $clasegrupal->clase_grupal_id = $request->clase_grupal_id;
-        $clasegrupal->fecha_inicio = $fecha_inicio;
-        $clasegrupal->fecha_final = $fecha_final;
-        $clasegrupal->fecha_inicio_preferencial = $fecha_inicio_preferencial;
-        $clasegrupal->especialidad_id = $request->especialidad_id;
-        $clasegrupal->instructor_id = $request->instructor_id;
-        $clasegrupal->estudio_id = $request->estudio_id;
-        $clasegrupal->hora_inicio = $request->hora_inicio;
-        $clasegrupal->hora_final = $request->hora_final;
-        $clasegrupal->color_etiqueta = $request->color_etiqueta;
-        $clasegrupal->nivel_baile_id = $request->nivel_baile_id;
-        $clasegrupal->cupo_minimo = $request->cupo_minimo;
-        $clasegrupal->cupo_maximo = $request->cupo_maximo;
-        $clasegrupal->cupo_reservacion = $request->cupo_reservacion;
-        $clasegrupal->link_video = $request->link_video;
-        $clasegrupal->titulo_video = $request->titulo_video;
-        $clasegrupal->boolean_promocionar = $request->boolean_promocionar;
-        $clasegrupal->dias_prorroga = $request->dias_prorroga;
-        $clasegrupal->cantidad_hombres = $cantidad_hombres;
-        $clasegrupal->cantidad_mujeres = $cantidad_mujeres;
-
-        if($clasegrupal->save()){
-
-            $config_clase_grupal = ConfigClasesGrupales::join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
-                ->select('config_clases_grupales.nombre')
-                ->where('clases_grupales.clase_grupal_id','=',$request->clase_grupal_id)
-            ->first();
-
-            $notificacion = new Notificacion; 
-
-            $notificacion->tipo_evento = 1;
-            $notificacion->evento_id = $clasegrupal->id;
-            $notificacion->mensaje = "Tu academia a creado una nueva clase grupal llamada ".$config_clase_grupal->nombre;
-            $notificacion->titulo = "Nueva Clase Grupal";
-
-            if($notificacion->save()){
-
-                $in = array(2,4);
-
-                $usuarios = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                    ->select('users.id')
-                    ->whereIn('usuarios_tipo.tipo',$in)
-                    ->where('users.academia_id', '=', Auth::user()->academia_id)
-                ->get();
-                
-                foreach ($usuarios as $usuario) {
-                    $usuarios_notificados = new NotificacionUsuario;
-                    $usuarios_notificados->id_usuario = $usuario->id;
-                    $usuarios_notificados->id_notificacion = $notificacion->id;
-                    $usuarios_notificados->visto = 0;
-                    $usuarios_notificados->save();
-                }
-            }
-
-            if($request->imageBase64){
-
-                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-                $path = storage_path();
-                $split = explode( ';', $request->imageBase64 );
-                $type =  explode( '/',  $split[0]);
-                $ext = $type[1];
-                
-                if($ext == 'jpeg' || 'jpg'){
-                    $extension = '.jpg';
+                    $usuarios = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                        ->select('users.id')
+                        ->whereIn('usuarios_tipo.tipo',$in)
+                        ->where('users.academia_id', '=', Auth::user()->academia_id)
+                    ->get();
+                    
+                    foreach ($usuarios as $usuario) {
+                        $usuarios_notificados = new NotificacionUsuario;
+                        $usuarios_notificados->id_usuario = $usuario->id;
+                        $usuarios_notificados->id_notificacion = $notificacion->id;
+                        $usuarios_notificados->visto = 0;
+                        $usuarios_notificados->save();
+                    }
                 }
 
-                if($ext == 'png'){
-                    $extension = '.png';
+                if($request->imageBase64){
+
+                    $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imageBase64 );
+                    $type =  explode( '/',  $split[0]);
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
+
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
+
+                    $nombre_img = "clasegrupal-". $clasegrupal->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(1440, 500);
+                    $img->save('assets/uploads/clase_grupal/'.$nombre_img);
+
+                    $clasegrupal->imagen = $nombre_img;
+                    $clasegrupal->save();
+
                 }
 
-                $nombre_img = "clasegrupal-". $clasegrupal->id . $extension;
-                $image = base64_decode($base64_string);
+                // $academia = Academia::find(Auth::user()->academia_id);
+                // $instructor = Instructor::find($request->instructor_id);
+                // $clase_grupal = ConfigClasesGrupales::find($request->clase_grupal_id);
 
-                // \Storage::disk('clase_grupal')->put($nombre_img,  $image);
-                $img = Image::make($image)->resize(1440, 500);
-                $img->save('assets/uploads/clase_grupal/'.$nombre_img);
+                // $subj = 'Te han asignado una Clase Grupal';
 
-                $clasegrupal->imagen = $nombre_img;
-                $clasegrupal->save();
+                // $array = [
 
+                //    'nombre_clase' => $clase_grupal->nombre,
+                //    'nombre_instructor' => $instructor->nombre,
+                //    'correo' => $instructor->correo,
+                //    'academia' => $academia->nombre,
+                //    'hora_inicio' => $request->hora_inicio,
+                //    'hora_final' => $request->hora_final,
+                //    'fecha' => $fecha_inicio,
+                //    'subj' => $subj
+                // ];
+
+                /*Mail::send('correo.clase_grupal_instructor', $array, function($msj) use ($array){
+                        $msj->subject($array['subj']);
+                        $msj->to($array['correo']);
+                    });*/
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-
-            // $academia = Academia::find(Auth::user()->academia_id);
-            // $instructor = Instructor::find($request->instructor_id);
-            // $clase_grupal = ConfigClasesGrupales::find($request->clase_grupal_id);
-
-            // $subj = 'Te han asignado una Clase Grupal';
-
-            // $array = [
-
-            //    'nombre_clase' => $clase_grupal->nombre,
-            //    'nombre_instructor' => $instructor->nombre,
-            //    'correo' => $instructor->correo,
-            //    'academia' => $academia->nombre,
-            //    'hora_inicio' => $request->hora_inicio,
-            //    'hora_final' => $request->hora_final,
-            //    'fecha' => $fecha_inicio,
-            //    'subj' => $subj
-            // ];
-
-            /*Mail::send('correo.clase_grupal_instructor', $array, function($msj) use ($array){
-                    $msj->subject($array['subj']);
-                    $msj->to($array['correo']);
-                });*/
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-    }
     }
 
     public function storeInscripcion(Request $request){
@@ -1666,6 +1668,7 @@ class ClaseGrupalController extends BaseController {
                 $inscripcion->razon_entrega = $request->razon_entrega;
                 $inscripcion->talla_franela = $request->talla_franela;
                 $inscripcion->tipo_pago = $request->tipo_pago;
+                $inscripcion->observacion_cambio_costo = $request->observacion_cambio_costo;
 
                 if($inscripcion->save()){
                                         
@@ -2194,46 +2197,51 @@ class ClaseGrupalController extends BaseController {
 
     public function updateHorario(Request $request){
 
-    $rules = [
-        'hora_inicio' => 'required',
-        'hora_final' => 'required',
-    ];
+        $rules = [
+            'hora_inicio' => 'required',
+            'hora_final' => 'required',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
-        'hora_final.required' => 'Ups! La hora final es requerida',
-    ];
+            'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
+            'hora_final.required' => 'Ups! La hora final es requerida',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
-
-    else{
-        $clasegrupal = ClaseGrupal::find($request->id);
-
-        $hora_inicio = strtotime($request->hora_inicio);
-        $hora_final = strtotime($request->hora_final);
-
-        if($hora_inicio > $hora_final)
-        {
-
-            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
         }
 
-        $clasegrupal->hora_inicio = $request->hora_inicio;
-        $clasegrupal->hora_final = $request->hora_final;
+        else{
 
-        if($clasegrupal->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            $clasegrupal = ClaseGrupal::find($request->id);
+
+            $academia = Academia::find(Auth::user()->academia_id);
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+            }
+
+            if($hora_inicio > $hora_final){
+                return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+            }
+
+            $clasegrupal->hora_inicio = $hora_inicio;
+            $clasegrupal->hora_final = $hora_final;
+
+            if($clasegrupal->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
-    }
     }
 
     public function updateCupos(Request $request){

@@ -274,7 +274,6 @@
         <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/languages/es.js"></script>
         <script src="{{url('/')}}/assets/js/functions.js"></script>
 
-		
         
         <!-- Placeholder for IE9 -->
         <!--[if IE 9 ]>
@@ -518,6 +517,19 @@
       $('.table-responsive').css( "overflow", "auto" );
     })
 
+    //Time
+
+    if ($('.time-picker')[0]) {
+      @if($tipo_horario == 1)
+        $('.time-picker').datetimepicker({
+            format: 'LT'
+        });
+      @else
+        $('.time-picker').datetimepicker({
+            format: 'hh:mm a'
+        });
+      @endif
+    }
 
   </script>
 		

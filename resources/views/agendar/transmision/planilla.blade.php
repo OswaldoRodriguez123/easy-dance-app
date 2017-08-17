@@ -559,7 +559,13 @@
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-alarm f-22"></i> </span>
                                <span class="f-14"> Hora </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="transmision-hora">{{$transmision->hora}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="transmision-hora">
+                                @if($tipo_horario == 1)
+                                    {{\Carbon\Carbon::createFromFormat('H:i:s',$transmision->hora)->format('H:i')}}
+                                @else
+                                    {{\Carbon\Carbon::createFromFormat('H:i:s',$transmision->hora)->format('g:i a')}}
+                                @endif
+                              </span> </span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalPresentador-Transmision">
@@ -662,9 +668,9 @@
       limpiarMensaje();
       $("#fecha").val($("#transmision-fecha").text()); 
     })
-    $('#modalHora-Fiesta').on('show.bs.modal', function (event) {
+    $('#modalHora-Transmision').on('show.bs.modal', function (event) {
       limpiarMensaje();
-      $("#hora").val($("#transmision-hora").text()); 
+      $("#hora").val($("#transmision-hora").text().trim()); 
     })
     $('#modalDesarrollo-Transmision').on('show.bs.modal', function (event) {
       limpiarMensaje();

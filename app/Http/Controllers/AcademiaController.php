@@ -710,4 +710,16 @@ class AcademiaController extends BaseController {
         }
     }
 
+    public function updateHorario(Request $request){
+
+        $academia = Academia::find(Auth::user()->academia_id);
+        $academia->tipo_horario = $request->tipo_horario;
+        
+        if($academia->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
 }

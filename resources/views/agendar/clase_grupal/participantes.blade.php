@@ -441,7 +441,7 @@
                 </div>
             </div>
 
-<div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
@@ -647,6 +647,18 @@
                                     </tr>
                                     </table>
 
+                                </div>
+
+                                <div class="col-sm-12 p-20" id="textarea_observacion" style="display:none">
+
+                                    <div class="clearfix p-b-10"></div>
+                                   
+                                    <label for="observacion_cambio_costo" id="id-observacion_cambio_costo">Explique las razones por las que el costo fue cambiado</label>
+                                    <br></br>
+
+                                    <div class="fg-line">
+                                      <textarea class="form-control" id="observacion_cambio_costo" name="observacion_cambio_costo" rows="2"></textarea>
+                                    </div>
                                 </div>
 
                                 <div class="clearfix p-b-35"></div>
@@ -1729,6 +1741,8 @@
 
                           $('#razon_entrega').val('')
                           $('#talla_franela').val('')
+                          $('#observacion_cambio_costo').text('')
+                          $('#textarea_observacion').hide();
 
                           // });
                         // }
@@ -1839,6 +1853,7 @@
                           
                           var costo_inscripcion = $("#costo_inscripcion").val();
                           $("#clasegrupal-costo_inscripcion").text(costo_inscripcion)
+                          $('#textarea_observacion').show();
 
                           finprocesado();
                           $(".procesando").removeClass('show');
@@ -1932,6 +1947,7 @@
                           
                           var costo_mensualidad = $("#costo_mensualidad").val();
                           $("#clasegrupal-costo_mensualidad").text(costo_mensualidad)
+                          $('#textarea_observacion').show();
 
                           finprocesado();
                           $(".procesando").removeClass('show');
@@ -2025,6 +2041,7 @@
                           
                           var fecha_pago = $("#fecha_pago").val();
                           $("#clasegrupal-fecha_inicio_preferencial").text(fecha_pago)
+                          $('#textarea_observacion').show();
 
                           finprocesado();
                           $(".procesando").removeClass('show');

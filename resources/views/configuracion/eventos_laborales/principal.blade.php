@@ -101,7 +101,7 @@
                                     ?>
 
                                     @if($evento['tipo'] == 'A')
-                                        <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion">
+                                        <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo = "1">
                                     @else
                                         <tr id="{{$id}}" class="seleccion seleccion_deleted" data-tipo = "2">
                                     @endif
@@ -168,8 +168,8 @@
             pageLength: 25,   
             order: [[0, 'asc']],
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).addClass( "text-center" );
-              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
             },
             language: {
                             processing:     "Procesando ...",

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use DB;
+use App\Academia;
 use App\DiasDeSemana;
 use App\ConfigEspecialidades;
 use App\ConfigEstudios;
@@ -83,11 +84,16 @@ class MultihorarioClaseGrupalController extends BaseController
 
         }else{
 
-                $hora_inicio = strtotime($request->hora_inicio_acordeon);
-                $hora_final = strtotime($request->hora_final_acordeon);
+                $academia = Academia::find(Auth::user()->academia_id);
+                if($academia->tipo_horario == 1){
+                    $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio_acordeon);
+                    $hora_final = Carbon::createFromFormat('H:i',$request->hora_final_acordeon);
+                }else{
+                    $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio_acordeon);
+                    $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final_acordeon);
+                }
 
-                if($hora_inicio > $hora_final)
-                {
+                if($hora_inicio > $hora_final){
                     return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
                 }
 
@@ -103,9 +109,13 @@ class MultihorarioClaseGrupalController extends BaseController
                         $hora_inicio = Carbon::createFromFormat('H:i:s', $comparacion->hora_inicio);
                         $hora_final = Carbon::createFromFormat('H:i:s', $comparacion->hora_final);
 
-                        
-                        $hora_inicio_ingresada = Carbon::createFromFormat('H:i', $request->hora_inicio_acordeon);
-                        $hora_final_ingresada = Carbon::createFromFormat('H:i', $request->hora_final_acordeon);
+                        if($academia->tipo_horario == 1){
+                            $hora_inicio_ingresada = Carbon::createFromFormat('H:i',$request->hora_inicio_acordeon);
+                            $hora_final_ingresada = Carbon::createFromFormat('H:i',$request->hora_final_acordeon);
+                        }else{
+                            $hora_inicio_ingresada = Carbon::createFromFormat('H:i a',$request->hora_inicio_acordeon);
+                            $hora_final_ingresada = Carbon::createFromFormat('H:i a',$request->hora_final_acordeon);
+                        }
 
                         if($hora_inicio_ingresada->between($hora_inicio, $hora_final) OR $hora_final_ingresada->between($hora_inicio, $hora_final)){
                             return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El instructor tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422);
@@ -129,8 +139,13 @@ class MultihorarioClaseGrupalController extends BaseController
                         $hora_final = Carbon::createFromFormat('H:i:s', $comparacion->hora_final);
 
                         
-                        $hora_inicio_ingresada = Carbon::createFromFormat('H:i', $request->hora_inicio_acordeon);
-                        $hora_final_ingresada = Carbon::createFromFormat('H:i', $request->hora_final_acordeon);
+                        if($academia->tipo_horario == 1){
+                            $hora_inicio_ingresada = Carbon::createFromFormat('H:i',$request->hora_inicio_acordeon);
+                            $hora_final_ingresada = Carbon::createFromFormat('H:i',$request->hora_final_acordeon);
+                        }else{
+                            $hora_inicio_ingresada = Carbon::createFromFormat('H:i a',$request->hora_inicio_acordeon);
+                            $hora_final_ingresada = Carbon::createFromFormat('H:i a',$request->hora_final_acordeon);
+                        }
 
                         if($hora_inicio_ingresada->between($hora_inicio, $hora_final) OR $hora_final_ingresada->between($hora_inicio, $hora_final)){
                             return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El instructor tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422);
@@ -154,8 +169,13 @@ class MultihorarioClaseGrupalController extends BaseController
                         $hora_final = Carbon::createFromFormat('H:i:s', $comparacion->hora_final);
 
                         
-                        $hora_inicio_ingresada = Carbon::createFromFormat('H:i', $request->hora_inicio_acordeon);
-                        $hora_final_ingresada = Carbon::createFromFormat('H:i', $request->hora_final_acordeon);
+                        if($academia->tipo_horario == 1){
+                            $hora_inicio_ingresada = Carbon::createFromFormat('H:i',$request->hora_inicio_acordeon);
+                            $hora_final_ingresada = Carbon::createFromFormat('H:i',$request->hora_final_acordeon);
+                        }else{
+                            $hora_inicio_ingresada = Carbon::createFromFormat('H:i a',$request->hora_inicio_acordeon);
+                            $hora_final_ingresada = Carbon::createFromFormat('H:i a',$request->hora_final_acordeon);
+                        }
 
                         if($hora_inicio_ingresada->between($hora_inicio, $hora_final) OR $hora_final_ingresada->between($hora_inicio, $hora_final)){
                             return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El estudio tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422);
@@ -179,8 +199,13 @@ class MultihorarioClaseGrupalController extends BaseController
                         $hora_final = Carbon::createFromFormat('H:i:s', $comparacion->hora_final);
 
                         
-                        $hora_inicio_ingresada = Carbon::createFromFormat('H:i', $request->hora_inicio_acordeon);
-                        $hora_final_ingresada = Carbon::createFromFormat('H:i', $request->hora_final_acordeon);
+                        if($academia->tipo_horario == 1){
+                            $hora_inicio_ingresada = Carbon::createFromFormat('H:i',$request->hora_inicio_acordeon);
+                            $hora_final_ingresada = Carbon::createFromFormat('H:i',$request->hora_final_acordeon);
+                        }else{
+                            $hora_inicio_ingresada = Carbon::createFromFormat('H:i a',$request->hora_inicio_acordeon);
+                            $hora_final_ingresada = Carbon::createFromFormat('H:i a',$request->hora_final_acordeon);
+                        }
 
                         if($hora_inicio_ingresada->between($hora_inicio, $hora_final) OR $hora_final_ingresada->between($hora_inicio, $hora_final)){
                             return response()->json(['errores' => ['hora_inicio_acordeon' => [0, 'Ups! El estudio tiene una clase asignada a esta hora']], 'status' => 'ERROR'],422);
@@ -207,8 +232,21 @@ class MultihorarioClaseGrupalController extends BaseController
                                 $hora_inicio = Carbon::createFromFormat('H:i', $horario['hora_inicio']);
                                 $hora_final = Carbon::createFromFormat('H:i', $horario['hora_final']);
 
-                                $hora_inicio_ingresada = Carbon::createFromFormat('H:i', $request->hora_inicio_acordeon);
-                                $hora_final_ingresada = Carbon::createFromFormat('H:i', $request->hora_final_acordeon);
+                                if($academia->tipo_horario == 1){
+                                    $hora_inicio = Carbon::createFromFormat('H:i',$horario['hora_inicio']);
+                                    $hora_final = Carbon::createFromFormat('H:i',$horario['hora_final']);
+                                }else{
+                                    $hora_inicio = Carbon::createFromFormat('H:i a',$horario['hora_inicio']);
+                                    $hora_final = Carbon::createFromFormat('H:i a',$horario['hora_final']);
+                                }
+
+                                if($academia->tipo_horario == 1){
+                                    $hora_inicio_ingresada = Carbon::createFromFormat('H:i',$request->hora_inicio_acordeon);
+                                    $hora_final_ingresada = Carbon::createFromFormat('H:i',$request->hora_final_acordeon);
+                                }else{
+                                    $hora_inicio_ingresada = Carbon::createFromFormat('H:i a',$request->hora_inicio_acordeon);
+                                    $hora_final_ingresada = Carbon::createFromFormat('H:i a',$request->hora_final_acordeon);
+                                }
 
 
                                 if($hora_inicio_ingresada->between($hora_inicio, $hora_final) OR $hora_final_ingresada->between($hora_inicio, $hora_final)){
@@ -240,7 +278,6 @@ class MultihorarioClaseGrupalController extends BaseController
                 $clase_grupal = ClaseGrupal::find($request->id);
                 $fecha_inicio = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inicio);
                 
-                // $fecha_inicio = Carbon::now();
                 $dia_de_semana = $fecha_inicio->dayOfWeek;
 
                 if(intval($request->dia_de_semana_id) >= $dia_de_semana){
@@ -292,14 +329,7 @@ class MultihorarioClaseGrupalController extends BaseController
         }
     }
 
-   
-
-
-
     public function eliminar($id){
-
-        // $horario=HorarioClaseGrupal::find($id);
-        // $horario->delete();
 
         $arreglo = Session::get('horarios');
         unset($arreglo[$id]);
@@ -330,11 +360,21 @@ class MultihorarioClaseGrupalController extends BaseController
             foreach($horarios as $tmp){
                 foreach($tmp as $horario){
 
+                    $academia = Academia::find(Auth::user()->academia_id);
+
+                    if($academia->tipo_horario == 1){
+                        $hora_inicio = Carbon::createFromFormat('H:i',$horario['hora_inicio'])->toTimeString();
+                        $hora_final = Carbon::createFromFormat('H:i',$horario['hora_final'])->toTimeString();
+                    }else{
+                        $hora_inicio = Carbon::createFromFormat('H:i a',$horario['hora_inicio'])->toTimeString();
+                        $hora_final = Carbon::createFromFormat('H:i a',$horario['hora_final'])->toTimeString();
+                    }
+
                     $horario_clase_grupal = new HorarioClaseGrupal();
 
                     $horario_clase_grupal->fecha=$horario['fecha_inicio'];
-                    $horario_clase_grupal->hora_inicio=$horario['hora_inicio'];
-                    $horario_clase_grupal->hora_final=$horario['hora_final'];
+                    $horario_clase_grupal->hora_inicio=$hora_inicio;
+                    $horario_clase_grupal->hora_final=$hora_final;
                     $horario_clase_grupal->instructor_id=$horario['instructor'];
                     $horario_clase_grupal->especialidad_id=$horario['especialidad'];
                     $horario_clase_grupal->estudio_id=$horario['estudio'];
@@ -480,46 +520,52 @@ class MultihorarioClaseGrupalController extends BaseController
 
     public function updateHorario(Request $request){
 
-    $rules = [
-        'hora_inicio' => 'required',
-        'hora_final' => 'required',
-    ];
+        $rules = [
+            'hora_inicio' => 'required',
+            'hora_final' => 'required',
+        ];
 
-    $messages = [
+        $messages = [
 
-        'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
-        'hora_final.required' => 'Ups! La hora final es requerida',
-    ];
+            'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
+            'hora_final.required' => 'Ups! La hora final es requerida',
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-    }
-
-    else{
-
-        $clasegrupal = HorarioClaseGrupal::find($request->id);
-
-        $hora_inicio = strtotime($request->hora_inicio);
-        $hora_final = strtotime($request->hora_final);
-
-        if($hora_inicio > $hora_final)
-        {
-            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
         }
 
-        $clasegrupal->hora_inicio = $request->hora_inicio;
-        $clasegrupal->hora_final = $request->hora_final;
+        else{
 
-        if($clasegrupal->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            $clasegrupal = HorarioClaseGrupal::find($request->id);
+
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+            }
+
+            if($hora_inicio > $hora_final){
+                return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+            }
+
+            $clasegrupal->hora_inicio = $hora_inicio;
+            $clasegrupal->hora_final = $hora_final;
+
+            if($clasegrupal->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
-    }
     }
 
     public function destroy($id)

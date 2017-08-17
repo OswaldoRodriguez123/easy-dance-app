@@ -329,225 +329,228 @@ class TallerController extends BaseController {
      */
     public function store(Request $request)
     {
-        //dd($request->all());
 
 
-    $rules = [
-        'nombre' => 'required|min:3|max:50',
-        'costo' => 'required|numeric',
-        'fecha' => 'required',
-        'hora_inicio' => 'required',
-        'hora_final' => 'required',
-        'color_etiqueta' => 'required',
-        'especialidad_id' => 'required',
-        'nivel_baile_id' => 'required',
-        'instructor_id' => 'required',
-        'estudio_id' => 'required',
-        'cupo_minimo' => 'numeric',
-        'cupo_maximo' => 'numeric',
-        'cupo_reservacion' => 'numeric',
-        
-        
-    ];
+        $rules = [
+            'nombre' => 'required|min:3|max:50',
+            'costo' => 'required|numeric',
+            'fecha' => 'required',
+            'hora_inicio' => 'required',
+            'hora_final' => 'required',
+            'color_etiqueta' => 'required',
+            'especialidad_id' => 'required',
+            'nivel_baile_id' => 'required',
+            'instructor_id' => 'required',
+            'estudio_id' => 'required',
+            'cupo_minimo' => 'numeric',
+            'cupo_maximo' => 'numeric',
+            'cupo_reservacion' => 'numeric',
+            
+            
+        ];
 
-    $messages = [
+        $messages = [
 
-        'nombre.required' => 'Ups! El Nombre es requerido ',
-        'nombre.min' => 'El mínimo de caracteres permitidos son 3',
-        'nombre.max' => 'El máximo de caracteres permitidos son 50',
-        'costo.required' => 'Ups! El Costo es requerido',
-        'costo.numeric' => 'Ups! El Costo es inválido , debe contener sólo números',
-        'fecha.required' => 'Ups! La fecha es requerida',
-        'hora_inicio.required' => 'Ups! El horario es requerido',
-        'hora_final.required' => 'Ups! El horario es requerido',
-        'especialidad_id.required' => 'Ups! La especialidad es requerida',
-        'nivel_baile_id.required' => 'Ups! El nivel de baile es requerido ',
-        'instructor_id.required' => 'Ups! El Instructor es requerido',
-        'estudio_id.required' => 'Ups! La Sala o Estudio requerida',
-        'etiqueta.required' => 'Ups! El color de la etiqueta es requerido',
-        'cupo_minimo.numeric' => 'Ups! La cantidad de cupos es inválido , debe contener sólo números',
-        'cupo_maximo.numeric' => 'Ups! La cantidad de cupos es inválido , debe contener sólo números',
-        'cupo_reservacion.numeric' => 'Ups! La cantidad de cupos  para reservacion es inválido , debe contener sólo números',
+            'nombre.required' => 'Ups! El Nombre es requerido ',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+            'nombre.max' => 'El máximo de caracteres permitidos son 50',
+            'costo.required' => 'Ups! El Costo es requerido',
+            'costo.numeric' => 'Ups! El Costo es inválido , debe contener sólo números',
+            'fecha.required' => 'Ups! La fecha es requerida',
+            'hora_inicio.required' => 'Ups! El horario es requerido',
+            'hora_final.required' => 'Ups! El horario es requerido',
+            'especialidad_id.required' => 'Ups! La especialidad es requerida',
+            'nivel_baile_id.required' => 'Ups! El nivel de baile es requerido ',
+            'instructor_id.required' => 'Ups! El Instructor es requerido',
+            'estudio_id.required' => 'Ups! La Sala o Estudio requerida',
+            'etiqueta.required' => 'Ups! El color de la etiqueta es requerido',
+            'cupo_minimo.numeric' => 'Ups! La cantidad de cupos es inválido , debe contener sólo números',
+            'cupo_maximo.numeric' => 'Ups! La cantidad de cupos es inválido , debe contener sólo números',
+            'cupo_reservacion.numeric' => 'Ups! La cantidad de cupos  para reservacion es inválido , debe contener sólo números',
 
-    ];
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        // return redirect("/home")
+            // return redirect("/home")
 
-        // ->withErrors($validator)
-        // ->withInput();
+            // ->withErrors($validator)
+            // ->withInput();
 
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-        //dd($validator);
+            //dd($validator);
 
-    }
-
-    else{
-
-        $fecha = explode(" - ", $request->fecha);
-
-        $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
-        $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
-
-        if($fecha_inicio < Carbon::now()){
-
-            return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de inicio no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
         }
 
-        if($fecha_inicio > $fecha_final)
-        {
-            return response()->json(['errores' => ['fecha' => [0, 'Ups! La fecha de inicio es mayor a la fecha final']], 'status' => 'ERROR'],422);
-        }
+        else{
 
-        $fecha_inicio = $fecha_inicio->toDateString();
-        $fecha_final = $fecha_final->toDateString();
+            $fecha = explode(" - ", $request->fecha);
 
-        $hora_inicio = strtotime($request->hora_inicio);
-        $hora_final = strtotime($request->hora_final);
+            $fecha_inicio = Carbon::createFromFormat('d/m/Y', $fecha[0]);
+            $fecha_final = Carbon::createFromFormat('d/m/Y', $fecha[1]);
 
-        if($hora_inicio > $hora_final)
-        {
+            if($fecha_inicio < Carbon::now()){
 
-            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
-        }
+                return response()->json(['errores' => ['fecha' => [0, 'Ups! ha ocurrido un error. La fecha de inicio no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+            }
 
-        if($request->cupo_minimo > $request->cupo_maximo)
-        {
-
-            return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo es mayor al cupo maximo']], 'status' => 'ERROR'],422);
-        }
-
-        if(trim($request->cantidad_hombres) == '')
-        {
-            $cantidad_hombres = null;
-        }else{
-            $cantidad_hombres = $request->cantidad_hombres;
-        }
-
-        if(trim($request->cantidad_mujeres) == '')
-        {
-            $cantidad_mujeres = null;
-        }else{
-            $cantidad_mujeres = $request->cantidad_mujeres;
-        }
-
-        $cupos = $cantidad_mujeres + $cantidad_hombres;
-
-        if($request->cupo_minimo > $request->cupo_maximo)
-        {
-
-            return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo es mayor al cupo maximo']], 'status' => 'ERROR'],422);
-        }
-
-        if($cupos < $request->cupo_minimo)
-        {
-            return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo sobrepasa la suma de los cupos de hombres y mujeres']], 'status' => 'ERROR'],422);
-        }
-
-        if($cupos > $request->cupo_maximo)
-        {
-            return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! La suma de los cupos de hombres y mujeres sobrepasa el cupo maximo']], 'status' => 'ERROR'],422);
-        }
-
-        if($request->link_video){
-
-            $parts = parse_url($request->link_video);
-
-            if(isset($parts['host']))
+            if($fecha_inicio > $fecha_final)
             {
-                if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+                return response()->json(['errores' => ['fecha' => [0, 'Ups! La fecha de inicio es mayor a la fecha final']], 'status' => 'ERROR'],422);
+            }
 
-                
-                }else{
-                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
-                }
+            $fecha_inicio = $fecha_inicio->toDateString();
+            $fecha_final = $fecha_final->toDateString();
+
+            $academia = Academia::find(Auth::user()->academia_id);
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
             }else{
-                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
-                }
-            
+                $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
             }
 
-        $taller = new Taller;
-
-        $nombre = title_case($request->nombre);
-        $descripcion = $request->descripcion;
-
-        $taller->academia_id = Auth::user()->academia_id;
-        $taller->descripcion = $descripcion;
-        $taller->nombre = $nombre;
-        $taller->costo = $request->costo;
-        $taller->fecha_inicio = $fecha_inicio;
-        $taller->fecha_final = $fecha_final;
-        $taller->hora_inicio = $request->hora_inicio;
-        $taller->hora_final = $request->hora_final;
-        $taller->especialidad_id = $request->especialidad_id;
-        $taller->instructor_id = $request->instructor_id;
-        $taller->estudio_id = $request->estudio_id;
-        $taller->color_etiqueta = $request->color_etiqueta;
-        $taller->cupo_minimo = $request->cupo_minimo;
-        $taller->cupo_maximo = $request->cupo_maximo;
-        $taller->cupo_reservacion = $request->cupo_reservacion;
-        $taller->condiciones = $request->condiciones;
-        $taller->link_video = $request->link_video;
-        $taller->cantidad_hombres = $cantidad_hombres;
-        $taller->cantidad_mujeres = $cantidad_mujeres;
-        $taller->boolean_promocionar = $request->boolean_promocionar;
-
-        if($taller->save()){
-
-            if($request->costo){
-
-                $servicio = new ConfigServicios;
-
-                $servicio->academia_id = Auth::user()->academia_id;
-                $servicio->nombre = 'Inscripción ' . $nombre;
-                $servicio->costo = $request->costo;
-                $servicio->imagen = '';
-                $servicio->descripcion = $descripcion;
-                $servicio->incluye_iva = 1;
-                $servicio->tipo = 5;
-                $servicio->tipo_id = $taller->id;
-
-                $servicio->save();
+            if($hora_inicio > $hora_final){
+                return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
             }
 
-            if($request->imageBase64){
+            if($request->cupo_minimo > $request->cupo_maximo)
+            {
 
-                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-                $path = storage_path();
-                $split = explode( ';', $request->imageBase64 );
-                $type =  explode( '/',  $split[0]);
-                $ext = $type[1];
+                return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo es mayor al cupo maximo']], 'status' => 'ERROR'],422);
+            }
+
+            if(trim($request->cantidad_hombres) == '')
+            {
+                $cantidad_hombres = null;
+            }else{
+                $cantidad_hombres = $request->cantidad_hombres;
+            }
+
+            if(trim($request->cantidad_mujeres) == '')
+            {
+                $cantidad_mujeres = null;
+            }else{
+                $cantidad_mujeres = $request->cantidad_mujeres;
+            }
+
+            $cupos = $cantidad_mujeres + $cantidad_hombres;
+
+            if($request->cupo_minimo > $request->cupo_maximo)
+            {
+
+                return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo es mayor al cupo maximo']], 'status' => 'ERROR'],422);
+            }
+
+            if($cupos < $request->cupo_minimo)
+            {
+                return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! El cupo minimo sobrepasa la suma de los cupos de hombres y mujeres']], 'status' => 'ERROR'],422);
+            }
+
+            if($cupos > $request->cupo_maximo)
+            {
+                return response()->json(['errores' => ['cupo_minimo' => [0, 'Ups! La suma de los cupos de hombres y mujeres sobrepasa el cupo maximo']], 'status' => 'ERROR'],422);
+            }
+
+            if($request->link_video){
+
+                $parts = parse_url($request->link_video);
+
+                if(isset($parts['host']))
+                {
+                    if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+
+                    
+                    }else{
+                        return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                    }
+                }else{
+                        return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                    }
                 
-                if($ext == 'jpeg' || 'jpg'){
-                    $extension = '.jpg';
                 }
 
-                if($ext == 'png'){
-                    $extension = '.png';
+            $taller = new Taller;
+
+            $nombre = title_case($request->nombre);
+            $descripcion = $request->descripcion;
+
+            $taller->academia_id = Auth::user()->academia_id;
+            $taller->descripcion = $descripcion;
+            $taller->nombre = $nombre;
+            $taller->costo = $request->costo;
+            $taller->fecha_inicio = $fecha_inicio;
+            $taller->fecha_final = $fecha_final;
+            $taller->hora_inicio = $hora_inicio;
+            $taller->hora_final = $hora_final;
+            $taller->especialidad_id = $request->especialidad_id;
+            $taller->instructor_id = $request->instructor_id;
+            $taller->estudio_id = $request->estudio_id;
+            $taller->color_etiqueta = $request->color_etiqueta;
+            $taller->cupo_minimo = $request->cupo_minimo;
+            $taller->cupo_maximo = $request->cupo_maximo;
+            $taller->cupo_reservacion = $request->cupo_reservacion;
+            $taller->condiciones = $request->condiciones;
+            $taller->link_video = $request->link_video;
+            $taller->cantidad_hombres = $cantidad_hombres;
+            $taller->cantidad_mujeres = $cantidad_mujeres;
+            $taller->boolean_promocionar = $request->boolean_promocionar;
+
+            if($taller->save()){
+
+                if($request->costo){
+
+                    $servicio = new ConfigServicios;
+
+                    $servicio->academia_id = Auth::user()->academia_id;
+                    $servicio->nombre = 'Inscripción ' . $nombre;
+                    $servicio->costo = $request->costo;
+                    $servicio->imagen = '';
+                    $servicio->descripcion = $descripcion;
+                    $servicio->incluye_iva = 1;
+                    $servicio->tipo = 5;
+                    $servicio->tipo_id = $taller->id;
+
+                    $servicio->save();
                 }
 
-                $nombre_img = "taller-". $taller->id . $extension;
-                $image = base64_decode($base64_string);
+                if($request->imageBase64){
 
-                // \Storage::disk('taller')->put($nombre_img,  $image);
-                $img = Image::make($image)->resize(1440, 500);
-                $img->save('assets/uploads/taller/'.$nombre_img);
+                    $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                    $path = storage_path();
+                    $split = explode( ';', $request->imageBase64 );
+                    $type =  explode( '/',  $split[0]);
+                    $ext = $type[1];
+                    
+                    if($ext == 'jpeg' || 'jpg'){
+                        $extension = '.jpg';
+                    }
 
-                $taller->imagen = $nombre_img;
-                $taller->save();
+                    if($ext == 'png'){
+                        $extension = '.png';
+                    }
 
+                    $nombre_img = "taller-". $taller->id . $extension;
+                    $image = base64_decode($base64_string);
+
+                    // \Storage::disk('taller')->put($nombre_img,  $image);
+                    $img = Image::make($image)->resize(1440, 500);
+                    $img->save('assets/uploads/taller/'.$nombre_img);
+
+                    $taller->imagen = $nombre_img;
+                    $taller->save();
+
+                }
+                
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
-            
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-    }
     }
 
      public function updateNombre(Request $request){
@@ -746,56 +749,55 @@ class TallerController extends BaseController {
 
     public function updateHorario(Request $request){
 
-    $rules = [
+        $rules = [
 
-        'hora_inicio' => 'required',
-        'hora_final' => 'required',
+            'hora_inicio' => 'required',
+            'hora_final' => 'required',
 
-    ];
+        ];
 
-    $messages = [
+        $messages = [
 
-        'hora_inicio.required' => 'Ups! El horario es requerido',
-        'hora_final.required' => 'Ups! El horario es requerido',
+            'hora_inicio.required' => 'Ups! El horario es requerido',
+            'hora_final.required' => 'Ups! El horario es requerido',
 
-    ];
+        ];
 
-    $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-    if ($validator->fails()){
+        if ($validator->fails()){
 
-        // return redirect("/home")
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-        // ->withErrors($validator)
-        // ->withInput();
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
-
-    }
-
-    else{
-
-        $hora_inicio = strtotime($request->hora_inicio);
-        $hora_final = strtotime($request->hora_final);
-
-        if($hora_inicio > $hora_final)
-        {
-
-            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
         }
 
-        $taller = Taller::find($request->id);
-        $taller->hora_inicio = $request->hora_inicio;
-        $taller->hora_final = $request->hora_final;
+        else{
 
-        if($taller->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+            }
+
+            if($hora_inicio > $hora_final){
+                return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+            }
+
+            $taller = Taller::find($request->id);
+            $taller->hora_inicio = $hora_inicio;
+            $taller->hora_final = $hora_final;
+
+            if($taller->save()){
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }
-    }
     }
 
     public function updateEspecialidad(Request $request){
@@ -1168,8 +1170,8 @@ class TallerController extends BaseController {
 
         }else{
 
-            $inscripcion = InscripcionTaller::where('inscripcion_taller.alumno_id', '=', $request->alumno_id)
-                ->where('inscripcion_taller.taller_id', '=', $request->taller_id)
+            $inscripcion = InscripcionTaller::where('alumno_id', '=', $request->alumno_id)
+                ->where('taller_id', '=', $request->taller_id)
             ->first(); 
 
             // comprobar si esta inscrito
@@ -1181,6 +1183,7 @@ class TallerController extends BaseController {
 
                 $inscripcion->taller_id = $request->taller_id;
                 $inscripcion->alumno_id = $request->alumno_id;
+                $inscripcion->observacion_cambio_costo = $request->observacion_cambio_costo;
 
                 if($inscripcion->save()){
 

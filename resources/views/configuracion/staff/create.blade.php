@@ -273,17 +273,17 @@
 
                                     <div class="col-sm-4 text-center">
                                     
-                                    <span class="f-16 c-morado">Dia de Semana</span>
+                                    <span class="f-16 c-morado" id="id-dia_de_semana_id">Dia de Semana</span>
 
                                    </div>
                                    <div class="col-sm-4 text-center">
 
-                                   <span class="f-16 c-morado">Hora Desde</span>
+                                   <span class="f-16 c-morado" id="id-hora_inicio">Hora Desde</span>
 
                                    </div>
                                    <div class="col-sm-4 text-center">
 
-                                   <span class="f-16 c-morado">Hora Hasta</span>
+                                   <span class="f-16 c-morado" id="id-hora_final">Hora Hasta</span>
 
                                    </div>
                                    
@@ -303,6 +303,11 @@
                                         </select>
                                       </div>
                                     </div>
+                                    <div class="has-error" id="error-dia_de_semana_id">
+                                      <span >
+                                          <small id="error-dia_de_semana_id_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
                               </div>
 
                               <div class="col-sm-4 text-center">
@@ -312,6 +317,11 @@
                                               <input name="hora_inicio" id="hora_inicio" class="form-control time-picker" placeholder="Desde" type="text">
                                           </div>
                                     </div>
+                                    <div class="has-error" id="error-hora_inicio">
+                                      <span >
+                                          <small id="error-hora_inicio_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
                               </div>
 
                               <div class="col-sm-4 text-center">
@@ -320,6 +330,11 @@
                                       <div class="dtp-container fg-line">
                                               <input name="hora_final" id="hora_final" class="form-control time-picker" placeholder="Hasta" type="text">
                                           </div>
+                                    </div>
+                                    <div class="has-error" id="error-hora_final">
+                                      <span >
+                                          <small id="error-hora_final_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
                                     </div>
                               </div>
 
@@ -914,7 +929,12 @@
                           var nTitle="Ups! ";
                           var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                           var nType = 'danger';
-                        }                       
+                        }          
+
+                        $('#dia_de_semana_id').val('')
+                        $('#hora_inicio').val('')      
+                        $('#hora_final').val('')    
+                        $('.selectpicker').selectpicker('refresh')    
                         $(".procesando").removeClass('show');
                         $(".procesando").addClass('hidden');
                         $("#guardar").removeAttr("disabled");

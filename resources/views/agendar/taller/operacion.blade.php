@@ -205,6 +205,7 @@
                                 //          $("#msj-danger").fadeOut();
                                 //         }, 3000);
                                 //         
+                                finprocesado()
                                 swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
                                 }
                 });

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use App\Academia;
 use App\Staff;
 use App\HorarioStaff;
 use App\ConfigStaff;
@@ -126,28 +127,22 @@ class StaffController extends BaseController
 	            return response()->json(['errores' => ['fecha_nacimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a 1 año de edad']], 'status' => 'ERROR'],422);
 	        }
 
-	        $hora_inicio = strtotime($request->hora_inicio);
-	        $hora_final = strtotime($request->hora_final);
-
-	        if($hora_inicio > $hora_final){
-
-	            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
-	        }
-
 	        $fecha_nacimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_nacimiento)->toDateString();
 
 	        $nombre = title_case($request->nombre);
 	        $apellido = title_case($request->apellido);
 	        $correo = trim(strtolower($request->correo));
 
-            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                ->select('users.id')
-                ->where('users.email',$correo)
-                ->where('usuarios_tipo.tipo',8)
-            ->first();
+            if($correo){
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->select('users.id')
+                    ->where('users.email',$correo)
+                    ->where('usuarios_tipo.tipo',8)
+                ->first();
 
-            if($usuario){
-                return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
+                if($usuario){
+                    return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
+                }
             }
 
 	        if($request->telefono)
@@ -183,7 +178,6 @@ class StaffController extends BaseController
 	        if($staff->save()){
 
                 if($correo){
-
                     if(!$usuario){
 
                         $usuario = new User;
@@ -1011,19 +1005,24 @@ class StaffController extends BaseController
 
         }
 
-        $hora_inicio = strtotime($request->hora_inicio);
-        $hora_final = strtotime($request->hora_final);
+        $academia = Academia::find(Auth::user()->academia_id);
 
-        if($hora_inicio > $hora_final)
-        {
+        if($academia->tipo_horario == 1){
+            $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+            $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
+        }else{
+            $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+            $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+        }
 
+        if($hora_inicio > $hora_final){
             return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
         }
 
         $alumno = Staff::withTrashed()->find($request->id);
 
-        $alumno->hora_inicio = $request->hora_inicio;
-        $alumno->hora_final = $request->hora_final;
+        $alumno->hora_inicio = $hora_inicio;
+        $alumno->hora_final = $hora_final;
 
         if($alumno->save()){
      
@@ -1064,12 +1063,26 @@ class StaffController extends BaseController
 
             if(!$horario){
 
+                $academia = Academia::find(Auth::user()->academia_id);
+
+                if($academia->tipo_horario == 1){
+                    $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+                    $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
+                }else{
+                    $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+                    $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+                }
+
+                if($hora_inicio > $hora_final){
+                    return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+                }
+
                 $horario = new HorarioStaff;
-                
+
                 $horario->staff_id = $request->id;                   
                 $horario->dia_de_semana_id = $request->dia_de_semana_id;
-                $horario->hora_inicio = $request->hora_inicio;
-                $horario->hora_final = $request->hora_final;
+                $horario->hora_inicio = $hora_inicio;
+                $horario->hora_final = $hora_final;
 
                 if($horario->save()){
 
@@ -1126,8 +1139,32 @@ class StaffController extends BaseController
 
     else{
 
-        $dia_de_semana = DiasDeSemana::find($request->dia_de_semana_id);
+        $academia = Academia::find(Auth::user()->academia_id);
 
+        if($academia->tipo_horario == 1){
+            $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+            $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
+        }else{
+            $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+            $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+        }
+
+        if($hora_inicio > $hora_final){
+            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+        }
+
+        $horarios = Session::get('horarios_staff');
+
+        if($horarios){
+            foreach ($horarios as $horario) {
+                if($horario['dia_de_semana_id'] == $request->dia_de_semana_id){
+                    return response()->json(['errores' => ['dia_de_semana_id' => [0, 'Ups! Ya posee un horario configurado para este día']], 'status' => 'ERROR'],422);
+                }
+
+            }
+        }
+
+        $dia_de_semana = DiasDeSemana::find($request->dia_de_semana_id);
         $array=array('dia_de_semana_id' => $request->dia_de_semana_id, 'dia_de_semana' => $dia_de_semana->nombre, 'hora_inicio' => $request->hora_inicio , 'hora_final' => $request->hora_final);
 
         Session::push('horarios_staff', $array);
