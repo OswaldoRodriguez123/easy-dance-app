@@ -3335,6 +3335,20 @@
         $('.table-responsive').css( "overflow", "auto" );
     })
 
+    $('#modalAgregar').on('hidden.bs.modal', function () {
+
+      $('input[name=boolean_promociones]').prop('checked',false)
+      $('input[name=boolean_franela]').prop('checked',true)
+      $('input[name=boolean_programacion]').prop('checked',true)
+
+      $('#textarea_entrega').hide();
+      $('#textarea_observacion').hide();
+      $('#div_promocion').hide();
+      $('')
+      $('#agregar_inscripcion')[0].reset()
+      $('.selectpicker').selectpicker('refresh')
+    });
+
   </script>
 
 @stop
