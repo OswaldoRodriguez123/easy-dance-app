@@ -337,9 +337,20 @@
                             @foreach ($alumnos as $alumno)
                               <?php $id = $alumno['id']; 
 
-                                $contenido = '<p class="c-negro">' .
+                                if($alumno['imagen']){
+                                        $imagen = '/assets/uploads/usuario/'.$alumno['imagen'];
+                                    }else{
+                                        if($alumno['sexo'] == 'F'){
+                                            $imagen = '/assets/img/Mujer.jpg';
+                                        }else{
+                                            $imagen = '/assets/img/Hombre.jpg';
+                                        }
+                                    }
 
-                                $alumno['nombre'] . ' ' . $alumno['apellido'] .'<br><br>' .
+
+                                $contenido = 
+                                '<p class="c-negro">' .
+                                    $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .
 
                                 'Clase Grupal: ' . $alumno['nombre_clase']  . '<br>'.
                                 'Día: ' . $alumno['dia_clase'] . '<br>'.
@@ -370,8 +381,26 @@
                             @endforeach 
 
                             @foreach ($instructores as $instructor)
-                                <?php $id = $instructor['id']; ?>
-                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$instructor['imagen']}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$instructor['nombre']}} {{$instructor['apellido']}}" data-identificacion-participante = "{{$instructor['identificacion']}}" data-sexo = "{{$instructor['sexo']}}" data-tipo-participante = "instructor" >
+
+                              <?php $id = $instructor['id']; 
+
+                                if($instructor['imagen']){
+                                        $imagen = '/assets/uploads/usuario/'.$instructor['imagen'];
+                                    }else{
+                                        if($instructor['sexo'] == 'F'){
+                                            $imagen = '/assets/img/Mujer.jpg';
+                                        }else{
+                                            $imagen = '/assets/img/Hombre.jpg';
+                                        }
+                                    }
+
+
+                                $contenido = 
+                                '<p class="c-negro">' .
+                                    $instructor['nombre'] . ' ' . $instructor['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .'<br></p>';
+
+                              ?>
+                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$instructor['imagen']}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$instructor['nombre']}} {{$instructor['apellido']}}" data-identificacion-participante = "{{$instructor['identificacion']}}" data-sexo = "{{$instructor['sexo']}}" data-tipo-participante = "instructor" >
                                     <td class="text-center previa"></td>
                                     <td class="text-center previa">
                                         @if($instructor['imagen'])
@@ -391,8 +420,27 @@
                             @endforeach 
 
                             @foreach ($staffs as $staff)
-                                <?php $id = $staff['id']; ?>
-                                <tr id="asistencia_alumno_row_{{$id}}" class="seleccion" data-id-participante = "{{$id}}" data-nombre-participante = "{{$staff['nombre']}} {{$staff['apellido']}}" data-tipo-participante = "staff">
+
+                                <?php $id = $staff['id']; 
+
+                                if($staff['imagen']){
+                                        $imagen = '/assets/uploads/usuario/'.$staff['imagen'];
+                                    }else{
+                                        if($staff['sexo'] == 'F'){
+                                            $imagen = '/assets/img/Mujer.jpg';
+                                        }else{
+                                            $imagen = '/assets/img/Hombre.jpg';
+                                        }
+                                    }
+
+
+                                $contenido = 
+                                '<p class="c-negro">' .
+                                    $staff['nombre'] . ' ' . $staff['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .'<br></p>';
+
+                              ?>
+
+                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" id="asistencia_alumno_row_{{$id}}" class="seleccion" data-id-participante = "{{$id}}" data-nombre-participante = "{{$staff['nombre']}} {{$staff['apellido']}}" data-tipo-participante = "staff">
                                     <td class="text-center previa"></td>
                                     <td class="text-center previa">
                                         @if($staff['imagen'])
