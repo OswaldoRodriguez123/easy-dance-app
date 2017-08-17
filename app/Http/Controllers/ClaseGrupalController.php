@@ -84,6 +84,7 @@ class ClaseGrupalController extends BaseController {
         $academia = Academia::find(Auth::user()->academia_id);
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         $usuario_id = Session::get('easydance_usuario_id');
+        $academia = Academia::find(Auth::user()->academia_id);
 
         if($usuario_tipo == 1 OR $usuario_tipo == 3 OR $usuario_tipo == 5 || $usuario_tipo == 6){
 
@@ -104,7 +105,6 @@ class ClaseGrupalController extends BaseController {
                     $inicio = 1;
                 }
 
-                $academia = Academia::find(Auth::user()->academia_id);
                 if($academia->tipo_horario == 1){
                     $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
                     $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
@@ -141,7 +141,6 @@ class ClaseGrupalController extends BaseController {
                     $inicio = 1;
                 }
 
-                $academia = Academia::find(Auth::user()->academia_id);
                 if($academia->tipo_horario == 1){
                     $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
                     $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
@@ -2834,14 +2833,23 @@ class ClaseGrupalController extends BaseController {
             ->get();
 
             $arrayHorario= array();
+            $academia = Academia::find(Auth::user()->academia_id);
 
             foreach ($horario_clase_grupal as $horario) {
+
                 $instructor=$horario->instructor_nombre.' '.$horario->instructor_apellido;
                 $especialidad=$horario->especialidad_nombre;
                 $estudio = $horario->estudio_nombre;
                 $fecha=$horario->fecha;
-                $hora_inicio=$horario->hora_inicio;
-                $hora_final=$horario->hora_final;
+
+                if($academia->tipo_horario == 1){
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$horario->hora_inicio)->toTimeString();
+                    $hora_final = Carbon::createFromFormat('H:i:s',$horario->hora_final)->toTimeString();
+                }else{
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$horario->hora_inicio)->format('g:i a');
+                    $hora_final = Carbon::createFromFormat('H:i:s',$horario->hora_final)->format('g:i a');
+                }
+                
                 $id_horario=$horario->id;
 
                 $fc=explode('-',$fecha);

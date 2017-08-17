@@ -601,11 +601,17 @@ class VisitanteController extends BaseController {
           $fecha_siguiente = '';
          }
 
-         if($request->hora_siguiente){
-          $hora_siguiente = $request->hora_siguiente;
-         }else{
-          $hora_siguiente = '';
-         }
+        if($request->hora_siguiente){
+            $hora_siguiente = Carbon::createFromFormat('H:i',$request->hora_siguiente)->toTimeString();
+        }else{
+            $hora_siguiente = '';
+        }
+
+        if($academia->tipo_horario == 1){
+            $hora_llamada = Carbon::createFromFormat('H:i',$request->hora_llamada)->toTimeString();
+        }else{
+            $hora_llamada = Carbon::createFromFormat('H:i a',$request->hora_llamada)->toTimeString();
+        }
 
         $llamada = new Llamada;
         
@@ -614,7 +620,7 @@ class VisitanteController extends BaseController {
         $llamada->observacion = $request->observacion;
         $llamada->status = $request->status;
         $llamada->fecha_llamada = $fecha_llamada;
-        $llamada->hora_llamada = $request->hora_llamada;
+        $llamada->hora_llamada = $hora_llamada;
         $llamada->fecha_siguiente = $fecha_siguiente;
         $llamada->hora_siguiente = $hora_siguiente;
 

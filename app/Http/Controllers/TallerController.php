@@ -168,6 +168,14 @@ class TallerController extends BaseController {
                     $status = 'Vencida';
                 }
 
+                if($academia->tipo_horario == 1){
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$taller->hora_inicio)->toTimeString();
+                    $hora_final = Carbon::createFromFormat('H:i:s',$taller->hora_final)->toTimeString();
+                }else{
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$taller->hora_inicio)->format('g:i a');
+                    $hora_final = Carbon::createFromFormat('H:i:s',$taller->hora_final)->format('g:i a');
+                }
+
                 $collection=collect($taller);  
                 $taller_array = $collection->toArray(); 
                 $taller_array['cantidad_participantes']=$cantidad_participantes;  
@@ -175,6 +183,8 @@ class TallerController extends BaseController {
                 $taller_array['especialidades']=$especialidad_string;
                 $taller_array['status']=$status;
                 $taller_array['dias_restantes']=$dias_restantes;
+                $taller_array['hora_inicio']=$hora_inicio;
+                $taller_array['hora_final']=$hora_final;
                 
                 $array[$taller->id] = $taller_array;
             }

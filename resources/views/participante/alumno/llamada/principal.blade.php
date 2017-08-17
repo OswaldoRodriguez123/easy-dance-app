@@ -115,9 +115,27 @@
                                   @endif
                                   </td>
                                   <td>{{ str_limit(title_case($llamada->observacion), $limit = 30, $end = '...') }}</td>
-                                  <td>{{$llamada->hora_llamada}}</td>
+                                  <td>
+
+                                    @if($tipo_horario == 1)
+                                        {{\Carbon\Carbon::createFromFormat('H:i:s',$llamada->hora_llamada)->format('H:i')}}
+                                    @else
+                                        {{\Carbon\Carbon::createFromFormat('H:i:s',$llamada->hora_llamada)->format('g:i a')}}
+                                    @endif
+               
+                                  </td>
                                   <td>{{$llamada->fecha_siguiente}}</td>
-                                  <td>{{$llamada->hora_siguiente}}</td>
+                                  <td>
+                                    @if($llamada->hora_siguiente != '00:00:00')
+                                      @if($tipo_horario == 1)
+                                          {{\Carbon\Carbon::createFromFormat('H:i:s',$llamada->hora_siguiente)->format('H:i')}}
+                                      @else
+                                          {{\Carbon\Carbon::createFromFormat('H:i:s',$llamada->hora_siguiente)->format('g:i a')}}
+                                      @endif
+                                    @else
+                                      {{$llamada->hora_siguiente}}
+                                    @endif
+                                  </td>
                                   <td>{{$tiempo_respuesta}}</td>
                                   <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer eliminar"></i></td>
                                     

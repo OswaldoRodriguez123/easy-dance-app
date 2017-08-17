@@ -96,6 +96,7 @@ class ClasePersonalizadaController extends BaseController {
 
 
             $array = array();
+            $academia = Academia::find(Auth::user()->academia_id);
 
             $clases_personalizadas = InscripcionClasePersonalizada::join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
                 ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
@@ -122,9 +123,19 @@ class ClasePersonalizadaController extends BaseController {
                     $tipo = 'C';
                 }
 
+                if($academia->tipo_horario == 1){
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_personalizada->hora_inicio)->toTimeString();
+                    $hora_final = Carbon::createFromFormat('H:i:s',$clase_personalizada->hora_final)->toTimeString();
+                }else{
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_personalizada->hora_inicio)->format('g:i a');
+                    $hora_final = Carbon::createFromFormat('H:i:s',$clase_personalizada->hora_final)->format('g:i a');
+                }
+
                 $collection=collect($clase_personalizada);     
                 $personalizada_array = $collection->toArray();
                 $personalizada_array['tipo']=$tipo;
+                $personalizada_array['hora_inicio']=$hora_inicio;
+                $personalizada_array['hora_final']=$hora_final;
                 $array[] = $personalizada_array;
             }
 
@@ -154,9 +165,19 @@ class ClasePersonalizadaController extends BaseController {
                     $tipo = 'C';
                 }
 
+                if($academia->tipo_horario == 1){
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_personalizada->hora_inicio)->toTimeString();
+                    $hora_final = Carbon::createFromFormat('H:i:s',$clase_personalizada->hora_final)->toTimeString();
+                }else{
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_personalizada->hora_inicio)->format('g:i a');
+                    $hora_final = Carbon::createFromFormat('H:i:s',$clase_personalizada->hora_final)->format('g:i a');
+                }
+
                 $collection=collect($clase_personalizada);     
                 $personalizada_array = $collection->toArray();
                 $personalizada_array['tipo']=$tipo;
+                $personalizada_array['hora_inicio']=$hora_inicio;
+                $personalizada_array['hora_final']=$hora_final;
                 $array[] = $personalizada_array;
             }
 
@@ -1290,8 +1311,10 @@ class ClasePersonalizadaController extends BaseController {
         $activas = array();
         $finalizadas = array();
         $canceladas = array();
+        $academia = Academia::find(Auth::user()->academia_id);
         $i = 0;
         $horas_restantes = 0;
+        $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
 
         $nombre = $clase->nombre;
         $horas_asignadas = $clase->horas_asignadas;
@@ -1302,34 +1325,43 @@ class ClasePersonalizadaController extends BaseController {
         $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
         $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
-        $hora_inicio=$clase->hora_inicio;
-        $hora_final=$clase->hora_final;
-        $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
-
-        $hie = explode(':',$hora_inicio);
-        $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], '00');
-
-        $hfe = explode(':',$hora_final);
-        $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], '00');
+        if($academia->tipo_horario == 1){
+            $hora_inicio = Carbon::createFromFormat('H:i:s',$clase->hora_inicio)->toTimeString();
+            $hora_final = Carbon::createFromFormat('H:i:s',$clase->hora_final)->toTimeString();
+        }else{
+            $hora_inicio = Carbon::createFromFormat('H:i:s',$clase->hora_inicio);
+            $hora_final = Carbon::createFromFormat('H:i:s',$clase->hora_final);
+        }
 
         $hora_asignada = $hora_inicio->diffInHours($hora_final);
+
+        if($academia->tipo_horario == 1){
+            $hora_inicio = $hora_inicio->toTimeString();
+            $hora_final = $hora_final->toTimeString();
+        }else{
+            $hora_inicio = $hora_inicio->format('g:i a');
+            $hora_final = $hora_final->format('g:i a');
+        }
+
         $horas_restantes = $horas_restantes + $hora_asignada;
 
         if($clase->estatus != 0){
 
             if($dt >= Carbon::now()){
-                $activas[]=array("id" => $clase->id, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$clase->hora_inicio, 'hora_final'=>$clase->hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 1, 'hora_asignada' => $hora_asignada);
+                $activas[]=array("id" => $clase->id, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 1, 'hora_asignada' => $hora_asignada);
                 $i++;
             }else{
-                $finalizadas[]=array("id" => $clase->id,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$clase->hora_inicio, 'hora_final'=>$clase->hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 1, 'hora_asignada' => $hora_asignada);
+                $finalizadas[]=array("id" => $clase->id,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 1, 'hora_asignada' => $hora_asignada);
                 $i++;
             }
         }else{
-            $canceladas[]=array("id" => $clase->id,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$clase->hora_inicio, 'hora_final'=>$clase->hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 1, 'hora_asignada' => $hora_asignada);
+            $canceladas[]=array("id" => $clase->id,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 1, 'hora_asignada' => $hora_asignada);
                 $i++;
         }
 
         foreach ($horarios as $clase) {
+
+            $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
 
             $fecha_start=explode('-',$clase->fecha);
             $fecha_end=explode('-',$clase->fecha);
@@ -1337,32 +1369,38 @@ class ClasePersonalizadaController extends BaseController {
             $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
             $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
-            $hora_inicio=$clase->hora_inicio;
-            $hora_final=$clase->hora_final;
-            $instructor = $clase->instructor_nombre . ' ' .$clase->instructor_apellido;
-
-            $hie = explode(':',$hora_inicio);
-            $hora_inicio = Carbon::createFromTime($hie[0], $hie[1], '00');
-
-            $hfe = explode(':',$hora_final);
-            $hora_final = Carbon::createFromTime($hfe[0], $hfe[1], '00');
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i:s',$clase->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i:s',$clase->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i:s',$clase->hora_inicio);
+                $hora_final = Carbon::createFromFormat('H:i:s',$clase->hora_final);
+            }
 
             $hora_asignada = $hora_inicio->diffInHours($hora_final);
 
+            if($academia->tipo_horario == 1){
+                $hora_inicio = $hora_inicio->toTimeString();
+                $hora_final = $hora_final->toTimeString();
+            }else{
+                $hora_inicio = $hora_inicio->format('g:i a');
+                $hora_final = $hora_final->format('g:i a');
+            }
+           
             $horas_restantes = $horas_restantes + $hora_asignada;
 
             if($clase->estatus != 0){
         
                 if($dt >= Carbon::now()){
-                    $activas[]=array("id" => $clase->id,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$clase->hora_inicio, 'hora_final'=>$clase->hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 2, 'hora_asignada' => $hora_asignada);
+                    $activas[]=array("id" => $clase->id,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 2, 'hora_asignada' => $hora_asignada);
                     $i++;
                 }else{
-                    $finalizadas[]=array("id" => $clase->id,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$clase->hora_inicio, 'hora_final'=>$clase->hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 2, 'hora_asignada' => $hora_asignada);
+                    $finalizadas[]=array("id" => $clase->id,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 2, 'hora_asignada' => $hora_asignada);
                     $i++;
                 }
 
             }else{
-                $canceladas[]=array("id" => $clase->id,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$clase->hora_inicio, 'hora_final'=>$clase->hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 2, 'hora_asignada' => $hora_asignada);
+                $canceladas[]=array("id" => $clase->id,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido, 'tipo' => 2, 'hora_asignada' => $hora_asignada);
                 $i++;
             }
 

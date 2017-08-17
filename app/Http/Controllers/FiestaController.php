@@ -40,6 +40,7 @@ class FiestaController extends BaseController {
     {
         $fiestas = Fiesta::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
         $array = array();
+        $academia = Academia::find(Auth::user()->academia_id);
 
         foreach($fiestas as $fiesta){
 
@@ -55,10 +56,20 @@ class FiestaController extends BaseController {
                 $status = 'Vencida';
             }
 
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i:s',$fiesta->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i:s',$fiesta->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i:s',$fiesta->hora_inicio)->format('g:i a');
+                $hora_final = Carbon::createFromFormat('H:i:s',$fiesta->hora_final)->format('g:i a');
+            }
+
             $collection=collect($fiesta);  
             $fiesta_array = $collection->toArray();   
             $fiesta_array['status']=$status;
             $fiesta_array['dias_restantes']=$dias_restantes;
+            $fiesta_array['hora_inicio']=$hora_inicio;
+            $fiesta_array['hora_final']=$hora_final;
             $array[$fiesta->id] = $fiesta_array;
         }
 
