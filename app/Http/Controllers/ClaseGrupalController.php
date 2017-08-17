@@ -3630,6 +3630,7 @@ class ClaseGrupalController extends BaseController {
     public function historial_asistencia($id){
 
         $inscripcion_clase_grupal = InscripcionClaseGrupal::find($id);
+        $academia = Academia::find(Auth::user()->academia_id);
 
         $clase_grupal = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
           ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
@@ -3757,7 +3758,12 @@ class ClaseGrupalController extends BaseController {
                 if($asistencia){
 
                     $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
-                    $hora = $asistencia->hora;
+                    
+                    if($academia->tipo_horario == 1){
+                        $hora = Carbon::createFromFormat('H:i:s',$asistencia->hora)->toTimeString();
+                    }else{
+                        $hora = Carbon::createFromFormat('H:i:s',$asistencia->hora)->format('g:i a');
+                    }
      
                     $total_asistencia++;
                 }else{
@@ -3854,7 +3860,12 @@ class ClaseGrupalController extends BaseController {
 
                     if($asistencia){
                         $asistio = 'zmdi c-verde zmdi-check zmdi-hc-fw f-20';
-                        $hora = $asistencia->hora;
+
+                        if($academia->tipo_horario == 1){
+                            $hora = Carbon::createFromFormat('H:i:s',$asistencia->hora)->toTimeString();
+                        }else{
+                            $hora = Carbon::createFromFormat('H:i:s',$asistencia->hora)->format('g:i a');
+                        }
 
                         $total_asistencia++;
                     }else{
