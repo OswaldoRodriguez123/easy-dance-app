@@ -443,7 +443,9 @@
                                 backgroundColor:'{{$taller['etiqueta']}}',
                                 className: 'actividad',
                                 url: '{{url('/')}}{{$taller['url']}}',
-                                tipo: 'talleres'
+                                tipo: 'talleres',
+                                hora_inicio: '{{$taller['hora_inicio_tooltip']}}',
+                                hora_final: '{{$taller['hora_final_tooltip']}}',
                             },
                         @endforeach
 
@@ -488,6 +490,8 @@
                                 url: '{{$url}}',
                                 tipo: '{{$tipo}}',
                                 nombre_clase: '{{$clase['nombre_clase']}}',
+                                hora_inicio: '{{$clase['hora_inicio_tooltip']}}',
+                                hora_final: '{{$clase['hora_final_tooltip']}}',
                             },
                         @endforeach
 
@@ -507,7 +511,9 @@
                                 backgroundColor:'{{$clasepersonalizada['etiqueta']}}',
                                 className: 'actividad',
                                 url: '{{url('/')}}{{$clasepersonalizada['url']}}',
-                                tipo: 'clases-personalizadas'
+                                tipo: 'clases-personalizadas',
+                                hora_inicio: '{{$clasepersonalizada['hora_inicio_tooltip']}}',
+                                hora_final: '{{$clasepersonalizada['hora_final_tooltip']}}',
                             },
                         @endforeach
 
@@ -527,7 +533,9 @@
                                 backgroundColor:'{{$fiesta['etiqueta']}}',
                                 className: 'actividad',
                                 url: '{{url('/')}}{{$fiesta['url']}}',
-                                tipo: 'fiestas-eventos'
+                                tipo: 'fiestas-eventos',
+                                hora_inicio: '{{$fiesta['hora_inicio_tooltip']}}',
+                                hora_final: '{{$fiesta['hora_final_tooltip']}}',
                             },
                         @endforeach
 
@@ -547,7 +555,9 @@
                                 backgroundColor:'{{$cita['etiqueta']}}',
                                 className: 'actividad',
                                 url: '{{url('/')}}{{$cita['url']}}',
-                                tipo: 'citas'
+                                tipo: 'citas',
+                                hora_inicio: '{{$cita['hora_inicio_tooltip']}}',
+                                hora_final: '{{$cita['hora_final_tooltip']}}',
                             },
                         @endforeach
 
@@ -567,7 +577,8 @@
                                 backgroundColor:'{{$transmision['etiqueta']}}',
                                 className: 'actividad',
                                 url: "{{url('/')}}{{$transmision['url']}}",
-                                tipo: 'transmisiones'
+                                tipo: 'transmisiones',
+                                hora: '{{$transmision['hora_tooltip']}}',
 
                             },
                         @endforeach
@@ -688,9 +699,8 @@
                             var tmp2 = tmp[0].split('-')
                             var tema = tmp2[1]
                             var fecha = tmp[1]
-                            var hora = tmp[2]
+                            var hora = event.hora
                             var presentador = tmp[3]
-
 
                             var contenido = 'Tema: ' + tema + '<br>'
                             contenido += 'Fecha: ' + fecha + '<br>'
@@ -709,7 +719,7 @@
                             var especialidad = tmp[1]
                             var imagen_instructor = tmp[2]
                             var sexo = tmp[3]
-                            var hora = tmp[4]
+                            var hora = event.hora_inicio + ' - ' + event.hora_final
 
                             if(imagen_instructor){
                                 imagen = '/assets/uploads/instructor/'+imagen_instructor
@@ -750,7 +760,7 @@
                                 var nivel = tmp[2]
                                 var imagen_instructor = tmp[3]
                                 var sexo = tmp[4]
-                                var hora = tmp[5]
+                                var hora = event.hora_inicio + ' - ' + event.hora_final
                                 var nombre_clase = event.nombre_clase
 
                                 if(imagen_instructor){
@@ -805,7 +815,7 @@
 
                             var imagen_instructor = tmp[3]
                             var sexo = tmp[4]
-                            var hora = tmp[5]
+                            var hora = event.hora_inicio + ' - ' + event.hora_final
 
                             if(imagen_instructor){
                                 imagen = '/assets/uploads/instructor/'+imagen_instructor
@@ -846,7 +856,7 @@
                             var tipo = tmp[1]
                             var imagen_instructor = tmp[2]
                             var sexo = tmp[3]
-                            var hora = tmp[4]
+                            var hora = event.hora_inicio + ' - ' + event.hora_final
                             var tipo_pago = tmp[5]
 
                             if(imagen_instructor){
