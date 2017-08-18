@@ -519,17 +519,19 @@
 
     //Time
 
-    if ($('.time-picker')[0]) {
-      @if($tipo_horario == 1)
-        $('.time-picker').datetimepicker({
-            format: 'LT'
-        });
-      @else
-        $('.time-picker').datetimepicker({
-            format: 'hh:mm a'
-        });
-      @endif
-    }
+    @if(Auth::check())
+      if ($('.time-picker')[0]) {
+        @if($tipo_horario == 1)
+          $('.time-picker').datetimepicker({
+              format: 'LT'
+          });
+        @else
+          $('.time-picker').datetimepicker({
+              format: 'hh:mm a'
+          });
+        @endif
+      }
+    @endif
 
   </script>
 		
