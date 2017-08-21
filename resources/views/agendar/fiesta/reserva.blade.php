@@ -1325,7 +1325,7 @@
         boleto = this.id;            
        
         var route=route_agregar+"/"+boleto;             
-        window.location=route;    
+        window.open(route, '_blank');;    
     
       });
 

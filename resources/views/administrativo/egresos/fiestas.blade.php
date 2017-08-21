@@ -150,7 +150,7 @@
         var row = $(t).closest('tr').attr('id');
         var id_fiesta = row.split('_');
         var route =route_detalle+"/"+row;
-        window.location=route;
+        window.open(route, '_blank');;
       }
 
       $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
@@ -228,7 +228,7 @@
 
     $("i[name=operacion").click(function(){
         var route =route_operacion+"/"+this.id;
-        window.location=route;
+        window.open(route, '_blank');;
     });
 
     </script>

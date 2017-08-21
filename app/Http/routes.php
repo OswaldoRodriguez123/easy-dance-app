@@ -1275,7 +1275,9 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		
 		Route::get('progreso','ProgresoController@index');
 		Route::get('progreso/{id}','ProgresoController@progreso');
-		Route::get('programacion','ProgresoController@principalprogramacion');
+		Route::get('programaciones','ProgresoController@principalprogramacion');
+		Route::get('programacion/salsa','ProgresoController@programacionsalsa');
+		Route::get('programacion/bachata','ProgresoController@programacionbachata');
 		Route::get('programacion/{id}','ProgresoController@programacion');
 
 		Route::get('/certificado/','ProgresoController@certificado');

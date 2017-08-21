@@ -14,7 +14,9 @@ use App\InscripcionCoreografia;
 use App\InscripcionClasePersonalizada;
 use App\ClaseGrupal;
 use App\HorarioClaseGrupal;
+use App\VencimientoClaseGrupal;
 use App\ClasePersonalizada;
+use App\HorarioClasePersonalizada;
 use App\ItemsFacturaProforma;
 use App\Academia;
 use App\Familia;
@@ -1966,6 +1968,12 @@ class AlumnoController extends BaseController
         $delete = Presupuesto::where('alumno_id',$id)->forceDelete();
         $delete = InscripcionClaseGrupal::where('alumno_id',$id)->forceDelete();
         $delete = InscripcionTaller::where('alumno_id',$id)->forceDelete();
+        $clases_personalizadas = InscripcionClasePersonalizada::where('alumno_id',$id)->get();
+        foreach($clases_personalizadas as $clase_personalizada)
+        {
+            $delete = HorarioClasePersonalizada::where('clase_personalizada_id',$clase_personalizada->id)->forceDelete();
+        }
+
         $delete = InscripcionClasePersonalizada::where('alumno_id',$id)->forceDelete();
         // $delete = InscripcionCoreografia::where('alumno_id',$id)->forceDelete();
         $delete = Asistencia::where('alumno_id',$id)->forceDelete();
@@ -2016,6 +2024,12 @@ class AlumnoController extends BaseController
                     $delete = Presupuesto::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = InscripcionClaseGrupal::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = InscripcionTaller::where('alumno_id',$hijo->id)->forceDelete();
+                    $clases_personalizadas = InscripcionClasePersonalizada::where('alumno_id',$hijo->id)->get();
+                    foreach($clases_personalizadas as $clase_personalizada)
+                    {
+                        $delete = HorarioClasePersonalizada::where('clase_personalizada_id',$clase_personalizada->id)->forceDelete();
+                    }
+
                     $delete = InscripcionClasePersonalizada::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = Asistencia::where('alumno_id',$hijo->id)->forceDelete();
                     $delete = Cita::where('alumno_id',$hijo->id)->forceDelete();
@@ -2073,6 +2087,7 @@ class AlumnoController extends BaseController
             $delete = Incidencia::where('usuario_id', $usuario->id)->forceDelete();
             $delete = Sugerencia::where('usuario_id', $usuario->id)->forceDelete();
             $delete = UsuarioTipo::where('usuario_id', $usuario->id)->forceDelete();
+            $delete = VencimientoClaseGrupal::where('usuario_id', $usuario->id)->forceDelete();
             $usuario->forceDelete();
 
         }

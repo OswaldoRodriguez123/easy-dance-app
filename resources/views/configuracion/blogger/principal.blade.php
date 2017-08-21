@@ -161,12 +161,12 @@
         }else{
             var route =route_progreso+"/"+row;
         }
-        window.location=route;
+        window.open(route, '_blank');;
       }
 
       $("i[name=operacion").click(function(){
             var route =route_operacion+"/"+this.id;
-            window.location=route;
+            window.open(route, '_blank');;
         });
 
       $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {

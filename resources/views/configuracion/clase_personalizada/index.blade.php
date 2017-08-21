@@ -374,14 +374,14 @@
       function previa(t){
         var row = $(t).closest('tr').attr('id');
         var route =route_detalle+"/"+row;
-        window.location=route;
+        window.open(route, '_blank');;
       }
 
       $('#tablelistar tbody').on( 'click', 'i.zmdi-wrench', function () {
 
             var id = $(this).closest('tr').attr('id');
             var route =route_operacion+"/"+id;
-            window.location=route;
+            window.open(route, '_blank');;
          });
 
 

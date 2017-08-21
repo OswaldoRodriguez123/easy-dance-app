@@ -172,14 +172,14 @@
 
                 var row = $(t).closest('tr').attr('id');
                 var route =route_detalle+"/"+row;
-                window.location=route;
+                window.open(route, '_blank');;
             }
 
         }
 
          $("i[name=operacion").click(function(){
             var route =route_operacion+"/"+this.id;
-            window.location=route;
+            window.open(route, '_blank');;
          });
 
          function clear(){

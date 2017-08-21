@@ -168,12 +168,12 @@
         //     var row = $(t).closest('tr').attr('id');
         //     var id_alumno = row.split('_');
         //     var route =route_detalle+"/"+id_alumno[1];
-        //     window.location=route;
+        //     window.open(route, '_blank');;
         // }
 
         //  $("i[name=operacion").click(function(){
         //     var route =route_operacion+"/"+this.id;
-        //     window.location=route;
+        //     window.open(route, '_blank');;
         //  });
 
          $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
@@ -236,7 +236,7 @@
 
                 var row = $(t).closest('tr').attr('id');
                 var route =route_detalle+"/"+row;
-                window.location=route;
+                window.open(route, '_blank');;
 
         }
 

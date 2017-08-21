@@ -218,12 +218,12 @@
         var row = $(t).closest('tr').attr('id');
         var id_servicio = row.split('_');
         var route =route_detalle+"/"+id_servicio[1];
-        window.location=route;
+        window.open(route, '_blank');;
         }
 
          $("i[name=operacion").click(function(){
             var route =route_operacion+"/"+this.id;
-            window.location=route;
+            window.open(route, '_blank');;
          });
 
          $("i[name=eliminar]").click(function(){

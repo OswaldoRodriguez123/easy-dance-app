@@ -166,12 +166,12 @@
         var row = $(t).closest('tr').attr('id');
         var id_clasegrupal = row.split('_');
         var route =route_detalle+"/"+id_clasegrupal[1];
-        window.location=route;
+        window.open(route, '_blank');;
       }
 
       $("i[name=operacion").click(function(){
             var route =route_operacion+"/"+this.id;
-            window.location=route;
+            window.open(route, '_blank');;
          });
 
 

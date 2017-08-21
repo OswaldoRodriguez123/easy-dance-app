@@ -212,12 +212,12 @@
     function previa(t){
         var id = $(t).closest('tr').attr('id');
         var route =route_detalle+"/"+id;
-        window.location=route;
+        window.open(route, '_blank');
     }
 
     $("i[name=operacion").click(function(){
         var route =route_operacion+"/"+this.id;
-        window.location=route;
+        window.open(route, '_blank');;
     });
 
     $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
@@ -300,7 +300,7 @@
                 success:function(respuesta){
 
                     procesando();
-                    window.location=route_principal; 
+                    window.open(route, '_blank');_principal; 
 
                 },
                 error:function(msj){

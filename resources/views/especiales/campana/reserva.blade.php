@@ -1212,7 +1212,7 @@
       recompensa = this.id;            
      
       var route=route_agregar+"/"+recompensa;             
-      window.location=route;    
+      window.open(route, '_blank');;    
   
     });
 
@@ -1224,7 +1224,7 @@
 
       campana = "1"    
       var route=route_agregar_unsign+"/"+campana;   
-      window.location=route;    
+      window.open(route, '_blank');;    
 
     });
 

@@ -127,11 +127,11 @@
     $(document).on( 'click', '.previa', function () {
         var id = this.id;
         procesando();
-        window.location=route_detalle+"/"+id;
+        window.open(route, '_blank');_detalle+"/"+id;
 
         // if("{{Auth::check()}}")
         // {
-        //     window.location=route_enviar+"/"+id;
+        //     window.open(route, '_blank');_enviar+"/"+id;
         // }
 
         // else{
@@ -146,7 +146,7 @@
         //               data:"&tipo_reservacion=3",
         //               success:function(respuesta){
 
-        //                   window.location=route_reserva+id; 
+        //                   window.open(route, '_blank');_reserva+id; 
 
         //               },
         //               error:function(msj){

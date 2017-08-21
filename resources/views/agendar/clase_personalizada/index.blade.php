@@ -327,7 +327,7 @@
 
           var id = $(row).attr('id');
           var route =route_detalle+"/"+id;
-          window.location=route;
+          window.open(route, '_blank');
 
 
         }else if(row.data('tipo') == 'C'){
@@ -349,7 +349,7 @@
 
             var id = $(this).closest('tr').attr('id');
             var route =route_operacion+"/"+id;
-            window.location=route;
+            window.open(route, '_blank');;
          });
 
 
@@ -599,7 +599,7 @@
                 success:function(respuesta){
 
                     procesando();
-                    window.location=route_principal; 
+                    window.open(route, '_blank');_principal; 
 
                 },
                 error:function(msj){

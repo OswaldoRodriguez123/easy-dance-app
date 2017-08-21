@@ -176,7 +176,7 @@
     function previa(t){
         var id = $(t).closest('tr').attr('id');
         var route =route_detalle+"/"+id;
-        window.location=route;
+        window.open(route, '_blank');
       }
 
       $('#tablelistar tbody').on( 'click', '.eliminar', function () {
@@ -252,7 +252,7 @@
 
     $("i[name=operacion").click(function(){
         var route =route_operacion+"/"+this.id;
-        window.location=route;
+        window.open(route, '_blank');;
     });
 
     $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {

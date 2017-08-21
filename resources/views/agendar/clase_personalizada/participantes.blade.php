@@ -833,7 +833,7 @@
                     data:datos,
                     success:function(respuesta){
 
-                        window.location=route_principal; 
+                        window.open(route, '_blank');_principal; 
 
                     },
                     error:function(msj){
@@ -865,7 +865,7 @@
                     data:datos,
                     success:function(respuesta){
 
-                        window.location=route_principal; 
+                        window.open(route, '_blank');_principal; 
 
                     },
                     error:function(msj){

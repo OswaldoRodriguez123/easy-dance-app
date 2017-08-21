@@ -182,7 +182,7 @@
 
             }
             
-            window.location=route;
+            window.open(route, '_blank');;
         }
 
 

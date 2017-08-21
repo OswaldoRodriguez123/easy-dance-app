@@ -176,7 +176,7 @@
         var id = this.id;
         procesando();
 
-        window.location=route_entradas+"/"+id;
+        window.open(route, '_blank');_entradas+"/"+id;
 
       });
 

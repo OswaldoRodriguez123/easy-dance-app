@@ -112,7 +112,7 @@
                             </li>
 
                             <li style="margin-top: 26px; right: 50%">
-                                <a class="f-15 text-header f-700" href="{{url('/')}}/programacion"><span class="f-15 text-header f-700">PASO A PASO</span></a>
+                                <a class="f-15 text-header f-700" href="{{url('/')}}/programacion/salsa"><span class="f-15 text-header f-700">PASO A PASO</span></a>
                             </li>
                         @endif
                     @endif

@@ -177,14 +177,6 @@
                                  
                                     <label for="nombre" id="id-clase_personalizada_id">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" aria-describedby="popoverclase" data-toggle="popover" data-placement="right" data-content="Selecciona el nombre de la clase a la que deseas asistir" title="" data-original-title="Ayuda"></i>
 
-   
-                                  <!--   <button aria-describedby="popover420878" class="btn btn-primary waves-effect" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." title="" data-original-title="Popover Title">
-                                    Top
-                                </button> -->
-                          <!--       <button class="btn btn-primary waves-effect" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." title="" data-original-title="Popover Title">
-                                    Top
-                                </button> -->
-
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
                                       <div class="fg-line">

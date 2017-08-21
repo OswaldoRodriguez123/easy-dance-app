@@ -309,12 +309,12 @@
         var row = $(t).closest('tr').attr('id');
         var route =route_detalle+"/"+row;
         
-        window.location=route;
+        window.open(route, '_blank');;
       }
 
       $('#tablelistar tbody').on( 'click', 'i.zmdi-wrench', function () {
             var route =route_operacion+"/"+this.id;
-            window.location=route;
+            window.open(route, '_blank');;
          });
 
     </script>

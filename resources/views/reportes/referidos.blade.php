@@ -504,7 +504,7 @@
      function previa(t){
         var id = $(t).closest('tr').attr('id');
         var route =route_detalle+"/"+id;
-        window.location=route;
+        window.open(route, '_blank');;
       }
 
     // sparklinePie('inscritos-stats-pie', values, 45, 45, ['#fff', 'rgba(255,255,255,0.7)', 'rgba(255,255,255,0.4)', 'rgba(255,255,255,0.2)']);

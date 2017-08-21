@@ -130,7 +130,7 @@
         var id = this.id;
         procesando();
 
-        window.location=route_progreso+"/"+id;
+        window.open(route, '_blank');_progreso+"/"+id;
 
       });
 

@@ -973,7 +973,7 @@
 
         $("#asistencia-horario").text("---");
         //var route =route_verificar+"/"+id_alumno[1];
-        //window.location=route;
+        //window.open(route, '_blank');;
         //alert(id_alumno);
         var route = route_consultar_cg;
         var token = $('input:hidden[name=_token]').val();

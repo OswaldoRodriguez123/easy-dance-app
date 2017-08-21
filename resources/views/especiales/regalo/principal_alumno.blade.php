@@ -134,7 +134,7 @@
 
         var route =route_enviar+"/"+row;
 
-        window.location=route;
+        window.open(route, '_blank');;
       });
 
     

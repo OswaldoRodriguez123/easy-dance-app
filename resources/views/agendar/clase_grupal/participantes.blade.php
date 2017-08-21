@@ -2701,7 +2701,7 @@
         // function previa(t){
         //   var id = $(t).closest('tr').data('id');
         //   var route =route_detalle+"/"+id;
-        //   window.location=route;
+        //   window.open(route, '_blank');;
         // }
 
 
@@ -2930,7 +2930,7 @@
           data: id,
           success:function(respuesta){
             var route =route_valorar+"/{{$examen}}";
-            window.location=route;
+            window.open(route, '_blank');;
           },
           error:function(msj){
             swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
@@ -2977,7 +2977,7 @@
       procesando();
 
       var route =route_examen+"/{{$clasegrupal->clase_grupal_id}}";
-      window.location=route;
+      window.open(route, '_blank');;
 
        
     }

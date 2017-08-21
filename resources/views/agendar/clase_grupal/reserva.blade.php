@@ -817,7 +817,7 @@
                       data:"&tipo_reservacion=1",
                       success:function(respuesta){
 
-                          window.location=route_reserva+id; 
+                          window.open(route, '_blank');_reserva+id; 
 
                       },
                       error:function(msj){

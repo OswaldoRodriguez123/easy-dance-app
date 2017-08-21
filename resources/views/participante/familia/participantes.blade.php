@@ -625,7 +625,7 @@
         //     var row = $(t).closest('tr').attr('id');
         //     var id_alumno = row.split('_');
         //     var route =route_detalle+"/"+id_alumno[1];
-        //     window.location=route;
+        //     window.open(route, '_blank');;
         // }
 
         $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {

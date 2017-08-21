@@ -278,7 +278,7 @@
                 procesando();
                 var id = row.attr('id');
                 var route =route_detalle+"/"+id;
-                window.location=route;
+                window.open(route, '_blank');;
             }
         }
 

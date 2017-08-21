@@ -225,7 +225,7 @@
 
           $(".progreso").click(function(){
             procesando();
-            window.location = "{{url('/')}}/programacion";
+            window.location = "{{url('/')}}/programaciones";
           });
 
         

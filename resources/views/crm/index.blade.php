@@ -202,7 +202,7 @@
         var row = $(t).closest('tr').attr('id');
         var id_academia = row.split('_');
         var route =route_detalle+"/"+id_academia[1];
-        window.location=route;
+        window.open(route, '_blank');;
       }
 
 		</script>

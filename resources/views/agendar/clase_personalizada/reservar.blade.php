@@ -797,13 +797,12 @@
 
        $( "#cancelar" ).click(function() {
         $("#agregar_clasepersonalizada")[0].reset();
-        $('#especialidad_id').selectpicker('render');
-        $('#instructor_id').selectpicker('render');
+        $('.selectpicker').selectpicker('refresh')
+        $('.paquete').hide()
         limpiarMensaje();
         $('html,body').animate({
         scrollTop: $("#id-clase_grupal_id").offset().top-90,
         }, 1500);
-        //$("#nombre").focus();
       });
 
        $("#condiciones").on('change', function(){

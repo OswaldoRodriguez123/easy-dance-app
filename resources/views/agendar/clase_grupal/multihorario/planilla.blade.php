@@ -969,7 +969,7 @@
                     dataType: 'json',
                     success:function(respuesta){
 
-                        window.location=route_principal; 
+                        window.open(route, '_blank');_principal; 
 
                     },
                     error:function(msj){
@@ -1040,7 +1040,7 @@
             data:datos,
             success:function(respuesta){
 
-                window.location=route_principal; 
+                window.open(route, '_blank');_principal; 
 
             },
             error:function (msj, ajaxOptions, thrownError){
@@ -1069,7 +1069,7 @@
         var row = $(t).closest('tr').attr('id');
         var route =route_detalle+"/"+row;
         
-        window.location=route;
+        window.open(route, '_blank');;
       }
 
    </script> 
