@@ -170,7 +170,7 @@ class ProgresoController extends BaseController {
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
             ->where('inscripcion_clase_grupal.alumno_id','=', $usuario_id)
-            ->where('clases_grupales.especialidad_id','=', 20)
+            // ->where('clases_grupales.especialidad_id','=', 20)
             ->OrderBy('clases_grupales.hora_inicio')
         ->get();
 
@@ -432,7 +432,7 @@ class ProgresoController extends BaseController {
                 $notas = '';
             }
 
-            if($clase_grupal->especialidad_id != 1){
+            if($clase_grupal->especialidad_id){
                 return view('progreso.programacion-salsa')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'notas' => $notas, 'pasos' => $pasos, 'id' => $id]); 
             }else{
                 return view('progreso.programacion-bachata')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'notas' => $notas, 'pasos' => $pasos, 'id' => $id]);
