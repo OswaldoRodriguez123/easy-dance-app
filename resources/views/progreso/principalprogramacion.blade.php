@@ -108,7 +108,6 @@
 
     $(document).on( 'click', '.previa', function () {
         var id = this.id;
-        procesando();
         var route = route_progreso+"/"+id
         window.open(route, '_blank');;
       });
