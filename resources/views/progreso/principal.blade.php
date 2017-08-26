@@ -109,11 +109,9 @@
     $(document).on( 'click', '.previa', function () {
         var id = this.id;
         procesando();
-
-        window.open(route, '_blank');_progreso+"/"+id;
-
-      });
-
+        var route = route_progreso+"/"+id
+        window.open(route, '_blank');
+    });
     
 
      </script>
