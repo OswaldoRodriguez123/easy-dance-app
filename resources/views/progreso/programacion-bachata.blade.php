@@ -488,15 +488,25 @@
         console.log(url)
         titulo = target.text()
 
-        var link_video = url.split('=');
+        var link_video = youtube_parser(url)
 
-        $("#video_promocional").attr('src', "http://www.youtube.com/embed/"+link_video[1]);
+        $("#video_promocional").attr('src', "http://www.youtube.com/embed/"+link_video);
 
         $('#nombre_modal').text(titulo)
 
         $('#modalVideo').modal('show');
       }
     });
+
+    function youtube_parser(url){
+      var regExp = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|\&v(?:i)?=))([^#\&\?]*).*/;
+      var match = url.match(regExp);
+      if (match && match[1].length == 11) {
+        return match[1];
+      } else {
+        console.log('error')
+      }
+    }
 
     $('#modalVideo').on('hidden.bs.modal', function () {
 
