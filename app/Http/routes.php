@@ -223,6 +223,12 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::put('configuracion/academia/update/password', 'AcademiaController@updatePassword');
 		Route::put('configuracion/academia/update/horario', 'AcademiaController@updateHorario');
 
+		//PASOS
+
+		Route::get('configuracion/herramientas/pasos','ProgresoController@principal_pasos');
+		Route::post('configuracion/herramientas/pasos/agregar', 'ProgresoController@agregar_paso');
+		Route::delete('configuracion/herramientas/pasos/eliminar/{id}', 'ProgresoController@eliminar_paso');
+
 		// MANUALES DE PROCEDIMIENTOS
 
 		Route::get('configuracion/herramientas/procedimientos','HerramientaController@planilla_procedimientos');

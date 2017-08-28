@@ -30,7 +30,9 @@
                            <div class="modal-body">                           
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12 m-b-20 text-center">                                   
-                                  <iframe id="video_vimeo" src="https://player.vimeo.com/video/203096537" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                                  <div class="embed-responsive embed-responsive-4by3" name="video_promocional_frame" id="video_promocional_frame">
+                                    <iframe name="video_promocional" id="video_promocional" class="embed-responsive-item" src=""></iframe>
+                                  </div>
                                 </div>
 
 
@@ -97,85 +99,56 @@
                                             </li>
                                             <div class="eos-group-title">NIVEL 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
-                                              <li class="eos-item">
-                                                <a class="video_url" data-url="207961670">01. Ángulos Arriba
+                                              @foreach($pasos as $paso)
+                                                @if($paso->nivel_id == 1 && $paso->ciclo == 1)
+                                                  <li class="eos-item">
+                                                    <a class="{{ empty($permisos[$paso->id]) ? 'disabled' : 'video_url' }}" data-url="{{$paso->link_video}}">{{$paso->nombre}}
 
-                                                  <!-- @if($usuario_tipo == 3)
-                                                    <input id="n1v1" class="pull-right checkbox {{ empty($pasos['n1v1']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n1v1']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
-                                                  @endif -->
+                                                      @if($usuario_tipo == 3)
+                                                        <input id="{{$paso->id}}" class="pull-right checkbox {{ empty($permisos[$paso->id]) ? 'unchecked' : 'checked' }}" {{ empty($permisos[$paso->id]) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @endif
 
-                                                </a> 
-                                              </li>
-                                              <li class="eos-item">
-                                                <a class="video_url" data-url="207961713">02. Ángulos Pa Alante
-
-                                                 <!--  @if($usuario_tipo == 3)
-                                                    <input id="n1v2" class="pull-right checkbox {{ empty($pasos['n1v2']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n1v2']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
-                                                  @endif -->
-
-                                                </a>
-                                              </li>
-                                              <li class="eos-item">
-                                                <a class="video_url" data-url="207961777">03. Ángulos Diagonal Alante
-
-                                                  <!-- @if($usuario_tipo == 3)
-                                                    <input id="n1v3" class="pull-right checkbox {{ empty($pasos['n1v3']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n1v3']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
-                                                  @endif -->
-
-                                                </a>
-                                              </li>
-                                              <li class="eos-item">
-                                                <a class="video_url" data-url="207961828">04. Ángulos Cruzados Alante
-
-                                                  <!-- @if($usuario_tipo == 3)
-                                                    <input id="n1v4" class="pull-right checkbox {{ empty($pasos['n1v4']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n1v4']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
-                                                  @endif -->
-
-                                                </a>
-                                              </li>
-                                              <li class="eos-item">
-                                                <a class="{{ empty($pasos['n1v5']) ? 'disabled' : 'video_url' }}" data-url="207961879">05. Ángulos Pa Atras
-
-                                                  @if($usuario_tipo == 3)
-                                                    <input id="n1v5" class="pull-right checkbox {{ empty($pasos['n1v5']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n1v5']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
-                                                  @endif
-
-                                                </a>
-                                              </li>
-                                              
-
-
+                                                    </a>
+                                                  </li>
+                                                @endif
+                                              @endforeach
                                             </div>
 
 
                                             <div class="eos-group-title">NIVEL 2 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
 
-                                              <li class="eos-item">
-                                                <a class="{{ empty($clase_1->clase_4) || empty($pasos['n2v1']) ? 'disabled' : 'video_url' }}" data-url="207962406">01. Danilo
+                                              @foreach($pasos as $paso)
+                                                @if($paso->nivel_id == 1 && $paso->ciclo == 2)
+                                                  <li class="eos-item">
+                                                    <a class="{{ empty($clase_1->clase_4) || empty($permisos[$paso->id]) ? 'disabled' : 'video_url' }}" data-url="{{$paso->link_video}}">{{$paso->nombre}}
 
-                                                  @if($usuario_tipo == 3)
-                                                    <input id="n2v1" class="pull-right checkbox {{ empty($pasos['n2v1']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n2v1']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
-                                                  @endif
+                                                      @if($usuario_tipo == 3)
+                                                        <input id="{{$paso->id}}" class="pull-right checkbox {{ empty($permisos[$paso->id]) ? 'unchecked' : 'checked' }}" {{ empty($permisos[$paso->id]) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @endif
 
-                                                </a>
-                                              </li>
+                                                    </a>
+                                                  </li>
+                                                @endif
+                                              @endforeach
                                               
                                             </div>
 
                                             <div class="eos-group-title">NIVEL 3 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
-                                              <li class="eos-item">
-                                                <a class="{{ empty($clase_2->clase_4) || empty($pasos['n3v1']) ? 'disabled' : 'video_url' }}" data-url="203096537">01. 7 70
+                                              @foreach($pasos as $paso)
+                                                @if($paso->nivel_id == 1 && $paso->ciclo == 3)
+                                                  <li class="eos-item">
+                                                    <a class="{{ empty($clase_2->clase_4) || empty($permisos[$paso->id]) ? 'disabled' : 'video_url' }}" data-url="{{$paso->link_video}}">{{$paso->nombre}}
 
+                                                      @if($usuario_tipo == 3)
+                                                        <input id="{{$paso->id}}" class="pull-right checkbox {{ empty($permisos[$paso->id]) ? 'unchecked' : 'checked' }}" {{ empty($permisos[$paso->id]) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @endif
 
-                                                @if($usuario_tipo == 3)
-                                                  <input id="n9v1" class="pull-right checkbox {{ empty($pasos['n9v1']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n3v1']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                    </a>
+                                                  </li>
                                                 @endif
-
-
-                                                </a>
-                                              </li>
+                                              @endforeach
                                               
                                             </div>
                                           </div>
@@ -196,45 +169,57 @@
                                             </li>
                                             <div class="eos-group-title">NIVEL 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
-                                              <li class="eos-item">
-                                                <a class="{{ empty($clase_3->clase_4) || empty($pasos['n4v1']) ? 'disabled' : 'video_url' }}" data-url="208049665">01. El Uno /Dame
+                                              @foreach($pasos as $paso)
+                                                @if($paso->nivel_id == 2 && $paso->ciclo == 1)
+                                                  <li class="eos-item">
+                                                    <a class="{{ empty($clase_3->clase_4) || empty($permisos[$paso->id]) ? 'disabled' : 'video_url' }}" data-url="{{$paso->link_video}}">{{$paso->nombre}}
 
-                                                  @if($usuario_tipo == 3)
-                                                    <input id="n4v1" class="pull-right checkbox {{ empty($pasos['n4v1']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n4v1']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
-                                                  @endif
+                                                      @if($usuario_tipo == 3)
+                                                        <input id="{{$paso->id}}" class="pull-right checkbox {{ empty($permisos[$paso->id]) ? 'unchecked' : 'checked' }}" {{ empty($permisos[$paso->id]) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @endif
 
-                                                </a>
-                                              </li>
+                                                    </a>
+                                                  </li>
+                                                @endif
+                                              @endforeach
                                               
 
                                             </div>
 
                                             <div class="eos-group-title">NIVEL 2 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
-                                                <li class="eos-item">
-                                                  <a class="{{ empty($clase_4->clase_4) || empty($pasos['n5v1']) ? 'disabled' : 'video_url' }}" data-url="208050687">01. Enchufa Con Palmas
+                                                @foreach($pasos as $paso)
+                                                @if($paso->nivel_id == 2 && $paso->ciclo == 2)
+                                                  <li class="eos-item">
+                                                    <a class="{{ empty($clase_4->clase_4) || empty($permisos[$paso->id]) ? 'disabled' : 'video_url' }}" data-url="{{$paso->link_video}}">{{$paso->nombre}}
 
-                                                  @if($usuario_tipo == 3)
-                                                    <input id="n5v1" class="pull-right checkbox {{ empty($pasos['n5v1']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n5v1']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
-                                                  @endif
+                                                      @if($usuario_tipo == 3)
+                                                        <input id="{{$paso->id}}" class="pull-right checkbox {{ empty($permisos[$paso->id]) ? 'unchecked' : 'checked' }}" {{ empty($permisos[$paso->id]) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @endif
 
-                                                  </a>
-                                                </li>
+                                                    </a>
+                                                  </li>
+                                                @endif
+                                              @endforeach
                                                 
                                             </div>
 
 
                                             <div class="eos-group-title">NIVEL 3 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
-                                              <li class="eos-item">
-                                                <a class="{{ empty($clase_5->clase_4) || empty($pasos['n6v1']) ? 'disabled' : 'video_url' }}" data-url="208214885">01. Abrázala
+                                              @foreach($pasos as $paso)
+                                                @if($paso->nivel_id == 2 && $paso->ciclo == 3)
+                                                  <li class="eos-item">
+                                                    <a class="{{ empty($clase_5->clase_4) || empty($permisos[$paso->id]) ? 'disabled' : 'video_url' }}" data-url="{{$paso->link_video}}">{{$paso->nombre}}
 
-                                                @if($usuario_tipo == 3)
-                                                  <input id="n6v1" class="pull-right checkbox {{ empty($pasos['n6v1']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n6v1']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @if($usuario_tipo == 3)
+                                                        <input id="{{$paso->id}}" class="pull-right checkbox {{ empty($permisos[$paso->id]) ? 'unchecked' : 'checked' }}" {{ empty($permisos[$paso->id]) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @endif
+
+                                                    </a>
+                                                  </li>
                                                 @endif
-
-                                                </a>
-                                              </li>
+                                              @endforeach
                                               
                                             </div>
                                           </div>
@@ -254,49 +239,55 @@
                                             </li>
                                             <div class="eos-group-title">NIVEL 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
-                                              <!-- <li class="eos-item">
-                                                <a class="{{ empty($clase_4->clase_4) ? 'disabled' : 'video_url' }}" data-url="208216522">11. 73</a>
-                                              </li> -->
-                                              <li class="eos-item">
-                                                <a class="{{ empty($clase_6->clase_4) || empty($pasos['n7v1'])? 'disabled' : 'video_url' }}" data-url="208216684">01. Cepillao
+                                              @foreach($pasos as $paso)
+                                                @if($paso->nivel_id == 3 && $paso->ciclo == 1)
+                                                  <li class="eos-item">
+                                                    <a class="{{ empty($clase_6->clase_4) || empty($permisos[$paso->id]) ? 'disabled' : 'video_url' }}" data-url="{{$paso->link_video}}">{{$paso->nombre}}
 
-                                                @if($usuario_tipo == 3)
-                                                  <input id="n7v1" class="pull-right checkbox {{ empty($pasos['n7v1']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n7v1']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @if($usuario_tipo == 3)
+                                                        <input id="{{$paso->id}}" class="pull-right checkbox {{ empty($permisos[$paso->id]) ? 'unchecked' : 'checked' }}" {{ empty($permisos[$paso->id]) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @endif
+
+                                                    </a>
+                                                  </li>
                                                 @endif
-
-                                                </a>
-                                              </li>
+                                              @endforeach
                                              
-
                                             </div>
 
                                             <div class="eos-group-title">NIVEL 2 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
-                                              <li class="eos-item">
-                                                <a class="{{ empty($clase_7->clase_4) || empty($pasos['n8v1']) ? 'disabled' : 'video_url' }}" data-url="208218918">01. Coca Cola Por Detrás
+                                              @foreach($pasos as $paso)
+                                                @if($paso->nivel_id == 3 && $paso->ciclo == 2)
+                                                  <li class="eos-item">
+                                                    <a class="{{ empty($clase_7->clase_4) || empty($permisos[$paso->id]) ? 'disabled' : 'video_url' }}" data-url="{{$paso->link_video}}">{{$paso->nombre}}
 
-                                                @if($usuario_tipo == 3)
-                                                  <input id="n8v1" class="pull-right checkbox {{ empty($pasos['n8v1']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n8v1']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @if($usuario_tipo == 3)
+                                                        <input id="{{$paso->id}}" class="pull-right checkbox {{ empty($permisos[$paso->id]) ? 'unchecked' : 'checked' }}" {{ empty($permisos[$paso->id]) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @endif
+
+                                                    </a>
+                                                  </li>
                                                 @endif
-
-                                                </a>
-                                              </li>
+                                              @endforeach
                                               
                                             </div>
 
                                             <div class="eos-group-title">NIVEL 3 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
-                                              <li class="eos-item">
-                                                <a class="{{ empty($clase_8->clase_4) || empty($pasos['n9v1']) ? 'disabled' : 'video_url' }}" data-url="203096537">01. 7 70
+                                              @foreach($pasos as $paso)
+                                                @if($paso->nivel_id == 3 && $paso->ciclo == 3)
+                                                  <li class="eos-item">
+                                                    <a class="{{ empty($clase_8->clase_4) || empty($permisos[$paso->id]) ? 'disabled' : 'video_url' }}" data-url="{{$paso->link_video}}">{{$paso->nombre}}
 
+                                                      @if($usuario_tipo == 3)
+                                                        <input id="{{$paso->id}}" class="pull-right checkbox {{ empty($permisos[$paso->id]) ? 'unchecked' : 'checked' }}" {{ empty($permisos[$paso->id]) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @endif
 
-                                                @if($usuario_tipo == 3)
-                                                  <input id="n9v1" class="pull-right checkbox {{ empty($pasos['n9v1']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n9v1']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                    </a>
+                                                  </li>
                                                 @endif
-
-
-                                                </a>
-                                              </li>
+                                              @endforeach
                                               
                                             </div>
                                           </div>
@@ -315,50 +306,56 @@
                                             </li>
                                             <div class="eos-group-title">NIVEL 1 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content"> 
-                                              <!-- <li class="eos-item">
-                                                <a class="{{ empty($clase_8->clase_4) ? 'disabled' : 'video_url' }}" data-url="203096537">06. Tormenta</a>
-                                              </li> -->
-                                              <li class="eos-item">
-                                                <a class="{{ empty($clase_9->clase_4) || empty($pasos['n10v1']) ? 'disabled' : 'video_url' }}" data-url="203096537">01. Consorte
+                                              @foreach($pasos as $paso)
+                                                @if($paso->nivel_id == 4 && $paso->ciclo == 1)
+                                                  <li class="eos-item">
+                                                    <a class="{{ empty($clase_9->clase_4) || empty($permisos[$paso->id]) ? 'disabled' : 'video_url' }}" data-url="{{$paso->link_video}}">{{$paso->nombre}}
 
-                                                @if($usuario_tipo == 3)
-                                                  <input id="n10v1" class="pull-right checkbox {{ empty($pasos['n10v1']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n10v1']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @if($usuario_tipo == 3)
+                                                        <input id="{{$paso->id}}" class="pull-right checkbox {{ empty($permisos[$paso->id]) ? 'unchecked' : 'checked' }}" {{ empty($permisos[$paso->id]) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @endif
+
+                                                    </a>
+                                                  </li>
                                                 @endif
-
-                                                </a>
-                                              </li>
-                                              <!-- <li class="eos-item">
-                                                <a class="{{ empty($clase_8->clase_4) ? 'disabled' : 'video_url' }}" data-url="203096537">08. El Bebé</a>
-                                              </li> -->
+                                              @endforeach
                                               
                                             </div>
 
                                             <div class="eos-group-title">NIVEL 2 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
-                                              <li class="eos-item">
-                                                <a class="{{ empty($clase_10->clase_4) || empty($pasos['n11v1']) ? 'disabled' : 'video_url' }}" data-url="203096537">01. Sombrero de Magni
+                                              @foreach($pasos as $paso)
+                                                @if($paso->nivel_id == 4 && $paso->ciclo == 2)
+                                                  <li class="eos-item">
+                                                    <a class="{{ empty($clase_10->clase_4) || empty($permisos[$paso->id]) ? 'disabled' : 'video_url' }}" data-url="{{$paso->link_video}}">{{$paso->nombre}}
 
-                                                @if($usuario_tipo == 3)
-                                                  <input id="n11v1" class="pull-right checkbox {{ empty($pasos['n11v1']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n11v1']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @if($usuario_tipo == 3)
+                                                        <input id="{{$paso->id}}" class="pull-right checkbox {{ empty($permisos[$paso->id]) ? 'unchecked' : 'checked' }}" {{ empty($permisos[$paso->id]) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @endif
+
+                                                    </a>
+                                                  </li>
                                                 @endif
-
-                                                </a>
-                                              </li>
+                                              @endforeach
                                               
                                     
                                             </div>
 
                                             <div class="eos-group-title">NIVEL 3 <i class="glyphicon glyphicon-plus pull-right f-12" style="padding-top: 6%"></i></div>
                                             <div class="eos-group-content">
-                                              <li class="eos-item">
-                                                <a class="{{ empty($clase_11->clase_4) || empty($pasos['n12v1']) ? 'disabled' : 'video_url' }}" data-url="203096537">01. Rubenada Complicada
+                                              @foreach($pasos as $paso)
+                                                @if($paso->nivel_id == 4 && $paso->ciclo == 3)
+                                                  <li class="eos-item">
+                                                    <a class="{{ empty($clase_11->clase_4) || empty($permisos[$paso->id]) ? 'disabled' : 'video_url' }}" data-url="{{$paso->link_video}}">{{$paso->nombre}}
 
-                                                @if($usuario_tipo == 3)
-                                                  <input id="n12v1" class="pull-right checkbox {{ empty($pasos['n12v1']) ? 'unchecked' : 'checked' }}" {{ empty($pasos['n12v1']) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @if($usuario_tipo == 3)
+                                                        <input id="{{$paso->id}}" class="pull-right checkbox {{ empty($permisos[$paso->id]) ? 'unchecked' : 'checked' }}" {{ empty($permisos[$paso->id]) ? '' : 'checked="checked"' }} style="width: 10%; margin-top: 6%" type="checkbox">
+                                                      @endif
+
+                                                    </a>
+                                                  </li>
                                                 @endif
-
-                                                </a>
-                                              </li>
+                                              @endforeach
                                               
                                             </div>
                                           </div>
@@ -451,8 +448,6 @@
       $('.ciclo').addClass('disabled');
 
     });
-
-    var vi_player = new Vimeo.Player('video_vimeo');
     
     $('.eos-item').click(function(e) {
 
@@ -489,19 +484,24 @@
 
       }else if(target.hasClass('video_url')){
 
-        video_id = target.data('url');
+        url = target.data('url');
+        console.log(url)
         titulo = target.text()
 
-        vi_player.loadVideo(video_id).then(function(id) {
+        var link_video = url.split('=');
 
-        }).catch(function(error) {
-            console.log('vi error', error.name);
-        });
+        $("#video_promocional").attr('src', "http://www.youtube.com/embed/"+link_video[1]);
 
         $('#nombre_modal').text(titulo)
 
         $('#modalVideo').modal('show');
       }
+    });
+
+    $('#modalVideo').on('hidden.bs.modal', function () {
+
+      $("#modalVideo iframe").attr("src", $("#modalVideo iframe").attr("src"));
+
     });
 
     $(".eos-group-title").click(function(e) {
@@ -518,12 +518,6 @@
         $(icono).removeClass('glyphicon-minus')
         $(icono).addClass('glyphicon-plus')
       }
-
-    });
-
-    $('#modalVideo').on('hidden.bs.modal', function () {
-
-      vi_player.pause()
 
     });
 

@@ -9,7 +9,10 @@ use App\InscripcionClaseGrupal;
 use App\ClaseGrupal;
 use App\HorarioClaseGrupal;
 use App\Progreso;
+use App\Paso;
 use App\ProgresoPaso;
+use App\ConfigEspecialidades;
+use App\ConfigNiveles;
 use App\Examen;
 use App\Instructor;
 use App\Evaluacion;
@@ -64,7 +67,6 @@ class ProgresoController extends BaseController {
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga')
                 ->where('clases_grupales.instructor_id','=', $usuario_id)
-                ->where('clases_grupales.deleted_at', '=', null)
                 ->OrderBy('clases_grupales.hora_inicio')
             ->get();
 
@@ -86,7 +88,6 @@ class ProgresoController extends BaseController {
                 ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga')
-                ->where('clases_grupales.deleted_at', '=', null)
                 ->OrderBy('clases_grupales.hora_inicio')
             ->get();
 
@@ -401,7 +402,7 @@ class ProgresoController extends BaseController {
             $tmp = ProgresoPaso::where('clase_grupal_id',$id)->where('status',1)->get();
             $collection=collect($tmp);
             $grouped = $collection->groupBy('codigo');     
-            $pasos = $grouped->toArray();
+            $permisos = $grouped->toArray();
             
             if($usuario_tipo == 2 OR $usuario_tipo == 4)
             {
@@ -432,10 +433,14 @@ class ProgresoController extends BaseController {
                 $notas = '';
             }
 
-            if($clase_grupal->especialidad_id){
+            $pasos = Paso::where('academia_id',$clase_grupal->academia_id)
+                ->where('especialidad_id',$clase_grupal->especialidad_id)
+            ->get();
+
+            if($clase_grupal->especialidad_id != 1){
                 return view('progreso.programacion-salsa')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'notas' => $notas, 'pasos' => $pasos, 'id' => $id]); 
             }else{
-                return view('progreso.programacion-bachata')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'notas' => $notas, 'pasos' => $pasos, 'id' => $id]);
+                return view('progreso.programacion-bachata')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'notas' => $notas, 'permisos' => $permisos, 'id' => $id, 'pasos' => $pasos]);
             }
 
             
@@ -539,6 +544,104 @@ class ProgresoController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
         }
 
+    }
+
+    public function principal_pasos(){
+
+        $pasos = Paso::join('config_especialidades', 'pasos.especialidad_id', '=', 'config_especialidades.id')
+            ->join('config_niveles_baile', 'pasos.nivel_id', '=', 'config_niveles_baile.id')
+            ->select('pasos.*','config_niveles_baile.nombre as nivel', 'config_especialidades.nombre as especialidad')
+            ->where('pasos.academia_id', Auth::user()->academia_id)
+        ->get();
+
+        return view('configuracion.herramientas.pasos.principal')->with(['pasos' => $pasos, 'config_especialidades' => ConfigEspecialidades::all(), 'config_niveles' => ConfigNiveles::where('academia_id', null)->get()]);
+
+    }
+
+    public function agregar_paso(Request $request)
+    {
+
+        $rules = [
+            'nombre' => 'required|min:3|max:50',
+            'especialidad_id' => 'required',
+            'nivel_id' => 'required',
+            'ciclo' => 'required',
+            'link_video' => 'required|active_url',
+        ];
+
+        $messages = [
+
+            'nombre.required' => 'Ups! El Nombre es requerido ',
+            'nombre.min' => 'El mínimo de caracteres permitidos son 3',
+            'nombre.max' => 'El máximo de caracteres permitidos son 50',
+            'especialidad_id.required' => 'Ups! La especialidad es requerida',
+            'nivel_id.required' => 'Ups! El nivel es requerido',
+            'ciclo.required' => 'Ups! El ciclo es requerido',
+            'link_video.required' => 'Ups! La URL es requerida',
+            'link_video.active_url' => 'Ups! La URL no es valida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            if($request->link_video){
+
+                $parts = parse_url($request->link_video);
+
+                if(isset($parts['host']))
+                {
+                    if($parts['host'] == "www.youtube.com" || $parts['host'] == "www.youtu.be"){
+
+                    
+                    }else{
+                        return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                    }
+                }else{
+                    return response()->json(['errores' => ['link_video' => [0, 'Ups! ha ocurrido un error, debes ingresar un enlace de YouTube']], 'status' => 'ERROR'],422);
+                }
+                
+            }
+
+            $paso = new Paso;
+
+            $nombre = title_case($request->nombre);
+
+            $paso->academia_id = Auth::user()->academia_id;
+            $paso->nombre = $nombre;
+            $paso->especialidad_id = $request->especialidad_id;
+            $paso->nivel_id = $request->nivel_id;
+            $paso->ciclo = $request->ciclo;
+            $paso->link_video = $request->link_video;
+
+            if($paso->save()){
+
+                $especialidad = ConfigEspecialidades::find($request->especialidad_id);
+                $nivel = ConfigNiveles::find($request->nivel_id);
+             
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'paso' => $paso, 'especialidad' => $especialidad->nombre, 'nivel' => $nivel->nombre, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function eliminar_paso($id)
+    {
+        $permisos = ProgresoPaso::where('codigo',$id)->delete();
+        $paso = Paso::find($id);
+        
+        if($paso->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El correo ha sido eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
 }

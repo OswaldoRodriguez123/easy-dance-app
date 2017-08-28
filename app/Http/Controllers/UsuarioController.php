@@ -802,7 +802,6 @@ class UsuarioController extends BaseController {
 
         foreach($evaluaciones_vencidas as $evaluacion){
             $evaluacion->estatus = 1;
-
             $evaluacion->save();
         }
 
