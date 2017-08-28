@@ -72,8 +72,9 @@
                            
                                <div class="clearfix p-b-35"></div>
 
+                                
+                              <label for="ciclo" id="id-ciclo">Ciclo</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nivel" id = "pop-nivel" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Seleccione el ciclo" title="" data-original-title="Ayuda" data-html="true"></i>
 
-                                <label for="nivel_id" id="id-nivel_id">Nivel de baile</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nivel" id = "pop-nivel" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de distintos niveles, en caso que desees asignar uno nuevo, debes dirigirte a la sección de configuración general y personalizar nuevos niveles" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                  <div class="input-group">
                                   <span class="input-group-addon"><i class="icon_a-niveles f-22"></i></span>
@@ -98,7 +99,7 @@
 
                               <div class="clearfix p-b-35"></div>
 
-                              <label for="ciclo" id="id-ciclo">Ciclo</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nivel" id = "pop-nivel" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Seleccione el ciclo" title="" data-original-title="Ayuda" data-html="true"></i>
+                                <label for="nivel_id" id="id-nivel_id">Nivel de baile</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nivel" id = "pop-nivel" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de distintos niveles, en caso que desees asignar uno nuevo, debes dirigirte a la sección de configuración general y personalizar nuevos niveles" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                  <div class="input-group">
                                   <span class="input-group-addon"><i class="icon_a-niveles f-22"></i></span>
@@ -209,8 +210,8 @@
                                 <tr>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Especialidad</th>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nivel</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Ciclo</th>
+                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nivel</th>
                                     <th class="text-center" data-column-id="acciones" data-order="desc">Operaciones</th>
                                 </tr>
                             </thead>
