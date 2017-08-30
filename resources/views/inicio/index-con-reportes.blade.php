@@ -156,7 +156,7 @@
 
 
                   <div class="col-sm-12 col-sd-12 text-center"><br><br><br>
-                    <button type="button" class="btn-blanco m-r-10 f-16 guardar" id="guardar" name ="guardar" onclick="procesando()">Enviar</button>
+                    <button type="button" class="btn-blanco m-r-10 f-16" id="guardar" name ="guardar" onclick="procesando()">Enviar</button>
 
                     <br><br><br><br>
                   </div>
