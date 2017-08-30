@@ -775,35 +775,11 @@ class UsuarioController extends BaseController {
     public function index_con_reportes()
     {
 
-        
-        
-
         return view('inicio.index-con-reportes')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas, 'transmisiones' => $arrayTransmisiones, 'mujeres' => $mujeres, 'hombres' => $hombres, 'egresos_generales' => $egresos_generales, 'egresos_eventos' => $egresos_eventos, 'egresos_talleres' => $egresos_talleres, 'egresos_campanas' => $egresos_campanas, 'porcentaje_general' => $porcentaje_general, 'porcentaje_evento' => $porcentaje_evento, 'porcentaje_taller' => $porcentaje_taller, 'porcentaje_campana' => $porcentaje_campana, 'ingresos_generales' => $ingresos_generales, 'ingresos_eventos' => $ingresos_eventos, 'ingresos_talleres' => $ingresos_talleres, 'ingresos_campanas' => $ingresos_campanas, 'porcentaje_ingreso_general' => $porcentaje_ingreso_general, 'porcentaje_ingreso_evento' => $porcentaje_ingreso_evento, 'porcentaje_ingreso_taller' => $porcentaje_ingreso_taller, 'porcentaje_ingreso_campana' => $porcentaje_ingreso_campana]);
     }
 
     public function index()
     {
-
-        $congelados = InscripcionClaseGrupal::where('fecha_final','<',Carbon::now()->toDateString())
-            ->where('boolean_congelacion',0)
-        ->get();
-
-        foreach($congelados as $congelado){
-            $congelado->fecha_inicio = '0000-00-00';
-            $congelado->fecha_final = '0000-00-00';
-            $congelado->boolean_congelacion = 0;
-
-            $congelado->save();
-        }
-
-        $evaluaciones_vencidas = Evaluacion::where('fecha_vencimiento','<',Carbon::now()->toDateString())
-            ->where('estatus',0)
-        ->get();
-
-        foreach($evaluaciones_vencidas as $evaluacion){
-            $evaluacion->estatus = 1;
-            $evaluacion->save();
-        }
 
         $academia = Academia::find(Auth::user()->academia_id);
 
@@ -822,19 +798,47 @@ class UsuarioController extends BaseController {
 
                 if($fecha_comprobacion < $hoy){
 
+                    $congelados = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+                        ->where('inscripcion_clase_grupal.fecha_final','<',Carbon::now()->toDateString())
+                        ->where('inscripcion_clase_grupal.boolean_congelacion',0)
+                        ->where('clases_grupales.academia_id',Auth::user()->academia_id)
+                    ->get();
+
+                    foreach($congelados as $congelado){
+                        $congelado->fecha_inicio = '0000-00-00';
+                        $congelado->fecha_final = '0000-00-00';
+                        $congelado->boolean_congelacion = 0;
+
+                        $congelado->save();
+                    }
+
+                    $evaluaciones_vencidas = Evaluacion::where('fecha_vencimiento','<',Carbon::now()->toDateString())
+                        ->where('estatus',0)
+                        ->where('academia_id',Auth::user()->academia_id)
+                    ->get();
+
+                    foreach($evaluaciones_vencidas as $evaluacion){
+                        $evaluacion->estatus = 1;
+                        $evaluacion->save();
+                    }
+
                     $credenciales_vencidas = CredencialAlumno::where('cantidad', '<=', 0)->delete();
 
-                    $clases_grupales = ClaseGrupal::where('boolean_vencimiento',0)->where('academia_id',Auth::user()->academia_id)->get();
+                    $clases_grupales = ClaseGrupal::where('boolean_vencimiento',0)
+                        ->where('academia_id',Auth::user()->academia_id)
+                    ->get();
 
                     foreach($clases_grupales as $clase_grupal){
+
                         $fecha_final = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_final);
 
-
                         if(Carbon::now()->addMonth() > $fecha_final && $fecha_final > Carbon::now()){
+
                             $usuarios = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                                 ->select('users.id','usuarios_tipo.tipo')
                                 ->where('academia_id',Auth::user()->academia_id)
                             ->get();
+
                             foreach($usuarios as $usuario){
 
                                 if($usuario->tipo == 1 OR $usuario->tipo == 3 OR $usuario->tipo == 5 OR $usuario->tipo == 6){
@@ -857,10 +861,11 @@ class UsuarioController extends BaseController {
                     $reservaciones = Reservacion::all();
 
                     foreach($reservaciones as $reservacion){
+
                         $fecha_vencimiento = Carbon::parse($reservacion->fecha_vencimiento);
+
                         if(Carbon::now() > $fecha_vencimiento){
-                            $reservacion->deleted_at = Carbon::now();
-                            $reservacion->save();
+                            $reservacion->delete();
                         }
 
                     }
@@ -887,7 +892,6 @@ class UsuarioController extends BaseController {
 
                     return $this->pagorecurrente();
                 }
-
 
                 $vencimiento = VencimientoClaseGrupal::join('clases_grupales', 'vencimiento_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
                     ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
