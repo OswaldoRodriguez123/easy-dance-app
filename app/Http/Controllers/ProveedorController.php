@@ -309,7 +309,7 @@ class ProveedorController extends BaseController {
 
             $map = \Gmaps::create_map();
  
-           return view('configuracion.proveedor.planilla' , compact('map'))->with('proveedor' , $proveedor);
+           return view('configuracion.proveedor.planilla' , compact('map'))->with(['proveedor' => $proveedor, 'id' => $id]);
         }else{
            return redirect("configuracion/proveedor"); 
         }
