@@ -1046,15 +1046,17 @@
 
                     if(instructor_id){
                         $('#instructor_id').val(instructor_id)
-                    }else{
-                        $('#instructor_id').val(0)
                     }
+                    // else{
+                    //     $('#instructor_id').val(0)
+                    // }
 
                     if(tipo){
                         $('#tipo').val(tipo)
-                    }else{
-                        $('#tipo').val(0)
                     }
+                    // else{
+                    //     $('#tipo').val(0)
+                    // }
 
                     cId.fullCalendar('rerenderEvents');
                     $('.dropdown').removeClass('open')
