@@ -118,6 +118,7 @@
 
                 <div id="calendar"></div>
                 <input type="hidden" id="tipo" name="tipo" value="0" />
+                <input type="hidden" id="instructor_id" name="instructor_id" value="0" />
                     
                     <!-- Add event -->
                     <div class="modal fade" id="addNew-event" data-backdrop="static" data-keyboard="false">
@@ -446,6 +447,7 @@
                                 tipo: 'talleres',
                                 hora_inicio: '{{$taller['hora_inicio_tooltip']}}',
                                 hora_final: '{{$taller['hora_final_tooltip']}}',
+                                instructor_id: '{{$taller['instructor_id']}}',
                             },
                         @endforeach
 
@@ -492,6 +494,7 @@
                                 nombre_clase: '{{$clase['nombre_clase']}}',
                                 hora_inicio: '{{$clase['hora_inicio_tooltip']}}',
                                 hora_final: '{{$clase['hora_final_tooltip']}}',
+                                instructor_id: '{{$clase['instructor_id']}}',
                             },
                         @endforeach
 
@@ -514,6 +517,7 @@
                                 tipo: 'clases-personalizadas',
                                 hora_inicio: '{{$clasepersonalizada['hora_inicio_tooltip']}}',
                                 hora_final: '{{$clasepersonalizada['hora_final_tooltip']}}',
+                                instructor_id: '{{$clasepersonalizada['instructor_id']}}',
                             },
                         @endforeach
 
@@ -536,6 +540,7 @@
                                 tipo: 'fiestas-eventos',
                                 hora_inicio: '{{$fiesta['hora_inicio_tooltip']}}',
                                 hora_final: '{{$fiesta['hora_final_tooltip']}}',
+                                instructor_id: '{{$fiesta['instructor_id']}}',
                             },
                         @endforeach
 
@@ -558,6 +563,7 @@
                                 tipo: 'citas',
                                 hora_inicio: '{{$cita['hora_inicio_tooltip']}}',
                                 hora_final: '{{$cita['hora_final_tooltip']}}',
+                                instructor_id: '{{$cita['instructor_id']}}',
                             },
                         @endforeach
 
@@ -579,6 +585,7 @@
                                 url: "{{url('/')}}{{$transmision['url']}}",
                                 tipo: 'transmisiones',
                                 hora: '{{$transmision['hora_tooltip']}}',
+                                instructor_id: '{{$transmision['instructor_id']}}',
 
                             },
                         @endforeach
@@ -894,9 +901,20 @@
                         $(eventElement).attr('title','');
 
                         tipo = $('#tipo').val();
+                        instructor_id = $('#instructor_id').val();
 
-                        if(tipo != 0){
-                            return tipo.indexOf(event.tipo) >= 0
+                        if(tipo != 0 && instructor_id != 0){
+                            console.log('tipo y instructor')
+                            return tipo.indexOf(event.tipo) >= 0 && instructor_id.indexOf(event.instructor_id) >= 0
+                        }else{
+                            if(tipo != 0){
+                                console.log('tipo')
+                                return tipo.indexOf(event.tipo) >= 0
+                            }
+                            if(instructor_id != 0){
+                                console.log('instructor')
+                                return instructor_id.indexOf(event.instructor_id) >= 0
+                            }
                         }
 
                     },
@@ -938,6 +956,16 @@
                                             '</li>' +
                                             '<li>' +
                                                 '<a class="pointer" data-tipo="clases-grupales">Clases Grupales</a>' +
+                                                '<ul class="dropdown-menu dropdown-menu-left">' +
+                                                    '<li>' +
+                                                        '<a class="pointer" data-instructor_id="0">Todos</a>' +
+                                                    '</li>' +
+                                                    @foreach($instructores as $instructor)
+                                                        '<li>' +
+                                                            '<a class="pointer" data-instructor_id="{{$instructor->id}}">{{$instructor->nombre}} {{$instructor->apellido}}</a>' +
+                                                        '</li>' +
+                                                    @endforeach
+                                                '</ul>' +
                                             '</li>' +
                                             '<li>' +
                                                 '<a class="pointer" data-tipo="clases-personalizadas">Clases Personalizadas</a>' +
@@ -1012,8 +1040,22 @@
 
 
                 $(".dropdown-menu a").unbind('click').bind('click', function(e) {
+
                     tipo = $(this).data('tipo')
-                    $('#tipo').val(tipo)
+                    instructor_id = $(this).data('instructor_id')
+
+                    if(instructor_id){
+                        $('#instructor_id').val(instructor_id)
+                    }else{
+                        $('#instructor_id').val(0)
+                    }
+
+                    if(tipo){
+                        $('#tipo').val(tipo)
+                    }else{
+                        $('#tipo').val(0)
+                    }
+
                     cId.fullCalendar('rerenderEvents');
                     $('.dropdown').removeClass('open')
                 });

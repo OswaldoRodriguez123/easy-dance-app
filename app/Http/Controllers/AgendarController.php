@@ -82,7 +82,8 @@ class AgendarController extends BaseController
             $instructor = $taller->instructor_nombre . ' ' .$taller->instructor_apellido;
             $sexo = $taller->sexo;
             $especialidad = $taller->especialidad;
-            $instructor_imagen = Instructor::find($taller->instructor_id);               
+            $instructor_imagen = Instructor::find($taller->instructor_id);      
+            $instructor_id = $taller->instructor_id;         
             
             if($instructor_imagen){
                 if($instructor_imagen->imagen){
@@ -113,7 +114,7 @@ class AgendarController extends BaseController
                 $hora_final_tooltip = Carbon::createFromFormat('H:i:s',$taller->hora_final)->format('g:i a');
             }
 
-            $arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip);
+            $arrayTalleres[] = array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip, 'instructor_id' => $instructor_id);
 		}
 
         foreach ($horarios_talleres as $taller) {
@@ -133,7 +134,8 @@ class AgendarController extends BaseController
             $instructor = $taller->instructor_nombre . ' ' .$taller->instructor_apellido;
             $sexo = $taller->sexo;
             $especialidad = $taller->especialidad;
-            $instructor_imagen = Instructor::find($taller->instructor_id);               
+            $instructor_imagen = Instructor::find($taller->instructor_id);   
+            $instructor_id = $taller->instructor_id;            
             
             if($instructor_imagen){
                 if($instructor_imagen->imagen){
@@ -164,7 +166,7 @@ class AgendarController extends BaseController
                 $hora_final_tooltip = Carbon::createFromFormat('H:i:s',$taller->hora_final)->format('g:i a');
             }
 
-            $arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip);
+            $arrayTalleres[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip, 'instructor_id' => $instructor_id);
 
             
         }
@@ -173,7 +175,7 @@ class AgendarController extends BaseController
             ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->join('config_especialidades', 'config_especialidades.id', '=', 'clases_grupales.especialidad_id')
             ->join('config_niveles_baile', 'config_niveles_baile.id', '=', 'clases_grupales.nivel_baile_id')
-            ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
+            ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
             ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
             ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
@@ -184,7 +186,7 @@ class AgendarController extends BaseController
             ->join('config_especialidades', 'config_especialidades.id', '=', 'horarios_clases_grupales.especialidad_id')
             ->join('config_niveles_baile', 'config_niveles_baile.id', '=', 'clases_grupales.nivel_baile_id')
             ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('clases_grupales.id', 'clases_grupales.fecha_final', 'clases_grupales.cantidad_hombres','clases_grupales.cantidad_mujeres', 'horarios_clases_grupales.fecha as fecha_inicio', 'horarios_clases_grupales.hora_inicio', 'horarios_clases_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horarios_clases_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
+            ->select('clases_grupales.id', 'clases_grupales.fecha_final', 'clases_grupales.cantidad_hombres','clases_grupales.cantidad_mujeres', 'horarios_clases_grupales.fecha as fecha_inicio', 'horarios_clases_grupales.hora_inicio', 'horarios_clases_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horarios_clases_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'horarios_clases_grupales.instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
             ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
@@ -240,7 +242,8 @@ class AgendarController extends BaseController
             $sexo = $clase->sexo;
             $especialidad = $clase->especialidad;
             $nivel = $clase->nivel;
-            $instructor_imagen = Instructor::find($clase->instructor_id);               
+            $instructor_imagen = Instructor::find($clase->instructor_id);
+            $instructor_id = $clase->instructor_id;               
             
             if($instructor_imagen){
                 if($instructor_imagen->imagen){
@@ -275,7 +278,7 @@ class AgendarController extends BaseController
                 $hora_final_tooltip = Carbon::createFromFormat('H:i:s',$clase->hora_final)->format('g:i a');
             }
 
-    		$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$fecha_inicio,"fecha_final"=>$fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, 'inicio' => $inicio, "nombre_clase" => $nombre_clase, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip);
+    		$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$fecha_inicio,"fecha_final"=>$fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, 'inicio' => $inicio, "nombre_clase" => $nombre_clase, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip, 'instructor_id' => $instructor_id);
 			
 			while($dt->timestamp<$df->timestamp){
                 $nombre = $clase->nombre;
@@ -290,11 +293,11 @@ class AgendarController extends BaseController
 
                 if(!$horario_bloqueado){
 
-                    $arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "nombre_clase" => $nombre_clase, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip);
+                    $arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "nombre_clase" => $nombre_clase, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip, 'instructor_id' => $instructor_id);
                 }else{
                     if($horario_bloqueado->boolean_mostrar == 1)
                     {
-                        $arrayClases[]=array("id"=>$clase->id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo, "nombre_clase" => $nombre_clase, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip);
+                        $arrayClases[]=array("id"=>$clase->id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo, "nombre_clase" => $nombre_clase, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip, 'instructor_id' => $instructor_id);
                      }
                 }
 			}
@@ -338,7 +341,8 @@ class AgendarController extends BaseController
             $sexo = $clase->sexo;
             $especialidad = $clase->especialidad;
             $nivel = $clase->nivel;
-            $instructor_imagen = Instructor::find($clase->instructor_id);               
+            $instructor_imagen = Instructor::find($clase->instructor_id); 
+            $instructor_id = $clase->instructor_id;              
             
             if($instructor_imagen){
                 if($instructor_imagen->imagen){
@@ -369,7 +373,7 @@ class AgendarController extends BaseController
                 $hora_final_tooltip = Carbon::createFromFormat('H:i:s',$clase->hora_final)->format('g:i a');
             }
 
-            $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "nombre_clase" => $nombre_clase, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip);
+            $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "nombre_clase" => $nombre_clase, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip, 'instructor_id' => $instructor_id);
 
             while($dt->timestamp<$df->timestamp){
                 $fecha="";
@@ -383,11 +387,11 @@ class AgendarController extends BaseController
 
                  if(!$horario_bloqueado){
 
-                    $arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "nombre_clase" => $nombre_clase, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip);
+                    $arrayClases[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "nombre_clase" => $nombre_clase, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip, 'instructor_id' => $instructor_id);
                 }else{
                     if($horario_bloqueado->boolean_mostrar == 1)
                     {
-                        $arrayClases[]=array("id"=>$clase->id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo, "nombre_clase" => $nombre_clase, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip);
+                        $arrayClases[]=array("id"=>$clase->id,"nombre"=>"CANCELADA","descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$horario_bloqueado->id."!".$horario_bloqueado->razon_cancelacion."!".$instructor."!".$fecha_inicio." - ".$fecha_final."!".$hora_inicio." - ".$hora_final."!".$imagen."!".$sexo, "nombre_clase" => $nombre_clase, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip, 'instructor_id' => $instructor_id);
                      }
                 }
             }
@@ -440,7 +444,8 @@ class AgendarController extends BaseController
             $especialidad = $clasepersonalizada->especialidad;    
             $clase_personalizada_nombre = $clasepersonalizada->clase_personalizada_nombre;
             $sexo = $clasepersonalizada->sexo;
-            $instructor_imagen = Instructor::find($clasepersonalizada->instructor_id);               
+            $instructor_imagen = Instructor::find($clasepersonalizada->instructor_id); 
+            $instructor_id = $clasepersonalizada->instructor_id;              
             
             if($instructor_imagen){
                 if($instructor_imagen->imagen){
@@ -471,13 +476,13 @@ class AgendarController extends BaseController
             }
 
             // if(!$asistencia){
-                $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip);
+                $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip, 'instructor_id' => $instructor_id);
             // }
 			
 			while($dt->timestamp<$df->timestamp){
 				$fecha="";
 				$fecha=$dt->addWeek()->toDateString();
-				$arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip);
+				$arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip, 'instructor_id' => $instructor_id);
 			}
 		}
 
@@ -501,8 +506,8 @@ class AgendarController extends BaseController
             $especialidad = $clasepersonalizada->especialidad;    
             $clase_personalizada_nombre = $clasepersonalizada->clase_personalizada_nombre;
             $sexo = $clasepersonalizada->sexo;
-            
-            $instructor_imagen = Instructor::find($clasepersonalizada->instructor_id);               
+            $instructor_imagen = Instructor::find($clasepersonalizada->instructor_id);     
+            $instructor_id = $clasepersonalizada->instructor_id;          
             
             if($instructor_imagen){
                 if($instructor_imagen->imagen){
@@ -533,13 +538,13 @@ class AgendarController extends BaseController
             }
 
             // if(!$asistencia){
-                $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip);
+                $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip, 'instructor_id' => $instructor_id);
             // }
 
             while($dt->timestamp<$df->timestamp){
                 $fecha="";
                 $fecha=$dt->addWeek()->toDateString();
-                $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip);
+                $arrayClasespersonalizadas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip, 'instructor_id' => $instructor_id);
             }
 
         }
@@ -576,12 +581,12 @@ class AgendarController extends BaseController
                 $hora_final_tooltip = Carbon::createFromFormat('H:i:s',$fiesta->hora_final)->format('g:i a');
             }
 
-    		$arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip);
+    		$arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip, 'instructor_id' => 0);
 
 			while($dt->timestamp<$df->timestamp){
 				$fecha="";
 				$fecha=$dt->addWeek()->toDateString();
-				$arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip);
+				$arrayFiestas[]=array("id"=>$id,"nombre"=>$nombre,"descripcion"=>$descripcion, "fecha_inicio"=>$fecha,"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip, 'instructor_id' => 0);
 			}
 
 		}
@@ -623,7 +628,8 @@ class AgendarController extends BaseController
             $etiqueta=$cita->color_etiqueta;
             $instructor = $cita->instructor_nombre . ' ' .$cita->instructor_apellido;
             $sexo = $cita->sexo;
-            $instructor_imagen = Instructor::find($cita->instructor_id);               
+            $instructor_imagen = Instructor::find($cita->instructor_id);  
+            $instructor_id = $cita->instructor_id;             
             
             if($instructor_imagen){
                 if($instructor_imagen->imagen){
@@ -662,7 +668,7 @@ class AgendarController extends BaseController
                 $hora_final_tooltip = Carbon::createFromFormat('H:i:s',$cita->hora_final)->format('g:i a');
             }
 
-            $arrayCitas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip);
+            $arrayCitas[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$dt->toDateString(),"fecha_final"=>$df->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta,"url"=>$url, "hora_inicio_tooltip"=>$hora_inicio_tooltip, 'hora_final_tooltip'=>$hora_final_tooltip, 'instructor_id' => $instructor_id);
 
         }
 
@@ -691,10 +697,12 @@ class AgendarController extends BaseController
                 $hora_tooltip = Carbon::createFromFormat('H:i:s',$transmision->hora)->format('g:i a');
             }
 
-            $arrayTransmisiones[]=array("id"=>$id,"nombre"=>'Transmisión', "fecha"=> $fecha, "hora"=>$hora, "etiqueta"=>$etiqueta,"url"=>$url, "hora_tooltip"=>$hora_tooltip);
+            $arrayTransmisiones[]=array("id"=>$id,"nombre"=>'Transmisión', "fecha"=> $fecha, "hora"=>$hora, "etiqueta"=>$etiqueta,"url"=>$url, "hora_tooltip"=>$hora_tooltip, 'instructor_id' => 0);
         }
 
-        return view('agendar.index')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas, 'transmisiones' => $arrayTransmisiones, 'usuario_tipo' => $usuario_tipo]);
+        $instructores = Instructor::where('academia_id',Auth::user()->academia_id)->get();
+
+        return view('agendar.index')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas, 'transmisiones' => $arrayTransmisiones, 'usuario_tipo' => $usuario_tipo, 'instructores' => $instructores]);
 
     }
 
