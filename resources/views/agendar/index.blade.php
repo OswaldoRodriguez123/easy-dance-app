@@ -1044,19 +1044,14 @@
                     tipo = $(this).data('tipo')
                     instructor_id = $(this).data('instructor_id')
 
-                    if(instructor_id){
+                    if($(this).hasData('instructor_id')){
+                        instructor_id = $(this).data('instructor_id')
                         $('#instructor_id').val(instructor_id)
                     }
-                    // else{
-                    //     $('#instructor_id').val(0)
-                    // }
 
-                    if(tipo){
+                    if($(this).hasData('tipo')){
                         $('#tipo').val(tipo)
                     }
-                    // else{
-                    //     $('#tipo').val(0)
-                    // }
 
                     cId.fullCalendar('rerenderEvents');
                     $('.dropdown').removeClass('open')
