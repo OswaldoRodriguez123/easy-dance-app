@@ -302,8 +302,7 @@
           }
       }
           
-      if(empty("{{$academia->nombre}}"))
-      {
+      if(!"{{$academia->nombre}}"){
         setTimeout(function(){ 
 
           $("#modalConfiguracion").modal({
@@ -330,7 +329,6 @@
 
           }, 3000);
       }
-
     });
 
     $("#guardar").click(function(){
@@ -457,44 +455,44 @@
           });
       });
 
-            function limpiarMensaje(){
-                  var campo = ["nombre", "especialidad_id", "pais_id", "estado"];
-                    fLen = campo.length;
-                    for (i = 0; i < fLen; i++) {
-                        $("#error-"+campo[i]+"_mensaje").html('');
-                    }
-                  }
-
-                  function errores(merror){
-                  var campo = ["nombre", "especialidad_id", "pais_id", "estado"];
-                  var elemento="";
-                  var contador=0;
-                  $.each(merror, function (n, c) {
-                  if(contador==0){
-                  elemento=n;
-                  }
-                  contador++;
-
-                   $.each(this, function (name, value) {              
-                      var error=value;
-                      $("#error-"+n+"_mensaje").html(error);             
-                   });
-                });
-
-                  // $('html,body').animate({
-                  //       scrollTop: $("#id-"+elemento).offset().top-90,
-                  // }, 1500);          
-
+        function limpiarMensaje(){
+              var campo = ["nombre", "especialidad_id", "pais_id", "estado"];
+                fLen = campo.length;
+                for (i = 0; i < fLen; i++) {
+                    $("#error-"+campo[i]+"_mensaje").html('');
+                }
               }
 
-           function configuracion(){
-            procesando();
-            window.location = "{{url('/')}}/configuracion";
-            }
-           
-           function atras(){
-            $('#modalDios').modal('hide');
-           }
+              function errores(merror){
+              var campo = ["nombre", "especialidad_id", "pais_id", "estado"];
+              var elemento="";
+              var contador=0;
+              $.each(merror, function (n, c) {
+              if(contador==0){
+              elemento=n;
+              }
+              contador++;
+
+               $.each(this, function (name, value) {              
+                  var error=value;
+                  $("#error-"+n+"_mensaje").html(error);             
+               });
+            });
+
+              // $('html,body').animate({
+              //       scrollTop: $("#id-"+elemento).offset().top-90,
+              // }, 1500);          
+
+          }
+
+       function configuracion(){
+        procesando();
+        window.location = "{{url('/')}}/configuracion";
+        }
+       
+       function atras(){
+        $('#modalDios').modal('hide');
+       }
 
     </script>
 
