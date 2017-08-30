@@ -1041,15 +1041,13 @@
 
                 $(".dropdown-menu a").unbind('click').bind('click', function(e) {
 
-                    tipo = $(this).data('tipo')
-                    instructor_id = $(this).data('instructor_id')
-
-                    if($(this).hasData('instructor_id')){
+                    if($(this).data('instructor_id') !== undefined){
                         instructor_id = $(this).data('instructor_id')
                         $('#instructor_id').val(instructor_id)
                     }
 
-                    if($(this).hasData('tipo')){
+                    if($(this).data('tipo') !== undefined){
+                        tipo = $(this).data('tipo')
                         $('#tipo').val(tipo)
                     }
 
