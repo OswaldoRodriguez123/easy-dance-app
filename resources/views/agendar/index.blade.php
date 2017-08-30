@@ -332,7 +332,7 @@
                         dataType: 'json',
                         success:function(respuesta){
 
-                            window.open(route, '_blank');_principal; 
+                            window.location = route_principal;
 
                         },
                         error:function(msj){
@@ -367,8 +367,8 @@
                                 dataType: 'json',
                                 data: datos,
                                 success:function(respuesta){
-
-                                    window.open(route, '_blank');_principal; 
+                                    
+                                    window.location = route_principal; 
 
                                 },
                                 error:function(msj){
@@ -391,7 +391,7 @@
                         dataType: 'json',
                         success:function(respuesta){
 
-                            window.open(route, '_blank');_principal; 
+                            window.location = route_principal; 
 
                         },
                         error:function(msj){

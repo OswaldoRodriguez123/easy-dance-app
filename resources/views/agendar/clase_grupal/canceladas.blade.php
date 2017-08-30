@@ -754,7 +754,7 @@
 
                 finprocesado();
 
-                window.open(route, '_blank');_principal; 
+                window.location = route_principal;
                 notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
               }, 1000);
 
@@ -844,7 +844,7 @@
                       $('.modal').modal('hide');
 
                       finprocesado();
-                      window.open(route, '_blank');_principal; 
+                      window.location = route_principal; 
 
                       notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
                     }, 1000);
@@ -901,7 +901,7 @@
                     data:datos+"&tipo=3",
                     success:function(respuesta){
 
-                        window.open(route, '_blank');_principal; 
+                      window.location = route_principal;
 
                     },
                     error:function(msj){

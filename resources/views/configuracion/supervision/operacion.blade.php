@@ -163,7 +163,7 @@
                     success:function(respuesta){
 
                         procesando();
-                        window.open(route, '_blank');_principal; 
+                        window.location = route_principal; 
 
                     },
                     error:function(msj){

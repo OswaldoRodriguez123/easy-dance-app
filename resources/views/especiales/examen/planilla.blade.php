@@ -1795,7 +1795,7 @@ $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
                     data:id,
                     success:function(respuesta){
 
-                        window.open(route, '_blank');_principal; 
+                        window.location = route_principal; 
 
                     },
                     error:function(msj){
