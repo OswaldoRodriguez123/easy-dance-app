@@ -64,7 +64,7 @@
                             <thead>
                                 <tr>
                                     @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
-                                        <th class="text-center" data-column-id="nombre">Usuario</th>
+                                        <th class="text-center" data-column-id="nombre">Miembro del Staff</th>
                                     @endif
                                     <th class="text-center" data-column-id="nombre">Nivel de Incidencia</th>
                                     <th class="text-center" data-column-id="nombre">Administrador</th>

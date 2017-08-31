@@ -96,7 +96,7 @@
                                <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <label for="costo_mensualidad" id="id-costo_mensualidad">Costo Mensualidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor de la mensualidad, en caso de que la clase grupal no posea costo alguno, procede a dejar el campo vacío" title="" data-original-title="Ayuda"></i>
+                                        <label for="costo_mensualidad" id="id-costo_mensualidad">Costo Mensualidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor de la mensualidad, en caso que dicha clase no posea costo alguno, procede a dejar el campo vacío" title="" data-original-title="Ayuda"></i>
                                         <div class="input-group">
                                         <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
                                         <div class="fg-line">
@@ -116,7 +116,7 @@
 
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="descripcion" id="id-descripcion">Descripción</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta los objetivos de la clase grupal e infórmale de los beneficios que recibirán al momento de realizarla" title="" data-original-title="Ayuda"></i>
+                                    <label for="descripcion" id="id-descripcion">Descripción</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta los objetivos de la clase grupal e infórmale a tus clientes o alumnos los beneficios que recibirán al momento de realizarla" title="" data-original-title="Ayuda"></i>
                                     <div class="fg-line">
                                       <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="2000 Caracteres" maxlength="2000" onkeyup="countChar(this)"></textarea>
                                     </div>
@@ -128,29 +128,11 @@
                                       </span>
                                   </div>
                                </div>
-
+                    
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
-                                 
-                                    <label for="condiciones" id="id-condiciones">Condiciones y Normativas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las condiciones necesarias, dichas condiciones serán vistas por tus clientes y de esa forma podrás mantener una comunicación clara y transparente en cuanto a las normativas que rigen en tus actividades" title="" data-original-title="Ayuda"></i>
-                                    <br></br>
-
-                                    <div class="fg-line">
-                                      <textarea class="form-control caja" style="height: 100%" id="condiciones" name="condiciones" rows="8" placeholder="2500 Caracteres"></textarea>
-                                      </div>
-                                    <div class="has-error" id="error-condiciones">
-                                      <span >
-                                        <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-
-                               <div class="col-sm-12">
-                                <label for="apellido" id="id-imagen">Cargar Imagen</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen que será visualizada por tus alumnos para identificar las clases grupales que ofreces" title="" data-original-title="Ayuda"></i>
+                                <label for="apellido" id="id-imagen">Cargar Imagen</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona una imagen de tu ordenador, soporta formato en JPG, JPEG Y PNG, el tamaño de la imagen debe ser menor o igual a 1 MB. Nota: imágenes grandes o mayor a 230 x 120 se reducirán" title="" data-original-title="Ayuda"></i>
                                 
                                 <div class="clearfix p-b-15"></div>
                                   
@@ -177,7 +159,7 @@
 
                                <div class="col-sm-12">
                                        <div class="form-group fg-line ">
-                                          <label for="">Incluye impuestos fiscales (IVA)</label id="id-iva"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si manejas impuestos o no aplica" title="" data-original-title="Ayuda"></i>
+                                          <label for="">Incluye impuestos fiscales (IVA)</label id="id-iva"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si manejas impuestos fiscales, en caso que tu academia no aplique, deja el suiche de modo inactivo" title="" data-original-title="Ayuda"></i>
                                           
                                           <br></br>
                                           <input type="text" id="incluye_iva" name="incluye_iva" value="" hidden="hidden">
@@ -313,7 +295,7 @@
 
                                    <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="nombre">Retraso de Pago</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección de opción avanzada podrás generar una mora por retraso de pago e incluir el porcentaje que consideres pertinente" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre">Retraso de Pago</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección podrás asignar a tus alumnos o clientes una cantidad o cuota económica por un concepto de retraso de pago (mora) en mensualidades, acuerdos de pago, actividades especiales u otros" title="" data-original-title="Ayuda"></i>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-collapse">
                                     <div class="panel-heading" role="tab" id="headingTwo">

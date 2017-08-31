@@ -30,7 +30,7 @@
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
                                  <div class="form-group">
-                                    <label for="nombre">Titulo</label>
+                                    <label for="nombre">Autor</label>
                                     <div class="fg-line">
                                       <input type="text" class="form-control input-sm input-mask" name="nombre" id="nombre" placeholder="Ej: Valeria Zambrano">
                                     </div>
@@ -157,7 +157,7 @@
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
                                  <div class="form-group">
-                                    <label for="correo">Descripción</label>
+                                    <label for="correo">Perfil del bloguero</label>
                                     <div class="fg-line">
                                       <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="350 Caracteres" maxlength="350" onkeyup="countChar(this)"></textarea>
                                     </div>
@@ -358,7 +358,7 @@
 
 
                     <div class="block-header">
-                       <?php $url = "/blog" ?>
+                        <?php $url = "/configuracion/blogueros" ?>
                         <a onclick="procesando()" class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -390,8 +390,8 @@
                                         <a href="#" class="mousehand disabled">
                                             <span class="ca-icon-planilla"><i class="glyphicon glyphicon-book"></i></span>
                                             <div class="ca-content-planilla">
-                                                <h2 class="ca-main-planilla">Vista Blogero</h2>
-                                                <h3 class="ca-sub-planilla">Personaliza el campo blogero</h3>
+                                                <h2 class="ca-main-planilla">Vista Bloguero</h2>
+                                                <h3 class="ca-sub-planilla">Personaliza el campo bloguero</h3>
                                             </div>
                                         </a>
                                     </li>
@@ -423,7 +423,7 @@
 					           	<div class="col-sm-9">
 
                         <div class="col-sm-12">
-                            <p class="text-center opaco-0-8 f-22">Datos del Blogero</p>
+                            <p class="text-center opaco-0-8 f-22">Datos del Bloguero</p>
                         </div>
 
                         <div class="col-sm-12">
@@ -432,7 +432,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($blogger->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-accounts-alt f-22"></i> </span>
-                               <span class="f-14"> Nombre </span>
+                               <span class="f-14"> Autor </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="blogger-nombre" class="capitalize">{{$blogger->nombre}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
@@ -440,7 +440,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-descripcion" class="zmdi {{ empty($blogger->descripcion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
-                               <span class="f-14"> Descripción </span>
+                               <span class="f-14"> Perfil del bloguero </span>
                              </td>
                              <td id="blogger-descripcion" class="f-14 m-l-15" data-valor="{{$blogger->descripcion}}" >{{ str_limit($blogger->descripcion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
@@ -484,9 +484,9 @@
 
 @section('js') 
    <script type="text/javascript">
-    route_update="{{url('/')}}/configuracion/blogeros/update";
-    route_eliminar="{{url('/')}}/configuracion/blogeros/eliminar/";
-    route_principal="{{url('/')}}/configuracion/blogeros";
+    route_update="{{url('/')}}/configuracion/blogueros/update";
+    route_eliminar="{{url('/')}}/configuracion/blogueros/eliminar/";
+    route_principal="{{url('/')}}/configuracion/blogueros";
 
     $(document).ready(function(){
 
@@ -697,7 +697,7 @@
 
     $("i[name=eliminar]").click(function(){
       swal({   
-          title: "Desea eliminar al blogero?",   
+          title: "Desea eliminar al bloguero?",   
           text: "Confirmar eliminación!",   
           type: "warning",   
           showCancelButton: true,   

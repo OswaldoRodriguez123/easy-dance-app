@@ -60,7 +60,7 @@
                             <div class="clearfix p-b-15"></div>
                             <div class="col-sm-12">
                                  
-                                  <label for="usuario_id" id="id-usuario_id">Autor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el autor de la entrada" title="" data-original-title="Ayuda" data-html="true"></i>
+                                  <label for="usuario_id" id="id-usuario_id">Autor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el autor de la entrada del blog" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                   <div class="input-group">
                                     <span class="input-group-addon"><i class="icon_b-nombres f-22"></i></span>
@@ -109,7 +109,7 @@
 
                                <div class="col-sm-12">
                                  
-                                  <label for="categoria">Tópico</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tópico de la entrada" title="" data-original-title="Ayuda" data-html="true"></i>
+                                  <label for="categoria">Tópico</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tema o tópico de la entrada del blog" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                   <div class="input-group">
                                     <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
@@ -141,7 +141,7 @@
                                   <label for="dirigido">A quien va dirigido</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona a quienes le llegaran un correo al publicarse esta entrada" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                   <div class="input-group">
-                                    <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
+                                    <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
                                     <div class="fg-line">
                                     <div class="select">
                                       <select class="selectpicker" name="dirigido" id="dirigido" data-live-search="true">

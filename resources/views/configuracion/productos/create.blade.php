@@ -114,7 +114,7 @@
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
-                                <label for="imagen" id="id-imagen">Cargar Imagen</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Soporta formatos en: JPEG, JPG y PNG. El tamaño de la imagen debe menor o igual a 1 MB. NOTA: Logos grandes o mayor de 230 x 120 se reducirán" title="" data-original-title="Ayuda"></i>
+                                <label for="imagen" id="id-imagen">Cargar Imagen</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona una imagen del producto desde tu ordenador, soporta formato en JPG, JPEG Y PNG, el tamaño de la imagen debe ser menor o igual a 1 MB. Nota: imágenes grandes o mayor a 230 x 120 se reducirán" title="" data-original-title="Ayuda"></i>
                             
                                 <div class="clearfix"></div>
                               
@@ -160,7 +160,7 @@
 
                                <div class="col-sm-12">
                                  
-                                    <label for="tipo" id="id-tipo">Tipo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de producto" title="" data-original-title="Ayuda"></i>
+                                    <label for="tipo" id="id-tipo">Categoría</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona en la categoría en que se encuentre el producto, por ejemplo, si es una camiseta que ofreces como venta, pertenece a un evento de la academia y deseas reflejar en los reportes en el sector que se encuentra dicho producto, debes indicar que este pertenece a la categoría evento. De esa forma podrás sectorizar el Tipo de producto que ofreces a tus clientes" title="" data-original-title="Ayuda"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
@@ -186,7 +186,7 @@
 
                                <div class="col-sm-12">
                                        <div class="form-group fg-line ">
-                                          <label for="">Incluye impuestos fiscales (IVA)</label id="id-iva"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si manejas impuestos o no aplica" title="" data-original-title="Ayuda"></i>
+                                          <label for="">Incluye impuestos fiscales (IVA)</label id="id-iva"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si manejas impuestos fiscales, en caso que el producto no aplique, deja el suiche de modo inactivo" title="" data-original-title="Ayuda"></i>
                                           
                                           <br></br>
                                           <input type="text" id="incluye_iva" name="incluye_iva" value="" hidden="hidden">

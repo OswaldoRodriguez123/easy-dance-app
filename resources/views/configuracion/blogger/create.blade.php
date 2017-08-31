@@ -32,7 +32,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <?php $url = "/configuracion/blogeros" ?>
+                        <?php $url = "/configuracion/blogueros" ?>
                         <a onclick="procesando()" class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
@@ -51,18 +51,18 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="glyphicon glyphicon-book f-25" id="id-entrada"></i> Agregar Blogero </span>                                                         
+                            <span class="f-25 c-morado"><i class="glyphicon glyphicon-book f-25" id="id-entrada"></i> Agregar bloguero </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
-                          <form name="agregar_blogero" id="agregar_blogero"  >
+                          <form name="agregar_bloguero" id="agregar_bloguero"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
                               <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del blogero" title="" data-original-title="Ayuda" data-html="true"></i>
+                                    <label for="nombre" id="id-nombre">Autor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la persona que se encargará de crear o desarrollar el blog" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b-nombres f-22"></i></span>
@@ -81,7 +81,7 @@
 
                                <div class="col-sm-12">
                                  
-                                    <label for="descripcion" id="id-descripcion">Descripción</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la descripción del blogero" title="" data-original-title="Ayuda" data-html="true"></i>
+                                    <label for="descripcion" id="id-descripcion">Perfil del bloguero</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa una breve descripción o reseña de la persona que se encargará de crear o desarrollar el blog" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                      
                                    <div class="form-group">
@@ -103,7 +103,7 @@
 
 
                           <div class="col-sm-12">
-                                <label for="apellido" id="id-imagen">Imagen</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga la imagen del blogero" title="" data-original-title="Ayuda"></i>
+                                <label for="apellido" id="id-imagen">Imagen</label></label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona una imagen de tu ordenador, de la persona que se encargará de crear o desarrollar el blog. soporta formato en JPG, JPEG Y PNG, el tamaño de la imagen debe ser menor o igual a 1 MB. Nota: imágenes grandes o mayor a 230 x 120 se reducirán" title="" data-original-title="Ayuda"></i>
                                 
                                 <div class="clearfix p-b-15"></div>
                                   
@@ -281,8 +281,8 @@
 @section('js') 
 <script type="text/javascript">
 
-    route_agregar="{{url('/')}}/configuracion/blogeros/agregar";
-    route_principal="{{url('/')}}/configuracion/blogeros";
+    route_agregar="{{url('/')}}/configuracion/blogueros/agregar";
+    route_principal="{{url('/')}}/configuracion/blogueros";
 
   $(document).ready(function(){
 
@@ -379,7 +379,7 @@
 
                 var route = route_agregar;
                 var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_blogero" ).serialize(); 
+                var datos = $( "#agregar_bloguero" ).serialize(); 
                 procesando();
                 $.ajax({
                     url: route,
@@ -469,7 +469,7 @@
   }
 
   $( "#cancelar" ).click(function() {
-    $("#agregar_blogero")[0].reset();
+    $("#agregar_bloguero")[0].reset();
     limpiarMensaje();
     $('html,body').animate({
     scrollTop: $("#id-nombre").offset().top-90,

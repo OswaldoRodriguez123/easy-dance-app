@@ -2609,7 +2609,6 @@
         serverSide: false,
         pageLength: 25,
         bPaginate: false, 
-        bFilter:false, 
         bSort:false, 
         bInfo:false,
         order: [[0, 'asc']],
@@ -2621,7 +2620,8 @@
         },
         language: {
                         processing:     "Procesando ...",
-                        search:         "Buscar:",
+                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                        searchPlaceholder: "BUSCAR",
                         lengthMenu:     "Mostrar _MENU_ Registros",
                         info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
                         infoEmpty:      "Mostrando 0 a 0 de 0 Registros",

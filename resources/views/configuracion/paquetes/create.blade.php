@@ -26,7 +26,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/paquetes" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Paquetes</a>
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/paquetes" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Paquetes de Clases</a>
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
@@ -42,7 +42,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-paquete f-25" id="id-paquete"></i> Agregar Paquete</span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_a-paquete f-25" id="id-paquete"></i> Agregar Paquete de Clases</span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -53,7 +53,7 @@
                             <div class="clearfix p-b-15"></div>
                               <div class="col-sm-12">
                                  <div class="form-group">
-                                    <label for="nombre" id="id-nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del paquete" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-nombre">Nombre</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del paquete de clases que ofrecerás" title="" data-original-title="Ayuda"></i>
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-paquete f-22"></i></span>
                                       <div class="fg-line">
@@ -115,7 +115,7 @@
 
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="descripcion" id="id-descripcion">Descripción</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta los objetivos de la clase grupal e infórmale de los beneficios que recibirán al momento de realizarla" title="" data-original-title="Ayuda"></i>
+                                    <label for="descripcion" id="id-descripcion">Descripción</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta los objetivos del paquete de clase grupal e infórmale a tus clientes o alumnos los beneficios que recibirán al momento de realizarla" title="" data-original-title="Ayuda"></i>
                                     <div class="fg-line">
                                       <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="2000 Caracteres" maxlength="2000" onkeyup="countChar(this)"></textarea>
                                     </div>
@@ -131,7 +131,7 @@
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
-                                <label for="apellido" id="id-imagen">Cargar Imagen</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen que será visualizada por tus alumnos para identificar las clases grupales que ofreces" title="" data-original-title="Ayuda"></i>
+                                <label for="apellido" id="id-imagen">Cargar Imagen</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona una foto de tu ordenador, con un diseño horizontal, soporta formato en JPG, JPEG Y PNG, el tamaño de la imagen debe poseer una resolución máxima de 1200 x 630 y una resolución mínima de 600 x 315" title="" data-original-title="Ayuda"></i>
                                 
                                 <div class="clearfix p-b-15"></div>
                                   
@@ -158,7 +158,7 @@
 
                                <div class="col-sm-12">
                                  <div class="form-group fg-line ">
-                                    <label for="">Incluye impuestos fiscales (IVA)</label id="id-iva"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si manejas impuestos o no aplica" title="" data-original-title="Ayuda"></i>
+                                    <label for="">Incluye impuestos fiscales (IVA)</label id="id-iva"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si manejas impuestos fiscales, en caso que el servicio de paquete de clases no lo incluye, deja el suiche de modo inactivo" title="" data-original-title="Ayuda"></i>
                                     
                                     <br></br>
                                     <input type="text" id="incluye_iva" name="incluye_iva" value="" hidden="hidden">
@@ -182,7 +182,7 @@
 
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="dias_vencimiento" id="dias_vencimiento">Días de caducidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de dias que estaran vigentes las credenciales" title="" data-original-title="Ayuda"></i>
+                                    <label for="dias_vencimiento" id="id-dias_vencimiento">Días de caducidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica la cantidad de días que tendrán vigencia las credenciales a otorgar" title="" data-original-title="Ayuda"></i>
                                     <input type="text" class="form-control input-sm input-mask" name="dias_vencimiento" id="dias_vencimiento" data-mask="0000000" placeholder="Ej: 25">
                                  </div>
                                  <div class="has-error" id="error-dias_vencimiento">
@@ -196,7 +196,7 @@
 
                                <div class="col-sm-12">
                                  
-                                  <label for="tipo_uso" id="id-tipo_uso">Contabilizar a partir de</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona desde que momento correran los dias de caducidad" title="" data-original-title="Ayuda"></i>
+                                  <label for="tipo_uso" id="id-tipo_uso">Fecha de uso desde</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el momento en que deseas que el plan inicie su activación" title="" data-original-title="Ayuda"></i>
 
                                   <div class="input-group">
                                     <span class="input-group-addon"><i class="icon_b-costo f-22"></i></span>
@@ -335,7 +335,7 @@
   setInterval(porcentaje, 1000);
 
    function porcentaje(){
-    var campo = ["nombre", "costo", "cantidad_clases_grupales", "descripcion", "incluye_iva"];
+    var campo = ["nombre", "costo", "cantidad_clases_grupales", "descripcion", "incluye_iva", "imagen", "dias_vencimiento"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;

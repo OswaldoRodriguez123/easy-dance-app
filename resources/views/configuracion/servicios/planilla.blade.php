@@ -313,7 +313,7 @@
                                <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group fg-line">
-                                    <label for="tipo">Tipo</label>
+                                    <label for="tipo">Categoría</label>
                                     <div class="select">
                                           <select class="form-control" id="tipo" name="tipo">
                                             <option value="1">Academia Recepción</option>
@@ -471,7 +471,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tipo" class="zmdi {{ empty($servicio->tipo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-especialidad f-22"></i> </span>
-                               <span class="f-14"> Tipo </span>
+                               <span class="f-14"> Categoría </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="servicio-tipo" data-valor="{{$servicio->tipo}}">{{$tipo}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>

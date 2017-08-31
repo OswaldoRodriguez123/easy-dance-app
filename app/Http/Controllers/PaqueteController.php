@@ -48,7 +48,7 @@ class PaqueteController extends BaseController {
 
         $rules = [
             'nombre' => 'required|min:3|max:50',
-            'costo' => 'required|numeric',
+            'costo' => 'numeric',
             'cantidad_clases_grupales' => 'required|numeric',
             'descripcion' => 'required|min:3|max:500',
             'dias_vencimiento' => 'numeric',
@@ -219,7 +219,6 @@ class PaqueteController extends BaseController {
 
         $messages = [
 
-            'costo.required' => 'Ups! El costo es requerido',
             'costo.numeric' => 'Ups! El costo es inválido , debe contener sólo números',
 
         ];

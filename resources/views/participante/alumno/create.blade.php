@@ -230,7 +230,7 @@
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
-                                    <label for="codigo" id="id-codigo">Código de Referido</label><span class="c-morado f-700 f-16"></span><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el código de referido del alumno que te informo de nosotros para obtener beneficios" title="" data-original-title="Ayuda"></i>
+                                    <label for="codigo" id="id-codigo">Código de Referido</label><span class="c-morado f-700 f-16"></span><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="En caso que el alumno realizará su proceso de inscripción a través de un código referido, debes proceder a copiarlo en el siguiente campo" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>

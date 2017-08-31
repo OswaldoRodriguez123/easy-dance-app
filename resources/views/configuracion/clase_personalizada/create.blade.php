@@ -73,7 +73,7 @@
 
                                <div class="col-sm-6">
                                  
-                                    <label for="nombre" id="id-costo">Costo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor o precio el cual estara sujetado la clase personalizada" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-costo">Costo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor o precio que le asignarás a la clase personalizada o al programa de clases que estás creando" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
@@ -90,7 +90,7 @@
 
                                <div class="col-sm-6">
                                  
-                                    <label for="nombre" id="id-cantidad_horas">Cantidad de Horas</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor o precio el cual estara sujetado la clase personalizada" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-cantidad_horas">Cantidad de Horas</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de horas que durará la clase o el programa de clases que estás creando" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
@@ -109,7 +109,7 @@
 
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="descripcion" id="id-descripcion">Descripción</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta los objetivos de la clase grupal e infórmale de los beneficios que recibirán al momento de realizarla" title="" data-original-title="Ayuda"></i>
+                                    <label for="descripcion" id="id-descripcion">Descripción</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta los objetivos de la clase o programa de clases personalizadas e infórmale a tus clientes o alumnos los beneficios que recibirán al momento de realizarla" title="" data-original-title="Ayuda"></i>
                                     <div class="fg-line">
                                       <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="2000 Caracteres" maxlength="2000" onkeyup="countChar(this)"></textarea>
                                     </div>
@@ -125,7 +125,7 @@
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
-                                <label for="apellido" id="id-imagen">Cargar Imagen</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen horizontal  para que sea utilizada cuando compartes en Facebook.  Resolución recomendada: 1200 x 630, resolución mínima: 600 x 315" title="" data-original-title="Ayuda"></i>
+                                <label for="apellido" id="id-imagen">Cargar Imagen</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona una foto de tu ordenador, con un diseño horizontal, soporta formato en JPG, JPEG Y PNG, el tamaño de la imagen debe poseer una resolución máxima de 1200 x 630 y una resolución mínima de 600 x 315" title="" data-original-title="Ayuda"></i>
                                 
                                 <div class="clearfix p-b-15"></div>
                                   
@@ -214,7 +214,7 @@
 
                                  <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="nombre">Opciones Avanzadas</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Configura nuevos paquetes" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre">Programar varios participantes</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="En el caso que, en tu programa de clases personalizadas, deseas ingresar dos o más personas con diferentes precios, te damos la oportunidad que puedas agregar tanto la cantidad de integrantes como el valor del mismo, de esa forma, podrás ofrecer un programa de clases que a medida que se incremente el número de personas se incrementa el precio o valor que le asignas" title="" data-original-title="Ayuda"></i>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-collapse">
                                     <div class="panel-heading" role="tab" id="headingTwo">

@@ -185,15 +185,15 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		//BLOGGERS
 
-		Route::get('configuracion/blogeros', 'BloggerController@index');
-		Route::get('configuracion/blogeros/agregar', 'BloggerController@create');
-		Route::post('configuracion/blogeros/agregar', 'BloggerController@store');
-		Route::get('configuracion/blogeros/detalle/{id}', 'BloggerController@edit');
-		Route::put('configuracion/blogeros/update/nombre', 'BloggerController@updateNombre');
-		Route::put('configuracion/blogeros/update/descripcion', 'BloggerController@updateDescripcion');
-		Route::put('configuracion/blogeros/update/imagen', 'BloggerController@updateImagen');
-		Route::put('configuracion/blogeros/update/redes', 'BloggerController@updateRedes');
-		Route::delete('configuracion/blogeros/eliminar/{id}', 'BloggerController@destroy');
+		Route::get('configuracion/blogueros', 'BloggerController@index');
+		Route::get('configuracion/blogueros/agregar', 'BloggerController@create');
+		Route::post('configuracion/blogueros/agregar', 'BloggerController@store');
+		Route::get('configuracion/blogueros/detalle/{id}', 'BloggerController@edit');
+		Route::put('configuracion/blogueros/update/nombre', 'BloggerController@updateNombre');
+		Route::put('configuracion/blogueros/update/descripcion', 'BloggerController@updateDescripcion');
+		Route::put('configuracion/blogueros/update/imagen', 'BloggerController@updateImagen');
+		Route::put('configuracion/blogueros/update/redes', 'BloggerController@updateRedes');
+		Route::delete('configuracion/blogueros/eliminar/{id}', 'BloggerController@destroy');
 
 		//LLAMADAS
 

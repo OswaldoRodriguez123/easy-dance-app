@@ -48,7 +48,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="zmdi icon_f-incidencias f-25" id="id-clase_grupal_id"></i> Sección de Incidencias </span>                                                         
+                            <span class="f-25 c-morado"><i class="zmdi icon_f-incidencias f-25" id="id-incidencia"></i> Sección de Incidencias </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -59,7 +59,7 @@
                             <div class="clearfix p-b-15"></div>
                               <div class="col-sm-12">
                                  
-                                  <label for="nombre" id="id-usuario_id">Usuario</label>
+                                  <label for="nombre" id="id-usuario_id">Miembro del Staff</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el miembro del staff a quien se le emitirá la incidencia" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                   <div class="input-group">
                                     <span class="input-group-addon"><i class="icon_b icon_b-nombres f-22"></i></span>
@@ -84,7 +84,7 @@
 
                                <div class="col-sm-12">
                                  
-                                  <label for="nombre" id="id-gravedad_id">Nivel de Incidencia</label>
+                                  <label for="nombre" id="id-gravedad_id">Nivel de Incidencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica el nivel o gravedad de la incidencia infringida" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                   <div class="input-group">
                                     <span class="input-group-addon"><i class="icon_a-niveles f-22"></i></span>
@@ -109,7 +109,7 @@
 
                                <div class="col-sm-12">
                                  
-                                      <label for="fecha" id="id-fecha">Fecha</label>
+                                      <label for="fecha" id="id-fecha">Fecha</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona la fecha en que la incidencia fue realizada" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                       <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
@@ -159,8 +159,8 @@
 
                               <button type="button" class="btn btn-blanco m-r-10 f-18 guardar" id="guardar" >Guardar</button>
 
-<!--                               <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
- -->
+                              <button type="button" class="cancelar btn btn-default" id="cancelar" name="cancelar">Cancelar</button>
+
                             </div>
                         </div></form>
                     </div>
@@ -341,6 +341,15 @@
       $('#charNum').text(6000 - len);
     }
   };
+
+  $( "#cancelar" ).click(function() {
+    $("#agregar_incidencia")[0].reset();
+    $('.selectpicker').selectpicker('refresh');
+    limpiarMensaje();
+    $('html,body').animate({
+      scrollTop: $("#id-incidencia").offset().top-90,
+    }, 1500);
+  });
 
 </script> 
 @stop

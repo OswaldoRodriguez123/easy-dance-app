@@ -227,7 +227,7 @@
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
-                                    <label for="apellido" id="id-imagen_perfil">Imagen de Perfil</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Carga una imagen de perfil para el instructor" title="" data-original-title="Ayuda"></i>
+                                    <label for="apellido" id="id-imagen_perfil">Imagen de Perfil</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona una imagen del instructor desde tu ordenador, soporta formato en JPG, JPEG Y PNG, el tamaño de la imagen debe ser menor o igual a 1 MB. Nota: imágenes grandes o mayor a 230 x 120 se reducirán" title="" data-original-title="Ayuda"></i>
                                     
                                     <div class="clearfix p-b-15"></div>
                                       
@@ -477,7 +477,7 @@
 
                               <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-resumen_artistico">Resumen artístico</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Describe tu perfil como instructor, habla de tu personalidad en el baile, ¿cómo iniciaste? en que te has especializado?   Porqué te gusta enseñar o bailar, cuéntales a tus clientes y público en general cuáles son tus fortalezas  al momento de enseñar o bailar" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-resumen_artistico">Resumen artístico</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Describe la formación artística que has recibido, cuéntale a los alumnos de tus logros, tus hazañas en el gremio del baile" title="" data-original-title="Ayuda"></i>
 
                                     <br></br>
 
@@ -566,7 +566,7 @@
 
                                      <div class="col-sm-12">
                                        <div class="form-group fg-line ">
-                                          <label for="">Mostrar todas las clases grupales en el sistema</label id="id-boolean_disponibilidad"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="El instructor al entrar en el sistema, podra administrar todas las clases grupales indistintamente sean de el o no" title="" data-original-title="Ayuda"></i>
+                                          <label for="">Mostrar todas las clases grupales en el sistema</label id="id-boolean_disponibilidad"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Al activar dicha función brindas el privilegio al instructor de operar las clases que se encuentren agendadas en el sistema" title="" data-original-title="Ayuda"></i>
                                           
                                           <br></br>
                                           <input type="text" id="boolean_administrador" name="boolean_administrador" value="" hidden="hidden">

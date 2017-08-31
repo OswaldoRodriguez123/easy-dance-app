@@ -309,7 +309,7 @@
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
                                 <div class="form-group fg-line">
-                                    <label for="apellido">Generos</label>
+                                    <label for="apellido">Especialidad</label>
 
                                       <div class="select">
                                         <select class="selectpicker bs-select-hidden" id="genero" name="genero" multiple="" data-max-options="5" title="Selecciona">
@@ -1073,7 +1073,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-generos" class="zmdi {{ empty($examen->generos) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-instructor f-22"></i> </span>
-                               <span class="f-14"> Generos Musicales </span>
+                               <span class="f-14"> Especialidad </span>
                              </td>
                              <td  class="f-14 m-l-15" id="examen-genero" >{{$examen->generos}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>

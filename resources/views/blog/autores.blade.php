@@ -41,7 +41,7 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="glyphicon glyphicon-book f-25"></i> Directorio de Blogeros</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="glyphicon glyphicon-book f-25"></i> Directorio de blogueros</p>
                             <hr class="linea-morada">                                                         
                         </div>
 
@@ -146,7 +146,7 @@
 
 
                                   <div align="center"><i class="zmdi zmdi-mood-bad zmdi-hc-5x c-morado"></i></div>
-                                  <div class="c-morado f-30 text-center"> Ups! lo sentimos, la academia <b>{{$academia->nombre}}</b> actualmente no ha registrado ningun blogero. </div>
+                                  <div class="c-morado f-30 text-center"> Ups! lo sentimos, la academia <b>{{$academia->nombre}}</b> actualmente no ha registrado ningun bloguero. </div>
 
 
                              </div>

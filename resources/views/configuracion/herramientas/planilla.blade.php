@@ -834,11 +834,11 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="academia-administrativo"></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle blogero">
+                            <tr class="detalle bloguero">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10">  <i class="glyphicon glyphicon-book f-22"></i> </span>
-                               <span class="f-14"> Blogeros </span>
+                               <span class="f-14"> blogueros </span>
                              </td>
                              <td class="f-14 m-l-15" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
@@ -1986,11 +1986,11 @@
         }
       };
 
-      $('.blogero').click(function(){
+      $('.bloguero').click(function(){
 
         procesando();
 
-        window.location = "{{url('/')}}/configuracion/blogeros"
+        window.location = "{{url('/')}}/configuracion/blogueros"
 
       });  
 

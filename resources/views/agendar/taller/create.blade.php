@@ -77,7 +77,7 @@
 
                                <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-costo">Costo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor o precio el cual estara sujetado el taller" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-costo">Costo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el valor o precio que le asignarás al taller que estás creando" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>

@@ -17,7 +17,7 @@
 @stop
 @section('content')
 
-<a href="{{url('/')}}/configuracion/blogeros/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
+<a href="{{url('/')}}/configuracion/blogueros/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
                 <div class="container">
                 
@@ -43,9 +43,9 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <span class="f-16 p-t-0 text-success">Agregar un Blogero <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
+                            <span class="f-16 p-t-0 text-success">Agregar un Bloguero <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="glyphicon glyphicon-book f-25"></i> Sección de Blogeros</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="glyphicon glyphicon-book f-25"></i> Sección de Blogueros</p>
                             <hr class="linea-morada">                                                         
                         </div>
                         <div class="table-responsive row">
@@ -92,10 +92,10 @@
             
         <script type="text/javascript">
 
-        route_detalle="{{url('/')}}/configuracion/blogeros/detalle";
-        route_operacion="{{url('/')}}/configuracion/blogeros/operaciones";
-        route_eliminar="{{url('/')}}/configuracion/blogeros/eliminar/";
-        route_progreso="{{url('/')}}/configuracion/blogeros/progreso";
+        route_detalle="{{url('/')}}/configuracion/blogueros/detalle";
+        route_operacion="{{url('/')}}/configuracion/blogueros/operaciones";
+        route_eliminar="{{url('/')}}/configuracion/blogueros/eliminar/";
+        route_progreso="{{url('/')}}/configuracion/blogueros/progreso";
 
         $(document).ready(function(){
 
@@ -177,7 +177,7 @@
                 element = this;
 
                 swal({   
-                    title: "Desea eliminar al blogero?",   
+                    title: "Desea eliminar al bloguero?",   
                     text: "Confirmar eliminación!",   
                     type: "warning",   
                     showCancelButton: true,   
@@ -226,7 +226,7 @@
                             .remove()
                             .draw();
 
-                        swal("Exito!","El blogero ha sido eliminada!","success");
+                        swal("Exito!","El bloguero ha sido eliminada!","success");
                         
                         }
                     },

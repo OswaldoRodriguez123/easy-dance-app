@@ -348,7 +348,7 @@
 
                                <div class="col-sm-12">
                                  
-                                  <label for="nombre" id="id-presentacion">Presentación general de la fiesta</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Preséntate, presenta tus antecedentes, tu fiesta y por qué es importante para ti. Expresa la magnitud de lo que te ayudarán a lograr tus colaboradores" title="" data-original-title="Ayuda"></i>
+                                  <label for="nombre" id="id-presentacion">Presentación general de la fiesta</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Presenta las características más destacada de la fiesta, exprésale los beneficios y ventajas que recibirán al momento de participar. No olvides que es muy importante transmitir a tus clientes la relevancia de tu actividad" title="" data-original-title="Ayuda"></i>
 
                                   <br></br>
 

@@ -133,7 +133,7 @@
                                 <div class="clearfix p-b-35"></div>
 
                                  <div class="col-sm-12">
-                                     <label for="nivel_baile" id="id-genero">Selecciona tus generos musicales</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un genero, en caso de no poseerlo, dirígete a la sección de genero y procede a registrarlo" title="" data-original-title="Ayuda"></i>
+                                     <label for="nivel_baile" id="id-genero">Especialidad</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un genero, en caso de no poseerlo, dirígete a la sección de genero y procede a registrarlo" title="" data-original-title="Ayuda"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
@@ -164,7 +164,7 @@
                                 
                                 <div class="col-sm-12">
                                   <div class="clearfix"></div>
-                                  <label for="boolean_grupal" id="id-boolean_grupal">A quien va dirigido:</label>
+                                  <label for="boolean_grupal" id="id-boolean_grupal">A quien va dirigido:</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona si la valoración es dirigida para todos los alumnos de la academia o un grupo en específico" title="" data-original-title="Ayuda"></i>
                                   <div class="clearfix"></div>
                                   <div class="input-group">
                                       <!-- <span class="input-group-addon"><i class="icon_b icon_b-sexo f-22"></i></span> -->
@@ -283,7 +283,7 @@
                                 
                                  <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="nombre">Ítems a Evaluar</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa los datos o estado de salud del participante" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre">Ítems a Evaluar</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona los ítems a evaluar que te ofrece Easy Dance, además encontrarás en la parte inferior de la planilla un campo para agregar nuevos ítems en caso de necesitarlo" title="" data-original-title="Ayuda"></i>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-collapse">
                                     <div class="panel-heading" role="tab" id="headingTwo">

@@ -19,7 +19,7 @@
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete de Clases<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_nombre_paquete" id="edit_nombre_paquete"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -73,7 +73,7 @@
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete de Clases<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_costo_paquete" id="edit_costo_paquete"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -127,7 +127,7 @@
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete de Clases<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_cantidad_paquete" id="edit_cantidad_paquete"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -181,7 +181,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete de Clases<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_descripcion_paquete" id="edit_descripcion_paquete"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -232,7 +232,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete de Clases<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_imagen_paquete" id="edit_imagen_paquete"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -303,7 +303,7 @@
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete de Clases<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_dias_paquete" id="edit_dias_paquete"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -357,7 +357,7 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Paquete de Clases<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_tipo_paquete" id="edit_tipo_paquete"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -365,7 +365,7 @@
                            <div class="row p-t-20 p-b-0">
                                 <div class="col-sm-12">
                                  
-                                  <label for="tipo_uso" id="id-tipo_uso">Contabilizar a partir de</label>
+                                  <label for="tipo_uso" id="id-tipo_uso">Fecha de uso desde</label>
                                   <div class="input-group">
                                     <span class="input-group-addon"><i class="icon_b-costo f-22"></i></span>
                                     <div class="p-t-10">
@@ -424,7 +424,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/paquetes" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Paquetes</a>
+                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/paquetes" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Paquetes de Clases</a>
 
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -456,8 +456,8 @@
                                         <a href="#" class="disabled">
                                             <span class="ca-icon-planilla"><i class="icon_a-paquete"></i></span>
                                             <div class="ca-content-planilla">
-                                                <h2 class="ca-main-planilla">Vista Paquete</h2>
-                                                <h3 class="ca-sub-planilla">Personaliza el campo paquete</h3>
+                                                <h2 class="ca-main-planilla">Vista Paquete de Clases</h2>
+                                                <h3 class="ca-sub-planilla">Personaliza el campo paquete de clases</h3>
                                             </div>
                                         </a>
                                     </li>
@@ -486,7 +486,7 @@
 					           	<div class="col-sm-9">
 
                          <div class="col-sm-12">
-                              <p class="text-center opaco-0-8 f-22"><i class="icon_a-paquete f-25"></i> Datos del Paquete</p>
+                              <p class="text-center opaco-0-8 f-22"><i class="icon_a-paquete f-25"></i> Datos del Paquete de Clases</p>
                           </div>
 
                           <div class="col-sm-12">
@@ -543,7 +543,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-costo f-22"></i> </span>
-                               <span class="f-14"> Contabilizar a partir de</span>
+                               <span class="f-14"> Fecha de uso desde</span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="paquete-tipo_uso" data-valor="{{$paquete->tipo_uso}}">
                                @if($paquete->tipo_uso == 1)
