@@ -904,15 +904,12 @@
                         instructor_id = $('#instructor_id').val();
 
                         if(tipo != 0 && instructor_id != 0){
-                            console.log('tipo y instructor')
                             return tipo.indexOf(event.tipo) >= 0 && instructor_id.indexOf(event.instructor_id) >= 0
                         }else{
                             if(tipo != 0){
-                                console.log('tipo')
                                 return tipo.indexOf(event.tipo) >= 0
                             }
                             if(instructor_id != 0){
-                                console.log('instructor')
                                 return instructor_id.indexOf(event.instructor_id) >= 0
                             }
                         }

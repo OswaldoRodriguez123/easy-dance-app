@@ -92,7 +92,7 @@ class PaqueteController extends BaseController {
 
             if($paquete->save()){
 
-                if($request->imageBase64){
+                if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
 
                     $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
                     $path = storage_path();
@@ -283,7 +283,7 @@ class PaqueteController extends BaseController {
     {
         $paquete = Paquete::find($request->id);
         
-        if($request->imageBase64){
+        if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
             $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
             $path = storage_path();
             $split = explode( ';', $request->imageBase64 );

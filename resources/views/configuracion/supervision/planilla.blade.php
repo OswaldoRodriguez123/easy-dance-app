@@ -28,7 +28,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Configuración<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Supervisión<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_descripcion_supervision" id="edit_descripcion_supervision"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -89,7 +89,7 @@
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Configuración<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Supervisión<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
                         <form name="edit_cargo_supervision" id="edit_cargo_supervision"  >
                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -150,7 +150,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Configuración</a>
+                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/supervisiones" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Supervisión</a>
                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
@@ -184,8 +184,8 @@
                                         <a href="#" class="disabled">
                                             <span class="ca-icon-planilla"><i class="icon_f-staff"></i></span>
                                             <div class="ca-content-planilla">
-                                                <h2 class="ca-main-planilla">Vista Configuración</h2>
-                                                <h3 class="ca-sub-planilla">Personaliza el campo configuracion</h3>
+                                                <h2 class="ca-main-planilla">Vista Supervisión</h2>
+                                                <h3 class="ca-sub-planilla">Personaliza el campo supervisión</h3>
                                             </div>
                                         </a>
                                     </li>
@@ -219,7 +219,7 @@
 					           	<div class="col-sm-9">
 
                          <div class="col-sm-12">
-                              <p class="text-center opaco-0-8 f-22">Datos de la Configuración</p>
+                              <p class="text-center opaco-0-8 f-22">Datos de la Supervisión</p>
                           </div>
 
                           <div class="col-sm-12">

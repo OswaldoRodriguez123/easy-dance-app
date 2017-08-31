@@ -1525,7 +1525,7 @@ class ClaseGrupalController extends BaseController {
                     }
                 }
 
-                if($request->imageBase64){
+                if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
 
                     $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
                     $path = storage_path();
@@ -2393,7 +2393,7 @@ class ClaseGrupalController extends BaseController {
     {
                 $clasegrupal = ClaseGrupal::find($request->id);
                 
-                if($request->imageBase64){
+                if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
                     $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
                     $path = storage_path();
                     $split = explode( ';', $request->imageBase64 );

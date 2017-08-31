@@ -799,14 +799,14 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="academia-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalEspeciales-Academia">
+<!--                             <tr class="detalle" data-toggle="modal" href="#modalEspeciales-Academia">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-normativa" class="zmdi {{ empty($academia->normativa) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10">  <i class="icon_a-especialidad f-22"></i> </span>
                                <span class="f-14"> Especiales </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="academia-especiales"></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
-                            </tr> 
+                            </tr>  -->
                             <tr class="detalle" data-toggle="modal" href="#modalAdministrativo-Academia">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-administrativo" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
