@@ -91,7 +91,7 @@
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$estudio->nombre}}</td>
                                     <td class="text-center previa">{{$estudio->capacidad}}</td>
-                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i></td>
                                   </tr>
                             @endforeach 
                    
@@ -189,7 +189,7 @@
                                     <td class="text-center previa">{{$nivel->nombre}}</td>
                                     <td class="text-center"> 
                                       @if($nivel->academia_id)
-                                        <i class="zmdi zmdi-delete f-20 p-r-10"></i>
+                                        <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>
                                       @endif
                                     </td>
                                   </tr>
@@ -355,7 +355,7 @@
                                     <td class="text-center previa">{{$staff->nombre}}</td>
                                     <td class="text-center"> 
                                       @if($staff->academia_id)
-                                        <i class="zmdi zmdi-delete f-20 p-r-10"></i>
+                                        <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>
                                       @endif
                                     </td>
                                   </tr>
@@ -452,7 +452,7 @@
                                 <?php $id = $formula->id; ?>
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$formula->nombre}}</td>
-                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></i></td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i></i></td>
                                   </tr>
                             @endforeach 
                    
@@ -549,7 +549,7 @@
                                 <?php $id = $valoracion->id; ?>
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$valoracion->nombre}}</td>
-                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></i></td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i></i></td>
                                 </tr>
                             @endforeach 
                    
@@ -685,7 +685,7 @@
                                     <td class="text-center previa">{{$puntaje->nombre}}</td>
                                     <td class="text-center previa">{{$puntaje->cantidad}}</td>
                                     <td class="text-center previa">{{$puntaje->fecha_vencimiento}}</td>
-                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i></td>
                                   </tr>
                             @endforeach 
                    
@@ -1424,7 +1424,7 @@
                           var rowNode=h.row.add( [
                           ''+nombre+'',
                           ''+capacidad+'',
-                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
                           .attr('id',rowId)
@@ -1511,7 +1511,7 @@
                           var rowId=respuesta.id;
                           var rowNode=t.row.add( [
                           ''+nombre+'',
-                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
                           .attr('id',rowId)
@@ -1566,7 +1566,7 @@
 
     });
 
-    $('#tableniveles tbody').on( 'click', 'i.zmdi-delete', function () {
+    $('#tableniveles tbody').on( 'click', 'i.zmdi-delete boton red', function () {
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
@@ -1597,7 +1597,7 @@
                 .draw();
           });
 
-    $('#tableestudio tbody').on( 'click', 'i.zmdi-delete', function () {
+    $('#tableestudio tbody').on( 'click', 'i.zmdi-delete boton red', function () {
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
@@ -1661,7 +1661,7 @@
                           var rowId=respuesta.id;
                           var rowNode=k.row.add( [
                           ''+nombre+'',
-                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
                           .attr('id',rowId)
@@ -1716,7 +1716,7 @@
 
     });
 
-    $('#tablecargo tbody').on( 'click', 'i.zmdi-delete', function () {
+    $('#tablecargo tbody').on( 'click', 'i.zmdi-delete boton red', function () {
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
@@ -1779,7 +1779,7 @@
                           var rowId=respuesta.id;
                           var rowNode=l.row.add( [
                           ''+nombre+'',
-                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
                           .attr('id',rowId)
@@ -1833,7 +1833,7 @@
 
     });
 
-    $('#tableformula tbody').on( 'click', 'i.zmdi-delete', function () {
+    $('#tableformula tbody').on( 'click', 'i.zmdi-delete boton red', function () {
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
@@ -1895,7 +1895,7 @@
                 var rowId=respuesta.id;
                 var rowNode=m.row.add( [
                 ''+nombre+'',
-                '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
                 .attr('id',rowId)
@@ -1945,7 +1945,7 @@
 
     });
 
-    $('#tablevaloracion tbody').on( 'click', 'i.zmdi-delete', function () {
+    $('#tablevaloracion tbody').on( 'click', 'i.zmdi-delete boton red', function () {
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
@@ -2038,7 +2038,7 @@
                           ''+nombre+'',
                           ''+cantidad+'',
                           ''+fecha_vencimiento+'',
-                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
                           .attr('id',rowId)
@@ -2093,7 +2093,7 @@
 
     }); 
 
-    $('#tablepuntaje tbody').on( 'click', 'i.zmdi-delete', function () {
+    $('#tablepuntaje tbody').on( 'click', 'i.zmdi-delete boton red', function () {
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');

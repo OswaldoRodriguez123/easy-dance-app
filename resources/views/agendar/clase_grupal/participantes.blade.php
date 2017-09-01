@@ -1331,7 +1331,7 @@
                                                         </li>
 
                                                         <li class="hidden-xs">
-                                                            <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
+                                                            <a class="eliminar"><i class="zmdi zmdi-delete boton red f-20"></i> Eliminar</a>
                                                         </li>
                                                       @endif
 
@@ -1365,7 +1365,7 @@
                                       <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
                                       <td class="text-center previa">{{$alumno['tiempo_vencimiento']}}</td>
                                       <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-money f-20 p-r-3 operacionModal c-verde"></i></label></td>
-                                      <td class="text-center"><i class="zmdi zmdi-delete eliminar f-20 p-r-10 pointer"></i></td>
+                                      <td class="text-center"><i class="zmdi zmdi-delete boton red eliminar f-20 p-r-10 pointer"></i></td>
                                   </tr>
                                 @endif
                             @endforeach 
@@ -2375,12 +2375,12 @@
 
                       if({{$usuario_tipo}} != 3){
 
-                        accion = '<i class="zmdi zmdi-delete f-20 p-r-10 pointer">'
+                        accion = '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer">'
 
                       }else{
 
                         if(array.instructor_id == "{{$usuario_id}}"){
-                          accion = '<i class="zmdi zmdi-delete f-20 p-r-10 pointer">'
+                          accion = '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer">'
                         }else{
                           accion = '<i data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Esta credencial no puede ser eliminada porque fue asignada por un administrador" title="" data-original-title="Ayuda" class="zmdi zmdi-lock-outline f-20 p-r-10 disabled">'
                         }
@@ -2485,11 +2485,11 @@
 
                       if({{$usuario_tipo}} != 3)
 
-                        accion = '<i class="zmdi zmdi-delete f-20 p-r-10 pointer">'
+                        accion = '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer">'
 
                       else{
                         if(respuesta.credencial_alumno.instructor_id == "{{$usuario_id}}"){
-                          accion = '<i class="zmdi zmdi-delete f-20 p-r-10 pointer">'
+                          accion = '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer">'
                         }else{
                           accion = '<i data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Esta credencial no puede ser eliminada porque fue asignada por un administrador" title="" data-original-title="Ayuda" class="zmdi zmdi-lock-outline f-20 p-r-10 pointer">'
                         }
@@ -2556,7 +2556,7 @@
             });
           });
 
-        $('#tablecredencial tbody').on( 'click', 'i.zmdi-delete', function () {
+        $('#tablecredencial tbody').on( 'click', 'i.zmdi-delete boton red', function () {
 
           var id = $(this).closest('tr').attr('id');
           element = this;
@@ -2706,7 +2706,7 @@
 
 
           $('.eliminar').on('click', function () {
-        // $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+        // $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
 
                 var id = $(this).closest('tr').attr('id');
 

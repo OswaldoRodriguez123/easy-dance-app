@@ -406,7 +406,7 @@
                                   <hr>
                                   
                                   <!-- <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a> -->
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
                                     

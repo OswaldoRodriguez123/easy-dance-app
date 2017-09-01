@@ -1863,7 +1863,7 @@ class AdministrativoController extends BaseController {
                     }
                 }
 
-                $array = array(['id' => $item_factura->id, 'item_id' => $item_id , 'nombre' => $producto_servicio->nombre , 'tipo' => $tipo, 'cantidad' => $request->cantidad, 'precio_neto' => $precio_neto, 'impuesto' => intval($request->impuesto), 'importe_neto' => $importe_neto, 'operacion' => '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>']);
+                $array = array(['id' => $item_factura->id, 'item_id' => $item_id , 'nombre' => $producto_servicio->nombre , 'tipo' => $tipo, 'cantidad' => $request->cantidad, 'precio_neto' => $precio_neto, 'impuesto' => intval($request->impuesto), 'importe_neto' => $importe_neto, 'operacion' => '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer"></i>']);
 
                 $last_proforma = ItemsFacturaProforma::where('fecha' , '=', Carbon::now()->toDateString())
                     ->where('academia_id' , '=', Auth::user()->academia_id)

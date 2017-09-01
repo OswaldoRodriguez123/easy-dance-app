@@ -987,7 +987,7 @@
                           ''+formatmoney(parseFloat(precio_neto))+'',
                           ''+impuesto+'',
                           ''+formatmoney(parseFloat(importe_neto))+'',
-                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
                           .attr('id',rowId)
@@ -1070,7 +1070,7 @@
 
     //FUNCION ELIMINAR
 
-    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
     
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();

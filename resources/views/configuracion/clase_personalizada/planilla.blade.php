@@ -508,7 +508,7 @@
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$precio->participantes}}</td>
                                     <td class="text-center previa">{{$precio->precio}}</td>
-                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></i></td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i></i></td>
                                   </tr>
                             @endforeach 
                          
@@ -601,7 +601,7 @@
                                   <hr></hr>
 
                                   <!-- <a href="{{url('/')}}/configuracion/clases-personalizadas/participantes/{{$clasepersonalizada->id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></a> -->
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$clasepersonalizada->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$clasepersonalizada->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
                                     
@@ -1201,7 +1201,7 @@
                             var rowNode=t.row.add( [
                             ''+participantes+'',
                             ''+precio+'',
-                            '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                            '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                             ] ).draw(false).node();
                             $( rowNode )
                             .attr('id',rowId)
@@ -1256,7 +1256,7 @@
                   });
             });
 
-          $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+          $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
             var padre=$(this).parents('tr');
             var token = $('input:hidden[name=_token]').val();
             var id = $(this).closest('tr').attr('id');

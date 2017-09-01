@@ -71,7 +71,7 @@
                                     <td class="text-center previa">{{$credencial->nombre}} {{$credencial->apelldio}}</td>
                                     <td class="text-center previa">{{$credencial->cantidad}}</td>
                                     <td class="text-center previa">{{$credencial->fecha_vencimiento}}</td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i></td>
                         
                                 </tr>
 
@@ -192,7 +192,7 @@
                       ''+concepto+'',
                       ''+remuneracion+'',
                       ''+fecha_vencimiento+'',
-                      '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                      '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                       ] ).draw(false).node();
                       $( rowNode )
                       .attr('id',respuesta.array.id)
@@ -239,7 +239,7 @@
 
     });
 
-    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
 
         var id = $(this).closest('tr').attr('id');
         var element = this

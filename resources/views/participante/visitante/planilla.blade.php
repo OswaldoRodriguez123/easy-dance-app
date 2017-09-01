@@ -799,7 +799,7 @@
                                   <a class="impresion"><i class="icon_a-examen f-20 m-r-5 boton blue sa-warning" data-original-title="Realizar encuesta" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/participante/alumno/agregar/{{$visitante->id}}"><i class="zmdi zmdi-trending-up zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Transferir" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/participante/visitante/llamadas/{{$visitante->id}}"><i class="zmdi zmdi-phone zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Llamadas" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <a class="reservar"><i class="zmdi zmdi-phone zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Reservar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <a class="reservar"><i class="icon_a-reservaciones zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Reservar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <br></br>
                                     
                                    
@@ -866,7 +866,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="visitante-correo"><span>{{$visitante->correo}}</span></span> <span class="pull-right c-blanco"></td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalTelefono-Visitante">
+                            <tr id="tr_contacto" data-valor="{{$visitante->celular}}" class="detalle" data-toggle="modal" href="#modalTelefono-Visitante">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi {{ empty($visitante->telefono) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-telefono f-22"></i> </span>
@@ -961,7 +961,12 @@
 
     $(document).ready(function(){
 
-        $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
+      if($('#tr_contacto').data('valor') != ''){
+        $("#estatus-telefono").removeClass('c-amarillo zmdi-dot-circle');
+        $("#estatus-telefono").addClass('c-verde zmdi-check');
+      }
+
+      $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
         A: {pattern: /[A-Za-záéíóúÁÉÍÓÚ.,@*+_ñÑ ]/}
         }
@@ -1112,6 +1117,15 @@
           else{
             $("#estatus-"+c.name).removeClass('c-amarillo zmdi-dot-circle');
             $("#estatus-"+c.name).addClass('c-verde zmdi-check');
+          }
+
+          if(c.name == 'celular'){
+            $('#tr_contacto').data('valor') == c.value;
+          }
+
+          if(c.name == 'celular' && $('#tr_contacto').data('valor') != ''){
+            $("#estatus-telefono").removeClass('c-amarillo zmdi-dot-circle');
+            $("#estatus-telefono").addClass('c-verde zmdi-check');
           }
           
         });

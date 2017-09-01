@@ -64,7 +64,7 @@
                                  <tr id="{{$mensaje->id}}" class="seleccion">
                                     <td class="text-center previa">{{$mensaje->titulo}}</td>
                                     <td class="text-center"> 
-                                        <i class="eliminar zmdi zmdi-delete f-20"></i> 
+                                        <i class="eliminar zmdi zmdi-delete boton red f-20"></i> 
                                     </td>
                                 </tr>
                             @endforeach 

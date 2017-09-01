@@ -65,7 +65,7 @@
                                     <td class="text-center previa">{{$presupuesto['fecha']}}</td>
                                     <td class="text-center previa">{{$presupuesto['fecha_valida']}}</td>
                                     <td class="text-center previa">{{ number_format($presupuesto['total'], 2, '.' , '.') }}</td>
-                                    <td class="text-center"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                    <td class="text-center"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10"></i></td>
                                 </tr>
                             @endforeach 
                                                            
@@ -176,7 +176,7 @@
         //     window.open(route, '_blank');;
         //  });
 
-         $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+         $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
                 var id = $(this).closest('tr').attr('id');
                 var element = this;
                 swal({   

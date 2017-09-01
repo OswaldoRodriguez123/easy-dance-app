@@ -835,7 +835,7 @@
                                     <td class="text-center previa">{{$boleto->nombre}}</td>
                                     <td class="text-center previa">{{$boleto->costo}}</td>
                                     <td class="text-center previa">{{$boleto->cantidad}}</td>
-                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i></td>
                                   </tr>
                             @endforeach 
                    
@@ -1019,7 +1019,7 @@
                                     <td class="text-center previa">{{$dato->numero_cuenta}}</td>
                                     <td class="text-center previa">{{$dato->rif}}</td>
                                     <td class="text-center previa">{{$dato->nombre}}</td>
-                                    <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i></td>
                                   </tr>
                             @endforeach 
                                                            
@@ -1112,12 +1112,13 @@
                                     <hr></hr>
                                     
                                     <a href="{{url('/')}}/agendar/fiestas/progreso/{{$fiesta->id}}"><i class="icon_e-ver-progreso f-16 m-r-5 boton blue"  data-original-title="Ver Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                    
                                     <a href="{{url('/')}}/agendar/fiestas/contribuciones/{{$fiesta->id}}"><i class="icon_c-money f-16 m-r-5 boton blue"  data-original-title="Ver Contribuciones" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                     <a href="{{url('/')}}/agendar/fiestas/patrocinadores/{{$fiesta->id}}"><i class="icon_a-campana f-16 m-r-5 boton blue"  data-original-title="Ver Patrocinadores" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
 
                                     <a href="{{url('/')}}/agendar/fiestas/egresos/{{$fiesta->id}}"><i class="fa fa-money f-16 m-r-5 boton blue"  data-original-title="Egresos" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
 
-                                    <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$fiesta->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                    <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$fiesta->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
 
 
@@ -1801,7 +1802,7 @@
                   ''+nombre+'',
                   ''+cantidad+'',
                   ''+costo+'',
-                  '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                  '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                   ] ).draw(false).node();
                   $( rowNode )
                   .attr('id',rowId)
@@ -1847,7 +1848,7 @@
         });
       });
 
-    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
@@ -1924,7 +1925,7 @@
                 ''+numero_cuenta+'',
                 ''+rif+'',
                 ''+nombre+'',
-                '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
                 .attr('id',rowId)
@@ -1975,7 +1976,7 @@
 
     });
 
-    $('#tabledatos tbody').on( 'click', 'i.zmdi-delete', function () {
+    $('#tabledatos tbody').on( 'click', 'i.zmdi-delete boton red', function () {
         var padre=$(this).parents('tr');
         var token = $('input:hidden[name=_token]').val();
         var id = $(this).closest('tr').attr('id');

@@ -87,7 +87,7 @@
                                                         </li>
 
                                                         <li class="hidden-xs eliminar">
-                                                            <a class="pointer eliminar"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                                            <a class="pointer eliminar"><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>
                                                         </li>
 
                                                     </ul>

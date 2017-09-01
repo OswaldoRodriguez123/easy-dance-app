@@ -1120,7 +1120,7 @@
                                             {{$horario['hora_final']}}
                                           </td>
                                           <!-- <td class="text-center" width="50">
-                                          <i class="zmdi zmdi-delete f-20 p-r-10"></i>
+                                          <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>
                                           </td> -->
                                         </tr>
 
@@ -1273,7 +1273,7 @@
                                               </li>
 
                                               <li class="hidden-xs eliminar">
-                                                  <a class="pointer"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar Clase</a>
+                                                  <a class="pointer"><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar Clase</a>
                                               </li>
 
                                             @endif

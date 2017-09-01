@@ -302,7 +302,7 @@
                                   <hr></hr>
                                   
                                    <a href="{{url('/')}}/especiales/regalos/enviar/{{$regalo->id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Agregar participante" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$regalo->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$regalo->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
                                 

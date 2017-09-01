@@ -104,7 +104,7 @@
                                                         </li>
 
                                                         <li class="hidden-xs">
-                                                            <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
+                                                            <a class="eliminar"><i class="zmdi zmdi-delete boton red f-20"></i> Eliminar</a>
                                                         </li>
 
 

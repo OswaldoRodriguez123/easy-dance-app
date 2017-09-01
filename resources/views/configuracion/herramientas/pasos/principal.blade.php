@@ -224,7 +224,7 @@
                                     <td class="text-center previa">{{$paso->especialidad}}</td>
                                     <td class="text-center previa">{{$paso->nivel}}</td>
                                     <td class="text-center previa">{{$paso->ciclo}}</td>
-                                    <td class="text-center disabled"> <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> <i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 
                                                            
@@ -295,7 +295,7 @@
         });
 
 
-        $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+        $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
 
             var id = $(this).closest('tr').attr('id');
             element = this;
@@ -398,7 +398,7 @@
                                 ''+respuesta.especialidad+'',
                                 ''+respuesta.nivel+'',
                                 ''+respuesta.paso.ciclo+'',
-                                '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                                '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer"></i>'
                             ] ).draw(false).node();
 
                             $( rowNode )

@@ -45,7 +45,7 @@
 
                     <li data-ripplecator class ="dark-ripples">
                         <a href="#" class="eliminar">
-                            <span class="ca-icon-c"><i  class="zmdi zmdi-delete f-35 boton red sa-warning" name="eliminar" id="{{$id}}" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
+                            <span class="ca-icon-c"><i  class="zmdi zmdi-delete boton red f-35 boton red sa-warning" name="eliminar" id="{{$id}}" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""  ></i></span>
                             <div class="ca-content-c">
                                 <h2 class="ca-main-c">Eliminar</h2>
                                 <h3 class="ca-sub-c"></h3>

@@ -136,7 +136,7 @@
                                                 <td class="text-center previa">{{ number_format($factura['total'], 2, '.' , '.') }}</td>
                                                 <td class="text-center previa">
                                                     <i name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>
-                                                    <i class="zmdi zmdi-delete f-20 p-r-10 pointer eliminar_factura"></i>
+                                                    <i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer eliminar_factura"></i>
                                                 </td>
                                             </tr>
 
@@ -259,7 +259,7 @@
                         ''+nombre+'',
                         ''+array.fecha_vencimiento+'',
                         ''+formatmoney(parseFloat(array.importe_neto))+'',
-                        '<i name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i class="eliminar zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                        '<i name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i class="eliminar zmdi zmdi-delete boton red f-20 p-r-10 pointer"></i>'
                         ] ).draw(false).node();
                         $( rowNode )
                             .attr('id',array.id)
@@ -305,7 +305,7 @@
                     ''+concepto+'',
                     ''+array.fecha+'',
                     ''+formatmoney(parseFloat(array.total))+'',
-                    '<i name="correo" class="zmdi zmdi-email f-20 p-r-10"></i> <i class="eliminar_factura zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                    '<i name="correo" class="zmdi zmdi-email f-20 p-r-10"></i> <i class="eliminar_factura zmdi zmdi-delete boton red f-20 p-r-10 pointer"></i>'
                     ] ).draw(false).node();
                     $( rowNode )
                         .attr('id',array.id)

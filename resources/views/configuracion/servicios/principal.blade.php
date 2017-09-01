@@ -131,7 +131,7 @@
                                         <span style="display: none">
                                             {{$servicio['tipo']}}
                                         </span> 
-                                        <i name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i>
+                                        <i name="eliminar" id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i>
                                     </td>
                                 </tr>
                             @endforeach 

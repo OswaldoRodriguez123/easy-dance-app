@@ -55,7 +55,7 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-delete f-25"></i> Reporte de Eliminados</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-delete boton red f-25"></i> Reporte de Eliminados</p>
                             <hr class="linea-morada">
                                                          
                         </div>

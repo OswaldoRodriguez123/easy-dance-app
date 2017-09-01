@@ -133,7 +133,7 @@
                                     <td class="text-center"> 
 
                                     <i class="zmdi zmdi-refresh-alt f-20 p-r-10 pointer acciones" id="{{$id}}" name="descongelar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Descongelar" title="" data-original-title=""></i> 
-                                    <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones" id="{{$id}}" name="eliminar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Eliminar Permanentemente" title="" data-original-title=""></i></td>
+                                    <i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones" id="{{$id}}" name="eliminar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Eliminar Permanentemente" title="" data-original-title=""></i></td>
                                 </tr>
                             @endforeach 
                                                            

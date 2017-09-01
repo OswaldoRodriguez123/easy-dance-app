@@ -29,7 +29,7 @@
                                    data-original-title="Enviar Correo" type="button" class="btn btn-primary waves-effect" data-toggle="tooltip" data-placement="bottom" title=""></i>
                                </div>
                                <div class="col-sm-4 text-center">
-                                   <i  class="zmdi zmdi-delete f-35 boton red sa-warning" data-original-title="Eliminar" type="button" class="btn btn-primary waves-effect" data-toggle="tooltip" data-placement="bottom" title=""  ></i> 
+                                   <i  class="zmdi zmdi-delete boton red f-35 boton red sa-warning" data-original-title="Eliminar" type="button" class="btn btn-primary waves-effect" data-toggle="tooltip" data-placement="bottom" title=""  ></i> 
                                                                
                                </div>
                             </div>                           
@@ -293,7 +293,7 @@
                                     <td>{{$promociones['porcentaje_descuento']}}  </td>
                                     <td class="text-center"><label class="label label-success f-13">Activo</label></td>
                                     <td class="text-center"><label class="label label-success f-13">Bien</label></td>
-                                    <td class="text-center"> <i data-toggle="modal" href="#modalNivel" class="zmdi zmdi-filter-list f-20 p-r-10"></i> <i id = "<?= $id ?>" class="zmdi zmdi-delete f-20 sa-warning"></i></td>
+                                    <td class="text-center"> <i data-toggle="modal" href="#modalNivel" class="zmdi zmdi-filter-list f-20 p-r-10"></i> <i id = "<?= $id ?>" class="zmdi zmdi-delete boton red f-20 sa-warning"></i></td>
                                 </tr>
                             @endforeach  
                                 <tr>

@@ -120,7 +120,7 @@
                                     <td class="text-center previa">{{$patrocinador->monto}}</td>
                                     <td class="text-center previa">{{$patrocinador->cantidad}}</td>
                                     <td class="text-center"> 
-                                      <i class="zmdi zmdi-delete eliminar f-20 p-r-10"></i> 
+                                      <i class="zmdi zmdi-delete boton red eliminar f-20 p-r-10"></i> 
                                       <!-- <i class="zmdi zmdi-email f-20 p-r-10"></i> -->
                                     </td>
                                 </tr>
@@ -221,7 +221,7 @@
             });
 
 
-      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
         var id = $(this).closest('tr').attr('id');
         element = this;
 

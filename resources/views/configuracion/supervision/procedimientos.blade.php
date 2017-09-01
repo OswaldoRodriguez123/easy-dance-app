@@ -257,7 +257,7 @@
                                 <tr id="{{$id}}" class="seleccion">
                                     <td class="text-center previa">{{$procedimiento['nombre']}}</td>
                                     <td class="text-center previa">{{$procedimiento['items']}}</td>
-                                    <td class="text-center disabled"> <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> <i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 
                                                            
@@ -409,7 +409,7 @@
         });
 
 
-        $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+        $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
 
                 var id = $(this).closest('tr').attr('id');
                 element = this;
@@ -514,7 +514,7 @@
                             var rowId=array.id;
                             var rowNode=f.row.add( [
                                 ''+array.nombre+'',
-                                '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                                '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer"></i>'
                             ] ).draw(false).node();
 
                             $( rowNode )
@@ -584,7 +584,7 @@
                             var rowId=respuesta.array.id;
                             var rowNode=s.row.add( [
                                 ''+respuesta.array.nombre+'',
-                                '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                                '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer"></i>'
                             ] ).draw(false).node();
 
                             $( rowNode )
@@ -637,7 +637,7 @@
             });
         });
 
-        $('#tablesession tbody').on( 'click', 'i.zmdi-delete', function () {
+        $('#tablesession tbody').on( 'click', 'i.zmdi-delete boton red', function () {
             var padre=$(this).parents('tr');
             var token = $('input:hidden[name=_token]').val();
             var row = $(this).closest('tr').attr('id');
@@ -729,7 +729,7 @@
                             var rowNode=t.row.add( [
                                 ''+respuesta.nombre+'',
                                 ''+respuesta.cantidad+'',
-                                '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                                '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer"></i>'
                             ] ).draw(false).node();
 
                             $( rowNode )
@@ -812,7 +812,7 @@
                             var rowId=respuesta.array.id;
                             var rowNode=f.row.add( [
                                 ''+respuesta.array.nombre+'',
-                                '<i class="zmdi zmdi-delete f-20 p-r-10 pointer"></i>'
+                                '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer"></i>'
                             ] ).draw(false).node();
 
                             $( rowNode )
@@ -870,7 +870,7 @@
             });
         });
 
-        $('#tablefijo tbody').on( 'click', 'i.zmdi-delete', function () {
+        $('#tablefijo tbody').on( 'click', 'i.zmdi-delete boton red', function () {
             var padre=$(this).parents('tr');
             var token = $('input:hidden[name=_token]').val();
             var row = $(this).closest('tr').attr('id');

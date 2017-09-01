@@ -427,7 +427,7 @@
                                   <hr></hr>
                                   
                                   <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$proveedor->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$proveedor->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
                                     
@@ -477,7 +477,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="proveedor-correo"><span>{{$proveedor->correo}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalTelefono-Proveedor">
+                            <tr id ="tr_contacto" data-valor="{{$proveedor->celular}}" class="detalle" data-toggle="modal" href="#modalTelefono-Proveedor">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi {{ empty($proveedor->telefono) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-telefono f-22"></i> </span>
@@ -531,6 +531,11 @@
     route_email="{{url('/')}}/correo/sesion";
 
     $(document).ready(function(){
+
+      if($('#tr_contacto').data('valor') != ''){
+        $("#estatus-telefono").removeClass('c-amarillo zmdi-dot-circle');
+        $("#estatus-telefono").addClass('c-verde zmdi-check');
+      }
 
       $('#nombre').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', {'translation': {
 
@@ -650,6 +655,15 @@
           else{
             $("#estatus-"+c.name).removeClass('c-amarillo zmdi-dot-circle');
             $("#estatus-"+c.name).addClass('c-verde zmdi-check');
+          }
+
+          if(c.name == 'celular'){
+            $('#tr_contacto').data('valor') == c.value;
+          }
+
+          if(c.name == 'celular' && $('#tr_contacto').data('valor') != ''){
+            $("#estatus-telefono").removeClass('c-amarillo zmdi-dot-circle');
+            $("#estatus-telefono").addClass('c-verde zmdi-check');
           }
         });
       }

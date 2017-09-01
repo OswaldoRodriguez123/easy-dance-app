@@ -332,7 +332,7 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_a-instructor f-25" id="id-clase_grupal_id"></i> Agregar Familia</span>                                                         
+                            <span class="f-25 c-morado"><i class="icon_d-familia f-25" id="id-clase_grupal_id"></i> Agregar Familia</span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
@@ -908,7 +908,7 @@
 
                           if(respuesta.editar == ''){
 
-                            $( "#participantes" ).append( '<div class="col-sm-2 participante" id='+id+' data-identificacion='+identificacion+' data-nombre='+nombre+' data-apellido='+apellido+' data-fecha='+fecha_nacimiento+' data-sexo='+sexo+' data-correo='+correo+' data-celular='+celular+'><i class="zmdi zmdi-edit pointer f-20 p-r-10"></i> <i class="zmdi zmdi-delete pointer f-20 p-r-10 eliminar"></i> <img name="imagen_mostrar" class="img-responsive img-circle" src='+sexo_imagen+' alt=""> <br> <span name="nombre_mostrar">'+nombre+ ' '+apellido+'</span></div>');
+                            $( "#participantes" ).append( '<div class="col-sm-2 participante" id='+id+' data-identificacion='+identificacion+' data-nombre='+nombre+' data-apellido='+apellido+' data-fecha='+fecha_nacimiento+' data-sexo='+sexo+' data-correo='+correo+' data-celular='+celular+'><i class="zmdi zmdi-edit pointer f-20 p-r-10"></i> <i class="zmdi zmdi-delete boton red pointer f-20 p-r-10 eliminar"></i> <img name="imagen_mostrar" class="img-responsive img-circle" src='+sexo_imagen+' alt=""> <br> <span name="nombre_mostrar">'+nombre+ ' '+apellido+'</span></div>');
 
                           }else{
 
@@ -969,7 +969,7 @@
                 });
             });
 
-          $('#participantes').on( 'click', 'i.zmdi-delete', function () {
+          $('#participantes').on( 'click', 'i.zmdi-delete boton red', function () {
                   var token = $('input:hidden[name=_token]').val();
                   var id = this.id;
                         $.ajax({

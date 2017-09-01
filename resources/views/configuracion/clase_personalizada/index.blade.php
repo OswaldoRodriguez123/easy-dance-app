@@ -244,7 +244,9 @@
                                 <td class="text-center previa">{{$clase_personalizada->nombre}}</td>
                                 <td class="text-center previa">{{ number_format($clase_personalizada->costo, 2, '.' , '.') }}</td>
 
-                                <td class="text-center disabled"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
+                                <td class="text-center disabled"> 
+                                  <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i>
+                                </td>
 
                                 </tr>
 
@@ -339,36 +341,7 @@
                         }
                     }
         });
-    
 
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-                //Basic Example
-                $("#data-table-basica").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
-                    }
-                });
-
-                rechargeActivas();
 			});
         
       function previa(t){
@@ -620,7 +593,6 @@
                                 }
                 });
       }
-
 
 		</script>
 @stop

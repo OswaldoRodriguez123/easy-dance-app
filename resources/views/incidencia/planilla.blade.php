@@ -300,8 +300,8 @@
                                   <span class="f-16 f-700">Acciones</span>
 
                                   <hr></hr>
-                                  <a href="{{url('/')}}/incidencias/visualizar/{{$id}}"><i class="zmdi zmdi-eye f-20 m-r-10 boton red sa-warning"  data-original-title="Visualizar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <a href="{{url('/')}}/incidencias/visualizar/{{$id}}"><i class="zmdi zmdi-eye f-20 m-r-10 boton azul sa-warning"  data-original-title="Visualizar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
                                     

@@ -138,7 +138,7 @@
                                     <td class="text-center previa">{{$evaluacion['total']}}</td>
                                     <td class="text-center previa">{{intval($evaluacion['porcentaje'])}}%</td>
                                     @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
-                                        <td class="text-center disabled"> <i class="zmdi zmdi-delete pointer f-20 p-r-10"></i></td>
+                                        <td class="text-center disabled"> <i class="zmdi zmdi-delete boton red pointer f-20 p-r-10"></i></td>
                                     @endif
                                 </tr>
                             @endforeach  
@@ -221,7 +221,7 @@
     }
 
 
-    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
       var id = $(this).closest('tr').attr('id');
       element = this;
 

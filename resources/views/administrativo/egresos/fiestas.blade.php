@@ -153,7 +153,7 @@
         window.open(route, '_blank');;
       }
 
-      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
 
                 var id = $(this).closest('tr').attr('id');
                 // var temp = row.split('_');

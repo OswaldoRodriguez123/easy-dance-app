@@ -119,7 +119,7 @@
                                     <td class="text-center previa">{{$patrocinador->nombre}} {{$patrocinador->apellido}}</td>
                                     <td class="text-center previa">{{$patrocinador->monto}}</td>
                                     <td class="text-center previa">{{$patrocinador->cantidad}}</td>
-                                    <!-- <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete eliminar f-20 p-r-10"></i> <i data-toggle="modal" class="zmdi zmdi-email f-20 p-r-10"></i></td> -->
+                                    <!-- <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete boton red eliminar f-20 p-r-10"></i> <i data-toggle="modal" class="zmdi zmdi-email f-20 p-r-10"></i></td> -->
                                 </tr>
                             @endforeach 
                                                            
@@ -218,7 +218,7 @@
             });
 
 
-      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
 
                 var id = $(this).closest('tr').attr('id');
                 // var temp = row.split('_');

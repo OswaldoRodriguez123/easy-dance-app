@@ -43,7 +43,7 @@
                         <div class="card-header text-right">
                             <span class="f-16 p-t-0 text-success">Agregar una Familia <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-instructor f-25"></i> Sección de Familias</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_d-familia f-25"></i> Sección de Familias</p>
                             <hr class="linea-morada">                                                         
                         </div>
                         <div class="table-responsive row">
@@ -95,7 +95,7 @@
                                                         </li>
 
                                                         <li class="hidden-xs eliminar">
-                                                            <a class="pointer eliminar"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                                            <a class="pointer eliminar"><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>
                                                         </li>
 
                                                     </ul>

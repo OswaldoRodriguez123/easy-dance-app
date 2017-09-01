@@ -71,7 +71,9 @@
                                     </td>
                                     <td class="text-center previa">{{$promocion['nombre']}}</td>
                                     <td class="text-center previa">{{$promocion['porcentaje_descuento']}}% </td>
-                                    <td class="text-center disabled"> <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> 
+                                        <i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer boton red"></i>
+                                    </td>
                                     <!-- <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i></td> -->
                                 </tr>
                             @endforeach  
@@ -170,7 +172,7 @@
             window.open(route, '_blank');;
          });
 
-      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
 
                 var id = $(this).closest('tr').attr('id');
                 // var temp = row.split('_');

@@ -1142,7 +1142,7 @@
                 ''+respuesta.array[0].impuesto+'',
                 ''+formatmoney(parseFloat(respuesta.array[0].importe_neto))+'',
                 ''+'Por Cobrar'+'',
-                '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                 ] ).draw(false).node();
                 $( rowNode )
                 .attr('id',rowId)
@@ -1215,7 +1215,7 @@
 
     //FUNCION ELIMINAR
 
-    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
     
       var id = $(this).closest('tr').attr('id');
       var element = $(this)
@@ -1427,7 +1427,7 @@
                 ''+array[0].impuesto+'',
                 ''+formatmoney(parseFloat(array[0].importe_neto))+'',
                 ''+estatus+'',
-                ''+'<i class="zmdi zmdi-delete f-20 p-r-10"></i>'+''
+                ''+'<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'+''
                 ] ).draw(false).node();
                 $( rowNode )
                 .attr('id',rowId)

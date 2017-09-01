@@ -18,63 +18,141 @@
 
 @section('content')
 
- <div class="modal fade" id="modalCancelar" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                                        <h4 class="modal-title c-negro"> Clase Cancelada <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                                    </div>
-                                    <form name="cancelar_clase" id="cancelar_clase"  >
-                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                       <div class="modal-body">                           
-                                       <div class="row p-t-20 p-b-0">
-
-                                           <div class="col-sm-3">
-  
-                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
-
-                                                <div class="clearfix p-b-15"></div>
-    
-                                                <span class="f-15 f-700 span_instructor"></span>
-
-                                                  
-                                           </div>
-
-                                           <div class="col-sm-9">
-                                             
-                                            <p class="f-16">Horario: <span class="f-700 span_hora"></span></p>
-
-                                            <p class="f-16">Fecha: <span class="f-700 span_fecha"></span></p> 
-
-                                               <div class="clearfix"></div> 
-                                               <div class="clearfix p-b-15"></div>
-
-
-                                           </div>
-
-                                           
-                                       </div>
-
-                                       <div class="row p-t-20 p-b-0">
-
-                                       <hr style="margin-top:5px">
-
-                                       <div class="col-sm-12">
-                                 
-                                        <label for="razon_cancelacion" id="id-razon_cancelacion">Razones de cancelación</label>
-                                        <br></br>
-
-                                        <div class="fg-line">
-                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" disabled></textarea>
-                                          </div>
-                                      </div>
-
-                                       </div>
-                                       
-                                    </div>
-                                </div>
-                            </div>
+            <div class="modal fade" id="modalCancelada" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"> Clase Cancelada <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
+                         <div class="modal-body">                           
+                         <div class="row p-t-20 p-b-0">
+
+                             <div class="col-sm-3">
+
+                                  <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                                  <div class="clearfix p-b-15"></div>
+
+                                  <span class="f-15 f-700 span_instructor"></span>
+
+                                    
+                             </div>
+
+                             <div class="col-sm-9">
+                               
+                              <p class="f-16">Horario: <span class="f-700 span_hora"></span></p>
+
+                              <p class="f-16">Fecha: <span class="f-700 span_fecha"></span></p> 
+
+                                 <div class="clearfix"></div> 
+                                 <div class="clearfix p-b-15"></div>
+
+
+                             </div>
+
+                             
+                         </div>
+
+                         <div class="row p-t-20 p-b-0">
+
+                           <hr style="margin-top:5px">
+                           <div class="col-sm-12">
+                     
+                            <label class ="razon_cancelacion" for="razon_cancelacion" id="id-razon_cancelacion">Razones de cancelación</label>
+                            <br></br>
+
+                            <div class="fg-line">
+                              <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" disabled></textarea>
+                              </div>
+                          </div>
+
+                         </div>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="modalCancelar" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"> Cancelar una clase <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="cancelar_clase" id="cancelar_clase"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" name="clasepersonalizada_id" id="clasepersonalizada_id"></input>  
+                          <input type="hidden" name="tipo" id="tipo" value="1"></input>  
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+
+                             <div class="col-sm-3">
+
+                                  <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                                  <div class="clearfix p-b-15"></div>
+
+                                  <span class="f-15 f-700 span_instructor"></span>
+
+                                    
+                             </div>
+
+                             <div class="col-sm-9">
+                               
+                              <p class="f-16">Horario: <span class="f-700 span_hora"></span></p>
+
+                              <p class="f-16">Fecha: <span class="f-700 span_fecha"></span></p> 
+
+                                 <div class="clearfix"></div> 
+                                 <div class="clearfix p-b-15"></div>
+
+
+                             </div>
+
+                             
+                          </div>
+
+                           <div class="row p-t-20 p-b-0">
+
+                           <hr style="margin-top:5px">
+
+                           <div class="col-sm-12">
+                     
+                            <label for="razon_cancelacion" id="id-razon_cancelacion">Razones de cancelar la clase</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás cancelando o bloqueando la clase" title="" data-original-title="Ayuda"></i>
+                            <br></br>
+
+                            <div class="fg-line">
+                              <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" placeholder="Ej. No podré  asistir por razones ajenas a mi voluntad"></textarea>
+                              </div>
+                            <div class="has-error" id="error-razon_cancelacion">
+                              <span >
+                                <small class="help-block error-span" id="error-razon_cancelacion_mensaje" ></small>                                           
+                              </span>
+                            </div>
+                          </div>
+
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-6 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-6">                          
+                              <button type="button" class="btn-blanco btn m-r-10 f-16 cancelar_clase" id="cancelar_clase" name="cancelar_clase" > Completar la cancelación</button>
+                              <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
 
             <a href="{{url('/')}}/agendar/clases-personalizadas/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
@@ -214,8 +292,13 @@
                                                           <a onclick="procesando()" href="{{url('/')}}/agendar/clases-personalizadas/agenda/{{$id}}"><i class="zmdi zmdi-eye f-16 boton blue"></i> Agenda</a>
                                                       </li>
 
+                                                      <li class="hidden-xs cancelar">
+                                                          <a><i class="zmdi zmdi-close-circle-o f-16 c-youtube"></i> Cancelar Clase</a>
+                                                      </li>
+
+
                                                       <li class="hidden-xs eliminar">
-                                                          <a class="pointer eliminar"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                                          <a class="pointer eliminar"><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>
                                                       </li>
 
                                                   </ul>
@@ -263,6 +346,8 @@
         route_configuracion="{{url('/')}}/agendar/clases-personalizadas/configurar"
         route_eliminar="{{url('/')}}/agendar/clases-personalizadas/eliminar/";
         route_principal="{{url('/')}}/agendar/clases-personalizadas";
+        route_cancelar="{{url('/')}}/agendar/clases-personalizadas/cancelar";
+        route_cancelarpermitir="{{url('/')}}/agendar/clases-personalizadas/cancelarpermitir";
             
         $(document).ready(function(){
 
@@ -322,8 +407,7 @@
         
         var row = $(t).closest('tr');
 
-        if(row.data('tipo') == 'A')
-        {
+        if(row.data('tipo') == 'A'){
 
           var id = $(row).attr('id');
           var route =route_detalle+"/"+id;
@@ -339,11 +423,28 @@
           $('.span_fecha').text(fecha)
           $('.span_hora').text(hora)
           $('.span_instructor').text(instructor)
-          $('#razon_cancelacion').text(cancelacion)
-          $("#modalCancelar" ).modal('show');
+          $('.razon_cancelacion').text(cancelacion)
+          $("#modalCancelada" ).modal('show');
 
         }
       }
+
+      $('.cancelar').on('click', function(){
+        var row = $(this).closest('tr');
+        var id = $(row).attr('id')
+
+        var fecha = $(row).find('td').eq(4).html();
+        var hora = $(row).find('td').eq(5).html();
+        var instructor = $(row).find('td').eq(3).html();
+        $('.span_fecha').text(fecha)
+        $('.span_hora').text(hora)
+        $('.span_instructor').text(instructor)
+        $('#clasepersonalizada_id').val(id)
+
+        $("#modalCancelar" ).modal('show');
+      })
+
+
 
       $('#tablelistar tbody').on( 'click', 'i.zmdi-wrench', function () {
 
@@ -639,8 +740,89 @@
     });
 
     $('.table-responsive').on('hide.bs.dropdown', function () {
-        $('.table-responsive').css( "overflow", "auto" );
-     }) 
+      $('.table-responsive').css( "overflow", "auto" );
+   }) 
+
+    $(".cancelar_clase").click(function(){
+
+        var id = $('#clasepersonalizada_id').val()
+    
+         swal({   
+                    title: "Desea cancelar la clase personalizada",   
+                    text: "Confirmar cancelación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Confirmar cancelación!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+          procesando();
+         var route = route_cancelar;
+         var token = '{{ csrf_token() }}';
+         var datos = $( "#cancelar_clase" ).serialize(); 
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:datos,
+                    success:function(respuesta){
+
+                        window.location = route_principal; 
+
+                    },
+                    error:function(msj){
+                    if (typeof msj.responseJSON === "undefined") {
+                      window.location = "{{url('/')}}/error";
+                    }
+                    $(".modal").modal('hide');
+                    finprocesado();
+                    swal({ 
+                    title: 'El estatus de esta clase es de "cancelación tardía", al cancelarla de igual manera será debitada económicamente al participante. ¿ Desea proceder ?',   
+                    text: "Confirmar cancelación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Confirmar cancelación!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true,
+                    html: true
+                }, function(isConfirm){   
+                  if (isConfirm) {
+                    procesando();
+                    var route = route_cancelarpermitir + id;
+
+                    $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:datos,
+                    success:function(respuesta){
+
+                        window.location = route_principal; 
+
+                    },
+                    error:function(msj){
+
+                            // if (typeof msj.responseJSON === "undefined") {
+                            //     window.location = "{{url('/')}}/error";
+                            //  }
+
+
+    
+                            }
+                        });
+                    }
+                });
+             }
+         });
+        }
+      });
+    });
+
 
 		</script>
 @stop

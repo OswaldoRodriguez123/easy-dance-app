@@ -919,7 +919,7 @@
                           ''+dia_de_semana_id+'',
                           ''+hora_inicio+'',
                           ''+hora_final+'',
-                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
                           .attr('id',rowId)
@@ -984,7 +984,7 @@
 
     });
 
-  $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+  $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
         var padre=$(this).parents('tr');
         var token = $('input:hidden[name=_token]').val();
         var id = $(this).closest('tr').attr('id');
@@ -1168,7 +1168,7 @@
                   ''+monto+'',
                   ''+monto_porcentaje+'',
                   ''+monto_minimo+'',
-                  '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                  '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                   ] ).draw(false).node();
 
                   $( rowNode )
@@ -1232,7 +1232,7 @@
 
     });
 
-  $('#tablepagos tbody').on( 'click', 'i.zmdi-delete', function () {
+  $('#tablepagos tbody').on( 'click', 'i.zmdi-delete boton red', function () {
 
                 var id = $(this).closest('tr').attr('id') + '-' + $(this).closest('tr').data('tipo_servicio');
                 element = this;

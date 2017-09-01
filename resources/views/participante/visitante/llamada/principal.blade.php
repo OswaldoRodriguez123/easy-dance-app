@@ -137,7 +137,7 @@
                                     @endif
                                   </td>
                                   <td>{{$tiempo_respuesta}}</td>
-                                  <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer eliminar"></i></td>
+                                  <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer eliminar"></i></td>
                                     
                                 </tr>
                             @endforeach 

@@ -276,87 +276,87 @@
 
 
             <div class="modal fade" id="modalCancelar" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                                        <h4 class="modal-title c-negro"> Cancelar una clase <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                                    </div>
-                                    <form name="cancelar_clase" id="cancelar_clase"  >
-                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                       <input type="hidden" name="clasepersonalizada_id" id="clasepersonalizada_id" value="{{$clasepersonalizada->id}}"></input>  
-                                      <input type="hidden" name="tipo" id="tipo" value="1"></input>  
-                                       <div class="modal-body">                           
-                                       <div class="row p-t-20 p-b-0">
-
-                                           <div class="col-sm-3">
-  
-                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
-
-                                                <div class="clearfix p-b-15"></div>
-    
-                                                <span class="f-15 f-700 span_instructor">{{$clasepersonalizada->instructor_nombre}} {{$clasepersonalizada->instructor_apellido}}  </span>
-
-                                                  
-                                           </div>
-
-                                           <div class="col-sm-9">
-                                             
-                                            <p class="f-16"> <span class="f-700 span_hora">Horario: {{$clasepersonalizada->hora_inicio}} - {{$clasepersonalizada->hora_final}}</span></p>
-
-                                            <p class="f-16"> <span class="f-700 span_fecha">Fecha: {{$clasepersonalizada->fecha_inicio}}</span></p> 
-
-                                            <p class="f-16"> <span class="f-700 span_especialidad">Especialidad: {{$clasepersonalizada->especialidad_nombre}}</span></p>
-
-                                               <div class="clearfix"></div> 
-                                               <div class="clearfix p-b-15"></div>
-
-
-                                           </div>
-
-                                           
-                                       </div>
-
-                                       <div class="row p-t-20 p-b-0">
-
-                                       <hr style="margin-top:5px">
-
-                                       <div class="col-sm-12">
-                                 
-                                        <label for="razon_cancelacion" id="id-razon_cancelacion">Razones de cancelar la clase</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás cancelando o bloqueando la clase" title="" data-original-title="Ayuda"></i>
-                                        <br></br>
-
-                                        <div class="fg-line">
-                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" placeholder="Ej. No podré  asistir por razones ajenas a mi voluntad"></textarea>
-                                          </div>
-                                        <div class="has-error" id="error-razon_cancelacion">
-                                          <span >
-                                            <small class="help-block error-span" id="error-razon_cancelacion_mensaje" ></small>                                           
-                                          </span>
-                                        </div>
-                                      </div>
-
-                                       </div>
-                                       
-                                    </div>
-                                    <div class="modal-footer p-b-20 m-b-20">
-                                        <div class="col-sm-6 text-left">
-                                          <div class="procesando hidden">
-                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                                          <div class="preloader pls-purple">
-                                              <svg class="pl-circular" viewBox="25 25 50 50">
-                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                              </svg>
-                                          </div>
-                                          </div>
-                                        </div>
-                                        <div class="col-sm-6">                          
-                                          <button type="button" class="btn-blanco btn m-r-10 f-16 cancelar_clase" id="cancelar_clase" name="cancelar_clase" > Completar la cancelación</button>
-                                          <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
-                                        </div>
-                                    </div></form>
-                                </div>
-                            </div>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"> Cancelar una clase <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
+                        <form name="cancelar_clase" id="cancelar_clase"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <input type="hidden" name="clasepersonalizada_id" id="clasepersonalizada_id" value="{{$clasepersonalizada->id}}"></input>  
+                          <input type="hidden" name="tipo" id="tipo" value="1"></input>  
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+
+                               <div class="col-sm-3">
+
+                                    <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                                    <div class="clearfix p-b-15"></div>
+
+                                    <span class="f-15 f-700 span_instructor">{{$clasepersonalizada->instructor_nombre}} {{$clasepersonalizada->instructor_apellido}}  </span>
+
+                                      
+                               </div>
+
+                               <div class="col-sm-9">
+                                 
+                                <p class="f-16"> <span class="f-700 span_hora">Horario: {{$clasepersonalizada->hora_inicio}} - {{$clasepersonalizada->hora_final}}</span></p>
+
+                                <p class="f-16"> <span class="f-700 span_fecha">Fecha: {{$clasepersonalizada->fecha_inicio}}</span></p> 
+
+                                <p class="f-16"> <span class="f-700 span_especialidad">Especialidad: {{$clasepersonalizada->especialidad_nombre}}</span></p>
+
+                                   <div class="clearfix"></div> 
+                                   <div class="clearfix p-b-15"></div>
+
+
+                               </div>
+
+                               
+                           </div>
+
+                           <div class="row p-t-20 p-b-0">
+
+                           <hr style="margin-top:5px">
+
+                           <div class="col-sm-12">
+                     
+                            <label for="razon_cancelacion" id="id-razon_cancelacion">Razones de cancelar la clase</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás cancelando o bloqueando la clase" title="" data-original-title="Ayuda"></i>
+                            <br></br>
+
+                            <div class="fg-line">
+                              <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" placeholder="Ej. No podré  asistir por razones ajenas a mi voluntad"></textarea>
+                              </div>
+                            <div class="has-error" id="error-razon_cancelacion">
+                              <span >
+                                <small class="help-block error-span" id="error-razon_cancelacion_mensaje" ></small>                                           
+                              </span>
+                            </div>
+                          </div>
+
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-6 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-6">                          
+                              <button type="button" class="btn-blanco btn m-r-10 f-16 cancelar_clase" id="cancelar_clase" name="cancelar_clase" > Completar la cancelación</button>
+                              <button type="button" class="cancelar btn btn-default" data-dismiss="modal">Volver</button>
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
 
 
             <div class="modal fade" id="modalMultihorario-ClasePersonalizada" tabindex="-1" role="dialog" aria-hidden="true">
@@ -407,7 +407,7 @@
                                             {{$horario['hora_final']}}
                                           </td>
                                           <!-- <td class="text-center" width="50">
-                                          <i class="zmdi zmdi-delete f-20 p-r-10"></i>
+                                          <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>
                                           </td> -->
                                         </tr>
 
@@ -505,7 +505,7 @@
                                   <a href="{{url('/')}}/agendar/clases-personalizadas/multihorario/{{$clasepersonalizada->id}}"><i class="zmdi zmdi-calendar-note f-16 m-r-5 boton blue"  data-original-title="Multihorario" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/agendar/clases-personalizadas/agenda/{{$clasepersonalizada->id}}"><i class="zmdi zmdi-eye f-16 m-r-5 boton blue"  data-original-title="Ver Agenda" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <i data-toggle="modal" href="#modalCancelar" name="operacion" class="zmdi zmdi-close-circle-o f-20 p-r-10 pointer acciones c-youtube" data-original-title="Cancelar Clase" data-toggle="tooltip" data-placement="bottom" title=""></i>
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$clasepersonalizada->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$clasepersonalizada->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
                                     
@@ -604,16 +604,11 @@
                               <td class="f-14 m-l-15" ><span id="clasepersonalizada-multihorarios">
                                
                               @if(count($arrayHorario) > 1)
-
                                 Varios
                               @elseif(count($arrayHorario) == 1)
-
                                 Ver
-
                               @else
-
                                 Ninguno
-
                               @endif
 
                              <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>

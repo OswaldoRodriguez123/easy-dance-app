@@ -276,8 +276,8 @@
                                   <hr></hr>
                                   
                  
-                                  <a class="" href="{{url('/')}}/supervisiones/conceptos/{{$id}}"><i class="zmdi zmdi-plus f-20 m-r-10 boton red sa-warning" name="conceptos" data-original-title="Conceptos a Evaluar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <a class="" href="{{url('/')}}/supervisiones/conceptos/{{$id}}"><i class="zmdi zmdi-plus f-20 m-r-10 boton blue sa-warning" name="conceptos" data-original-title="Conceptos a Evaluar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
                                     

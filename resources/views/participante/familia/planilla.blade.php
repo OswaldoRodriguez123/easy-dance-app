@@ -728,7 +728,7 @@
                                   <a class="pagar"><i class="icon_a-pagar f-20 m-r-5 boton blue sa-warning" data-original-title="Pagar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a class="transferir"><i class="zmdi zmdi-trending-up zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Transferir" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
                                     
@@ -796,7 +796,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="alumno-correo"><span>{{$familia[0]['correo']}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalTelefono-Alumno">
+                            <tr id ="tr_contacto" data-valor="{{$familia[0]['celular']}}" class="detalle" data-toggle="modal" href="#modalTelefono-Alumno">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi {{ empty($familia[0]['telefono']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-telefono f-22"></i> </span>
@@ -1098,7 +1098,6 @@
           }else if(c.name=='direccion'){
              $("#alumno-"+c.name).data('valor',c.value);
              $("#alumno-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
-            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
           }else{
 
             $("#alumno-"+c.name).text(c.value.toLowerCase());
@@ -1111,6 +1110,15 @@
           else{
             $("#estatus-"+c.name).removeClass('c-amarillo zmdi-dot-circle');
             $("#estatus-"+c.name).addClass('c-verde zmdi-check');
+          }
+
+          if(c.name == 'celular'){
+            $('#tr_contacto').data('valor') == c.value;
+          }
+
+          if(c.name == 'celular' && $('#tr_contacto').data('valor') != ''){
+            $("#estatus-telefono").removeClass('c-amarillo zmdi-dot-circle');
+            $("#estatus-telefono").addClass('c-verde zmdi-check');
           }
         });
       }
@@ -1368,8 +1376,7 @@
 
         $.each(alumno, function (index, array) {
 
-          if(array.es_representante == 0)
-          {
+          if(array.es_representante == 0){
             $("#rol_representate").hide();
           }else{
             $("#rol_representate").show();
@@ -1446,8 +1453,7 @@
          
           $("#total").text(formatmoney(parseFloat(array.total)));
 
-          if(array.total == 0)
-          {
+          if(array.total == 0){
             $(".estatus_e").removeClass('c-youtube');
             $(".estatus_e").addClass('c-verde');
           }else{
@@ -1455,9 +1461,6 @@
             $(".estatus_e").removeClass('c-verde');
           }
           
-
-
-
         });
 
         

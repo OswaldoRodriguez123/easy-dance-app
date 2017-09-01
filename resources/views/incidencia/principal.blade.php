@@ -86,7 +86,12 @@
                                     <td class="text-center previa">{{$incidencia['administrador']}}</td>
                                     <td class="text-center previa">{{$incidencia['fecha']}} </td>
                                     @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
-                                        <td class="text-center disabled"><i name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
+                                        <td class="text-center disabled">
+                                        
+                                            <a href="{{url('/')}}/incidencias/visualizar/{{$id}}"><i class="zmdi zmdi-eye f-20 m-r-10 boton azul sa-warning"  data-original-title="Visualizar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+
+                                            <i name="eliminar" id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i>
+                                        </td>
                                     @endif
                                 </tr>
                             @endforeach 

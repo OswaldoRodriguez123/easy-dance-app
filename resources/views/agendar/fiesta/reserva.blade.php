@@ -1056,7 +1056,7 @@
                   var rowNode=h.row.add( [
                   ''+nombre+'',
                   ''+email+'',
-                  '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                  '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                   ] ).draw(false).node();
                   $( rowNode )
                   .attr('id',rowId)
@@ -1113,7 +1113,7 @@
 
       });
 
-       $('#tableañadir tbody').on( 'click', 'i.zmdi-delete', function () {
+       $('#tableañadir tbody').on( 'click', 'i.zmdi-delete boton red', function () {
           var padre=$(this).parents('tr');
           var token = $('input:hidden[name=_token]').val();
           var id = $(this).closest('tr').attr('id');

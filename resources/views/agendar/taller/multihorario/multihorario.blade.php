@@ -275,7 +275,7 @@
                                         $horario['hora_final']}}
                                       </td>
                                       <td class="text-center" width="50">
-                                      <i class="zmdi zmdi-delete f-20 p-r-10"></i>
+                                      <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>
                                       </td>
                                     </tr>
 
@@ -427,7 +427,7 @@
                           ''+fecha+'',
                           ''+hora_inicio+'',
                           ''+hora_final+'',
-                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
                           .attr('id',rowId)
@@ -480,7 +480,7 @@
 
     });
 
-  $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+  $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
         var padre=$(this).parents('tr');
         var token = $('input:hidden[name=_token]').val();
         var id = $(this).closest('tr').attr('id');

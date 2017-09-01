@@ -64,8 +64,8 @@
                                 <?php $id = $blogger->id; ?>
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$blogger->nombre}}</td>
-                                    <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
-                                  </tr>
+                                    <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i></td>
+                                </tr>
                             @endforeach 
                                                            
                             </tbody>
@@ -169,7 +169,7 @@
             window.open(route, '_blank');;
         });
 
-      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
 
                 var id = $(this).closest('tr').attr('id');
                 // var temp = row.split('_');

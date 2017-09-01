@@ -90,11 +90,19 @@
                                                         </li>
 
                                                         <li class="hidden-xs">
+                                                            <a onclick="procesando()" href="{{url('/')}}/agendar/fiestas/contribuciones/{{$id}}"><i class="zmdi icon_c-money f-16 boton blue"></i> Contribuciones</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
+                                                            <a onclick="procesando()" href="{{url('/')}}/agendar/fiestas/patrocinadores/{{$id}}"><i class="zmdi icon_a-campana f-16 boton blue"></i> Patrocinadores</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
                                                             <a onclick="procesando()" href="{{url('/')}}/agendar/fiestas/egresos/{{$id}}"><i class="zmdi fa fa-money f-16 boton blue"></i> Egresos</a>
                                                         </li>
 
                                                         <li class="hidden-xs eliminar">
-                                                            <a class="pointer eliminar"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                                            <a class="pointer eliminar"><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>
                                                         </li>
 
                                                     </ul>

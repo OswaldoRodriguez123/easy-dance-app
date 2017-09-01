@@ -426,7 +426,7 @@
                                   <hr></hr>
                                   
                                 
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$promocion->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                  <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$promocion->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                   <br></br>
                                     

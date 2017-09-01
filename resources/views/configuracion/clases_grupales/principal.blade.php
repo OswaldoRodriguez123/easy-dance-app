@@ -68,7 +68,7 @@
                                     <td class="text-center previa">{{$clases['nombre']}}</td>
                                     <td class="text-center previa">{{ number_format($clases['costo_inscripcion'], 2, '.' , '.') }}</td>
                                     <td class="text-center previa">{{ number_format($clases['costo_mensualidad'], 2, '.' , '.') }} </td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 
                                                            

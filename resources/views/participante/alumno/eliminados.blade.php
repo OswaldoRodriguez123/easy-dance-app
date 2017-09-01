@@ -80,7 +80,7 @@
                                     <td class="text-center disabled">{{$alumno->administrador_nombre}} {{$alumno->administrador_apellido}} </td>
                                     <td class="text-center disabled"> 
                                         <i class="zmdi zmdi-refresh-alt f-20 p-r-10 pointer acciones" id="{{$id}}" name="restablecer" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Restablecer" title="" data-original-title=""></i> 
-                                        <i class="zmdi zmdi-delete f-20 p-r-10 pointer acciones" id="{{$id}}" name="eliminar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Eliminar Definitivamente" title="" data-original-title=""></i>
+                                        <i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones" id="{{$id}}" name="eliminar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Eliminar Definitivamente" title="" data-original-title=""></i>
                                     </td>
                                 </tr>
                             @endforeach 

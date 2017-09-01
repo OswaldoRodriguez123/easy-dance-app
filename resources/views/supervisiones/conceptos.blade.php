@@ -220,7 +220,7 @@
                                                         </li>
 
                                                         <li class="hidden-xs">
-                                                            <a class="eliminar"><i class="zmdi zmdi-delete f-20"></i> Eliminar</a>
+                                                            <a class="eliminar"><i class="zmdi zmdi-delete boton red f-20"></i> Eliminar</a>
                                                         </li>
 
 
@@ -500,7 +500,7 @@
                             operacion += 'Historial'
                             operacion += '</a></li>'
                             operacion += '<li class="hidden-xs eliminar"><a class="pointer eliminar">'
-                            operacion += '<i class="zmdi zmdi-delete f-20 boton red sa-warning"></i>'
+                            operacion += '<i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i>'
                             operacion += 'Eliminar'
                             operacion += '</a></li>'
                             operacion += '</ul></div></li></ul>'

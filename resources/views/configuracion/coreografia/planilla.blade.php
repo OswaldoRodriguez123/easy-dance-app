@@ -749,7 +749,7 @@
                               <hr></hr>
                               
                               <a href="{{url('/')}}/configuracion/coreografias/participantes/{{$coreografia->id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                              <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$coreografia->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                              <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$coreografia->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                               <br></br>
                                 

@@ -297,7 +297,7 @@
                                       <i class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
                                     </td>
                                     <td class="text-center">
-                                      <i class="zmdi zmdi-delete eliminar f-20 p-r-10"></i>
+                                      <i class="zmdi zmdi-delete boton red eliminar f-20 p-r-10"></i>
                                     </td>
                                 </tr>
                             @endforeach 
@@ -527,7 +527,7 @@
                               ''+sexo+'',
                               ''+nombre+ ' ' +apellido+'',
                               ''+deuda+'',
-                              '<i class="zmdi zmdi-delete eliminar f-20 p-r-10"></i>'
+                              '<i class="zmdi zmdi-delete boton red eliminar f-20 p-r-10"></i>'
                               ] ).draw(false).node();
                               $( rowNode )
                               .attr('id',rowId)
@@ -689,7 +689,7 @@
             });
         });
 
-        $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+        $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
 
                 var id = $(this).closest('tr').attr('id');
                 // var temp = row.split('_');

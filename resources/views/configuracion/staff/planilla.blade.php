@@ -192,7 +192,7 @@
                                                 </td>
                                                 <td class="text-center">{{ number_format($comision['monto_porcentaje'], 2, '.' , '.') }}</td>
                                                 <td class="text-center">{{ number_format($comision['monto_minimo'], 2, '.' , '.') }}</td>
-                                                <td class="text-center"> <i class="zmdi zmdi-delete f-20 p-r-10"></i></td>
+                                                <td class="text-center"> <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i></td>
                                               </tr>
                                         @endforeach 
                                                                        
@@ -799,7 +799,7 @@
                                           </td>
 
                                           <td class="text-center" width="50">
-                                          <i class="zmdi zmdi-delete f-20 p-r-10"></i>
+                                          <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>
                                           </td>
                                         </tr>
 
@@ -894,7 +894,7 @@
       
                                     <a href="{{url('/')}}/configuracion/staff/pagos/{{$alumno->id}}"><i class="zmdi zmdi-money f-20 m-r-5 boton blue sa-warning" data-original-title="Pagos" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                     <a href="{{url('/')}}/incidencias/generar/{{$id}}"><i class="icon_f-incidencias f-20 m-r-5 boton blue sa-warning" data-original-title="Incidencia" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                    <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$alumno->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                    <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$alumno->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
                                     <br></br>
                                 </div>
@@ -1472,7 +1472,7 @@
                           ''+dia_de_semana_id+'',
                           ''+hora_inicio+'',
                           ''+hora_final+'',
-                          '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                           ] ).draw(false).node();
                           $( rowNode )
                           .attr('id',rowId)
@@ -1519,7 +1519,7 @@
 
     });
 
-  $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+  $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
         var padre=$(this).parents('tr');
         var token = $('input:hidden[name=_token]').val();
         var id = $(this).closest('tr').attr('id');
@@ -1683,7 +1683,7 @@
                   ''+monto+'',
                   ''+monto_porcentaje+'',
                   ''+monto_minimo+'',
-                  '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                  '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                   ] ).draw(false).node();
                   $( rowNode )
                   .attr('id',rowId)
@@ -1745,7 +1745,7 @@
 
     });
 
-  $('#tablepagos tbody').on( 'click', 'i.zmdi-delete', function () {
+  $('#tablepagos tbody').on( 'click', 'i.zmdi-delete boton red', function () {
 
                 var id = $(this).closest('tr').attr('id');
                 element = this;

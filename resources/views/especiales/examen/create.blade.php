@@ -82,8 +82,7 @@
 
                                <div class="col-sm-12">
                                  
-                                     <label for="nivel_baile" id="id-instructor_id">Instructor a Cargo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo, dirígete a la sección de instructores y procede a registrarlo" title="" data-original-title="Ayuda"></i>
-
+                                     <label for="nivel_baile" id="id-instructor_id">Instructor a Cargo</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-instructor" id = "pop-instructor" aria-describedby="popoverinstructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de instructores y procede a registrarlo. Desde esta sección podemos redireccionarte <br> <a href='{{url('/')}}/participante/instructor/agregar' class='redirect pointer'> Llévame <i class='icon_a-instructor f-22'></i></a>" title="" data-original-title="Ayuda" data-html="true"></i>
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
                                     <div class="fg-line">
@@ -133,7 +132,7 @@
                                 <div class="clearfix p-b-35"></div>
 
                                  <div class="col-sm-12">
-                                     <label for="nivel_baile" id="id-genero">Especialidad</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un genero, en caso de no poseerlo, dirígete a la sección de genero y procede a registrarlo" title="" data-original-title="Ayuda"></i>
+                                     <label for="nivel_baile" id="id-genero">Especialidad</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de diversas especialidades" title="" data-original-title="Ayuda"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
@@ -1235,7 +1234,7 @@
                             var rowId=respuesta.id;
                             var rowNode=t.row.add( [
                             ''+item_nuevo+'',
-                            '<i class="zmdi zmdi-delete f-20 p-r-10"></i>'
+                            '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                             ] ).draw(false).node();
                             $( rowNode )
                             .attr('id',rowId)
@@ -1290,7 +1289,7 @@
                   });
             });
 
-$('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+$('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
                   var padre=$(this).parents('tr');
                   var token = $('input:hidden[name=_token]').val();
                   var id = $(this).closest('tr').attr('id');
@@ -1330,6 +1329,20 @@ $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
                 $('.clase_grupal').show();
           }
        });
+
+      $('#pop-instructor').popover({
+                html: true,
+                trigger: 'manual'
+            }).on( "mouseenter", function(e) {
+
+                $(this).popover('show');
+                
+                e.preventDefault();
+      });
+
+      $('.ayuda').on('mouseenter', function(e) {
+        $('.ayuda').not(this).popover('hide')
+      })
 
 </script> 
 @stop

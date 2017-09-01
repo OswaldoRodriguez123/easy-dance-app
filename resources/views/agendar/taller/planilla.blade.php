@@ -1155,7 +1155,7 @@
                                   <!-- <a href="{{url('/')}}/agendar/talleres/participantes/{{$taller->id}}"><i class="icon_a-participantes f-16 m-r-5 boton blue"  data-original-title="Participantes" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/agendar/talleres/progreso/{{$taller->id}}"><i class="icon_e-ver-progreso f-16 m-r-5 boton blue"  data-original-title="Ver Progreso" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/agendar/talleres/egresos/{{$taller->id}}"><i class="fa fa-money f-16 m-r-5 boton blue"  data-original-title="Egresos" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <i class="zmdi zmdi-delete f-20 m-r-10 boton red sa-warning" id="{{$taller->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i> -->
+                                  <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$taller->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i> -->
 
                                   <ul class="top-menu">
                                     <li class="dropdown">
@@ -1185,7 +1185,7 @@
                                               </li>
 
                                               <li class="hidden-xs eliminar">
-                                                  <a class="pointer"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                                  <a class="pointer"><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>
                                               </li>
 
                                             @endif

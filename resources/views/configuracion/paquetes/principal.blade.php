@@ -67,7 +67,7 @@
                                     <td class="text-center previa">{{$paquete['nombre']}}</td>
                                     <td class="text-center previa">{{ number_format($paquete['costo'], 2, '.' , '.') }}</td>
                                     <td class="text-center previa">{{$paquete['cantidad_clases_grupales']}} </td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> <i data-toggle="modal" name="eliminar" id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 
                                                            

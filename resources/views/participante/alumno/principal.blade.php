@@ -50,7 +50,7 @@
                                         </a>
                                         <ul class="dropdown-menu dm-icon pull-right">
                                             <li class="hidden-xs">
-                                                <a onclick="procesando()" href="{{url('/')}}/participante/alumno/eliminados"><i name="eliminados" id="eliminados" class="tm-icon zmdi zmdi-delete f-25 pointer eliminados detalle"></i>&nbsp;Bandeja Eliminados</a>
+                                                <a onclick="procesando()" href="{{url('/')}}/participante/alumno/eliminados"><i name="eliminados" id="eliminados" class="tm-icon zmdi zmdi-delete boton red f-25 pointer eliminados detalle"></i>&nbsp;Bandeja Eliminados</a>
                                             </li>
 
                                             <li class="hidden-xs">
@@ -225,7 +225,7 @@
                                                             </li>
 
                                                             <li class="hidden-xs eliminar">
-                                                                <a class="pointer eliminar"><i class="zmdi zmdi-delete f-20 boton red sa-warning"></i> Eliminar</a>
+                                                                <a class="pointer eliminar"><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>
                                                             </li>
 
                                                         </ul>
