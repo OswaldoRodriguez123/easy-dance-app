@@ -2220,7 +2220,7 @@ class UsuarioController extends BaseController {
                     $clasegrupal = InscripcionClaseGrupal::find($InscripcionClase->InscripcionID);
 
                         
-                    if($FacturaProforma != 0 && Carbon::now()->format('Y-m-d') > $tolerancia && $clasegrupal->tiene_mora == 0 && $configClases->porcentaje_retraso){
+                    if($FacturaProforma != 0 && Carbon::now()->addDay() > $tolerancia && $clasegrupal->tiene_mora == 0 && $configClases->porcentaje_retraso){
 
                         $mora = ($configClases->costo_mensualidad * $configClases->porcentaje_retraso)/100;
 
@@ -2261,7 +2261,7 @@ class UsuarioController extends BaseController {
 
                 $fecha->addDays($acuerdo->tiempo_tolerancia);
 
-                if(Carbon::now() > $fecha && $proforma->tiene_mora == 0 && $acuerdo->porcentaje_retraso){
+                if(Carbon::now()->addDay() > $fecha && $proforma->tiene_mora == 0 && $acuerdo->porcentaje_retraso){
 
                     $mora = ($proforma->importe_neto * $acuerdo->porcentaje_retraso)/100;
 
