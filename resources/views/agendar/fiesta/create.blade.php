@@ -1037,7 +1037,7 @@
 
     });
 
-  $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
+  $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
         var padre=$(this).parents('tr');
         var token = $('input:hidden[name=_token]').val();
         var id = $(this).closest('tr').attr('id');
@@ -1155,7 +1155,7 @@
 
     });
 
-  $('#tablehorario tbody').on( 'click', 'i.zmdi-delete boton red', function () {
+  $('#tablehorario tbody').on( 'click', 'i.zmdi-delete', function () {
         var padre=$(this).parents('tr');
         var token = $('input:hidden[name=_token]').val();
         var id = $(this).closest('tr').attr('id');

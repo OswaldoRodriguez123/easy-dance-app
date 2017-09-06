@@ -1023,7 +1023,7 @@
 
     });
 
-    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
         var padre=$(this).parents('tr');
         var token = $('input:hidden[name=_token]').val();
         var id = $(this).closest('tr').attr('id');
@@ -1152,7 +1152,7 @@
 
     });
 
-    $('#tabledatos tbody').on( 'click', 'i.zmdi-delete boton red', function () {
+    $('#tabledatos tbody').on( 'click', 'i.zmdi-delete', function () {
         var padre=$(this).parents('tr');
         var token = $('input:hidden[name=_token]').val();
         var id = $(this).closest('tr').attr('id');

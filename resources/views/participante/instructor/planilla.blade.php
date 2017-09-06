@@ -2360,7 +2360,7 @@
         }
       };
 
-      $('#tablepagos tbody').on( 'click', 'i.zmdi-delete boton red', function () {
+      $('#tablepagos tbody').on( 'click', 'i.zmdi-delete', function () {
 
                 var id = $(this).closest('tr').attr('id');
                 element = this;
@@ -2942,7 +2942,7 @@
 
     });
 
-  $('#tablecomisiones tbody').on( 'click', 'i.zmdi-delete boton red', function () {
+  $('#tablecomisiones tbody').on( 'click', 'i.zmdi-delete', function () {
 
       var id = $(this).closest('tr').attr('id');
       element = this;

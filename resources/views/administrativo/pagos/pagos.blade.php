@@ -1215,7 +1215,7 @@
 
     //FUNCION ELIMINAR
 
-    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
     
       var id = $(this).closest('tr').attr('id');
       var element = $(this)

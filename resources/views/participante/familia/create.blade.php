@@ -969,7 +969,7 @@
                 });
             });
 
-          $('#participantes').on( 'click', 'i.zmdi-delete boton red', function () {
+          $('#participantes').on( 'click', 'i.zmdi-delete', function () {
                   var token = $('input:hidden[name=_token]').val();
                   var id = this.id;
                         $.ajax({

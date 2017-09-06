@@ -409,7 +409,7 @@
         });
 
 
-        $('#tablelistar tbody').on( 'click', 'i.zmdi-delete boton red', function () {
+        $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
 
                 var id = $(this).closest('tr').attr('id');
                 element = this;
@@ -637,7 +637,7 @@
             });
         });
 
-        $('#tablesession tbody').on( 'click', 'i.zmdi-delete boton red', function () {
+        $('#tablesession tbody').on( 'click', 'i.zmdi-delete', function () {
             var padre=$(this).parents('tr');
             var token = $('input:hidden[name=_token]').val();
             var row = $(this).closest('tr').attr('id');
@@ -870,7 +870,7 @@
             });
         });
 
-        $('#tablefijo tbody').on( 'click', 'i.zmdi-delete boton red', function () {
+        $('#tablefijo tbody').on( 'click', 'i.zmdi-delete', function () {
             var padre=$(this).parents('tr');
             var token = $('input:hidden[name=_token]').val();
             var row = $(this).closest('tr').attr('id');

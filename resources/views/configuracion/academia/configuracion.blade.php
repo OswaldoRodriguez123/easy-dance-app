@@ -1440,7 +1440,7 @@
 
     });
 
-    $('#tableniveles tbody').on( 'click', 'i.zmdi-delete boton red', function () {
+    $('#tableniveles tbody').on( 'click', 'i.zmdi-delete', function () {
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
@@ -1471,7 +1471,7 @@
                 .draw();
           });
 
-    $('#tableestudio tbody').on( 'click', 'i.zmdi-delete boton red', function () {
+    $('#tableestudio tbody').on( 'click', 'i.zmdi-delete', function () {
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
@@ -1588,7 +1588,7 @@
 
     });
 
-    $('#tablecargo tbody').on( 'click', 'i.zmdi-delete boton red', function () {
+    $('#tablecargo tbody').on( 'click', 'i.zmdi-delete', function () {
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
@@ -1703,7 +1703,7 @@
 
     });
 
-    $('#tableformula tbody').on( 'click', 'i.zmdi-delete boton red', function () {
+    $('#tableformula tbody').on( 'click', 'i.zmdi-delete', function () {
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
@@ -1818,7 +1818,7 @@
 
     });
 
-    $('#tablevaloracion tbody').on( 'click', 'i.zmdi-delete boton red', function () {
+    $('#tablevaloracion tbody').on( 'click', 'i.zmdi-delete', function () {
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
