@@ -177,7 +177,7 @@ class AgendarController extends BaseController
             ->join('config_niveles_baile', 'config_niveles_baile.id', '=', 'clases_grupales.nivel_baile_id')
             ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
-            ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
+            // ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
             ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
         ->get();
 
@@ -189,7 +189,7 @@ class AgendarController extends BaseController
             ->select('clases_grupales.id', 'clases_grupales.fecha_final', 'clases_grupales.cantidad_hombres','clases_grupales.cantidad_mujeres', 'horarios_clases_grupales.fecha as fecha_inicio', 'horarios_clases_grupales.hora_inicio', 'horarios_clases_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horarios_clases_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'horarios_clases_grupales.instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
-            ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
+            // ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
             ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
         ->get();
 
