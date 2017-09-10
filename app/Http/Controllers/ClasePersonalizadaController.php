@@ -291,7 +291,7 @@ class ClasePersonalizadaController extends BaseController {
             $promotores['1-'.$staff->id] = $promotor_array;
         }
 
-        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->orderBy('nombre', 'asc')->get();
 
         foreach($instructores as $instructor)
         {
@@ -304,7 +304,9 @@ class ClasePersonalizadaController extends BaseController {
             $promotores['2-'.$instructor->id] = $promotor_array;
         }
 
-        return view('agendar.clase_personalizada.reservar')->with(['alumnos' => $alumnos, 'especialidad' => ConfigEspecialidades::all(), 'instructoresacademia' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->where('boolean_disponibilidad' , 1)->get(), 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'precios' => $precios, 'alumno_id' => $alumno_id, 'promotores' => $promotores, 'usuario_tipo' => $usuario_tipo]);
+        usort($promotores, array($this, 'sortByName'));
+
+        return view('agendar.clase_personalizada.reservar')->with(['alumnos' => $alumnos, 'especialidad' => ConfigEspecialidades::all(), 'instructores' => $instructores, 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'precios' => $precios, 'alumno_id' => $alumno_id, 'promotores' => $promotores, 'usuario_tipo' => $usuario_tipo]);
         
     }
 

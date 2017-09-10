@@ -147,8 +147,9 @@
                                       <select class="selectpicker" name="dirigido" id="dirigido" data-live-search="true">
 
                                         <option value="1">Todos</option>
-                                        <option value="2">Visitantes Presenciales</option>
                                         <option value="3">Alumnos</option>
+                                        <option value="2">Visitantes Presenciales</option>
+                                        
                                         
                                       </select>
                                     </div>
@@ -390,7 +391,7 @@
                 });
             };
 
-  $("#guardar").click(function(){
+            $("#guardar").click(function(){
 
                 var contenido = $('#contenido').summernote('code');
                 contenido = encodeURIComponent(contenido);

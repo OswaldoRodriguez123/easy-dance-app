@@ -805,6 +805,7 @@ class BlogController extends BaseController {
             'usuario_id' => 'required',
 	        'titulo' => 'required|min:3|max:60',
 	        'categoria' => 'required',
+            'dirigido' => 'required',
 	        'contenido' => 'required',
 	    ];
 
@@ -814,6 +815,7 @@ class BlogController extends BaseController {
 	        'titulo.min' => 'El mínimo de caracteres permitidos son 3',
 	        'titulo.max' => 'El máximo de caracteres permitidos son 60',
 	        'categoria.required' => 'Ups! La categoria es requerida',
+            'dirigido.required' => 'Ups! A quien va dirigido es requerido',
 	        'contenido.required' => 'Ups! El contenido es requerido',
 
 	    ];
@@ -827,6 +829,11 @@ class BlogController extends BaseController {
 	    }
 
 	    else{
+
+            if($request->contenido == "<p><br></p>"){
+                return response()->json(['errores' => ['contenido' => [0, 'Ups! El contenido es requerido']], 'status' => 'ERROR'],422);
+            }
+            
 
 	        $entrada = new EntradaBlog;
 

@@ -162,7 +162,7 @@
 
                             <div class="col-sm-12">
                            
-                              <label for="instructor" id="id-promotor">Promotor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un promotor" title="" data-original-title="Ayuda"></i>
+                              <label for="instructor" id="id-promotor">Promotor</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un promotor" title="" data-original-title="Ayuda"></i>
 
                               <div class="input-group">
                                 <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
@@ -302,7 +302,7 @@
 
                                     <div class="col-sm-12">
                                  
-                                    <label for="especialidad" id="id-especialidad_id">Especialidad</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de diversas especialidades" title="" data-original-title="Ayuda"></i>
+                                    <label for="especialidad" id="id-especialidad_id">Especialidad</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de diversas especialidades" title="" data-original-title="Ayuda"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
@@ -347,7 +347,7 @@
                                       <div class="select">
                                         <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
                                           <option value="">Selecciona</option>
-                                          @foreach ( $instructoresacademia as $instructores )
+                                          @foreach ( $instructores as $instructores )
                                           <option value = "{{ $instructores['id'] }}">{{ $instructores['nombre'] }} {{ $instructores['apellido'] }}</option>
                                           @endforeach
                                         </select>

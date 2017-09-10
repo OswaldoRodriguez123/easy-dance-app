@@ -122,7 +122,7 @@ class InstructorController extends BaseController {
         'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento' => 'required',
         'sexo' => 'required',
-        'correo' => 'email|max:255|unique:users,email',
+        'correo' => 'required|email|max:255|unique:users,email',
     ];
 
     $messages = [

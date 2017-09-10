@@ -81,6 +81,10 @@ class TransmisionController extends BaseController {
 
 	    else{
 
+	    	if($request->color_etiqueta == "#"){
+                return response()->json(['errores' => ['color_etiqueta' => [0, 'Ups! El color de la etiqueta es requerido']], 'status' => 'ERROR'],422);
+            }
+
 	        $fecha = Carbon::createFromFormat('d/m/Y', $request->fecha); 
 
 	        if($fecha < Carbon::now()){
@@ -331,6 +335,10 @@ class TransmisionController extends BaseController {
 	    }
 
 	    else{
+
+	    	if($request->color_etiqueta == "#"){
+                return response()->json(['errores' => ['color_etiqueta' => [0, 'Ups! El color de la etiqueta es requerido']], 'status' => 'ERROR'],422);
+            }
 
 	        $transmision = Transmision::find($request->id);
 

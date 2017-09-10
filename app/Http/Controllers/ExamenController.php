@@ -103,10 +103,9 @@ class ExamenController extends BaseController {
             $array[$clase_grupal->id] = $clase_grupal_array;
         }
 
-        $config_examenes = ConfigTipoExamen::all();
+        $config_examenes = ConfigTipoExamen::orderBy('nombre', 'asc')->get();
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         $generos_musicales = ConfigEspecialidades::all();
-
 
 		return view('especiales.examen.create')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'generos_musicales'=> $generos_musicales, 'clases_grupales' => $array, 'config_examenes' => $config_examenes, 'usuario_tipo' => $usuario_tipo]);
 	}
@@ -182,7 +181,7 @@ class ExamenController extends BaseController {
             $array[$clase_grupal->id] = $clase_grupal_array;
         }
 
-        $config_examenes = ConfigTipoExamen::all();
+        $config_examenes = ConfigTipoExamen::orderBy('nombre', 'asc')->get();
         $generos_musicales = ConfigEspecialidades::all();
 
 

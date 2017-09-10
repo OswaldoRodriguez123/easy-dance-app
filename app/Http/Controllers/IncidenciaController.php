@@ -121,7 +121,7 @@ class IncidenciaController extends BaseController {
             $usuarios['2-'.$instructor->id] = $usuario_array;
         }
 
-        $gravedades = Gravedad::all();
+        $gravedades = Gravedad::orderBy('nombre')->get();
 
         return view('incidencia.create')->with(['usuarios' => $usuarios, 'gravedades' => $gravedades]);
     }
@@ -272,7 +272,7 @@ class IncidenciaController extends BaseController {
                 $usuarios['2-'.$instructor->id] = $usuario_array;
             }
 
-            $gravedades = Gravedad::all();
+            $gravedades = Gravedad::orderBy('nombre')->get();
 
              return view('incidencia.planilla')->with(['incidencia' => $incidencia, 'usuario' => $usuario, 'administrador' => $administrador, 'gravedades' => $gravedades, 'instructores_staffs'=> $usuarios, 'id' => $id]);
 

@@ -329,7 +329,7 @@ class TallerController extends BaseController {
             Session::forget('horario'); 
         }
 
-        return view('agendar.taller.create')->with(['especialidad' => ConfigEspecialidades::all(), 'dias_de_semana' => DiasDeSemana::all(), 'nivel_baile' => ConfigNiveles::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get(), 'estudio' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get()]);
+        return view('agendar.taller.create')->with(['especialidad' => ConfigEspecialidades::all(), 'dias_de_semana' => DiasDeSemana::all(), 'nivel_baile' => ConfigNiveles::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get(), 'estudio' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get()]);
     }
 
     /**
@@ -396,6 +396,10 @@ class TallerController extends BaseController {
         }
 
         else{
+
+            if($request->color_etiqueta == "#"){
+                return response()->json(['errores' => ['color_etiqueta' => [0, 'Ups! El color de la etiqueta es requerido']], 'status' => 'ERROR'],422);
+            }
 
             $fecha = explode(" - ", $request->fecha);
 
@@ -993,6 +997,11 @@ class TallerController extends BaseController {
     }
 
     public function updateEtiqueta(Request $request){
+
+        if($request->color_etiqueta == "#"){
+            return response()->json(['errores' => ['color_etiqueta' => [0, 'Ups! El color de la etiqueta es requerido']], 'status' => 'ERROR'],422);
+        }
+        
         $taller = Taller::find($request->id);
         $taller->color_etiqueta = $request->color_etiqueta;
 

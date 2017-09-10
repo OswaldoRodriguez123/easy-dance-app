@@ -65,10 +65,10 @@ class ConfigProductosController extends BaseController {
     $messages = [
 
         'nombre.required' => 'Ups! El Nombre  es requerido',
-        'costo.required' => 'Ups! El costo de la inscripción es requerido',
-        'costo.numeric' => 'Ups! El campo del costo de la inscripcion en inválido , debe contener sólo números',
-        'cantidad.required' => 'Ups! El cantidad de la inscripción es requerido',
-        'cantidad.numeric' => 'Ups! El campo del costo de la inscripcion en inválido , debe contener sólo números',
+        'costo.required' => 'Ups! El costo es requerido',
+        'costo.numeric' => 'Ups! El costo es inválido , debe contener sólo números',
+        'cantidad.required' => 'Ups! La cantidad es requerida',
+        'cantidad.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -187,7 +187,7 @@ class ConfigProductosController extends BaseController {
     $messages = [
 
         'costo.required' => 'Ups! El costo es requerido',
-        'costo.numeric' => 'Ups! El campo de costo es inválido , debe contener sólo números',
+        'costo.numeric' => 'Ups! El costo es inválido , debe contener sólo números',
 
     ];
 
@@ -219,8 +219,8 @@ class ConfigProductosController extends BaseController {
     ];
 
     $messages = [
-        'cantidad.required' => 'Ups! El cantidad es requerido',
-        'cantidad.numeric' => 'Ups! El campo de cantidad es inválido , debe contener sólo números',
+        'cantidad.required' => 'Ups! La cantidad es requerida',
+        'cantidad.numeric' => 'Ups! La cantidad es inválida, debe contener sólo números',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);

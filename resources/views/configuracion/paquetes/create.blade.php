@@ -95,7 +95,7 @@
                                <div class="col-sm-12">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <label for="cantidad_clases_grupales" id="id-cantidad_clases_grupales">Cantidad de Clases</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de clases que posee el paquete" title="" data-original-title="Ayuda"></i>
+                                        <label for="cantidad_clases_grupales" id="id-cantidad_clases_grupales">Cantidad de Clases</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de clases que posee el paquete" title="" data-original-title="Ayuda"></i>
                                         <div class="input-group">
                                         <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
                                         <div class="fg-line">
@@ -158,7 +158,7 @@
 
                                <div class="col-sm-12">
                                  <div class="form-group fg-line ">
-                                    <label for="">Incluye impuestos fiscales (IVA)</label id="id-iva"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si manejas impuestos fiscales, en caso que el servicio de paquete de clases no lo incluye, deja el suiche de modo inactivo" title="" data-original-title="Ayuda"></i>
+                                    <label for="">Incluye impuestos fiscales (IVA)</label id="id-iva"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si manejas impuestos fiscales, en caso que el servicio de paquete de clases no lo incluye, deja el suiche de modo inactivo" title="" data-original-title="Ayuda"></i>
                                     
                                     <br></br>
                                     <input type="text" id="incluye_iva" name="incluye_iva" value="" hidden="hidden">

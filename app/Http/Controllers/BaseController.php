@@ -245,4 +245,8 @@ class BaseController extends Controller {
         return substr(str_shuffle(str_repeat($pool, 5)), 0, $length);
     }
 
+    public static function sortByName($a, $b) {
+      return strcmp($a["nombre"], $b["nombre"]);
+    }
+
 }

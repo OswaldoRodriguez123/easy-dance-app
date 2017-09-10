@@ -45,7 +45,7 @@ class StaffController extends BaseController
     {
         $dia_de_semana = DiasDeSemana::all();
 
-        $config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
+        $config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get();
 
         Session::forget('horarios_staff');
         Session::forget('comisiones');
@@ -276,7 +276,7 @@ class StaffController extends BaseController
 
             $dia_de_semana = DiasDeSemana::all();
 
-            $config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
+            $config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get();
 
             $horarios = HorarioStaff::join('dias_de_semana', 'horarios_staff.dia_de_semana_id', '=', 'dias_de_semana.id')
                 ->join('staff', 'horarios_staff.staff_id', '=', 'staff.id')

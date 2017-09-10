@@ -50,7 +50,7 @@ class ConfigSupervisionController extends BaseController {
             $cargos_usados[] = $configuracion->cargo_id;
         }
 
-    	$cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
+    	$cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get();
 
         return view('configuracion.supervision.create')->with(['cargos' => $cargos, 'cargos_usados' => $cargos_usados]);
 
@@ -76,7 +76,7 @@ class ConfigSupervisionController extends BaseController {
                 $cargos_usados[] = $configuracion->cargo_id;
             }
 
-            $cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
+            $cargos = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get();
             
             return view('configuracion.supervision.planilla')->with(['config_supervision' => $config_supervision, 'id' => $id, 'cargos' => $cargos, 'cargos_usados' => $cargos_usados]);
 

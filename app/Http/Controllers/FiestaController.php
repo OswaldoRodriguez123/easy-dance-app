@@ -319,6 +319,10 @@ class FiestaController extends BaseController {
 
         else{
 
+            if($request->color_etiqueta == "#"){
+                return response()->json(['errores' => ['color_etiqueta' => [0, 'Ups! El color de la etiqueta es requerido']], 'status' => 'ERROR'],422);
+            }
+
             if($request->link_video){
 
                 $parts = parse_url($request->link_video);
@@ -638,6 +642,11 @@ class FiestaController extends BaseController {
     }
 
     public function updateEtiqueta(Request $request){
+
+        if($request->color_etiqueta == "#"){
+            return response()->json(['errores' => ['color_etiqueta' => [0, 'Ups! El color de la etiqueta es requerido']], 'status' => 'ERROR'],422);
+        }
+
         $fiesta = Fiesta::find($request->id);
         $fiesta->color_etiqueta = $request->color_etiqueta;
 

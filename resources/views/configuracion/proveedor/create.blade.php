@@ -91,7 +91,7 @@
 
                                <div class="col-sm-12">
                                  
-                                    <label for="empresa" id="id-empresa">Empresa</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la empresa del proveedor" title="" data-original-title="Ayuda"></i>
+                                    <label for="empresa" id="id-empresa">Empresa</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la empresa del proveedor" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-city-alt f-22"></i></span>

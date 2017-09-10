@@ -84,7 +84,7 @@
 
                                <div class="col-sm-12">
                                  
-                                  <label for="nombre" id="id-gravedad_id">Nivel de Incidencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica el nivel o gravedad de la incidencia infringida" title="" data-original-title="Ayuda" data-html="true"></i>
+                                  <label for="nombre" id="id-gravedad_id">Nivel de Incidencia</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica el nivel o gravedad de la incidencia infringida" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                   <div class="input-group">
                                     <span class="input-group-addon"><i class="icon_a-niveles f-22"></i></span>
@@ -109,7 +109,7 @@
 
                                <div class="col-sm-12">
                                  
-                                      <label for="fecha" id="id-fecha">Fecha</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona la fecha en que la incidencia fue realizada" title="" data-original-title="Ayuda" data-html="true"></i>
+                                      <label for="fecha" id="id-fecha">Fecha</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona la fecha en que la incidencia fue realizada" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                       <div class="input-group">
                                       <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
@@ -128,7 +128,7 @@
 
                               <div class="col-sm-12">
                                 <div class="form-group">
-                                  <label for="mensaje" id="id-mensaje">Incidencia</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección podrás generar amonestaciones, notificaciones o avisos al personal que labora y que usa cuenta de Easy Dance" title="" data-original-title="Ayuda"></i>
+                                  <label for="mensaje" id="id-mensaje">Incidencia</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección podrás generar amonestaciones, notificaciones o avisos al personal que labora y que usa cuenta de Easy Dance" title="" data-original-title="Ayuda"></i>
 
                                     <textarea class="form-control caja" style="height: 100%" id="mensaje" name="mensaje" rows="8" placeholder="6000 Caracteres" onkeyup="countChar(this)" maxlength="2500"></textarea>
                

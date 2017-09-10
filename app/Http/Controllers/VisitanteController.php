@@ -70,9 +70,9 @@ class VisitanteController extends BaseController {
      */
     public function create()
     {
-        $tipologias = Tipologia::all();
+        $tipologias = Tipologia::orderBy('nombre')->get();
 
-        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::all(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(),'tipologias' => $tipologias]);;
+        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(),'tipologias' => $tipologias]);;
     }
 
     public function operar($id)
@@ -411,9 +411,9 @@ class VisitanteController extends BaseController {
                 $especialidades = $visitante->especialidad_nombre;
             }
 
-            $tipologias = Tipologia::all();
+            $tipologias = Tipologia::orderBy('nombre')->get();
  
-            return view('participante.visitante.planilla' , compact('map'))->with(['como_nos_conociste' => ComoNosConociste::all(), 'visitante' => $visitante, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'tipologias' => $tipologias, 'id' => $id]);
+            return view('participante.visitante.planilla')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'visitante' => $visitante, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'tipologias' => $tipologias, 'id' => $id]);
         }else{
             return redirect("participante/visitante"); 
         }

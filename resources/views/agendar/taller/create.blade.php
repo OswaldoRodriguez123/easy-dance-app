@@ -154,7 +154,7 @@
 
                                <div class="col-sm-12">
                                     <div class="cp-container">
-                                        <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un color de etiqueta para la clase grupal que será visualizado por tus alumnos e instructores en el calendario de eventos" title="" data-original-title="Ayuda"></i>
+                                        <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un color de etiqueta para la clase grupal que será visualizado por tus alumnos e instructores en el calendario de eventos" title="" data-original-title="Ayuda"></i>
                                         <div class="input-group form-group">
 
                                             <span class="input-group-addon"><i class="zmdi zmdi-invert-colors f-22"></i></span>
@@ -612,7 +612,7 @@
 
                               <div class="col-sm-12">
                                        <div class="form-group fg-line ">
-                                          <label for="">Promocionar en la web</label id="id-boolean_promocionar"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Mostrar el taller en la web" title="" data-original-title="Ayuda"></i>
+                                          <label for="">Promocionar en la web</label id="id-boolean_promocionar"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Mostrar el taller en la web" title="" data-original-title="Ayuda"></i>
                                           
                                           <br></br>
                                           <input type="text" id="boolean_promocionar" name="boolean_promocionar" value="" hidden="hidden">

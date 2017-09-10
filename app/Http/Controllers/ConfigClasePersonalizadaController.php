@@ -205,6 +205,10 @@ class ConfigClasePersonalizadaController extends BaseController {
 
     else{
 
+        if($request->color_etiqueta == "#"){
+            return response()->json(['errores' => ['color_etiqueta' => [0, 'Ups! El color de la etiqueta es requerido']], 'status' => 'ERROR'],422);
+        }
+
         $nombre = title_case($request->nombre);
 
         $clasepersonalizada = new ClasePersonalizada;
@@ -505,6 +509,11 @@ class ConfigClasePersonalizadaController extends BaseController {
     }
 
     public function updateEtiqueta(Request $request){
+
+        if($request->color_etiqueta == "#"){
+            return response()->json(['errores' => ['color_etiqueta' => [0, 'Ups! El color de la etiqueta es requerido']], 'status' => 'ERROR'],422);
+        }
+        
         $clasepersonalizada = ClasePersonalizada::find($request->id);
         $clasepersonalizada->color_etiqueta = $request->color_etiqueta;
 

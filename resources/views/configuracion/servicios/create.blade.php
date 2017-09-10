@@ -147,9 +147,10 @@
                                       <div class="select">
                                         <select class="selectpicker" name="tipo" id="tipo" data-live-search="true">
                                           <option value="1">Academia Recepción</option>
+                                          <option value="11">Campaña</option>
                                           <option value="14">Fiesta y Eventos</option>
                                           <option value="5">Taller</option>
-                                          <option value="11">Campaña</option>
+                                          
                                         </select>
                                       </div>
                                     </div>
@@ -255,7 +256,7 @@
 
                                <div class="col-sm-12">
                                        <div class="form-group fg-line ">
-                                          <label for="">Incluye impuestos fiscales (IVA)</label id="id-iva"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si manejas impuestos fiscales, en caso que el servicio no aplique, deja el suiche de modo inactivo" title="" data-original-title="Ayuda"></i>
+                                          <label for="">Incluye impuestos fiscales (IVA)</label id="id-iva"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si manejas impuestos fiscales, en caso que el servicio no aplique, deja el suiche de modo inactivo" title="" data-original-title="Ayuda"></i>
                                           
                                           <br></br>
                                           <input type="text" id="incluye_iva" name="incluye_iva" value="" hidden="hidden">

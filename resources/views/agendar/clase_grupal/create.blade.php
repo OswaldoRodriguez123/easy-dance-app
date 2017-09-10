@@ -295,7 +295,7 @@
                                <div class="clearfix p-b-35"></div>
 
                                <div class="col-xs-12">
-                              <label for="nombre" id="id-cupo_minimo">Cantidad de Cupos</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de cupos mínimos y máximos permitidos en la clase grupal" title="" data-original-title="Ayuda"></i>
+                              <label for="nombre" id="id-cupo_minimo">Cantidad de Cupos</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de cupos mínimos y máximos permitidos en la clase grupal" title="" data-original-title="Ayuda"></i>
                               </div>
 
                                           <div class="col-xs-6">
@@ -366,7 +366,7 @@
 
                                <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-cupo_reservacion">Cantidad de cupos para reserva online</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de cupos que podrán ser ofrecidos como ticket de reservación por via online" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-cupo_reservacion">Cantidad de cupos para reserva online</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de cupos que podrán ser ofrecidos como ticket de reservación por via online" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_d icon_d-reporte f-22"></i></span>
@@ -639,7 +639,7 @@
 
                                 <div class="col-sm-12">
                                        <div class="form-group fg-line ">
-                                          <label for="">Días de prórroga</label id="id-dias_prorroga"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de días de prórroga que tendrá la clase grupal en la web luego de iniciar" title="" data-original-title="Ayuda"></i>
+                                          <label for="">Días de prórroga</label id="id-dias_prorroga"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de días de prórroga que tendrá la clase grupal en la web luego de iniciar" title="" data-original-title="Ayuda"></i>
                                           
                                           <br></br>
                                           <input type="text" class="form-control input-sm input-mask" name="dias_prorroga" id="dias_prorroga" data-mask="000" placeholder="Ej. 7">

@@ -230,7 +230,7 @@
 
                                <div class="col-sm-12">
 
-                                    <label for="nombre" id="id-tipo">Tipo de evaluacion</label> <span class="c-morado f-700 f-16">*</span>
+                                    <label for="nombre" id="id-tipo">Tipo de evaluacion</label>
                                         <div class="input-group">
                                           <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
                                           <div class="fg-line">
@@ -256,7 +256,7 @@
 
                                 <div class="col-sm-12">
                                     <div class="cp-container">
-                                        <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un color de etiqueta para la clase grupal que será visualizado por tus alumnos e instructores en el calendario de eventos" title="" data-original-title="Ayuda"></i>
+                                        <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un color de etiqueta para la clase grupal que será visualizado por tus alumnos e instructores en el calendario de eventos" title="" data-original-title="Ayuda"></i>
                                         <div class="input-group form-group">
 
                                             <span class="input-group-addon"><i class="zmdi zmdi-invert-colors f-22"></i></span>
@@ -282,7 +282,7 @@
                                 
                                  <div class="col-sm-12">
                                  <div class="form-group fg-line">
-                                    <label for="nombre">Ítems a Evaluar</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona los ítems a evaluar que te ofrece Easy Dance, además encontrarás en la parte inferior de la planilla un campo para agregar nuevos ítems en caso de necesitarlo" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre">Ítems a Evaluar</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona los ítems a evaluar que te ofrece Easy Dance, además encontrarás en la parte inferior de la planilla un campo para agregar nuevos ítems en caso de necesitarlo" title="" data-original-title="Ayuda"></i>
                                     <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
                                     <div class="panel panel-collapse">
                                     <div class="panel-heading" role="tab" id="headingTwo">

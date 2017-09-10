@@ -57,7 +57,7 @@
                                     <div class="col-sm-6">
                                          <div class="form-group">
 
-                                            <label for="email" id="id-email">Correo electrónico</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico del participante " title="" data-original-title="Ayuda"></i>
+                                            <label for="email" id="id-email">Correo electrónico</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el correo electrónico del participante " title="" data-original-title="Ayuda"></i>
                                             <div class="input-group">
                                             <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
                                             <div class="fg-line">
@@ -73,7 +73,7 @@
                                        </div>
                                         <div class="col-sm-6">
                                          <div class="form-group">
-                                            <label for="confirm-email" id="id-email_confirmation">Confirmar Correo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Repite el correo electrónico para confirmar su cuenta" title="" data-original-title="Ayuda"></i>
+                                            <label for="confirm-email" id="id-email_confirmation">Confirmar Correo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Repite el correo electrónico para confirmar su cuenta" title="" data-original-title="Ayuda"></i>
                                             <span class="input-group">
                                             <span class="input-group-addon"><i class="icon_a icon_a-correo f-22"></i></span>
                                             <div class="fg-line">
@@ -91,7 +91,7 @@
 
                                      <div class="col-sm-6 ">
                                          <div class="form-group">
-                                            <label for="correo" id="id-password">Contraseña</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa una contraseña que contenga un mínimo de seis (6) caracteres , esta podrá ser números o letras, mayúsculas o minúscula" title="" data-original-title="Ayuda"></i>
+                                            <label for="correo" id="id-password">Contraseña</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa una contraseña que contenga un mínimo de seis (6) caracteres , esta podrá ser números o letras, mayúsculas o minúscula" title="" data-original-title="Ayuda"></i>
                                             <span class="input-group">
                                             <span class="input-group-addon"><i class="zmdi zmdi-lock f-22"></i></span>
                                             <div class="fg-line">
@@ -107,7 +107,7 @@
                                        </div>
                                         <div class="col-sm-6">
                                          <div class="form-group">
-                                            <label for="direccion" id="id-password_confirmation">Confirmar tu contraseña</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Repite la contraseña para confirmarla" title="" data-original-title="Ayuda"></i>
+                                            <label for="direccion" id="id-password_confirmation">Confirmar tu contraseña</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Repite la contraseña para confirmarla" title="" data-original-title="Ayuda"></i>
                                             <span class="input-group">
                                             <span class="input-group-addon"><i class="zmdi zmdi-lock f-22"></i></span>
                                             <div class="fg-line">
@@ -126,7 +126,7 @@
                                 
                                    <div class="col-sm-6">
                                          <div class="form-group">
-                                            <label for="correo" id="id-responsable">Administrador</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del participante que recibirá la invitación para usar la cuenta de invitación" title="" data-original-title="Ayuda"></i>
+                                            <label for="correo" id="id-responsable">Administrador</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del participante que recibirá la invitación para usar la cuenta de invitación" title="" data-original-title="Ayuda"></i>
                                             <span class="input-group">
                                             <span class="input-group-addon"><i class="zmdi zmdi-account f-22"></i></span>
                                             <div class="fg-line">
@@ -142,7 +142,7 @@
                                        </div>
 
                                        <div class="col-sm-6">
-                                           <label>Tipo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de cuenta que deseas invitar" title="" data-original-title="Ayuda"></i>
+                                           <label>Tipo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de cuenta que deseas invitar" title="" data-original-title="Ayuda"></i>
                                           <div class="form-group">
                                               <span class="input-group">
                                                 <span class="input-group-addon"><i class="icon_b icon_b-como-se-entero f-22"></i></span>
@@ -411,7 +411,7 @@
             });
 
       function limpiarMensaje(){
-      var campo = ["email", "email_confirmation", "password", "password_confirmation", "responsable"];
+      var campo = ["email", "email_confirmation", "password", "password_confirmation", "responsable", "usuario_tipo"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -419,7 +419,6 @@
       }
 
       function errores(merror){
-      var campo = ["email", "email_confirmation", "password", "password_confirmation", "responsable"];
       var elemento="";
       var contador=0;
       $.each(merror, function (n, c) {

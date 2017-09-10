@@ -468,7 +468,7 @@
                                       <div class="clearfix p-b-35"></div>
 
                                    
-                                      <label for="apellido" id="id-tipo">Tipo</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de pago" title="" data-original-title="Ayuda"></i>
+                                      <label for="apellido" id="id-tipo">Tipo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de pago" title="" data-original-title="Ayuda"></i>
 
                                       <div class="form-group fg-line ">
                                         <div class="p-t-10">
@@ -828,7 +828,7 @@
             });
 
       function limpiarMensaje(){
-      var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "telefono", "celular", "direccion", "hora_inicio", "hora_final", "correo"];
+      var campo = ["identificacion", "nombre", "apellido", "fecha_nacimiento", "sexo", "telefono", "celular", "direccion", "hora_inicio", "hora_final", "correo", "cargo"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');

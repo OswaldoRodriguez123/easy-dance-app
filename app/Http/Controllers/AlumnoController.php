@@ -464,7 +464,7 @@ class AlumnoController extends BaseController
 
     public function create()
     {
-        $tipologias = Tipologia::all();
+        $tipologias = Tipologia::orderBy('nombre')->get();
  
         return view('participante.alumno.create')->with(['tipologias' => $tipologias]);
     }
@@ -650,7 +650,7 @@ class AlumnoController extends BaseController
                 $tipo_pago = 'Sin Confirmar';
             }
 
-            $tipologias = Tipologia::all();
+            $tipologias = Tipologia::orderBy('nombre')->get();
 
             $llamadas = Llamada::where('usuario_id', $id)->where('usuario_tipo',2)->count();
 
