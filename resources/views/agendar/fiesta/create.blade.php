@@ -39,7 +39,7 @@
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                             
                         </ul>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+                        
                     </div> 
                     
                     <div class="card">
@@ -353,8 +353,9 @@
                                   <br></br>
 
                                   <div class="fg-line">
-                                    <textarea class="form-control" id="presentacion" name="presentacion" rows="8" placeholder="500 Caracteres"></textarea>
+                                    <textarea class="form-control" id="presentacion" name="presentacion" rows="8" placeholder="500 Caracteres" maxlength="500" onkeyup="countChar2(this)"></textarea>
                                   </div>
+                                  <div class="opaco-0-8 text-right">Resta <span id="charNum2">500</span> Caracteres</div>
                                <div class="has-error" id="error-presentacion">
                                     <span >
                                         <small class="help-block error-span" id="error-presentacion_mensaje" ></small>                                
@@ -393,21 +394,22 @@
 
                             <div class="col-sm-12">
                                  
-                                    <label for="condiciones" id="id-condiciones">Condiciones y Normativas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las condiciones necesarias, dichas condiciones serán vistas por tus clientes y de esa forma podrás mantener una comunicación clara y transparente en cuanto a las normativas que rigen en tus actividades" title="" data-original-title="Ayuda"></i>
-                                    <br></br>
+                              <label for="condiciones" id="id-condiciones">Condiciones y Normativas</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las condiciones necesarias, dichas condiciones serán vistas por tus clientes y de esa forma podrás mantener una comunicación clara y transparente en cuanto a las normativas que rigen en tus actividades" title="" data-original-title="Ayuda"></i>
+                              <br></br>
 
-                                    <div class="fg-line">
-                                      <textarea class="form-control caja" style="height:100%" id="condiciones" name="condiciones" rows="8" placeholder="1500 Caracteres"></textarea>
-                                      </div>
-                                    <div class="has-error" id="error-condiciones">
-                                      <span >
-                                        <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
+                              <div class="fg-line">
+                                <textarea class="form-control caja" style="height:100%" id="condiciones" name="condiciones" rows="8" placeholder="1500 Caracteres" maxlength="1500" onkeyup="countChar3(this)"></textarea>
+                              </div>
+                              <div class="opaco-0-8 text-right">Resta <span id="charNum3">1500</span> Caracteres</div>
+                              <div class="has-error" id="error-condiciones">
+                                <span >
+                                  <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                           
+                                </span>
+                              </div>
+                            </div>
+                         </div>
 
-                               <div class="clearfix p-b-35"></div>
+                         <div class="clearfix p-b-35"></div>
 
                             <!-- <div class="col-sm-12">
                                  <div class="form-group fg-line">
@@ -1270,10 +1272,19 @@
 
       function countChar2(val) {
         var len = val.value.length;
-        if (len >= 10000) {
-          val.value = val.value.substring(0, 10000);
+        if (len >= 500) {
+          val.value = val.value.substring(0, 500);
         } else {
-          $('#charNum2').text(10000 - len);
+          $('#charNum2').text(500 - len);
+        }
+      };
+
+      function countChar3(val) {
+        var len = val.value.length;
+        if (len >= 1500) {
+          val.value = val.value.substring(0, 1500);
+        } else {
+          $('#charNum3').text(1500 - len);
         }
       };
 

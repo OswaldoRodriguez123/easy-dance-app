@@ -1445,9 +1445,18 @@ class AsistenciaController extends BaseController
       if(!$asistencia){
 
         $clase_grupal = ClaseGrupal::find($clase_grupal_id);
-        $in_credencial = array(0,$clase_grupal->instructor_id);
+        
+        if($clase_grupal){
+          $instructor_id = $clase_grupal->instructor_id;
+        }else{
+          $instructor_id = '';
+        }
 
-        $inscripcion_clase_grupal=InscripcionClaseGrupal::where('alumno_id',$alumno_id)->where('clase_grupal_id',$clase_grupal_id)->first();
+        $in_credencial = array(0,$instructor_id);
+
+        $inscripcion_clase_grupal=InscripcionClaseGrupal::where('alumno_id',$alumno_id)
+          ->where('clase_grupal_id',$clase_grupal_id)
+        ->first();
 
         if($inscripcion_clase_grupal){
 
@@ -1505,7 +1514,6 @@ class AsistenciaController extends BaseController
           $asistencia->pertenece = $pertenece;
           $asistencia->boolean_credencial = $boolean_credencial;
         
-
           if($asistencia->save()){
       
             $inscripcion_clase_grupal = InscripcionClaseGrupal::onlyTrashed()

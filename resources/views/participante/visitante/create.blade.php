@@ -39,7 +39,7 @@
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                             
                         </ul>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+                        
                     </div> 
                     
                     <div class="card">
@@ -315,7 +315,7 @@
 
                               <div class="col-sm-12">
                                
-                                  <label for="apellido" id="id-interes_id">Tipo de Interes</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de interes del visitante" title="" data-original-title="Ayuda"></i>
+                                  <label for="apellido" id="id-interes_id">Tipo de Interes</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de interes del visitante" title="" data-original-title="Ayuda"></i>
 
                                   <div class="input-group">
                                     <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>

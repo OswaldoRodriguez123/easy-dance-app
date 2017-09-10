@@ -46,7 +46,7 @@
 	                            
 	                        </ul>
                         @endif
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+                        
                     </div> 
                     
                     <div class="card">
@@ -663,8 +663,9 @@
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="300 Caracteres"></textarea>
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="2" placeholder="300 Caracteres" maxlength="300" onkeyup="countChar(this)"></textarea>
                                     </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">300</span> Caracteres</div>
                                  <div class="has-error" id="error-descripcion">
                                       <span >
                                           <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                
@@ -680,8 +681,9 @@
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="condiciones" name="condiciones" rows="2" placeholder="1500 Caracteres"></textarea>
-                                      </div>
+                                      <textarea class="form-control" id="condiciones" name="condiciones" rows="2" placeholder="1500 Caracteres"  maxlength="1500" onkeyup="countChar2(this)"></textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum2">1500</span> Caracteres</div>
                                     <div class="has-error" id="error-condiciones">
                                       <span >
                                         <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                           
@@ -1343,6 +1345,24 @@ $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
       $('.ayuda').on('mouseenter', function(e) {
         $('.ayuda').not(this).popover('hide')
       })
+
+  function countChar(val) {
+    var len = val.value.length;
+    if (len >= 300) {
+      val.value = val.value.substring(0, 300);
+    } else {
+      $('#charNum').text(300 - len);
+    }
+  };
+
+  function countChar2(val) {
+    var len = val.value.length;
+    if (len >= 1500) {
+      val.value = val.value.substring(0, 1500);
+    } else {
+      $('#charNum2').text(1500 - len);
+    }
+  };
 
 </script> 
 @stop

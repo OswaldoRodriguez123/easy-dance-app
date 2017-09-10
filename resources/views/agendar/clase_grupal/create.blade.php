@@ -42,7 +42,6 @@
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                             
                         </ul>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
                     </div> 
                     
                     <div class="card">
@@ -107,24 +106,6 @@
                                </div>
     
                                <div class="clearfix p-b-35"></div>
-
-                                <!-- <div class="col-sm-12">
-                                    
-                                      <label for="fecha_inicio_preferencial" id="id-fecha_inicio_preferencial">Fecha de primer cobro automático</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="El cobro automático te permitirá de manera mensual generar un cobro a la clase grupal de modo general, de forma que, todos los alumnos ingresados en dicha clase, recibirán una carga correspondiente al costo de la mensualidad. Por tal motivo, debes indicarle al sistema la fecha en que necesitas el cargo mensual" title="" data-original-title="Ayuda"></i>
-                                      <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-calendar f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="fecha_inicio_preferencial" id="fecha_inicio_preferencial" class="form-control date-picker proceso" placeholder="Seleciona" type="text">
-                                          </div>
-                                    </div>
-                                    <div class="has-error" id="error-fecha_inicio_preferencial">
-                                        <span >
-                                            <small class="help-block error-span" id="error-fecha_inicio_preferencial_mensaje" ></small>                                           
-                                        </span>
-                                    </div>
-                                </div> -->
-
-                                <!-- <div class="clearfix p-b-35"></div> -->
 
                                 <div class="col-xs-6">
                                  

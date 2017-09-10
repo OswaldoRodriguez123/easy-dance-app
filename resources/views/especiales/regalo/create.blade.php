@@ -38,7 +38,7 @@
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                             
                         </ul>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+                        
                     </div>
                     
                     <div class="card">
@@ -95,8 +95,9 @@
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="4" placeholder="250 Caracteres"></textarea>
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="4" placeholder="250 Caracteres" maxlength="250" onkeyup="countChar(this)"></textarea>
                                     </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">250</span> Caracteres</div>
                                  <div class="has-error" id="error-descripcion">
                                       <span >
                                           <small class="help-block error-span" id="error-descripcion_mensaje" ></small>                                
@@ -432,14 +433,23 @@
 
   }
 
-       $( "#cancelar" ).click(function() {
-        $("#agregar_regalo")[0].reset();
-        limpiarMensaje();
-        $('html,body').animate({
-        scrollTop: $("#id-clase_grupal_id").offset().top-90,
-        }, 1500);
-        $("#nombre").focus();
-      });
+   $( "#cancelar" ).click(function() {
+    $("#agregar_regalo")[0].reset();
+    limpiarMensaje();
+    $('html,body').animate({
+    scrollTop: $("#id-clase_grupal_id").offset().top-90,
+    }, 1500);
+    $("#nombre").focus();
+  });
+
+   function countChar(val) {
+    var len = val.value.length;
+    if (len >= 250) {
+      val.value = val.value.substring(0, 250);
+    } else {
+      $('#charNum').text(250 - len);
+    }
+  };
 
 </script> 
 @stop

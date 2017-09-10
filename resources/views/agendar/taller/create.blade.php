@@ -42,7 +42,7 @@
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                             
                         </ul>
-                        <!--<h4><i class="zmdi zmdi-accounts-alt p-r-5"></i> Agendar <span class="breadcrumb-ico m-t-10 p-l-5 p-r-5"> <i class="zmdi zmdi-caret-right"></i> </span> <span class="active-state"><i class="flaticon-alumnos"></i> Clases Grupales </span></h4>-->
+                        
                     </div> 
                     
                     <div class="card">
@@ -419,8 +419,9 @@
                                     <br></br>
 
                                     <div class="fg-line">
-                                      <textarea class="form-control caja" style="height: 100%" id="condiciones" name="condiciones" rows="8" placeholder="1500 Caracteres"></textarea>
-                                      </div>
+                                      <textarea class="form-control caja" style="height: 100%" id="condiciones" name="condiciones" rows="8" placeholder="1500 Caracteres" maxlength="1500" onkeyup="countChar2(this)"></textarea>
+                                    </div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum2">1500</span> Caracteres</div>
                                     <div class="has-error" id="error-condiciones">
                                       <span >
                                         <small class="help-block error-span" id="error-condiciones_mensaje" ></small>                                           
@@ -1231,10 +1232,10 @@
 
       function countChar2(val) {
         var len = val.value.length;
-        if (len >= 10000) {
-          val.value = val.value.substring(0, 10000);
+        if (len >= 1500) {
+          val.value = val.value.substring(0, 1500);
         } else {
-          $('#charNum2').text(10000 - len);
+          $('#charNum2').text(1500 - len);
         }
       };
 </script> 
