@@ -23,7 +23,6 @@ class EventoLaboralController extends BaseController
     	$eventos_laborales = EventoLaboral::join('staff', 'eventos_laborales.staff_id', '=', 'staff.id')
             ->select('eventos_laborales.*', 'staff.nombre as staff_nombre', 'staff.apellido as staff_apellido', 'staff.cargo', 'staff.sexo')
             ->where('staff.academia_id','=', Auth::user()->academia_id)
-            ->orderBy('fecha')
         ->get();
 
         $array = array();
