@@ -507,7 +507,7 @@
                                 <?php $id = $precio->id; ?>
                                 <tr id="{{$id}}" class="seleccion" >
                                     <td class="text-center previa">{{$precio->participantes}}</td>
-                                    <td class="text-center previa">{{$precio->precio}}</td>
+                                    <td class="text-center previa">{{ number_format($precio->precio, 2, '.' , '.') }}</td>
                                     <td class="text-center"> <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i></i></td>
                                   </tr>
                             @endforeach 
@@ -1200,7 +1200,7 @@
                             var rowId=respuesta.id;
                             var rowNode=t.row.add( [
                             ''+participantes+'',
-                            ''+precio+'',
+                            ''+formatmoney(parseFloat(precio))+'',
                             '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                             ] ).draw(false).node();
                             $( rowNode )
@@ -1292,6 +1292,10 @@
           $(".dismiss").click(function(){
             $('.modal').modal('hide');
           });
+
+        function formatmoney(n) {
+          return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+        }
 
     
    </script> 

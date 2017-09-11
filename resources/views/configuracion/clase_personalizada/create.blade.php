@@ -283,28 +283,28 @@
                         </div>
                         </div>
 
-                                      <div class="clearfix p-b-35"></div>
+                        <div class="clearfix p-b-35"></div>
 
 
 
-                                      <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>
+                        <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>
 
-                                      <div class="clearfix p-b-35"></div>
-                                      <hr></hr>
+                        <div class="clearfix p-b-35"></div>
+                        <hr></hr>
 
-                                        </div>
-                                    </div>
-                                    </div>
-                                    </div>
-                                 </div>
-                                 <div class="has-error" id="error-nombre">
-                                      <span >
-                                          <small class="help-block error-span" id="error-nombre_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
+                          </div>
+                      </div>
+                      </div>
+                      </div>
+                   </div>
+                   <div class="has-error" id="error-nombre">
+                        <span >
+                            <small class="help-block error-span" id="error-nombre_mensaje" ></small>                                
+                        </span>
+                    </div>
+                 </div>
 
-                               <div class="clearfix p-b-35"></div>
+                 <div class="clearfix p-b-35"></div>
 
 
                                <!-- <div class="col-sm-12">
@@ -936,7 +936,7 @@
                             var rowId=respuesta.id;
                             var rowNode=t.row.add( [
                             ''+participantes+'',
-                            ''+precio+'',
+                            ''+formatmoney(parseFloat(precio))+'',
                             '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                             ] ).draw(false).node();
                             $( rowNode )
@@ -1130,6 +1130,10 @@
           $('#charNum').text(2000 - len);
         }
       };
+
+      function formatmoney(n) {
+        return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+      }
 
 </script> 
 @stop
