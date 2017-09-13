@@ -47,6 +47,7 @@ use Session;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use Image;
+use File;
 use Illuminate\Support\Facades\Input;
 
 class HerramientaController extends BaseController {
@@ -445,6 +446,63 @@ class HerramientaController extends BaseController {
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
         // return redirect("alumno");
+    }
+
+    public function actualizarProcedimiento(Request $request){
+
+        $rules = [
+            'nombre' => 'required|min:1',
+            'pdf2' => 'required|mimes:pdf',
+        ];
+
+        $messages = [
+            'nombre.required' => 'Ups! El Nombre es requerido',
+            'pdf2.required' => 'Ups! El PDF es requerido',
+            'pdf2.mimes' => 'Ups! Solo se aceptan archivos PDF',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $procedimiento = ManualProcedimiento::where('academia_id',Auth::user()->academia_id)
+                ->where('nombre',$request->nombre)
+                ->where('id','!=',$request->id)
+            ->first();
+
+            if(!$procedimiento){
+
+                $procedimiento = ManualProcedimiento::find($request->id);
+
+                $nombre_archivo_viejo = $procedimiento->nombre.'-'.Auth::user()->academia_id.'.pdf';
+
+                $procedimiento->nombre = $request->nombre;
+                $procedimiento->academia_id = Auth::user()->academia_id;
+
+                if($procedimiento->save()){
+
+                    File::delete("assets/uploads/procedimientos/".$nombre_archivo_viejo);
+
+                    $extension = $request->pdf2->getClientOriginalExtension();
+                    $nombre_archivo = $request->nombre.'-'.Auth::user()->academia_id.'.'.$extension;
+
+                    \Storage::disk('procedimientos')->put($nombre_archivo,  \File::get($request->pdf2));
+
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'procedimiento' => $procedimiento, 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+                }
+                
+            }else{
+                return response()->json(['errores' => ['nombre' => [0, 'Ups! Ya posee una normativa con este nombre']], 'status' => 'ERROR'],422);
+            }
+        }
     }
 
 }

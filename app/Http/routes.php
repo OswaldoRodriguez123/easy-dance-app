@@ -233,12 +233,14 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 
 		Route::get('configuracion/herramientas/procedimientos','HerramientaController@planilla_procedimientos');
 		Route::post('configuracion/herramientas/procedimientos/agregar', 'HerramientaController@agregarProcedimiento');
+		Route::post('configuracion/herramientas/procedimientos/actualizar', 'HerramientaController@actualizarProcedimiento');
 		Route::delete('configuracion/herramientas/procedimientos/eliminar/{id}', 'HerramientaController@eliminarProcedimiento');
 
 		// NORMATIVAS
 
 		Route::get('configuracion/herramientas/normativas','NormativaController@edit');
 		Route::post('configuracion/herramientas/normativas/agregar', 'NormativaController@store');
+		Route::post('configuracion/herramientas/normativas/actualizar', 'NormativaController@update');
 		Route::delete('configuracion/herramientas/normativas/eliminar/{id}', 'NormativaController@destroy');
 
 		// HERRAMIENTAS
