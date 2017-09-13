@@ -168,8 +168,8 @@
             pageLength: 25,   
             order: [[3, 'asc']],
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).addClass( "text-center" );
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
             },
             language: {
                             processing:     "Procesando ...",
