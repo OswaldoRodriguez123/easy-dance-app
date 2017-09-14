@@ -14,7 +14,6 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.min.js"></script>
 
 @stop
 @section('content')
@@ -130,7 +129,7 @@
 
                                     $contenido = 
                                     '<p class="c-negro">' .
-                                        $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg lazy" src="'.$imagen.'" alt=""><br><br>' .
+                                        $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .
 
                                         'Cantidad que adeuda: ' . number_format($alumno['deuda'], 2, '.' , '.')  . '<br>'.
                                         'Número Móvil: ' . $alumno['celular'] . '<br>'.
@@ -149,7 +148,7 @@
                                     <td class="text-center previa"> @if($alumno['activacion']) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">
                                         @if($alumno['imagen'])
-                                          <img class="lv-img lazy" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
+                                          <img class="lv-img" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
                                         @else
                                             @if($alumno['sexo'] == 'M')
                                               <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
@@ -273,10 +272,6 @@
         $(document).ready(function(){
 
         t=$('#tablelistar').DataTable({
-
-            drawCallback: function(){
-                $("img.lazy").lazyload();
-            },
             processing: true,
             serverSide: false,
             pageLength: 25,    
@@ -310,6 +305,22 @@
                             }
                         }
             });
+
+            $.each(document.images, function(){
+               var this_image = this;
+               var src = $(this_image).attr('src') || '' ;
+               if(!src.length > 0){
+                   //this_image.src = options.loading; // show loading
+                   var lsrc = $(this_image).attr('lsrc') || '' ;
+                   if(lsrc.length > 0){
+                       var img = new Image();
+                       img.src = lsrc;
+                       $(img).load(function() {
+                           this_image.src = this.src;
+                       });
+                   }
+               }
+           });
         });
 
         function previa(t){
