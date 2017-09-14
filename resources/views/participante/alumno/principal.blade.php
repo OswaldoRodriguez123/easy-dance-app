@@ -151,9 +151,9 @@
                                           <img class="lv-img lazy" src="{{url('/')}}/assets/img/Hombre.jpg" data-image = "{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
                                         @else
                                             @if($alumno['sexo'] == 'M')
-                                              <img class="lv-img lazy" src="{{url('/')}}/assets/img/profile-pics/4.jpg" data-image = "{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                              <img class="lv-img lazy" src="{{url('/')}}/assets/img/profile-pics/Hombre.jpg" data-image = "{{url('/')}}/assets/img/profile-pics/Hombre.jpg" alt="">
                                             @else
-                                              <img class="lv-img lazy" src="{{url('/')}}/assets/img/profile-pics/5.jpg" data-image = "{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                              <img class="lv-img lazy" src="{{url('/')}}/assets/img/profile-pics/Mujer.jpg" data-image = "{{url('/')}}/assets/img/profile-pics/Mujer.jpg" alt="">
                                         @endif
                                       @endif
                                     </td>

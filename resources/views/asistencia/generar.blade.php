@@ -350,7 +350,7 @@
 
                                 $contenido = 
                                 '<p class="c-negro">' .
-                                    $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .
+                                    $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg lazy" src="/assets/img/Hombre.jpg" data-image = "'.$imagen.'" alt=""><br><br>' .
 
                                 'Clase Grupal: ' . $alumno['nombre_clase']  . '<br>'.
                                 'Día: ' . $alumno['dia_clase'] . '<br>'.
@@ -365,12 +365,12 @@
                                 <td class="text-center previa"> @if(isset($activacion[$id])) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                 <td class="text-center previa">
                                   @if($alumno['imagen'])
-                                    <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
+                                    <img class="lv-img lazy" src="{{url('/')}}/assets/img/Hombre.jpg" data-image = "{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
                                   @else
                                     @if($alumno['sexo'] == 'M')
-                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                      <img class="lv-img lazy" src="{{url('/')}}/assets/img/profile-pics/Hombre.jpg" data-image = "{{url('/')}}/assets/img/profile-pics/Hombre.jpg" alt="">
                                     @else
-                                      <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                      <img class="lv-img lazy" src="{{url('/')}}/assets/img/profile-pics/Mujer.jpg" data-image = "{{url('/')}}/assets/img/profile-pics/Mujer.jpg" alt="">
                                     @endif
                                   @endif
                                 </td>
@@ -397,19 +397,19 @@
 
                                 $contenido = 
                                 '<p class="c-negro">' .
-                                    $instructor['nombre'] . ' ' . $instructor['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .'<br></p>';
+                                    $instructor['nombre'] . ' ' . $instructor['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg lazy" src="/assets/img/Hombre.jpg" data-image = "'.$imagen.'" alt=""><br><br></p>';
 
                               ?>
                                 <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$instructor['imagen']}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$instructor['nombre']}} {{$instructor['apellido']}}" data-identificacion-participante = "{{$instructor['identificacion']}}" data-sexo = "{{$instructor['sexo']}}" data-tipo-participante = "instructor" >
                                     <td class="text-center previa"></td>
                                     <td class="text-center previa">
-                                        @if($instructor['imagen'])
-                                          <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$instructor['imagen']}}" alt="">
+                                      @if($instructor['imagen'])
+                                        <img class="lv-img lazy" src="{{url('/')}}/assets/img/Hombre.jpg" data-image = "{{url('/')}}/assets/uploads/usuario/{{$instructor['imagen']}}" alt="">
+                                      @else
+                                        @if($instructor['sexo'] == 'M')
+                                          <img class="lv-img lazy" src="{{url('/')}}/assets/img/profile-pics/Hombre.jpg" data-image = "{{url('/')}}/assets/img/profile-pics/Hombre.jpg" alt="">
                                         @else
-                                            @if($instructor['sexo'] == 'M')
-                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
-                                            @else
-                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                          <img class="lv-img lazy" src="{{url('/')}}/assets/img/profile-pics/Mujer.jpg" data-image = "{{url('/')}}/assets/img/profile-pics/Mujer.jpg" alt="">
                                         @endif
                                       @endif
                                     </td>
@@ -436,22 +436,22 @@
 
                                 $contenido = 
                                 '<p class="c-negro">' .
-                                    $staff['nombre'] . ' ' . $staff['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .'<br></p>';
+                                    $staff['nombre'] . ' ' . $staff['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg lazy" src="/assets/img/Hombre.jpg" data-image = "'.$imagen.'" alt=""><br><br></p>';
 
                               ?>
 
                                 <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" id="asistencia_alumno_row_{{$id}}" class="seleccion" data-id-participante = "{{$id}}" data-nombre-participante = "{{$staff['nombre']}} {{$staff['apellido']}}" data-tipo-participante = "staff">
                                     <td class="text-center previa"></td>
                                     <td class="text-center previa">
-                                        @if($staff['imagen'])
-                                          <img class="lv-img-sm" src="{{url('/')}}/assets/uploads/usuario/{{$staff['imagen']}}" alt="">
+                                      @if($staff['imagen'])
+                                        <img class="lv-img lazy" src="{{url('/')}}/assets/img/Hombre.jpg" data-image = "{{url('/')}}/assets/uploads/usuario/{{$staff['imagen']}}" alt="">
+                                      @else
+                                        @if($staff['sexo'] == 'M')
+                                          <img class="lv-img lazy" src="{{url('/')}}/assets/img/profile-pics/Hombre.jpg" data-image = "{{url('/')}}/assets/img/profile-pics/Hombre.jpg" alt="">
                                         @else
-                                            @if($staff['sexo'] == 'M')
-                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
-                                            @else
-                                              <img class="lv-img-sm" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
-                                            @endif
+                                          <img class="lv-img lazy" src="{{url('/')}}/assets/img/profile-pics/Mujer.jpg" data-image = "{{url('/')}}/assets/img/profile-pics/Mujer.jpg" alt="">
                                         @endif
+                                      @endif
                                     </td>
                                     <td class="text-center previa">{{$staff['nombre']}} {{$staff['apellido']}}</td>
                                     <td class="text-center previa">{{$staff['identificacion']}} <i class="icon_f-staff"></i></td>
@@ -495,44 +495,56 @@
 
       var tipo = 1;
 
-        $(document).ready(function(){
+      $(document).ready(function(){
 
-          $("#clases_grupales").prop("checked", true);
+        $("#clases_grupales").prop("checked", true);
 
-            t=$('#tablelistar').DataTable({
-            processing: true,
-            serverSide: false,
-            pageLength: 25,  
-            order: [[2, 'asc']],
-            fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","buscar(this)" );
-            },
-            language: {
-                            processing:     "Procesando ...",
-                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                            searchPlaceholder: "BUSCAR",
-                            lengthMenu:     "Mostrar _MENU_ Registros",
-                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                            infoPostFix:    "",
-                            loadingRecords: "...",
-                            zeroRecords:    "No se encontraron registros coincidentes",
-                            emptyTable:     "No hay datos disponibles en la tabla",
-                            paginate: {
-                                first:      "Primero",
-                                previous:   "Anterior",
-                                next:       "Siguiente",
-                                last:       "Ultimo"
-                            },
-                            aria: {
-                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                            }
-                        }
-            });
+          t=$('#tablelistar').DataTable({
+          processing: true,
+          serverSide: false,
+          pageLength: 25,  
+          order: [[2, 'asc']],
+          fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","buscar(this)" );
+          },
+          drawCallback: function(){
+            loadImages();
+          },
+          language: {
+                          processing:     "Procesando ...",
+                          search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                          searchPlaceholder: "BUSCAR",
+                          lengthMenu:     "Mostrar _MENU_ Registros",
+                          info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                          infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                          infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                          infoPostFix:    "",
+                          loadingRecords: "...",
+                          zeroRecords:    "No se encontraron registros coincidentes",
+                          emptyTable:     "No hay datos disponibles en la tabla",
+                          paginate: {
+                              first:      "Primero",
+                              previous:   "Anterior",
+                              next:       "Siguiente",
+                              last:       "Ultimo"
+                          },
+                          aria: {
+                              sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                              sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                          }
+                      }
+          });
+      })
+      function loadImages(){
+        imagenes = $('.lazy')
+
+        $.each(imagenes, function(){
+            var this_image = this;
+            var src = $(this_image).data('image');
+            this_image.src = src;
         });
+      };
 
     // $('#buscar').on( 'keyup', function () {
     //   asistencia.search( this.value ).draw();
