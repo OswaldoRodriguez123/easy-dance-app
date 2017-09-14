@@ -129,7 +129,7 @@
 
                                     $contenido = 
                                     '<p class="c-negro">' .
-                                        $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .
+                                        $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="/assets/img/Hombre.jpg" data-image = "'.$imagen.'" alt=""><br><br>' .
 
                                         'Cantidad que adeuda: ' . number_format($alumno['deuda'], 2, '.' , '.')  . '<br>'.
                                         'Número Móvil: ' . $alumno['celular'] . '<br>'.
@@ -148,12 +148,12 @@
                                     <td class="text-center previa"> @if($alumno['activacion']) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
                                     <td class="text-center previa">
                                         @if($alumno['imagen'])
-                                          <img class="lv-img" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
+                                          <img class="lv-img" src="{{url('/')}}/assets/img/Hombre.jpg" data-image = "{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
                                         @else
                                             @if($alumno['sexo'] == 'M')
-                                              <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                              <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/4.jpg" data-image = "{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
                                             @else
-                                              <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                              <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/5.jpg" data-image = "{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
                                         @endif
                                       @endif
                                     </td>
@@ -308,18 +308,8 @@
 
             $.each(document.images, function(){
                var this_image = this;
-               var src = $(this_image).attr('src') || '' ;
-               if(!src.length > 0){
-                   //this_image.src = options.loading; // show loading
-                   var lsrc = $(this_image).attr('lsrc') || '' ;
-                   if(lsrc.length > 0){
-                       var img = new Image();
-                       img.src = lsrc;
-                       $(img).load(function() {
-                           this_image.src = this.src;
-                       });
-                   }
-               }
+               var src = $(this_image).data('image');
+                this_image.src = src;
            });
         });
 
