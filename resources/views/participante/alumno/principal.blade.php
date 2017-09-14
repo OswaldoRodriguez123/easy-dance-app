@@ -308,9 +308,6 @@
                     }
                 }
             });
-
-            loadImages();
-
         });
 
         function loadImages(){
