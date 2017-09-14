@@ -283,6 +283,7 @@
                 },
                 drawCallback: function(){
                     loadImages();
+                    $('[data-toggle="popover"]').popover(); 
                 },
                 language: {
                     processing:     "Procesando ...",
