@@ -7,6 +7,7 @@
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/easy_dance_ico_5.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
 @stop
 
@@ -16,6 +17,7 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
+<script src="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 @stop
 @section('content')
 
@@ -79,6 +81,458 @@
           </div>
       </div>
   </div>
+
+  <div class="modal fade" id="modalCancelar" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <!--<h4 class="modal-title">Agendar</h4>-->
+                                    <i class="icon_a-agendar f-35" ></i>
+                                    <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body m-b-20">
+                                    <p class="text-center p-t-0 f-700 opaco-0-8 f-25">Hey {{Auth::user()->nombre}}.</p> 
+                                    <p class="text-center p-b-20 f-700 opaco-0-8 f-22">¿Listo para bloquear una clase?...</p>
+                                    <form id="frm_agendar" name="frm_agendar" class="addEvent" role="form" method="POST" action="agendar">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <div class="col-sm-4">
+                                      <ul class="ca-menu" style="margin: 0 auto;">
+                                        <li style="height: 250px;">
+                                            <a href="#modalCancelarUna" data-toggle="modal" class="agendar" data-agendar="clases-grupales">
+                                                <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="icon_f-1-una-clase"></i></span>
+                                                <div class="ca-content" style="top: 35%;">
+                                                    <h2 class="ca-main f-20">Bloquear una clase</h2>
+                                                    <h3 class="ca-sub" style="line-height: 20px;">Bloquear!</h3>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    </div>
+                                    <div class="col-sm-4">
+                                      <ul class="ca-menu" style="margin: 0 auto;">
+                                        <li style="height: 250px;">
+                                            <a href="#modalCancelarVarias" data-toggle="modal" class="agendar" data-agendar="clases-personalizadas">
+                                                <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="icon_f-varias-clases"></i></span>
+                                                <div class="ca-content" style="top: 35%;">
+                                                    <h2 class="ca-main f-20">Bloquear varias Clases</h2>
+                                                    <h3 class="ca-sub" style="line-height: 20px;">Bloquear!</h3>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    </div>
+                                    <div class="col-sm-4">
+                                      <ul class="ca-menu" style="margin: 0 auto;">
+                                        <li style="height: 250px;">
+                                            <a href="#modalCancelarPermanente" data-toggle="modal" class="agendar" data-agendar="talleres" >
+                                                <span class="ca-icon" style="line-height: 60px, top: 35%;"><i class="icon_f-eliminar-todas"></i></span>
+                                                <div class="ca-content" style="top: 35%;">
+                                                    <h2 class="ca-main f-20">Bloquear clases permanentemente</h2>
+                                                    <h3 class="ca-sub" style="line-height: 20px;">Bloquear!</h3>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    </div>
+
+                                    <div class="clearfix p-b-10"></div>
+
+                                        
+                                        <input type="hidden" id="getStart" name="getStart" />
+                                        <input type="hidden" id="getEnd" name="getEnd" />
+                                        <input type="hidden" id="agendar" name="agendar" />
+                                    </form>
+                                </div>
+                                
+                                <div class="modal-footer">
+                                    <!--<button type="submit" class="btn btn-link" id="addEvent">Add Event</button>
+                                    <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modal fade" id="modalCancelarUna" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                                        <h4 class="modal-title c-negro"> Bloquear una clase <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                                    </div>
+                                    <form name="cancelar_una_clase" id="cancelar_una_clase"  >
+                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                       <input class="id" type="hidden" name="id" id="id"></input>  
+                                       
+                                       <div class="modal-body">  
+
+                                       <div class="row p-t-20 p-b-0">
+
+                                           <div class="col-sm-3">
+  
+                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                                                <div class="clearfix p-b-15"></div>
+    
+                                                <span class="f-15 f-700 span_instructor"></span>
+
+                                                  
+                                           </div>
+
+                                           <div class="col-sm-3">
+  
+                                                <span class="f-15 f-700 span_clase_grupal"></span>
+
+                                                  
+                                           </div>
+
+                                           <div class="col-sm-6">
+                                             
+                                            <p class="f-16">Horario: <span class="f-700 span_hora"></span></p>
+
+                                            <p class="f-16"> <span class="f-700" style="float:left; padding-top: 0.5%">Fecha: 
+
+                                            <div class="dtp-container">
+                                              <input name="fecha_cancelacion" id="fecha_cancelacion" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text" style="padding-top: 0; width: 85%">
+                                            </div>
+
+
+                                            </span></p>
+
+
+                                               <div class="clearfix"></div> 
+                                               <div class="clearfix p-b-15"></div>
+
+
+                                           </div>
+
+                                           
+                                       </div>                         
+
+                                       <div class="row p-t-20 p-b-0">
+
+                     
+
+                               <div class="clearfix p-b-35"></div>
+
+
+            
+
+                                      <div class="col-sm-12">
+                                 
+                                        <label for="razon_cancelacion" id="id-razon_cancelacion">Razones del bloqueo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás cancelando o bloqueando la clase" title="" data-original-title="Ayuda"></i>
+                                        <br></br>
+
+                                        <div class="fg-line">
+                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" placeholder="Ej. No podré  asistir por razones ajenas a mi voluntad"></textarea>
+                                          </div>
+                                        <div class="has-error" id="error-razon_cancelacion">
+                                          <span >
+                                            <small class="help-block error-span" id="error-razon_cancelacion_mensaje" ></small>                                           
+                                          </span>
+                                        </div>
+                                      </div>
+
+                                      <div class="col-sm-12">
+                                       <div class="form-group fg-line ">
+                                          <label for="">Mostrar bloqueo en la web</label id="id-boolean_mostrar"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona si los clientes e instructores podrán ver el bloqueo de la clase en el calendario de actividades" title="" data-original-title="Ayuda"></i>
+                                          
+                                          <br></br>
+                                          <input type="text" class="boolean_mostrar" id="boolean_mostrar" name="boolean_mostrar" value="" hidden="hidden">
+                                          <div class="p-t-10">
+                                            <div class="toggle-switch" data-ts-color="purple">
+                                            <span class="p-r-10 f-700 f-16">No</span><input class ="mostrar" id="mostrar" type="checkbox">
+                                            
+                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                            </div>
+                                          </div>
+                                          
+                                       </div>
+                                       <div class="has-error" id="error-boolean_mostrar">
+                                            <span >
+                                                <small class="help-block error-span" id="error-boolean_mostrar_mensaje" ></small>                                           
+                                            </span>
+                                        </div>
+                                     </div>
+
+                                       </div>
+                                       
+                                    </div>
+                                    <div class="modal-footer p-b-20 m-b-20">
+                                        <div class="col-sm-6 text-left">
+                                          <div class="procesando hidden">
+                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                                          <div class="preloader pls-purple">
+                                              <svg class="pl-circular" viewBox="25 25 50 50">
+                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                              </svg>
+                                          </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">                          
+                                          <button type="button" class="btn-blanco btn m-r-10 f-16 cancelar_una_clase" > Completar el bloqueo</button>
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Volver</button>
+                                        </div>
+                                    </div></form>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="modal fade" id="modalCancelarVarias" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                                        <h4 class="modal-title c-negro"> Bloquear varias clases <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                                    </div>
+                                    <form name="cancelar_varias_clases" id="cancelar_varias_clases"  >
+                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                       <input class="id" type="hidden" name="id" id="id"></input>  
+                                       
+                                       <div class="modal-body">  
+
+                                       <div class="row p-t-20 p-b-0">
+
+                                           <div class="col-sm-3">
+  
+                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                                                <div class="clearfix p-b-15"></div>
+    
+                                                <span class="f-15 f-700 span_instructor"></span>
+
+                                                  
+                                           </div>
+
+                                           <div class="col-sm-3">
+  
+                                                <span class="f-15 f-700 span_clase_grupal"></span>
+
+                                                  
+                                           </div>
+
+                                           <div class="col-sm-6">
+                                             
+                                            <p class="f-16">Horario: <span class="f-700 span_hora"></span></p>
+
+
+
+                                               <div class="clearfix"></div> 
+                                               <div class="clearfix p-b-15"></div>
+
+
+                                           </div>
+
+                                           
+                                       </div>                       
+
+                                       <div class="row p-t-20 p-b-0">
+
+                     
+
+                               <div class="clearfix p-b-35"></div>
+
+
+            
+
+                                      <div class="col-sm-12">
+                                 
+                                        <label for="razon_cancelacion" id="id-razon_cancelacion">Razones del bloqueo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás cancelando o bloqueando la clase" title="" data-original-title="Ayuda"></i>
+                                        <br></br>
+
+                                        <div class="fg-line">
+                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" placeholder="Ej. No podré  asistir por razones ajenas a mi voluntad"></textarea>
+                                          </div>
+                                        <div class="has-error" id="error-razon_cancelacion">
+                                          <span >
+                                            <small class="help-block error-span" id="error-razon_cancelacion_mensaje" ></small>                                           
+                                          </span>
+                                        </div>
+                                      </div>
+
+                                      <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="form-group fg-line">
+                                            <label for="fecha_inicio">Fecha</label>
+                                            <div class="fg-line">
+                                                <input type="text" id="fecha2" name="fecha2" class="form-control pointer" placeholder="Selecciona la fecha">
+                                            </div>
+                                         </div>
+                                            <div class="has-error" id="error-fecha2">
+                                              <span >
+                                                  <small id="error-fecha2_mensaje" class="help-block error-span" ></small>                                           
+                                              </span>
+                                            </div>
+                                        </div>
+                                       </div>
+
+                                      <div class="col-sm-12">
+                                       <div class="form-group fg-line ">
+                                          <label for="">Mostrar bloqueo en la web</label id="id-boolean_mostrar"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona si los clientes e instructores podrán ver el bloqueo de la clase en el calendario de actividades" title="" data-original-title="Ayuda"></i>
+                                          
+                                          <br></br>
+                                          <input type="text" class="boolean_mostrar" id="boolean_mostrar" name="boolean_mostrar" value="" hidden="hidden">
+                                          <div class="p-t-10">
+                                            <div class="toggle-switch" data-ts-color="purple">
+                                            <span class="p-r-10 f-700 f-16">No</span><input class ="mostrar" id="mostrar" type="checkbox">
+                                            
+                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                            </div>
+                                          </div>
+                                          
+                                       </div>
+                                       <div class="has-error" id="error-boolean_mostrar">
+                                            <span >
+                                                <small class="help-block error-span" id="error-boolean_mostrar_mensaje" ></small>                                           
+                                            </span>
+                                        </div>
+                                     </div>
+
+                                       </div>
+                                       
+                                    </div>
+                                    <div class="modal-footer p-b-20 m-b-20">
+                                        <div class="col-sm-6 text-left">
+                                          <div class="procesando hidden">
+                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                                          <div class="preloader pls-purple">
+                                              <svg class="pl-circular" viewBox="25 25 50 50">
+                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                              </svg>
+                                          </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">                          
+                                          <button type="button" class="btn-blanco btn m-r-10 f-16 cancelar_varias_clases" > Completar el bloqueo</button>
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Volver</button>
+                                        </div>
+                                    </div></form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="modalCancelarPermanente" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                                        <h4 class="modal-title c-negro"> Bloquear la clase permanentemente <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                                    </div>
+                                    <form name="cancelar_permanentemente" id="cancelar_permanentemente"  >
+                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                       <input class="id" type="hidden" name="id" id="id"></input>  
+                                       
+                                       <div class="modal-body">  
+
+                                       <div class="row p-t-20 p-b-0">
+
+                                           <div class="col-sm-3">
+  
+                                                <img src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
+
+                                                <div class="clearfix p-b-15"></div>
+    
+                                                <span class="f-15 f-700 span_instructor"></span>
+
+                                                  
+                                           </div>
+
+                                           <div class="col-sm-3">
+  
+                                                <span class="f-15 f-700 span_clase_grupal"></span>
+
+                                                  
+                                           </div>
+
+                                           <div class="col-sm-6">
+                                             
+                                            <p class="f-16">Horario: <span class="f-700 span_hora"></span></p>
+
+                                            <p class="f-16"> <span class="f-700" style="float:left; padding-top: 0.5%">Fecha: 
+
+                                            <div class="dtp-container">
+                                              <input name="fecha_cancelacion" id="fecha_cancelacion" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text" style="padding-top: 0; width: 85%">
+                                            </div>
+
+
+                                            </span></p>
+
+
+                                               <div class="clearfix"></div> 
+                                               <div class="clearfix p-b-15"></div>
+
+
+                                           </div>
+
+                                           
+                                       </div>                          
+
+                                       <div class="row p-t-20 p-b-0">
+
+                     
+
+                               <div class="clearfix p-b-35"></div>
+
+
+            
+
+                                      <div class="col-sm-12">
+                                 
+                                        <label for="razon_cancelacion" id="id-razon_cancelacion">Razones del bloqueo</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica las razones por el cual estás cancelando o bloqueando la clase" title="" data-original-title="Ayuda"></i>
+                                        <br></br>
+
+                                        <div class="fg-line">
+                                          <textarea class="form-control" id="razon_cancelacion" name="razon_cancelacion" rows="2" placeholder="Ej. No podré  asistir por razones ajenas a mi voluntad"></textarea>
+                                          </div>
+                                        <div class="has-error" id="error-razon_cancelacion">
+                                          <span >
+                                            <small class="help-block error-span" id="error-razon_cancelacion_mensaje" ></small>                                           
+                                          </span>
+                                        </div>
+                                      </div>
+
+                                      <div class="col-sm-12">
+                                       <div class="form-group fg-line ">
+                                          <label for="">Mostrar bloqueo en la web</label id="id-boolean_mostrar"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona si los clientes e instructores podrán ver el bloqueo de la clase en el calendario de actividades" title="" data-original-title="Ayuda"></i>
+                                          
+                                          <br></br>
+                                          <input type="text" class="boolean_mostrar" id="boolean_mostrar" name="boolean_mostrar" value="" hidden="hidden">
+                                          <div class="p-t-10">
+                                            <div class="toggle-switch" data-ts-color="purple">
+                                            <span class="p-r-10 f-700 f-16">No</span><input class ="mostrar" id="mostrar" type="checkbox">
+                                            
+                                            <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                            </div>
+                                          </div>
+                                          
+                                       </div>
+                                       <div class="has-error" id="error-boolean_mostrar">
+                                            <span >
+                                                <small class="help-block error-span" id="error-boolean_mostrar_mensaje" ></small>                                           
+                                            </span>
+                                        </div>
+                                     </div>
+
+                                       </div>
+                                       
+                                    </div>
+                                    <div class="modal-footer p-b-20 m-b-20">
+                                        <div class="col-sm-6 text-left">
+                                          <div class="procesando hidden">
+                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                                          <div class="preloader pls-purple">
+                                              <svg class="pl-circular" viewBox="25 25 50 50">
+                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                              </svg>
+                                          </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">                          
+                                          <button type="button" class="btn-blanco btn m-r-10 f-16 cancelar_permanentemente" > Completar el bloqueo</button>
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Volver</button>
+                                        </div>
+                                    </div></form>
+                                </div>
+                            </div>
+                        </div>
 
 
 
@@ -189,6 +643,7 @@
         route_principal="{{url('/')}}/agendar/clases-grupales";
         route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminar/";
         route_consulta="{{url('/')}}/agendar/clases-grupales/consulta-estatus-alumnos";
+        route_cancelar="{{url('/')}}/agendar/clases-grupales/cancelar";
 
         var clases_grupales = <?php echo json_encode($clase_grupal_join);?>;
 
@@ -197,6 +652,51 @@
         var pagina = document.location.origin
 
         $(document).ready(function(){
+
+            $(".boolean_mostrar").val('1');  //VALOR POR DEFECTO
+            $(".mostrar").attr("checked", true); //VALOR POR DEFECTO
+
+            $(".mostrar").on('change', function(){
+              if ($(this).is(":checked")){
+                $(".boolean_mostrar").val('1');
+              }else{
+                $(".boolean_mostrar").val('0');
+              }    
+            });
+
+            $('#fecha2').daterangepicker({
+              "autoApply" : false,
+              "opens": "left",
+              "applyClass": "bgm-morado waves-effect",
+              locale : {
+                  format: 'DD/MM/YYYY',
+                  applyLabel : 'Aplicar',
+                  cancelLabel : 'Cancelar',
+                  daysOfWeek : [
+                      "Dom",
+                      "Lun",
+                      "Mar",
+                      "Mie",
+                      "Jue",
+                      "Vie",
+                      "Sab"
+                  ],
+                  monthNames: [
+                      "Enero",
+                      "Febrero",
+                      "Marzo",
+                      "Abril",
+                      "Mayo",
+                      "Junio",
+                      "Julio",
+                      "Agosto",
+                      "Septiembre",
+                      "Octubre",
+                      "Noviembre",
+                      "Diciembre"
+                  ],        
+              }
+          });
 
             i = parseInt("{{$hoy}}");
             hoy = i;
@@ -406,7 +906,7 @@
                 operacion += '<i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i>' 
                 operacion += 'Ver Progreso'
                 operacion += '</a></li>'
-                operacion += '<li class="hidden-xs"><a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/canceladas/'+array.id+'">'
+                operacion += '<li class="hidden-xs cancelar"><a>'
                 operacion += '<i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i>'
                 operacion += 'Cancelar Clase'
                 operacion += '</a></li>'
@@ -438,6 +938,8 @@
                     .attr('title','')
                     .attr('data-content',contenido)
                     .attr('id',array.id)
+                    .data('imagen',array.imagen)
+                    .data('sexo',array.sexo)
                     .addClass('seleccion');
             });
 
@@ -457,20 +959,6 @@
         
         window.open(route, '_blank');
       }
-
- 
-
-    // $('#tablelistar tbody').on( 'hover', 'a.dropdown-toggle', function () {
-    //     console.log('entro')
-
-    //   if($('.dropdown').hasClass('open')){
-
-    //   }else{
-    //     $( this ).click();
-    //   }
-     
-    // });
-
 
     $(".trasladar").click(function(){
       id = this.id;
@@ -537,11 +1025,231 @@
       });
     }
 
-  $('#tablelistar tbody').on( 'click', 'a.cancelado', function () {
-    var id = $(this).closest('tr').attr('id');
-    $('input[name=id]').val(id)
+  $('#tablelistar tbody').on( 'click', '.cancelar', function () {
+
+    var row = $(this).closest('tr')
+    var id = $(row).attr('id');
+    var nombre = $(row).find('td:eq(1)').text();
+    var instructor = $(row).find('td:eq(2)').text();
+    var hora = $(row).find('td:eq(4)').text();
+    var imagen = $(row).data('imagen');
+    var sexo = $(row).data('sexo');
+
+    $('.id').val(id);
+    $('.span_clase_grupal').text(nombre)
+    $('.span_hora').text(hora)
+    $('.span_instructor').text(instructor)
+
+    if(imagen){
+
+        $('#imagen').attr('src', "{{url('/')}}/assets/uploads/instructor/"+imagen)
+
+    }else{
+        if(sexo == 'F'){
+            $('#imagen').attr('src', "{{url('/')}}/assets/img/Mujer.jpg")
+        }else{
+            $('#imagen').attr('src', "{{url('/')}}/assets/img/Hombre.jpg")
+        }
+    }
+
     $('#modalCancelar').modal('show')
+
   });
+
+  $(".cancelar_una_clase").click(function(){
+
+
+        fecha_inicio = $('#fecha_cancelacion').val();
+
+        swal({   
+                    title: "Desea bloquear la clase el dia "+fecha_inicio,   
+                    text: "Confirmar bloqueo!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Confirmar bloqueo!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+          procesando();
+          var route = route_cancelar;
+          var token = '{{ csrf_token() }}';
+          var datos = $( "#cancelar_una_clase" ).serialize(); 
+          $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+            dataType: 'json',
+            data:datos+"&tipo=1",
+            success:function(respuesta){
+               setTimeout(function(){ 
+
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY"; 
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje="¡Excelente! El registro se ha guardado satisfactoriamente";
+
+                $('.modal').modal('hide');
+
+                finprocesado();
+
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              }, 1000);
+
+            },
+            error:function(msj){
+
+            setTimeout(function(){ 
+              if (typeof msj.responseJSON === "undefined") {
+                window.location = "{{url('/')}}/error";
+              }
+              var nType = 'danger';
+              if(msj.responseJSON.status=="ERROR"){
+                errores(msj.responseJSON.errores);
+                var nTitle=" Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle=" Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              finprocesado();
+            
+              }, 1000); 
+             
+                   }
+               });
+              }
+            });
+          });
+
+      $(".cancelar_varias_clases").click(function(){
+    
+         swal({   
+                    title: "Desea bloquear la clase desde el " + $('#fecha2').val(),   
+                    text: "Confirmar bloqueo!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Confirmar bloqueo!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+          procesando();
+         var route = route_cancelar;
+         var token = '{{ csrf_token() }}';
+         var datos = $( "#cancelar_varias_clases" ).serialize(); 
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:datos+"&tipo=2",
+                    success:function(respuesta){
+                     setTimeout(function(){ 
+
+                      var nFrom = $(this).attr('data-from');
+                      var nAlign = $(this).attr('data-align');
+                      var nIcons = $(this).attr('data-icon');
+                      var nAnimIn = "animated flipInY";
+                      var nAnimOut = "animated flipOutY"; 
+                      var nType = 'success';
+                      var nTitle="Ups! ";
+                      var nMensaje="¡Excelente! El registro se ha guardado satisfactoriamente";
+
+                      $('.modal').modal('hide');
+
+                      finprocesado();
+
+                      notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                    }, 1000);
+
+                  },
+                  error:function(msj){
+
+                    setTimeout(function(){ 
+                    if (typeof msj.responseJSON === "undefined") {
+                      window.location = "{{url('/')}}/error";
+                    }
+                    var nType = 'danger';
+                    if(msj.responseJSON.status=="ERROR"){
+                      errores(msj.responseJSON.errores);
+                      var nTitle=" Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                    }else{
+                      var nTitle=" Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    }
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                    finprocesado();
+                    
+                  }, 1000); 
+             
+             }
+         });
+        }
+      });
+    });
+
+      $(".cancelar_permanentemente").click(function(){
+    
+         swal({   
+                    title: "Desea bloquear la clase permanentemente",   
+                    text: "Confirmar bloqueo!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Confirmar bloqueo!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+          procesando();
+         var route = route_cancelar;
+         var token = '{{ csrf_token() }}';
+         var datos = $( "#cancelar_varias_clases" ).serialize(); 
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                    dataType: 'json',
+                    data:datos+"&tipo=3",
+                    success:function(respuesta){
+
+                      window.location = route_principal;
+
+                    },
+                    error:function(msj){
+
+                    setTimeout(function(){ 
+                    if (typeof msj.responseJSON === "undefined") {
+                      window.location = "{{url('/')}}/error";
+                    }
+                    var nType = 'danger';
+                    if(msj.responseJSON.status=="ERROR"){
+                      errores(msj.responseJSON.errores);
+                      var nTitle=" Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                    }else{
+                      var nTitle=" Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    }
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                    finprocesado();
+                    
+                }, 1000); 
+             
+             }
+         });
+        }
+      });
+    });
 
   $('#tablelistar tbody').on( 'click', 'a.modal_trasladar', function () {
     var id = $(this).closest('tr').attr('id');
