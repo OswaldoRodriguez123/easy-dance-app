@@ -306,7 +306,9 @@
                         }
             });
 
-            $.each('.lazy', function(){
+            imagenes = $('.lazy')
+
+            $.each(imagenes, function(){
                var this_image = this;
                var src = $(this_image).data('image');
                 this_image.src = src;
