@@ -129,7 +129,7 @@
 
                                     $contenido = 
                                     '<p class="c-negro">' .
-                                        $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg lazy" src="/assets/img/Hombre.jpg" data-image = "'.$imagen.'" alt=""><br><br>' .
+                                        $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .
 
                                         'Cantidad que adeuda: ' . number_format($alumno['deuda'], 2, '.' , '.')  . '<br>'.
                                         'Número Móvil: ' . $alumno['celular'] . '<br>'.
@@ -283,7 +283,6 @@
                 },
                 drawCallback: function(){
                     loadImages();
-                    $('[data-toggle="popover"]').popover(); 
                 },
                 language: {
                     processing:     "Procesando ...",
@@ -315,9 +314,10 @@
             imagenes = $('.lazy')
 
             $.each(imagenes, function(){
-                var this_image = this;
-                var src = $(this_image).data('image');
-                this_image.src = src;
+                var row = $(this).closest('tr')
+                var image = this;
+                var src = $(image).data('image');
+                image.src = src;
             });
         }
 
