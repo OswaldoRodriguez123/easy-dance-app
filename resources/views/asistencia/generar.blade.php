@@ -350,7 +350,7 @@
 
                                 $contenido = 
                                 '<p class="c-negro">' .
-                                    $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg lazy" src="/assets/img/Hombre.jpg" data-image = "'.$imagen.'" alt=""><br><br>' .
+                                    $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .
 
                                 'Clase Grupal: ' . $alumno['nombre_clase']  . '<br>'.
                                 'Día: ' . $alumno['dia_clase'] . '<br>'.
@@ -397,7 +397,7 @@
 
                                 $contenido = 
                                 '<p class="c-negro">' .
-                                    $instructor['nombre'] . ' ' . $instructor['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg lazy" src="/assets/img/Hombre.jpg" data-image = "'.$imagen.'" alt=""><br><br></p>';
+                                    $instructor['nombre'] . ' ' . $instructor['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br></p>';
 
                               ?>
                                 <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" id="asistencia_alumno_row_{{$id}}" class="seleccion" data-imagen = "{{$instructor['imagen']}}" data-id-participante = "{{$id}}" data-nombre-participante = "{{$instructor['nombre']}} {{$instructor['apellido']}}" data-identificacion-participante = "{{$instructor['identificacion']}}" data-sexo = "{{$instructor['sexo']}}" data-tipo-participante = "instructor" >
@@ -436,7 +436,7 @@
 
                                 $contenido = 
                                 '<p class="c-negro">' .
-                                    $staff['nombre'] . ' ' . $staff['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg lazy" src="/assets/img/Hombre.jpg" data-image = "'.$imagen.'" alt=""><br><br></p>';
+                                    $staff['nombre'] . ' ' . $staff['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br></p>';
 
                               ?>
 
