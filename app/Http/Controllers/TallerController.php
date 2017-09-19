@@ -1467,10 +1467,11 @@ class TallerController extends BaseController {
      */
     public function destroy($id)
     {
-        $exist = InscripcionTaller::where('taller_id', $id)->first();
+        // $exist = InscripcionTaller::where('taller_id', $id)->first();
 
-        if(!$exist)
-        {
+        // if(!$exist)
+        // {
+            $horarios = HorarioTaller::where('taller_id', $id)->delete();
             $taller = Taller::find($id);
             
             if($taller->delete()){
@@ -1480,9 +1481,9 @@ class TallerController extends BaseController {
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
 
-        }else{
-            return response()->json(['error_mensaje'=> 'Ups! Este taller no puede ser eliminado ya que posee alumnos registrados' , 'status' => 'ERROR-BORRADO'],422);
-        }
+        // }else{
+        //     return response()->json(['error_mensaje'=> 'Ups! Este taller no puede ser eliminado ya que posee alumnos registrados' , 'status' => 'ERROR-BORRADO'],422);
+        // }
     }
 
     public function egresos($id)
