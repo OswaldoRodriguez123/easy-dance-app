@@ -22,7 +22,43 @@
 @section('content')
 
 
-<a href="{{url('/')}}/participante/alumno/llamadas/agregar/{{$id}}" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
+   <div class="modal fade" id="modalObservacion" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                  <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Observación <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+              </div>
+              <div class="modal-body">                           
+                 <div class="row p-t-20 p-b-0">
+                   <div class="col-sm-12">
+                     <div class="form-group fg-line">
+                        <label for="costo">Observación</label>
+                        <textarea class="form-control" id="observacion" name="observacion" rows="2" placeholder="Observación" disabled></textarea>
+                     </div>
+                   </div>
+                 </div>
+                 
+              </div>
+              <div class="modal-footer p-b-20 m-b-20">
+                  <div class="col-sm-12 text-left">
+                    <div class="procesando hidden">
+                    <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                    <div class="preloader pls-purple">
+                        <svg class="pl-circular" viewBox="25 25 50 50">
+                            <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                        </svg>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12">                            
+
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <a href="{{url('/')}}/participante/alumno/llamadas/agregar/{{$id}}" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
                 <div class="container">
                 
@@ -94,7 +130,7 @@
 
                                 ?>
                                 <?php $id = $llamada->id; ?>
-                                <tr id="{{$id}}" class="seleccion" >
+                                <tr id="{{$id}}" class="seleccion" data-observacion="{{$llamada->observacion}}" >
 
                                   <td><span style="display:none">{{$llamada->fecha_llamada}}</span></td>
 
@@ -178,7 +214,7 @@
         order: [[1, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "disabled" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                        processing:     "Procesando ...",
@@ -266,7 +302,12 @@
                 });
       }
 
-
+      function previa(t){
+        var row = $(t).closest('tr');
+        var observacion = row.data('observacion');
+        $('#observacion').text(observacion)
+        $('#modalObservacion').modal('show')
+      }
 
     </script>
 @stop
