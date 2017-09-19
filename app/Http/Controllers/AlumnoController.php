@@ -171,6 +171,7 @@ class AlumnoController extends BaseController
             ->select('alumnos.*', 'config_clases_grupales.nombre as clase_grupal_nombre', 'inscripcion_clase_grupal.id as inscripcion_id','inscripcion_clase_grupal.deleted_at')
             ->where('alumnos.academia_id', Auth::user()->academia_id)
             ->whereNotNull('inscripcion_clase_grupal.deleted_at')
+            ->whereNotNull('clases_grupales.deleted_at')
         ->get();
 
 
@@ -196,6 +197,7 @@ class AlumnoController extends BaseController
             ->select('alumnos.*', 'config_clases_grupales.nombre as clase_grupal_nombre', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_inicio', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_final', 'inscripcion_clase_grupal.razon_congelacion')
             ->where('alumnos.academia_id', Auth::user()->academia_id)
             ->where('inscripcion_clase_grupal.boolean_congelacion',1)
+            ->where('clases_grupales.deleted_at',null)
         ->get();
 
         $array = array();

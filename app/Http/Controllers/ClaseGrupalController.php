@@ -1132,7 +1132,6 @@ class ClaseGrupalController extends BaseController {
             $clasegrupal->fecha_final = $fecha_final;
             $clasegrupal->boolean_congelacion = 1;
            
-
             if($clasegrupal->save()){
                
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $request->inscripcion_clase_grupal_id, 200]);

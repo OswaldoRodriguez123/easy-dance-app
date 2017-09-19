@@ -800,7 +800,7 @@ class UsuarioController extends BaseController {
 
                     $congelados = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                         ->where('inscripcion_clase_grupal.fecha_final','<',Carbon::now()->toDateString())
-                        ->where('inscripcion_clase_grupal.boolean_congelacion',0)
+                        ->where('inscripcion_clase_grupal.boolean_congelacion',1)
                         ->where('clases_grupales.academia_id',Auth::user()->academia_id)
                     ->get();
 

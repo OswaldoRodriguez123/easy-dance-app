@@ -1466,7 +1466,8 @@ class AsistenciaController extends BaseController
 
           $estatu="credencial";
 
-          $credenciales = CredencialAlumno::where('alumno_id',$alumno_id)->whereIn('instructor_id',$in_credencial)
+          $credenciales = CredencialAlumno::where('alumno_id',$alumno_id)
+            ->whereIn('instructor_id',$in_credencial)
             ->where('fecha_vencimiento','>=', Carbon::now()->toDateString())
             ->where('cantidad' ,'>', 0)
           ->sum('cantidad');
