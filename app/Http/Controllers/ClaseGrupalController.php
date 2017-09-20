@@ -1661,6 +1661,7 @@ class ClaseGrupalController extends BaseController {
             $alumnosclasegrupal = InscripcionClaseGrupal::withTrashed()->where('alumno_id', $request->alumno_id)->where('clase_grupal_id', $request->clase_grupal_id)->first();
 
             if($alumnosclasegrupal){
+                
                 $alumnosclasegrupal->deleted_at = null;
                 $alumnosclasegrupal->save();
 
@@ -1744,6 +1745,14 @@ class ClaseGrupalController extends BaseController {
                     $in = array(3,4);
                     $config_clase_grupal = ConfigClasesGrupales::withTrashed()->find($clasegrupal->clase_grupal_id);
 
+                    if($config_clase_grupal){
+                        $servicio_id = $config_clase_grupal->servicio_id;
+                        $nombre = $config_clase_grupal->nombre;
+                    }else{
+                        $servicio_id = 0;
+                        $nombre = '';
+                    }
+
                     $visitante = Visitante::where('alumno_id', $request->alumno_id)->first();
 
                     if($visitante){
@@ -1777,8 +1786,8 @@ class ClaseGrupalController extends BaseController {
                         $item_factura->usuario_tipo = 1;
                         $item_factura->academia_id = Auth::user()->academia_id;
                         $item_factura->fecha = Carbon::now()->toDateString();
-                        $item_factura->item_id = $config_clase_grupal->servicio_id;
-                        $item_factura->nombre = 'Inscripción ' . $config_clase_grupal->nombre;
+                        $item_factura->item_id = $servicio_id;
+                        $item_factura->nombre = 'Inscripción ' . $nombre;
                         $item_factura->tipo = 3;
                         $item_factura->cantidad = 1;
                         $item_factura->precio_neto = 0;
