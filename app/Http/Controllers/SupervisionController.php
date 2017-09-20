@@ -1119,6 +1119,12 @@ class SupervisionController extends BaseController {
 
         	$detalle_evaluacion = DetalleSupervisionEvaluacion::where('evaluacion_id',$request->id)->delete();
 
+        	$notificacion = Notificacion::where('tipo_evento',8)->where('evento_id',$request->id)->first();
+            if($notificacion){
+                $notificacion_usuario = NotificacionUsuario::where('id_notificacion',$notificacion->id)->delete();
+                $notificacion->delete();
+            }
+
             return response()->json(['mensaje' => '¡Excelente! La evaluación se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);

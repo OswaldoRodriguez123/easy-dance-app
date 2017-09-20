@@ -146,9 +146,9 @@
                                             if($notificacion['tipo_evento'] == 1){
                                                 $url = "agendar/clases-grupales/progreso/".$notificacion['evento_id'];
                                             }else if($notificacion['tipo_evento'] == 6){
-                                                $url = "incidencias/detalle/".$notificacion['evento_id'];
-                                            }else if($notificacion['tipo_evento'] == 7){
                                                 $url = "evaluaciones/detalle/".$notificacion['evento_id'];
+                                            }else if($notificacion['tipo_evento'] == 7){
+                                                $url = "incidencias/detalle/".$notificacion['evento_id'];
                                             }else if($notificacion['tipo_evento'] == 8){
                                                 $url = "supervision/detalle/".$notificacion['evento_id'];
                                             }

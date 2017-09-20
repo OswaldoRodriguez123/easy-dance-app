@@ -14,6 +14,9 @@ use App\ItemsExamenes;
 use App\ConfigEspecialidades;
 use App\ConfigTipoExamen;
 use App\ConfigFormulaExito;
+use App\Evaluacion;
+use App\Notificacion;
+use App\NotificacionUsuario;
 use Validator;
 use Session;
 use Carbon\Carbon;
@@ -872,6 +875,19 @@ class ExamenController extends BaseController {
 		$examen = Examen::find($id);
 		
         if($examen->delete()){
+
+            $evaluaciones = Evaluacion::where('examen_id',$id)->get();
+
+            foreach($evaluaciones as $evaluacion){
+                $notificacion = Notificacion::where('tipo_evento',6)->where('evento_id',$evaluacion->id)->first();
+                if($notificacion){
+                    $notificacion_usuario = NotificacionUsuario::where('id_notificacion',$notificacion->id)->delete();
+                    $notificacion->delete();
+                }
+            }
+
+            $delete = Evaluacion::where('examen_id',$id)->delete();
+
             return response()->json(['mensaje' => '¡Excelente! El Examen se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);

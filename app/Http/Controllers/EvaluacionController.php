@@ -458,37 +458,38 @@ class EvaluacionController extends BaseController
     }
 
     public function getDetalle($id){
+
         //DATOS DE ENCABEZADO
         
-        $nota_final = evaluacion::find($id);
+        $evaluacion = Evaluacion::find($id);
         
         $alumno = DB::table('evaluaciones')
-                            ->join('alumnos', 'evaluaciones.alumno_id','=','alumnos.id')
-                            ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.correo', 'alumnos.telefono', 'alumnos.celular', 'alumnos.sexo', 'alumnos.direccion', 'alumnos.fecha_nacimiento', 'alumnos.identificacion', 'alumnos.id', 'alumnos.created_at')
-                            ->where('evaluaciones.id','=',$id)
-                            ->first();
+                    ->join('alumnos', 'evaluaciones.alumno_id','=','alumnos.id')
+                    ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.correo', 'alumnos.telefono', 'alumnos.celular', 'alumnos.sexo', 'alumnos.direccion', 'alumnos.fecha_nacimiento', 'alumnos.identificacion', 'alumnos.id', 'alumnos.created_at')
+                    ->where('evaluaciones.id','=',$id)
+                ->first();
 
         $fecha_ingreso = Carbon::createFromFormat('Y-m-d H:i:s', $alumno->created_at)->format('Y-m-d');
 
         $instructor = DB::table('evaluaciones')
-                            ->join('instructores', 'evaluaciones.instructor_id','=','instructores.id')
-                            ->select('instructores.nombre AS instructor_nombre', 'instructores.apellido AS instructor_apellido', 'instructores.telefono', 'instructores.celular', 'instructores.facebook', 'instructores.twitter', 'instructores.instagram', 'instructores.linkedin', 'instructores.youtube', 'instructores.pagina_web')
-                            ->where('evaluaciones.id','=',$id)
-                            ->first();
+                        ->join('instructores', 'evaluaciones.instructor_id','=','instructores.id')
+                        ->select('instructores.nombre AS instructor_nombre', 'instructores.apellido AS instructor_apellido', 'instructores.telefono', 'instructores.celular', 'instructores.facebook', 'instructores.twitter', 'instructores.instagram', 'instructores.linkedin', 'instructores.youtube', 'instructores.pagina_web')
+                        ->where('evaluaciones.id','=',$id)
+                    ->first();
 
         $academia = DB::table('evaluaciones')
-                            ->join('academias', 'evaluaciones.academia_id','=','academias.id')
-                            ->select('academias.nombre AS academia_nombre','academias.imagen as imagen_academia', 'academias.identificacion', 'academias.telefono', 'academias.celular', 'academias.correo', 'academias.direccion')
-                            ->where('evaluaciones.id','=',$id)
-                            ->first();
+                        ->join('academias', 'evaluaciones.academia_id','=','academias.id')
+                        ->select('academias.nombre AS academia_nombre','academias.imagen as imagen_academia', 'academias.identificacion', 'academias.telefono', 'academias.celular', 'academias.correo', 'academias.direccion')
+                        ->where('evaluaciones.id','=',$id)
+                    ->first();
 
         $examen = DB::table('evaluaciones')
-                            ->join('examenes', 'evaluaciones.examen_id','=','examenes.id')
-                            ->join('instructores', 'evaluaciones.instructor_id','=','instructores.id')
-                            ->join('config_tipo_examenes', 'examenes.tipo','=','config_tipo_examenes.id')
-                            ->select('evaluaciones.*', 'examenes.genero','evaluaciones.porcentaje', 'config_tipo_examenes.nombre', 'examenes.proxima_fecha', 'instructores.nombre AS instructor_nombre', 'instructores.apellido AS instructor_apellido', 'instructores.telefono', 'instructores.celular', 'instructores.facebook', 'instructores.twitter', 'instructores.instagram', 'instructores.linkedin', 'instructores.youtube', 'instructores.pagina_web', 'examenes.id as examen_id')
-                            ->where('evaluaciones.id','=',$id)
-                            ->first();
+                    ->join('examenes', 'evaluaciones.examen_id','=','examenes.id')
+                    ->join('instructores', 'evaluaciones.instructor_id','=','instructores.id')
+                    ->join('config_tipo_examenes', 'examenes.tipo','=','config_tipo_examenes.id')
+                    ->select('evaluaciones.*', 'examenes.genero','evaluaciones.porcentaje', 'config_tipo_examenes.nombre', 'examenes.proxima_fecha', 'instructores.nombre AS instructor_nombre', 'instructores.apellido AS instructor_apellido', 'instructores.telefono', 'instructores.celular', 'instructores.facebook', 'instructores.twitter', 'instructores.instagram', 'instructores.linkedin', 'instructores.youtube', 'instructores.pagina_web', 'examenes.id as examen_id')
+                    ->where('evaluaciones.id','=',$id)
+                ->first();
 
         $clase_grupal = DB::table('alumnos')
                 ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
@@ -575,9 +576,9 @@ class EvaluacionController extends BaseController
             'alumno'                    => $alumno, 
             'academia'                  => $academia, 
             'detalle_notas'             => $detalles_notas,
-            'nota_final'                => $nota_final->total,
-            'observacion'               => $nota_final->observacion,
-            'fecha'                     => $nota_final->created_at,
+            'nota_final'                => $evaluacion->total,
+            'observacion'               => $evaluacion->observacion,
+            'fecha'                     => $evaluacion->created_at,
             'genero_examen'             => $examen->genero,
             'porcentaje'                => $examen->porcentaje,
             'edad'                      => $edad,

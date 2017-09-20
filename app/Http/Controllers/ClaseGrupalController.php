@@ -3056,6 +3056,12 @@ class ClaseGrupalController extends BaseController {
             $clasegrupal = ClaseGrupal::find($id);
         
             if($clasegrupal->delete()){
+
+                $notificacion = Notificacion::where('tipo_evento',1)->where('evento_id',$id)->first();
+                if($notificacion){
+                    $notificacion_usuario = NotificacionUsuario::where('id_notificacion',$notificacion->id)->delete();
+                    $notificacion->delete();
+                }
                 return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
