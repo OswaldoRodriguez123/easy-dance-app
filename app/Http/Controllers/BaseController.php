@@ -8,6 +8,7 @@ use App\User;
 use App\Academia;
 use App\AlumnoRemuneracion;
 use App\ConfigClasesGrupales;
+use App\Taller;
 use App\Instructor;
 use App\Notificacion;
 use Illuminate\Support\Facades\Auth;
@@ -62,18 +63,20 @@ class BaseController extends Controller {
                 $collection=collect($notificacion);     
                 $notificacion_imagen_array = $collection->toArray();
 
-                if($notificacion->tipo_evento != 1){
-                    if(Auth::user()->imagen){
-                        $notificacion_imagen_array['imagen']= "/assets/uploads/usuario/".Auth::user()->imagen;
-                    }else{
+                // if($notificacion->tipo_evento != 1){
+                //     if(Auth::user()->imagen){
+                //         $notificacion_imagen_array['imagen']= "/assets/uploads/usuario/".Auth::user()->imagen;
+                //     }else{
                         
-                        if(Auth::user()->sexo == 'F'){
-                            $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/1.jpg";
-                        }else{
-                            $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/2.jpg";
-                        }
-                    }
-                }else if($notificacion->tipo_evento == 1){
+                //         if(Auth::user()->sexo == 'F'){
+                //             $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/1.jpg";
+                //         }else{
+                //             $notificacion_imagen_array['imagen']= "/assets/img/profile-pics/2.jpg";
+                //         }
+                //     }
+                // }else 
+
+                if($notificacion->tipo_evento == 1){
 
                     $clase_grupal = ConfigClasesGrupales::join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
                         ->select('config_clases_grupales.imagen')
@@ -100,6 +103,30 @@ class BaseController extends Controller {
                             $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
                         }
                 	}
+                }else if($notificacion->tipo_evento == 2){
+
+                    $taller = Taller::find($notificacion->evento_id);
+
+                    if($taller){
+
+                        if($taller->imagen){
+                            $notificacion_imagen_array['imagen']= "/assets/uploads/taller/".$taller->imagen;
+                        }else{
+                            
+                            if($academia->imagen){
+                                $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$academia->imagen;
+                            }else{
+                                $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
+                            }
+                        }
+                    }else{
+                    
+                        if($academia->imagen){
+                            $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$academia->imagen;
+                        }else{
+                            $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
+                        }
+                    }
                 }else{
                     if($academia->imagen){
                         $notificacion_imagen_array['imagen']= "/assets/uploads/academia/".$academia->imagen;

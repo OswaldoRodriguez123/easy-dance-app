@@ -145,6 +145,13 @@
                                         <?php
                                             if($notificacion['tipo_evento'] == 1){
                                                 $url = "agendar/clases-grupales/progreso/".$notificacion['evento_id'];
+                                            }else if($notificacion['tipo_evento'] == 2){
+                                                $url = "agendar/talleres/progreso/".$notificacion['evento_id'];
+                                            }else if($notificacion['tipo_evento'] == 3){
+                                                // $url = "agendar/clases-personalizadas/progreso/".$notificacion['evento_id'];
+                                                $url = "agendar";
+                                            }else if($notificacion['tipo_evento'] == 4){
+                                                $url = "agendar";
                                             }else if($notificacion['tipo_evento'] == 6){
                                                 $url = "evaluaciones/detalle/".$notificacion['evento_id'];
                                             }else if($notificacion['tipo_evento'] == 7){

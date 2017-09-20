@@ -19,6 +19,9 @@ use App\ItemsFacturaProforma;
 use App\Egreso;
 use App\ConfigEgreso;
 use App\Reservacion;
+use App\User;
+use App\Notificacion;
+use App\NotificacionUsuario;
 use Validator;
 use DB;
 use Carbon\Carbon;
@@ -515,6 +518,57 @@ class TallerController extends BaseController {
             $taller->boolean_promocionar = $request->boolean_promocionar;
 
             if($taller->save()){
+
+                $notificacion = new Notificacion; 
+
+                $notificacion->tipo_evento = 2;
+                $notificacion->evento_id = $taller->id;
+                $notificacion->mensaje = "Tu academia ha creado un taller llamado ".$taller->nombre;
+                $notificacion->titulo = "Nuevo Taller";
+
+                if($notificacion->save()){
+
+                    $in = array(2,4);
+
+                    $usuarios = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                        ->select('users.id')
+                        ->whereIn('usuarios_tipo.tipo',$in)
+                        ->where('users.academia_id', '=', Auth::user()->academia_id)
+                    ->get();
+                    
+                    foreach ($usuarios as $usuario) {
+                        $usuarios_notificados = new NotificacionUsuario;
+                        $usuarios_notificados->id_usuario = $usuario->id;
+                        $usuarios_notificados->id_notificacion = $notificacion->id;
+                        $usuarios_notificados->visto = 0;
+                        $usuarios_notificados->save();
+                    }
+                }
+
+                $instructor = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                        ->select('users.id')
+                        ->where('usuarios_tipo.tipo',3)    
+                        ->where('usuarios_tipo.tipo_id',$request->instructor_id) 
+                    ->first();
+
+                if($instructor){
+
+                    $notificacion = new Notificacion; 
+
+                    $notificacion->tipo_evento = 2;
+                    $notificacion->evento_id = $taller->id;
+                    $notificacion->mensaje = "Te han asignado un taller llamado ".$taller->nombre;
+                    $notificacion->titulo = "Nuevo Taller";
+
+                    if($notificacion->save()){
+
+                        $usuarios_notificados = new NotificacionUsuario;
+                        $usuarios_notificados->id_usuario = $instructor->id;
+                        $usuarios_notificados->id_notificacion = $notificacion->id;
+                        $usuarios_notificados->visto = 0;
+                        $usuarios_notificados->save();
+                    }
+                }
 
                 if($request->costo){
 
@@ -1475,6 +1529,11 @@ class TallerController extends BaseController {
             $taller = Taller::find($id);
             
             if($taller->delete()){
+                $notificacion = Notificacion::where('tipo_evento',2)->where('evento_id',$id)->first();
+                if($notificacion){
+                    $notificacion_usuario = NotificacionUsuario::where('id_notificacion',$notificacion->id)->delete();
+                    $notificacion->delete();
+                }
                 $delete = ConfigServicios::where('tipo',5)->where('tipo_id',$id)->delete();
                 return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
             }else{

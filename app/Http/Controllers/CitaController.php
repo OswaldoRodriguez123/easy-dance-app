@@ -13,6 +13,8 @@ use App\Asistencia;
 use App\Llamada;
 use App\InscripcionClaseGrupal;
 use App\User;
+use App\Notificacion;
+use App\NotificacionUsuario;
 use App\ItemsFacturaProforma;
 use Carbon\Carbon;
 use Validator;
@@ -226,6 +228,57 @@ class CitaController extends BaseController {
             $cita->cita_llamada = $request->cita_llamada;
 
             if($cita->save()){
+
+                $in = array(2,4);
+
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->select('users.id')
+                    ->whereIn('usuarios_tipo.tipo',$in)
+                    ->where('usuarios_tipo.tipo_id', '=',$request->alumno_id)
+                ->first();
+                
+                if($usuario){
+
+                    $notificacion = new Notificacion; 
+
+                    $notificacion->tipo_evento = 4;
+                    $notificacion->evento_id = Auth::user()->academia_id;
+                    $notificacion->mensaje = "Tu academia te ha asignado una cita";
+                    $notificacion->titulo = "Nueva Cita";
+
+                    if($notificacion->save()){
+                        $usuarios_notificados = new NotificacionUsuario;
+                        $usuarios_notificados->id_usuario = $usuario->id;
+                        $usuarios_notificados->id_notificacion = $notificacion->id;
+                        $usuarios_notificados->visto = 0;
+                        $usuarios_notificados->save();
+                    }
+                }
+
+                $instructor = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                        ->select('users.id')
+                        ->where('usuarios_tipo.tipo',3)    
+                        ->where('usuarios_tipo.tipo_id',$request->instructor_id) 
+                    ->first();
+
+                if($instructor){
+
+                    $notificacion = new Notificacion; 
+
+                    $notificacion->tipo_evento = 4;
+                    $notificacion->evento_id = Auth::user()->academia_id;
+                    $notificacion->mensaje = "Tu academia te ha asignado una cita";
+                    $notificacion->titulo = "Nueva Cita";
+
+                    if($notificacion->save()){
+
+                        $usuarios_notificados = new NotificacionUsuario;
+                        $usuarios_notificados->id_usuario = $instructor->id;
+                        $usuarios_notificados->id_notificacion = $notificacion->id;
+                        $usuarios_notificados->visto = 0;
+                        $usuarios_notificados->save();
+                    }
+                }
 
                 $academia = Academia::find(Auth::user()->academia_id);
                 $alumno = Alumno::find($request->alumno_id);
@@ -475,6 +528,11 @@ class CitaController extends BaseController {
         $cita = Cita::find($id);
         
         if($cita->delete()){
+            $notificacion = Notificacion::where('tipo_evento',4)->where('evento_id',$id)->first();
+            if($notificacion){
+                $notificacion_usuario = NotificacionUsuario::where('id_notificacion',$notificacion->id)->delete();
+                $notificacion->delete();
+            }
             return response()->json(['mensaje' => '¡Excelente! La Cita se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);

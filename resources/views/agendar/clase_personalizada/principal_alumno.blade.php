@@ -118,7 +118,7 @@
     <script type="text/javascript">
 
     route_detalle="{{url('/')}}/agendar/clases-personalizadas/detalle";
-    route_enviar="{{url('/')}}/agendar/clases-personalizadas/agregar";
+    route_enviar="{{url('/')}}/agendar/clases-personalizadas/agregar/";
     route_reserva="{{url('/')}}/reservacion/";
   
     $(document).on( 'click', '.previa', function () {
@@ -127,10 +127,8 @@
 
         if("{{Auth::check()}}")
         {
-            window.open(route, '_blank');_enviar+"/"+id;
-        }
-
-        else{
+            window.open(route_enviar+id, '_blank');
+        }else{
              var route = route_reserva + 3;
              var token = $('input:hidden[name=_token]').val();
                   
@@ -142,7 +140,7 @@
                       data:"&tipo_reservacion=3",
                       success:function(respuesta){
 
-                          window.open(route, '_blank');_reserva+id; 
+                          window.open(route_reserva+id, '_blank'); 
 
                       },
                       error:function(msj){

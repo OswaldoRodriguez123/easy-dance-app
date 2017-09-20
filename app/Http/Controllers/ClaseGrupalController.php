@@ -1546,7 +1546,7 @@ class ClaseGrupalController extends BaseController {
 
             if($clasegrupal->save()){
 
-                $config_clase_grupal = ConfigClasesGrupales::join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
+                $config_clase_grupal = ConfigClasesGrupales::withTrashed()->join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
                     ->select('config_clases_grupales.nombre')
                     ->where('clases_grupales.clase_grupal_id','=',$request->clase_grupal_id)
                 ->first();
@@ -1555,7 +1555,7 @@ class ClaseGrupalController extends BaseController {
 
                 $notificacion->tipo_evento = 1;
                 $notificacion->evento_id = $clasegrupal->id;
-                $notificacion->mensaje = "Tu academia a creado una nueva clase grupal llamada ".$config_clase_grupal->nombre;
+                $notificacion->mensaje = "Tu academia ha creado una nueva clase grupal llamada ".$config_clase_grupal->nombre;
                 $notificacion->titulo = "Nueva Clase Grupal";
 
                 if($notificacion->save()){
@@ -1571,6 +1571,31 @@ class ClaseGrupalController extends BaseController {
                     foreach ($usuarios as $usuario) {
                         $usuarios_notificados = new NotificacionUsuario;
                         $usuarios_notificados->id_usuario = $usuario->id;
+                        $usuarios_notificados->id_notificacion = $notificacion->id;
+                        $usuarios_notificados->visto = 0;
+                        $usuarios_notificados->save();
+                    }
+                }
+
+                $instructor = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                        ->select('users.id')
+                        ->where('usuarios_tipo.tipo',3)    
+                        ->where('usuarios_tipo.tipo_id',$request->instructor_id)                
+                    ->first();
+
+                if($instructor){
+
+                    $notificacion = new Notificacion; 
+
+                    $notificacion->tipo_evento = 1;
+                    $notificacion->evento_id = $clasegrupal->id;
+                    $notificacion->mensaje = "Te han asignado una Clase Grupal llamada ".$config_clase_grupal->nombre;
+                    $notificacion->titulo = "Nueva Clase Grupal";
+
+                    if($notificacion->save()){
+
+                        $usuarios_notificados = new NotificacionUsuario;
+                        $usuarios_notificados->id_usuario = $instructor->id;
                         $usuarios_notificados->id_notificacion = $notificacion->id;
                         $usuarios_notificados->visto = 0;
                         $usuarios_notificados->save();
