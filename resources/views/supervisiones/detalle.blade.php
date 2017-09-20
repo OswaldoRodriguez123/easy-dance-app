@@ -203,6 +203,10 @@
 
                             <br><br>
 
+                            Fecha de Ejecución : {{$fecha_ejecucion}}
+
+                            <br><br>
+
 
                              <div class="row m-b-25">
                                 <div class="col-sm-12 f-16 text-center" style="margin-top: 100px">

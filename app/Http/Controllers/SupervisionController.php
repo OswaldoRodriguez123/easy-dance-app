@@ -1065,7 +1065,7 @@ class SupervisionController extends BaseController {
         	->join('supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
     		->join('staff', 'supervisiones.supervisor_id','=','staff.id')
 	        ->join('config_staff', 'supervisiones.cargo','=','config_staff.id')
-	        ->select('supervisiones.*', 'config_staff.nombre as cargo', 'staff.nombre', 'staff.apellido', 'supervisiones_evaluaciones.total', 'supervisiones_evaluaciones.porcentaje', 'supervisiones_evaluaciones.observacion')
+	        ->select('supervisiones.*', 'config_staff.nombre as cargo', 'staff.nombre', 'staff.apellido', 'supervisiones_evaluaciones.total', 'supervisiones_evaluaciones.porcentaje', 'supervisiones_evaluaciones.observacion', 'supervisiones_evaluaciones.created_at')
 	        ->where('supervisiones_evaluaciones.id', $id)
         ->first();
 
@@ -1090,12 +1090,15 @@ class SupervisionController extends BaseController {
 	        $detalles_notas = DetalleSupervisionEvaluacion::select('nombre', 'nota')
 	            ->where('evaluacion_id','=',$id)
 	        ->get();
+
+	        $fecha_ejecucion = Carbon::createFromFormat('Y-m-d H:i:s',$evaluacion->created_at)->format('d-m-Y');
 	        
 	        return view('supervisiones.detalle')->with([
 	        	'evaluacion'               => $evaluacion,
 	            'staff'                    => $staff, 
 	            'academia'                 => $academia, 
 	            'detalle_notas'            => $detalles_notas,
+	            'fecha_ejecucion' 		   => $fecha_ejecucion
 
 	        ]);
     	}else{

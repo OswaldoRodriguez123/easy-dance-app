@@ -217,7 +217,7 @@
     function previa(t){
 
         var id = $(t).closest('tr').attr('id');
-        window.open(route, '_blank');_detalle+id;
+        window.open(route_detalle+id, '_blank');
     }
 
 
