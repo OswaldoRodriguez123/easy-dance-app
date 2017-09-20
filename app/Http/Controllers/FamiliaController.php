@@ -634,8 +634,7 @@ class FamiliaController extends BaseController {
 
         $alumnos = Alumno::withTrashed()->where('familia_id', $id)->orderBy('nombre', 'asc')->get();
         $array = array();
-
-        $i = 0;
+        $representante_id = 0;
 
         foreach($alumnos as $alumno){
 
@@ -646,23 +645,31 @@ class FamiliaController extends BaseController {
 
             if($representante){
                 $es_representante = 1;
+                $representante_id = $alumno->id;
             }else{
                 $es_representante = 0;
             }
+
             $total = ItemsFacturaProforma::where('usuario_id', '=' ,  $alumno->id)->where('usuario_tipo',1)->sum('importe_neto');
+
+            if(!$total){
+                $total = 0;
+            }
+            
+            $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
             $collection=collect($alumno);     
+
             $alumno_array = $collection->toArray();
             
             $alumno_array['total']=$total;
             $alumno_array['es_representante']=$es_representante;
-            $array[$i] = $alumno_array;
-
-            $i = $i + 1;
+            $alumno_array['edad']=$edad;
+            $array[$alumno->id] = $alumno_array;
 
         }
 
         if($alumnos){
-           return view('participante.familia.planilla')->with(['familia' => $array , 'id' => $id]);
+           return view('participante.familia.planilla')->with(['familia' => $array , 'id' => $id, 'representante_id' => $representante_id]);
         }else{
            return redirect("participante/familia"); 
         }

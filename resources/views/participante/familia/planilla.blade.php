@@ -200,12 +200,12 @@
                                     <label class="radio radio-inline m-r-20">
                                         <input name="sexo" id="mujer" value="F" type="radio">
                                         <i class="input-helper"></i>  
-                                        Mujer <i class="zmdi zmdi-female p-l-5 f-20"></i>
+                                        Mujer <i class="zmdi zmdi-female p-l-5 f-20 mujer"></i>
                                     </label>
                                     <label class="radio radio-inline m-r-20 ">
                                         <input name="sexo" id="hombre" value="M" type="radio">
                                         <i class="input-helper"></i>  
-                                        Hombre <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
+                                        Hombre <i class="zmdi zmdi-male-alt p-l-5 f-20 hombre"></i>
                                     </label>
                                     </div>
                                     
@@ -670,7 +670,7 @@
 
                         <div class="col-sm-6">
                           <a href="" class="pull-right">
-                             @if($familia[0]['sexo']=='F')
+                             @if($familia[$representante_id]['sexo']=='F')
                                 <img class="img-responsive img-circle imagen_mostrar" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="">        
                              @else
                                 <img class="img-responsive img-circle imagen_mostrar" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="">
@@ -709,7 +709,7 @@
                                   <table class="table table-striped table-bordered historial">
                                    <tr class="detalle historial">
                                    <td class = "historial"></td>
-                                   <td class="f-14 m-l-15 historial" data-original-title="" data-content="Ver historial" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-12 f-700 historial">Balance E: </span><span class = "f-12 f-700 historial" id="total" name="total"></span> <i class="zmdi zmdi-money {{ empty($familia[0]['total']) ? 'c-verde ' : 'c-youtube' }} f-20 m-r-5 historial estatus_e"></i></td>
+                                   <td class="f-14 m-l-15 historial" data-original-title="" data-content="Ver historial" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-12 f-700 historial">Balance E: </span><span class = "f-12 f-700 historial" id="total" name="total"></span> <i class="zmdi zmdi-money {{ empty($familia[$representante_id]['total']) ? 'c-verde ' : 'c-youtube' }} f-20 m-r-5 historial estatus_e"></i></td>
                                   </tr>
                                   </table>
 
@@ -752,65 +752,74 @@
                            <table class="table table-striped table-bordered">
                             <tr class="detalle" data-toggle="modal" href="#modalID-Alumno">
                              <td width="50%"> 
-                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-identificacion" class="zmdi {{ empty($familia[0]['identificacion']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-identificacion" class="zmdi {{ empty($familia[$representante_id]['identificacion']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-account-box f-22"></i> </span>
                               <span class="f-14">Id / pasaporte </span>
                              </td>
-                             <td class="f-14 m-l-15" id="alumno-identificacion">{{$familia[0]['identificacion']}}<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                             <td class="f-14 m-l-15" id="alumno-identificacion">{{$familia[$representante_id]['identificacion']}}<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalNombre-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($familia[0]['nombre']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($familia[$representante_id]['nombre']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-accounts-alt f-22"></i> </span>
                                <span class="f-14"> Nombres </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-nombre" class="capitalize">{{$familia[0]['nombre']}}</span> <span id="alumno-apellido" class="capitalize">{{$familia[0]['apellido']}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-nombre" class="capitalize">{{$familia[$representante_id]['nombre']}}</span> <span id="alumno-apellido" class="capitalize">{{$familia[$representante_id]['apellido']}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalFechaNacimiento-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_nacimiento" class="zmdi {{ empty($familia[0]['fecha_nacimiento']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_nacimiento" class="zmdi {{ empty($familia[$representante_id]['fecha_nacimiento']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b-fecha-de-nacimiento f-22"></i> </span>
                                <span class="f-14"> Fecha de nacimiento  </span>
                              </td>
-                             <td  class="f-14 m-l-15" id="alumno-fecha_nacimiento" >{{ \Carbon\Carbon::createFromFormat('Y-m-d',$familia[0]['fecha_nacimiento'])->format('d/m/Y')}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td  class="f-14 m-l-15" id="alumno-fecha_nacimiento" >{{ \Carbon\Carbon::createFromFormat('Y-m-d',$familia[$representante_id]['fecha_nacimiento'])->format('d/m/Y')}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                              <tr class="detalle" data-toggle="modal" href="#modalSexo-Alumno">
                              <td> 
-                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-sexo" class="zmdi {{ empty($familia[0]['sexo']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-sexo" class="zmdi {{ empty($familia[$representante_id]['sexo']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-male-female f-22"></i> </span>
                               <span class="f-14"> Sexo </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-sexo" data-valor="{{$familia[0]['sexo']}}">
-                               @if($familia[0]['sexo']=='F')
-                                  <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
-                               @else
-                                  <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
-                               @endif
+                             <td class="f-14 m-l-15" ><span id="alumno-sexo" data-valor="{{$familia[$representante_id]['sexo']}}">
+                               @if($familia[$representante_id]['edad'] >= 18)
+                                  @if($familia[$representante_id]['sexo']=='F')
+                                      <i class="zmdi zmdi-female f-25 c-rosado"></i>
+                                  @else
+                                      <i class="zmdi zmdi-male-alt f-25 c-azul"></i>
+                                  @endif
+                              @else
+                                  @if($familia[$representante_id]['sexo']=='F')
+                                      <i class="zmdi fa fa-child f-15 c-rosado"></i>
+                                  @else
+                                      <i class="zmdi fa fa-child f-15 c-azul"></i> 
+                                  @endif
+                              @endif
+                              </span>
                              </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalCorreo-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($familia[0]['correo']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-correo" class="zmdi {{ empty($familia[$representante_id]['correo']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a-correo f-22"></i> </span>
                                <span class="f-14"> Correo </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-correo"><span>{{$familia[0]['correo']}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-correo"><span>{{$familia[$representante_id]['correo']}}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr id ="tr_contacto" data-valor="{{$familia[0]['celular']}}" class="detalle" data-toggle="modal" href="#modalTelefono-Alumno">
+                            <tr id ="tr_contacto" data-valor="{{$familia[$representante_id]['celular']}}" class="detalle" data-toggle="modal" href="#modalTelefono-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi {{ empty($familia[0]['telefono']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-telefono" class="zmdi {{ empty($familia[$representante_id]['telefono']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_b icon_b-telefono f-22"></i> </span>
                                <span class="f-14"> Contacto </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-telefono">{{$familia[0]['telefono']}}</span> / <span id="alumno-celular">{{$familia[0]['celular']}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td class="f-14 m-l-15" ><span id="alumno-telefono">{{$familia[$representante_id]['telefono']}}</span> / <span id="alumno-celular">{{$familia[$representante_id]['celular']}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalDireccion-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-direccion" class="zmdi {{ empty($familia[0]->direccion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-direccion" class="zmdi {{ empty($familia[$representante_id]->direccion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-pin-drop zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Dirección </span>
                              </td>
-                             <td id="alumno-direccion" class="f-14 m-l-15 capitalize" data-valor="{{$familia[0]['direccion']}}" >{{ str_limit($familia[0]['direccion'], $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                             <td id="alumno-direccion" class="f-14 m-l-15 capitalize" data-valor="{{$familia[$representante_id]['direccion']}}" >{{ str_limit($familia[$representante_id]['direccion'], $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalFicha-Alumno">
                              <td>
@@ -826,8 +835,8 @@
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-male-female f-22"></i> </span>
                               <span class="f-14"> Rol del representante dentro de la academia </span>
                              </td>
-                             <td class="f-14 m-l-15" ><span id="alumno-rol" data-valor="{{$familia[0]['tipo']}}">
-                               @if($familia[0]['tipo']==1)
+                             <td class="f-14 m-l-15" ><span id="alumno-rol" data-valor="{{$familia[$representante_id]['tipo']}}">
+                               @if($familia[$representante_id]['tipo']==1)
                                   También participa como alumno activo </span>
                                @else
                                   Sólo representante </span>
@@ -865,8 +874,10 @@
     route_historial = "{{url('/')}}/participante/alumno/historial/";
     route_email="{{url('/')}}/correo/sesion/";
 
-    total = "{{$familia[0]['total']}}";
-    id = "{{$familia[0]['id']}}";
+    total = "{{$familia[$representante_id]['total']}}";
+    id = "{{$familia[$representante_id]['id']}}";
+    edad = "{{$familia[$representante_id]['edad']}}";
+    var alumnos = <?php echo json_encode($familia);?>;
 
     // $(document).on("click", function () {
     //    var clickedBtnID = this; // or var clickedBtnID = this.id
@@ -880,7 +891,7 @@
     $(document).ready(function(){
 
     
-      $("#alumno_id").val("{{$familia[0]['id']}}");
+      $("#alumno_id").val("{{$familia[$representante_id]['id']}}");
 
       if(total){
         $("#total").text(formatmoney(parseFloat(total)));
@@ -889,32 +900,32 @@
         $("#total").text(formatmoney(0));
       }
       
-      if("{{$familia[0]['alergia']}}" == 1){
+      if("{{$familia[$representante_id]['alergia']}}" == 1){
           $("#alergia").val('1');  //VALOR POR DEFECTO
           $("#alergia-switch").attr("checked", true); //VALOR POR DEFECTO
         }
 
-        if("{{$familia[0]['asma']}}" == 1){
+        if("{{$familia[$representante_id]['asma']}}" == 1){
           $("#asma").val('1');  //VALOR POR DEFECTO
           $("#asma-switch").attr("checked", true); //VALOR POR DEFECTO
         }
 
-        if("{{$familia[0]['convulsiones']}}" == 1){
+        if("{{$familia[$representante_id]['convulsiones']}}" == 1){
           $("#convulsiones").val('1');  //VALOR POR DEFECTO
           $("#convulsiones-switch").attr("checked", true); //VALOR POR DEFECTO
         }
 
-        if("{{$familia[0]['cefalea']}}" == 1){
+        if("{{$familia[$representante_id]['cefalea']}}" == 1){
           $("#cefalea").val('1');  //VALOR POR DEFECTO
           $("#cefalea-switch").attr("checked", true); //VALOR POR DEFECTO
         }
 
-        if("{{$familia[0]['hipertension']}}" == 1){
+        if("{{$familia[$representante_id]['hipertension']}}" == 1){
           $("#hipertension").val('1');  //VALOR POR DEFECTO
           $("#hipertension-switch").attr("checked", true); //VALOR POR DEFECTO
         }
 
-        if("{{$familia[0]['lesiones']}}" == 1){
+        if("{{$familia[$representante_id]['lesiones']}}" == 1){
           $("#lesiones").val('1');  //VALOR POR DEFECTO
           $("#lesiones-switch").attr("checked", true); //VALOR POR DEFECTO
         }
@@ -1080,10 +1091,22 @@
       function campoValor(form){
         $.each(form, function (n, c) {
           if(c.name=='sexo'){
-            if(c.value=='M'){              
-              var valor='<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>';                              
-            }else if(c.value=='F'){
-              var valor='<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>';
+
+            if(edad >= 18){
+
+              if(c.value=='M'){ 
+
+                var valor='<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>';                              
+              }else if(c.value=='F'){
+                var valor='<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>';
+              }
+            }else{
+              if(c.value=='M'){ 
+
+                var valor='<i class="zmdi fa fa-child f-15 c-azul"></i> </span>';                              
+              }else if(c.value=='F'){
+                var valor='<i class="zmdi fa fa-child f-15 c-rosado"></i> </span>';
+              }
             }
             $("#alumno-"+c.name).data('valor',c.value);
             $("#alumno-"+c.name).html(valor);
@@ -1099,9 +1122,7 @@
              $("#alumno-"+c.name).data('valor',c.value);
              $("#alumno-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
           }else{
-
             $("#alumno-"+c.name).text(c.value.toLowerCase());
-            
           }
           if(c.value == ''){
             $("#estatus-"+c.name).removeClass('c-verde zmdi-check');
@@ -1120,6 +1141,9 @@
             $("#estatus-telefono").removeClass('c-amarillo zmdi-dot-circle');
             $("#estatus-telefono").addClass('c-verde zmdi-check');
           }
+
+          alumnos[id][c.name] = c.value
+
         });
       }
 
@@ -1370,101 +1394,192 @@
 
         id = $(this).val();
 
-        var alumnos = <?php echo json_encode($familia);?>;
-
-        var alumno = $.grep(alumnos, function(e){ return e.id == id; });
-
-        $.each(alumno, function (index, array) {
-
-          if(array.es_representante == 0){
-            $("#rol_representate").hide();
-          }else{
-            $("#rol_representate").show();
+        $.each(alumnos, function (index, array) {
+          if(array.id == id){
+            alumno = array
           }
-
-          $("#alumno-identificacion").text(array.identificacion)
-          $("#alumno-nombre").text(array.nombre)
-          $("#alumno-apellido").text(array.apellido)
-          $("#alumno-fecha_nacimiento").text(array.fecha_nacimiento)
-          $("#alumno-correo").text(array.correo)
-          $("#alumno-telefono").text(array.telefono)
-          $("#alumno-celular").text(array.celular)
-          $("#alumno-direccion").text(array.direccion)
-
-        if(array.alergia == 1){
-          $("#alergia").val('1');  //VALOR POR DEFECTO
-          $("#alergia-switch").attr("checked", true); //VALOR POR DEFECTO
-        }else{
-          $("#alergia").val('0');  //VALOR POR DEFECTO
-          $("#alergia-switch").attr("checked", false); //VALOR POR DEFECTO
-        }
-
-        if(array.asma == 1){
-          $("#asma").val('1');  //VALOR POR DEFECTO
-          $("#asma-switch").attr("checked", true); //VALOR POR DEFECTO
-        }else{
-          $("#asma").val('0');  //VALOR POR DEFECTO
-          $("#asma-switch").attr("checked", false); //VALOR POR DEFECTO
-        }
-
-        if(array.convulsiones == 1){
-          $("#convulsiones").val('1');  //VALOR POR DEFECTO
-          $("#convulsiones-switch").attr("checked", true); //VALOR POR DEFECTO
-        }else{
-          $("#convulsiones").val('0');  //VALOR POR DEFECTO
-          $("#convulsiones-switch").attr("checked", false); //VALOR POR DEFECTO
-        }
-
-        if(array.cefalea == 1){
-          $("#cefalea").val('1');  //VALOR POR DEFECTO
-          $("#cefalea-switch").attr("checked", true); //VALOR POR DEFECTO
-        }else{
-          $("#cefalea").val('0');  //VALOR POR DEFECTO
-          $("#cefalea-switch").attr("checked", false); //VALOR POR DEFECTO
-        }
-
-        if(array.hipertension == 1){
-          $("#hipertension").val('1');  //VALOR POR DEFECTO
-          $("#hipertension-switch").attr("checked", true); //VALOR POR DEFECTO
-        }else{
-          $("#hipertension").val('0');  //VALOR POR DEFECTO
-          $("#hipertension-switch").attr("checked", false); //VALOR POR DEFECTO
-        }
-
-        if(array.lesiones == 1){
-          $("#lesiones").val('1');  //VALOR POR DEFECTO
-          $("#lesiones-switch").attr("checked", true); //VALOR POR DEFECTO
-        }else{
-          $("#lesiones").val('0');  //VALOR POR DEFECTO
-          $("#lesiones-switch").attr("checked", false); //VALOR POR DEFECTO
-        }
-
-          if(array.sexo=='F'){
-
-            $('.imagen_mostrar').attr('src', '{{url('/')}}/assets/img/profile-pics/1.jpg');
-
-          }
-
-          else{
-
-            $('.imagen_mostrar').attr('src', '{{url('/')}}/assets/img/profile-pics/2.jpg');
-
-          }
-         
-          $("#total").text(formatmoney(parseFloat(array.total)));
-
-          if(array.total == 0){
-            $(".estatus_e").removeClass('c-youtube');
-            $(".estatus_e").addClass('c-verde');
-          }else{
-            $(".estatus_e").addClass('c-youtube');
-            $(".estatus_e").removeClass('c-verde');
-          }
-          
         });
 
-        
-      });
+        if(alumno.es_representante == 0){
+          $("#rol_representate").hide();
+        }else{
+          $("#rol_representate").show();
+        }
+
+        edad = alumno.edad
+
+        $("#alumno-identificacion").text(alumno.identificacion)
+        $("#alumno-nombre").text(alumno.nombre)
+        $("#alumno-apellido").text(alumno.apellido)
+        $("#alumno-fecha_nacimiento").text(alumno.fecha_nacimiento)
+        $("#alumno-correo").text(alumno.correo)
+        $("#alumno-telefono").text(alumno.telefono)
+        $("#alumno-celular").text(alumno.celular)
+        $("#alumno-direccion").text(alumno.direccion)
+
+        if(alumno.identificacion){
+          $("#estatus-identificacion").removeClass('c-amarillo zmdi-dot-circle');
+          $("#estatus-identificacion").addClass('c-verde zmdi-check');
+        }else{
+          $("#estatus-identificacion").removeClass('c-verde zmdi-check');
+          $("#estatus-identificacion").addClass('c-amarillo zmdi-dot-circle');
+        }
+
+        if(alumno.nombre){
+          $("#estatus-nombre").removeClass('c-amarillo zmdi-dot-circle');
+          $("#estatus-nombre").addClass('c-verde zmdi-check');
+        }else{
+          $("#estatus-nombre").removeClass('c-verde zmdi-check');
+          $("#estatus-nombre").addClass('c-amarillo zmdi-dot-circle');
+        }
+
+        if(alumno.apellido){
+          $("#estatus-apellido").removeClass('c-amarillo zmdi-dot-circle');
+          $("#estatus-apellido").addClass('c-verde zmdi-check');
+        }else{
+          $("#estatus-apellido").removeClass('c-verde zmdi-check');
+          $("#estatus-apellido").addClass('c-amarillo zmdi-dot-circle');
+        }
+
+        if(alumno.fecha_nacimiento){
+          $("#estatus-fecha_nacimiento").removeClass('c-amarillo zmdi-dot-circle');
+          $("#estatus-fecha_nacimiento").addClass('c-verde zmdi-check');
+        }else{
+          $("#estatus-fecha_nacimiento").removeClass('c-verde zmdi-check');
+          $("#estatus-fecha_nacimiento").addClass('c-amarillo zmdi-dot-circle');
+        }
+
+        if(alumno.correo){
+          $("#estatus-correo").removeClass('c-amarillo zmdi-dot-circle');
+          $("#estatus-correo").addClass('c-verde zmdi-check');
+        }else{
+          $("#estatus-correo").removeClass('c-verde zmdi-check');
+          $("#estatus-correo").addClass('c-amarillo zmdi-dot-circle');
+        }
+
+        if(alumno.telefono){
+          $("#estatus-telefono").removeClass('c-amarillo zmdi-dot-circle');
+          $("#estatus-telefono").addClass('c-verde zmdi-check');
+        }else{
+          $("#estatus-telefono").removeClass('c-verde zmdi-check');
+          $("#estatus-telefono").addClass('c-amarillo zmdi-dot-circle');
+        }
+
+        if(alumno.celular){
+          $("#estatus-celular").removeClass('c-amarillo zmdi-dot-circle');
+          $("#estatus-celular").addClass('c-verde zmdi-check');
+        }else{
+          $("#estatus-celular").removeClass('c-verde zmdi-check');
+          $("#estatus-celular").addClass('c-amarillo zmdi-dot-circle');
+        }
+
+        if(alumno.direccion.length > 0){
+          $("#estatus-direccion").removeClass('c-amarillo zmdi-dot-circle');
+          $("#estatus-direccion").addClass('c-verde zmdi-check');
+        }else{
+          $("#estatus-direccion").removeClass('c-verde zmdi-check');
+          $("#estatus-direccion").addClass('c-amarillo zmdi-dot-circle');
+        }
+
+      if(alumno.alergia == 1){
+        $("#alergia").val('1');  //VALOR POR DEFECTO
+        $("#alergia-switch").attr("checked", true); //VALOR POR DEFECTO
+      }else{
+        $("#alergia").val('0');  //VALOR POR DEFECTO
+        $("#alergia-switch").attr("checked", false); //VALOR POR DEFECTO
+      }
+
+      if(alumno.asma == 1){
+        $("#asma").val('1');  //VALOR POR DEFECTO
+        $("#asma-switch").attr("checked", true); //VALOR POR DEFECTO
+      }else{
+        $("#asma").val('0');  //VALOR POR DEFECTO
+        $("#asma-switch").attr("checked", false); //VALOR POR DEFECTO
+      }
+
+      if(alumno.convulsiones == 1){
+        $("#convulsiones").val('1');  //VALOR POR DEFECTO
+        $("#convulsiones-switch").attr("checked", true); //VALOR POR DEFECTO
+      }else{
+        $("#convulsiones").val('0');  //VALOR POR DEFECTO
+        $("#convulsiones-switch").attr("checked", false); //VALOR POR DEFECTO
+      }
+
+      if(alumno.cefalea == 1){
+        $("#cefalea").val('1');  //VALOR POR DEFECTO
+        $("#cefalea-switch").attr("checked", true); //VALOR POR DEFECTO
+      }else{
+        $("#cefalea").val('0');  //VALOR POR DEFECTO
+        $("#cefalea-switch").attr("checked", false); //VALOR POR DEFECTO
+      }
+
+      if(alumno.hipertension == 1){
+        $("#hipertension").val('1');  //VALOR POR DEFECTO
+        $("#hipertension-switch").attr("checked", true); //VALOR POR DEFECTO
+      }else{
+        $("#hipertension").val('0');  //VALOR POR DEFECTO
+        $("#hipertension-switch").attr("checked", false); //VALOR POR DEFECTO
+      }
+
+      if(alumno.lesiones == 1){
+        $("#lesiones").val('1');  //VALOR POR DEFECTO
+        $("#lesiones-switch").attr("checked", true); //VALOR POR DEFECTO
+      }else{
+        $("#lesiones").val('0');  //VALOR POR DEFECTO
+        $("#lesiones-switch").attr("checked", false); //VALOR POR DEFECTO
+      }
+
+      if(alumno.sexo=='F'){
+
+        $('.imagen_mostrar').attr('src', '{{url('/')}}/assets/img/profile-pics/1.jpg');
+
+      }else{
+
+        $('.imagen_mostrar').attr('src', '{{url('/')}}/assets/img/profile-pics/2.jpg');
+
+      }
+
+      if(edad >= 18){
+
+        if(alumno.sexo == 'M'){ 
+
+          var sexo = "<i class='zmdi zmdi-male-alt f-25 c-azul'></i>";  
+
+        }else if(alumno.sexo == 'F'){
+
+          var sexo = "<i class='zmdi zmdi-female f-25 c-rosado'></i>";
+
+        }
+      }else{
+
+        if(alumno.sexo =='M'){ 
+
+        var sexo = "<i class='zmdi fa fa-child f-15 c-azul'></i>";  
+
+        }else if(alumno.sexo =='F'){
+
+        var sexo ="<i class='zmdi fa fa-child f-15 c-rosado'></i>";
+
+        }
+      }
+
+      $("#alumno-sexo").empty()
+      $("#alumno-sexo").append(sexo)
+
+
+     
+      $("#total").text(formatmoney(parseFloat(alumno.total)));
+
+      if(alumno.total == 0){
+        $(".estatus_e").removeClass('c-youtube');
+        $(".estatus_e").addClass('c-verde');
+      }else{
+        $(".estatus_e").addClass('c-youtube');
+        $(".estatus_e").removeClass('c-verde');
+      }
+      
+    });
+
 
    </script> 
 

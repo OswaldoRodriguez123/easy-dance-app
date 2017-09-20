@@ -1093,10 +1093,22 @@
       function campoValor(form){
         $.each(form, function (n, c) {
           if(c.name=='sexo'){
-            if(c.value=='M'){              
-              var valor='<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>';                              
-            }else if(c.value=='F'){
-              var valor='<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>';
+
+            if("{{$edad}}" >= 18){
+
+              if(c.value=='M'){ 
+
+                var valor='<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>';                              
+              }else if(c.value=='F'){
+                var valor='<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>';
+              }
+            }else{
+              if(c.value=='M'){ 
+
+                var valor='<i class="zmdi fa fa-child f-15 c-azul"></i> </span>';                              
+              }else if(c.value=='F'){
+                var valor='<i class="zmdi fa fa-child f-15 c-rosado"></i> </span>';
+              }
             }
             $("#visitante-"+c.name).data('valor',c.value);
             $("#visitante-"+c.name).html(valor);
