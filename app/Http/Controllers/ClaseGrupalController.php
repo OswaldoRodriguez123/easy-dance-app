@@ -1661,7 +1661,7 @@ class ClaseGrupalController extends BaseController {
             $alumnosclasegrupal = InscripcionClaseGrupal::withTrashed()->where('alumno_id', $request->alumno_id)->where('clase_grupal_id', $request->clase_grupal_id)->first();
 
             if($alumnosclasegrupal){
-                
+
                 $alumnosclasegrupal->deleted_at = null;
                 $alumnosclasegrupal->save();
 
@@ -1809,8 +1809,8 @@ class ClaseGrupalController extends BaseController {
                         $item_factura->usuario_tipo = 1;
                         $item_factura->academia_id = Auth::user()->academia_id;
                         $item_factura->fecha = Carbon::now()->toDateString();
-                        $item_factura->item_id = $config_clase_grupal->servicio_id;
-                        $item_factura->nombre = 'Cuota ' . $config_clase_grupal->nombre;
+                        $item_factura->item_id = $servicio_id;
+                        $item_factura->nombre = 'Cuota ' . $nombre;
                         $item_factura->tipo = 4;
                         $item_factura->cantidad = 1;
                         $item_factura->precio_neto = 0;
