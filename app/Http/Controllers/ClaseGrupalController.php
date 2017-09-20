@@ -1254,7 +1254,11 @@ class ClaseGrupalController extends BaseController {
 
             // $porcentaje = intval(($cantidad_reservaciones / $cupo_reservacion) * 100);
 
-            $porcentaje = intval(($cupos_totales / $clase_grupal_join->cupo_maximo) * 100);
+            if($clase_grupal_join->cupo_maximo > 0){
+                $porcentaje = intval(($cupos_totales / $clase_grupal_join->cupo_maximo) * 100);
+            }else{
+                $porcentaje = 0;
+            }
 
             if(Auth::check()){
 

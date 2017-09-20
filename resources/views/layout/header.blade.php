@@ -142,7 +142,19 @@
                                 </div>
                                 <div class="lv-body">
                                     @foreach( $notificaciones as $notificacion)
-                                        <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/notificaciones">
+                                        <?php
+                                            if($notificacion['tipo_evento'] == 1){
+                                                $url = "agendar/clases-grupales/progreso/".$notificacion['evento_id'];
+                                            }else if($notificacion['tipo_evento'] == 6){
+                                                $url = "incidencias/detalle/".$notificacion['evento_id'];
+                                            }else if($notificacion['tipo_evento'] == 7){
+                                                $url = "evaluaciones/detalle/".$notificacion['evento_id'];
+                                            }else if($notificacion['tipo_evento'] == 8){
+                                                $url = "supervision/detalle/".$notificacion['evento_id'];
+                                            }
+                                        ?>
+
+                                        <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/{{$url}}">
                                             <div class="media">
                                                 <div class="pull-left">
                                                     <img class="img-circle" src="{{url('/')}}{{$notificacion['imagen']}}" alt="" width="45px" height="auto">
@@ -155,6 +167,9 @@
                                         </a>
                                     @endforeach
                                 </div>
+                            </div>
+                            <div class="text-center m-5">
+                                <a href="{{url('/')}}/notificaciones"><b>Ver Todos</b></a>
                             </div>
                         </div>
                     </li>
