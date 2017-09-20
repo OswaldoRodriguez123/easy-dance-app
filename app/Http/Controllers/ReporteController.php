@@ -747,9 +747,12 @@ class ReporteController extends BaseController
         	->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
         ->get();
 
+        $academia = Academia::find(Auth::user()->academia_id);
+
         $array = array();
 
         foreach($clase_grupal_join as $clase_grupal){
+
             $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
             $dia = $fecha_inicio->dayOfWeek;
 
@@ -757,13 +760,23 @@ class ReporteController extends BaseController
                 $dia = 7;
             }
 
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->format('g:i a');
+                $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->format('g:i a');
+            }
+
             $collection=collect($clase_grupal);     
-            $clase_array = $collection->toArray();
+            $clase_grupal_array = $collection->toArray();
                 
-            $clase_array['dia']=$dia;
-            $clase_array['tipo']=1;
-            $clase_array['tipo_id']=$clase_grupal->clase_grupal_id;
-            $array['1'.$clase_grupal->clase_grupal_id] = $clase_array;
+            $clase_grupal_array['dia']=$dia;
+            $clase_grupal_array['tipo']=1;
+            $clase_grupal_array['tipo_id']=$clase_grupal->clase_grupal_id;
+            $clase_grupal_array['hora_inicio']=$hora_inicio;
+            $clase_grupal_array['hora_final']=$hora_final;
+            $array['1'.$clase_grupal->clase_grupal_id] = $clase_grupal_array;
         }
 
 
@@ -775,13 +788,23 @@ class ReporteController extends BaseController
                 $dia = 7;
             }
 
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->format('g:i a');
+                $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->format('g:i a');
+            }
+
             $collection=collect($clase_grupal);     
-            $clase_array = $collection->toArray();
+            $clase_grupal_array = $collection->toArray();
                 
-            $clase_array['dia']=$dia;
-            $clase_array['tipo']=2;
-            $clase_array['tipo_id']=$clase_grupal->horario_id;
-            $array['2'.$clase_grupal->clase_grupal_id] = $clase_array;
+            $clase_grupal_array['dia']=$dia;
+            $clase_grupal_array['tipo']=2;
+            $clase_grupal_array['tipo_id']=$clase_grupal->horario_id;
+            $clase_grupal_array['hora_inicio']=$hora_inicio;
+            $clase_grupal_array['hora_final']=$hora_final;
+            $array['2'.$clase_grupal->clase_grupal_id] = $clase_grupal_array;
         }
 
         return view('reportes.asistencias')->with(['clases_grupales' => $array]);
@@ -1446,8 +1469,8 @@ class ReporteController extends BaseController
 
                     }else{
 
-                        $fecha_tmp = Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inscripcion);
-                        $fecha_tmp2 = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio);
+                        $fecha_tmp = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inscripcion);
+                        $fecha_tmp2 = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
 
                         if($fecha_tmp > $fecha_tmp2){
                             $fecha_a_comparar = $fecha_tmp;

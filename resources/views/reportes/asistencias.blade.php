@@ -299,7 +299,6 @@
                     clase_grupal_array.push(array); 
                    
                     $('#clase_grupal_id').append( new Option(array.clase_grupal_nombre +'  -  '+array.hora_inicio+' / '+array.hora_final + '  -  ' + array.instructor_nombre + ' ' + array.instructor_apellido,array.clase_grupal_id));
-
                 }
             });
 
