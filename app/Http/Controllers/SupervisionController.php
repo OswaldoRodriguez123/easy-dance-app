@@ -1068,34 +1068,39 @@ class SupervisionController extends BaseController {
 	        ->select('supervisiones.*', 'config_staff.nombre as cargo', 'staff.nombre', 'staff.apellido', 'supervisiones_evaluaciones.total', 'supervisiones_evaluaciones.porcentaje', 'supervisiones_evaluaciones.observacion')
 	        ->where('supervisiones_evaluaciones.id', $id)
         ->first();
-        
-        $staff = SupervisionEvaluacion::join('conceptos_supervisiones', 'supervisiones_evaluaciones.concepto_id', '=', 'conceptos_supervisiones.id')
-        	->join('supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
-    		->join('staff', 'supervisiones.staff_id','=','staff.id')
-            ->select('staff.*')
-            ->where('supervisiones_evaluaciones.id','=',$id)
-        ->first();
 
-        $academia = SupervisionEvaluacion::join('conceptos_supervisiones', 'supervisiones_evaluaciones.concepto_id', '=', 'conceptos_supervisiones.id')
-        	->join('supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
-			->join('staff', 'supervisiones.staff_id','=','staff.id')
-			->join('academias', 'staff.academia_id','=','academias.id')
-            ->select('academias.*')
-            ->where('supervisiones_evaluaciones.id','=',$id)
-        ->first();
-            
-        //DATOS DE DETALLE
-        $detalles_notas = DetalleSupervisionEvaluacion::select('nombre', 'nota')
-            ->where('evaluacion_id','=',$id)
-        ->get();
-        
-        return view('supervisiones.detalle')->with([
-        	'evaluacion'               => $evaluacion,
-            'staff'                    => $staff, 
-            'academia'                 => $academia, 
-            'detalle_notas'            => $detalles_notas,
+        if($evaluacion){
+	        
+	        $staff = SupervisionEvaluacion::join('conceptos_supervisiones', 'supervisiones_evaluaciones.concepto_id', '=', 'conceptos_supervisiones.id')
+	        	->join('supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
+	    		->join('staff', 'supervisiones.staff_id','=','staff.id')
+	            ->select('staff.*')
+	            ->where('supervisiones_evaluaciones.id','=',$id)
+	        ->first();
 
-        ]);
+	        $academia = SupervisionEvaluacion::join('conceptos_supervisiones', 'supervisiones_evaluaciones.concepto_id', '=', 'conceptos_supervisiones.id')
+	        	->join('supervisiones', 'conceptos_supervisiones.supervision_id', '=', 'supervisiones.id')
+				->join('staff', 'supervisiones.staff_id','=','staff.id')
+				->join('academias', 'staff.academia_id','=','academias.id')
+	            ->select('academias.*')
+	            ->where('supervisiones_evaluaciones.id','=',$id)
+	        ->first();
+	            
+	        //DATOS DE DETALLE
+	        $detalles_notas = DetalleSupervisionEvaluacion::select('nombre', 'nota')
+	            ->where('evaluacion_id','=',$id)
+	        ->get();
+	        
+	        return view('supervisiones.detalle')->with([
+	        	'evaluacion'               => $evaluacion,
+	            'staff'                    => $staff, 
+	            'academia'                 => $academia, 
+	            'detalle_notas'            => $detalles_notas,
+
+	        ]);
+    	}else{
+    		return redirect("inicio");
+    	}
     }
 
     public function eliminar_evaluacion(Request $request)
