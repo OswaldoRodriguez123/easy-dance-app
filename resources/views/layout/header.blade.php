@@ -51,13 +51,15 @@
                                     <a href="{{url('configuracion/paquetes')}}"><i class="zmdi icon_a-paquete f-16"></i> Paquetes</a>
                                 </li>
 
-                                <li class="hidden-xs">
-                                    <a href="{{url('configuracion/staff')}}"><i class="zmdi icon_f-staff f-16"></i> Staff</a>
-                                </li>
+                                @if($usuario_tipo == 1 || $usuario_tipo == 5)
+                                    <li class="hidden-xs">
+                                        <a href="{{url('configuracion/staff')}}"><i class="zmdi icon_f-staff f-16"></i> Staff</a>
+                                    </li>
 
-                                <li class="hidden-xs">
-                                    <a href="{{url('configuracion/administradores')}}"><i class="zmdi zmdi-key f-16"></i> Administradores</a>
-                                </li>
+                                    <li class="hidden-xs">
+                                        <a href="{{url('configuracion/administradores')}}"><i class="zmdi zmdi-key f-16"></i> Administradores</a>
+                                    </li>
+                                @endif
 
                                 <li class="hidden-xs">
                                     <a href="{{url('blog')}}"><i class="zmdi glyphicon glyphicon-book f-16"></i> Blog</a>
@@ -74,9 +76,12 @@
                                <span class="f-15 f-700 text-header">ACCIONES</span>
                             </a>
                             <ul class="dropdown-menu dm-icon pull-right">
-                                <li class="hidden-xs">
-                                    <a href="{{url('/')}}/invitar"><i class="zmdi icon_d-invitar"></i> Invitar</a>
-                                </li>
+
+                                @if($usuario_tipo == 1 || $usuario_tipo == 5)
+                                    <li class="hidden-xs">
+                                        <a href="{{url('/')}}/invitar"><i class="zmdi icon_d-invitar"></i> Invitar</a>
+                                    </li>
+                                @endif
                                 <li class="hidden-xs">
                                     <a href="{{url('validar')}}"><i class="zmdi zmdi-check f-16"></i> Validar</a>
                                 </li>
@@ -86,9 +91,11 @@
                                 <li class="hidden-xs">
                                     <a href="{{url('mensajes')}}"><i class="zmdi zmdi-smartphone f-16"></i> Enviar Mensaje</a>
                                 </li>
-                                <li class="hidden-xs">
-                                    <a href="{{url('incidencias')}}"><i class="zmdi icon_f-incidencias f-16"></i> Generar Incidencias</a>
-                                </li>
+                                @if($usuario_tipo == 1 || $usuario_tipo == 5)
+                                    <li class="hidden-xs">
+                                        <a href="{{url('incidencias')}}"><i class="zmdi icon_f-incidencias f-16"></i> Generar Incidencias</a>
+                                    </li>
+                                @endif
                                 <li class="hidden-xs">
                                     <a href="{{url('agendar/citas')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Citas y Llamadas</a>
                                 </li>
@@ -205,7 +212,7 @@
                             @endif
 
                             @if(Auth::check())
-                                @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
+                                @if($usuario_tipo == 1 || $usuario_tipo == 5)
                                     <li class="hidden-xs">
                                         <a href="{{url('supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> Supervisiones</a>
                                     </li>

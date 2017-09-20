@@ -2304,6 +2304,7 @@ class UsuarioController extends BaseController {
         if($alumno){
 
             $inasistencias = 0;
+            $status = true;
 
             $clase_grupal = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
@@ -2589,8 +2590,6 @@ class UsuarioController extends BaseController {
      
                     if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
                         $status = false;
-                    }else{
-                        $status = true;
                     }
                 }
             }
