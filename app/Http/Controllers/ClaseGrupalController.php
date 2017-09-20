@@ -1749,7 +1749,7 @@ class ClaseGrupalController extends BaseController {
                         $servicio_id = $config_clase_grupal->servicio_id;
                         $nombre = $config_clase_grupal->nombre;
                     }else{
-                        $servicio_id = 0;
+                        $servicio_id = 1;
                         $nombre = '';
                     }
 
