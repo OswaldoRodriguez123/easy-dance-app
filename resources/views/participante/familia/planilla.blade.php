@@ -573,7 +573,7 @@
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
                                 <div class="form-group fg-line ">
-                                    <label for="sexo p-t-10">Rol del representante dentro de la academia</label>
+                                    <label for="sexo p-t-10">Rol del participante</label>
                                     <div class="p-t-10">
                                     <label class="radio radio-inline m-r-20">
                                         <input name="rol" id="representante" value="0" type="radio">
@@ -583,7 +583,7 @@
                                     <label class="radio radio-inline m-r-20 ">
                                         <input name="rol" id="alumno" value="1" type="radio">
                                         <i class="input-helper"></i>  
-                                        También participa como alumno activo <i class="icon_a-instructor p-l-5 f-20"></i>
+                                        Participa como alumno activo <i class="icon_a-instructor p-l-5 f-20"></i>
                                     </label>
                                     </div>
                                     
@@ -815,7 +815,7 @@
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalDireccion-Alumno">
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-direccion" class="zmdi {{ empty($familia[$representante_id]->direccion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-direccion" class="zmdi {{ empty($familia[$representante_id]['direccion']) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-pin-drop zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Dirección </span>
                              </td>
@@ -833,14 +833,15 @@
                              <td> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-rol" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-male-female f-22"></i> </span>
-                              <span class="f-14"> Rol del representante dentro de la academia </span>
+                              <span class="f-14"> Rol del participante </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="alumno-rol" data-valor="{{$familia[$representante_id]['tipo']}}">
                                @if($familia[$representante_id]['tipo']==1)
-                                  También participa como alumno activo </span>
+                                  Participa como alumno activo
                                @else
-                                  Sólo representante </span>
+                                  Sólo representante 
                                @endif
+                               </span>
                              </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                            </table>
@@ -890,7 +891,11 @@
 
     $(document).ready(function(){
 
-    
+      if($('#tr_contacto').data('valor') != ''){
+        $("#estatus-telefono").removeClass('c-amarillo zmdi-dot-circle');
+        $("#estatus-telefono").addClass('c-verde zmdi-check');
+      }
+
       $("#alumno_id").val("{{$familia[$representante_id]['id']}}");
 
       if(total){
@@ -1024,6 +1029,7 @@
       limpiarMensaje();
       $("#fecha_nacimiento").val($("#alumno-fecha_nacimiento").text()); 
     })
+
     $('#modalSexo-Alumno').on('show.bs.modal', function (event) {
       limpiarMensaje();
       var sexo=$("#alumno-sexo").data('valor');
@@ -1032,19 +1038,16 @@
       }else{
         $("#mujer").prop("checked", true);
       }
-      
     })
 
     $('#modalRol-Alumno').on('show.bs.modal', function (event) {
       limpiarMensaje();
       var rol=$("#alumno-rol").data('valor');
-      console.log(rol);
       if(rol==''){
         $("#alumno").prop("checked", true);
       }else{
         $("#representante").prop("checked", true);
       }
-      
     })
     
      $('#modalCorreo-Alumno').on('show.bs.modal', function (event) {
@@ -1114,7 +1117,7 @@
             if(c.value==0){              
               var valor='Sólo representante';                              
             }else if(c.value==1){
-              var valor='También participa como alumno activo';   
+              var valor='Participa como alumno activo';   
             }
             $("#alumno-"+c.name).data('valor',c.value);
             $("#alumno-"+c.name).html(valor);
@@ -1400,13 +1403,13 @@
           }
         });
 
-        if(alumno.es_representante == 0){
-          $("#rol_representate").hide();
-        }else{
-          $("#rol_representate").show();
-        }
-
         edad = alumno.edad
+
+        if(alumno.tipo == 1){
+          rol = "También participa como alumno activo"
+        }else{
+          rol = "Sólo representante"
+        }
 
         $("#alumno-identificacion").text(alumno.identificacion)
         $("#alumno-nombre").text(alumno.nombre)
@@ -1415,7 +1418,12 @@
         $("#alumno-correo").text(alumno.correo)
         $("#alumno-telefono").text(alumno.telefono)
         $("#alumno-celular").text(alumno.celular)
-        $("#alumno-direccion").text(alumno.direccion)
+        $("#tr_contacto").data('valor',alumno.celular)
+        $("#alumno-direccion").data('valor',alumno.direccion)
+        $("#alumno-direccion").text(alumno.direccion.toLowerCase().substr(0, 30) + "...");
+        $("#alumno-rol").text(rol)
+        $('#alumno-sexo').data('valor',alumno.sexo)
+        $('#alumno-rol').data('valor',alumno.tipo)
 
         if(alumno.identificacion){
           $("#estatus-identificacion").removeClass('c-amarillo zmdi-dot-circle');
@@ -1463,6 +1471,11 @@
         }else{
           $("#estatus-telefono").removeClass('c-verde zmdi-check');
           $("#estatus-telefono").addClass('c-amarillo zmdi-dot-circle');
+        }
+
+        if($('#tr_contacto').data('valor') != ''){
+          $("#estatus-telefono").removeClass('c-amarillo zmdi-dot-circle');
+          $("#estatus-telefono").addClass('c-verde zmdi-check');
         }
 
         if(alumno.celular){

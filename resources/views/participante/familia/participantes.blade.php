@@ -335,6 +335,7 @@
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
+                                    <th class="text-center" data-column-id="nombre" data-order="desc">Rol del Participante</th>
                                     <th class="text-center" data-column-id="estatu_c" data-order="desc">Estatus C</th>
                                     <th class="text-center" data-column-id="estatu_e" data-order="desc">Balance E</th>
                                     <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
@@ -348,16 +349,21 @@
                                     <td class="text-center previa">{{$alumno->identificacion}}</td>
                                     <td class="text-center previa">
                                     @if($alumno->sexo=='F')
-                                    <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                      <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
                                     @else
-                                    <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                      <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
                                     @endif
                                     </td>
                                     <td class="text-center previa">{{$alumno->nombre}} {{$alumno->apellido}} </td>
+                                    <td class="text-center previa">
+                                      @if($alumno->tipo == 1)
+                                        Alumno
+                                      @else
+                                        Representante
+                                      @endif
+                                    </td>
                                     <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-label-alt-outline f-20 p-r-3 operacionModal c-verde"></i></label></td>
                                     <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-money f-20 p-r-3 operacionModal c-verde"></i></label></td>
-                                    <!--<td class="text-center"> <i data-toggle="modal" href="#modalOperacion" class="zmdi zmdi-filter-list f-20 p-r-10 operacionModal"></i></td>-->
-                                    <!-- <td class="text-center"> <a href="{{url('/')}}/participante/alumno/operaciones/{{$id}}"><i class="zmdi zmdi-filter-list f-20 p-r-10"></i></a></td> -->
                                     <td class="text-center"> <i data-toggle="modal" class="zmdi zmdi-delete boton red eliminar pointer f-20 p-r-10"></i></td>
                                 </tr>
                             @endforeach 
