@@ -1413,11 +1413,12 @@
         route_credencial="{{url('/')}}/agendar/clases-grupales/agregar_credencial";
         route_eliminar_credencial="{{url('/')}}/agendar/clases-grupales/eliminar_credencial/";
         route_detalle="{{url('/')}}/participante/alumno/detalle";
-        route_valorar="{{url('/')}}/especiales/examenes/evaluar";
+        route_valorar="{{url('/')}}/especiales/examenes/evaluar/";
         route_examen="{{url('/')}}/especiales/examenes/agregar";
         route_alumno="{{url('/')}}/guardar-alumno";
         route_transferir="{{url('/')}}/agendar/clases-grupales/transferir";
         route_consultar_credencial="{{url('/')}}/agendar/clases-grupales/consultar_credenciales";
+        route_consulta_examen="{{url('/')}}/agendar/clases-grupales/consulta_examen/";
         route_nota_administrativa="{{url('/')}}/agendar/clases-grupales/agregar-nota-administrativa";
 
         var in_credencial = <?php echo json_encode($in_credencial);?>;
@@ -2925,29 +2926,41 @@
 
     $(".valorar").click(function(){
 
-      if("{{$examen}}"){
+      var id = $(this).closest('tr').data('id');
+      var token = $('input:hidden[name=_token]').val();
+      procesando();
 
-        var id = $(this).closest('tr').data('id');
-        var token = $('input:hidden[name=_token]').val();
-
-        $.ajax({
-          url: route_alumno+"/"+id,
+      $.ajax({
+        url: route_consulta_examen+"{{$clasegrupal->clase_grupal_id}}",
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        success:function(respuesta){
+          if(respuesta.examen){
+            examen_id = respuesta.examen
+            $.ajax({
+              url: route_alumno+"/"+id,
               headers: {'X-CSRF-TOKEN': token},
               type: 'POST',
-          dataType: 'json',
-          data: id,
-          success:function(respuesta){
-            var route =route_valorar+"/{{$examen}}";
-            window.open(route, '_blank');;
-          },
-          error:function(msj){
-            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-            }
-        });
-        
-      }else{
-         $('#modalError').modal('show');
-      }
+              dataType: 'json',
+              success:function(respuesta){
+                var route =route_valorar+examen_id;
+                window.location=route;
+              },
+              error:function(msj){
+                finprocesado()
+                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+              }
+            });
+          }else{
+            finprocesado();
+             $('#modalError').modal('show');
+          }
+        },
+        error:function(msj){
+          swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+        }
+      });
     });
 
     function activar(correo){
@@ -2981,19 +2994,14 @@
 
 
     function valoracion(){
-
-      procesando();
-
       var route =route_examen+"/{{$clasegrupal->clase_grupal_id}}";
-      window.open(route, '_blank');;
-
-       
+      window.open(route, '_blank');
+      $('.modal').modal('hide')
     }
 
     function atras(){
       $('#modalError').modal('hide');
     }
-
 
     $('.modal_transferir').click(function(){
 

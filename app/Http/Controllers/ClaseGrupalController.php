@@ -928,13 +928,6 @@ class ClaseGrupalController extends BaseController {
             }
 
             $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
-            $examen = Examen::where('boolean_grupal',1)->where('clase_grupal_id', $id)->first();
-
-            if($examen){
-                $examen = $examen->id;
-            }else{
-                $examen = '';
-            }
 
             if($usuario_tipo == 3){
                 $usuario_id = Session::get('easydance_usuario_id');
@@ -1039,7 +1032,7 @@ class ClaseGrupalController extends BaseController {
 
             $tipologias = Tipologia::all();
 
-            return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'examen' => $examen, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal, 'promotores' => $promotores, 'promociones' => $promociones, 'usuario_tipo' => $usuario_tipo, 'tipologias' => $tipologias, 'credenciales' => $credenciales, 'in_credencial' => $in_credencial]);
+            return view('agendar.clase_grupal.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'clasegrupal' => $clasegrupal, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'total_credenciales' => $total_credenciales, 'clases_grupales' => $array_clase_grupal, 'promotores' => $promotores, 'promociones' => $promociones, 'usuario_tipo' => $usuario_tipo, 'tipologias' => $tipologias, 'credenciales' => $credenciales, 'in_credencial' => $in_credencial]);
 
         }else{
             return redirect("agendar/clases-grupales"); 
@@ -5307,5 +5300,18 @@ class ClaseGrupalController extends BaseController {
 
         return response()->json(['mensaje' => '¡Excelente! Los datos se han generado satisfactoriamente', 'status' => 'OK', 'credenciales' => $credenciales, 'total_credenciales' => $total_credenciales, 200]);
 
+    }
+
+    function consulta_examen_clase_grupal($id){
+
+        $examen = Examen::where('boolean_grupal',1)->where('clase_grupal_id', $id)->first();
+
+        if($examen){
+            $examen = $examen->id;
+        }else{
+            $examen = '';
+        }
+
+        return response()->json(['mensaje' => '¡Excelente! Los datos se han generado satisfactoriamente', 'status' => 'OK', 'examen' => $examen, 200]);
     }
 }
