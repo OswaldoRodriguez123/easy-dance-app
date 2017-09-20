@@ -557,6 +557,7 @@ class ClaseGrupalController extends BaseController {
                     }
                 }
 
+                $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
 
                 $collection=collect($alumno);     
                 $alumno_array = $collection->toArray();
@@ -570,6 +571,7 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['tiempo_vencimiento'] = $fecha_de_realizacion;
                 $alumno_array['fecha_vencimiento'] = $reservacion->fecha_vencimiento;
                 $alumno_array['llamadas'] = 0;
+                $alumno_array['edad'] = $edad;
                 $array['2-'.$alumno->id] = $alumno_array;
             
             }
@@ -902,6 +904,7 @@ class ClaseGrupalController extends BaseController {
                 }
 
                 $llamadas = Llamada::where('usuario_id',$alumno->id)->where('usuario_tipo',2)->count();
+                $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
 
                 $collection=collect($alumno);     
                 $alumno_array = $collection->toArray();
@@ -912,6 +915,7 @@ class ClaseGrupalController extends BaseController {
                 $alumno_array['deuda']=$deuda;
                 $alumno_array['tipo'] = 1;
                 $alumno_array['llamadas'] = $llamadas;
+                $alumno_array['edad'] = $edad;
 
                 $array[$alumno->id] = $alumno_array;
 

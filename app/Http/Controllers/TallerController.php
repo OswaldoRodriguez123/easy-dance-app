@@ -1189,6 +1189,10 @@ class TallerController extends BaseController {
         if($taller){
 
             $usuario_tipo = Session::get('easydance_usuario_tipo');
+            $mujeres = 0;
+            $hombres = 0;
+            $array = array();
+            $in = array(2,4);
 
             $alumnos_inscritos = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
                 ->select('alumnos.*', 'inscripcion_taller.alumno_id')
@@ -1196,22 +1200,65 @@ class TallerController extends BaseController {
                 ->where('inscripcion_taller.deleted_at', '=', null)
             ->get();
 
+            foreach($alumnos_inscritos as $alumno){
 
-            $mujeres = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
-                ->where('inscripcion_taller.taller_id', '=', $id)
-                ->where('inscripcion_taller.deleted_at', '=', null)
-                ->where('alumnos.sexo', '=', 'F')
-            ->count();
+                $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                    ->where('usuario_id','=',$alumno->id)
+                    ->where('usuario_tipo',1)
+                ->sum('importe_neto');
 
-            $hombres = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
-                ->where('inscripcion_taller.taller_id', '=', $id)
-                ->where('inscripcion_taller.deleted_at', '=', null)
-                ->where('alumnos.sexo', '=', 'M')
-            ->count();
+                $activacion = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id', $alumno->id)
+                    ->whereIn('usuarios_tipo.tipo', $in)
+                    ->where('users.confirmation_token', '!=', null)
+                ->first();
+
+                if($activacion){
+                    $activacion = 1;
+                }else{
+                    $activacion = 0;
+                }
+
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id',$alumno->id)
+                    ->whereIn('usuarios_tipo.tipo',$in)
+                ->first();
+
+                if($usuario){
+
+                    if($usuario->imagen){
+                        $imagen = $usuario->imagen;
+                    }else{
+                        $imagen = '';
+                    }
+
+                }else{
+                    $imagen = '';
+                }
+
+                $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+
+                $collection=collect($alumno);     
+                $alumno_array = $collection->toArray();
+
+                $alumno_array['imagen'] = $imagen;
+                $alumno_array['activacion']=$activacion;
+                $alumno_array['deuda']=$deuda;
+                $alumno_array['edad'] = $edad;
+
+                $array[$alumno->id] = $alumno_array;
+
+                if($alumno->sexo == 'F'){
+                    $mujeres++;
+                }else{
+                    $hombres++;
+                }
+
+            }
 
             $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
-            return view('agendar.taller.participantes')->with(['alumnos_inscritos' => $alumnos_inscritos, 'id' => $id, 'taller' => $taller, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'usuario_tipo' => $usuario_tipo]);
+            return view('agendar.taller.participantes')->with(['alumnos_inscritos' => $array, 'id' => $id, 'taller' => $taller, 'alumnos' => $alumnos, 'mujeres' => $mujeres, 'hombres' => $hombres, 'usuario_tipo' => $usuario_tipo]);
         }else{
             return redirect("agendar/talleres"); 
         }

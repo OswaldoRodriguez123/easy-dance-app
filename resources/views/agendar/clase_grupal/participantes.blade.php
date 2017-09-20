@@ -1265,10 +1265,18 @@
                                     </td>
                                     <td class="text-center previa">{{$alumno['identificacion']}}</td>
                                     <td class="text-center previa">
-                                    @if($alumno['sexo']=='F')
-                                      <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> 
+                                    @if($alumno['edad'] >= 18)
+                                        @if($alumno['sexo']=='F')
+                                            <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                        @else
+                                            <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                        @endif
                                     @else
-                                      <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i>
+                                        @if($alumno['sexo']=='F')
+                                            <span style="display: none">F</span><i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
+                                        @else
+                                            <span style="display: none">M</span><i class="zmdi fa fa-child f-15 c-azul"></i> </span>
+                                        @endif
                                     @endif
                                     </td>
                                     <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>

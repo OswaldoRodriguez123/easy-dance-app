@@ -35,40 +35,14 @@
               <div role="tabpanel" class="tab-pane  animated active fadeInRight in" id="reportes">
                 <div id="id-reporte" class="text-center icon_d icon_d-reporte f-40" style="color:#f44336;  margin-bottom: -20px;"><p class="f-18">Reportes</p></div>
                 <ul id="sti-menu"  class="sti-menu">
-                  <li data-hovercolor="#f44336">
-                      <a href="{{url('/')}}/reportes/asistencias"><h2 data-type="mText" class="sti-item">Asistencias</h2><span data-type="icon" class="sti-icon sti-icon-reportes5 sti-item"></span></a>
-                  </li>
-                  <li data-hovercolor="#f44336">
-                      <a href="{{url('/')}}/reportes/diagnosticos"><h2 data-type="mText" class="sti-item">Valoración</h2><span data-type="icon" class="sti-icon sti-icon-reportes8 sti-item"></span></a>
-                  </li>    
-                  <li data-hovercolor="#f44336">
-                      <a href="{{url('/')}}/reportes/presenciales"><h2 data-type="mText" class="sti-item">Presenciales </h2><span data-type="icon" class="sti-icon sti-icon-reportes2 sti-item"></span></a>
-                  </li>
-                  <li data-hovercolor="#f44336">
-                      <a data-toggle="modal" href="{{url('/')}}/reportes/estatus-alumnos"><h2 data-type="mText" class="sti-item">Estatus de alumnos</h2><span data-type="icon" class="sti-icon sti-icon-reportes4 sti-item"></span></a>
-                  </li>
-
-                  <div class="clearfix"></div>
 
                   <li data-hovercolor="#f44336">
                     <a href="{{url('/')}}/reportes/inscritos"><h2 data-type="mText" class="sti-item">Inscritos</h2><span data-type="icon" class="sti-icon sti-icon-reportes1 sti-item"></span></a>
                   </li>
-                  <li data-hovercolor="#f44336">
-                      <a href="{{url('/')}}/reportes/camisetas-programacion"><h2 data-type="mText" class="sti-item">Camisetas y Programación </h2><span data-type="icon" class="sti-icon sti-icon-reportes6 sti-item"></span></a>
-                  </li>    
-                  <li data-hovercolor="#f44336">
-                      <a href="{{url('/')}}/reportes/referidos"><h2 data-type="mText" class="sti-item">Referidos </h2><span data-type="icon" class="sti-icon sti-icon-reportes9 sti-item"></span></a>
-                  </li>
-                  <li data-hovercolor="#f44336">
-                      <a data-toggle="modal" href="{{url('/')}}/reportes/reservaciones"><h2 data-type="mText" class="sti-item">Reservaciones</h2><span data-type="icon" class="sti-icon sti-icon-reportes3 sti-item"></span></a>
-                  </li>
-
-                  <div class="clearfix"></div>
 
                   <li data-hovercolor="#f44336">
-                      <a data-toggle="modal" href="{{url('/')}}/reportes/credenciales"><h2 data-type="mText" class="sti-item">Credenciales</h2><span data-type="icon" class="sti-icon sti-icon-reportes7 sti-item"></span></a>
+                      <a href="{{url('/')}}/reportes/asistencias"><h2 data-type="mText" class="sti-item">Asistencias</h2><span data-type="icon" class="sti-icon sti-icon-reportes5 sti-item"></span></a>
                   </li>
-
 
                   <li data-hovercolor="#f44336">
                       <a data-toggle="modal" href="{{url('/')}}/reportes/administrativo"><h2 data-type="mText" class="sti-item">Administrativo</h2><span data-type="icon" class="sti-icon sti-icon-reportes11 sti-item"></span></a>
@@ -78,6 +52,38 @@
                       <a data-toggle="modal" href="{{url('/')}}/reportes/master"><h2 data-type="mText" class="sti-item">Master</h2><span data-type="icon" class="sti-icon sti-icon-reportes10 sti-item"></span></a>
                   </li>
 
+                  <div class="clearfix"></div>
+
+                  <li data-hovercolor="#f44336">
+                      <a href="{{url('/')}}/reportes/contactos"><h2 data-type="mText" class="sti-item">Contactos</h2><span data-type="icon" class="sti-icon sti-icon-reportes12 sti-item"></span></a>
+                  </li>
+                  
+                  <li data-hovercolor="#f44336">
+                      <a href="{{url('/')}}/reportes/referidos"><h2 data-type="mText" class="sti-item">Referidos </h2><span data-type="icon" class="sti-icon sti-icon-reportes9 sti-item"></span></a>
+                  </li>
+
+                  <li data-hovercolor="#f44336">
+                      <a href="{{url('/')}}/reportes/presenciales"><h2 data-type="mText" class="sti-item">Presenciales </h2><span data-type="icon" class="sti-icon sti-icon-reportes2 sti-item"></span></a>
+                  </li>
+
+                  <li data-hovercolor="#f44336">
+                      <a data-toggle="modal" href="{{url('/')}}/reportes/estatus-alumnos"><h2 data-type="mText" class="sti-item">Estatus de alumnos</h2><span data-type="icon" class="sti-icon sti-icon-reportes4 sti-item"></span></a>
+                  </li>
+
+                  <div class="clearfix"></div>
+
+                  <li data-hovercolor="#f44336">
+                      <a data-toggle="modal" href="{{url('/')}}/reportes/credenciales"><h2 data-type="mText" class="sti-item">Credenciales</h2><span data-type="icon" class="sti-icon sti-icon-reportes7 sti-item"></span></a>
+                  </li>
+
+                  <li data-hovercolor="#f44336">
+                      <a href="{{url('/')}}/reportes/diagnosticos"><h2 data-type="mText" class="sti-item">Valoración</h2><span data-type="icon" class="sti-icon sti-icon-reportes8 sti-item"></span></a>
+                  </li>   
+
+                  <li data-hovercolor="#f44336">
+                      <a data-toggle="modal" href="{{url('/')}}/reportes/reservaciones"><h2 data-type="mText" class="sti-item">Reservaciones</h2><span data-type="icon" class="sti-icon sti-icon-reportes3 sti-item"></span></a>
+                  </li> 
+
                   <li data-hovercolor="#f44336">
                       <a href="{{url('/')}}/reportes/asistencias-personal"><h2 data-type="mText" class="sti-item">Asistencias Personal</h2><span data-type="icon" class="sti-icon sti-icon-reportes5 sti-item"></span></a>
                   </li>
@@ -85,8 +91,8 @@
                   <div class="clearfix"></div>
 
                   <li data-hovercolor="#f44336">
-                      <a href="{{url('/')}}/reportes/contactos"><h2 data-type="mText" class="sti-item">Contactos</h2><span data-type="icon" class="sti-icon sti-icon-reportes12 sti-item"></span></a>
-                  </li>
+                      <a href="{{url('/')}}/reportes/camisetas-programacion"><h2 data-type="mText" class="sti-item">Camisetas y Programación </h2><span data-type="icon" class="sti-icon sti-icon-reportes6 sti-item"></span></a>
+                  </li> 
 
                   <li data-hovercolor="#f44336">
                       <a href="{{url('/')}}/reportes/comisiones"><h2 data-type="mText" class="sti-item">Comisiones</h2><span data-type="icon" class="sti-icon sti-icon-reportes13 sti-item"></span></a>
@@ -99,6 +105,7 @@
                   <li data-hovercolor="#f44336">
                       <a href="{{url('/')}}/reportes/clientes"><h2 data-type="mText" class="sti-item">Perfil del Cliente </h2><span data-type="icon" class="sti-icon sti-icon-reportes2 sti-item"></span></a>
                   </li>
+
 
                 </ul>
               </div>

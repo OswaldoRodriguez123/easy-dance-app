@@ -272,6 +272,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th class="text-center" data-column-id="imagen">Imagen</th>
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
@@ -282,19 +283,38 @@
                             <tbody>
 
                             @foreach ($alumnos_inscritos as $alumno)
-                                <?php $id = $alumno->id; ?>
+                                <?php $id = $alumno['id']; ?>
                                 <tr id="{{$id}}" class="seleccion" >
-                                    <td class="text-center previa">{{$alumno->identificacion}}</td>
                                     <td class="text-center previa">
-                                    @if($alumno->sexo=='F')
-                                      <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                      @if($alumno['imagen'])
+                                        <img class="lv-img" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
+                                      @else
+                                          @if($alumno['sexo'] == 'M')
+                                            <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                          @else
+                                            <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                          @endif
+                                      @endif
+                                    </td>
+                                    <td class="text-center previa">{{$alumno['identificacion']}}</td>
+                                    <td class="text-center previa">
+                                    @if($alumno['edad'] >= 18)
+                                        @if($alumno['sexo']=='F')
+                                            <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                        @else
+                                            <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                        @endif
                                     @else
-                                      <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                        @if($alumno['sexo']=='F')
+                                            <span style="display: none">F</span><i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
+                                        @else
+                                            <span style="display: none">M</span><i class="zmdi fa fa-child f-15 c-azul"></i> </span>
+                                        @endif
                                     @endif
                                     </td>
-                                    <td class="text-center previa">{{$alumno->nombre}} {{$alumno->apellido}} </td>
+                                    <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
                                     <td class="text-center previa">
-                                      <i class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
+                                      <span style="display: none">{{$alumno['deuda']}}</span><i class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
                                     </td>
                                     <td class="text-center">
                                       <i class="zmdi zmdi-delete boton red eliminar f-20 p-r-10"></i>
@@ -339,21 +359,7 @@
         processing: true,
         serverSide: false,
         pageLength: 25,   
-        order: [[0, 'asc']],
-        fnDrawCallback: function() {
-          $('.dataTables_paginate').show();
-          /*if ($('#tablelistar tr').length < 25) {
-              $('.dataTables_paginate').hide();
-          }
-          else{
-             $('.dataTables_paginate').show();
-          }*/
-        },
-        pageLength: 25,
-        paging: false,
-        language: {
-              searchPlaceholder: "Buscar"
-        },
+        order: [[3, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
@@ -382,25 +388,8 @@
                         }
                     }
         });
-    
 
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-            });
+        });
 
         function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
                 $.growl({
@@ -881,7 +870,7 @@
             $( "#todos2" ).addClass( "c-verde" );
 
             t
-            .columns(1)
+            .columns(2)
             .search('')
             .draw(); 
 
@@ -892,7 +881,7 @@
             $( "#todos2" ).removeClass( "c-verde" );
 
             t
-            .columns(1)
+            .columns(2)
             .search($(this).val())
             .draw();
 
@@ -903,7 +892,7 @@
             $( "#todos2" ).removeClass( "c-verde" );
 
             t
-            .columns(1)
+            .columns(2)
             .search($(this).val())
             .draw();
 
