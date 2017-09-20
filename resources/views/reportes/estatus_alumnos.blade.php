@@ -84,13 +84,13 @@
                                             <select class="selectpicker" name="clase_grupal_id" id="clase_grupal_id" data-live-search="true">
 
                                                 <option value="0">Todas</option>
-                                                @foreach ($clases_grupales as $clase)
-                                                    <?php $id = $clase['id']; ?>
+                                                @foreach ($clases_grupales as $clase_grupal)
+                                                    <?php $id = $clase_grupal['id']; ?>
                                                     <option value="{{$id}}">                       
-                                                        {{$clase['nombre']}} - {{$clase['dia']}} - 
-                                                        {{$clase['hora_inicio']}}/ 
-                                                        {{$clase['hora_final']}} -  {{$clase['instructor_nombre']}}
-                                                        {{$clase['instructor_apellido']}}
+                                                        {{$clase_grupal['nombre']}} - {{$clase_grupal['dia']}} - 
+                                                        {{$clase_grupal['hora_inicio']}} / 
+                                                        {{$clase_grupal['hora_final']}} -  {{$clase_grupal['instructor_nombre']}}
+                                                        {{$clase_grupal['instructor_apellido']}}
                                                     </option>
                                                 @endforeach                                
                                             </select> 

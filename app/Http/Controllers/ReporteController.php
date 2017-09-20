@@ -1186,9 +1186,13 @@ class ReporteController extends BaseController
                 ->orderBy('clases_grupales.hora_inicio', 'asc')
         ->get();
 
-        foreach($clases_grupales as $clase){
+        $academia = Academia::find(Auth::user()->academia_id);
 
-            $fecha = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
+        $array = array();
+
+        foreach($clases_grupales as $clase_grupal){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
           
             $i = $fecha->dayOfWeek;
 
@@ -1222,14 +1226,24 @@ class ReporteController extends BaseController
 
             }
 
-            $collection=collect($clase);     
-            $clase_array = $collection->toArray();
-                
-            $clase_array['dia']=$dia;
-            $clases[$clase->id] = $clase_array;
+            if($academia->tipo_horario == 1){
+                $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->format('g:i a');
+                $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->format('g:i a');
+            }
+
+            $collection=collect($clase_grupal);     
+            $clase_grupal_array = $collection->toArray();
+            
+            $clase_grupal_array['hora_inicio']=$hora_inicio;
+            $clase_grupal_array['hora_final']=$hora_final; 
+            $clase_grupal_array['dia']=$dia;
+            $array[$clase_grupal->id] = $clase_grupal_array;
         }
 
-        return view('reportes.estatus_alumnos')->with(['alumnos' => $alumnos, 'clases_grupales' => $clases]);
+        return view('reportes.estatus_alumnos')->with(['alumnos' => $alumnos, 'clases_grupales' => $array]);
     }
 
     public function Estatus_AlumnosFiltros(Request $request){
