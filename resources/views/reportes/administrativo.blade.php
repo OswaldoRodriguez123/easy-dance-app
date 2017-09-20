@@ -114,7 +114,7 @@
                                                 <?php $id = $clase['id']; ?>
                                                 <option value="{{$id}}">                       
                                                     {{$clase['nombre']}} - {{$clase['dia']}} - 
-                                                    {{$clase['hora_inicio']}}/ 
+                                                    {{$clase['hora_inicio']}} / 
                                                     {{$clase['hora_final']}} -  {{$clase['instructor_nombre']}}
                                                     {{$clase['instructor_apellido']}}
                                                 </option>
