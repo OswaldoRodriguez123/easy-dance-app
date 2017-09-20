@@ -214,12 +214,25 @@
                                     <label class="radio radio-inline m-r-20">
                                         <input name="sexo" id="mujer" value="F" type="radio">
                                         <i class="input-helper"></i>  
-                                        Mujer <i class="zmdi zmdi-female p-l-5 f-20"></i>
+
+                                        Mujer 
+
+                                        @if($edad >= 18)
+                                          <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                        @else
+                                          <i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
+                                        @endif
                                     </label>
                                     <label class="radio radio-inline m-r-20 ">
                                         <input name="sexo" id="hombre" value="M" type="radio">
                                         <i class="input-helper"></i>  
-                                        Hombre <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
+                                        Hombre 
+
+                                        @if($edad >= 18)
+                                          <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                        @else
+                                          <i class="zmdi fa fa-child f-15 c-azul"></i> </span>
+                                        @endif
                                     </label>
                                     </div>
                                     

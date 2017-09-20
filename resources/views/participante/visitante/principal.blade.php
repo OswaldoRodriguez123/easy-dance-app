@@ -97,11 +97,19 @@
                                     <td class="text-center previa">{{$visitante['fecha_registro']}}</td>
                                     <td class="text-center previa">{{$visitante['hora_registro']}}</td>
                                     <td class="text-center previa">
-                                    @if($visitante['sexo']=='F')
-                                      <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
-                                    @else
-                                      <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
-                                    @endif
+                                      @if($visitante['edad'] >= 18)
+                                          @if($visitante['sexo']=='F')
+                                              <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                          @else
+                                              <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                          @endif
+                                      @else
+                                          @if($visitante['sexo']=='F')
+                                              <span style="display: none">F</span><i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
+                                          @else
+                                              <span style="display: none">M</span><i class="zmdi fa fa-child f-15 c-azul"></i> </span>
+                                          @endif
+                                      @endif
                                     </td>
 
                                     <?php $tmp = explode(" ", $visitante['nombre']);

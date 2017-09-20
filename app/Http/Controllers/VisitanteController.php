@@ -55,7 +55,10 @@ class VisitanteController extends BaseController {
                 $visitante_array['especialidad']='Sin Especificar';
             }  
 
+            $edad = Carbon::createFromFormat('Y-m-d', $visitante->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+
             $visitante_array['fecha_registro']=$fecha->toDateString();
+            $visitante_array['edad']=$edad;
             $array[$visitante->id] = $visitante_array;
 
         }
@@ -412,8 +415,10 @@ class VisitanteController extends BaseController {
             }
 
             $tipologias = Tipologia::orderBy('nombre')->get();
+
+            $edad = Carbon::createFromFormat('Y-m-d', $visitante->fecha_nacimiento)->diff(Carbon::now())->format('%y');
  
-            return view('participante.visitante.planilla')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'visitante' => $visitante, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'tipologias' => $tipologias, 'id' => $id]);
+            return view('participante.visitante.planilla')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'visitante' => $visitante, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'tipologias' => $tipologias, 'edad' => $edad, 'id' => $id]);
         }else{
             return redirect("participante/visitante"); 
         }
