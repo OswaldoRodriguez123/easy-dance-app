@@ -2295,9 +2295,6 @@ class UsuarioController extends BaseController {
 
         $id = $datos[0]['usuario_id'];
 
-        $array = array();
-        $array_inasistencia = array();
-
         //ARRAY DE BUSQUEDA EN ASISTENCIAS
 
         $tipo_clase = array(1,2);
@@ -2305,6 +2302,8 @@ class UsuarioController extends BaseController {
         $alumno = Alumno::find($id);
 
         if($alumno){
+
+            $inasistencias = 0;
 
             $clase_grupal = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
