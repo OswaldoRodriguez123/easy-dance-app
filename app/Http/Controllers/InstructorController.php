@@ -773,7 +773,7 @@ class InstructorController extends BaseController {
          
                 if($usuario){
 
-                    $instructor->correo = $correo;
+                    $usuario->email = $correo;
 
                     if($usuario->save()){
 
