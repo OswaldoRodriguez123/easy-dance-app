@@ -783,7 +783,7 @@
                               </div>
                               <div class="clearfix p-b-35"></div>
 
-                          <div class="table-responsive row">
+                          <div class="table-responsive row" id="tableactividad_responsive">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tableactividad" >
                             <thead>
@@ -796,10 +796,20 @@
                             <tbody>
 
                             @foreach ($actividades as $actividad)
-                                <?php $id = $actividad->id; ?>
-                                <tr id="{{$id}}" class="seleccion" >
+                                <?php 
+                                    $id = $actividad->id; 
+
+                                    $contenido = '';
+
+                                    $contenido = '<p class="c-negro">' .
+
+                                    title_case($actividad->descripcion).'</p>';
+                  
+                                ?>
+
+                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "" data-html = "true" title= "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" id="{{$id}}" class="seleccion">
                                     <td class="text-center previa">{{$actividad->nombre}}</td>
-                                    <td class="text-center previa">{{$actividad->descripcion}}</td>
+                                    <td class="text-center previa">{{ str_limit($actividad->descripcion, $limit = 30, $end = '...') }}</td>
                                     <td class="text-center"> <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i></td>
                                 </tr>
                             @endforeach 
@@ -2284,89 +2294,91 @@
 
     $("#añadiractividad").click(function(){
 
-                var datos = $( "#edit_actividad_academia" ).serialize(); 
-                procesando();
-                var route = "{{url('/')}}/configuracion/academia/actividad";
-                var token = $('input:hidden[name=_token]').val();
-                var datos = datos;
-                limpiarMensaje();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data: datos ,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
+      procesando();
+      limpiarMensaje();
+      var datos = $( "#edit_actividad_academia" ).serialize(); 
+      var route = "{{url('/')}}/configuracion/academia/actividad";
+      var token = $('input:hidden[name=_token]').val();
 
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
+      $.ajax({
+          url: route,
+          headers: {'X-CSRF-TOKEN': token},
+          type: 'POST',
+          dataType: 'json',
+          data: datos,
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
 
-                          var nombre = respuesta.array.nombre;
-                          var descripcion = respuesta.array.descripcion;
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
 
-                          var rowId=respuesta.id;
-                          var rowNode=a.row.add( [
-                          ''+nombre+'',
-                          ''+descripcion+'',
-                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
-                          ] ).draw(false).node();
-                          $( rowNode )
-                          .attr('id',rowId)
-                          .addClass('seleccion');
+                var nombre = respuesta.array.nombre;
+                var descripcion = respuesta.array.descripcion;
 
-                          $("#edit_actividad_academia")[0].reset();
+                var rowId=respuesta.id;
+                var rowNode=a.row.add( [
+                  ''+nombre+'',
+                  ''+descripcion+'',
+                  '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                ] ).draw(false).node();
 
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        $("#guardar").removeAttr("disabled");
-                        finprocesado();
-                        $(".cancelar").removeAttr("disabled");
+                $( rowNode )
+                  .attr('id',rowId)
+                  .addClass('seleccion');
 
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        finprocesado();
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
+                $("#edit_actividad_academia")[0].reset();
+
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              } 
+
+              $(".procesando").removeClass('show');
+              $(".procesando").addClass('hidden');
+              $("#guardar").removeAttr("disabled");
+              finprocesado();
+              $(".cancelar").removeAttr("disabled");
+
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }                        
+              $("#guardar").removeAttr("disabled");
+              $(".cancelar").removeAttr("disabled");
+              finprocesado();
+              $(".procesando").removeClass('show');
+              $(".procesando").addClass('hidden');
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
 
     }); 
 
@@ -2374,31 +2386,49 @@
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
-      $.ajax({
-           url: "{{url('/')}}/configuracion/academia/eliminaractividad/"+id,
-           headers: {'X-CSRF-TOKEN': token},
-           type: 'POST',
-           dataType: 'json',                
-          success: function (data) {
-            if(data.status=='OK'){
-                
-                                 
-            }else{
-              swal(
-                'Solicitud no procesada',
-                'Ha ocurrido un error, intente nuevamente por favor',
-                'error'
-              );
-            }
-          },
-          error:function (xhr, ajaxOptions, thrownError){
-            swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-          }
-        })
+      element = this;
 
-        a.row( $(this).parents('tr') )
-          .remove()
-          .draw();
+      swal({   
+          title: "Desea eliminar la actividad?",   
+          text: "Confirmar eliminación!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Eliminar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+      if (isConfirm) {
+        procesando();
+        $.ajax({
+             url: "{{url('/')}}/configuracion/academia/eliminaractividad/"+id,
+             headers: {'X-CSRF-TOKEN': token},
+             type: 'POST',
+             dataType: 'json',                
+            success: function (data) {
+              if(data.status=='OK'){
+
+                swal("Exito!","La actividad ha sido eliminada!","success");
+
+                a.row( $(element).parents('tr') )
+                  .remove()
+                  .draw();      
+              }else{
+                swal(
+                  'Solicitud no procesada',
+                  'Ha ocurrido un error, intente nuevamente por favor',
+                  'error'
+                );
+              }
+
+              finprocesado(); 
+            },
+            error:function (xhr, ajaxOptions, thrownError){
+              swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+            }
+          })
+        }
+      });
     })
 
     $(".procedimientos").click(function(){
@@ -2425,6 +2455,14 @@
       procesando();
       window.location = "{{url('/')}}/configuracion/herramientas/pasos";
     });
+
+    $('#tableactividad').on('mouseenter', function () {
+        $('#tableactividad_responsive').css( "overflow", "inherit" );
+    });
+
+    $('#tableactividad').on('mouseleave', function () {
+        $('#tableactividad_responsive').css( "overflow", "auto" );
+    })
 
    </script>     
 		
