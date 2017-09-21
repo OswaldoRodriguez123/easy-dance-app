@@ -121,8 +121,10 @@
     <script type="text/javascript">
         @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
             route_detalle="{{url('/')}}/incidencias/detalle";
+            order = 3;
         @else
             route_detalle="{{url('/')}}/incidencias/visualizar";
+            order = 2
         @endif
 
         route_eliminar="{{url('/')}}/incidencias/eliminar";
@@ -135,7 +137,7 @@
                 pageLength: 25,  
                 bInfo: false,
                 bLengthChange: false,
-                order: [[3, 'desc']],
+                order: [[order, 'desc']],
                 language: {
                       searchPlaceholder: "Buscar"
                 },
