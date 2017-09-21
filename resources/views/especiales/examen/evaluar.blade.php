@@ -371,12 +371,11 @@
 						</div>
 
 						<div class="row">
-	                        <div class="col-sm-12 text-center">
-	                         
-	                          <a href="{{url('/')}}/especiales/evaluaciones"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
-	                          <br>
-	                          <span class="f-700 opaco-0-8 f-16">Sección Pruebas</span>
-		                    </div>						
+              <div class="col-sm-12 text-center">
+                <a href="{{url('/')}}/especiales/evaluaciones/{{$id}}"><i class="zmdi zmdi-eye zmdi-hc-fw f-30 boton blue sa-warning"></i></a>
+                <br>
+                <span class="f-700 opaco-0-8 f-16">Sección Pruebas</span>
+              </div>						
 						</div>
 
 						<nav class="navbar navbar-default navbar-fixed-bottom">
