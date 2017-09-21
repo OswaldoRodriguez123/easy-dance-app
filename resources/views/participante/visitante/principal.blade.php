@@ -159,6 +159,10 @@
                                                             <a onclick="procesando()"><i class="zmdi icon_a-reservaciones f-16 boton blue"></i>Reservar</a>
                                                         </li>
 
+                                                        <li class="hidden-xs eliminar">
+                                                            <a class="pointer eliminar"><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>
+                                                        </li>
+
                                                     </ul>
                                                 </div>
                                             </li>
@@ -194,6 +198,8 @@
 
         route_detalle="{{url('/')}}/participante/visitante/detalle";
         route_operacion="{{url('/')}}/participante/visitante/operaciones";
+        route_eliminar="{{url('/')}}/participante/visitante/eliminar/";
+        route_principal="{{url('/')}}/participante/visitante";
             
         $(document).ready(function(){
 
@@ -332,6 +338,51 @@
                         }
         });
     })
+
+    $(".eliminar").click(function(){
+            var id = $(this).closest('tr').attr('id');
+            swal({   
+                title: "Desea eliminar al visitante?",   
+                text: "Confirmar eliminación!",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+      if (isConfirm) {
+        var route = route_eliminar + id;
+        var token = '{{ csrf_token() }}';
+            
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'DELETE',
+                dataType: 'json',
+                data:id,
+                success:function(respuesta){
+
+                    procesando();
+                    window.location = route_principal; 
+
+                },
+                error:function(msj){
+                            // $("#msj-danger").fadeIn(); 
+                            // var text="";
+                            // console.log(msj);
+                            // var merror=msj.responseJSON;
+                            // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                            // $("#msj-error").html(text);
+                            // setTimeout(function(){
+                            //          $("#msj-danger").fadeOut();
+                            //         }, 3000);
+                            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                            }
+            });
+            }
+        });
+    });
 
     </script>
 @stop

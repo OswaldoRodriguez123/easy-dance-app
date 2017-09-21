@@ -19,6 +19,49 @@
 @stop
 @section('content')
 
+            <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                 <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                    <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Error<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                 </div>
+                                
+                          <div class="modal-body">                           
+                          <div class="row p-t-20 p-b-0">
+
+                          <div class="col-md-2"></div>
+                          <div class="col-md-8">
+                            <div align="center"><i class="zmdi zmdi-alert-circle-o zmdi-hc-5x c-youtube"></i></div>
+                            <div class="c-morado f-40 text-center"> ¡Error! </div>
+                            <div class="clearfix m-20 m-b-25"></div>
+                            <div class="text-center f-20">Esta clase grupal no posee valoración</div>
+                            <div class="text-center f-20">No te preocupes, desde aqui puedes crearla</div>
+
+                            <div class="clearfix m-20 m-b-25"></div>
+                            <div class="clearfix m-20 m-b-25"></div>
+                            
+                            <div align="center">
+                            <button type="submit" class="butp button5" onclick="valoracion()">Llevame</button>
+                            <button type="submit" class="but2 button55" onclick="atras()"><span>En otro momento</span></button><br><br><br>
+                            </div>
+                            
+
+                            <div class="clearfix m-20 m-b-25"></div>
+                            <div class="clearfix m-20 m-b-25"></div>
+                            <div class="clearfix m-20 m-b-25"></div>
+                            <div class="clearfix m-20 m-b-25"></div>
+
+                          </div>
+                          <div class="col-md-2"></div>
+
+
+                  
+                          </div>
+                          </div>
+                          </div>
+                  </div>
+              </div>
+
             <section id="content">
                 <div class="container">
                 
@@ -98,10 +141,14 @@
         @else
             route_detalle="{{url('/')}}/programacion";
         @endif
+        route_consulta_examen="{{url('/')}}/agendar/clases-grupales/consulta_examen/";
+        route_valorar="{{url('/')}}/especiales/examenes/evaluar/";
+        route_examen="{{url('/')}}/especiales/examenes/agregar/";
 
         var i;
         var hoy;
         var pagina = document.location.origin
+        var clase_grupal_id
 
         $(document).ready(function(){
 
@@ -294,7 +341,7 @@
                 operacion += 'Participantes'
                 operacion += '</a></li>'
                 operacion += '<li class="hidden-xs">'
-                operacion += '<a onclick="procesando()" href="'+pagina+'/especiales/examenes/agregar/'+array.id+'">'
+                operacion += '<a class="valorar">'
                 operacion += '<i class="icon_a-examen f-16 m-r-10 boton blue"></i>'
                 operacion += 'Valorar'
                 operacion += '</a></li>'
@@ -334,8 +381,12 @@
         $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
 
             var id = $(this).closest('tr').attr('id');
-            var dropdown = $('#dropdown_'+id)
-            var dropdown_toggle = $('#dropdown_toggle_'+id)
+            var dropdown = $(this).closest('.dropdown')
+            var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+            $('.dropdown-toggle').attr('aria-expanded','false')
+            $('.dropdown').removeClass('open')
+            $('.table-responsive').css( "overflow", "auto" );
 
             if(!dropdown.hasClass('open')){
                 dropdown.addClass('open')
@@ -348,6 +399,44 @@
         $('.table-responsive').on('hide.bs.dropdown', function () {
           $('.table-responsive').css( "overflow", "auto" );
         })
+
+        $('#tablelistar tbody').on('click', '.valorar', function () {
+
+          var id = $(this).closest('tr').attr('id');
+          var token = "{{ csrf_token() }}"
+          clase_grupal_id = id
+          procesando();
+
+          $.ajax({
+            url: route_consulta_examen+id,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            dataType: 'json',
+            success:function(respuesta){
+              if(respuesta.examen){
+                examen_id = respuesta.examen
+                var route =route_valorar+examen_id;
+                window.location=route;
+              }else{
+                finprocesado();
+                 $('#modalError').modal('show');
+              }
+            },
+            error:function(msj){
+              swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+            }
+          });
+        });
+
+        function atras(){
+          $('#modalError').modal('hide');
+        }
+
+        function valoracion(){
+            var route =route_examen+clase_grupal_id;
+            window.open(route, '_blank');
+            $('.modal').modal('hide')
+        }
 
     </script>
 @stop

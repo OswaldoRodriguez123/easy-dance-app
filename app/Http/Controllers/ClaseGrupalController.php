@@ -84,9 +84,8 @@ class ClaseGrupalController extends BaseController {
         $academia = Academia::find(Auth::user()->academia_id);
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         $usuario_id = Session::get('easydance_usuario_id');
-        $academia = Academia::find(Auth::user()->academia_id);
 
-        if($usuario_tipo == 1 OR $usuario_tipo == 3 OR $usuario_tipo == 5 || $usuario_tipo == 6){
+        if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6){
 
             foreach($clase_grupal_join as $clase_grupal){
 
@@ -375,49 +374,6 @@ class ClaseGrupalController extends BaseController {
 
         return view('agendar.clase_grupal.principal_alumno')->with(['clase_grupal_join' => $array, 'academia' => $academia]);
         
-    }
-
-    public function index()
-    {
-        // $clases_grupales_join = ClaseGrupal::table('clases_grupales')
-        //     ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-        //     ->select('config_clases_grupales.*')
-        //     ->get();
-
-        $clase_grupal_join = DB::table('clases_grupales')
-            ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
-            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-            ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id')
-            ->get();
-
-        $alumnosclasegrupal = DB::table('alumnos')
-                ->join('inscripcion_clase_grupal', 'alumnos.id', '=', 'inscripcion_clase_grupal.alumno_id')
-                ->join('clases_grupales', 'clases_grupales.id', '=', 'inscripcion_clase_grupal.clase_grupal_id')
-                ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.telefono', 'alumnos.id', 'alumnos.identificacion', 'alumnos.sexo')
-                ->get();
-
-            //dd($clase_grupal_join);
-
-        return view('agendar.clase_grupal.index')->with(['clase_grupal' => ClaseGrupal::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_clases_grupales' => ConfigClasesGrupales::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get(), 'instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'alumno' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(),'alumnosclasegrupal' => $alumnosclasegrupal, 'clase_grupal_join' => $clase_grupal_join]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function inscribir($id)
-    {
-        $clasegrupal = DB::table('config_clases_grupales')
-                ->join('clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-                ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial')
-                ->where('clases_grupales.id', '=', $id)
-                ->where('clases_grupales.deleted_at', '=', null)
-        ->first();
-
-        return view('agendar.clase_grupal.inscripcion')->with(['alumno' => Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'id' => $id, 'clasegrupal' => $clasegrupal]);
     }
 
     public function participantes($id)

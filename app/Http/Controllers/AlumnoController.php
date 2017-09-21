@@ -2040,6 +2040,7 @@ class AlumnoController extends BaseController
                     $delete = Visitante::where('alumno_id',$hijo->id)->forceDelete();
 
                     $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                        ->select('users.id')
                         ->where('usuarios_tipo.tipo_id',$hijo->id)
                         ->whereIn('usuarios_tipo.tipo',$in)
                     ->first();
@@ -2047,6 +2048,7 @@ class AlumnoController extends BaseController
                     if($usuario){
 
                         $notificaciones_usuarios = NotificacionUsuario::where('id_usuario', $usuario->id)->get();
+
                         foreach($notificaciones_usuarios as $notificacion_usuario)
                         {
                             $notificacion = Notificacion::find($notificacion_usuario->id_notificacion);
@@ -2057,6 +2059,7 @@ class AlumnoController extends BaseController
                         $delete = NotificacionUsuario::where('id_usuario', $usuario->id)->forceDelete();
                         $delete = Incidencia::where('usuario_id', $usuario->id)->forceDelete();
                         $delete = Sugerencia::where('usuario_id', $usuario->id)->forceDelete();
+                        $delete = UsuarioTipo::where('usuario_id',$usuario->id)->delete();
 
                         $usuario->forceDelete();
 
@@ -2068,6 +2071,7 @@ class AlumnoController extends BaseController
         }
 
         $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->select('users.id')
             ->where('usuarios_tipo.tipo_id',$id)
             ->whereIn('usuarios_tipo.tipo',$in)
         ->first();
@@ -2077,6 +2081,7 @@ class AlumnoController extends BaseController
             $delete = Familia::where('representante_id',$usuario->id)->forceDelete();
 
             $notificaciones_usuarios = NotificacionUsuario::where('id_usuario', $usuario->id)->get();
+
             foreach($notificaciones_usuarios as $notificacion_usuario)
             {
                 $notificacion = Notificacion::find($notificacion_usuario->id_notificacion);
@@ -2088,7 +2093,7 @@ class AlumnoController extends BaseController
             $delete = NotificacionUsuario::where('id_usuario', $usuario->id)->forceDelete();
             $delete = Incidencia::where('usuario_id', $usuario->id)->forceDelete();
             $delete = Sugerencia::where('usuario_id', $usuario->id)->forceDelete();
-            $delete = UsuarioTipo::where('usuario_id', $usuario->id)->forceDelete();
+            $delete = UsuarioTipo::where('usuario_id', $usuario->id)->delete();
             $delete = VencimientoClaseGrupal::where('usuario_id', $usuario->id)->forceDelete();
             $usuario->forceDelete();
 

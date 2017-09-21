@@ -80,14 +80,16 @@
                                 </div>
 
                                 <div class="col-md-4">
-                                    <label>Fecha</label> &nbsp; &nbsp; &nbsp;
-                                    <div class="select">
-                                        <select class="selectpicker" data-live-search="true" name="tipo" id="tipo">
-                                            <option value="1">Hoy</option>
-                                            <option value="2">Mes Actual</option>
-                                            <option value="3">Mes Pasado</option>
+                                    <label>Sexo</label>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="sexo" id="sexo">
+                                          <option value="0">Todos</option>
+                                          <option value="M">Masculino</option>
+                                          <option value="F">Femenino</option>
                                         </select>
-                                    </div>
+                                      </div>
+                                    </div>                          
                                 </div>
 
                                 <div class="col-md-4">
@@ -104,6 +106,77 @@
                                 </div>
 
                                 <div class="clearfix m-b-20"></div>
+
+                                <div class="col-md-4">
+                                    <label>Especialidad de interés</label>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" id="especialidad_id" name="especialidad_id">
+                                          <option value="0">Todos</option>
+                                          @foreach ( $especialidades as $especialidad )
+                                          <option value = "{{ $especialidad['id'] }}">{{ $especialidad['nombre'] }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Días de interés</label>
+
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="dias_clase_id" id="dias_clase_id" data-live-search="true">
+                                          <option value="0">Todos</option>
+                                          @foreach ( $dias_de_semana as $dias )
+                                            <option value = "{{ $dias['id'] }}">{{ $dias['nombre'] }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Tipo de Interes</label>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="interes_id" id="interes_id">
+                                          <option value="0">Todos</option>
+                                          <option value="1">Adulto</option>
+                                          <option value="2">Niño</option>
+                                        </select>
+                                      </div>
+                                    </div>                          
+                                </div>
+
+                                <div class="clearfix m-b-20"></div>
+
+                                <div class="col-md-4">
+                                    <label>Perfil del Cliente</label>
+
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="tipologia_id" id="tipologia_id" data-live-search="true">
+                                          <option value="0">Todos</option>
+                                          @foreach ( $tipologias as $tipologia )
+                                            <option value = "{{ $tipologia->id }}">{{ $tipologia->nombre }}</option>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <label>Fecha</label> &nbsp; &nbsp; &nbsp;
+                                    <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="tipo" id="tipo">
+                                            <option value="1">Hoy</option>
+                                            <option value="2">Mes Actual</option>
+                                            <option value="3">Mes Pasado</option>
+                                        </select>
+                                    </div>
+                                </div>
 
                                 <div class="col-sm-4">
                                     <div class="form-group fg-line">

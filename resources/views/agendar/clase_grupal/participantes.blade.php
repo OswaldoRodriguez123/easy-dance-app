@@ -1414,7 +1414,7 @@
         route_eliminar_credencial="{{url('/')}}/agendar/clases-grupales/eliminar_credencial/";
         route_detalle="{{url('/')}}/participante/alumno/detalle";
         route_valorar="{{url('/')}}/especiales/examenes/evaluar/";
-        route_examen="{{url('/')}}/especiales/examenes/agregar";
+        route_examen="{{url('/')}}/especiales/examenes/agregar/";
         route_alumno="{{url('/')}}/guardar-alumno";
         route_transferir="{{url('/')}}/agendar/clases-grupales/transferir";
         route_consultar_credencial="{{url('/')}}/agendar/clases-grupales/consultar_credenciales";
@@ -2994,7 +2994,7 @@
 
 
     function valoracion(){
-      var route =route_examen+"/{{$clasegrupal->clase_grupal_id}}";
+      var route =route_examen+"{{$clasegrupal->clase_grupal_id}}";
       window.open(route, '_blank');
       $('.modal').modal('hide')
     }

@@ -39,6 +39,8 @@ use App\FormasPago;
 use App\Reservacion;
 use App\Participante;
 use App\Tipologia;
+use App\ConfigEspecialidades;
+use App\DiasDeInteres;
 use Mail;
 use DB;
 use Validator;
@@ -456,8 +458,12 @@ class ReporteController extends BaseController
 
         $como_nos_conociste = ComoNosConociste::all();
         $promotores = Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get();
+        $tipologias = Tipologia::orderBy('nombre')->get();
+        $como_nos_conociste = ComoNosConociste::orderBy('nombre')->get(); 
+        $especialidades = ConfigEspecialidades::all();
+        $dias_de_semana = DiasDeInteres::all();
 
-        return view('reportes.presenciales')->with([ 'promotores' => $promotores, 'como_nos_conociste' => $como_nos_conociste]);
+        return view('reportes.presenciales')->with(['promotores' => $promotores, 'como_nos_conociste' => $como_nos_conociste,'como_nos_conociste' => $como_nos_conociste, 'especialidades' => $especialidades, 'dias_de_semana' => $dias_de_semana, 'tipologias' => $tipologias]);
 	}
 
     public function PresencialesFiltros(Request $request)
@@ -476,6 +482,32 @@ class ReporteController extends BaseController
         {
             $query->where('visitantes_presenciales.como_nos_conociste_id','=', $request->como_nos_conociste_id);
         }
+
+        if($request->sexo)
+        {
+            $query->where('visitantes_presenciales.sexo','=', $request->sexo);
+        }
+
+        if($request->especialidad_id)
+        {
+            $query->where('visitantes_presenciales.especialidad_id','=', $request->especialidad_id);
+        }
+
+        if($request->dias_clase_id)
+        {
+            $query->where('visitantes_presenciales.dias_clase_id','=', $request->dias_clase_id);
+        }
+
+        if($request->interes_id)
+        {
+            $query->where('visitantes_presenciales.interes_id','=', $request->interes_id);
+        }
+
+        if($request->tipologia_id)
+        {
+            $query->where('visitantes_presenciales.tipologia_id','=', $request->tipologia_id);
+        }
+
 
         if($request->boolean_fecha){
             $fecha = explode(' - ', $request->fecha);
@@ -3299,38 +3331,112 @@ class ReporteController extends BaseController
 
         foreach($reservaciones as $reservacion){
 
-            if($reservacion->boolean_confirmacion){
-                $boolean_confirmacion = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
-                $total_confirmaciones++; 
-            }else{
-                $boolean_confirmacion = '<i class="zmdi c-amarillo zmdi-dot-circle zmdi-hc-fw"></i>';
-            }
-
-            $total++;
-            
-            if($reservacion->tipo_usuario == 1){
-                $alumno = Alumno::withTrashed()->find($reservacion->tipo_usuario_id);
-                $interna++;
-            }else if($reservacion->tipo_usuario == 2){
-                $alumno = Visitante::withTrashed()->find($reservacion->tipo_usuario_id);
-                $interna++;
-            }else{
-                $alumno = Participante::find($reservacion->tipo_usuario_id);
-                $externa++;
-            }
-
-            if($alumno->sexo == 'F'){
-                $mujeres++;
-            }else{
-                $hombres++;
-            }
-
             $clase_grupal = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->select('config_clases_grupales.nombre')
                 ->where('clases_grupales.id','=',$reservacion->tipo_reservacion_id)
             ->first();
 
             if($clase_grupal){
+
+                if($reservacion->boolean_confirmacion){
+                    $boolean_confirmacion = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>';
+                    $total_confirmaciones++; 
+                }else{
+                    $boolean_confirmacion = '<i class="zmdi c-amarillo zmdi-dot-circle zmdi-hc-fw"></i>';
+                }
+
+                $total++;
+                
+                if($reservacion->tipo_usuario == 1){
+                    $alumno = Alumno::withTrashed()->find($reservacion->tipo_usuario_id);
+                    $interna++;
+                    $tipo_reservacion = 'Interna';
+                    $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+                }else if($reservacion->tipo_usuario == 2){
+                    $alumno = Visitante::withTrashed()->find($reservacion->tipo_usuario_id);
+                    $interna++;
+                    $tipo_reservacion = 'Interna';
+                    $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+                }else{
+                    $alumno = Participante::find($reservacion->tipo_usuario_id);
+                    $externa++;
+                    $tipo_reservacion = 'Externa';
+                    $edad = 20;
+                }
+
+                if($alumno->sexo == 'F'){
+                    $mujeres++;
+                }else{
+                    $hombres++;
+                }
+
+                $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+
+                if($fecha_vencimiento > Carbon::now()){
+                    $diferencia_tiempo = Carbon::now()->diffInWeeks($fecha_vencimiento);
+
+                    if($diferencia_tiempo<1){
+
+                        $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                        $diferencia_tiempo = $now->diffInDays($fecha_vencimiento);
+
+                        if($diferencia_tiempo<1){
+
+                            $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                            $diferencia_tiempo = $now->diffInHours($fecha_vencimiento);
+
+                            if($diferencia_tiempo<1){
+
+                                $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                                $diferencia_tiempo = $now->diffInMinutes($fecha_vencimiento);
+
+                                if($diferencia_tiempo<1){
+
+                                    $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                                    $diferencia_tiempo = $now->diffInSeconds($fecha_vencimiento);
+
+                                    if($diferencia_tiempo==1){
+                                        $fecha_de_realizacion = "en ".$diferencia_tiempo." segundo";
+                                    }else{
+                                        $fecha_de_realizacion = "en ".$diferencia_tiempo." Segundos";
+                                    }
+                                }else{
+
+                                    if($diferencia_tiempo==1){
+                                        $fecha_de_realizacion = "en ".$diferencia_tiempo." minuto";
+                                    }else{
+                                        $fecha_de_realizacion = "en ".$diferencia_tiempo." minutos";
+                                    }
+                                }
+                            }else{
+
+                                if($diferencia_tiempo==1){
+                                    $fecha_de_realizacion = "en ".$diferencia_tiempo." hora";
+                                }else{
+                                    $fecha_de_realizacion = "en ".$diferencia_tiempo." horas";
+                                }
+                            }
+                        }else{
+
+                            if($diferencia_tiempo==1){
+                                $hora_segundos = $fecha_vencimiento->format('H:i');
+                                $fecha_de_realizacion = "Mañana a las ".$hora_segundos;
+                            }else{
+                                 $fecha_de_realizacion = "en ".$diferencia_tiempo." días";
+                            }
+                                
+                        }
+                    }else{
+                        
+                        if($diferencia_tiempo==1){
+                            $fecha_de_realizacion = "en ".$diferencia_tiempo." semana";
+                        }else{
+                            $fecha_de_realizacion = "en ".$diferencia_tiempo." semanas";
+                        }
+                    }
+                }else{
+                    $fecha_de_realizacion = "Vencida";
+                }
 
                 $collection=collect($reservacion);     
                 $reservacion_array = $collection->toArray();   
@@ -3340,6 +3446,9 @@ class ReporteController extends BaseController
                 $reservacion_array['celular'] = $alumno->celular;
                 $reservacion_array['clase'] = $clase_grupal->nombre;
                 $reservacion_array['boolean_confirmacion'] = $boolean_confirmacion;
+                $reservacion_array['tipo_reservacion'] = $tipo_reservacion;
+                $reservacion_array['edad'] = $edad;
+                $reservacion_array['fecha_vencimiento'] = $fecha_de_realizacion;
                 $array[$reservacion->id] = $reservacion_array;
             }
         }

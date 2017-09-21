@@ -813,6 +813,7 @@
                                   <a href="{{url('/')}}/participante/alumno/agregar/{{$visitante->id}}"><i class="zmdi zmdi-trending-up zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Transferir" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/participante/visitante/llamadas/{{$visitante->id}}"><i class="zmdi zmdi-phone zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Llamadas" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a class="reservar"><i class="icon_a-reservaciones zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Reservar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$visitante->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
                                   <br></br>
                                     
                                    
@@ -967,10 +968,13 @@
 
 @section('js') 
    <script type="text/javascript">
+
     route_update="{{url('/')}}/participante/visitante/update";
     route_email="{{url('/')}}/correo/sesion";
     route_impresion="{{url('/')}}/participante/visitante/impresion/";
     route_enviar="{{url('/')}}/participante/visitante/enviar-correo";
+    route_eliminar="{{url('/')}}/participante/visitante/eliminar/";
+    route_principal="{{url('/')}}/participante/visitante";
 
     $(document).ready(function(){
 
@@ -1430,6 +1434,54 @@
                         }
         });
     });
+
+      $("i[name=eliminar]").click(function(){
+                id = this.id;
+                swal({   
+                    title: "Desea eliminar al alumno?",   
+                    text: "Confirmar eliminación!",   
+                    type: "warning",   
+                    showCancelButton: true,   
+                    confirmButtonColor: "#DD6B55",   
+                    confirmButtonText: "Eliminar!",  
+                    cancelButtonText: "Cancelar",         
+                    closeOnConfirm: true 
+                }, function(isConfirm){   
+          if (isConfirm) {
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'success';
+            var nAnimIn = $(this).attr('data-animation-in');
+            var nAnimOut = $(this).attr('data-animation-out')
+
+            eliminar(id);
+          }
+                });
+      });
+
+      function eliminar(id){
+         var route = route_eliminar + id;
+         var token = '{{ csrf_token() }}';
+                
+          $.ajax({
+              url: route,
+                  headers: {'X-CSRF-TOKEN': token},
+                  type: 'DELETE',
+              dataType: 'json',
+              data:id,
+              success:function(respuesta){
+
+                  procesando();
+                  window.location = route_principal; 
+
+              },
+              error:function(msj){
+
+                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+              }
+          });
+      }
     
    </script> 
 

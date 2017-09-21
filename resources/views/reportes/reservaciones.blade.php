@@ -260,11 +260,12 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center" data-column-id="confirmacion"></th>
-                                            <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
-                                            <th class="text-center" data-column-id="apellido" data-order="desc">Apellido</th>
+                                            <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
                                             <th class="text-center" data-column-id="sexo" data-order="desc">Sexo</th>
                                             <th class="text-center" data-column-id="celular">Contacto Móvil</th>
                                             <th class="text-center" data-column-id="clase">Clase Reservada</th>
+                                            <th class="text-center" data-column-id="apellido" data-order="desc">Tipo de Reservación</th>
+                                            <th class="text-center" data-column-id="apellido" data-order="desc">Vencimiento</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -438,22 +439,28 @@
 
                             $.each(respuesta.reservaciones, function (index, array) {
 
-                                if(array.sexo=='F')
-                                {
-                                    sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
-                                }
-                                else
-                                {
-                                    sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
+                                if(array.edad >= 18){
+                                    if(array.sexo=='F'){
+                                        sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
+                                    }else{
+                                        sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
+                                    }
+                                }else{
+                                    if(array.sexo=='F'){
+                                        sexo = '<i class="zmdi fa fa-child f-15 c-rosado"></i> </span>'
+                                    }else{
+                                        sexo = '<i class="zmdi fa fa-child f-15 c-azul"></i> </span>'
+                                    }
                                 }
 
                                 var rowNode=t.row.add( [
                                     ''+array.boolean_confirmacion+'',
-                                    ''+array.nombre+'',
-                                    ''+array.apellido+'',
+                                    ''+array.nombre+ ' ' +array.apellido+'',
                                     ''+sexo+'',
                                     ''+array.celular+'',
                                     ''+array.clase+'',
+                                    ''+array.tipo_reservacion+'',
+                                    ''+array.fecha_vencimiento+'',
                                     ] ).draw(false).node();
                                     $( rowNode )
                                         .attr('id',array.id)

@@ -160,7 +160,7 @@
 
                                <div class="col-sm-12">
                                  
-                                     <label for="como_se_entero" id="id-como_nos_conociste_id">¿Cómo se enteró?</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Cuéntanos cómo oistes o te enterastes de nosotros" title="" data-original-title="Ayuda"></i>
+                                     <label for="como_se_entero" id="id-como_nos_conociste_id">¿Cómo se enteró?</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Cuéntanos cómo oistes o te enterastes de nosotros" title="" data-original-title="Ayuda"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_b-como-se-entero f-22"></i></span>

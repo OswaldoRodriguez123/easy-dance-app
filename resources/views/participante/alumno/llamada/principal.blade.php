@@ -63,8 +63,9 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <?php $url = "/participante/alumno/detalle/$id" ?>
-                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        <!-- <?php $url = "/participante/alumno/detalle/$id" ?>
+                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a> -->
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/alumno" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Alumno</a>
                         
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
@@ -123,8 +124,6 @@
                                   \Carbon\Carbon::setLocale('es');
 
                                   $fecha_llamada = $llamada->created_at;
-                                  $fecha_llamada->subHours(4);
-
                                   $tiempo_respuesta = $fecha_llamada->diffForHumans($interesado->created_at);  
 
 

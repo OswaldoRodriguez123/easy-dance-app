@@ -46,8 +46,6 @@ class VisitanteController extends BaseController {
 
         foreach($visitantes as $visitante){
 
-            $fecha = Carbon::createFromFormat('Y-m-d', $visitante->fecha_registro);
-
             $collection=collect($visitante);     
             $visitante_array = $collection->toArray();
 
@@ -57,7 +55,6 @@ class VisitanteController extends BaseController {
 
             $edad = Carbon::createFromFormat('Y-m-d', $visitante->fecha_nacimiento)->diff(Carbon::now())->format('%y');
 
-            $visitante_array['fecha_registro']=$fecha->toDateString();
             $visitante_array['edad']=$edad;
             $array[$visitante->id] = $visitante_array;
 
@@ -75,7 +72,7 @@ class VisitanteController extends BaseController {
     {
         $tipologias = Tipologia::orderBy('nombre')->get();
 
-        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(),'tipologias' => $tipologias]);;
+        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(),'tipologias' => $tipologias]);
     }
 
     public function operar($id)
@@ -99,7 +96,6 @@ class VisitanteController extends BaseController {
             'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
             'fecha_nacimiento' => 'required',
             'sexo' => 'required',
-            'como_nos_conociste_id' => 'required',
             'correo' => 'email|max:255|unique:visitantes_presenciales,correo'
         ];
 
@@ -114,7 +110,6 @@ class VisitanteController extends BaseController {
             'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
             'sexo.required' => 'Ups! El Sexo  es requerido ',
             'fecha_nacimiento.required' => 'Ups! La fecha de nacimiento es requerida',
-            'como_nos_conociste_id.required' => 'Ups! La pregunta de ¿Cómo se enteró? es requerida ',
             'correo.email' => 'Ups! El correo tiene una dirección inválida',
             'correo.max' => 'El máximo de caracteres permitidos son 255',
             'correo.unique' => 'Ups! Ya este correo ha sido registrado'
@@ -535,8 +530,12 @@ class VisitanteController extends BaseController {
     public function destroy($id)
     {
         $visitante = Visitante::find($id);
-        $visitante->delete();
-        return view('visitante.index');
+        
+        if($visitante->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El visitante se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
     public function indexLlamada($id){
@@ -587,11 +586,7 @@ class VisitanteController extends BaseController {
 
 
         $academia = Academia::find(Auth::user()->academia_id);
-        if($academia->pais_id == 11){
-            $fecha_llamada = Carbon::now('America/Bogota');  
-        }else{
-            $fecha_llamada = Carbon::now('America/Caracas');
-        }
+        $fecha_llamada = Carbon::now();
 
         if($request->fecha_siguiente){
 

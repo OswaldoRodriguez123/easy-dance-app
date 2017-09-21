@@ -610,7 +610,7 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::get('participante/visitante', 'VisitanteController@index');
 		Route::post('participante/visitante/agregar', 'VisitanteController@store');
 		Route::get('participante/visitante/agregar', 'VisitanteController@create');
-		Route::post('participante/visitante/eliminar/{id}', 'VisitanteController@destroy');
+		Route::delete('participante/visitante/eliminar/{id}', 'VisitanteController@destroy');
 		Route::get('participante/visitante/detalle/{id}', 'VisitanteController@edit');
 		Route::get('participante/visitante/operaciones/{id}', 'VisitanteController@operar');
 		Route::put('participante/visitante/update/identificacion','VisitanteController@updateID');
