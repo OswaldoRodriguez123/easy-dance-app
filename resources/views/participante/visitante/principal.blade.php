@@ -155,7 +155,7 @@
                                                             <a onclick="procesando()" href="{{url('/')}}/participante/visitante/llamadas/{{$id}}"><i class="zmdi zmdi-phone f-16 boton blue"></i> Llamadas</a>
                                                         </li>
 
-                                                        <li class="hidden-xs reservar">
+                                                        <li class="hidden-xs reservar pointer">
                                                             <a onclick="procesando()"><i class="zmdi icon_a-reservaciones f-16 boton blue"></i>Reservar</a>
                                                         </li>
 
