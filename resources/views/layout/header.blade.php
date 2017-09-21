@@ -155,7 +155,7 @@
                                             }else if($notificacion['tipo_evento'] == 6){
                                                 $url = "evaluaciones/detalle/".$notificacion['evento_id'];
                                             }else if($notificacion['tipo_evento'] == 7){
-                                                $url = "incidencias/detalle/".$notificacion['evento_id'];
+                                                $url = "incidencias/visualizar/".$notificacion['evento_id'];
                                             }else if($notificacion['tipo_evento'] == 8){
                                                 $url = "supervision/detalle/".$notificacion['evento_id'];
                                             }

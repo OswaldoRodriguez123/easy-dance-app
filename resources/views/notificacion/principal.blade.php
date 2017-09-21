@@ -217,7 +217,7 @@
 
   route_enviar="{{url('/')}}/notificaciones";
   route_clase_grupal="{{url('/')}}/agendar/clases-grupales/progreso/";
-  route_incidencia="{{url('/')}}/incidencias/detalle/";
+  route_incidencia="{{url('/')}}/incidencias/visualizar/";
   route_valoracion="{{url('/')}}/evaluaciones/detalle/";
   route_supervision="{{url('/')}}/supervision/detalle/";
 
