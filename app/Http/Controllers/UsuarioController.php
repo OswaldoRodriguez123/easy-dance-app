@@ -2310,6 +2310,7 @@ class UsuarioController extends BaseController {
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->select('clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'config_clases_grupales.asistencia_rojo', 'config_clases_grupales.asistencia_amarilla', 'inscripcion_clase_grupal.fecha_inscripcion', 'clases_grupales.id')
                 ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
+                ->where('inscripcion_clase_grupal.boolean_congelacion', 0)
                 ->where('clases_grupales.deleted_at', null)
                 ->orderBy('inscripcion_clase_grupal.fecha_inscripcion', 'desc')
             ->first();

@@ -1338,6 +1338,7 @@ class ReporteController extends BaseController
                      'config_clases_grupales.asistencia_amarilla'
                     )
             ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
+            ->where('inscripcion_clase_grupal.boolean_congelacion', 0)
             ->where('clases_grupales.deleted_at', null)
             ->orderBy('inscripcion_clase_grupal.fecha_inscripcion', 'desc');
 
