@@ -3328,6 +3328,7 @@ class ReporteController extends BaseController
         $hombres = 0;
         $interna = 0;
         $externa = 0;
+        $now = Carbon::now();
 
         foreach($reservaciones as $reservacion){
 
