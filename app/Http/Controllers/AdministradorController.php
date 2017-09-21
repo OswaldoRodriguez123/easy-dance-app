@@ -67,7 +67,7 @@ class AdministradorController extends BaseController
 
         $rules = [
 
-            'email' => 'required|email|max:255|confirmed|unique:users,email',
+            'email' => 'required|email|max:255|confirmed',
             'email_confirmation' => 'required',
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required',
@@ -81,7 +81,6 @@ class AdministradorController extends BaseController
             'email.required' => 'Ups! El Correo es requerido',
             'email.email' => 'Ups! El Correo tiene una dirección inválida',
             'email.max' => 'El máximo de caracteres permitidos son 255',
-            'email.unique' => 'Ups! Ya este correo ha sido registrado',
             'email.confirmed' => 'Ups! Los correos introducidos no coinciden, intenta de nuevo',
             'email_confirmation.required' => 'Ups! El Correo es requerido',
             'password.required' => 'Ups! La contraseña es requerida',
@@ -104,8 +103,18 @@ class AdministradorController extends BaseController
 
         }else{
 
-            if($request->usuario_tipo == 5)
-            {
+            $correo = trim(strtolower($request->email)); 
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->select('users.id')
+                ->where('users.email',$correo)
+                ->where('usuarios_tipo.tipo',$request->usuario_tipo)
+            ->first();
+
+            if($usuario){
+                return response()->json(['errores' => ['email' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
+            }
+
+            if($request->usuario_tipo == 5){
                 $sucursal = Academia::select('academias.sucursal_id')
                     ->where('academias.id','=',Auth::user()->academia_id)
                 ->first();
@@ -114,52 +123,53 @@ class AdministradorController extends BaseController
                 $academia->sucursal_id = $sucursal->sucursal_id;
                 $academia->save();
 
-                $id = $academia->id;
+                $academia_id = $academia->id;
 
             }else{
-                $id = Auth::user()->academia_id;
+                $academia_id = Auth::user()->academia_id;
             }
 
-            $correo = strtolower($request->email);
-            $nombre = title_case($request->responsable);
+            $usuario = User::where('email',$correo)->first();
 
-            $usuario = new User;
+            if(!$usuario){
 
-            $usuario->academia_id = $id;
-            $usuario->nombre = $nombre;
-            $usuario->email = $correo;
-            $usuario->como_nos_conociste_id = 1;
-            $usuario->confirmation_token = str_random(40);
-            $usuario->password = bcrypt($request->password);
-            $usuario->usuario_tipo = $request->usuario_tipo;
+                $nombre = title_case($request->responsable);
 
-            if($usuario->save())
-            {
+                $usuario = new User;
 
-                $usuario_tipo = new UsuarioTipo;
-                $usuario_tipo->usuario_id = $usuario->id;
-                $usuario_tipo->tipo = $request->usuario_tipo;
-                $usuario_tipo->tipo_id = 0;
-                $usuario_tipo->save();
+                $usuario->academia_id = $academia_id;
+                $usuario->nombre = $nombre;
+                $usuario->email = $correo;
+                $usuario->como_nos_conociste_id = 1;
+                $usuario->confirmation_token = str_random(40);
+                $usuario->password = bcrypt($request->password);
+                $usuario->usuario_tipo = $request->usuario_tipo;
 
-                $link = "confirmacion/?token=".$usuario->confirmation_token;
-
-                $array = [
-                   'nombre' => $usuario->nombre,
-                   'email' => $usuario->email,
-                   'link' => $link,
-                   'contrasena' => $request->password
-                ];
-
-                Mail::send('correo.sucursal', $array, function($msj) use ($array){
-                    $msj->subject('ESTAMOS MUY FELICES DE TENERTE A BORDO');
-                    $msj->to($array['email']);
-                });
-
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);   
-            }else{
-                return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+                $usuario->save();
             }
+
+            $usuario_tipo = new UsuarioTipo;
+            $usuario_tipo->usuario_id = $usuario->id;
+            $usuario_tipo->tipo = $request->usuario_tipo;
+            $usuario_tipo->tipo_id = 0;
+            $usuario_tipo->save();
+
+            $link = "confirmacion/?token=".$usuario->confirmation_token;
+
+            $array = [
+               'nombre' => $usuario->nombre,
+               'email' => $usuario->email,
+               'link' => $link,
+               'contrasena' => $request->password
+            ];
+
+            Mail::send('correo.sucursal', $array, function($msj) use ($array){
+                $msj->subject('ESTAMOS MUY FELICES DE TENERTE A BORDO');
+                $msj->to($array['email']);
+            });
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);   
+            
         }
         
     }
