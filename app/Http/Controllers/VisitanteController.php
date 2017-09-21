@@ -590,19 +590,23 @@ class VisitanteController extends BaseController {
 
         if($request->fecha_siguiente){
 
-          $fecha_siguiente = Carbon::createFromFormat('d/m/Y', $request->fecha_siguiente);
+            $fecha_siguiente = Carbon::createFromFormat('d/m/Y', $request->fecha_siguiente);
           
-          if($fecha_llamada > $fecha_siguiente ) {
+            if($fecha_llamada > $fecha_siguiente ) {
 
-             return response()->json(['errores' => ['fecha_siguiente' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha mayor a hoy']], 'status' => 'ERROR'],422);
-           } 
+                return response()->json(['errores' => ['fecha_siguiente' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha mayor a hoy']], 'status' => 'ERROR'],422);
+            } 
 
-         }else{
-          $fecha_siguiente = '';
-         }
+        }else{
+            $fecha_siguiente = '';
+        }
 
         if($request->hora_siguiente){
-            $hora_siguiente = Carbon::createFromFormat('H:i',$request->hora_siguiente)->toTimeString();
+            if($academia->tipo_horario == 1){
+                $hora_siguiente = Carbon::createFromFormat('H:i',$request->hora_siguiente)->toTimeString();
+            }else{
+                $hora_siguiente = Carbon::createFromFormat('H:i a',$request->hora_siguiente)->toTimeString();
+            }
         }else{
             $hora_siguiente = '';
         }
