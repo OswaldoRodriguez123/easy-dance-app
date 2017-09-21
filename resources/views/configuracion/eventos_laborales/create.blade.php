@@ -103,7 +103,7 @@
                                   </div>
                                </div>
 
-                               <div class="clearfix p-b-35"></div>
+                               <!-- <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
                                  
@@ -186,7 +186,7 @@
                                       </span>
                                   </div>
                                </div>
-
+ -->
                           
                             <div class="clearfix p-b-35"></div>
 
@@ -214,10 +214,108 @@
                                     </div>
                                 </div>
 
+                              <div class="clearfix p-b-35"></div>
+                                        
+                              <div class="form-group">
                                 
+                                <div class="col-sm-2">
+                                  <label for="actividad_id" id="id-actividad_id">Actividad Laboral </label>
+                                </div>
+                                <div class="col-sm-2">
+                                  <div class="fg-line">
+                                    <div class="select">
+                                      <select class="selectpicker" name="actividad_id" id="actividad_id" data-live-search="true">
+                                        <option value="">Selecciona</option>
+                                        @foreach ( $actividades as $actividad )
+                                        <option value = "{{ $actividad->id }}">{{ $actividad->nombre }}</option>
+                                        @endforeach
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div class="has-error" id="error-actividad_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-actividad_id_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                                </div>
+                                <div class="col-sm-1">
+                                  <label for="fecha" id="id-fecha">Fecha </label>
+                                </div>
+
+                                <div class="col-sm-2">
+                                   <div class="dtp-container fg-line">
+                                      <input name="fecha" id="fecha" class="form-control date-picker proceso pointer" placeholder="Seleciona" type="text" 
+
+                                      @if (session('fecha_inicio'))
+                                        value="{{session('fecha_inicio')}}"
+                                      @endif
+                                      >
+                                  </div>
+                                  <div class="has-error" id="error-fecha">
+                                      <span >
+                                          <small class="help-block error-span" id="error-fecha_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                                </div>
+
+                                <div class="col-sm-1">
+                                  <label for="fecha" id="id-fecha">Horario </label>
+                                </div>
+
+                                <div class="col-sm-2">
+                                   
+                                  <div class="dtp-container fg-line">
+                                    <input name="hora_inicio" id="hora_inicio" class="form-control time-picker pointer" placeholder="Desde" type="text">
+                                  </div>
+                                  <div class="has-error" id="error-hora_inicio">
+                                      <span >
+                                          <small class="help-block error-span" id="error-hora_inicio_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                                </div>
+
+                                <div class="col-sm-2">
+                                   
+                                  <div class="dtp-container fg-line">
+                                    <input name="hora_final" id="hora_final" class="form-control time-picker pointer" placeholder="Hasta" type="text">
+                                  </div>
+                                  <div class="has-error" id="error-hora_final">
+                                      <span >
+                                          <small class="help-block error-span" id="error-hora_final_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                                </div>
+                              </div>
 
                               <div class="clearfix p-b-35"></div>
 
+                              <div class="col-md-12 text-left pull-left">
+                                <button type="button" class="btn btn-blanco m-r-8 f-10 guardar" name= "add" id="add" > Agregar Linea <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
+                              </div>
+
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="col-md-12">
+                                <div class="table-responsive row">
+                                  <div class="col-md-12">
+                                    <table class="table table-striped table-bordered text-center " id="tablelistar" >
+                                      <thead>
+                                        <tr>
+                                            <th class="text-center" data-column-id="acepto" data-order="desc"></th>
+                                            <th class="text-center" data-column-id="staff" data-order="desc">Staff</th>
+                                            <th class="text-center" data-column-id="actividad" data-order="desc">Actividad</th>
+                                            <th class="text-center" data-column-id="fecha">Fecha</th>
+                                            <th class="text-center" data-column-id="operacion" data-order="desc">Acciones</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody class="text-center" >
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="clearfix p-b-35"></div>
 
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
@@ -267,6 +365,7 @@
 
   route_agregar="{{url('/')}}/configuracion/eventos-laborales/agregar";
   route_principal="{{url('/')}}/configuracion/eventos-laborales";
+  route_eliminar="{{url('/')}}/configuracion/eventos-laborales/eliminar/";
 
   var staffs = <?php echo json_encode($staffs);?>;
 
@@ -378,76 +477,20 @@
       });
   };
 
-  $("#guardar").click(function(){
+    $("#guardar").click(function(){
+      procesando();
+      setTimeout(function(){ 
+        window.location = route_principal;
+      }, 2000); 
+    });
 
-                var route = route_agregar;
-                var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_evento" ).serialize(); 
-                procesando();      
-                limpiarMensaje();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:datos,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          window.location = route_principal;
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-
-                          finprocesado();
-
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                        }                       
-                        
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        finprocesado();
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-            });
-
-     
-
-      function limpiarMensaje(){
-        var campo = ["staff_id", "fecha", "hora_inicio", "hora_final", "cargo", "descripcion"];
-        fLen = campo.length;
-        for (i = 0; i < fLen; i++) {
-            $("#error-"+campo[i]+"_mensaje").html('');
-        }
+    function limpiarMensaje(){
+      var campo = ["staff_id", "fecha", "hora_inicio", "hora_final", "cargo", "descripcion"];
+      fLen = campo.length;
+      for (i = 0; i < fLen; i++) {
+          $("#error-"+campo[i]+"_mensaje").html('');
       }
+    }
 
     function errores(merror){
       var elemento="";
@@ -474,6 +517,7 @@
     $("#agregar_evento")[0].reset();
     $('#cargo').selectpicker('refresh')
     $('#staff_id').selectpicker('refresh')
+    $('#actividad_id').selectpicker('refresh')
     limpiarMensaje();
     $('html,body').animate({
     scrollTop: $("#id-evento_id").offset().top-90,
@@ -545,6 +589,190 @@
       $('#charNum').text(250 - len);
     }
   };
+
+  t=$('#tablelistar').DataTable({
+    processing: true,
+    serverSide: false,
+    pageLength: 25, 
+    bPaginate: false, 
+    bFilter:false, 
+    bSort:false, 
+    bInfo:false,
+    fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+      $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).addClass( "text-center" );
+      $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).addClass( "disabled" );
+    },
+    language: {
+                    processing:     "Procesando ...",
+                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                    searchPlaceholder: "BUSCAR",
+                    lengthMenu:     "Mostrar _MENU_ Registros",
+                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                    infoPostFix:    "",
+                    loadingRecords: "...",
+                    zeroRecords:    "No se encontraron registros coincidentes",
+                    emptyTable:     "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first:      "Primero",
+                        previous:   "Anterior",
+                        next:       "Siguiente",
+                        last:       "Ultimo"
+                    },
+                    aria: {
+                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                    }
+                }
+    });
+
+    $("#add").click(function(){
+
+      $("#add").attr("disabled","disabled");
+      $("#add").css({
+        "opacity": ("0.2")
+      });
+      $("#guardar").attr("disabled","disabled");
+      $(".cancelar").attr("disabled","disabled");
+
+      var route = route_agregar;
+      var token = $('input:hidden[name=_token]').val();
+      var datos = $("#agregar_evento").serialize(); 
+      limpiarMensaje();
+      $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data:datos,
+        success:function(respuesta){
+          setTimeout(function(){ 
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY"; 
+            if(respuesta.status=="OK"){
+
+              var nType = 'success';
+              var nTitle="Ups! ";
+              var nMensaje=respuesta.mensaje;
+
+              var rowId=respuesta.evento.id;
+              var rowNode=t.row.add( [
+              '',
+              ''+respuesta.staff+'',
+              ''+respuesta.actividad+'',
+              ''+respuesta.evento.fecha+'',
+              '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+              ] ).draw(false).node();
+              $( rowNode )
+                .attr('id',rowId)
+                .addClass('seleccion');
+
+              $("#agregar_evento")[0].reset();
+              $('#cargo').selectpicker('refresh')
+              $('#staff_id').selectpicker('refresh')
+              $('#actividad_id').selectpicker('refresh')
+              limpiarMensaje();
+              $('html,body').animate({
+                scrollTop: $("#id-evento_id").offset().top-90,
+              }, 1000);
+
+          
+            }else{
+              var nTitle="Ups! ";
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              var nType = 'danger';
+            }                       
+            $("#guardar").removeAttr("disabled");
+            $(".cancelar").removeAttr("disabled");
+            $("#add").removeAttr("disabled");
+            $("#add").css({
+              "opacity": ("1")
+            });
+
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+          }, 1000);
+        },
+        error:function(msj){
+          setTimeout(function(){ 
+            if (typeof msj.responseJSON === "undefined") {
+              window.location = "{{url('/')}}/error";
+            }
+            if(msj.responseJSON.status=="ERROR"){
+              console.log(msj.responseJSON.errores);
+              errores(msj.responseJSON.errores);
+              var nTitle="    Ups! "; 
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+            }else{
+              var nTitle="   Ups! "; 
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+            }                        
+            $("#guardar").removeAttr("disabled");
+            $(".cancelar").removeAttr("disabled");
+            $("#add").removeAttr("disabled");
+            $("#add").css({
+              "opacity": ("1")
+            });
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'danger';
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY";                       
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+          }, 1000);
+        }
+      });
+    });
+
+    $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+
+      var id = $(this).closest('tr').attr('id');
+      element = this;
+      eliminar(id, element);
+      
+    });
+
+    function eliminar(id, element){
+      var route = route_eliminar + id;
+      var token = "{{ csrf_token() }}";
+
+      $.ajax({
+          url: route,
+          headers: {'X-CSRF-TOKEN': token},
+          type: 'DELETE',
+          dataType: 'json',
+          data:id,
+          success:function(respuesta){
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+
+                t.row( $(element).parents('tr') )
+                  .remove()
+                  .draw();
+              }
+          },
+          error:function(msj){
+                      $("#msj-danger").fadeIn(); 
+                      var text="";
+                      console.log(msj);
+                      var merror=msj.responseJSON;
+                      text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                      $("#msj-error").html(text);
+                      setTimeout(function(){
+                               $("#msj-danger").fadeOut();
+                              }, 3000);
+                      finprocesado();
+                      }
+      });
+    }
 
 </script> 
 @stop

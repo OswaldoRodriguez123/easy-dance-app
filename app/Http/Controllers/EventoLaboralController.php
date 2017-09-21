@@ -181,7 +181,12 @@ class EventoLaboralController extends BaseController
 	        $evento->color_etiqueta = $request->color_etiqueta;
 
 	        if($evento->save()){
-	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+                $actividad = ActividadLaboral::find($request->actividad_id);
+                $staff = Staff::find($request->staff_id);
+
+
+	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', "evento" => $evento, 'actividad' => $actividad->nombre, "staff" => $staff->nombre . ' ' . $staff->apellido, 'status' => 'OK', 200]);
 	        }else{
 	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
 	        }
