@@ -40,6 +40,7 @@ use App\Egreso;
 use App\Puntaje;
 use App\ConfigFormulaExito;
 use App\ManualProcedimiento;
+use App\ActividadLaboral;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -63,8 +64,9 @@ class HerramientaController extends BaseController {
         $config_formula = ConfigFormulaExito::where('academia_id' , Auth::user()->academia_id)->get();
         $valoraciones = ConfigTipoExamen::where('academia_id' , Auth::user()->academia_id)->get();
         $puntajes = Puntaje::where('academia_id' , Auth::user()->academia_id)->get();
+        $actividades = ActividadLaboral::where('academia_id' , Auth::user()->academia_id)->get();
 
-        return view('configuracion.herramientas.planilla')->with(['academia' => $academia, 'id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios, 'config_staff' => $config_staff, 'config_formula' => $config_formula, 'valoraciones' => $valoraciones, 'puntajes' => $puntajes]);
+        return view('configuracion.herramientas.planilla')->with(['academia' => $academia, 'id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios, 'config_staff' => $config_staff, 'config_formula' => $config_formula, 'valoraciones' => $valoraciones, 'puntajes' => $puntajes, 'actividades' => $actividades]);
 
     }
 
@@ -503,6 +505,55 @@ class HerramientaController extends BaseController {
                 return response()->json(['errores' => ['nombre' => [0, 'Ups! Ya posee una normativa con este nombre']], 'status' => 'ERROR'],422);
             }
         }
+    }
+
+    public function agregaractividad(Request $request){
+        
+    $rules = [
+
+        'nombre_actividad' => 'required',
+        'descripcion_actividad' => 'required',
+    ];
+
+    $messages = [
+
+        'nombre_actividad.required' => 'Ups! El Nombre es requerido',
+        'descripcion_actividad.required' => 'Ups! La Descripción es requerida',
+    ];
+
+    $validator = Validator::make($request->all(), $rules, $messages);
+
+    if ($validator->fails()){
+
+        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+    }
+
+    else{
+
+        $nombre = title_case($request->nombre_actividad);
+        
+        $actividad = new ActividadLaboral;
+                                        
+        $actividad->academia_id = Auth::user()->academia_id;
+        $actividad->nombre = $nombre;
+        $actividad->descripcion = $request->descripcion_actividad;
+
+        $actividad->save();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $actividad, 'id' => $actividad->id, 200]);
+
+        }
+    }
+
+    public function eliminaractividad($id){
+
+        $actividad = ActividadLaboral::find($id);
+
+        $actividad->delete();
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
     }
 
 }

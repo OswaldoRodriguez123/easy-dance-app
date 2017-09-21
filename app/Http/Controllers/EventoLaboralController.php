@@ -10,6 +10,7 @@ use App\Academia;
 use App\ConfigStaff;
 use App\Staff;
 use App\EventoLaboral;
+use App\ActividadLaboral;
 use Validator;
 use DB;
 use Session;
@@ -21,7 +22,8 @@ class EventoLaboralController extends BaseController
 	public function calendario()
     {
     	$eventos_laborales = EventoLaboral::join('staff', 'eventos_laborales.staff_id', '=', 'staff.id')
-            ->select('eventos_laborales.*', 'staff.nombre as staff_nombre', 'staff.apellido as staff_apellido', 'staff.cargo', 'staff.sexo')
+            ->leftJoin('actividades_laborales', 'eventos_laborales.actividad_id', '=', 'actividades_laborales.id')
+            ->select('actividades_laborales.nombre','actividades_laborales.descripcion','eventos_laborales.*', 'staff.nombre as staff_nombre', 'staff.apellido as staff_apellido', 'staff.cargo', 'staff.sexo')
             ->where('staff.academia_id','=', Auth::user()->academia_id)
         ->get();
 
@@ -80,7 +82,8 @@ class EventoLaboralController extends BaseController
 	public function principal()
     {
     	$eventos_laborales = EventoLaboral::join('staff', 'eventos_laborales.staff_id', '=', 'staff.id')
-            ->select('eventos_laborales.*', 'staff.nombre as staff_nombre', 'staff.apellido as staff_apellido')
+            ->leftJoin('actividades_laborales', 'eventos_laborales.actividad_id', '=', 'actividades_laborales.id')
+            ->select('actividades_laborales.nombre','actividades_laborales.descripcion','eventos_laborales.*', 'staff.nombre as staff_nombre', 'staff.apellido as staff_apellido')
             ->where('staff.academia_id','=', Auth::user()->academia_id)
         ->get();
 
@@ -109,8 +112,9 @@ class EventoLaboralController extends BaseController
 
         $config_staff = ConfigStaff::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->get();
         $staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
+        $actividades = ActividadLaboral::where('academia_id', Auth::user()->academia_id)->get();
 
-        return view('configuracion.eventos_laborales.create')->with([ 'staffs' => $staffs, 'config_staff' => $config_staff]);
+        return view('configuracion.eventos_laborales.create')->with([ 'staffs' => $staffs, 'config_staff' => $config_staff, 'actividades' => $actividades]);
     }
 
     public function store(Request $request)
@@ -118,18 +122,17 @@ class EventoLaboralController extends BaseController
 
 	    $rules = [
 	        'staff_id' => 'required',
+            'actividad_id' => 'required',
 	        'fecha' => 'required',
-	        'nombre' => 'required',
 	        'hora_inicio' => 'required',
 	        'hora_final' => 'required',
-	        'descripcion' => 'max:250',
 	    ];
 
 	    $messages = [
 
 	        'staff_id.required' => 'Ups! El Staff es requerido',
+            'actividad_id.required' => 'Ups! La actividad es requerida',
 	        'fecha.required' => 'Ups! La fecha es requerida',
-	       	'nombre.required' => 'Ups! La actividad es requerida',
 	        'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
 	        'hora_final.required' => 'Ups! La hora final es requerida',
 
@@ -172,11 +175,10 @@ class EventoLaboralController extends BaseController
 	        
 	        $evento->staff_id = $request->staff_id;
 	        $evento->fecha = $fecha;
-	        $evento->nombre = $request->nombre;
+	        $evento->actividad_id = $request->actividad_id;
 	        $evento->hora_inicio = $hora_inicio;
 	        $evento->hora_final = $hora_final;
 	        $evento->color_etiqueta = $request->color_etiqueta;
-	        $evento->descripcion = $request->descripcion;
 
 	        if($evento->save()){
 	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
@@ -190,15 +192,17 @@ class EventoLaboralController extends BaseController
     {
 
         $evento = EventoLaboral::join('staff', 'eventos_laborales.staff_id', '=', 'staff.id')
-	        ->select('eventos_laborales.*', 'staff.nombre as staff_nombre', 'staff.apellido as staff_apellido')
+	        ->leftJoin('actividades_laborales', 'eventos_laborales.actividad_id', '=', 'actividades_laborales.id')
+            ->select('eventos_laborales.*','actividades_laborales.nombre','actividades_laborales.descripcion', 'staff.nombre as staff_nombre', 'staff.apellido as staff_apellido')
 	        ->where('eventos_laborales.id', '=', $id)
         ->first();
 
         if($evento){
 
+            $actividades = ActividadLaboral::where('academia_id', Auth::user()->academia_id)->get();
         	$staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
 
-        	return view('configuracion.eventos_laborales.planilla')->with(['staffs' => $staffs, 'evento' => $evento, 'id' => $id]);
+        	return view('configuracion.eventos_laborales.planilla')->with(['staffs' => $staffs, 'actividades' => $actividades, 'evento' => $evento, 'id' => $id]);
 
         }else{
            return redirect("configuracion/eventos-laborales"); 
@@ -220,12 +224,12 @@ class EventoLaboralController extends BaseController
     public function updateNombre(Request $request){
 
 	    $rules = [
-	        'nombre' => 'required',
+	        'actividad_id' => 'required',
 	    ];
 
 	    $messages = [
 
-	        'nombre.required' => 'Ups! La actividad es requerida',
+	        'actividad_id.required' => 'Ups! La actividad es requerida',
 	    ];
 
 	    $validator = Validator::make($request->all(), $rules, $messages);
@@ -234,13 +238,11 @@ class EventoLaboralController extends BaseController
 
 	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-	    }
-
-	    else{
+	    }else{
 
 	        $evento = EventoLaboral::find($request->id);
 
-	        $evento->nombre =  $request->nombre;
+	        $evento->actividad_id =  $request->actividad_id;
 
 	        if($evento->save()){
 	            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
@@ -351,17 +353,6 @@ class EventoLaboralController extends BaseController
 	            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
 	        }
 	    }
-    }
-
-    public function updateDescripcion(Request $request){
-        $evento = EventoLaboral::find($request->id);
-        $evento->descripcion = $request->descripcion;
-
-        if($evento->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
     }
 
     public function destroy($id)

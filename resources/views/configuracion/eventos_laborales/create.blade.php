@@ -107,17 +107,24 @@
 
                                <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-nombre">Nombre de la actividad</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la actividad" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-actividad_id">Actividad Laboral</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona la actividad" title="" data-original-title="Ayuda"></i>
 
                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a icon_a-fiesta f-22"></i></span>
+                                      <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
                                       <div class="fg-line">
-                                      <input type="text" class="form-control input-sm proceso" name="nombre" id="nombre" placeholder="Ej. Fiesta de fin de año">
+                                      <div class="select">
+                                        <select class="selectpicker" name="actividad_id" id="actividad_id" data-live-search="true">
+                                          <option value="">Selecciona</option>
+                                          @foreach ( $actividades as $actividad )
+                                          <option value = "{{ $actividad->id }}">{{ $actividad->nombre }}</option>
+                                          @endforeach
+                                        </select>
                                       </div>
                                     </div>
-                                 <div class="has-error" id="error-nombre">
+                                  </div>
+                                 <div class="has-error" id="error-actividad_id">
                                       <span >
-                                          <small class="help-block error-span" id="error-nombre_mensaje" ></small>                                
+                                          <small class="help-block error-span" id="error-actividad_id_mensaje" ></small>                                
                                       </span>
                                   </div>
                                </div>
@@ -176,23 +183,6 @@
                                  <div class="has-error" id="error-hora_final">
                                       <span >
                                           <small class="help-block error-span" id="error-hora_final_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-
-                               <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="descripcion" id="id-descripcion">Descripción</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la descripción de la actividad" title="" data-original-title="Ayuda"></i>
-                                    <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="250 Caracteres" maxlength="2000" onkeyup="countChar(this)"></textarea>
-                                    </div>
-                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">250</span> Caracteres</div>
-                                 </div>
-                                 <div class="has-error" id="error-descripcion">
-                                      <span >
-                                          <small class="help-block error-span" id="error-descripcion_mensaje"  ></small>                                           
                                       </span>
                                   </div>
                                </div>
@@ -303,7 +293,7 @@
   setInterval(porcentaje, 1000);
 
   function porcentaje(){
-    var campo = ["staff_id", "cargo", "fecha", "hora_inicio", "hora_final", "descripcion"];
+    var campo = ["staff_id", "cargo","actividad_id", "fecha", "hora_inicio", "hora_final"];
     fLen = campo.length;
     var porcetaje=0;
     var cantidad =0;

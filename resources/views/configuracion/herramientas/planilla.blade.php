@@ -726,6 +726,122 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalActividad-Academia" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Academia<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_actividad_academia" id="edit_actividad_academia"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               
+                          <div class="col-sm-12">
+                                    <div class="form-group fg-line">
+                                    <label for="id">Actividad Laboral</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre y la descripcion de las actividades laborales en tu academía." title="" data-original-title="Ayuda"></i>
+
+                                    <div class="clearfix p-b-35"></div>
+                                
+                                    
+                                    <label for="nombre_puntaje" id="id-nombre_puntaje">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre de la actividad" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
+                                      <div class="fg-line">
+                                      <input type="text" class="form-control input-sm proceso" name="nombre_actividad" id="nombre_actividad" placeholder="Ej. Llamada">
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-nombre_actividad">
+                                      <span >
+                                          <small class="help-block error-span" id="error-nombre_actividad_mensaje" ></small>                               
+                                      </span>
+                                  </div>
+
+                                  <div class="clearfix p-b-35"></div>
+
+                                  <label for="descripcion_actividad" id="id-descripcion_actividad">Descripción</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la descripción de la actividad" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
+                                      <div class="fg-line">
+                                      <textarea class="form-control" name="descripcion_actividad" id="descripcion_actividad" placeholder="Descripción"></textarea>
+                                      </div>
+                                    </div>
+                                 <div class="has-error" id="error-descripcion_actividad">
+                                      <span >
+                                          <small class="help-block error-span" id="error-descripcion_actividad_mensaje" ></small>                               
+                                      </span>
+                                  </div>
+
+                              <br>
+
+                              <div class="card-header text-left">
+
+                              <button type="button" class="btn btn-blanco m-r-10 f-10" name= "añadiractividad" id="añadiractividad" > Agregar Linea</button>
+
+                              </div>
+                              <div class="clearfix p-b-35"></div>
+
+                          <div class="table-responsive row">
+                           <div class="col-md-12">
+                            <table class="table table-striped table-bordered text-center " id="tableactividad" >
+                            <thead>
+                                <tr>
+                                    <th class="text-center" data-column-id="nombre"></th>
+                                    <th class="text-center" data-column-id="descripcion"></th>
+                                    <th class="text-center" data-column-id="operacion" data-order="desc" ></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            @foreach ($actividades as $actividad)
+                                <?php $id = $actividad->id; ?>
+                                <tr id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">{{$actividad->nombre}}</td>
+                                    <td class="text-center previa">{{$actividad->descripcion}}</td>
+                                    <td class="text-center"> <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i></td>
+                                </tr>
+                            @endforeach 
+                   
+                            </tbody>
+                          </table>
+
+
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+
+                      <div class="clearfix p-b-35"></div>
+
+                      <div class="clearfix"></div> 
+                       <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 dismiss" href="#" id="dismiss" name="dismiss">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                              <div class="clearfix p-b-35"></div>
+                      
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <section id="content">
                 <div class="container">
                 
@@ -838,7 +954,7 @@
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10">  <i class="glyphicon glyphicon-book f-22"></i> </span>
-                               <span class="f-14"> blogueros </span>
+                               <span class="f-14"> Blogueros </span>
                              </td>
                              <td class="f-14 m-l-15" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
@@ -900,6 +1016,14 @@
                                <span class="f-14"> Pasos </span>
                              </td>
                              <td class="f-14 m-l-15" > <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalActividad-Academia">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10">  <i class="zmdi zmdi-calendar-check f-22"></i> </span>
+                               <span class="f-14"> Actividades Laborales </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                            </table>
                           </div>
@@ -1198,9 +1322,43 @@
                     }
         });
 
+      var a=$('#tableactividad').DataTable({
+        processing: true,
+        serverSide: false, 
+        bPaginate: false, 
+        bFilter:false, 
+        bSort:false, 
+        order: [[0, 'asc']],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1)', nRow).addClass( "text-center" );
+        },
+        language: {
+                        processing:     "Procesando ...",
+                        search:         "Buscar:",
+                        lengthMenu:     "Mostrar _MENU_ Registros",
+                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                        infoPostFix:    "",
+                        loadingRecords: "...",
+                        zeroRecords:    "No se encontraron registros coincidentes",
+                        emptyTable:     "No hay datos disponibles en la tabla",
+                        paginate: {
+                            first:      "Primero",
+                            previous:   "Anterior",
+                            next:       "Siguiente",
+                            last:       "Ultimo"
+                        },
+                        aria: {
+                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                        }
+                    }
+        });
+
 
     function limpiarMensaje(){
-        var campo = ["nombre_cargo", "nombre_estudio", "nombre_formula", "nombre_nivel", "nombre_puntaje", "nombre_supervision", "nombre_valoracion", "cargo_supervision"];
+        var campo = ["nombre_cargo", "nombre_estudio", "nombre_formula", "nombre_nivel", "nombre_puntaje", "nombre_supervision", "nombre_valoracion", "cargo_supervision","nombre_actividad","descripcion_actividad"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -2123,6 +2281,125 @@
           .remove()
           .draw();
     });
+
+    $("#añadiractividad").click(function(){
+
+                var datos = $( "#edit_actividad_academia" ).serialize(); 
+                procesando();
+                var route = "{{url('/')}}/configuracion/academia/actividad";
+                var token = $('input:hidden[name=_token]').val();
+                var datos = datos;
+                limpiarMensaje();
+                $.ajax({
+                    url: route,
+                        headers: {'X-CSRF-TOKEN': token},
+                        type: 'POST',
+                        dataType: 'json',
+                        data: datos ,
+                    success:function(respuesta){
+                      setTimeout(function(){ 
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY"; 
+                        if(respuesta.status=="OK"){
+
+                          var nType = 'success';
+                          var nTitle="Ups! ";
+                          var nMensaje=respuesta.mensaje;
+
+                          var nombre = respuesta.array.nombre;
+                          var descripcion = respuesta.array.descripcion;
+
+                          var rowId=respuesta.id;
+                          var rowNode=a.row.add( [
+                          ''+nombre+'',
+                          ''+descripcion+'',
+                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                          ] ).draw(false).node();
+                          $( rowNode )
+                          .attr('id',rowId)
+                          .addClass('seleccion');
+
+                          $("#edit_actividad_academia")[0].reset();
+
+                        }else{
+                          var nTitle="Ups! ";
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                          var nType = 'danger';
+                        }                       
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        $("#guardar").removeAttr("disabled");
+                        finprocesado();
+                        $(".cancelar").removeAttr("disabled");
+
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                      }, 1000);
+                    },
+                    error:function(msj){
+                      setTimeout(function(){ 
+                        // if (typeof msj.responseJSON === "undefined") {
+                        //   window.location = "{{url('/')}}/error";
+                        // }
+                        if(msj.responseJSON.status=="ERROR"){
+                          console.log(msj.responseJSON.errores);
+                          errores(msj.responseJSON.errores);
+                          var nTitle="    Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                        }else{
+                          var nTitle="   Ups! "; 
+                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        }                        
+                        $("#guardar").removeAttr("disabled");
+                        $(".cancelar").removeAttr("disabled");
+                        finprocesado();
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        var nFrom = $(this).attr('data-from');
+                        var nAlign = $(this).attr('data-align');
+                        var nIcons = $(this).attr('data-icon');
+                        var nType = 'danger';
+                        var nAnimIn = "animated flipInY";
+                        var nAnimOut = "animated flipOutY";                       
+                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                      }, 1000);
+                    }
+                });
+
+    }); 
+
+    $('#tableactividad tbody').on( 'click', 'i.zmdi-delete', function () {
+      var padre=$(this).parents('tr');
+      var token = $('input:hidden[name=_token]').val();
+      var id = $(this).closest('tr').attr('id');
+      $.ajax({
+           url: "{{url('/')}}/configuracion/academia/eliminaractividad/"+id,
+           headers: {'X-CSRF-TOKEN': token},
+           type: 'POST',
+           dataType: 'json',                
+          success: function (data) {
+            if(data.status=='OK'){
+                
+                                 
+            }else{
+              swal(
+                'Solicitud no procesada',
+                'Ha ocurrido un error, intente nuevamente por favor',
+                'error'
+              );
+            }
+          },
+          error:function (xhr, ajaxOptions, thrownError){
+            swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+          }
+        })
+
+        a.row( $(this).parents('tr') )
+          .remove()
+          .draw();
+    })
 
     $(".procedimientos").click(function(){
       procesando();
