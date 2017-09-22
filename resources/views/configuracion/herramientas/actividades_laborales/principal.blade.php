@@ -151,7 +151,7 @@
 
                                 <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "" data-html = "true" title= "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" id="{{$id}}" class="seleccion">
                                     <td class="text-center previa">{{$actividad->nombre}}</td>
-                                    <td class="text-center previa">{{ str_limit($actividad->descripcion, $limit = 30, $end = '...') }}</td>
+                                    <td class="text-center previa">{{ str_limit($actividad->descripcion, $limit = 15, $end = '...') }}</td>
                                     <td class="text-center"> <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i></td>
                                 </tr>
                             @endforeach 
