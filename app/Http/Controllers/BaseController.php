@@ -134,7 +134,28 @@ class BaseController extends Controller {
                         $notificacion_imagen_array['imagen']= "/assets/img/asd_.jpg";
                     }
                 }
-                
+
+                if($notificacion['tipo_evento'] == 1){
+                    $url = "agendar/clases-grupales/progreso/".$notificacion['evento_id'];
+                }else if($notificacion['tipo_evento'] == 2){
+                    $url = "agendar/talleres/progreso/".$notificacion['evento_id'];
+                }else if($notificacion['tipo_evento'] == 3){
+                    // $url = "agendar/clases-personalizadas/progreso/".$notificacion['evento_id'];
+                    $url = "agendar";
+                }else if($notificacion['tipo_evento'] == 4){
+                    $url = "agendar";
+                }else if($notificacion['tipo_evento'] == 6){
+                    $url = "evaluaciones/detalle/".$notificacion['evento_id'];
+                }else if($notificacion['tipo_evento'] == 7){
+                    $url = "incidencias/visualizar/".$notificacion['evento_id'];
+                }else if($notificacion['tipo_evento'] == 8){
+                    $url = "supervision/detalle/".$notificacion['evento_id'];
+                }else{
+                    $url = "inicio";
+                }
+
+                $notificacion_imagen_array['url']= $url;
+
                 $array[$notificacion->id] = $notificacion_imagen_array;
             }
 

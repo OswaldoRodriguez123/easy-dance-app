@@ -142,28 +142,7 @@
                                 </div>
                                 <div class="lv-body">
                                     @foreach( $notificaciones as $notificacion)
-                                        <?php
-                                            if($notificacion['tipo_evento'] == 1){
-                                                $url = "agendar/clases-grupales/progreso/".$notificacion['evento_id'];
-                                            }else if($notificacion['tipo_evento'] == 2){
-                                                $url = "agendar/talleres/progreso/".$notificacion['evento_id'];
-                                            }else if($notificacion['tipo_evento'] == 3){
-                                                // $url = "agendar/clases-personalizadas/progreso/".$notificacion['evento_id'];
-                                                $url = "agendar";
-                                            }else if($notificacion['tipo_evento'] == 4){
-                                                $url = "agendar";
-                                            }else if($notificacion['tipo_evento'] == 6){
-                                                $url = "evaluaciones/detalle/".$notificacion['evento_id'];
-                                            }else if($notificacion['tipo_evento'] == 7){
-                                                $url = "incidencias/visualizar/".$notificacion['evento_id'];
-                                            }else if($notificacion['tipo_evento'] == 8){
-                                                $url = "supervision/detalle/".$notificacion['evento_id'];
-                                            }else{
-                                                $url = "inicio";
-                                            }
-                                        ?>
-
-                                        <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/{{$url}}">
+                                        <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/${{notificacion['url']}}">
                                             <div class="media">
                                                 <div class="pull-left">
                                                     <img class="img-circle" src="{{url('/')}}{{$notificacion['imagen']}}" alt="" width="45px" height="auto">
