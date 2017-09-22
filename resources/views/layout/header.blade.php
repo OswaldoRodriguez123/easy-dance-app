@@ -142,7 +142,7 @@
                                 </div>
                                 <div class="lv-body">
                                     @foreach( $notificaciones as $notificacion)
-                                        <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/${{notificacion['url']}}">
+                                        <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/{{$notificacion['url']}}">
                                             <div class="media">
                                                 <div class="pull-left">
                                                     <img class="img-circle" src="{{url('/')}}{{$notificacion['imagen']}}" alt="" width="45px" height="auto">
