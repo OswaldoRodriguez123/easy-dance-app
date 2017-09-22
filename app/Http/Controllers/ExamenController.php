@@ -457,7 +457,7 @@ class ExamenController extends BaseController {
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
         }else{
-            
+
             $examen = Examen::find($request->id);
             $examen->genero = $request->genero;
 
@@ -550,7 +550,7 @@ class ExamenController extends BaseController {
         $examen_join = Examen::join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
             ->join('config_tipo_examenes', 'examenes.tipo', '=', 'config_tipo_examenes.id')
             ->select('examenes.*','instructores.nombre as instructor_nombre',
-                'instructores.apellido as instructor_apellido')
+                'instructores.apellido as instructor_apellido', 'config_tipo_examenes.nombre as tipo')
             ->where('examenes.id', '=', $id)
         ->first();
 
