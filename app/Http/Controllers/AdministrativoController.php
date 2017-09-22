@@ -2891,9 +2891,12 @@ class AdministrativoController extends BaseController {
                     $notificacion->titulo = "Nueva Transferencia";
 
                     if($notificacion->save()){
-                        
+
+                        $in = array(1,5,6);
+
                         $usuarios = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                            ->where('usuarios_tipo.tipo', 1)
+                            ->select('users.id','users.email')
+                            ->whereIn('usuarios_tipo.tipo', $in)
                             ->where('academia_id',Auth::user()->academia_id)
                         ->get();
                         
