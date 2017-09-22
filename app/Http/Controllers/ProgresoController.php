@@ -56,7 +56,6 @@ class ProgresoController extends BaseController {
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         $usuario_id = Session::get('easydance_usuario_id');
 
-
         $instructor = Instructor::find($usuario_id);
 
         if(!$instructor->boolean_administrador){
@@ -126,6 +125,7 @@ class ProgresoController extends BaseController {
             
             $clase_grupal_array['dia_de_semana']=$dia_de_semana;
             $clase_grupal_array['inicio']=$inicio;
+            $clase_grupal_array['tipo']=1;
             $array['1-'.$clase_grupal->id] = $clase_grupal_array;
         }
 
@@ -148,6 +148,7 @@ class ProgresoController extends BaseController {
             
             $clase_grupal_array['dia_de_semana']=$dia_de_semana;
             $clase_grupal_array['inicio']=$inicio;
+            $clase_grupal_array['tipo']=2;
             $array['2-'.$clase_grupal->horario_id] = $clase_grupal_array;
         }
 

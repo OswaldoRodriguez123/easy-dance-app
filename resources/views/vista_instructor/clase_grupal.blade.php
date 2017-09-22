@@ -134,11 +134,15 @@
             
     <script type="text/javascript">
 
+        var tipo
         @if($tipo == 1)
+            tipo = 1
             route_detalle="{{url('/')}}/agendar/clases-grupales/detalle";
         @elseif($tipo == 2)
+            tipo = 2
             route_detalle="{{url('/')}}/agendar/clases-grupales/nivelaciones";
         @else
+            tipo = 3
             route_detalle="{{url('/')}}/programacion";
         @endif
         route_consulta_examen="{{url('/')}}/agendar/clases-grupales/consulta_examen/";
@@ -365,6 +369,7 @@
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
+                    .data('tipo',array.tipo)
                     .addClass('seleccion');
             });
 
@@ -372,10 +377,17 @@
         }
 
         function previa(t){
+
             var id = $(t).closest('tr').attr('id');
+            var data_tipo = $(t).closest('tr').data('tipo');
+
+            if(tipo == 3){
+                id = id+'-'+data_tipo
+            }
+            
             var route =route_detalle+"/"+id;
             
-            window.open(route, '_blank');;
+            window.open(route, '_blank');
         }
 
         $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
