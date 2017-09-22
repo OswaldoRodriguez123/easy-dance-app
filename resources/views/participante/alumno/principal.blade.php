@@ -269,45 +269,42 @@
         route_eliminar="{{url('/')}}/participante/alumno/eliminar/";
         route_principal="{{url('/')}}/participante/alumno";
 
-        $(document).ready(function(){
-
-            t=$('#tablelistar').DataTable({
-                processing: true,
-                serverSide: false,
-                pageLength: 25,    
-                deferRender: true,
-                order: [[4, 'asc']],
-                fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
-                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
+        t=$('#tablelistar').DataTable({
+            processing: true,
+            serverSide: false,
+            pageLength: 25,    
+            deferRender: true,
+            order: [[4, 'asc']],
+            fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
+            },
+            drawCallback: function(){
+                loadImages();
+            },
+            language: {
+                processing:     "Procesando ...",
+                search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                searchPlaceholder: "BUSCAR",
+                lengthMenu:     "Mostrar _MENU_ Registros",
+                info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                infoPostFix:    "",
+                loadingRecords: "...",
+                zeroRecords:    "No se encontraron registros coincidentes",
+                emptyTable:     "No hay datos disponibles en la tabla",
+                paginate: {
+                    first:      "Primero",
+                    previous:   "Anterior",
+                    next:       "Siguiente",
+                    last:       "Ultimo"
                 },
-                drawCallback: function(){
-                    loadImages();
-                },
-                language: {
-                    processing:     "Procesando ...",
-                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                    searchPlaceholder: "BUSCAR",
-                    lengthMenu:     "Mostrar _MENU_ Registros",
-                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                    infoPostFix:    "",
-                    loadingRecords: "...",
-                    zeroRecords:    "No se encontraron registros coincidentes",
-                    emptyTable:     "No hay datos disponibles en la tabla",
-                    paginate: {
-                        first:      "Primero",
-                        previous:   "Anterior",
-                        next:       "Siguiente",
-                        last:       "Ultimo"
-                    },
-                    aria: {
-                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                    }
+                aria: {
+                    sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                    sortDescending: ": habilitado para ordenar la columna en orden descendente"
                 }
-            });
+            }
         });
 
         function loadImages(){

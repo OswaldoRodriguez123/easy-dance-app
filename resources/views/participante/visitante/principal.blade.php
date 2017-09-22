@@ -50,7 +50,7 @@
                             <hr class="linea-morada">                                                         
                         </div>
                         <div class="table-responsive row">
-                           <div class="col-md-12">
+                          <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" name="tablelistar">
                             <thead>
                                 <tr>
@@ -66,101 +66,101 @@
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($visitantes as $visitante)
-                              <?php 
-                                $id = $visitante['id']; 
-                                $tmp = explode(" ", $visitante['nombre']);
-                                $nombre_visitante = $tmp[0];
+                              @foreach ($visitantes as $visitante)
+                                <?php 
+                                  $id = $visitante['id']; 
+                                  $tmp = explode(" ", $visitante['nombre']);
+                                  $nombre_visitante = $tmp[0];
 
-                                $tmp = explode(" ", $visitante['apellido']);
-                                $apellido_visitante= $tmp[0];
+                                  $tmp = explode(" ", $visitante['apellido']);
+                                  $apellido_visitante= $tmp[0];
 
-                                $contenido = '';
+                                  $contenido = '';
 
-                                $contenido = '<p class="c-negro">'.$visitante['nombre'] . ' ' . $visitante['apellido'].'<br><br>' .
-                                  'Número Móvil: ' . $visitante['celular'] . '<br>'.
-                                  'Correo Electrónico: ' . $visitante['correo'] . '<br>'.
-                                  'Especialidad de Interés: ' . $visitante['especialidad'] . '<br>'.
-                                '</p>';
-                              ?>
+                                  $contenido = '<p class="c-negro">'.$visitante['nombre'] . ' ' . $visitante['apellido'].'<br><br>' .
+                                    'Número Móvil: ' . $visitante['celular'] . '<br>'.
+                                    'Correo Electrónico: ' . $visitante['correo'] . '<br>'.
+                                    'Especialidad de Interés: ' . $visitante['especialidad'] . '<br>'.
+                                  '</p>';
+                                ?>
 
-                              <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" >
-                                <td class="text-center previa"> 
-                                  @if($visitante['cliente'])
-                                    <i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> 
-                                  @endif
-                                </td>
-                                <td class="text-center previa">{{$visitante['fecha_registro']}}</td>
-                                <td class="text-center previa">{{$visitante['hora_registro']}}</td>
-                                <td class="text-center previa">
-                                  @if($visitante['edad'] >= 18)
-                                    @if($visitante['sexo']=='F')
-                                        <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
-                                    @else
-                                        <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" >
+                                  <td class="text-center previa"> 
+                                    @if($visitante['cliente'])
+                                      <i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> 
                                     @endif
-                                  @else
-                                    @if($visitante['sexo']=='F')
-                                        <span style="display: none">F</span><i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
+                                  </td>
+                                  <td class="text-center previa">{{$visitante['fecha_registro']}}</td>
+                                  <td class="text-center previa">{{$visitante['hora_registro']}}</td>
+                                  <td class="text-center previa">
+                                    @if($visitante['edad'] >= 18)
+                                      @if($visitante['sexo']=='F')
+                                          <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                      @else
+                                          <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                      @endif
                                     @else
-                                        <span style="display: none">M</span><i class="zmdi fa fa-child f-15 c-azul"></i> </span>
+                                      @if($visitante['sexo']=='F')
+                                          <span style="display: none">F</span><i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
+                                      @else
+                                          <span style="display: none">M</span><i class="zmdi fa fa-child f-15 c-azul"></i> </span>
+                                      @endif
                                     @endif
-                                  @endif
-                                </td>
-                                <td class="text-center previa">
-                                  {{$nombre_visitante}} {{$apellido_visitante}} 
-                                </td>
-                                <td class="text-center previa">
-                                  {{$visitante['como_se_entero']}}
-                                </td>
-                                <td class="text-center previa">{{$visitante['instructor_nombre']}} {{$visitante['instructor_apellido']}}
-                                </td>
-                                <td class="text-center disabled"> 
-                                  <ul class="top-menu">
-                                        <li class="dropdown" id="dropdown_{{$id}}">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
-                                               <span class="f-15 f-700" style="color:black"> 
-                                                    <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
-                                               </span>
-                                            </a>
-                                            <div class="dropup">
-                                                <ul class="dropdown-menu dm-icon pull-right">
+                                  </td>
+                                  <td class="text-center previa">
+                                    {{$nombre_visitante}} {{$apellido_visitante}} 
+                                  </td>
+                                  <td class="text-center previa">
+                                    {{$visitante['como_se_entero']}}
+                                  </td>
+                                  <td class="text-center previa">{{$visitante['instructor_nombre']}} {{$visitante['instructor_apellido']}}
+                                  </td>
+                                  <td class="text-center disabled"> 
+                                    <ul class="top-menu">
+                                          <li class="dropdown" id="dropdown_{{$id}}">
+                                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                                 <span class="f-15 f-700" style="color:black"> 
+                                                      <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                 </span>
+                                              </a>
+                                              <div class="dropup">
+                                                  <ul class="dropdown-menu dm-icon pull-right">
 
-                                                  @if($visitante['correo'])
-                                                    <li class="hidden-xs email">
-                                                        <a onclick="procesando()"><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
+                                                    @if($visitante['correo'])
+                                                      <li class="hidden-xs email">
+                                                          <a onclick="procesando()"><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
+                                                      </li>
+                                                    @endif
+
+                                                    <li class="hidden-xs">
+                                                        <a onclick="procesando()" href="{{url('/')}}/participante/visitante/impresion/{{$id}}"><i class="zmdi icon_a-examen f-16 boton blue"></i> Realizar encuesta</a>
                                                     </li>
-                                                  @endif
 
-                                                  <li class="hidden-xs">
-                                                      <a onclick="procesando()" href="{{url('/')}}/participante/visitante/impresion/{{$id}}"><i class="zmdi icon_a-examen f-16 boton blue"></i> Realizar encuesta</a>
-                                                  </li>
+                                                    <li class="hidden-xs">
+                                                        <a onclick="procesando()" href="{{url('/')}}/participante/alumno/agregar/{{$id}}"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>
+                                                    </li>
 
-                                                  <li class="hidden-xs">
-                                                      <a onclick="procesando()" href="{{url('/')}}/participante/alumno/agregar/{{$id}}"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>
-                                                  </li>
+                                                    <li class="hidden-xs">
+                                                        <a onclick="procesando()" href="{{url('/')}}/participante/visitante/llamadas/{{$id}}"><i class="zmdi zmdi-phone f-16 boton blue"></i> Llamadas</a>
+                                                    </li>
 
-                                                  <li class="hidden-xs">
-                                                      <a onclick="procesando()" href="{{url('/')}}/participante/visitante/llamadas/{{$id}}"><i class="zmdi zmdi-phone f-16 boton blue"></i> Llamadas</a>
-                                                  </li>
+                                                    <li class="hidden-xs reservar pointer">
+                                                        <a onclick="procesando()"><i class="zmdi icon_a-reservaciones f-16 boton blue"></i>Reservar</a>
+                                                    </li>
 
-                                                  <li class="hidden-xs reservar pointer">
-                                                      <a onclick="procesando()"><i class="zmdi icon_a-reservaciones f-16 boton blue"></i>Reservar</a>
-                                                  </li>
-
-                                                  <li class="hidden-xs eliminar">
-                                                      <a class="pointer eliminar"><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>
-                                                  </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </td>
-                              </tr>
-                            @endforeach 
+                                                    <li class="hidden-xs eliminar">
+                                                        <a class="pointer eliminar"><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>
+                                                    </li>
+                                                  </ul>
+                                              </div>
+                                          </li>
+                                      </ul>
+                                  </td>
+                                </tr>
+                              @endforeach 
                                                            
                             </tbody>
-                        </table>
+                          </table>
                          </div>
                         </div>
                         <div class="card-body p-b-20">
@@ -187,10 +187,7 @@
         route_operacion="{{url('/')}}/participante/visitante/operaciones";
         route_eliminar="{{url('/')}}/participante/visitante/eliminar/";
         route_principal="{{url('/')}}/participante/visitante";
-            
-        $(document).ready(function(){
-
-
+   
         t=$('#tablelistar').DataTable({
           processing: true,
           serverSide: false,
@@ -201,32 +198,29 @@
             $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).attr( "onclick","previa(this)" );
           },
           language: {
-                          processing:     "Procesando ...",
-                          search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                          searchPlaceholder: "BUSCAR",
-                          lengthMenu:     "Mostrar _MENU_ Registros",
-                          info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                          infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                          infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                          infoPostFix:    "",
-                          loadingRecords: "...",
-                          zeroRecords:    "No se encontraron registros coincidentes",
-                          emptyTable:     "No hay datos disponibles en la tabla",
-                          paginate: {
-                              first:      "Primero",
-                              previous:   "Anterior",
-                              next:       "Siguiente",
-                              last:       "Ultimo"
-                          },
-                          aria: {
-                              sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                              sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                          }
+                      processing:     "Procesando ...",
+                      search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                      searchPlaceholder: "BUSCAR",
+                      lengthMenu:     "Mostrar _MENU_ Registros",
+                      info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                      infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                      infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                      infoPostFix:    "",
+                      loadingRecords: "...",
+                      zeroRecords:    "No se encontraron registros coincidentes",
+                      emptyTable:     "No hay datos disponibles en la tabla",
+                      paginate: {
+                          first:      "Primero",
+                          previous:   "Anterior",
+                          next:       "Siguiente",
+                          last:       "Ultimo"
+                      },
+                      aria: {
+                          sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                          sortDescending: ": habilitado para ordenar la columna en orden descendente"
                       }
-          });
-      
-    });
-
+                  }
+      });
 
       function previa(t){
         var id = $(t).closest('tr').attr('id');
