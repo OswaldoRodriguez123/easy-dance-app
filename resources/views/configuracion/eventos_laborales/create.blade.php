@@ -259,7 +259,7 @@
                                 </div>
 
                                 <div class="col-sm-1">
-                                  <label for="fecha" id="id-fecha">Horario </label>
+                                  <label for="fecha" id="id-hora_inicio">Horario </label>
                                 </div>
 
                                 <div class="col-sm-2">
@@ -274,7 +274,7 @@
                                   </div>
                                 </div>
 
-                                <div class="col-sm-2">
+                                <div class="col-sm-2" id="id-hora_final">
                                    
                                   <div class="dtp-container fg-line">
                                     <input name="hora_final" id="hora_final" class="form-control time-picker pointer" placeholder="Hasta" type="text">
@@ -673,14 +673,12 @@
                 .attr('id',rowId)
                 .addClass('seleccion');
 
-              $("#agregar_evento")[0].reset();
-              $('#cargo').selectpicker('refresh')
-              $('#staff_id').selectpicker('refresh')
+              $('#actividad_id').val('')
               $('#actividad_id').selectpicker('refresh')
+              $('#fecha').val('')
+              $('#hora_inicio').val('')
+              $('#hora_final').val('')
               limpiarMensaje();
-              $('html,body').animate({
-                scrollTop: $("#id-evento_id").offset().top-90,
-              }, 1000);
 
           
             }else{
