@@ -101,6 +101,7 @@
             var alumno_id = "{{$alumno->id}}"
 
         $(document).ready(function (){
+
             $("#pagar").attr("disabled","disabled");
             
             $("#pagar").css({
@@ -108,77 +109,52 @@
             });
            
            $("#tablelistar").bootgrid({
-                    css: {
-                        icon: 'zmdi icon',
-                        iconColumns: 'zmdi-view-module',
-                        iconDown: 'zmdi-expand-more',
-                        iconRefresh: 'zmdi-refresh',
-                        iconUp: 'zmdi-expand-less'
-                    },
-                    selection: true,
-                    multiSelect: true,
-                    rowSelect: true,
-                    keepSelection: true,
-                    navigation: false
-                }).on("selected.rs.jquery.bootgrid", function(e, rows)
-                {
+                css: {
+                    icon: 'zmdi icon',
+                    iconColumns: 'zmdi-view-module',
+                    iconDown: 'zmdi-expand-more',
+                    iconRefresh: 'zmdi-refresh',
+                    iconUp: 'zmdi-expand-less'
+                },
+                selection: true,
+                multiSelect: true,
+                rowSelect: true,
+                keepSelection: true,
+                navigation: false
+            }).on("selected.rs.jquery.bootgrid", function(e, rows){
 
-                    // var rowIds = [];
-                    // for (var i = 0; i < rows.length; i++)
-                    // {
-                    //     rowIds.push(rows[i].id);
-                    // }
-                    // alert("Select: " + rowIds.join(","));
-                    selected = $("#tablelistar").bootgrid("getSelectedRows");
 
-                    if(selected.length === 0){
-                        $("#pagar").attr("disabled","disabled");
-                        $("#pagar").css({
-                            "opacity": ("0.2")
-                        });
-                    }
+                selected = $("#tablelistar").bootgrid("getSelectedRows");
 
-                    else{
-                        $("#pagar").removeAttr("disabled");
-                        $("#pagar").css({
-                          "opacity": ("1")
-                        });
-                    }
+                if(selected.length === 0){
+                    $("#pagar").attr("disabled","disabled");
+                    $("#pagar").css({
+                        "opacity": ("0.2")
+                    });
+                }else{
+                    $("#pagar").removeAttr("disabled");
+                    $("#pagar").css({
+                      "opacity": ("1")
+                    });
+                }
+            }).on("deselected.rs.jquery.bootgrid", function(e, rows){
 
-                }).on("deselected.rs.jquery.bootgrid", function(e, rows)
-                {
-                    // var rowIds = [];
-                    // for (var i = 0; i < rows.length; i++)
-                    // {
-                    //     rowIds.push(rows[i].id);
-                    // }
-                    // alert("Deselect: " + rowIds.join(","));
-                    selected = $("#tablelistar").bootgrid("getSelectedRows");
-    
-                    if(selected.length === 0){
-                        $("#pagar").attr("disabled","disabled");
-                        $("#pagar").css({
-                            "opacity": ("0.2")
-                        });
-                    }
+                selected = $("#tablelistar").bootgrid("getSelectedRows");
 
-                    else{
-                        $("#pagar").removeAttr("disabled");
-                        $("#pagar").css({
-                          "opacity": ("1")
-                        });
-                    }
-                });
+                if(selected.length === 0){
+                    $("#pagar").attr("disabled","disabled");
+                    $("#pagar").css({
+                        "opacity": ("0.2")
+                    });
+                }
 
-                // $('#tablelistar tr').each(function(index, element){
-
-                //         var tmp = $(element).find("td").eq(1).html();
-                //         console.log(tmp);
-                //         // var split = tmp.split('-');
-                //         // var vencimiento = split[1];
-
-                //     });
-
+                else{
+                    $("#pagar").removeAttr("disabled");
+                    $("#pagar").css({
+                      "opacity": ("1")
+                    });
+                }
+            });
         });
 
         $("#pagar").click(function(){

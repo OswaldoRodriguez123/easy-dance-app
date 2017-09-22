@@ -174,40 +174,38 @@
                 bSort:false, 
                 bInfo:false, 
                 order: [[1, 'desc']],
-                language: {
-                      searchPlaceholder: "Buscar"
-                },
                 fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                   $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
                   $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
                 },
                 language: {
-                                processing:     "Procesando ...",
-                                search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                                searchPlaceholder: "BUSCAR",
-                                lengthMenu:     "Mostrar _MENU_ Registros",
-                                info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                                infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                                infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                                infoPostFix:    "",
-                                loadingRecords: "...",
-                                zeroRecords:    "No se encontraron registros coincidentes",
-                                emptyTable:     "No hay datos disponibles en la tabla",
-                                paginate: {
-                                    first:      "Primero",
-                                    previous:   "Anterior",
-                                    next:       "Siguiente",
-                                    last:       "Ultimo"
-                                },
-                                aria: {
-                                    sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                                    sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                                }
-                            }
+                    processing:     "Procesando ...",
+                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                    searchPlaceholder: "BUSCAR",
+                    lengthMenu:     "Mostrar _MENU_ Registros",
+                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                    infoPostFix:    "",
+                    loadingRecords: "...",
+                    zeroRecords:    "No se encontraron registros coincidentes",
+                    emptyTable:     "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first:      "Primero",
+                        previous:   "Anterior",
+                        next:       "Siguiente",
+                        last:       "Ultimo"
+                    },
+                    aria: {
+                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                    }
+                }
 
             });
 
             $("#pendientes").prop("checked", true);
+
             t.column(1).visible(false)
             t.column(7).visible(false)
 
@@ -223,7 +221,6 @@
         } 
 
         $('input[name="tipo"]').on('change', function(){
-
 
             t
             .columns(0)
@@ -271,6 +268,7 @@
 
 
         function previa(t){
+
             var row = $(t).closest('tr')
             var tipo = row.data('tipo')
 
@@ -278,7 +276,7 @@
                 procesando();
                 var id = row.attr('id');
                 var route =route_detalle+"/"+id;
-                window.open(route, '_blank');;
+                window.open(route, '_blank');
             }
         }
 
@@ -301,82 +299,79 @@
 
         $("#pagar").click(function(){
 
-                var route = route_gestion;
-                var token = "{{ csrf_token() }}";
-                procesando();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:"&items_factura="+getChecked()+"&usuario_id=1-{{$alumno->id}}",
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          
-                            window.location = route_gestion;
+            var route = route_gestion;
+            var token = "{{ csrf_token() }}";
+            procesando();
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                    dataType: 'json',
+                    data:"&items_factura="+getChecked()+"&usuario_id=1-{{$alumno->id}}",
+                success:function(respuesta){
+                  setTimeout(function(){ 
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY"; 
+                    if(respuesta.status=="OK"){
+                      
+                        window.location = route_gestion;
 
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        // finprocesado();
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
+                    }else{
+                      var nTitle="Ups! ";
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                      var nType = 'danger';
+                    }                       
+                    $(".procesando").removeClass('show');
+                    $(".procesando").addClass('hidden');
+                    // finprocesado();
+                    $("#guardar").removeAttr("disabled");
+                    $(".cancelar").removeAttr("disabled");
 
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
-
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        finprocesado();
-                        $(".cancelar").removeAttr("disabled");
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                  }, 1000);
+                },
+                error:function(msj){
+                  setTimeout(function(){ 
+                    
+                    if (typeof msj.responseJSON === "undefined") {
+                      window.location = "{{url('/')}}/error";
                     }
-                });
+
+                    if(msj.responseJSON.status=="ERROR"){
+                      console.log(msj.responseJSON.errores);
+                      errores(msj.responseJSON.errores);
+                      var nTitle="    Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                    }else{
+                      var nTitle="   Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    }                        
+                    $("#guardar").removeAttr("disabled");
+                    finprocesado();
+                    $(".cancelar").removeAttr("disabled");
+                    $(".procesando").removeClass('show');
+                    $(".procesando").addClass('hidden');
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nType = 'danger';
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY";                       
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                  }, 1000);
+                }
             });
+        });
 
         $('#select_all').on('click', function(){
-          // Check/uncheck all checkboxes in the table
           var rows = t.rows({ 'search': 'applied' }).nodes();
           $('input[type="checkbox"]', rows).prop('checked', this.checked);
-
           values = getChecked();
 
           if(values.length > 0){
-
             $("#pagar").removeAttr("disabled");
             $("#pagar").css({
               "opacity": ("1")
@@ -388,9 +383,26 @@
               "opacity": ("0.2")
             });
           }
+        });
 
-       });
+        $('input[type="checkbox"]').on('change',function(){
 
-        </script>
+            values = getChecked();
+
+            if(values.length > 0){
+                $("#pagar").removeAttr("disabled");
+                $("#pagar").css({
+                  "opacity": ("1")
+                });
+
+            }else{
+                $("#pagar").attr("disabled","disabled");
+                $("#pagar").css({
+                  "opacity": ("0.2")
+                });
+            }
+        })
+
+    </script>
 
 @stop
