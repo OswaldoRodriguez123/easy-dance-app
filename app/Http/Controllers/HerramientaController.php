@@ -64,9 +64,8 @@ class HerramientaController extends BaseController {
         $config_formula = ConfigFormulaExito::where('academia_id' , Auth::user()->academia_id)->get();
         $valoraciones = ConfigTipoExamen::where('academia_id' , Auth::user()->academia_id)->get();
         $puntajes = Puntaje::where('academia_id' , Auth::user()->academia_id)->get();
-        $actividades = ActividadLaboral::where('academia_id' , Auth::user()->academia_id)->get();
 
-        return view('configuracion.herramientas.planilla')->with(['academia' => $academia, 'id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios, 'config_staff' => $config_staff, 'config_formula' => $config_formula, 'valoraciones' => $valoraciones, 'puntajes' => $puntajes, 'actividades' => $actividades]);
+        return view('configuracion.herramientas.planilla')->with(['academia' => $academia, 'id' => Auth::user()->academia_id, 'niveles' => $niveles, 'estudios' => $estudios, 'config_staff' => $config_staff, 'config_formula' => $config_formula, 'valoraciones' => $valoraciones, 'puntajes' => $puntajes]);
 
     }
 
@@ -505,6 +504,13 @@ class HerramientaController extends BaseController {
                 return response()->json(['errores' => ['nombre' => [0, 'Ups! Ya posee una normativa con este nombre']], 'status' => 'ERROR'],422);
             }
         }
+    }
+
+    public function principalactividades(){
+
+        $actividades = ActividadLaboral::where('academia_id' , Auth::user()->academia_id)->get();
+
+        return view('configuracion.herramientas.actividades_laborales.principal')->with(['actividades' => $actividades]);
     }
 
     public function agregaractividad(Request $request){

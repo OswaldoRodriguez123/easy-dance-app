@@ -243,6 +243,12 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('configuracion/herramientas/normativas/actualizar', 'NormativaController@update');
 		Route::delete('configuracion/herramientas/normativas/eliminar/{id}', 'NormativaController@destroy');
 
+		// ACTIVIDADES LABORALES
+
+		Route::get('configuracion/herramientas/actividades-laborales','HerramientaController@principalactividades');
+		Route::post('configuracion/academia/actividad','HerramientaController@agregaractividad');
+		Route::post('configuracion/academia/eliminaractividad/{id}','HerramientaController@eliminaractividad');
+
 		// HERRAMIENTAS
 
 		Route::get('configuracion/herramientas','HerramientaController@index');
@@ -258,8 +264,6 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('configuracion/academia/eliminarvaloracion/{id}','HerramientaController@eliminarvaloracion');
 		Route::post('configuracion/academia/puntaje','HerramientaController@agregarpuntaje');
 		Route::post('configuracion/academia/eliminarpuntaje/{id}','HerramientaController@eliminarpuntaje');
-		Route::post('configuracion/academia/actividad','HerramientaController@agregaractividad');
-		Route::post('configuracion/academia/eliminaractividad/{id}','HerramientaController@eliminaractividad');
 		Route::put('configuracion/academia/update/referido', 'HerramientaController@updateReferido');
 
 		// PRODUCTOS
