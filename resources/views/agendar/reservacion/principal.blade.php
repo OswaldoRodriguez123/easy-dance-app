@@ -195,16 +195,7 @@
         processing: true,
         serverSide: false,
         pageLength: 25,   
-        order: [[0, 'asc']],
-        fnDrawCallback: function() {
-        if ("{{count($actividades)}}" < 25) {
-              $('.dataTables_paginate').hide();
-              $('#tablelistar_length').hide();
-          }else{
-             $('.dataTables_paginate').show();
-          }
-        },
-        pageLength: 25,
+        order: [[1, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).attr( "onclick","previa(this)" );
