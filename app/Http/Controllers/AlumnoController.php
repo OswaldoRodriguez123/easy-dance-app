@@ -2505,7 +2505,9 @@ class AlumnoController extends BaseController
     public function createLlamada($id){
         
         
+        $hora = Carbon::now();
         $hora_actual = $hora->format('H:i');
+
         $interesado = Visitante::find($id);
         return view('participante.alumno.llamada.create')->with(['id' => $id, 'interesado' => $interesado, 'hora_actual' => $hora_actual]);
     }

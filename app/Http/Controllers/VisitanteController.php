@@ -566,9 +566,12 @@ class VisitanteController extends BaseController {
     }
 
     public function createLlamada($id){
-      
+        
+        $hora = Carbon::now();
+
         $hora_actual = $hora->format('H:i');
         $interesado = Visitante::find($id);
+
         return view('participante.visitante.llamada.create')->with(['id' => $id, 'interesado' => $interesado, 'hora_actual' => $hora_actual]);
     }
 
