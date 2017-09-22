@@ -1573,8 +1573,17 @@ class ReporteController extends BaseController
                         $j = 1;               
                     }
 
-                    $fecha_inscripcion = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inscripcion);
-                    $fecha_traspaso_admin = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_a_comprobar);
+                    if($clase_grupal->fecha_inscripcion){
+                        $fecha_inscripcion = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inscripcion);
+                    }else{
+                        $fecha_inscripcion = '1969-01-31';
+                    }
+
+                    if($clase_grupal->fecha_a_comprobar){
+                        $fecha_traspaso_admin = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_a_comprobar);
+                    }else{
+                        $fecha_traspaso_admin = '1969-01-31';
+                    }
 
                     if($fecha_asistencia_inicio > $fecha_inscripcion){
                         $fecha_a_comparar = $fecha_asistencia_inicio;
