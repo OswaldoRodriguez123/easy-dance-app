@@ -55,7 +55,24 @@ class VisitanteController extends BaseController {
 
             $edad = Carbon::createFromFormat('Y-m-d', $visitante->fecha_nacimiento)->diff(Carbon::now())->format('%y');
 
+            $tmp = explode(" ", $visitante['nombre']);
+            $nombre = $tmp[0];
+
+            $tmp = explode(" ", $visitante['apellido']);
+            $apellido= $tmp[0];
+
+            $contenido = '';
+
+            $contenido = '<p class="c-negro">'.$visitante['nombre'] . ' ' . $visitante['apellido'].'<br><br>' .
+                'Número Móvil: ' . $visitante['celular'] . '<br>'.
+                'Correo Electrónico: ' . $visitante['correo'] . '<br>'.
+                'Especialidad de Interés: ' . $visitante['especialidad'] . '<br>'.
+            '</p>';
+
+            $visitante_array['nombre']=$nombre;
+            $visitante_array['apellido']=$apellido;
             $visitante_array['edad']=$edad;
+            $visitante_array['contenido']=$contenido;
             $array[$visitante->id] = $visitante_array;
 
         }

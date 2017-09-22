@@ -67,24 +67,10 @@
                             <tbody class="text-center" >
 
                               @foreach ($visitantes as $visitante)
-                                <?php 
-                                  $id = $visitante['id']; 
-                                  $tmp = explode(" ", $visitante['nombre']);
-                                  $nombre_visitante = $tmp[0];
 
-                                  $tmp = explode(" ", $visitante['apellido']);
-                                  $apellido_visitante= $tmp[0];
+                                <?php $id = $visitante['id']; ?>
 
-                                  $contenido = '';
-
-                                  $contenido = '<p class="c-negro">'.$visitante['nombre'] . ' ' . $visitante['apellido'].'<br><br>' .
-                                    'Número Móvil: ' . $visitante['celular'] . '<br>'.
-                                    'Correo Electrónico: ' . $visitante['correo'] . '<br>'.
-                                    'Especialidad de Interés: ' . $visitante['especialidad'] . '<br>'.
-                                  '</p>';
-                                ?>
-
-                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" >
+                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$visitante['contenido']}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" >
                                   <td class="text-center previa"> 
                                     @if($visitante['cliente'])
                                       <i class="icon_a-estatus-de-clases c-verde f-20" data-html="true" data-original-title="" data-content="Cliente" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> 
@@ -108,7 +94,7 @@
                                     @endif
                                   </td>
                                   <td class="text-center previa">
-                                    {{$nombre_visitante}} {{$apellido_visitante}} 
+                                    {{$visitante['nombre']}} {{$visitante['apellido']}} 
                                   </td>
                                   <td class="text-center previa">
                                     {{$visitante['como_se_entero']}}
@@ -117,44 +103,44 @@
                                   </td>
                                   <td class="text-center disabled"> 
                                     <ul class="top-menu">
-                                          <li class="dropdown" id="dropdown_{{$id}}">
-                                              <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
-                                                 <span class="f-15 f-700" style="color:black"> 
-                                                      <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
-                                                 </span>
-                                              </a>
-                                              <div class="dropup">
-                                                  <ul class="dropdown-menu dm-icon pull-right">
+                                      <li class="dropdown" id="dropdown_{{$id}}">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                           <span class="f-15 f-700" style="color:black"> 
+                                                <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                           </span>
+                                        </a>
+                                        <div class="dropup">
+                                          <ul class="dropdown-menu dm-icon pull-right">
 
-                                                    @if($visitante['correo'])
-                                                      <li class="hidden-xs email">
-                                                          <a onclick="procesando()"><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
-                                                      </li>
-                                                    @endif
+                                            @if($visitante['correo'])
+                                              <li class="hidden-xs email">
+                                                  <a onclick="procesando()"><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
+                                              </li>
+                                            @endif
 
-                                                    <li class="hidden-xs">
-                                                        <a onclick="procesando()" href="{{url('/')}}/participante/visitante/impresion/{{$id}}"><i class="zmdi icon_a-examen f-16 boton blue"></i> Realizar encuesta</a>
-                                                    </li>
+                                            <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/participante/visitante/impresion/{{$id}}"><i class="zmdi icon_a-examen f-16 boton blue"></i> Realizar encuesta</a>
+                                            </li>
 
-                                                    <li class="hidden-xs">
-                                                        <a onclick="procesando()" href="{{url('/')}}/participante/alumno/agregar/{{$id}}"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>
-                                                    </li>
+                                            <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/participante/alumno/agregar/{{$id}}"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>
+                                            </li>
 
-                                                    <li class="hidden-xs">
-                                                        <a onclick="procesando()" href="{{url('/')}}/participante/visitante/llamadas/{{$id}}"><i class="zmdi zmdi-phone f-16 boton blue"></i> Llamadas</a>
-                                                    </li>
+                                            <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/participante/visitante/llamadas/{{$id}}"><i class="zmdi zmdi-phone f-16 boton blue"></i> Llamadas</a>
+                                            </li>
 
-                                                    <li class="hidden-xs reservar pointer">
-                                                        <a onclick="procesando()"><i class="zmdi icon_a-reservaciones f-16 boton blue"></i>Reservar</a>
-                                                    </li>
+                                            <li class="hidden-xs reservar pointer">
+                                                <a onclick="procesando()"><i class="zmdi icon_a-reservaciones f-16 boton blue"></i>Reservar</a>
+                                            </li>
 
-                                                    <li class="hidden-xs eliminar">
-                                                        <a class="pointer eliminar"><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>
-                                                    </li>
-                                                  </ul>
-                                              </div>
-                                          </li>
-                                      </ul>
+                                            <li class="hidden-xs eliminar">
+                                                <a class="pointer eliminar"><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </li>
+                                    </ul>
                                   </td>
                                 </tr>
                               @endforeach 
