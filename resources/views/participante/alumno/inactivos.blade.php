@@ -144,21 +144,21 @@
                             <tbody>
 
                             @foreach ($alumnos as $alumno)
-                                <?php $id = $alumno->inscripcion_id; ?>
-                                <tr id="{{$id}}" class="seleccion" data-nombre="{{$alumno->nombre}} {{$alumno->apellido}}">
-                                    <td class="text-center disabled">{{$alumno->deleted_at}}</td>
-                                    <td class="text-center disabled">{{$alumno->identificacion}}</td>
+                                <?php $id = $alumno['inscripcion_id']; ?>
+                                <tr id="{{$id}}" class="seleccion" data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}">
+                                    <td class="text-center disabled">{{$alumno['deleted_at']}}</td>
+                                    <td class="text-center disabled">{{$alumno['identificacion']}}</td>
                                     <td class="text-center disabled">
-                                    @if($alumno->sexo=='F')
+                                    @if($alumno['sexo']=='F')
                                     <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
                                     @else
                                     <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
                                     @endif
                                     </td>
-                                    <td class="text-center disabled">{{$alumno->nombre}} {{$alumno->apellido}}</td>
-                                    <td class="text-center disabled">{{$alumno->clase_grupal_nombre}}</td>
+                                    <td class="text-center disabled">{{$alumno['nombre']}} {{$alumno['apellido']}}</td>
+                                    <td class="text-center disabled">{{$alumno['clase_grupal_nombre']}}</td>
                                     <td class="text-center disabled">
-                                    <i data-toggle="modal" href="#" class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i>
+                                    <i data-toggle="modal" href="#" class="zmdi zmdi-money {{ isset($alumno['deuda']) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i>
                                     </td>
                                     
                                     <td class="text-center disabled"> 
@@ -184,7 +184,7 @@
                                                         </li>
 
                                                         <li class="hidden-xs">
-                                                            <a href="{{url('/')}}/participante/alumno/llamadas/{{$alumno->id}}"><i class="zmdi zmdi-phone f-20"></i> Llamadas</a>
+                                                            <a href="{{url('/')}}/participante/alumno/llamadas/{{$alumno['id']}}"><i class="zmdi zmdi-phone f-20"></i> Llamadas</a>
                                                         </li>
 
                                                         <li class="hidden-xs">

@@ -207,7 +207,7 @@ class NotificacionController extends BaseController
         }
 
         
-        return view('notificacion.principal')->with(['notificaciones' => $array]);
+        return view('notificacion.principal')->with(['notificaciones_principal' => $array]);
     }
 
 

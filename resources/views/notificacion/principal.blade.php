@@ -122,7 +122,7 @@
                           <div class="col-sm-12">
                            <table id="tablelistar" class="table table-striped table-bordered">
                            
-                           @foreach(array_slice($notificaciones, 0, 10) as $notificacion)
+                           @foreach(array_slice($notificaciones_principal, 0, 10) as $notificacion)
                             
                             <tr class="detalle" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff" data-mensaje="{{$notificacion['mensaje']}}" data-usuario="{{$notificacion['usuario_id']}}" data-tipo_evento="{{$notificacion['tipo_evento']}}" data-evento_id="{{$notificacion['evento_id']}}">
                              <td width="10%"> 
