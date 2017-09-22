@@ -41,11 +41,16 @@
                                     @if($clase_grupal_join)
 
                                         @foreach($clase_grupal_join as $clase_grupal)
+
+                                            <?php 
+                                                $id = $clase_grupal['id'];
+                                                $tipo = $clase_grupal['tipo'];
+                                            ?>
                       
                                             <div class="pointer opaco-0-8" style="border: 1px solid rgba(0, 0, 0, 0.1)">
 
-                                                @if($clase_grupal->imagen)
-                                                    <div class="col-sm-2"><img src="{{url('/')}}/assets/uploads/clase_grupal/{{$clase_grupal->imagen}}" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
+                                                @if($clase_grupal['imagen'])
+                                                    <div class="col-sm-2"><img src="{{url('/')}}/assets/uploads/clase_grupal/{{$clase_grupal['imagen']}}" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
                                                 @else
 
                                                     <div class="col-sm-2"><img src="{{url('/')}}/assets/img/EASY_DANCE_3_.jpg" style="line-height: 150px; height:150px; width: 150px; padding: 10px"></div>
@@ -54,16 +59,16 @@
 
                                                 <div class="col-sm-7">
 
-                                                    <p class="f-25 f-700" style="color:#5e5e5e">{{$clase_grupal->clase_grupal_nombre}}</p>
+                                                    <p class="f-25 f-700" style="color:#5e5e5e">{{$clase_grupal['clase_grupal_nombre']}}</p>
                                                 
-                                                    <p class="f-15 f-700">{{ str_limit($clase_grupal->descripcion, $limit = 250, $end = '...') }}</p>
+                                                    <p class="f-15 f-700">{{ str_limit($clase_grupal['descripcion'], $limit = 250, $end = '...') }}</p>
 
                                                 </div>
 
                                                 <div class="col-sm-3">
 
                                                     <div style="padding-top: 50px; padding-left: 25%">
-                                                        <button type="button" class="btn btn-blanco m-r-10 f-18 previa" id="{{$clase_grupal->id}}">Ver progreso<i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
+                                                        <button type="button" class="btn btn-blanco m-r-10 f-18 previa" id="{{$id}}-{{$tipo}}">Ver progreso<i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></button>
                                                     </div>
 
                                                 </div>    

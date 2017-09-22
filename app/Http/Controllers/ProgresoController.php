@@ -167,15 +167,39 @@ class ProgresoController extends BaseController {
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         $usuario_id = Session::get('easydance_usuario_id');
 
-        $clase_grupal_join = ClaseGrupal::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+        $clases_grupales = ClaseGrupal::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
             ->where('inscripcion_clase_grupal.alumno_id','=', $usuario_id)
-            // ->where('clases_grupales.especialidad_id','=', 20)
-            ->OrderBy('clases_grupales.hora_inicio')
+            ->where('clases_grupales.especialidad_id','=', 20)
         ->get();
 
-        return view('progreso.principalprogramacion')->with(['clase_grupal_join' => $clase_grupal_join]);
+        $horarios_clase_grupales = ClaseGrupal::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('horarios_clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
+            ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'horarios_clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
+            ->where('inscripcion_clase_grupal.alumno_id','=', $usuario_id)
+            ->where('horarios_clases_grupales.especialidad_id','=', 20)
+        ->get();
+
+        $array = array();
+
+        foreach($clases_grupales as $clase_grupal){
+
+            $collection=collect($clase_grupal);     
+            $clase_grupal_array = $collection->toArray();
+            $clase_grupal_array['tipo'] = 1;
+            $array[] = $clase_grupal_array;
+        }
+
+        foreach($horarios_clase_grupales as $clase_grupal){
+            $collection=collect($clase_grupal);     
+            $clase_grupal_array = $collection->toArray();
+            $clase_grupal_array['tipo'] = 2;
+            $array[] = $clase_grupal_array;
+        }
+
+        return view('progreso.principalprogramacion')->with(['clase_grupal_join' => $array]);
 
     }
 
@@ -184,16 +208,190 @@ class ProgresoController extends BaseController {
         $usuario_tipo = Session::get('easydance_usuario_tipo');
         $usuario_id = Session::get('easydance_usuario_id');
 
-        $clase_grupal_join = ClaseGrupal::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+        $clases_grupales = ClaseGrupal::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
             ->where('inscripcion_clase_grupal.alumno_id','=', $usuario_id)
             ->where('clases_grupales.especialidad_id','=', 1)
-            ->OrderBy('clases_grupales.hora_inicio')
         ->get();
 
-        return view('progreso.principalprogramacion')->with(['clase_grupal_join' => $clase_grupal_join]);
+        $horarios_clase_grupales = ClaseGrupal::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->join('horarios_clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'horarios_clases_grupales.id')
+            ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
+            ->where('inscripcion_clase_grupal.alumno_id','=', $usuario_id)
+            ->where('horarios_clases_grupales.especialidad_id','=', 1)
+        ->get();
 
+        $array = array();
+
+        foreach($clases_grupales as $clase_grupal){
+
+            $collection=collect($clase_grupal);     
+            $clase_grupal_array = $collection->toArray();
+            $clase_grupal_array['tipo'] = 1;
+            $array[] = $clase_grupal_array;
+        }
+
+        foreach($horarios_clase_grupales as $clase_grupal){
+            $collection=collect($clase_grupal);     
+            $clase_grupal_array = $collection->toArray();
+            $clase_grupal_array['tipo'] = 2;
+            $array[] = $clase_grupal_array;
+        }
+
+        return view('progreso.principalprogramacion')->with(['clase_grupal_join' => $array]);
+    }
+
+    public function programacion($id){
+        
+        $usuario_tipo = Session::get('easydance_usuario_tipo');
+        $usuario_id = Session::get('easydance_usuario_id');
+
+        $explode = explode("-",$id);
+        $id = $explode[0];
+        $tipo = $explode[1];
+
+        if($tipo == 1){
+            $clase_grupal = ClaseGrupal::find($id);
+            $especialidad_id = $clase_grupal->especialidad_id;
+        }else{
+            $horario = HorarioClaseGrupal::find($id);
+            $clase_grupal = ClaseGrupal::find($horario->clase_grupal_id);
+            $id = $clase_grupal->id;
+            $especialidad_id = $horario->especialidad_id;
+        }
+
+        if($clase_grupal){
+
+            $progreso = Progreso::where('clase_grupal_id',$id)->first();
+
+            if($progreso){
+
+                $clase_1 = Progreso::where('clase_grupal_id',$id)->where('tipo',1)->first();
+                $clase_2 = Progreso::where('clase_grupal_id',$id)->where('tipo',2)->first();
+                $clase_3 = Progreso::where('clase_grupal_id',$id)->where('tipo',3)->first();
+                $clase_4 = Progreso::where('clase_grupal_id',$id)->where('tipo',4)->first();
+                $clase_5 = Progreso::where('clase_grupal_id',$id)->where('tipo',5)->first();
+                $clase_6 = Progreso::where('clase_grupal_id',$id)->where('tipo',6)->first();
+                $clase_7 = Progreso::where('clase_grupal_id',$id)->where('tipo',7)->first();
+                $clase_8 = Progreso::where('clase_grupal_id',$id)->where('tipo',8)->first();
+                $clase_9 = Progreso::where('clase_grupal_id',$id)->where('tipo',9)->first();
+                $clase_10 = Progreso::where('clase_grupal_id',$id)->where('tipo',10)->first();
+                $clase_11 = Progreso::where('clase_grupal_id',$id)->where('tipo',11)->first();
+                $clase_12 = Progreso::where('clase_grupal_id',$id)->where('tipo',12)->first();
+                
+            }else{
+
+                $clase_1 = new Progreso;
+                $clase_1->clase_grupal_id = $id;
+                $clase_1->tipo = 1;
+                $clase_1->save();
+
+                $clase_2 = new Progreso;
+                $clase_2->clase_grupal_id = $id;
+                $clase_2->tipo = 2;
+                $clase_2->save();
+
+                $clase_3 = new Progreso;
+                $clase_3->clase_grupal_id = $id;
+                $clase_3->tipo = 3;
+                $clase_3->save();
+
+                $clase_4 = new Progreso;
+                $clase_4->clase_grupal_id = $id;
+                $clase_4->tipo = 4;
+                $clase_4->save();
+
+                $clase_5 = new Progreso;
+                $clase_5->clase_grupal_id = $id;
+                $clase_5->tipo = 5;
+                $clase_5->save();
+
+                $clase_6 = new Progreso;
+                $clase_6->clase_grupal_id = $id;
+                $clase_6->tipo = 6;
+                $clase_6->save();
+
+                $clase_7 = new Progreso;
+                $clase_7->clase_grupal_id = $id;
+                $clase_7->tipo = 7;
+                $clase_7->save();
+
+                $clase_8 = new Progreso;
+                $clase_8->clase_grupal_id = $id;
+                $clase_8->tipo = 8;
+                $clase_8->save();
+
+                $clase_9 = new Progreso;
+                $clase_9->clase_grupal_id = $id;
+                $clase_9->tipo = 9;
+                $clase_9->save();
+
+                $clase_10 = new Progreso;
+                $clase_10->clase_grupal_id = $id;
+                $clase_10->tipo = 10;
+                $clase_10->save();
+
+                $clase_11 = new Progreso;
+                $clase_11->clase_grupal_id = $id;
+                $clase_11->tipo = 11;
+                $clase_11->save();
+
+                $clase_12 = new Progreso;
+                $clase_12->clase_grupal_id = $id;
+                $clase_12->tipo = 12;
+                $clase_12->save();
+
+            }
+
+            $tmp = ProgresoPaso::where('clase_grupal_id',$id)->where('status',1)->get();
+            $collection=collect($tmp);
+            $grouped = $collection->groupBy('codigo');     
+            $permisos = $grouped->toArray();
+            
+            if($usuario_tipo == 2 OR $usuario_tipo == 4){
+
+                $find = InscripcionClaseGrupal::where('clase_grupal_id', $id)->where('alumno_id',$usuario_id)->first();
+
+                $examen = Examen::where('boolean_grupal',1)->where('clase_grupal_id', $id)->first();
+
+                if($examen){
+
+                    $evaluacion = Evaluacion::where('examen_id',$examen->id)->where('alumno_id', $usuario_id)->first();
+
+                    if($evaluacion){
+                        $detalles_notas = DetalleEvaluacion::select('nombre', 'nota')
+                           ->where('evaluacion_id','=',$evaluacion->id)
+                        ->count();
+
+                        $notas = ['nota' => $evaluacion->total, 'total' => $detalles_notas*10, 'porcentaje' => $evaluacion->porcentaje];
+                    }else{
+                        $notas = ['nota' => '', 'total' => '', 'porcentaje' => ''];
+                    }
+
+                }else{
+                    $notas = ['nota' => '', 'total' => '', 'porcentaje' => ''];
+                }
+                
+            }else{
+                $notas = '';
+            }
+
+            $pasos = Paso::where('academia_id',$clase_grupal->academia_id)
+                ->where('especialidad_id',$especialidad_id)
+            ->get();
+
+            if($especialidad_id != 1){
+                return view('progreso.programacion-salsa')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'notas' => $notas, 'id' => $id, 'pasos' => $pasos, 'permisos' => $permisos]); 
+            }else{
+                return view('progreso.programacion-bachata')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'notas' => $notas, 'id' => $id, 'pasos' => $pasos, 'permisos' => $permisos]);
+            }
+
+            
+        }else{
+            return redirect("/inicio"); 
+        }
     }
 
     public function progreso($id)
@@ -309,146 +507,6 @@ class ProgresoController extends BaseController {
         
     
     }
-
-    public function programacion($id)
-    {
-        $progreso = Progreso::where('clase_grupal_id',$id)->first();
-        $usuario_tipo = Session::get('easydance_usuario_tipo');
-        $usuario_id = Session::get('easydance_usuario_id');
-
-        $clase_grupal = ClaseGrupal::find($id);
-
-        if($clase_grupal){
-
-            if($progreso){
-                $clase_1 = Progreso::where('clase_grupal_id',$id)->where('tipo',1)->first();
-                $clase_2 = Progreso::where('clase_grupal_id',$id)->where('tipo',2)->first();
-                $clase_3 = Progreso::where('clase_grupal_id',$id)->where('tipo',3)->first();
-                $clase_4 = Progreso::where('clase_grupal_id',$id)->where('tipo',4)->first();
-                $clase_5 = Progreso::where('clase_grupal_id',$id)->where('tipo',5)->first();
-                $clase_6 = Progreso::where('clase_grupal_id',$id)->where('tipo',6)->first();
-                $clase_7 = Progreso::where('clase_grupal_id',$id)->where('tipo',7)->first();
-                $clase_8 = Progreso::where('clase_grupal_id',$id)->where('tipo',8)->first();
-                $clase_9 = Progreso::where('clase_grupal_id',$id)->where('tipo',9)->first();
-                $clase_10 = Progreso::where('clase_grupal_id',$id)->where('tipo',10)->first();
-                $clase_11 = Progreso::where('clase_grupal_id',$id)->where('tipo',11)->first();
-                $clase_12 = Progreso::where('clase_grupal_id',$id)->where('tipo',12)->first();
-                
-            }
-            else{
-
-                $clase_1 = new Progreso;
-                $clase_1->clase_grupal_id = $id;
-                $clase_1->tipo = 1;
-                $clase_1->save();
-
-                $clase_2 = new Progreso;
-                $clase_2->clase_grupal_id = $id;
-                $clase_2->tipo = 2;
-                $clase_2->save();
-
-                $clase_3 = new Progreso;
-                $clase_3->clase_grupal_id = $id;
-                $clase_3->tipo = 3;
-                $clase_3->save();
-
-                $clase_4 = new Progreso;
-                $clase_4->clase_grupal_id = $id;
-                $clase_4->tipo = 4;
-                $clase_4->save();
-
-                $clase_5 = new Progreso;
-                $clase_5->clase_grupal_id = $id;
-                $clase_5->tipo = 5;
-                $clase_5->save();
-
-                $clase_6 = new Progreso;
-                $clase_6->clase_grupal_id = $id;
-                $clase_6->tipo = 6;
-                $clase_6->save();
-
-                $clase_7 = new Progreso;
-                $clase_7->clase_grupal_id = $id;
-                $clase_7->tipo = 7;
-                $clase_7->save();
-
-                $clase_8 = new Progreso;
-                $clase_8->clase_grupal_id = $id;
-                $clase_8->tipo = 8;
-                $clase_8->save();
-
-                $clase_9 = new Progreso;
-                $clase_9->clase_grupal_id = $id;
-                $clase_9->tipo = 9;
-                $clase_9->save();
-
-                $clase_10 = new Progreso;
-                $clase_10->clase_grupal_id = $id;
-                $clase_10->tipo = 10;
-                $clase_10->save();
-
-                $clase_11 = new Progreso;
-                $clase_11->clase_grupal_id = $id;
-                $clase_11->tipo = 11;
-                $clase_11->save();
-
-                $clase_12 = new Progreso;
-                $clase_12->clase_grupal_id = $id;
-                $clase_12->tipo = 12;
-                $clase_12->save();
-
-            }
-
-            $tmp = ProgresoPaso::where('clase_grupal_id',$id)->where('status',1)->get();
-            $collection=collect($tmp);
-            $grouped = $collection->groupBy('codigo');     
-            $permisos = $grouped->toArray();
-            
-            if($usuario_tipo == 2 OR $usuario_tipo == 4)
-            {
-
-                $find = InscripcionClaseGrupal::where('clase_grupal_id', $id)->where('alumno_id',$usuario_id)->first();
-
-                $examen = Examen::where('boolean_grupal',1)->where('clase_grupal_id', $id)->first();
-
-                if($examen){
-
-                    $evaluacion = Evaluacion::where('examen_id',$examen->id)->where('alumno_id', $usuario_id)->first();
-
-                    if($evaluacion){
-                        $detalles_notas = DetalleEvaluacion::select('nombre', 'nota')
-                           ->where('evaluacion_id','=',$evaluacion->id)
-                        ->count();
-
-                        $notas = ['nota' => $evaluacion->total, 'total' => $detalles_notas*10, 'porcentaje' => $evaluacion->porcentaje];
-                    }else{
-                        $notas = ['nota' => '', 'total' => '', 'porcentaje' => ''];
-                    }
-
-                }else{
-                    $notas = ['nota' => '', 'total' => '', 'porcentaje' => ''];
-                }
-                
-            }else{
-                $notas = '';
-            }
-
-            $pasos = Paso::where('academia_id',$clase_grupal->academia_id)
-                ->where('especialidad_id',$clase_grupal->especialidad_id)
-            ->get();
-
-            if($clase_grupal->especialidad_id != 1){
-                return view('progreso.programacion-salsa')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'notas' => $notas, 'id' => $id, 'pasos' => $pasos, 'permisos' => $permisos]); 
-            }else{
-                return view('progreso.programacion-bachata')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'notas' => $notas, 'id' => $id, 'pasos' => $pasos, 'permisos' => $permisos]);
-            }
-
-            
-        }else{
-            return redirect("/inicio"); 
-        }
-    }
-
 
     public function certificado()
     {

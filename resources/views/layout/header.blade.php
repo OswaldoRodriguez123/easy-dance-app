@@ -118,8 +118,19 @@
                                 <a class="f-15 text-header f-700" href="{{url('/')}}/progreso"><span class="f-15 text-header f-700">MI PROGRESO</span></a>
                             </li>
 
-                            <li style="margin-top: 26px; right: 50%">
-                                <a class="f-15 text-header f-700" href="{{url('/')}}/programacion/salsa"><span class="f-15 text-header f-700">PASO A PASO</span></a>
+                            <li class="dropdown" style="margin-top: 26px; right: 50%">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                   <span class="f-15 f-700 text-header">PASO A PASO</span>
+                                </a>
+                                <ul class="dropdown-menu dm-icon pull-right">
+                                    <li class="hidden-xs">
+                                        <a href="{{url('programacion/salsa')}}"><i class="zmdi icon_a-instructor"></i> Salsa</a>
+                                    </li>
+
+                                    <li class="hidden-xs">
+                                        <a href="{{url('programacion/bachata')}}"><i class="zmdi icon_a-clase-personalizada f-16"></i> Bachata</a>
+                                    </li>
+                                </ul>
                             </li>
                         @endif
                     @endif
