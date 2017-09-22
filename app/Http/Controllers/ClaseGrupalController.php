@@ -725,12 +725,12 @@ class ClaseGrupalController extends BaseController {
                         $fecha_asistencia_inicio = Carbon::createFromFormat('Y-m-d', $ultima_asistencia->fecha);
                         $j = 0;
                     }else{
-                        $fecha_asistencia_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);     
+                        $fecha_asistencia_inicio = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio);     
                         $j = 1;               
                     }
 
-                    $fecha_inscripcion = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inscripcion);
-                    $fecha_traspaso_admin = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_a_comprobar);
+                    $fecha_inscripcion = Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inscripcion);
+                    $fecha_traspaso_admin = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_a_comprobar);
 
                     if($fecha_asistencia_inicio > $fecha_inscripcion){
                         $fecha_a_comparar = $fecha_asistencia_inicio;
