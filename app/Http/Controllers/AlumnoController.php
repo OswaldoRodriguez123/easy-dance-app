@@ -2483,98 +2483,101 @@ class AlumnoController extends BaseController
 
     public function indexLlamada($id){
 
-      $interesado = Alumno::find($id);
+        $interesado = Alumno::find($id);
 
-      $llamadas = Llamada::where('usuario_id', $id)->where('usuario_tipo',2)->get();
+        $llamadas = Llamada::where('usuario_id', $id)->where('usuario_tipo',2)->get();
 
-      return view('participante.alumno.llamada.principal')->with(['id' => $id, 'llamadas' => $llamadas, 'interesado' => $interesado]);
+        $inscripcion_clase_grupal = InscripcionClaseGrupal::where('alumno_id',$id)->orderBy('created_at','desc')->first();
+        if($inscripcion_clase_grupal){
+            $clase_grupal_id = $inscripcion_clase_grupal->clase_grupal_id;
+        }else{
+            $clase_grupal_id = '';
+        }
+
+        return view('participante.alumno.llamada.principal')->with(['id' => $id, 'llamadas' => $llamadas, 'interesado' => $interesado, 'clase_grupal_id' => $clase_grupal_id]);
     }
 
     public function createLlamada($id){
-        $academia = Academia::find(Auth::user()->academia_id);
-        if($academia->pais_id == 11){
-            $hora = Carbon::now('America/Bogota');  
-        }else{
-            $hora = Carbon::now('America/Caracas');
-        }
-      $hora_actual = $hora->format('H:i');
-      $interesado = Visitante::find($id);
-      return view('participante.alumno.llamada.create')->with(['id' => $id, 'interesado' => $interesado, 'hora_actual' => $hora_actual]);
+        
+        
+        $hora_actual = $hora->format('H:i');
+        $interesado = Visitante::find($id);
+        return view('participante.alumno.llamada.create')->with(['id' => $id, 'interesado' => $interesado, 'hora_actual' => $hora_actual]);
     }
 
     public function storeLlamada(Request $request){
 
-      $rules = [
-          'status' => 'required',
+        $rules = [
+            'status' => 'required',
           'hora_llamada' => 'required'
 
-      ];
+        ];
 
-      $messages = [
+        $messages = [
 
-          'status.required' => 'Ups! El Estatus es requerido',
-          'hora_llamada.required' => 'Ups! La hora es requerida',
+            'status.required' => 'Ups! El Estatus es requerido',
+            'hora_llamada.required' => 'Ups! La hora es requerida',
 
-      ];
+        ];
 
-      $validator = Validator::make($request->all(), $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
-      if ($validator->fails()){
+        if ($validator->fails()){
 
-          return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-      }else{
-
-        $academia = Academia::find(Auth::user()->academia_id);
-        $fecha_llamada = Carbon::now();  
-        
-        if($request->fecha_siguiente){
-
-            $fecha_siguiente = Carbon::createFromFormat('d/m/Y', $request->fecha_siguiente);
-          
-            if($fecha_llamada > $fecha_siguiente ) {
-
-                return response()->json(['errores' => ['fecha_siguiente' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha mayor a hoy']], 'status' => 'ERROR'],422);
-            } 
-
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
         }else{
-            $fecha_siguiente = '';
-        }
 
-        if($request->hora_siguiente){
-            if($academia->tipo_horario == 1){
-                $hora_siguiente = Carbon::createFromFormat('H:i',$request->hora_siguiente)->toTimeString();
+            $academia = Academia::find(Auth::user()->academia_id);
+            $fecha_llamada = Carbon::now();  
+            
+            if($request->fecha_siguiente){
+
+                $fecha_siguiente = Carbon::createFromFormat('d/m/Y', $request->fecha_siguiente);
+              
+                if($fecha_llamada > $fecha_siguiente ) {
+
+                    return response()->json(['errores' => ['fecha_siguiente' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha mayor a hoy']], 'status' => 'ERROR'],422);
+                } 
+
             }else{
-                $hora_siguiente = Carbon::createFromFormat('H:i a',$request->hora_siguiente)->toTimeString();
+                $fecha_siguiente = '';
             }
-        }else{
-            $hora_siguiente = '';
+
+            if($request->hora_siguiente){
+                if($academia->tipo_horario == 1){
+                    $hora_siguiente = Carbon::createFromFormat('H:i',$request->hora_siguiente)->toTimeString();
+                }else{
+                    $hora_siguiente = Carbon::createFromFormat('H:i a',$request->hora_siguiente)->toTimeString();
+                }
+            }else{
+                $hora_siguiente = '';
+            }
+
+            if($academia->tipo_horario == 1){
+                $hora_llamada = Carbon::createFromFormat('H:i',$request->hora_llamada)->toTimeString();
+            }else{
+                $hora_llamada = Carbon::createFromFormat('H:i a',$request->hora_llamada)->toTimeString();
+            }  
+
+            $llamada = new Llamada;
+
+            $llamada->usuario_id = $request->id;
+            $llamada->usuario_tipo = 2;
+            $llamada->observacion = $request->observacion;
+            $llamada->status = $request->status;
+            $llamada->fecha_llamada = $fecha_llamada;
+            $llamada->hora_llamada = $hora_llamada;
+            $llamada->fecha_siguiente = $fecha_siguiente;
+            $llamada->hora_siguiente = $hora_siguiente;
+
+            if($llamada->save()){
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+            }
         }
-
-        if($academia->tipo_horario == 1){
-            $hora_llamada = Carbon::createFromFormat('H:i',$request->hora_llamada)->toTimeString();
-        }else{
-            $hora_llamada = Carbon::createFromFormat('H:i a',$request->hora_llamada)->toTimeString();
-        }  
-
-        $llamada = new Llamada;
-
-        $llamada->usuario_id = $request->id;
-        $llamada->usuario_tipo = 2;
-        $llamada->observacion = $request->observacion;
-        $llamada->status = $request->status;
-        $llamada->fecha_llamada = $fecha_llamada;
-        $llamada->hora_llamada = $hora_llamada;
-        $llamada->fecha_siguiente = $fecha_siguiente;
-        $llamada->hora_siguiente = $hora_siguiente;
-
-        if($llamada->save()){
-
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
-        }
-      }
     }
 
     public function eliminarLlamada($id){
