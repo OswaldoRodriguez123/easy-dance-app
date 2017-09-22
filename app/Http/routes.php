@@ -166,6 +166,15 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 	------------------------------------------------------*/
 	Route::group(['middleware' => ['admin']], function() {
 
+		
+	
+	});	//END MIDDLEWARE ADMIN
+	/*----------------------------------------------------------
+	//MIDDELEWARE RECEPCIONISTA
+	//SOLO RUTAS A LAS QUE TENDRA ACCESO EL ROL RECEPCIONISTA
+	-----------------------------------------------------------*/
+	Route::group(['middleware' => 'recepcionista'], function() {
+
 		//BLOG
 
 		Route::get('blog/entrada/editar/{id}', 'BlogController@edit');
@@ -508,13 +517,8 @@ Route::group(['middleware' => ['auth','verified'] ], function () {
 		Route::post('reportes/eliminados', 'ReporteController@EliminadosFiltros');
 		Route::get('reportes/clientes', 'ReporteController@Clientes');
 		Route::post('reportes/clientes', 'ReporteController@ClientesFiltros');
-	
-	});	//END MIDDLEWARE ADMIN
-	/*----------------------------------------------------------
-	//MIDDELEWARE RECEPCIONISTA
-	//SOLO RUTAS A LAS QUE TENDRA ACCESO EL ROL RECEPCIONISTA
-	-----------------------------------------------------------*/
-	Route::group(['middleware' => 'recepcionista'], function() {
+
+		//TERMINA ADMIN
 
 		//PRINCIPAL
 
