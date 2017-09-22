@@ -457,6 +457,7 @@ class ExamenController extends BaseController {
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
         }else{
+            
             $examen = Examen::find($request->id);
             $examen->genero = $request->genero;
 
@@ -555,9 +556,9 @@ class ExamenController extends BaseController {
 
         if($examen_join){
 
-            $item_examen = DB::table('items_examenes')->where('examen_id','=',$id)->get();
-
-            $generos = DB::table('config_especialidades')->get();
+            $items_examenes = ItemsExamenes::where('examen_id','=',$id)->get();
+            $config_especialidades = ConfigEspecialidades::all();
+            $config_examenes = ConfigTipoExamen::all();
 
             $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
@@ -570,6 +571,7 @@ class ExamenController extends BaseController {
             $array = array();
 
             foreach($clase_grupal_join as $clase_grupal){
+
                 $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
                 $i = $fecha->dayOfWeek;
 
@@ -611,9 +613,7 @@ class ExamenController extends BaseController {
                 $array[$clase_grupal->id] = $clase_grupal_array;
             }
 
-            $config_examenes = ConfigTipoExamen::all();
-
-            return view('especiales.examen.planilla')->with(['instructor' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'examen' => $examen_join, 'items_examenes'=>$item_examen, 'genero'=>$generos, 'clases_grupales' => $array, 'config_examenes' => $config_examenes]);
+            return view('especiales.examen.planilla')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'examen' => $examen_join, 'items_examenes' => $items_examenes, 'config_especialidades' => $config_especialidades, 'clases_grupales' => $array, 'config_examenes' => $config_examenes]);
 
         }else{
            return redirect("especiales/examenes"); 

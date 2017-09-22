@@ -251,8 +251,8 @@
 
                                       <div class="select">
                                         <select class="form-control" id="instructor_id" name="instructor_id">
-                                        @foreach ( $instructor as $instruct )
-                                        <option value = "{!! $instruct['id'] !!}">{!! $instruct['nombre'] !!} {!! $instruct['apellido'] !!}</option>
+                                        @foreach ( $instructores as $instructor )
+                                        <option value = "{!! $instructor['id'] !!}">{!! $instructor['nombre'] !!} {!! $instructor['apellido'] !!}</option>
                                         @endforeach 
                                         </select>
                                       </div> 
@@ -313,8 +313,8 @@
 
                                       <div class="select">
                                         <select class="selectpicker bs-select-hidden" id="genero" name="genero" multiple="" data-max-options="5" title="Selecciona">
-                                        @foreach ( $genero as $generos )
-                                        <option value = "{{$generos->nombre}}">{{$generos->nombre}}</option>
+                                        @foreach ( $config_especialidades as $especialidad )
+                                        <option value = "{{$especialidad->nombre}}">{{$especialidad->nombre}}</option>
                                         @endforeach
                                         </select>
                                       </div> 
