@@ -164,6 +164,7 @@ class AlumnoController extends BaseController
                         'inscripcion_clase_grupal.id as inscripcion_id',
                         'inscripcion_clase_grupal.deleted_at',
                         'inscripcion_clase_grupal.fecha_inscripcion', 
+                        'inscripcion_clase_grupal.fecha_a_comprobar',
                         'clases_grupales.fecha_inicio', 
                         'clases_grupales.fecha_final', 
                         'clases_grupales.id as clase_grupal_id')
@@ -364,43 +365,40 @@ class AlumnoController extends BaseController
                     //NOTA IMPORTANTE: PARA NO ROMPER EL CICLO CON LA FECHA DE LA INSCRIPCION, EL PROCESO CONVERTIRA ESTA FECHA A UNA QUE CONCUERDE CON LA CLASE PRINCIPAL O ALGUN MULTIHORARIO, SINO LAS CONSULTAS NUNCA FUNCIONARAN
 
                     if($ultima_asistencia){
+                        $fecha_asistencia_inicio = Carbon::createFromFormat('Y-m-d', $ultima_asistencia->fecha);
+                        $j = 0;
+                    }else{
+                        $fecha_asistencia_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);     
+                        $j = 1;               
+                    }
 
-                        $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
+                    $fecha_inscripcion = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inscripcion);
+                    $fecha_traspaso_admin = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_a_comprobar);
+
+                    if($fecha_asistencia_inicio > $fecha_inscripcion){
+                        $fecha_a_comparar = $fecha_asistencia_inicio;
+                    }else{
+                        $fecha_a_comparar = $fecha_inscripcion;
+                        $j = 1;
+                    }
+
+                    if($fecha_traspaso_admin > $fecha_a_comparar){
+                        $fecha_a_comparar = $fecha_traspaso_admin;
+                        $j = 1;
+                    }
+
+                    $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
+
+                    while(!in_array($dia_a_comparar,$array_dias_clases)){
+
+                        $fecha_a_comparar->addDay();
                         $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
-                        
+
                         if($dia_a_comparar != 0){
                             $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
                         }else{
                             $dia_a_comparar = 7;
                         }
-
-                        $j = 0;
-
-                    }else{
-
-                        $fecha_tmp = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inscripcion);
-                        $fecha_tmp2 = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-
-                        if($fecha_tmp > $fecha_tmp2){
-                            $fecha_a_comparar = $fecha_tmp;
-                        }else{
-                            $fecha_a_comparar = $fecha_tmp2;
-                        }
-                        $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
-
-                        while(!in_array($dia_a_comparar,$array_dias_clases)){
-
-                            $fecha_a_comparar->addDay();
-                            $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
-
-                            if($dia_a_comparar != 0){
-                                $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
-                            }else{
-                                $dia_a_comparar = 7;
-                            }
-                        }
-                        
-                        $j = 1;
                     }
 
                     $fecha_inactividad = $fecha_a_comparar;
@@ -2169,7 +2167,14 @@ class AlumnoController extends BaseController
         $alumno = InscripcionClaseGrupal::withTrashed()->find($id);
         
         if($alumno->restore()){
-            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+
+            $alumno->fecha_a_comprobar = Carbon::now();
+            
+            if($alumno->save()){
+                return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

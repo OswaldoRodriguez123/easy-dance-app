@@ -1890,7 +1890,7 @@ class AsistenciaController extends BaseController
 
     $clase_grupal = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
         ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-        ->select('clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'config_clases_grupales.asistencia_rojo', 'config_clases_grupales.asistencia_amarilla', 'inscripcion_clase_grupal.fecha_inscripcion', 'clases_grupales.id', 'clases_grupales.instructor_id')
+        ->select('clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'config_clases_grupales.asistencia_rojo', 'config_clases_grupales.asistencia_amarilla', 'inscripcion_clase_grupal.fecha_inscripcion','inscripcion_clase_grupal.fecha_a_comprobar','clases_grupales.id', 'clases_grupales.instructor_id')
         ->where('inscripcion_clase_grupal.alumno_id', $request->alumno_id)
         ->where('inscripcion_clase_grupal.boolean_congelacion', 0)
         ->where('clases_grupales.deleted_at', null)
@@ -2085,43 +2085,40 @@ class AsistenciaController extends BaseController
           //NOTA IMPORTANTE: PARA NO ROMPER EL CICLO CON LA FECHA DE LA INSCRIPCION, EL PROCESO CONVERTIRA ESTA FECHA A UNA QUE CONCUERDE CON LA CLASE PRINCIPAL O ALGUN MULTIHORARIO, SINO LAS CONSULTAS NUNCA FUNCIONARAN
 
           if($ultima_asistencia){
+              $fecha_asistencia_inicio = Carbon::createFromFormat('Y-m-d', $ultima_asistencia->fecha);
+              $j = 0;
+          }else{
+              $fecha_asistencia_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);     
+              $j = 1;               
+          }
 
-              $fecha_a_comparar = Carbon::createFromFormat('Y-m-d',$ultima_asistencia->fecha);
+          $fecha_inscripcion = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inscripcion);
+          $fecha_traspaso_admin = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_a_comprobar);
+
+          if($fecha_asistencia_inicio > $fecha_inscripcion){
+              $fecha_a_comparar = $fecha_asistencia_inicio;
+          }else{
+              $fecha_a_comparar = $fecha_inscripcion;
+              $j = 1;
+          }
+
+          if($fecha_traspaso_admin > $fecha_a_comparar){
+              $fecha_a_comparar = $fecha_traspaso_admin;
+              $j = 1;
+          }
+
+          $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
+
+          while(!in_array($dia_a_comparar,$array_dias_clases)){
+
+              $fecha_a_comparar->addDay();
               $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
-              
+
               if($dia_a_comparar != 0){
                   $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
               }else{
                   $dia_a_comparar = 7;
               }
-
-              $j = 0;
-
-          }else{
-
-              $fecha_tmp = Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inscripcion);
-              $fecha_tmp2 = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio);
-
-              if($fecha_tmp > $fecha_tmp2){
-                  $fecha_a_comparar = $fecha_tmp;
-              }else{
-                  $fecha_a_comparar = $fecha_tmp2;
-              }
-              $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
-
-              while(!in_array($dia_a_comparar,$array_dias_clases)){
-
-                  $fecha_a_comparar->addDay();
-                  $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
-
-                  if($dia_a_comparar != 0){
-                      $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
-                  }else{
-                      $dia_a_comparar = 7;
-                  }
-              }
-              
-              $j = 1;
           }
 
           //EL INDEX INICIAL SE CREA PARA SABER DESDE DONDE SE COMENZARA A BUSCAR EN EL CICLO FOR DE ABAJO, YA DESCRITO EN LA NOTA 1.1
