@@ -311,7 +311,7 @@ class ProveedorController extends BaseController {
  
            return view('configuracion.proveedor.planilla' , compact('map'))->with(['proveedor' => $proveedor, 'id' => $id]);
         }else{
-           return redirect("configuracion/proveedor"); 
+           return redirect("proveedores"); 
         }
     }
 

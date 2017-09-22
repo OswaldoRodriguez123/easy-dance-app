@@ -172,7 +172,7 @@ class ConfigServiciosController extends BaseController {
             
             return view('configuracion.servicios.planilla')->with(['servicio' => $servicio , 'id' => $id, 'tipo' => $tipo]);
         }else{
-           return redirect("configuracion/servicios"); 
+           return redirect("servicios"); 
         }
     }
 

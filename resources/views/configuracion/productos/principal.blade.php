@@ -17,7 +17,7 @@
 @stop
 @section('content')
 
-<a href="{{url('/')}}/configuracion/productos/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
+<a href="{{url('/')}}/productos/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
 
             <section id="content">
                 <div class="container">
@@ -163,8 +163,8 @@
             
         <script type="text/javascript">
             
-            route_detalle="{{url('/')}}/configuracion/productos/detalle";
-            route_eliminar="{{url('/')}}/configuracion/productos/eliminar/";
+            route_detalle="{{url('/')}}/productos/detalle";
+            route_eliminar="{{url('/')}}/productos/eliminar/";
 
         $(document).ready(function(){
 

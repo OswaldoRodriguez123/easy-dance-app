@@ -17,7 +17,7 @@
 @stop
 @section('content')
 
-<a href="{{url('/')}}/configuracion/proveedor/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
+<a href="{{url('/')}}/proveedores/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
                 <div class="container">
                 
@@ -131,9 +131,9 @@
             
     <script type="text/javascript">
          
-        route_detalle="{{url('/')}}/configuracion/proveedor/detalle";
-        route_operacion="{{url('/')}}/configuracion/proveedor/operaciones";
-        route_eliminar="{{url('/')}}/configuracion/proveedor/eliminar/";
+        route_detalle="{{url('/')}}/proveedores/detalle";
+        route_operacion="{{url('/')}}/proveedores/operaciones";
+        route_eliminar="{{url('/')}}/proveedores/eliminar/";
         route_email="{{url('/')}}/correo/sesion/";
             
         $(document).ready(function(){

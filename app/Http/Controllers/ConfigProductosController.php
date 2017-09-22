@@ -156,7 +156,7 @@ class ConfigProductosController extends BaseController {
             }
             return view('configuracion.productos.planilla')->with(['producto' => $producto , 'id' => $id, 'tipo' => $tipo]);
         }else{
-           return redirect("configuracion/productos"); 
+           return redirect("productos"); 
         }
     }
 

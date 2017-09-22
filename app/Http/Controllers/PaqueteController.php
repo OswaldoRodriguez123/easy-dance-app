@@ -378,7 +378,7 @@ class PaqueteController extends BaseController {
         if($paquete){
             return view('configuracion.paquetes.planilla')->with(['paquete' => $paquete , 'id' => $id]);
         }else{
-           return redirect("configuracion/paquetes"); 
+           return redirect("paquetes"); 
         }
     }
 

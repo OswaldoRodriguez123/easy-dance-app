@@ -365,7 +365,7 @@
                 <div class="container">
                 
                     <div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/servicios" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Servicio</a>
+                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/servicios" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Servicio</a>
 
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -513,9 +513,9 @@
 
 @section('js') 
    <script type="text/javascript">
-    route_update="{{url('/')}}/configuracion/servicios/update";
-    route_eliminar="{{url('/')}}/configuracion/servicios/eliminar/";
-    route_principal="{{url('/')}}/configuracion/servicios";
+    route_update="{{url('/')}}/servicios/update";
+    route_eliminar="{{url('/')}}/servicios/eliminar/";
+    route_principal="{{url('/')}}/servicios";
 
    function formatmoney(n) {
       return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");

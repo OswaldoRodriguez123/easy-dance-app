@@ -35,20 +35,20 @@
                             </a>
                             <ul class="dropdown-menu dm-icon pull-right">
                                 <li class="hidden-xs">
-                                    <a href="{{url('configuracion/proveedor')}}"><i class="zmdi zmdi-truck"></i> Proveedores</a>
+                                    <a href="{{url('proveedores')}}"><i class="zmdi zmdi-truck"></i> Proveedores</a>
                                 </li>
 
                                 <li class="hidden-xs">
-                                    <a href="{{url('configuracion/productos')}}"><i class="zmdi icon_f-productos f-16"></i> Productos</a>
+                                    <a href="{{url('productos')}}"><i class="zmdi icon_f-productos f-16"></i> Productos</a>
                                 </li>
 
                                 <li class="hidden-xs">
-                                    <a href="{{url('configuracion/servicios')}}"><i class="zmdi icon_f-servicios f-16"></i> Servicios</a>
+                                    <a href="{{url('servicios')}}"><i class="zmdi icon_f-servicios f-16"></i> Servicios</a>
                                 </li>
 
 
                                 <li class="hidden-xs">
-                                    <a href="{{url('configuracion/paquetes')}}"><i class="zmdi icon_a-paquete f-16"></i> Paquetes</a>
+                                    <a href="{{url('paquetes')}}"><i class="zmdi icon_a-paquete f-16"></i> Paquetes</a>
                                 </li>
 
                                 @if($usuario_tipo == 1 || $usuario_tipo == 5)
@@ -190,17 +190,15 @@
                             <br>
                             
                             <span class="f-700 f-14"> 
+                                <?php 
+                                    $tmp = explode(" ", Auth::user()->nombre);
+                                    $nombre_usuario = $tmp[0];
 
-                            <?php $tmp = explode(" ", Auth::user()->nombre);
-                            $nombre_usuario = $tmp[0];
+                                    $tmp = explode(" ", Auth::user()->apellido);
+                                    $apellido_usuario = $tmp[0];
+                                ?>
 
-                            $tmp = explode(" ", Auth::user()->apellido);
-                            $apellido_usuario = $tmp[0];
-
-                            ?>
-
-                            {{$nombre_usuario}} {{$apellido_usuario}} 
-
+                                {{$nombre_usuario}} {{$apellido_usuario}} 
                             </span>
 
                         </a>
