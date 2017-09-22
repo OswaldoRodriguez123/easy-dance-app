@@ -2514,8 +2514,8 @@ class UsuarioController extends BaseController {
 
                     }else{
 
-                        $fecha_tmp = Carbon::createFromFormat('Y-m-d',$clasegrupal->fecha_inscripcion);
-                        $fecha_tmp2 = Carbon::createFromFormat('Y-m-d', $clasegrupal->fecha_inicio);
+                        $fecha_tmp = Carbon::createFromFormat('Y-m-d',$clase_grupal->fecha_inscripcion);
+                        $fecha_tmp2 = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
 
                         if($fecha_tmp > $fecha_tmp2){
                               $fecha_a_comparar = $fecha_tmp;
