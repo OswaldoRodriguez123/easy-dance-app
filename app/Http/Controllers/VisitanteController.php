@@ -40,6 +40,8 @@ class VisitanteController extends BaseController {
             ->Leftjoin('config_como_nos_conociste', 'visitantes_presenciales.como_nos_conociste_id', '=', 'config_como_nos_conociste.id')
             ->select('visitantes_presenciales.*', 'staff.nombre as instructor_nombre', 'staff.apellido as instructor_apellido', 'config_como_nos_conociste.nombre as como_se_entero', 'config_especialidades.nombre as especialidad')
             ->where('visitantes_presenciales.academia_id', '=' ,  Auth::user()->academia_id)
+            ->OrderBy('visitantes_presenciales.fecha_registro', 'desc')
+            ->limit(200)
         ->get();
 
         $array = array();

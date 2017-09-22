@@ -17,8 +17,6 @@
 @stop
 @section('content')
 
-  <script>procesando();</script>
-
 
             <a href="{{url('/')}}/participante/visitante/agregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
             <section id="content">
@@ -158,11 +156,7 @@
                               </div>
                             </div>
                         </div>
-                        
-                        
                     </div>
-                    
-                    
                 </div>
             </section>
 @stop
@@ -347,8 +341,6 @@
             }
         });
     });
-
-    finprocesado();
 
     </script>
 @stop
