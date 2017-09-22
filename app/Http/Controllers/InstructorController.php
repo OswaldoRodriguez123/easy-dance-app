@@ -1548,49 +1548,151 @@ class InstructorController extends BaseController {
     public function pagos_vista_instructor()
     {
 
-        $usuario_id = Session::get('easydance_usuario_id');
-        $instructor = Instructor::find($usuario_id);
+        $id = Session::get('easydance_usuario_id');
+        $instructor = Instructor::find($id);
 
         if($instructor)
         {
 
-            $pagadas = PagoInstructor::join('clases_grupales', 'pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
+            $array = array();
+
+            $pagos_instructor = PagoInstructor::join('clases_grupales', 'pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('pagos_instructor.created_at as fecha', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'pagos_instructor.monto', 'pagos_instructor.tipo')
-                ->where('instructores.id', $usuario_id)
-                ->limit(50)
-                ->where('pagos_instructor.boolean_clase_pagada', 1)
+                ->select('pagos_instructor.*', 'config_clases_grupales.nombre as servicio_producto', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor', 'config_clases_grupales.costo_mensualidad as servicio_producto_costo')
+                ->where('instructores.id', $id)
+                ->limit(100)
             ->get();
 
+            $total_pagos = PagoInstructor::where('instructor_id', $id)
+                ->where('boolean_pago', 0)
+            ->sum('monto');
 
-            $por_pagar = PagoInstructor::join('clases_grupales', 'pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
-                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('pagos_instructor.created_at as fecha', 'config_clases_grupales.nombre as clase', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor',  'pagos_instructor.monto', 'pagos_instructor.id', 'pagos_instructor.tipo')
-                ->where('instructores.id', $usuario_id)
-                ->where('pagos_instructor.boolean_clase_pagada', 0)
-                ->where('pagos_instructor.monto', '>', 0)
+            foreach($pagos_instructor as $pago){
+
+                $fecha = Carbon::createFromFormat('Y-m-d', $pago->fecha);
+                $i = $fecha->dayOfWeek;
+
+                if($i == 1){
+
+                    $dia = 'Lunes';
+
+                }else if($i == 2){
+
+                    $dia = 'Martes';
+
+                }else if($i == 3){
+
+                    $dia = 'Miercoles';
+
+                }else if($i == 4){
+
+                    $dia = 'Jueves';
+
+                }else if($i == 5){
+
+                    $dia = 'Viernes';
+
+                }else if($i == 6){
+
+                    $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                    $dia = 'Domingo';
+
+                }
+
+                $collection=collect($pago);     
+                $pago_array = $collection->toArray();
+                $pago_array['dia']=$dia;
+                $pago_array['id']='1-'.$pago->id;
+                $pago_array['cliente']='';
+                $array['1-'.$pago->id] = $pago_array;
+                
+            }
+
+            $comisiones = Comision::join('staff', 'comisiones.usuario_id', '=', 'staff.id')
+                ->select('comisiones.*', 'comisiones.hora','staff.nombre as nombre_staff', 'staff.apellido as apellido_staff')
+                ->where('comisiones.usuario_id', $id)
+                ->where('comisiones.usuario_tipo',2)
+                ->limit(100)
             ->get();
 
-            $total = PagoInstructor::select('pagos_instructor.*')
-                ->where('pagos_instructor.instructor_id', $usuario_id)
-                ->where('pagos_instructor.boolean_clase_pagada', 0)
-            ->sum('pagos_instructor.monto');
+            foreach($comisiones as $comision){
 
-            $pagos_instructor = ConfigPagosInstructor::join('clases_grupales', 'configuracion_pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
-                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
-                ->select('configuracion_pagos_instructor.id', 'configuracion_pagos_instructor.monto', 'config_clases_grupales.nombre as nombre', 'configuracion_pagos_instructor.clase_grupal_id as clase_grupal_id', 'configuracion_pagos_instructor.tipo as tipo')
-                ->where('instructores.id', $usuario_id)
-            ->get();
+                if($comision->servicio_producto_tipo == 1){
+                    $servicio_producto = ConfigServicios::find($comision->servicio_producto_id);
+                }else{
+                    $servicio_producto = ConfigProductos::find($comision->servicio_producto_id);
+                }
 
-            $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->select('clases_grupales.id', 'config_clases_grupales.nombre')
-                ->where('clases_grupales.instructor_id', $usuario_id)
-            ->get();
+                if($servicio_producto){
 
-            return view('participante.instructor.pagos')->with(['pagadas'=> $pagadas, 'por_pagar' => $por_pagar, 'total' => $total, 'instructor' => $instructor, 'pagos_instructor' => $pagos_instructor, 'clases_grupales' => $clase_grupal_join, 'id' => $usuario_id ]);
+                    if($comision->cliente_tipo == 1){
+                        $usuario = Alumno::find($comision->cliente_id);
+                    }else{
+                        $usuario = Staff::find($comision->cliente_id);
+                    }
+
+                    if($usuario){
+                        $cliente = $usuario->nombre . ' ' . $usuario->apellido;
+                    }else{
+                        $cliente = '';
+                    }
+
+                    $fecha = Carbon::createFromFormat('Y-m-d', $comision->fecha);
+                    $i = $fecha->dayOfWeek;
+
+                    if($i == 1){
+
+                        $dia = 'Lunes';
+
+                    }else if($i == 2){
+
+                        $dia = 'Martes';
+
+                    }else if($i == 3){
+
+                        $dia = 'Miercoles';
+
+                    }else if($i == 4){
+
+                        $dia = 'Jueves';
+
+                    }else if($i == 5){
+
+                        $dia = 'Viernes';
+
+                    }else if($i == 6){
+
+                        $dia = 'Sabado';
+
+                    }else if($i == 0){
+
+                        $dia = 'Domingo';
+
+                    }
+
+                    $collection=collect($comision);     
+                    $comision_array = $collection->toArray();
+                    
+                    $comision_array['servicio_producto']=$servicio_producto->nombre;
+                    $comision_array['dia']=$dia;
+                    $comision_array['id']='2-'.$comision->id;
+                    $comision_array['cliente']=$cliente;
+                    $array['2-'.$comision->id] = $comision_array;
+                }
+            }
+
+            $total_comisiones = Comision::where('usuario_id', $id)
+                ->where('usuario_tipo',2)
+                ->where('boolean_pago', 0)
+            ->sum('monto');
+
+            $total = $total_pagos + $total_comisiones;
+
+            return view('participante.instructor.pagos')->with(['pagos_comisiones'=> $array, 'total' => $total, 'instructor' => $instructor, 'id' => $id ]);
         }else{ 
 
             return redirect("participante/instructor"); 

@@ -23,6 +23,9 @@
                 
                     <div class="block-header">
 
+                      @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                          
+ 
                         <?php $url = "/participante/instructor/detalle/$id" ?>
                         <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
 
@@ -37,6 +40,10 @@
                                            
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
                         </ul>
+                        @else
+                          <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/inicio" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Inicio</a>
+                        @endif
+
 
                     </div> 
                     
