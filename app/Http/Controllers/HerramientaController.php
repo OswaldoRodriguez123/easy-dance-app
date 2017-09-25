@@ -519,12 +519,14 @@ class HerramientaController extends BaseController {
 
         'nombre_actividad' => 'required',
         'descripcion_actividad' => 'required',
+        'color_etiqueta' => 'required',
     ];
 
     $messages = [
 
         'nombre_actividad.required' => 'Ups! El Nombre es requerido',
         'descripcion_actividad.required' => 'Ups! La Descripción es requerida',
+        'color_etiqueta.required' => 'Ups! El color de la etiqueta es requerido',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -544,6 +546,7 @@ class HerramientaController extends BaseController {
         $actividad->academia_id = Auth::user()->academia_id;
         $actividad->nombre = $nombre;
         $actividad->descripcion = $request->descripcion_actividad;
+        $actividad->color_etiqueta = $request->color_etiqueta;
 
         $actividad->save();
 

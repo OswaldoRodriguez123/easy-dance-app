@@ -186,33 +186,7 @@
                                       </span>
                                   </div>
                                </div>
- -->
-                          
-                            <div class="clearfix p-b-35"></div>
-
-                             <div class="col-sm-12">
-                                    <div class="cp-container">
-                                        <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un color de etiqueta para la actividad que será visualizado en el calendario de eventos" title="" data-original-title="Ayuda"></i>
-                                        <div class="input-group form-group">
-
-                                            <span class="input-group-addon"><i class="zmdi zmdi-invert-colors f-22"></i></span>
-                                            <div class="fg-line dropdown">
-                                                <input type="text" name="color_etiqueta" id="color_etiqueta" class="form-control cp-value proceso pointer" value="#de87b4" data-toggle="dropdown">
-                                                    
-                                                <div class="dropdown-menu">
-                                                    <div class="color-picker" data-cp-default="#de87b4"></div>
-                                                </div>
-                                                
-                                                <i class="cp-value"></i>
-                                            </div>
-                                            <div class="has-error" id="error-color_etiqueta">
-                                                <span >
-                                                    <small class="help-block error-span" id="error-color_etiqueta_mensaje" ></small>                                           
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+ -->       
 
                               <div class="clearfix p-b-35"></div>
                                         
@@ -524,47 +498,7 @@
     }, 1000);
   });
 
-   $("#cargo").on('change', function(){
-      nombre = $("#cargo option:selected").text();
-
-      if(nombre == 'Coordinador de pista'){
-        $('#color_etiqueta').val('#519ff0')
-        $('.cp-value').css('background-color',"#519ff0")
-      }
-
-      if(nombre == 'Coordinador de eventos'){
-        $('#color_etiqueta').val('#b851f0')
-        $('.cp-value').css('background-color',"#b851f0")
-      }
-
-      if(nombre == 'Promotor'){
-        $('#color_etiqueta').val('#f051ec')
-        $('.cp-value').css('background-color',"#f051ec")
-      }
-
-      if(nombre == 'Supervisor'){
-        $('#color_etiqueta').val('#f06451')
-        $('.cp-value').css('background-color',"#ec5402")
-      }
-
-      if(nombre == 'Recepción'){
-        $('#color_etiqueta').val('#f0e651')
-        $('.cp-value').css('background-color',"#f0e651")
-      }
-
-      if(nombre == 'Instructor'){
-        $('#color_etiqueta').val('#a4f051')
-        $('.cp-value').css('background-color',"#a4f051")
-      }
-
-      if(nombre == 'Administrador'){
-        $('#color_etiqueta').val('#51f07e')
-        $('.cp-value').css('background-color',"#51f07e")
-      }
-
-    });
-
-   $('#cargo').on('change', function(){
+  $('#cargo').on('change', function(){
 
       id = $(this).val();
       $('#staff_id').empty();

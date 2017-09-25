@@ -23,7 +23,7 @@ class EventoLaboralController extends BaseController
     {
     	$eventos_laborales = EventoLaboral::join('staff', 'eventos_laborales.staff_id', '=', 'staff.id')
             ->leftJoin('actividades_laborales', 'eventos_laborales.actividad_id', '=', 'actividades_laborales.id')
-            ->select('actividades_laborales.nombre','actividades_laborales.descripcion','eventos_laborales.*', 'staff.nombre as staff_nombre', 'staff.apellido as staff_apellido', 'staff.cargo', 'staff.sexo')
+            ->select('actividades_laborales.nombre','actividades_laborales.descripcion', 'actividades_laborales.color_etiqueta', 'eventos_laborales.*', 'staff.nombre as staff_nombre', 'staff.apellido as staff_apellido', 'staff.cargo', 'staff.sexo')
             ->where('staff.academia_id','=', Auth::user()->academia_id)
         ->get();
 
@@ -178,7 +178,6 @@ class EventoLaboralController extends BaseController
 	        $evento->actividad_id = $request->actividad_id;
 	        $evento->hora_inicio = $hora_inicio;
 	        $evento->hora_final = $hora_final;
-	        $evento->color_etiqueta = $request->color_etiqueta;
 
 	        if($evento->save()){
 
@@ -257,16 +256,6 @@ class EventoLaboralController extends BaseController
    		}
     }
 
-    public function updateEtiqueta(Request $request){
-        $evento = EventoLaboral::find($request->id);
-        $evento->color_etiqueta = $request->color_etiqueta;
-
-        if($evento->save()){
-            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-    }
 
     public function updateFecha(Request $request){
 

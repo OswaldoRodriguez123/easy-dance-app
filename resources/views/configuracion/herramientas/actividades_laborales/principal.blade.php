@@ -6,6 +6,7 @@
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/vendors/farbtastic/farbtastic.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -14,6 +15,7 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
+<script src="{{url('/')}}/assets/vendors/farbtastic/farbtastic.min.js"></script>
 @stop
 @section('content')
 
@@ -49,16 +51,40 @@
 
                 <label for="descripcion_actividad" id="id-descripcion_actividad">Descripción</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la descripción de la actividad" title="" data-original-title="Ayuda"></i>
 
-                  <div class="input-group">
+                <div class="input-group">
                     <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
                     <div class="fg-line">
                     <textarea class="form-control" name="descripcion_actividad" id="descripcion_actividad" placeholder="Descripción"></textarea>
                     </div>
-                  </div>
-                  <div class="has-error" id="error-descripcion_actividad">
+                </div>
+                <div class="has-error" id="error-descripcion_actividad">
                     <span >
                         <small class="help-block error-span" id="error-descripcion_actividad_mensaje" ></small>                               
                     </span>
+                </div>
+
+                <div class="clearfix p-b-35"></div>
+
+                <div class="cp-container">
+                    <label for="fecha_cobro" id="id-color_etiqueta">Color de etiqueta</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un color de etiqueta para la actividad que será visualizado en el calendario de eventos" title="" data-original-title="Ayuda"></i>
+                    <div class="input-group form-group">
+
+                        <span class="input-group-addon"><i class="zmdi zmdi-invert-colors f-22"></i></span>
+                        <div class="fg-line dropdown">
+                            <input type="text" name="color_etiqueta" id="color_etiqueta" class="form-control cp-value proceso pointer" value="#de87b4" data-toggle="dropdown">
+                                
+                            <div class="dropdown-menu">
+                                <div class="color-picker" data-cp-default="#de87b4"></div>
+                            </div>
+                            
+                            <i class="cp-value"></i>
+                        </div>
+                        <div class="has-error" id="error-color_etiqueta">
+                            <span >
+                                <small class="help-block error-span" id="error-color_etiqueta_mensaje" ></small>                                           
+                            </span>
+                        </div>
+                    </div>
                 </div>
               </div>
             </div>
