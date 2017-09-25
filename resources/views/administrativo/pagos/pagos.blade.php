@@ -770,10 +770,16 @@
 
                 $.each(respuesta.items, function (index, array) {
 
+                  nombre = array[0].nombre;
+
+                  if(nombre.length > 15){
+                    nombre = nombre.substr(0, 30) + "..."
+                  }
+
                   var rowId=array[0].id;
                   var rowNode=t.row.add( [
                   ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',  
-                  ''+array[0].nombre+'',
+                  ''+nombre+'',
                   ''+array[0].cantidad+'',
                   ''+formatmoney(parseFloat(array[0].precio_neto))+'',
                   ''+array[0].impuesto+'',
@@ -781,12 +787,22 @@
                   ''+ ' ' +''
                   ] ).draw(false).node();
                   $( rowNode )
-                  .attr('id',rowId)
-                  .attr('fecha_vencimiento',array[0].fecha_vencimiento)
-                  .attr('tipo',array[0].tipo)
-                  .addClass('seleccion');
+                    .attr('id',rowId)
+                    .attr('fecha_vencimiento',array[0].fecha_vencimiento)
+                    .attr('tipo',array[0].tipo)
+                    .addClass('seleccion')
+                    .attr('data-trigger','hover')
+                    .attr('data-toggle','popover')
+                    .attr('data-placement','top')
+                    .attr('data-content','<p class="c-negro">'+array[0].nombre+'</p>')
+                    .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;')
+                    .attr('data-container','body')
+                    .attr('data-html','true')
+                    .attr('title','');
 
                 });
+
+                $('[data-toggle="popover"]').popover();
 
                 var importe_neto = respuesta.total;
                 var impuesto = "{{$impuesto}}";
@@ -1133,10 +1149,16 @@
                 var nTitle="Ups! ";
                 var nMensaje=respuesta.mensaje;
 
+                nombre = respuesta.array[0].nombre;
+
+                if(nombre.length > 15){
+                  nombre = nombre.substr(0, 30) + "..."
+                }
+
                 var rowId=respuesta.array[0].id;
                 var rowNode=t.row.add( [
                 ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',
-                ''+respuesta.array[0].nombre+'',
+                ''+nombre+'',
                 ''+respuesta.array[0].cantidad+'',
                 ''+formatmoney(parseFloat(respuesta.array[0].precio_neto))+'',
                 ''+respuesta.array[0].impuesto+'',
@@ -1146,7 +1168,19 @@
                 ] ).draw(false).node();
                 $( rowNode )
                 .attr('id',rowId)
-                .addClass('seleccion');
+                .attr('fecha_vencimiento',respuesta.array[0].fecha_vencimiento)
+                .attr('tipo',respuesta.array[0].tipo)
+                .addClass('seleccion')
+                .attr('data-trigger','hover')
+                .attr('data-toggle','popover')
+                .attr('data-placement','top')
+                .attr('data-content','<p class="c-negro">'+respuesta.array[0].nombre+'</p>')
+                .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;')
+                .attr('data-container','body')
+                .attr('data-html','true')
+                .attr('title','');
+
+                $('[data-toggle="popover"]').popover();
                 
                 var importe_neto = respuesta.array[0].importe_neto;
                 var impuesto = respuesta.array[0].impuesto;
@@ -1418,10 +1452,16 @@
                   estatus = '<span>Por Cobrar</span>'
                 }
 
+                nombre = array[0].nombre;
+
+                if(nombre.length > 15){
+                  nombre = nombre.substr(0, 30) + "..."
+                }
+
                 var rowId=array[0].id;
                 var rowNode=t.row.add( [
                 ''+'<input name="select_check" id="select_check" type="checkbox" />'+'',  
-                ''+array[0].nombre+'',
+                ''+nombre+'',
                 ''+array[0].cantidad+'',
                 ''+formatmoney(parseFloat(array[0].precio_neto))+'',
                 ''+array[0].impuesto+'',
@@ -1433,9 +1473,19 @@
                 .attr('id',rowId)
                 .attr('fecha_vencimiento',array[0].fecha_vencimiento)
                 .attr('tipo',array[0].tipo)
-                .addClass('seleccion');
+                .addClass('seleccion')
+                .attr('data-trigger','hover')
+                .attr('data-toggle','popover')
+                .attr('data-placement','top')
+                .attr('data-content','<p class="c-negro">'+array[0].nombre+'</p>')
+                .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;')
+                .attr('data-container','body')
+                .attr('data-html','true')
+                .attr('title','');
            
               });
+
+              $('[data-toggle="popover"]').popover();
 
               total = respuesta.total;
 
