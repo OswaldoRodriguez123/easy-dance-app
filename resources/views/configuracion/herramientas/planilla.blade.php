@@ -1346,8 +1346,7 @@
           tipo = 'PUT';
           $.ajaxSetup({cache:false, contentType:"application/x-www-form-urlencoded; charset=UTF-8"});
 
-        }
-        else{
+        }else{
 
           tipo = 'POST';
           var datos = new FormData();
@@ -1434,177 +1433,176 @@
 
     $("#añadirestudio").click(function(){
 
-                var datos = $( "#edit_estudio_academia" ).serialize(); 
-                procesando();
-                var route = "{{url('/')}}/configuracion/academia/estudio";
-                var token = $('input:hidden[name=_token]').val();
-                var datos = datos;
-                limpiarMensaje();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data: datos ,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
+      var datos = $( "#edit_estudio_academia" ).serialize(); 
+      procesando();
+      var route = "{{url('/')}}/configuracion/academia/estudio";
+      var token = $('input:hidden[name=_token]').val();
+      var datos = datos;
+      limpiarMensaje();
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data: datos ,
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
 
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
 
-                          var nombre = respuesta.array.nombre;
-                          var capacidad = respuesta.array.capacidad;
+                var nombre = respuesta.array.nombre;
+                var capacidad = respuesta.array.capacidad;
 
-                          var rowId=respuesta.id;
-                          var rowNode=h.row.add( [
-                          ''+nombre+'',
-                          ''+capacidad+'',
-                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
-                          ] ).draw(false).node();
-                          $( rowNode )
-                          .attr('id',rowId)
-                          .addClass('seleccion');
+                var rowId=respuesta.id;
+                var rowNode=h.row.add( [
+                ''+nombre+'',
+                ''+capacidad+'',
+                '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                ] ).draw(false).node();
+                $( rowNode )
+                .attr('id',rowId)
+                .addClass('seleccion');
 
-                          $("#edit_estudio_academia")[0].reset();
-                          // rechargeServicio();
+                $("#edit_estudio_academia")[0].reset();
+                // rechargeServicio();
 
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        $("#guardar").removeAttr("disabled");
-                        finprocesado();
-                        $(".cancelar").removeAttr("disabled");
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }                       
+              $(".procesando").removeClass('show');
+              $(".procesando").addClass('hidden');
+              $("#guardar").removeAttr("disabled");
+              finprocesado();
+              $(".cancelar").removeAttr("disabled");
 
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        finprocesado();
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              if (typeof msj.responseJSON === "undefined") {
+                window.location = "{{url('/')}}/error";
+              }
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }                        
+              $("#guardar").removeAttr("disabled");
+              $(".cancelar").removeAttr("disabled");
+              finprocesado();
+              $(".procesando").removeClass('show');
+              $(".procesando").addClass('hidden');
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
     });
 
     $("#añadirniveles").click(function(){
 
-                var datos = $( "#edit_nivel_academia" ).serialize(); 
-                procesando();
-                var route = "{{url('/')}}/configuracion/academia/nivel";
-                var token = $('input:hidden[name=_token]').val();
-                var datos = datos;
-                limpiarMensaje();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data: datos ,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
+      var datos = $( "#edit_nivel_academia" ).serialize(); 
+      procesando();
+      var route = "{{url('/')}}/configuracion/academia/nivel";
+      var token = $('input:hidden[name=_token]').val();
+      var datos = datos;
+      limpiarMensaje();
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data: datos ,
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
 
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
 
-                          var nombre = respuesta.array.nombre;
+                var nombre = respuesta.array.nombre;
 
-                          var rowId=respuesta.id;
-                          var rowNode=t.row.add( [
-                          ''+nombre+'',
-                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
-                          ] ).draw(false).node();
-                          $( rowNode )
-                          .attr('id',rowId)
-                          .addClass('seleccion');
+                var rowId=respuesta.id;
+                var rowNode=t.row.add( [
+                ''+nombre+'',
+                '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                ] ).draw(false).node();
+                $( rowNode )
+                .attr('id',rowId)
+                .addClass('seleccion');
 
-                          $("#edit_nivel_academia")[0].reset();
-                          // rechargeServicio();
+                $("#edit_nivel_academia")[0].reset();
+                // rechargeServicio();
 
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        $("#guardar").removeAttr("disabled");
-                        finprocesado();
-                        $(".cancelar").removeAttr("disabled");
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }                       
+              $(".procesando").removeClass('show');
+              $(".procesando").addClass('hidden');
+              $("#guardar").removeAttr("disabled");
+              finprocesado();
+              $(".cancelar").removeAttr("disabled");
 
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        finprocesado();
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              if (typeof msj.responseJSON === "undefined") {
+                window.location = "{{url('/')}}/error";
+              }
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }                        
+              $("#guardar").removeAttr("disabled");
+              $(".cancelar").removeAttr("disabled");
+              finprocesado();
+              $(".procesando").removeClass('show');
+              $(".procesando").addClass('hidden');
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
 
     });
 
@@ -1612,149 +1610,178 @@
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
-            $.ajax({
-                 url: "{{url('/')}}/configuracion/academia/eliminarnivel/"+id,
-                 headers: {'X-CSRF-TOKEN': token},
-                 type: 'POST',
-                 dataType: 'json',                
-                success: function (data) {
-                  if(data.status=='OK'){
-                      
-                                       
-                  }else{
-                    swal(
-                      'Solicitud no procesada',
-                      'Ha ocurrido un error, intente nuevamente por favor',
-                      'error'
-                    );
-                  }
-                },
-                error:function (xhr, ajaxOptions, thrownError){
-                  swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-                }
-              })
+      swal({   
+          title: "Desea eliminar el nivel?",   
+          text: "Confirmar eliminación!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Eliminar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+      if (isConfirm) {
+          procesando();
+          $.ajax({
+               url: "{{url('/')}}/configuracion/academia/eliminarnivel/"+id,
+               headers: {'X-CSRF-TOKEN': token},
+               type: 'POST',
+               dataType: 'json',                
+              success: function (data) {
+                if(data.status=='OK'){
 
-              t.row( $(this).parents('tr') )
-                .remove()
-                .draw();
-          });
+                  swal("Hecho!","Eliminado con éxito!","success");
+                  t.row($(padre))
+                    .remove()
+                    .draw();
+                  finprocesado();
+                             
+                }else{
+                  swal(
+                    'Solicitud no procesada',
+                    'Ha ocurrido un error, intente nuevamente por favor',
+                    'error'
+                  );
+                }
+              },
+              error:function (xhr, ajaxOptions, thrownError){
+                swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+              }
+            })
+          }
+        });   
+      });
 
     $('#tableestudio tbody').on( 'click', 'i.zmdi-delete', function () {
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
-            $.ajax({
-                 url: "{{url('/')}}/configuracion/academia/eliminarestudio/"+id,
-                 headers: {'X-CSRF-TOKEN': token},
-                 type: 'POST',
-                 dataType: 'json',                
-                success: function (data) {
-                  if(data.status=='OK'){
-                      
-                                       
-                  }else{
-                    swal(
-                      'Solicitud no procesada',
-                      'Ha ocurrido un error, intente nuevamente por favor',
-                      'error'
-                    );
-                  }
-                },
-                error:function (xhr, ajaxOptions, thrownError){
-                  swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-                }
-              })
-
-              h.row( $(this).parents('tr') )
-                .remove()
-                .draw();
-          });
+      swal({   
+          title: "Desea eliminar el estudio?",   
+          text: "Confirmar eliminación!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Eliminar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+        if (isConfirm) {
+          procesando();
+          $.ajax({
+           url: "{{url('/')}}/configuracion/academia/eliminarestudio/"+id,
+           headers: {'X-CSRF-TOKEN': token},
+           type: 'POST',
+           dataType: 'json',                
+            success: function (data) {
+              if(data.status=='OK'){
+                swal("Hecho!","Eliminado con éxito!","success");
+                h.row($(padre))
+                  .remove()
+                  .draw();
+                finprocesado();
+                                   
+              }else{
+                swal(
+                  'Solicitud no procesada',
+                  'Ha ocurrido un error, intente nuevamente por favor',
+                  'error'
+                );
+              }
+            },
+            error:function (xhr, ajaxOptions, thrownError){
+              swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+            }
+          })
+        }
+      });
+    });
 
 
     $("#añadircargo").click(function(){
 
-                var datos = $( "#edit_cargo_academia" ).serialize(); 
-                procesando();
-                var route = "{{url('/')}}/configuracion/academia/cargo";
-                var token = $('input:hidden[name=_token]').val();
-                var datos = datos;
-                limpiarMensaje();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data: datos ,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
+      var datos = $( "#edit_cargo_academia" ).serialize(); 
+      procesando();
+      var route = "{{url('/')}}/configuracion/academia/cargo";
+      var token = $('input:hidden[name=_token]').val();
+      var datos = datos;
+      limpiarMensaje();
+      $.ajax({
+          url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data: datos ,
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
 
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
 
-                          var nombre = respuesta.array.nombre;
+                var nombre = respuesta.array.nombre;
 
-                          var rowId=respuesta.id;
-                          var rowNode=k.row.add( [
-                          ''+nombre+'',
-                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
-                          ] ).draw(false).node();
-                          $( rowNode )
-                          .attr('id',rowId)
-                          .addClass('seleccion');
+                var rowId=respuesta.id;
+                var rowNode=k.row.add( [
+                ''+nombre+'',
+                '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                ] ).draw(false).node();
+                $( rowNode )
+                .attr('id',rowId)
+                .addClass('seleccion');
 
-                          $("#edit_cargo_academia")[0].reset();
-                          // rechargeServicio();
+                $("#edit_cargo_academia")[0].reset();
+                // rechargeServicio();
 
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        $("#guardar").removeAttr("disabled");
-                        finprocesado();
-                        $(".cancelar").removeAttr("disabled");
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }                       
+              $(".procesando").removeClass('show');
+              $(".procesando").addClass('hidden');
+              $("#guardar").removeAttr("disabled");
+              finprocesado();
+              $(".cancelar").removeAttr("disabled");
 
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        finprocesado();
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+            }, 1000);
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              if (typeof msj.responseJSON === "undefined") {
+                window.location = "{{url('/')}}/error";
+              }
+              if(msj.responseJSON.status=="ERROR"){
+                console.log(msj.responseJSON.errores);
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }                        
+              $("#guardar").removeAttr("disabled");
+              $(".cancelar").removeAttr("disabled");
+              finprocesado();
+              $(".procesando").removeClass('show');
+              $(".procesando").addClass('hidden');
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+      });
 
     });
 
@@ -1762,116 +1789,130 @@
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
-            $.ajax({
-                 url: "{{url('/')}}/configuracion/academia/eliminarcargo/"+id,
-                 headers: {'X-CSRF-TOKEN': token},
-                 type: 'POST',
-                 dataType: 'json',                
-                success: function (data) {
-                  if(data.status=='OK'){
-                      
-                                       
-                  }else{
-                    swal(
-                      'Solicitud no procesada',
-                      'Ha ocurrido un error, intente nuevamente por favor',
-                      'error'
-                    );
-                  }
-                },
-                error:function (xhr, ajaxOptions, thrownError){
-                  swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-                }
-              })
-
-              k.row( $(this).parents('tr') )
-                .remove()
-                .draw();
-          });
+      swal({   
+          title: "Desea eliminar el cargo?",   
+          text: "Confirmar eliminación!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Eliminar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+        if (isConfirm) {
+          procesando();
+          $.ajax({
+             url: "{{url('/')}}/configuracion/academia/eliminarcargo/"+id,
+             headers: {'X-CSRF-TOKEN': token},
+             type: 'POST',
+             dataType: 'json',                
+            success: function (data) {
+              if(data.status=='OK'){
+                swal("Hecho!","Eliminado con éxito!","success");
+                k.row($(padre))
+                  .remove()
+                  .draw();
+                finprocesado();
+                                   
+              }else{
+                swal(
+                  'Solicitud no procesada',
+                  'Ha ocurrido un error, intente nuevamente por favor',
+                  'error'
+                );
+              }
+            },
+            error:function (xhr, ajaxOptions, thrownError){
+              swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+            }
+          })
+        }
+      });
+    });
 
       $("#añadirformula").click(function(){
 
-                var datos = $( "#edit_formula_academia" ).serialize(); 
-                procesando();
-                var route = "{{url('/')}}/configuracion/academia/formula";
-                var token = $('input:hidden[name=_token]').val();
-                var datos = datos;
-                limpiarMensaje();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data: datos ,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
+        var datos = $( "#edit_formula_academia" ).serialize(); 
+        procesando();
+        var route = "{{url('/')}}/configuracion/academia/formula";
+        var token = $('input:hidden[name=_token]').val();
+        var datos = datos;
+        limpiarMensaje();
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                data: datos ,
+            success:function(respuesta){
+              setTimeout(function(){ 
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY"; 
+                if(respuesta.status=="OK"){
 
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
+                  var nType = 'success';
+                  var nTitle="Ups! ";
+                  var nMensaje=respuesta.mensaje;
 
-                          var nombre = respuesta.array.nombre;
+                  var nombre = respuesta.array.nombre;
 
-                          var rowId=respuesta.id;
-                          var rowNode=l.row.add( [
-                          ''+nombre+'',
-                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
-                          ] ).draw(false).node();
-                          $( rowNode )
-                          .attr('id',rowId)
-                          .addClass('seleccion');
+                  var rowId=respuesta.id;
+                  var rowNode=l.row.add( [
+                  ''+nombre+'',
+                  '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                  ] ).draw(false).node();
+                  $( rowNode )
+                  .attr('id',rowId)
+                  .addClass('seleccion');
 
-                          $("#edit_formula_academia")[0].reset();
+                  $("#edit_formula_academia")[0].reset();
 
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        $("#guardar").removeAttr("disabled");
-                        finprocesado();
-                        $(".cancelar").removeAttr("disabled");
+                }else{
+                  var nTitle="Ups! ";
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  var nType = 'danger';
+                }                       
+                $(".procesando").removeClass('show');
+                $(".procesando").addClass('hidden');
+                $("#guardar").removeAttr("disabled");
+                finprocesado();
+                $(".cancelar").removeAttr("disabled");
 
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if (typeof msj.responseJSON === "undefined") {
-                          window.location = "{{url('/')}}/error";
-                        }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        finprocesado();
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              }, 1000);
+            },
+            error:function(msj){
+              setTimeout(function(){ 
+                if (typeof msj.responseJSON === "undefined") {
+                  window.location = "{{url('/')}}/error";
+                }
+                if(msj.responseJSON.status=="ERROR"){
+                  console.log(msj.responseJSON.errores);
+                  errores(msj.responseJSON.errores);
+                  var nTitle="    Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                }else{
+                  var nTitle="   Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                }                        
+                $("#guardar").removeAttr("disabled");
+                $(".cancelar").removeAttr("disabled");
+                finprocesado();
+                $(".procesando").removeClass('show');
+                $(".procesando").addClass('hidden');
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nType = 'danger';
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY";                       
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+              }, 1000);
+            }
+        });
 
     });
 
@@ -1879,32 +1920,47 @@
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
-            $.ajax({
-                 url: "{{url('/')}}/configuracion/academia/eliminarformula/"+id,
-                 headers: {'X-CSRF-TOKEN': token},
-                 type: 'POST',
-                 dataType: 'json',                
-                success: function (data) {
-                  if(data.status=='OK'){
-                      
-                                       
-                  }else{
-                    swal(
-                      'Solicitud no procesada',
-                      'Ha ocurrido un error, intente nuevamente por favor',
-                      'error'
-                    );
-                  }
-                },
-                error:function (xhr, ajaxOptions, thrownError){
-                  swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-                }
-              })
+      swal({   
+          title: "Desea eliminar la formula?",   
+          text: "Confirmar eliminación!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Eliminar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+        if (isConfirm) {
+          procesando();
+          $.ajax({
+             url: "{{url('/')}}/configuracion/academia/eliminarformula/"+id,
+             headers: {'X-CSRF-TOKEN': token},
+             type: 'POST',
+             dataType: 'json',                
+            success: function (data) {
+              if(data.status=='OK'){
+                  
+                swal("Hecho!","Eliminado con éxito!","success");
+                l.row($(padre))
+                  .remove()
+                  .draw(); 
+                finprocesado();
 
-              l.row( $(this).parents('tr') )
-                .remove()
-                .draw();
-          });
+              }else{
+                swal(
+                  'Solicitud no procesada',
+                  'Ha ocurrido un error, intente nuevamente por favor',
+                  'error'
+                );
+              }
+            },
+            error:function (xhr, ajaxOptions, thrownError){
+              swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+            }
+          })
+        }
+      })
+    });
 
     $("#añadirvaloracion").click(function(){
 
@@ -1991,33 +2047,45 @@
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
-      $.ajax({
-           url: "{{url('/')}}/configuracion/academia/eliminarvaloracion/"+id,
-           headers: {'X-CSRF-TOKEN': token},
-           type: 'POST',
-           dataType: 'json',                
-          success: function (data) {
-            if(data.status=='OK'){
-                
-                                 
-            }else{
-              swal(
-                'Solicitud no procesada',
-                'Ha ocurrido un error, intente nuevamente por favor',
-                'error'
-              );
+      swal({   
+          title: "Desea eliminar la valoración?",   
+          text: "Confirmar eliminación!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Eliminar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+        if (isConfirm) {
+          procesando();
+          $.ajax({
+             url: "{{url('/')}}/configuracion/academia/eliminarvaloracion/"+id,
+             headers: {'X-CSRF-TOKEN': token},
+             type: 'POST',
+             dataType: 'json',                
+            success: function (data) {
+              if(data.status=='OK'){
+                swal("Hecho!","Eliminado con éxito!","success");
+                m.row($(padre))
+                  .remove()
+                  .draw();
+                                   
+              }else{
+                swal(
+                  'Solicitud no procesada',
+                  'Ha ocurrido un error, intente nuevamente por favor',
+                  'error'
+                );
+              }
+            },
+            error:function (xhr, ajaxOptions, thrownError){
+              swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
             }
-          },
-          error:function (xhr, ajaxOptions, thrownError){
-            swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-          }
-        })
-
-        m.row( $(this).parents('tr') )
-          .remove()
-          .draw();
+          })
+        }
+      });
     });
-
 
     function countCharDir(val) {
         var len = val.value.length;
@@ -2046,92 +2114,92 @@
 
       $("#añadirpuntaje").click(function(){
 
-                var datos = $( "#edit_puntaje_academia" ).serialize(); 
-                procesando();
-                var route = "{{url('/')}}/configuracion/academia/puntaje";
-                var token = $('input:hidden[name=_token]').val();
-                var datos = datos;
-                limpiarMensaje();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data: datos ,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
+        var datos = $( "#edit_puntaje_academia" ).serialize(); 
+        procesando();
+        var route = "{{url('/')}}/configuracion/academia/puntaje";
+        var token = $('input:hidden[name=_token]').val();
+        var datos = datos;
+        limpiarMensaje();
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                data: datos ,
+            success:function(respuesta){
+              setTimeout(function(){ 
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY"; 
+                if(respuesta.status=="OK"){
 
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
+                  var nType = 'success';
+                  var nTitle="Ups! ";
+                  var nMensaje=respuesta.mensaje;
 
-                          var nombre = respuesta.array.nombre;
-                          var cantidad = respuesta.array.cantidad;
-                          var fecha_vencimiento = respuesta.array.fecha_vencimiento;
+                  var nombre = respuesta.array.nombre;
+                  var cantidad = respuesta.array.cantidad;
+                  var fecha_vencimiento = respuesta.array.fecha_vencimiento;
 
-                          var rowId=respuesta.id;
-                          var rowNode=n.row.add( [
-                          ''+nombre+'',
-                          ''+cantidad+'',
-                          ''+fecha_vencimiento+'',
-                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
-                          ] ).draw(false).node();
-                          $( rowNode )
-                          .attr('id',rowId)
-                          .addClass('seleccion');
+                  var rowId=respuesta.id;
+                  var rowNode=n.row.add( [
+                  ''+nombre+'',
+                  ''+cantidad+'',
+                  ''+fecha_vencimiento+'',
+                  '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                  ] ).draw(false).node();
+                  $( rowNode )
+                  .attr('id',rowId)
+                  .addClass('seleccion');
 
-                          $("#edit_puntaje_academia")[0].reset();
-                          // rechargeServicio();
+                  $("#edit_puntaje_academia")[0].reset();
+                  // rechargeServicio();
 
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }                       
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        $("#guardar").removeAttr("disabled");
-                        finprocesado();
-                        $(".cancelar").removeAttr("disabled");
+                }else{
+                  var nTitle="Ups! ";
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  var nType = 'danger';
+                }                       
+                $(".procesando").removeClass('show');
+                $(".procesando").addClass('hidden');
+                $("#guardar").removeAttr("disabled");
+                finprocesado();
+                $(".cancelar").removeAttr("disabled");
 
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
-                        if(msj.responseJSON.status=="ERROR"){
-                          console.log(msj.responseJSON.errores);
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        $("#guardar").removeAttr("disabled");
-                        $(".cancelar").removeAttr("disabled");
-                        finprocesado();
-                        $(".procesando").removeClass('show');
-                        $(".procesando").addClass('hidden');
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";                       
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+              }, 1000);
+            },
+            error:function(msj){
+              setTimeout(function(){ 
+                // if (typeof msj.responseJSON === "undefined") {
+                //   window.location = "{{url('/')}}/error";
+                // }
+                if(msj.responseJSON.status=="ERROR"){
+                  console.log(msj.responseJSON.errores);
+                  errores(msj.responseJSON.errores);
+                  var nTitle="    Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                }else{
+                  var nTitle="   Ups! "; 
+                  var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                }                        
+                $("#guardar").removeAttr("disabled");
+                $(".cancelar").removeAttr("disabled");
+                finprocesado();
+                $(".procesando").removeClass('show');
+                $(".procesando").addClass('hidden');
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nType = 'danger';
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY";                       
+                notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+              }, 1000);
+            }
+        });
 
     }); 
 
@@ -2139,31 +2207,45 @@
       var padre=$(this).parents('tr');
       var token = $('input:hidden[name=_token]').val();
       var id = $(this).closest('tr').attr('id');
-      $.ajax({
-           url: "{{url('/')}}/configuracion/academia/eliminarpuntaje/"+id,
-           headers: {'X-CSRF-TOKEN': token},
-           type: 'POST',
-           dataType: 'json',                
-          success: function (data) {
-            if(data.status=='OK'){
-                
-                                 
-            }else{
-              swal(
-                'Solicitud no procesada',
-                'Ha ocurrido un error, intente nuevamente por favor',
-                'error'
-              );
+      swal({   
+          title: "Desea eliminar el puntaje?",   
+          text: "Confirmar eliminación!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Eliminar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+      if (isConfirm) {
+        procesando();
+        $.ajax({
+             url: "{{url('/')}}/configuracion/academia/eliminarpuntaje/"+id,
+             headers: {'X-CSRF-TOKEN': token},
+             type: 'POST',
+             dataType: 'json',                
+            success: function (data) {
+              if(data.status=='OK'){
+                  
+                swal("Hecho!","Eliminado con éxito!","success");
+                n.row($(padre))
+                  .remove()
+                  .draw(); 
+                finprocesado();             
+              }else{
+                swal(
+                  'Solicitud no procesada',
+                  'Ha ocurrido un error, intente nuevamente por favor',
+                  'error'
+                );
+              }
+            },
+            error:function (xhr, ajaxOptions, thrownError){
+              swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
             }
-          },
-          error:function (xhr, ajaxOptions, thrownError){
-            swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-          }
-        })
-
-        n.row( $(this).parents('tr') )
-          .remove()
-          .draw();
+          })
+        }
+      });
     });
 
     $(".procedimientos").click(function(){

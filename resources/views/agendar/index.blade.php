@@ -953,16 +953,6 @@
                                             '</li>' +
                                             '<li>' +
                                                 '<a class="pointer" data-tipo="clases-grupales">Clases Grupales</a>' +
-                                                '<ul class="dropdown-menu dropdown-menu-left">' +
-                                                    '<li>' +
-                                                        '<a class="pointer" data-instructor_id="0">Todos</a>' +
-                                                    '</li>' +
-                                                    @foreach($instructores as $instructor)
-                                                        '<li>' +
-                                                            '<a class="pointer" data-instructor_id="{{$instructor->id}}">{{$instructor->nombre}} {{$instructor->apellido}}</a>' +
-                                                        '</li>' +
-                                                    @endforeach
-                                                '</ul>' +
                                             '</li>' +
                                             '<li>' +
                                                 '<a class="pointer" data-tipo="clases-personalizadas">Clases Personalizadas</a>' +
