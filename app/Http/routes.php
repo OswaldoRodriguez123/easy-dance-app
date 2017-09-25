@@ -199,6 +199,7 @@
 			Route::get('configuracion/administradores','AdministradorController@principal');
 			Route::get('configuracion/administradores/agregar','AdministradorController@create');
 			Route::post('configuracion/administradores/agregar','AdministradorController@store');
+			Route::delete('configuracion/administradores/deshabilitar/{id}', 'AdministradorController@destroy');
 
 			//INVITAR
 

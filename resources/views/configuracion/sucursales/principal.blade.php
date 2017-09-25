@@ -53,13 +53,19 @@
                                     <th class="text-center" data-column-id="tipo" data-order="desc">Tipo</th>
                                     <th class="text-center" data-column-id="email" data-order="desc">Correo Electrónico</th>
                                     <th class="text-center" data-column-id="direccion" data-order="desc">Dirección</th>
+                                    <th class="text-center" data-column-id="operacion" data-order="desc" >Acciones</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
 
                             @foreach ($usuarios as $usuario)
                                 <?php $id = $usuario->id; ?>
-                                <tr id="row_{{$id}}" class="seleccion" >
+
+                                @if($usuario->estatus)
+                                    <tr id="row_{{$id}}" class="seleccion" >
+                                @else
+                                    <tr id="row_{{$id}}" class="seleccion seleccion_deleted" >
+                                @endif
                                     <td class="text-center previa">{{$usuario->nombre}} {{$usuario->apellido}}</td>
                                     <td class="text-center previa">{{$usuario->nombre_academia}}</td>
                                     <td class="text-center previa">
@@ -79,6 +85,11 @@
                                     @endif</td>
                                     <td class="text-center previa">{{ str_limit($usuario->email, $limit = 30, $end = '...') }}</td>
                                     <td class="text-center previa">{{ str_limit($usuario->direccion, $limit = 40, $end = '...') }}</td>
+                                    <td class="text-center disabled"> 
+                                        @if($usuario->estatus)
+                                            <i name="eliminar" id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i>
+                                        @endif
+                                    </td>
                                   </tr>
                             @endforeach 
                                                            
@@ -104,58 +115,118 @@
 
 @section('js') 
             
-        <script type="text/javascript">
+    <script type="text/javascript">
 
         route_detalle="{{url('/')}}/configuracion/administradores/detalle";
         route_operacion="{{url('/')}}/configuracion/administradores/operaciones";
+        route_deshabilitar="{{url('/')}}/configuracion/administradores/deshabilitar/";
 
         $(document).ready(function(){
 
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25,    
-        order: [[0, 'asc']],
-       fnDrawCallback: function() {
-        if ($('#tablelistar tr').length < 25) {
-              $('.dataTables_paginate').hide();
-          }else{
-             $('.dataTables_paginate').show();
-          }
-        },
-        pageLength: 25,
-        paging: false,
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "disabled" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
-        });
-    
+            t=$('#tablelistar').DataTable({
 
-    });
+                processing: true,
+                serverSide: false,
+                pageLength: 25,    
+                order: [[0, 'asc']],
+                fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+                  $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "disabled" );
+                },
+                language: {
+                                processing:     "Procesando ...",
+                                search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                                searchPlaceholder: "BUSCAR",
+                                lengthMenu:     "Mostrar _MENU_ Registros",
+                                info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                                infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                                infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                                infoPostFix:    "",
+                                loadingRecords: "...",
+                                zeroRecords:    "No se encontraron registros coincidentes",
+                                emptyTable:     "No hay datos disponibles en la tabla",
+                                paginate: {
+                                    first:      "Primero",
+                                    previous:   "Anterior",
+                                    next:       "Siguiente",
+                                    last:       "Ultimo"
+                                },
+                                aria: {
+                                    sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                    sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                                }
+                            }
+            });
+        
+
+        });
+
+        $("i[name=eliminar]").click(function(){
+
+            id = this.id;
+            element = this;
+
+            swal({   
+                title: "Desea eliminar el usuario?",   
+                text: "Confirmar eliminación!",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+                if (isConfirm) {
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nType = 'success';
+                    var nAnimIn = $(this).attr('data-animation-in');
+                    var nAnimOut = $(this).attr('data-animation-out')
+                    var nTitle="Ups! ";
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    
+                    
+                    eliminar(id, element);
+                }
+            });
+        });
+
+        function eliminar(id, element){
+
+            var route = route_deshabilitar + id;
+            var token = "{{ csrf_token() }}";
+            procesando();
+                
+            $.ajax({
+                url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'DELETE',
+                dataType: 'json',
+                data:id,
+                success:function(respuesta){
+
+                    finprocesado()
+
+                    swal("Hecho!","El usuario ha sido deshabilitado!","success");
+                    $(element).closest('tr').addClass('seleccion_deleted');
+                    $(element).remove();
+
+                },
+                error:function(msj){
+                    finprocesado()
+                    $("#msj-danger").fadeIn(); 
+                    var text="";
+                    console.log(msj);
+                    var merror=msj.responseJSON;
+                    text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                    $("#msj-error").html(text);
+                    setTimeout(function(){
+                        $("#msj-danger").fadeOut();
+                    }, 3000);
+                }
+            });
+        }
 
 
     </script>

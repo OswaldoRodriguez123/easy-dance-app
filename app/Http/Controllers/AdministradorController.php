@@ -29,6 +29,7 @@ class AdministradorController extends BaseController
             ->select('academias.nombre as nombre_academia', 'users.*', 'sucursales.id', 'users.usuario_tipo')
             ->where('sucursales.id','=', $academia->sucursal_id)
             ->whereIn('usuarios_tipo.tipo', $array)
+            ->distinct('users.id')
         ->get();
 
         return view('configuracion.sucursales.principal')->with('usuarios', $usuarios);
@@ -214,8 +215,17 @@ class AdministradorController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function destroy($id)
     {
-        //
+
+        $usuario = User::find($id);
+        $usuario->estatus = 0;
+        
+        if($usuario->save()){
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 }
