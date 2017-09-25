@@ -415,6 +415,13 @@
 			Route::put('configuracion/blogueros/update/imagen', 'BloggerController@updateImagen');
 			Route::put('configuracion/blogueros/update/redes', 'BloggerController@updateRedes');
 			Route::delete('configuracion/blogueros/eliminar/{id}', 'BloggerController@destroy');
+
+			//REPORTES
+
+			Route::get('reportes/administrativo', 'ReporteController@Administrativo');
+			Route::post('reportes/administrativo', 'ReporteController@AdministrativoFiltros');
+			Route::get('reportes/master', 'ReporteController@Master');
+			Route::post('reportes/master', 'ReporteController@MasterFiltros');
 		
 		});	//END MIDDLEWARE ADMIN
 		/*----------------------------------------------------------
@@ -533,16 +540,12 @@
 			Route::post('reportes/asistencias', 'ReporteController@AsistenciasFiltros');
 			Route::get('reportes/estatus-alumnos','ReporteController@Estatus_Alumnos');
 			Route::post('reportes/estatus-alumnos','ReporteController@Estatus_AlumnosFiltros');
-			Route::get('reportes/administrativo', 'ReporteController@Administrativo');
-			Route::post('reportes/administrativo', 'ReporteController@AdministrativoFiltros');
 			Route::get('reportes/camisetas-programacion', 'ReporteController@Camiseta_Programacion');
 			Route::post('reportes/camisetas-programacion', 'ReporteController@Camiseta_ProgramacionFiltros');
 			Route::get('reportes/referidos', 'ReporteController@Referidos');
 			Route::post('reportes/referidos', 'ReporteController@ReferidosFiltros');
 			Route::get('reportes/credenciales', 'ReporteController@Credenciales');
 			Route::post('reportes/credenciales', 'ReporteController@CredencialesFiltros');
-			Route::get('reportes/master', 'ReporteController@Master');
-			Route::post('reportes/master', 'ReporteController@MasterFiltros');
 			Route::get('reportes/asistencias-personal', 'ReporteController@AsistenciasPersonal');
 			Route::post('reportes/asistencias-personal', 'ReporteController@AsistenciasPersonalFiltros');
 			Route::get('reportes/reservaciones', 'ReporteController@Reservaciones');

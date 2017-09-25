@@ -44,13 +44,15 @@
                       <a href="{{url('/')}}/reportes/asistencias"><h2 data-type="mText" class="sti-item">Asistencias</h2><span data-type="icon" class="sti-icon sti-icon-reportes5 sti-item"></span></a>
                   </li>
 
-                  <li data-hovercolor="#f44336">
-                      <a data-toggle="modal" href="{{url('/')}}/reportes/administrativo"><h2 data-type="mText" class="sti-item">Administrativo</h2><span data-type="icon" class="sti-icon sti-icon-reportes11 sti-item"></span></a>
-                  </li>
+                  @if($usuario_tipo != 6)
+                    <li data-hovercolor="#f44336">
+                        <a data-toggle="modal" href="{{url('/')}}/reportes/administrativo"><h2 data-type="mText" class="sti-item">Administrativo</h2><span data-type="icon" class="sti-icon sti-icon-reportes11 sti-item"></span></a>
+                    </li>
 
-                  <li data-hovercolor="#f44336">
-                      <a data-toggle="modal" href="{{url('/')}}/reportes/master"><h2 data-type="mText" class="sti-item">Master</h2><span data-type="icon" class="sti-icon sti-icon-reportes10 sti-item"></span></a>
-                  </li>
+                    <li data-hovercolor="#f44336">
+                        <a data-toggle="modal" href="{{url('/')}}/reportes/master"><h2 data-type="mText" class="sti-item">Master</h2><span data-type="icon" class="sti-icon sti-icon-reportes10 sti-item"></span></a>
+                    </li>
+                  @endif
 
                   <div class="clearfix"></div>
 
