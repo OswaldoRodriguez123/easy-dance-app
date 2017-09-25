@@ -46,6 +46,8 @@ class VisitanteController extends BaseController {
 
         $array = array();
 
+        $academia = Academia::find(Auth::user()->academia_id);
+
         foreach($visitantes as $visitante){
 
             $collection=collect($visitante);     
@@ -63,6 +65,12 @@ class VisitanteController extends BaseController {
             $tmp = explode(" ", $visitante['apellido']);
             $apellido= $tmp[0];
 
+            if($academia->tipo_horario == 2){
+                $hora_registro = Carbon::createFromFormat('H:i:s',$visitante->hora_registro)->toTimeString();
+            }else{
+                $hora_registro = Carbon::createFromFormat('H:i:s',$visitante->hora_registro)->format('g:i a');
+            }
+
             $contenido = '';
 
             $contenido = '<p class="c-negro">'.$visitante['nombre'] . ' ' . $visitante['apellido'].'<br><br>' .
@@ -75,6 +83,7 @@ class VisitanteController extends BaseController {
             $visitante_array['apellido']=$apellido;
             $visitante_array['edad']=$edad;
             $visitante_array['contenido']=$contenido;
+            $visitante_array['hora_registro']=$hora_registro;
             $array[$visitante->id] = $visitante_array;
 
         }
