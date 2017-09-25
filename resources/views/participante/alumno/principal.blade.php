@@ -207,11 +207,17 @@
                                                             @endif
 
                                                             @if($alumno['usuario'])
-                                                                <li class="hidden-xs email">
+                                                                <li class="hidden-xs email pointer">
+                                                                    <a onclick="procesando()"><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
+                                                                </li>
+                                                            @else
+                                                                <li class="hidden-xs usuario pointer">
+                                                                    <a><i class="zmdi zmdi-alert-circle-o f-16 boton blue"></i> Crear Cuenta</a>
+                                                                </li>
+                                                                <li class="hidden-xs email pointer" style="display:none">
                                                                     <a onclick="procesando()"><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
                                                                 </li>
                                                             @endif
-
 
                                                             <li class="hidden-xs">
                                                                 <a onclick="procesando()" href="{{url('/')}}/participante/alumno/transferir/{{$id}}"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>
@@ -268,6 +274,7 @@
         route_email="{{url('/')}}/correo/sesion";
         route_eliminar="{{url('/')}}/participante/alumno/eliminar/";
         route_principal="{{url('/')}}/participante/alumno";
+        route_agregar="{{url('/')}}/participante/alumno/crear_cuenta/";
 
         t=$('#tablelistar').DataTable({
             processing: true,
@@ -484,6 +491,46 @@
             });
             }
         });
+    });
+
+    $(".usuario").click(function(){
+      element = this;
+      var id = $(this).closest('tr').attr('id');
+      swal({   
+        title: "Desea crearle la cuenta al alumno?",   
+        text: "Confirmar creación!",   
+        type: "warning",   
+        showCancelButton: true,   
+        confirmButtonColor: "#DD6B55",   
+        confirmButtonText: "Crear!",  
+        cancelButtonText: "Cancelar",         
+        closeOnConfirm: true 
+      }, function(isConfirm){   
+        if (isConfirm) {
+
+          procesando();
+          var token = '{{ csrf_token() }}';
+          var route = route_agregar + id;
+                
+          $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            dataType: 'json',
+            success:function(respuesta){
+              finprocesado();
+              swal('Exito!','La cuenta ha sido creada','success');
+              $(element).hide();
+              $(element).closest('tr').find('.email').show();
+
+            },
+            error:function(msj){
+              swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+              finprocesado();
+            }
+          });
+        }
+      });
     });
 
     </script>
