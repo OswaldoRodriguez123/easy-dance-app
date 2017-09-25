@@ -53,6 +53,7 @@ class BaseController extends Controller {
 
             $array = array();
             $numero_de_notificaciones = 0;
+            $now = Carbon::now();
 
             foreach ($notificaciones as $notificacion) {
 
@@ -154,7 +155,103 @@ class BaseController extends Controller {
                     $url = "inicio";
                 }
 
+                $fecha_de_registro = new Carbon($notificacion->created_at);
+                $diferencia_tiempo = $fecha_de_registro->diffInDays($now);
+
+                if($diferencia_tiempo<1){
+
+                    $fecha_de_registro = new Carbon($notificacion->created_at);
+                    $diferencia_tiempo = $fecha_de_registro->diffInHours($now);
+
+                    if($diferencia_tiempo<1){
+
+                        $fecha_de_registro = new Carbon($notificacion->created_at);
+                        $diferencia_tiempo = $fecha_de_registro->diffInMinutes($now);
+
+                        if($diferencia_tiempo<1){
+
+                            $fecha_de_registro = new Carbon($notificacion->created_at);
+                            $diferencia_tiempo = $fecha_de_registro->diffInSeconds($now);
+
+                            if($diferencia_tiempo==1){
+                                $fecha_de_realizacion = "hace ".$diferencia_tiempo." segundo";
+                            }else{
+                                $fecha_de_realizacion = "hace ".$diferencia_tiempo." Segundos";
+                            }
+                        }else{
+
+                            if($diferencia_tiempo==1){
+                                $fecha_de_realizacion = "hace ".$diferencia_tiempo." minuto";
+                            }else{
+                                $fecha_de_realizacion = "hace ".$diferencia_tiempo." minutos";
+                            }
+                        }
+                    }else{
+
+                        if($diferencia_tiempo==1){
+                            $fecha_de_realizacion = "hace ".$diferencia_tiempo." hora";
+                        }else{
+                            $fecha_de_realizacion = "hace ".$diferencia_tiempo." horas";
+                        }
+                    }
+                }else{
+
+                    if($academia->tipo_horario == 1){
+                        $hora_segundos = $fecha_de_registro->format('g:i a');
+                    }else{
+                        $hora_segundos = $fecha_de_registro->format('H:i');
+                    }
+
+                    if($diferencia_tiempo==1){
+                        $fecha_de_realizacion = "Ayer a las ".$hora_segundos;
+                    }else{
+
+                        $dia = $fecha_de_registro->format('d');
+
+                        switch ($fecha_de_registro->month) {
+                            case 1:
+                                $mes = "Enero";
+                                break;
+                            case 2:
+                                $mes = "Febrero";
+                                break;
+                            case 3:
+                                $mes = "Marzo";
+                                break;
+                            case 4:
+                                $mes = "Abril";
+                                break;
+                            case 5:
+                                $mes = "Mayo";
+                                break;
+                            case 6:
+                                $mes = "Junio";
+                                break;
+                            case 7:
+                                $mes = "Julio";
+                                break;
+                            case 8:
+                                $mes = "Agosto";
+                                break;
+                            case 9:
+                                $mes = "Septiembre";
+                                break;
+                            case 10:
+                                $mes = "Octubre";
+                                break;
+                            case 11:
+                                $mes = "Noviembre";
+                                break;
+                            case 12:
+                                $mes = "Diciembre";
+                                break;
+                        }
+                        $fecha_de_realizacion = $dia . " de " . $mes . " a las ".$hora_segundos;
+                    }
+                }
+
                 $notificacion_imagen_array['url']= $url;
+                $notificacion_imagen_array['fecha_de_realizacion']= $fecha_de_realizacion;
 
                 $array[$notificacion->id] = $notificacion_imagen_array;
             }

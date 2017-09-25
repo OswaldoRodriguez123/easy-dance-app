@@ -164,7 +164,11 @@
                                                 </div>
                                                 <div class="media-body">
                                                     <div class="lv-title">{{$notificacion['titulo']}}</div>
-                                                    <small class="lv-small">{{$notificacion['mensaje']}}</small>
+                                                    <small class="lv-small">
+                                                        {{$notificacion['mensaje']}}
+                                                        <br><br>
+                                                        {{$notificacion['fecha_de_realizacion']}}
+                                                    </small>
                                                 </div>
                                             </div>
                                         </a>
