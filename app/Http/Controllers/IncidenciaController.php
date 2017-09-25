@@ -86,9 +86,39 @@ class IncidenciaController extends BaseController {
 
     public function createconid($id)
     {
+        $usuarios = array();
+
+        $staffs = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($staffs as $staff){
+
+            $collection=collect($staff);     
+            $usuario_array = $collection->toArray();
+
+            $usuario_array['tipo']=1;
+            $usuario_array['id']='1-'.$staff->id;
+            $usuario_array['icono']="<i class='icon_f-staff'></i>";
+            $usuarios['1-'.$staff->id] = $usuario_array;
+        }
+
+        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        foreach($instructores as $instructor)
+        {
+            $collection=collect($instructor);     
+            $usuario_array = $collection->toArray();
+
+            $usuario_array['tipo']=2;
+            $usuario_array['id']='2-'.$instructor->id;
+            $usuario_array['icono']="<i class='icon_a-instructor'></i>";
+            $usuarios['2-'.$instructor->id] = $usuario_array;
+        }
+
+        $gravedades = Gravedad::all();
+
         $staff = Staff::find($id);
 
-        return view('incidencia.create')->with('staff', $staff);
+        return view('incidencia.create')->with(['staff' => $staff,'usuarios' => $usuarios, 'gravedades' => $gravedades]);
     }
 
     public function create()
