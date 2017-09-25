@@ -906,13 +906,8 @@ class AsistenciaController extends BaseController
       $arrayClaseGrupal=array();
 
       $fechaActual = Carbon::now();
-      // $geoip = new GeoIP();
-      // $geoip->setIp($request->ip());
-      // $fechaActual->tz = $geoip->getTimezone();
       $diaActual = $fechaActual->dayOfWeek;
-
       $collection = collect($claseGrupal);
-
 
       foreach ($claseGrupal as $grupal) {
 
@@ -989,6 +984,10 @@ class AsistenciaController extends BaseController
           }
         
       }
+
+      usort($arrayClaseGrupal, function($a, $b) {
+          return $a['hora_inicio'] < $b['hora_inicio'];
+      });
 
       return response()->json(['status' => 'OK', 'clases_grupales'=>$arrayClaseGrupal, 200]);
 
