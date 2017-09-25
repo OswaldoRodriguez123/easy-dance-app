@@ -630,15 +630,15 @@
                                   <div class="form-group fg-line ">
                                     <label for="tipo_horario p-t-10">Tipo de Horario</label>
                                     <div class="p-t-10">
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="tipo_horario" id="24_horas" value="1" type="radio">
-                                        <i class="input-helper"></i>  
-                                        24 Horas
-                                    </label>
                                     <label class="radio radio-inline m-r-20 ">
-                                        <input name="tipo_horario" id="12_horas" value="2" type="radio">
+                                        <input name="tipo_horario" id="12_horas" value="1" type="radio">
                                         <i class="input-helper"></i>  
                                         12 Horas
+                                    </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo_horario" id="24_horas" value="2" type="radio">
+                                        <i class="input-helper"></i>  
+                                        24 Horas
                                     </label>
                                     </div>
                                     

@@ -85,7 +85,7 @@ class MultihorarioClaseGrupalController extends BaseController
         }else{
 
                 $academia = Academia::find(Auth::user()->academia_id);
-                if($academia->tipo_horario == 1){
+                if($academia->tipo_horario == 2){
                     $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio_acordeon);
                     $hora_final = Carbon::createFromFormat('H:i',$request->hora_final_acordeon);
                 }else{
@@ -109,7 +109,7 @@ class MultihorarioClaseGrupalController extends BaseController
                         $hora_inicio = Carbon::createFromFormat('H:i:s', $comparacion->hora_inicio);
                         $hora_final = Carbon::createFromFormat('H:i:s', $comparacion->hora_final);
 
-                        if($academia->tipo_horario == 1){
+                        if($academia->tipo_horario == 2){
                             $hora_inicio_ingresada = Carbon::createFromFormat('H:i',$request->hora_inicio_acordeon);
                             $hora_final_ingresada = Carbon::createFromFormat('H:i',$request->hora_final_acordeon);
                         }else{
@@ -139,7 +139,7 @@ class MultihorarioClaseGrupalController extends BaseController
                         $hora_final = Carbon::createFromFormat('H:i:s', $comparacion->hora_final);
 
                         
-                        if($academia->tipo_horario == 1){
+                        if($academia->tipo_horario == 2){
                             $hora_inicio_ingresada = Carbon::createFromFormat('H:i',$request->hora_inicio_acordeon);
                             $hora_final_ingresada = Carbon::createFromFormat('H:i',$request->hora_final_acordeon);
                         }else{
@@ -169,7 +169,7 @@ class MultihorarioClaseGrupalController extends BaseController
                         $hora_final = Carbon::createFromFormat('H:i:s', $comparacion->hora_final);
 
                         
-                        if($academia->tipo_horario == 1){
+                        if($academia->tipo_horario == 2){
                             $hora_inicio_ingresada = Carbon::createFromFormat('H:i',$request->hora_inicio_acordeon);
                             $hora_final_ingresada = Carbon::createFromFormat('H:i',$request->hora_final_acordeon);
                         }else{
@@ -199,7 +199,7 @@ class MultihorarioClaseGrupalController extends BaseController
                         $hora_final = Carbon::createFromFormat('H:i:s', $comparacion->hora_final);
 
                         
-                        if($academia->tipo_horario == 1){
+                        if($academia->tipo_horario == 2){
                             $hora_inicio_ingresada = Carbon::createFromFormat('H:i',$request->hora_inicio_acordeon);
                             $hora_final_ingresada = Carbon::createFromFormat('H:i',$request->hora_final_acordeon);
                         }else{
@@ -232,7 +232,7 @@ class MultihorarioClaseGrupalController extends BaseController
                                 $hora_inicio = Carbon::createFromFormat('H:i', $horario['hora_inicio']);
                                 $hora_final = Carbon::createFromFormat('H:i', $horario['hora_final']);
 
-                                if($academia->tipo_horario == 1){
+                                if($academia->tipo_horario == 2){
                                     $hora_inicio = Carbon::createFromFormat('H:i',$horario['hora_inicio']);
                                     $hora_final = Carbon::createFromFormat('H:i',$horario['hora_final']);
                                 }else{
@@ -240,7 +240,7 @@ class MultihorarioClaseGrupalController extends BaseController
                                     $hora_final = Carbon::createFromFormat('H:i a',$horario['hora_final']);
                                 }
 
-                                if($academia->tipo_horario == 1){
+                                if($academia->tipo_horario == 2){
                                     $hora_inicio_ingresada = Carbon::createFromFormat('H:i',$request->hora_inicio_acordeon);
                                     $hora_final_ingresada = Carbon::createFromFormat('H:i',$request->hora_final_acordeon);
                                 }else{
@@ -362,7 +362,7 @@ class MultihorarioClaseGrupalController extends BaseController
 
                     $academia = Academia::find(Auth::user()->academia_id);
 
-                    if($academia->tipo_horario == 1){
+                    if($academia->tipo_horario == 2){
                         $hora_inicio = Carbon::createFromFormat('H:i',$horario['hora_inicio'])->toTimeString();
                         $hora_final = Carbon::createFromFormat('H:i',$horario['hora_final'])->toTimeString();
                     }else{
@@ -545,7 +545,7 @@ class MultihorarioClaseGrupalController extends BaseController
 
             $academia = Academia::find(Auth::user()->academia_id);
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
             }else{

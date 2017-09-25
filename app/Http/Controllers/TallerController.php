@@ -171,7 +171,7 @@ class TallerController extends BaseController {
                     $status = 'Vencida';
                 }
 
-                if($academia->tipo_horario == 1){
+                if($academia->tipo_horario == 2){
                     $hora_inicio = Carbon::createFromFormat('H:i:s',$taller->hora_inicio)->toTimeString();
                     $hora_final = Carbon::createFromFormat('H:i:s',$taller->hora_final)->toTimeString();
                 }else{
@@ -423,7 +423,7 @@ class TallerController extends BaseController {
             $fecha_final = $fecha_final->toDateString();
 
             $academia = Academia::find(Auth::user()->academia_id);
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
             }else{
@@ -843,7 +843,7 @@ class TallerController extends BaseController {
 
             $academia = Academia::find(Auth::user()->academia_id);
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
             }else{

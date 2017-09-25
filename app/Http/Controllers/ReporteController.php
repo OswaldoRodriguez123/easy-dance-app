@@ -108,7 +108,7 @@ class ReporteController extends BaseController
 
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
             }else{
@@ -802,7 +802,7 @@ class ReporteController extends BaseController
 
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
             }else{
@@ -855,7 +855,7 @@ class ReporteController extends BaseController
                 $dia = 7;
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
             }else{
@@ -883,7 +883,7 @@ class ReporteController extends BaseController
                 $dia = 7;
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
             }else{
@@ -1321,7 +1321,7 @@ class ReporteController extends BaseController
 
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
             }else{
@@ -1758,7 +1758,7 @@ class ReporteController extends BaseController
 
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
             }else{
@@ -2250,7 +2250,7 @@ class ReporteController extends BaseController
 
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
             }else{
@@ -2467,7 +2467,7 @@ class ReporteController extends BaseController
 
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
             }else{
@@ -3262,7 +3262,7 @@ class ReporteController extends BaseController
 
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
             }else{
@@ -3730,7 +3730,7 @@ class ReporteController extends BaseController
 
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
             }else{
@@ -3850,7 +3850,7 @@ class ReporteController extends BaseController
 
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
             }else{

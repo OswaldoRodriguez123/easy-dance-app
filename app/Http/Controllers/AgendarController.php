@@ -106,7 +106,7 @@ class AgendarController extends BaseController
                 $url = "/agendar/talleres/progreso/".$taller->id;
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio_tooltip = Carbon::createFromFormat('H:i:s',$taller->hora_inicio)->toTimeString();
                 $hora_final_tooltip = Carbon::createFromFormat('H:i:s',$taller->hora_final)->toTimeString();
             }else{
@@ -158,7 +158,7 @@ class AgendarController extends BaseController
                 $url = "/agendar/talleres/progreso/".$taller->id;
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio_tooltip = Carbon::createFromFormat('H:i:s',$taller->hora_inicio)->toTimeString();
                 $hora_final_tooltip = Carbon::createFromFormat('H:i:s',$taller->hora_final)->toTimeString();
             }else{
@@ -270,7 +270,7 @@ class AgendarController extends BaseController
                 $url = "/agendar/clases-grupales/progreso/".$clase->id;
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio_tooltip = Carbon::createFromFormat('H:i:s',$clase->hora_inicio)->toTimeString();
                 $hora_final_tooltip = Carbon::createFromFormat('H:i:s',$clase->hora_final)->toTimeString();
             }else{
@@ -365,7 +365,7 @@ class AgendarController extends BaseController
                 $url = "/agendar/clases-grupales/progreso/".$clase->id;
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio_tooltip = Carbon::createFromFormat('H:i:s',$clase->hora_inicio)->toTimeString();
                 $hora_final_tooltip = Carbon::createFromFormat('H:i:s',$clase->hora_final)->toTimeString();
             }else{
@@ -467,7 +467,7 @@ class AgendarController extends BaseController
 
             $asistencia = Asistencia::where('tipo',3)->where('tipo_id',$clasepersonalizada->id)->where('fecha',$dt->toDateString());
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio_tooltip = Carbon::createFromFormat('H:i:s',$clasepersonalizada->hora_inicio)->toTimeString();
                 $hora_final_tooltip = Carbon::createFromFormat('H:i:s',$clasepersonalizada->hora_final)->toTimeString();
             }else{
@@ -529,7 +529,7 @@ class AgendarController extends BaseController
 
             $asistencia = Asistencia::where('tipo',3)->where('tipo_id',$clasepersonalizada->id)->where('fecha',$dt->toDateString());
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio_tooltip = Carbon::createFromFormat('H:i:s',$clasepersonalizada->hora_inicio)->toTimeString();
                 $hora_final_tooltip = Carbon::createFromFormat('H:i:s',$clasepersonalizada->hora_final)->toTimeString();
             }else{
@@ -573,7 +573,7 @@ class AgendarController extends BaseController
                 $url = "/agendar/fiestas/progreso/".$fiesta->id;
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio_tooltip = Carbon::createFromFormat('H:i:s',$fiesta->hora_inicio)->toTimeString();
                 $hora_final_tooltip = Carbon::createFromFormat('H:i:s',$fiesta->hora_final)->toTimeString();
             }else{
@@ -660,7 +660,7 @@ class AgendarController extends BaseController
                 $url = "";
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio_tooltip = Carbon::createFromFormat('H:i:s',$cita->hora_inicio)->toTimeString();
                 $hora_final_tooltip = Carbon::createFromFormat('H:i:s',$cita->hora_final)->toTimeString();
             }else{
@@ -691,7 +691,7 @@ class AgendarController extends BaseController
                 $url = "";
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_tooltip = Carbon::createFromFormat('H:i:s',$transmision->hora)->toTimeString();
             }else{
                 $hora_tooltip = Carbon::createFromFormat('H:i:s',$transmision->hora)->format('g:i a');

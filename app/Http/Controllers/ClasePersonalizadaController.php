@@ -125,7 +125,7 @@ class ClasePersonalizadaController extends BaseController {
                     $tipo = 'C';
                 }
 
-                if($academia->tipo_horario == 1){
+                if($academia->tipo_horario == 2){
                     $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_personalizada->hora_inicio)->toTimeString();
                     $hora_final = Carbon::createFromFormat('H:i:s',$clase_personalizada->hora_final)->toTimeString();
                 }else{
@@ -167,7 +167,7 @@ class ClasePersonalizadaController extends BaseController {
                     $tipo = 'C';
                 }
 
-                if($academia->tipo_horario == 1){
+                if($academia->tipo_horario == 2){
                     $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_personalizada->hora_inicio)->toTimeString();
                     $hora_final = Carbon::createFromFormat('H:i:s',$clase_personalizada->hora_final)->toTimeString();
                 }else{
@@ -760,7 +760,7 @@ class ClasePersonalizadaController extends BaseController {
 
             $academia = Academia::find(Auth::user()->academia_id);
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
             }else{
@@ -986,7 +986,7 @@ class ClasePersonalizadaController extends BaseController {
 
             $academia = Academia::find(Auth::user()->academia_id);
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
             }else{
@@ -1385,7 +1385,7 @@ class ClasePersonalizadaController extends BaseController {
         $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
         $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
-        if($academia->tipo_horario == 1){
+        if($academia->tipo_horario == 2){
             $hora_inicio = Carbon::createFromFormat('H:i:s',$clase->hora_inicio)->toTimeString();
             $hora_final = Carbon::createFromFormat('H:i:s',$clase->hora_final)->toTimeString();
         }else{
@@ -1395,7 +1395,7 @@ class ClasePersonalizadaController extends BaseController {
 
         $hora_asignada = $hora_inicio->diffInHours($hora_final);
 
-        if($academia->tipo_horario == 1){
+        if($academia->tipo_horario == 2){
             $hora_inicio = $hora_inicio->toTimeString();
             $hora_final = $hora_final->toTimeString();
         }else{
@@ -1429,7 +1429,7 @@ class ClasePersonalizadaController extends BaseController {
             $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
             $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i:s',$clase->hora_inicio)->toTimeString();
                 $hora_final = Carbon::createFromFormat('H:i:s',$clase->hora_final)->toTimeString();
             }else{
@@ -1439,7 +1439,7 @@ class ClasePersonalizadaController extends BaseController {
 
             $hora_asignada = $hora_inicio->diffInHours($hora_final);
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_inicio = $hora_inicio->toTimeString();
                 $hora_final = $hora_final->toTimeString();
             }else{

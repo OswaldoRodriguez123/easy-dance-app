@@ -95,7 +95,7 @@ class TransmisionController extends BaseController {
 	        $fecha = $fecha->toDateString();
 
 	        $academia = Academia::find(Auth::user()->academia_id);
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora = Carbon::createFromFormat('H:i',$request->hora)->toTimeString();
             }else{
                 $hora = Carbon::createFromFormat('H:i a',$request->hora)->toTimeString();
@@ -257,7 +257,7 @@ class TransmisionController extends BaseController {
 
 	        $academia = Academia::find(Auth::user()->academia_id);
 
-	        if($academia->tipo_horario == 1){
+	        if($academia->tipo_horario == 2){
                 $hora = Carbon::createFromFormat('H:i',$request->hora)->toTimeString();
             }else{
                 $hora = Carbon::createFromFormat('H:i a',$request->hora)->toTimeString();

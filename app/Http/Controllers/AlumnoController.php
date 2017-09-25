@@ -2560,7 +2560,7 @@ class AlumnoController extends BaseController
             }
 
             if($request->hora_siguiente){
-                if($academia->tipo_horario == 1){
+                if($academia->tipo_horario == 2){
                     $hora_siguiente = Carbon::createFromFormat('H:i',$request->hora_siguiente)->toTimeString();
                 }else{
                     $hora_siguiente = Carbon::createFromFormat('H:i a',$request->hora_siguiente)->toTimeString();
@@ -2569,7 +2569,7 @@ class AlumnoController extends BaseController
                 $hora_siguiente = '';
             }
 
-            if($academia->tipo_horario == 1){
+            if($academia->tipo_horario == 2){
                 $hora_llamada = Carbon::createFromFormat('H:i',$request->hora_llamada)->toTimeString();
             }else{
                 $hora_llamada = Carbon::createFromFormat('H:i a',$request->hora_llamada)->toTimeString();
