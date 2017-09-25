@@ -560,7 +560,7 @@
                                <span class="f-14"> Hora </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="transmision-hora">
-                                @if($tipo_horario == 1)
+                                @if($tipo_horario == 2)
                                     {{\Carbon\Carbon::createFromFormat('H:i:s',$transmision->hora)->format('H:i')}}
                                 @else
                                     {{\Carbon\Carbon::createFromFormat('H:i:s',$transmision->hora)->format('g:i a')}}

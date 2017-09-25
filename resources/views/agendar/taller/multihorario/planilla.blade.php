@@ -514,7 +514,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="horario-hora_inicio">
 
-                                @if($tipo_horario == 1)
+                                @if($tipo_horario == 2)
                                     {{\Carbon\Carbon::createFromFormat('H:i:s',$horario->hora_inicio)->format('H:i')}}
                                 @else
                                     {{\Carbon\Carbon::createFromFormat('H:i:s',$horario->hora_inicio)->format('g:i a')}}
@@ -525,7 +525,7 @@
 
                               <span id="horario-hora_final">
 
-                              @if($tipo_horario == 1)
+                              @if($tipo_horario == 2)
                                   {{\Carbon\Carbon::createFromFormat('H:i:s',$taller->hora_final)->format('H:i')}}
 
                               @else

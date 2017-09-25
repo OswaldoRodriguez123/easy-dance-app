@@ -123,7 +123,7 @@
                                   <td>{{ str_limit(title_case($llamada->observacion), $limit = 30, $end = '...') }}</td>
                                   <td>
 
-                                    @if($tipo_horario == 1)
+                                    @if($tipo_horario == 2)
                                         {{\Carbon\Carbon::createFromFormat('H:i:s',$llamada->hora_llamada)->format('H:i')}}
                                     @else
                                         {{\Carbon\Carbon::createFromFormat('H:i:s',$llamada->hora_llamada)->format('g:i a')}}
@@ -133,7 +133,7 @@
                                   <td>{{$llamada->fecha_siguiente}}</td>
                                   <td>
                                     @if($llamada->hora_siguiente != '00:00:00')
-                                      @if($tipo_horario == 1)
+                                      @if($tipo_horario == 2)
                                           {{\Carbon\Carbon::createFromFormat('H:i:s',$llamada->hora_siguiente)->format('H:i')}}
                                       @else
                                           {{\Carbon\Carbon::createFromFormat('H:i:s',$llamada->hora_siguiente)->format('g:i a')}}

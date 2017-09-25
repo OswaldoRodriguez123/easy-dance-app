@@ -1911,7 +1911,7 @@
                              <td class="f-14 m-l-15" >
 
                              <span id="clasegrupal-hora_inicio">
-                                @if($tipo_horario == 1)
+                                @if($tipo_horario == 2)
                                     {{\Carbon\Carbon::createFromFormat('H:i:s',$clasegrupal->hora_inicio)->format('H:i')}}
                                 @else
                                     {{\Carbon\Carbon::createFromFormat('H:i:s',$clasegrupal->hora_inicio)->format('g:i a')}}
@@ -1922,7 +1922,7 @@
 
                               <span id="clasegrupal-hora_final">
 
-                              @if($tipo_horario == 1)
+                              @if($tipo_horario == 2)
                                   {{\Carbon\Carbon::createFromFormat('H:i:s',$clasegrupal->hora_final)->format('H:i')}}
                               @else
                                   {{\Carbon\Carbon::createFromFormat('H:i:s',$clasegrupal->hora_final)->format('g:i a')}}

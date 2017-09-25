@@ -521,7 +521,7 @@
 
     @if(Auth::check())
       if ($('.time-picker')[0]) {
-        @if($tipo_horario == 1)
+        @if($tipo_horario == 2)
           $('.time-picker').datetimepicker({
               format: 'LT'
           });
