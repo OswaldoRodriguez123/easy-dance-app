@@ -158,13 +158,13 @@
                                 <div class="lv-body">
                                     @foreach( $notificaciones as $notificacion)
                                         <a class="lv-item {{ empty($notificacion['visto']) ? 'bgm_notificacion_sin_ver' : '' }}" href="{{url('/')}}/{{$notificacion['url']}}">
-                                            <div class="media">
+                                            <div class="media" style="border-bottom: 1px solid #F0F0F0">
                                                 <div class="pull-left">
                                                     <img class="img-circle" src="{{url('/')}}{{$notificacion['imagen']}}" alt="" width="45px" height="auto">
                                                 </div>
                                                 <div class="media-body">
                                                     <div class="lv-title">{{$notificacion['titulo']}}</div>
-                                                    <small class="lv-small">
+                                                    <small class="lv-small" style="padding-bottom: 15px">
                                                         {{$notificacion['mensaje']}}
                                                         <br><br>
                                                         {{$notificacion['fecha_de_realizacion']}}
