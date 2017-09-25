@@ -3497,14 +3497,12 @@ class ClaseGrupalController extends BaseController {
 
         if(!$instructor->boolean_administrador){
 
-            $clase_grupal_join = DB::table('clases_grupales')
-                ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
+            $clase_grupal_join = ClaseGrupal::join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga')
                 ->where('clases_grupales.instructor_id','=', $usuario_id)
-                ->where('clases_grupales.deleted_at', '=', null)
                 ->OrderBy('clases_grupales.hora_inicio')
             ->get();
 
@@ -3635,7 +3633,6 @@ class ClaseGrupalController extends BaseController {
                 ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
                 ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion','config_clases_grupales.costo_mensualidad', 'clases_grupales.boolean_promocionar', 'clases_grupales.dias_prorroga')
-                ->where('clases_grupales.deleted_at', '=', null)
                 ->OrderBy('clases_grupales.hora_inicio')
             ->get();
 
