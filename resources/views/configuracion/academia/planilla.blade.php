@@ -560,13 +560,13 @@
                                     <span class="input-group">
                                     <span class="input-group-addon"><i class="zmdi zmdi-lock f-22"></i></span>
                                     <div class="fg-line">
-                                    <input type="password" class="form-control input-sm" name="password" id="password" placeholder="Mínimo de 6 caracteres">
+                                    <input type="password_supervision" class="form-control input-sm" name="password_supervision" id="password" placeholder="Mínimo de 6 caracteres">
                                     </div>
                                     </span>
                                  </div>
-                                 <div class="has-error" id="error-password">
+                                 <div class="has-error" id="error-password_supervision">
                                     <span >
-                                     <small id="error-password_mensaje" class="help-block error-span" ></small>
+                                     <small id="error-password_supervision_mensaje" class="help-block error-span" ></small>
                                     </span>
                                     </div>
                                </div>
@@ -579,13 +579,13 @@
                                     <span class="input-group">
                                     <span class="input-group-addon"><i class="zmdi zmdi-lock f-22"></i></span>
                                     <div class="fg-line">
-                                    <input type="password" class="form-control input-sm" name="password_confirmation" id="password_confirmation" placeholder="Repite tu contraseña">
+                                    <input type="password" class="form-control input-sm" name="password_supervision_confirmation" id="password_supervision_confirmation" placeholder="Repite tu contraseña">
                                     </div>
                                     </span>
                                  </div>
-                                 <div class="has-error" id="error-password_confirmation">
+                                 <div class="has-error" id="error-password_supervision_confirmation">
                                     <span >
-                                     <small id="error-password_confirmation_mensaje" class="help-block error-span" ></small>
+                                     <small id="error-password_supervision_confirmation_mensaje" class="help-block error-span" ></small>
                                     </span>
                                     </div>
                                </div>

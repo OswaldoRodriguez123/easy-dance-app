@@ -677,16 +677,16 @@ class AcademiaController extends BaseController {
     public function updatePassword(Request $request){
 
         $rules = [
-            'password' => 'required|min:6|confirmed',
-            'password_confirmation' => 'required',
+            'password_supervision' => 'required|min:6|confirmed',
+            'password_supervision_confirmation' => 'required',
         ];
 
         $messages = [
 
-            'password.required' => 'Ups! La contraseña es requerida',
-            'password.confirmed' => 'Ups! Las contraseñas introducidas no coinciden, intenta de nuevo',
-            'password.min' => 'Ups! La contraseña debe contener un mínimo de 6 caracteres',
-            'password_confirmation.required' => 'Ups! La contraseña es requerida',
+            'password_supervision.required' => 'Ups! La contraseña es requerida',
+            'password_supervision.confirmed' => 'Ups! Las contraseñas introducidas no coinciden, intenta de nuevo',
+            'password_supervision.min' => 'Ups! La contraseña debe contener un mínimo de 6 caracteres',
+            'password_supervision_confirmation.required' => 'Ups! La contraseña es requerida',
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -700,7 +700,7 @@ class AcademiaController extends BaseController {
         else{
             
             $academia = Academia::find(Auth::user()->academia_id);
-            $academia->password_supervision = bcrypt($request->password);
+            $academia->password_supervision = bcrypt($request->password_supervision);
 
             if($academia->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
