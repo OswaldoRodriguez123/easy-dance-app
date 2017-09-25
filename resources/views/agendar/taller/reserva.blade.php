@@ -706,7 +706,7 @@
                       data:"&tipo_reservacion=2",
                       success:function(respuesta){
 
-                          window.open(route, '_blank');_reserva+id; 
+                          window.location=route_reserva+id;  
 
                       },
                       error:function(msj){
