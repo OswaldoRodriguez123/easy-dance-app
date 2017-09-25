@@ -181,6 +181,7 @@ class ProgresoController extends BaseController {
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'horarios_clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
             ->where('inscripcion_clase_grupal.alumno_id','=', $usuario_id)
             ->where('horarios_clases_grupales.especialidad_id','=', 20)
+            ->where('clases_grupales.deleted_at',null)
         ->get();
 
         $array = array();
@@ -222,6 +223,7 @@ class ProgresoController extends BaseController {
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
             ->where('inscripcion_clase_grupal.alumno_id','=', $usuario_id)
             ->where('horarios_clases_grupales.especialidad_id','=', 1)
+            ->where('clases_grupales.deleted_at',null)
         ->get();
 
         $array = array();
