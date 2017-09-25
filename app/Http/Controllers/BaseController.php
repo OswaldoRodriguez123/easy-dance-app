@@ -163,7 +163,7 @@ class BaseController extends Controller {
             View::share ('usuario_tipo', $usuario_tipo);
             View::share ('usuario_id', $usuario_id);
             View::share ('tipo_horario', $academia->tipo_horario);
-            View::share ('sin_ver', $numero_de_notificaciones );
+            View::share ('notificaciones_pendientes', $numero_de_notificaciones );
    		}
 
     }

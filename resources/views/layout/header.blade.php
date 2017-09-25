@@ -138,7 +138,11 @@
                     <li class="dropdown">
                         <a data-toggle="dropdown" id="numero_de_notificaciones" href="#">
                             <i class="tm-icon zmdi zmdi-notifications"></i>
-                            <i class="tmn-counts" id="numero_actual">{{$sin_ver}}</i>
+                            @if($notificaciones_pendientes > 0)
+                                <i class="tmn-counts" id="numero_actual">{{$notificaciones_pendientes}}</i>
+                            @else
+                                <i class="tmn-counts" id="numero_actual" style="background: #5e5e5e">{{$notificaciones_pendientes}}</i>
+                            @endif
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg pull-right">
                             <div class="listview {{ empty($notificaciones) ? 'empty' : ''}}" id="notifications">
