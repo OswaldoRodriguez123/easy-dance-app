@@ -614,11 +614,6 @@
 			Route::post('participante/alumno/puntos-acumulados/eliminar/{id}', 'AlumnoController@eliminar_remuneracion');
 			Route::post('participante/alumno/credenciales/eliminar/{id}', 'AlumnoController@eliminar_credencial');
 
-			Route::get('participante/alumno/llamadas/{id}', 'AlumnoController@indexLlamada');
-			Route::get('participante/alumno/llamadas/agregar/{id}', 'AlumnoController@createLlamada');
-			Route::post('participante/alumno/llamadas/agregar', 'AlumnoController@storeLlamada');
-			Route::delete('participante/alumno/llamadas/eliminar/{id}', 'AlumnoController@eliminarLlamada');
-
 			Route::post('participante/alumno/crear_cuenta/{id}', 'AlumnoController@crearCuenta');
 			Route::get('participante/alumno/historial-asistencias/{id}', 'ClaseGrupalController@historial_asistencia_general');
 
@@ -1313,6 +1308,13 @@
 		});//END MIDDLEWARE ALUMNO
 
 		Route::group(['middleware' => ['instructor']], function() {
+
+			//LLAMADAS
+
+			Route::get('participante/alumno/llamadas/{id}', 'AlumnoController@indexLlamada');
+			Route::get('participante/alumno/llamadas/agregar/{id}', 'AlumnoController@createLlamada');
+			Route::post('participante/alumno/llamadas/agregar', 'AlumnoController@storeLlamada');
+			Route::delete('participante/alumno/llamadas/eliminar/{id}', 'AlumnoController@eliminarLlamada');
 
 			//PROCEDIMIENTOS
 

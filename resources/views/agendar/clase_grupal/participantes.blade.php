@@ -1330,13 +1330,15 @@
                                                           <a href="{{url('/')}}/agendar/clases-grupales/participantes/historial/{{$id}}"><i class="zmdi zmdi-shield-check f-20"></i> Asistencia</a>
                                                       </li>
 
+                                                       <li class="hidden-xs">
+                                                            <a href="{{url('/')}}/participante/alumno/llamadas/{{$alumno_id}}"><i class="zmdi zmdi-phone f-20"></i> Llamadas</a>
+                                                        </li>
+
                                                      @if($usuario_tipo != 3)
                                                         <li class="hidden-xs">
                                                             <a class="nota_administrativa"><i class="zmdi zmdi-assignment f-20"></i> Nota Administrativa</a>
                                                         </li>
-                                                        <li class="hidden-xs">
-                                                            <a href="{{url('/')}}/participante/alumno/llamadas/{{$alumno_id}}"><i class="zmdi zmdi-phone f-20"></i> Llamadas</a>
-                                                        </li>
+
 
                                                         <li class="hidden-xs">
                                                             <a class="eliminar"><i class="zmdi zmdi-delete boton red f-20"></i> Eliminar</a>
