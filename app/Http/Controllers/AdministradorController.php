@@ -28,6 +28,7 @@ class AdministradorController extends BaseController
             ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
             ->select('academias.nombre as nombre_academia', 'users.*', 'sucursales.id', 'users.usuario_tipo')
             ->where('sucursales.id','=', $academia->sucursal_id)
+            ->where('users.id','!=',Auth::user()->id)
             ->whereIn('usuarios_tipo.tipo', $array)
             ->distinct('users.id')
         ->get();
@@ -106,13 +107,21 @@ class AdministradorController extends BaseController
 
             $correo = trim(strtolower($request->email)); 
             $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                ->select('users.id')
+                ->select('users.id','users.estatus')
                 ->where('users.email',$correo)
                 ->where('usuarios_tipo.tipo',$request->usuario_tipo)
             ->first();
 
             if($usuario){
-                return response()->json(['errores' => ['email' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
+                if($usuario->estatus){
+                    return response()->json(['errores' => ['email' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
+                }else{
+                    
+                    $usuario->estatus = 1;
+                    $usuario->save();
+
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);   
+                }
             }
 
             if($request->usuario_tipo == 5){
