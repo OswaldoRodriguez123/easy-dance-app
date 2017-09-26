@@ -45,33 +45,30 @@
               <div class="pmo-block pmo-contact hidden-xs">
                   
                    <div class="text-left pointer" style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff">
-                        <div class="header_cuadro_alumno_borde_morado text-left f-16 f-700">Agendar</div>
-                        
-                        <div class ="detalle clase_grupal" style="margin-top:10px">
-                            <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> Clases Grupales <span style ="padding-right:5px" class ="pull-right opaco-0-8"></span></a> 
+                      <div class="header_cuadro_alumno_borde_morado text-left f-16 f-700">Agendar</div>
+                    
+                      <div class ="detalle clase_grupal" style="margin-top:10px">
+                        <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clases-grupales f-20"></i> Clases Grupales <span style ="padding-right:5px" class ="pull-right opaco-0-8"></span></a> 
+                      </div>
+                      
+                      <div class ="detalle ciclos">
+                        <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clase-personalizada f-20"></i> Nivelar Ciclos <span style ="padding-right:5px" class ="pull-right opaco-0-8"></span></a>
+                      </div>
 
-                          </div>
-                          
-                          <div class ="detalle ciclos">
-                            <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-clase-personalizada f-20"></i> Nivelar Ciclos <span style ="padding-right:5px" class ="pull-right opaco-0-8"></span>
+                      <div class ="detalle progreso">
+                        <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-20"></i> Progreso de clases <span style ="padding-right:5px" class ="pull-right opaco-0-8"></span></a>
+                      </div>
 
+                      <div class ="detalle valoracion">
+                        <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-examen f-20"></i> Valoración <span style ="padding-right:5px" class ="pull-right opaco-0-8"></span></a>
+                      </div>
 
-                            </a>
-                            </div>
-
-                          <div class ="detalle progreso">
-                            <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e"> <i class="icon_a-talleres f-20"></i> Progreso de clases <span style ="padding-right:5px" class ="pull-right opaco-0-8"></span></a>
-                            </div>
-
-
-
-                          <div class="clearfix p-b-15"></div>
+                      <div class="clearfix p-b-15"></div>
 
 
-
-                          <div class="clearfix p-b-15"></div>
-                          <div class="clearfix p-b-15"></div>
-                          <div class="clearfix p-b-15"></div>
+                      <div class="clearfix p-b-15"></div>
+                      <div class="clearfix p-b-15"></div>
+                      <div class="clearfix p-b-15"></div>
 
 
                     </div> <!-- AGENDAR -->
@@ -228,7 +225,10 @@
             window.location = "{{url('/')}}/programaciones";
           });
 
-        
-   
+          $(".valoracion").click(function(){
+            procesando();
+            window.location = "{{url('/')}}/especiales/examenes";
+          });
+
         </script>
 @stop        
