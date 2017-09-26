@@ -1428,13 +1428,30 @@
     })
 
     $(".dismiss").click(function(){
-      $('.modal').modal('hide');
+      procesando()
+      setTimeout(function(){
+        var nFrom = $(this).attr('data-from');
+        var nAlign = $(this).attr('data-align');
+        var nIcons = $(this).attr('data-icon');
+        var nType = 'success';
+        var nAnimIn = $(this).attr('data-animation-in');
+        var nAnimOut = $(this).attr('data-animation-out')
+        var nMensaje="¡Excelente! Los cambios se han actualizado satisfactoriamente";
+        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
+        $('.modal').modal('hide');
+        finprocesado();
+      }, 3000);
     });
 
     $("#añadirestudio").click(function(){
 
+      $("#añadirestudio").attr("disabled","disabled");
+      $("#añadirestudio").css({
+        "opacity": ("0.2")
+      });
+
       var datos = $( "#edit_estudio_academia" ).serialize(); 
-      procesando();
       var route = "{{url('/')}}/configuracion/academia/estudio";
       var token = $('input:hidden[name=_token]').val();
       var datos = datos;
@@ -1479,11 +1496,11 @@
                 var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                 var nType = 'danger';
               }                       
-              $(".procesando").removeClass('show');
-              $(".procesando").addClass('hidden');
-              $("#guardar").removeAttr("disabled");
-              finprocesado();
-              $(".cancelar").removeAttr("disabled");
+              
+              $("#añadirestudio").removeAttr("disabled");
+              $("#añadirestudio").css({
+                "opacity": ("1")
+              });
 
               notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
             }, 1000);
@@ -1501,10 +1518,14 @@
               }else{
                 var nTitle="   Ups! "; 
                 var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              }                        
+              }  
+
+              $("#añadirestudio").removeAttr("disabled");
+              $("#añadirestudio").css({
+                "opacity": ("1")
+              });
+
               $("#guardar").removeAttr("disabled");
-              $(".cancelar").removeAttr("disabled");
-              finprocesado();
               $(".procesando").removeClass('show');
               $(".procesando").addClass('hidden');
               var nFrom = $(this).attr('data-from');
@@ -1521,8 +1542,12 @@
 
     $("#añadirniveles").click(function(){
 
+      $("#añadirniveles").attr("disabled","disabled");
+      $("#añadirniveles").css({
+        "opacity": ("0.2")
+      });
+
       var datos = $( "#edit_nivel_academia" ).serialize(); 
-      procesando();
       var route = "{{url('/')}}/configuracion/academia/nivel";
       var token = $('input:hidden[name=_token]').val();
       var datos = datos;
@@ -1564,12 +1589,16 @@
                 var nTitle="Ups! ";
                 var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                 var nType = 'danger';
-              }                       
+              }  
+
+              $("#añadirniveles").removeAttr("disabled");
+              $("#añadirniveles").css({
+                "opacity": ("1")
+              });   
+
               $(".procesando").removeClass('show');
               $(".procesando").addClass('hidden');
               $("#guardar").removeAttr("disabled");
-              finprocesado();
-              $(".cancelar").removeAttr("disabled");
 
               notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
             }, 1000);
@@ -1587,10 +1616,14 @@
               }else{
                 var nTitle="   Ups! "; 
                 var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              }                        
+              }  
+
+              $("#añadirniveles").removeAttr("disabled");
+              $("#añadirniveles").css({
+                "opacity": ("1")
+              });  
+
               $("#guardar").removeAttr("disabled");
-              $(".cancelar").removeAttr("disabled");
-              finprocesado();
               $(".procesando").removeClass('show');
               $(".procesando").addClass('hidden');
               var nFrom = $(this).attr('data-from');
@@ -1700,8 +1733,12 @@
 
     $("#añadircargo").click(function(){
 
+      $("#añadircargo").attr("disabled","disabled");
+      $("#añadircargo").css({
+        "opacity": ("0.2")
+      });
+
       var datos = $( "#edit_cargo_academia" ).serialize(); 
-      procesando();
       var route = "{{url('/')}}/configuracion/academia/cargo";
       var token = $('input:hidden[name=_token]').val();
       var datos = datos;
@@ -1743,12 +1780,16 @@
                 var nTitle="Ups! ";
                 var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                 var nType = 'danger';
-              }                       
+              }  
+
+              $("#añadircargo").removeAttr("disabled");
+              $("#añadircargo").css({
+                "opacity": ("1")
+              });  
+
               $(".procesando").removeClass('show');
               $(".procesando").addClass('hidden');
               $("#guardar").removeAttr("disabled");
-              finprocesado();
-              $(".cancelar").removeAttr("disabled");
 
               notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
             }, 1000);
@@ -1766,10 +1807,14 @@
               }else{
                 var nTitle="   Ups! "; 
                 var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              }                        
+              } 
+
+              $("#añadircargo").removeAttr("disabled");
+              $("#añadircargo").css({
+                "opacity": ("1")
+              });
+
               $("#guardar").removeAttr("disabled");
-              $(".cancelar").removeAttr("disabled");
-              finprocesado();
               $(".procesando").removeClass('show');
               $(".procesando").addClass('hidden');
               var nFrom = $(this).attr('data-from');
@@ -1832,8 +1877,12 @@
 
       $("#añadirformula").click(function(){
 
+        $("#añadirformula").attr("disabled","disabled");
+        $("#añadirformula").css({
+          "opacity": ("0.2")
+        });
+
         var datos = $( "#edit_formula_academia" ).serialize(); 
-        procesando();
         var route = "{{url('/')}}/configuracion/academia/formula";
         var token = $('input:hidden[name=_token]').val();
         var datos = datos;
@@ -1874,12 +1923,16 @@
                   var nTitle="Ups! ";
                   var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                   var nType = 'danger';
-                }                       
+                }      
+
+                $("#añadirformula").removeAttr("disabled");
+                $("#añadirformula").css({
+                  "opacity": ("1")
+                });     
+
                 $(".procesando").removeClass('show');
                 $(".procesando").addClass('hidden');
                 $("#guardar").removeAttr("disabled");
-                finprocesado();
-                $(".cancelar").removeAttr("disabled");
 
                 notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
               }, 1000);
@@ -1897,10 +1950,14 @@
                 }else{
                   var nTitle="   Ups! "; 
                   var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                }                        
+                }  
+
+                $("#añadirformula").removeAttr("disabled");
+                $("#añadirformula").css({
+                  "opacity": ("1")
+                });  
+
                 $("#guardar").removeAttr("disabled");
-                $(".cancelar").removeAttr("disabled");
-                finprocesado();
                 $(".procesando").removeClass('show');
                 $(".procesando").addClass('hidden');
                 var nFrom = $(this).attr('data-from');
@@ -1964,8 +2021,12 @@
 
     $("#añadirvaloracion").click(function(){
 
+      $("#añadirvaloracion").attr("disabled","disabled");
+      $("#añadirvaloracion").css({
+        "opacity": ("0.2")
+      });
+
       var datos = $( "#edit_valoracion_academia" ).serialize(); 
-      procesando();
       var route = "{{url('/')}}/configuracion/academia/valoracion";
       var token = $('input:hidden[name=_token]').val();
       limpiarMensaje();
@@ -2006,7 +2067,11 @@
                 var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
                 var nType = 'danger';
               }                       
-              finprocesado();
+              
+              $("#añadirvaloracion").removeAttr("disabled");
+              $("#añadirvaloracion").css({
+                "opacity": ("1")
+              });  
 
               notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
             }, 1000);
@@ -2024,10 +2089,14 @@
               }else{
                 var nTitle="   Ups! "; 
                 var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              }                        
+              } 
+
+              $("#añadirvaloracion").removeAttr("disabled");
+              $("#añadirvaloracion").css({
+                "opacity": ("1")
+              }); 
+                                     
               $("#guardar").removeAttr("disabled");
-              $(".cancelar").removeAttr("disabled");
-              finprocesado();
               $(".procesando").removeClass('show');
               $(".procesando").addClass('hidden');
               var nFrom = $(this).attr('data-from');
