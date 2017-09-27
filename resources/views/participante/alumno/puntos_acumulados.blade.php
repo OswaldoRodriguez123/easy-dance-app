@@ -27,7 +27,7 @@
                   </div>
                   <form name="form_agregar" id="form_agregar"  >
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="id" value="{{$alumno->id}}"></input>
+                    <input type="hidden" name="id" value="{{$id}}"></input>
                     <div class="modal-body">                           
                       <div class="row p-t-20 p-b-0">
 
@@ -145,7 +145,7 @@
                                 
                             <div class ="col-md-12 text-right">                                
  
-                                <span class="f-16 p-t-0 text-success">Agregar <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
+                                <span class="f-16 p-t-0 text-success">Agregar Puntos<i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
 
                             </div>
 
@@ -154,7 +154,7 @@
 
 
 
-                            <span class ="f-700 f-16 opaco-0-8">Total : <span id="total">{{ $puntos_referidos }}</span></span>
+                            <span class ="f-700 f-16 opaco-0-8">Total : <span id="total">{{ $puntos_totales }}</span></span>
                          
                                                          
                         </div>
@@ -166,19 +166,33 @@
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
                                     <th class="text-center" data-column-id="cantidad" data-order="desc">Cantidad</th>
                                     <th class="text-center" data-column-id="fecha_vencimiento">Fecha Expiración</th>
+                                    <th class="text-center" data-column-id="status" data-type="numeric">Status</th>
                                     <th class="text-center" data-column-id="operacion">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
 
-                            @foreach ($alumno_remuneracion as $remuneracion)
-                                <?php $id = $remuneracion->id; ?>
+                            @foreach ($puntos as $punto)
+                                <?php 
+                                  $id = $punto['id']; 
+
+                                  $contenido = 
+                                  '<p class="c-negro">' .
+                                      'Concepto: ' . $punto['concepto'] . '<br>'.
+                                  '</p>'; 
+                                ?>
+
+
              
-                                <tr id="{{$id}}" class="seleccion">
+                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion">
             
-                                    <td class="text-center previa">{{$remuneracion->concepto}}</td>
-                                    <td class="text-center previa">{{$remuneracion->remuneracion}}</td>
-                                    <td class="text-center previa">{{$remuneracion->fecha_vencimiento}}</td>
+                                    <td>{{ str_limit(title_case($punto['concepto']), $limit = 30, $end = '...') }}</td>
+                                    <td class="text-center previa">{{$punto['remuneracion']}}</td>
+                                    <td class="text-center previa">{{$punto['fecha_vencimiento']}}</td>
+                                    <td class="text-center previa">
+                                        <span class="{{ empty($punto['dias_restantes']) ? 'c-youtube' : '' }}">{{$punto['status']}}</span>
+                                        Restan {{$punto['dias_restantes']}} Días
+                                    </td>
                                     <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i></td>
                         
                                 </tr>
@@ -207,48 +221,49 @@
 
 @section('js') 
             
-        <script type="text/javascript">
+    <script type="text/javascript">
 
         route_agregar="{{url('/')}}/participante/alumno/puntos-acumulados/agregar";
         route_eliminar="{{url('/')}}/participante/alumno/puntos-acumulados/eliminar/";
 
-        total = parseInt("{{$puntos_referidos}}")
+        total = parseInt("{{$puntos_totales}}")
 
         $(document).ready(function(){
-
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25,    
-        order: [[2, 'asc']],
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          // $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
-        });
+          t=$('#tablelistar').DataTable({
+          processing: true,
+          serverSide: false,
+          pageLength: 25,  
+          paging:false,  
+          bLengthChange: false, 
+          order: [[2, 'asc']],
+          fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
+          },
+          language: {
+                          processing:     "Procesando ...",
+                          search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                          searchPlaceholder: "BUSCAR",
+                          lengthMenu:     "Mostrar _MENU_ Registros",
+                          info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                          infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                          infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                          infoPostFix:    "",
+                          loadingRecords: "...",
+                          zeroRecords:    "No se encontraron registros coincidentes",
+                          emptyTable:     "No hay datos disponibles en la tabla",
+                          paginate: {
+                              first:      "Primero",
+                              previous:   "Anterior",
+                              next:       "Siguiente",
+                              last:       "Ultimo"
+                          },
+                          aria: {
+                              sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                              sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                          }
+                      }
+          });
     
           
         });
@@ -256,7 +271,6 @@
         $('#modalReferido-Alumno').on('hidden.bs.modal', function (event) {
           limpiarMensaje();
           $('#form_agregar')[0].reset();
-
         })
 
         $("#guardar").click(function(){
@@ -289,22 +303,38 @@
                       var concepto = respuesta.array.concepto;
                       var remuneracion = respuesta.array.remuneracion;
                       var fecha_vencimiento = respuesta.array.fecha_vencimiento;
+                      var estatus = respuesta.estatus;
+
+                      if(concepto.length > 15){
+                        concepto = concepto.substr(0, 30) + "..."
+                      }
 
                       total = total + parseInt(remuneracion);
                       $('#total').text(total);
 
                       var rowId=respuesta.id;
                       var rowNode=t.row.add( [
-                      ''+concepto+'',
-                      ''+remuneracion+'',
-                      ''+fecha_vencimiento+'',
-                      '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                        ''+concepto+'',
+                        ''+remuneracion+'',
+                        ''+fecha_vencimiento+'',
+                        ''+estatus+'',
+                        '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                       ] ).draw(false).node();
-                      $( rowNode )
-                      .attr('id',respuesta.array.id)
-                      .addClass('seleccion');
 
-                      $("#form_agregar")[0].reset();
+                      $( rowNode )
+                        .attr('id',respuesta.array.id)
+                        .addClass('seleccion')
+                        .attr('data-trigger','hover')
+                        .attr('data-toggle','popover')
+                        .attr('data-placement','top')
+                        .attr('data-content','<p class="c-negro">Concepto:'+respuesta.array.concepto+'</p>')
+                        .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;')
+                        .attr('data-container','body')
+                        .attr('data-html','true')
+                        .attr('title','');
+
+                      $('[data-toggle="popover"]').popover();
+
                       $('.modal').modal('hide')
 
                     }else{
@@ -347,67 +377,69 @@
 
     $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
 
-        var id = $(this).closest('tr').attr('id');
-        var element = this
-        swal({   
-            title: "Desea eliminar los puntos?",   
-            text: "Confirmar eliminación!",   
-            type: "warning",   
-            showCancelButton: true,   
-            confirmButtonColor: "#DD6B55",   
-            confirmButtonText: "Eliminar!",  
-            cancelButtonText: "Cancelar",         
-            closeOnConfirm: true 
-        }, function(isConfirm){   
-        if (isConfirm) {
-            procesando()
-          var token = $('input:hidden[name=_token]').val();
-            $.ajax({
-                 url: route_eliminar+id,
-                 headers: {'X-CSRF-TOKEN': token},
-                 type: 'POST',
-                 dataType: 'json',                
-                success: function (data) {
-                  if(data.status=='OK'){
+      var id = $(this).closest('tr').attr('id');
+      var element = this
+      swal({   
+          title: "Desea eliminar los puntos?",   
+          text: "Confirmar eliminación!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Eliminar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+      if (isConfirm) {
+          procesando()
+        var token = $('input:hidden[name=_token]').val();
+          $.ajax({
+               url: route_eliminar+id,
+               headers: {'X-CSRF-TOKEN': token},
+               type: 'POST',
+               dataType: 'json',                
+              success: function (data) {
+                if(data.status=='OK'){
 
 
-                  t.row( $(element).parents('tr') )
-                    .remove()
-                    .draw();
+                t.row( $(element).parents('tr') )
+                  .remove()
+                  .draw();
 
-                    total = total - parseInt(data.cantidad);
-                    $('#total').text(total)
-                    finprocesado()
-                    swal("Listo!","Los puntos han sido eliminados!","success");
-                      
-                                       
-                  }else{
-                    swal(
-                      'Solicitud no procesada',
-                      'Ha ocurrido un error, intente nuevamente por favor',
-                      'error'
-                    );
-                  }
-                },
-                error:function (xhr, ajaxOptions, thrownError){
-                  swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                  total = total - parseInt(data.cantidad);
+                  $('#total').text(total)
                   finprocesado()
+                  swal("Listo!","Los puntos han sido eliminados!","success");
+                    
+                                     
+                }else{
+                  swal(
+                    'Solicitud no procesada',
+                    'Ha ocurrido un error, intente nuevamente por favor',
+                    'error'
+                  );
                 }
-              })
-            }
-            });
-          });
+              },
+              error:function (xhr, ajaxOptions, thrownError){
+                swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                finprocesado()
+              }
+            })
+          }
+        });
+      });
 
-        function limpiarMensaje(){
-            var campo = ["concepto", "remuneracion", "fecha_vencimiento"];
-            fLen = campo.length;
-            for (i = 0; i < fLen; i++) {
-                $("#error-"+campo[i]+"_mensaje").html('');
-            }
+      $('#modalAgregar').on('shown.bs.modal', function (e) {
+        $("#form_agregar")[0].reset();
+      })
+
+      function limpiarMensaje(){
+        var campo = ["concepto", "remuneracion", "fecha_vencimiento"];
+        fLen = campo.length;
+        for (i = 0; i < fLen; i++) {
+            $("#error-"+campo[i]+"_mensaje").html('');
         }
+      }
 
-
-
-        </script>
+  </script>
 
 @stop

@@ -985,24 +985,115 @@ class AlumnoController extends BaseController
 
         $alumno = Alumno::find($id);
 
-
         if($alumno){
 
-            $puntos_referidos = 0;
+            $puntos_totales = 0;
+            $array = array();
 
-            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id',$id)->where('remuneracion' ,">", 0)->get();
+            $puntos = AlumnoRemuneracion::where('alumno_id',$id)->where('remuneracion' ,">", 0)->get();
 
-            foreach($alumno_remuneracion as $remuneracion){
-                $puntos_referidos = $puntos_referidos + $remuneracion->remuneracion;
+            foreach($puntos as $punto){
+
+                $puntos_totales = $puntos_totales + $punto->remuneracion;
+
+                $fecha = Carbon::createFromFormat('Y-m-d', $punto->fecha_vencimiento);
+
+                if($fecha >= Carbon::now()){
+
+                    $dias_restantes = $fecha->diffInDays();
+                    $status = 'Activa';
+
+                }else{
+                    $dias_restantes = 0;
+                    $status = 'Vencida';
+                }
+
+                $collection=collect($punto);  
+                $punto_array = $collection->toArray(); 
+                $punto_array['dias_restantes']=$dias_restantes;
+                $punto_array['status']=$status;
+
+                $array[$punto->id] = $punto_array;
+ 
             }
 
-            return view('participante.alumno.puntos_acumulados')->with(['alumno' => $alumno , 'id' => $id, 'puntos_referidos' => $puntos_referidos, 'alumno_remuneracion' => $alumno_remuneracion]);
+            return view('participante.alumno.puntos_acumulados')->with(['id' => $id, 'puntos_totales' => $puntos_totales, 'puntos' => $array]);
         }else{
            return redirect("participante/alumno"); 
         }
     }
 
-     public function credenciales($id)
+    public function agregar_remuneracion(Request $request){
+
+
+        $rules = [
+            'concepto' => 'required',
+            'remuneracion' => 'required|numeric',
+            'fecha_vencimiento' => 'required',
+        ];
+
+        $messages = [
+
+            'concepto.required' => 'Ups! El concepto es requerido ',
+            'remuneracion.required' => 'Ups! El cantidad es requerida',
+            'remuneracion.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
+            'fecha_vencimiento.required' => 'Ups! La fecha de vencimiento es requerida ',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }else{
+
+
+            $fecha_vencimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_vencimiento);
+
+            if($fecha_vencimiento < Carbon::now()){
+
+                return response()->json(['errores' => ['fecha_vencimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a hoy']], 'status' => 'ERROR'],422);
+            }
+
+            $fecha_vencimiento = $fecha_vencimiento->toDateString();
+          
+            $remuneracion = new AlumnoRemuneracion;
+            $remuneracion->alumno_id = $request->id;
+            $remuneracion->concepto = $request->concepto;
+            $remuneracion->remuneracion = $request->remuneracion;
+            $remuneracion->fecha_vencimiento = $fecha_vencimiento;
+
+            if($remuneracion->save()){
+
+                $fecha_vencimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_vencimiento);
+                $dias_restantes = $fecha_vencimiento->diffInDays();
+                $estatus = 'Activa Restan '.$dias_restantes.' Días';
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'array' => $remuneracion, 'estatus' => $estatus, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function eliminar_remuneracion($id)
+    {
+        
+        $remuneracion = AlumnoRemuneracion::find($id);
+
+        $cantidad = $remuneracion->remuneracion;
+        
+        if($remuneracion->delete()){
+
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 'cantidad' => $cantidad, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
+    }
+
+    public function credenciales($id)
     {   
 
         $alumno = Alumno::find($id);
@@ -2042,81 +2133,6 @@ class AlumnoController extends BaseController
         }
         
     }
-
-    public function agregar_remuneracion(Request $request){
-
-
-        $rules = [
-            'concepto' => 'required',
-            'remuneracion' => 'required|numeric',
-            'fecha_vencimiento' => 'required',
-        ];
-
-        $messages = [
-
-            'concepto.required' => 'Ups! El concepto es requerido ',
-            'remuneracion.required' => 'Ups! El cantidad es requerida',
-            'remuneracion.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
-            'fecha_vencimiento.required' => 'Ups! La fecha de vencimiento es requerida ',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()){
-
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        }
-
-        else{
-
-
-            $fecha_vencimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_vencimiento);
-
-            if($fecha_vencimiento < Carbon::now()){
-
-                return response()->json(['errores' => ['fecha_vencimiento' => [0, 'Ups! Esta fecha es invalida, debes ingresar una fecha superior a hoy']], 'status' => 'ERROR'],422);
-            }
-
-            $fecha_vencimiento = $fecha_vencimiento->toDateString();
-
-            $remuneracion = AlumnoRemuneracion::where('alumno_id',$request->id)->first();
-
-            if(!$remuneracion){
-
-                $remuneracion = new AlumnoRemuneracion;
-
-                $remuneracion->alumno_id = $request->id;
-                $remuneracion->concepto = $request->concepto;
-            }
-
-            $remuneracion->remuneracion = $request->remuneracion;
-            $remuneracion->fecha_vencimiento = $fecha_vencimiento;
-
-            if($remuneracion->save()){
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'array' => $remuneracion, 200]);
-            }else{
-                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-            }
-        }
-    }
-
-    public function eliminar_remuneracion($id)
-    {
-        
-        $remuneracion = AlumnoRemuneracion::find($id);
-
-        $cantidad = $remuneracion->remuneracion;
-        
-        if($remuneracion->delete()){
-
-            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 'cantidad' => $cantidad, 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-
-    }
-
 
     public function eliminar_credencial($id)
     {
