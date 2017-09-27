@@ -2366,7 +2366,6 @@
             case 'color_etiqueta':
                 $("#clasegrupal-"+c.name).text(c.value);
                 $("#color_etiqueta_container").css('background-color',c.value);
-                console.log('etiqueta');
                 break;
 
             case 'nivel_baile_id':

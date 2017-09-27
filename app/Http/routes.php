@@ -287,9 +287,14 @@
 
 			// ACTIVIDADES LABORALES
 
-			Route::get('configuracion/herramientas/actividades-laborales','HerramientaController@principalactividades');
-			Route::post('configuracion/academia/actividad','HerramientaController@agregaractividad');
-			Route::post('configuracion/academia/eliminaractividad/{id}','HerramientaController@eliminaractividad');
+			Route::get('configuracion/herramientas/actividades-laborales','ActividadLaboralController@index');
+			Route::get('configuracion/herramientas/actividades-laborales/detalle/{id}', 'ActividadLaboralController@edit');
+			Route::post('configuracion/herramientas/actividades-laborales/agregar','ActividadLaboralController@store');
+			Route::delete('configuracion/herramientas/actividades-laborales/eliminar/{id}','ActividadLaboralController@destroy');
+
+			Route::put('configuracion/herramientas/actividades-laborales/update/nombre', 'ActividadLaboralController@updateNombre');
+			Route::put('configuracion/herramientas/actividades-laborales/update/descripcion', 'ActividadLaboralController@updateDescripcion');
+			Route::put('configuracion/herramientas/actividades-laborales/update/etiqueta', 'ActividadLaboralController@updateEtiqueta');
 
 			// HERRAMIENTAS
 

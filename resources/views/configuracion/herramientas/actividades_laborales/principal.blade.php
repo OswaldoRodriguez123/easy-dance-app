@@ -206,8 +206,9 @@
             
     <script type="text/javascript">
 
-        route_agregar = "{{url('/')}}/configuracion/academia/actividad";
-        route_eliminar = "{{url('/')}}/configuracion/academia/eliminaractividad/";
+        route_agregar = "{{url('/')}}/configuracion/herramientas/actividades-laborales/agregar";
+        route_detalle = "{{url('/')}}/configuracion/herramientas/actividades-laborales/detalle/";
+        route_eliminar = "{{url('/')}}/configuracion/herramientas/actividades-laborales/eliminar/";
 
         $(document).ready(function(){
 
@@ -285,7 +286,7 @@
                 $.ajax({
                     url: route,
                         headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
+                        type: 'DELETE',
                     dataType: 'json',
                     data:id,
                     success:function(respuesta){
@@ -415,6 +416,14 @@
                     $("#error-"+n+"_mensaje").html(error);
                 });
             });
+        }
+
+        function previa(t){
+        
+            var row = $(t).closest('tr');
+            var id = $(row).attr('id');
+            var route =route_detalle+id;
+            window.open(route, '_blank');
         }
 
     </script>

@@ -40,7 +40,6 @@ use App\Egreso;
 use App\Puntaje;
 use App\ConfigFormulaExito;
 use App\ManualProcedimiento;
-use App\ActividadLaboral;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -505,64 +504,4 @@ class HerramientaController extends BaseController {
             }
         }
     }
-
-    public function principalactividades(){
-
-        $actividades = ActividadLaboral::where('academia_id' , Auth::user()->academia_id)->get();
-
-        return view('configuracion.herramientas.actividades_laborales.principal')->with(['actividades' => $actividades]);
-    }
-
-    public function agregaractividad(Request $request){
-        
-    $rules = [
-
-        'nombre_actividad' => 'required',
-        'descripcion_actividad' => 'required',
-        'color_etiqueta' => 'required',
-    ];
-
-    $messages = [
-
-        'nombre_actividad.required' => 'Ups! El Nombre es requerido',
-        'descripcion_actividad.required' => 'Ups! La Descripción es requerida',
-        'color_etiqueta.required' => 'Ups! El color de la etiqueta es requerido',
-    ];
-
-    $validator = Validator::make($request->all(), $rules, $messages);
-
-    if ($validator->fails()){
-
-        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-    }
-
-    else{
-
-        $nombre = title_case($request->nombre_actividad);
-        
-        $actividad = new ActividadLaboral;
-                                        
-        $actividad->academia_id = Auth::user()->academia_id;
-        $actividad->nombre = $nombre;
-        $actividad->descripcion = $request->descripcion_actividad;
-        $actividad->color_etiqueta = $request->color_etiqueta;
-
-        $actividad->save();
-
-        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $actividad, 'id' => $actividad->id, 200]);
-
-        }
-    }
-
-    public function eliminaractividad($id){
-
-        $actividad = ActividadLaboral::find($id);
-
-        $actividad->delete();
-
-        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
-
-    }
-
 }
