@@ -145,6 +145,8 @@ class BaseController extends Controller {
                     $url = "agendar";
                 }else if($notificacion['tipo_evento'] == 4){
                     $url = "agendar";
+                }else if($notificacion['tipo_evento'] == 5){
+                    $url = "notificaciones";
                 }else if($notificacion['tipo_evento'] == 6){
                     $url = "evaluaciones/detalle/".$notificacion['evento_id'];
                 }else if($notificacion['tipo_evento'] == 7){
