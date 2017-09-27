@@ -239,7 +239,7 @@
           order: [[2, 'asc']],
           fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
             $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
           },
           language: {
                           processing:     "Procesando ...",
@@ -396,7 +396,7 @@
           $.ajax({
                url: route_eliminar+id,
                headers: {'X-CSRF-TOKEN': token},
-               type: 'POST',
+               type: 'DELETE',
                dataType: 'json',                
               success: function (data) {
                 if(data.status=='OK'){

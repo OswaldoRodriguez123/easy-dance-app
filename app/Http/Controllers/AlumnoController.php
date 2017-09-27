@@ -1110,6 +1110,79 @@ class AlumnoController extends BaseController
         }
     }
 
+    public function updateConcepto(Request $request){
+
+        $rules = [
+            'concepto' => 'required',
+        ];
+
+        $messages = [
+
+            'concepto.required' => 'Ups! El Nombre  es requerido ',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        $remuneracion = AlumnoRemuneracion::find($request->id);
+
+        $concepto = title_case($request->concepto);
+        $remuneracion->concepto = $concepto;
+
+        if($remuneracion->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateCantidad(Request $request){
+
+        $rules = [
+            'remuneracion' => 'required|min:7|numeric',
+        ];
+
+        $messages = [
+            'remuneracion.required' => 'Ups! La cantidad es requerida',
+            'remuneracion.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+        }else{
+
+            $remuneracion = AlumnoRemuneracion::find($request->id);
+            $remuneracion->remuneracion = $request->remuneracion;  
+
+            if($remuneracion->save()){
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function updateFechaVencimiento(Request $request){
+
+        $remuneracion = AlumnoRemuneracion::find($request->id);
+        $fecha_vencimiento = Carbon::createFromFormat('d/m/Y', $request->fecha_vencimiento)->toDateString();
+
+        $remuneracion->fecha_vencimiento = $fecha_vencimiento;
+
+        if($remuneracion->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
     public function credenciales($id)
     {   
 

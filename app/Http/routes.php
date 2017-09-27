@@ -623,8 +623,12 @@
 
 			Route::get('participante/alumno/puntos-acumulados/{id}', 'AlumnoController@puntos_acumulados');
 			Route::post('participante/alumno/puntos-acumulados/agregar', 'AlumnoController@agregar_remuneracion');
-			Route::post('participante/alumno/puntos-acumulados/eliminar/{id}', 'AlumnoController@eliminar_remuneracion');
+			Route::delete('participante/alumno/puntos-acumulados/eliminar/{id}', 'AlumnoController@eliminar_remuneracion');
 			Route::get('participante/alumno/puntos-acumulados/detalle/{id}', 'AlumnoController@editar_remuneracion');
+
+			Route::put('participante/alumno/puntos-acumulados/update/concepto', 'AlumnoController@updateConcepto');
+			Route::put('participante/alumno/puntos-acumulados/update/cantidad', 'AlumnoController@updateCantidad');
+			Route::put('participante/alumno/puntos-acumulados/update/fecha_vencimiento', 'AlumnoController@updateFechaVencimiento');
 
 			//INSTRUCTOR
 

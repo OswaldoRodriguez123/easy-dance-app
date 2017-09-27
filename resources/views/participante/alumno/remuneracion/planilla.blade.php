@@ -116,7 +116,7 @@
                             </div>
                             <div class="col-sm-12">                            
 
-                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_cantidad_remuneracion" data-update="remuneracion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_cantidad_remuneracion" data-update="cantidad" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
 
                             </div>
                         </div></form>
@@ -257,7 +257,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="remuneracion-concepto" class="capitalize">{{$remuneracion->concepto}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalID-Remuneracion">
+                            <tr class="detalle" data-toggle="modal" href="#modalCantidad-Remuneracion">
                              <td width="50%"> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-remuneracion" class="zmdi {{ empty($remuneracion->remuneracion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      
                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-item-1 f-22"></i> </span>
