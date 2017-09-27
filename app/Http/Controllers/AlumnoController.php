@@ -1017,7 +1017,7 @@ class AlumnoController extends BaseController
  
             }
 
-            return view('participante.alumno.puntos_acumulados')->with(['id' => $id, 'puntos_totales' => $puntos_totales, 'puntos' => $array]);
+            return view('participante.alumno.remuneracion.principal')->with(['id' => $id, 'puntos_totales' => $puntos_totales, 'puntos' => $array]);
         }else{
            return redirect("participante/alumno"); 
         }
@@ -1091,6 +1091,23 @@ class AlumnoController extends BaseController
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
 
+    }
+
+    public function editar_remuneracion($id)
+    {   
+
+        Session::forget('puntos_referidos');
+
+        $remuneracion = AlumnoRemuneracion::join('alumnos', 'alumnos.id', '=', 'alumnos_remuneracion.alumno_id')
+            ->select('alumnos_remuneracion.*')
+            ->where('alumnos_remuneracion.id',$id)
+        ->first();
+
+        if($remuneracion){
+            return view('participante.alumno.remuneracion.planilla')->with(['remuneracion' => $remuneracion , 'id' => $id]);
+        }else{
+           return redirect("participante/alumno"); 
+        }
     }
 
     public function credenciales($id)

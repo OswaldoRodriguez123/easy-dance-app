@@ -210,7 +210,7 @@
         var row = $(t).closest('tr').attr('id');
         var route =route_detalle+"/"+row;
         window.open(route, '_blank');
-      }
+    }
 
     $("i[name=operacion").click(function(){
         var route =route_operacion+"/"+this.id;

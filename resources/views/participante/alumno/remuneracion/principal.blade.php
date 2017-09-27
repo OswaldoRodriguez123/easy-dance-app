@@ -225,6 +225,7 @@
 
         route_agregar="{{url('/')}}/participante/alumno/puntos-acumulados/agregar";
         route_eliminar="{{url('/')}}/participante/alumno/puntos-acumulados/eliminar/";
+        route_detalle="{{url('/')}}/participante/alumno/puntos-acumulados/detalle/";
 
         total = parseInt("{{$puntos_totales}}")
 
@@ -438,6 +439,12 @@
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
         }
+      }
+
+      function previa(t){
+        var id = $(t).closest('tr').attr('id');
+        var route =route_detalle+id;
+        window.open(route, '_blank');
       }
 
   </script>

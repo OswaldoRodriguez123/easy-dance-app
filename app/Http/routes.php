@@ -613,14 +613,18 @@
 			Route::post('participante/alumno/cancelar_cantidad', 'AlumnoController@cancelar_cantidad');
 
 			Route::get('participante/alumno/evaluaciones/{id}', 'EvaluacionController@evaluaciones_alumno');
-			Route::get('participante/alumno/puntos-acumulados/{id}', 'AlumnoController@puntos_acumulados');
 			Route::get('participante/alumno/credenciales/{id}', 'AlumnoController@credenciales');
-			Route::post('participante/alumno/puntos-acumulados/agregar', 'AlumnoController@agregar_remuneracion');
-			Route::post('participante/alumno/puntos-acumulados/eliminar/{id}', 'AlumnoController@eliminar_remuneracion');
 			Route::post('participante/alumno/credenciales/eliminar/{id}', 'AlumnoController@eliminar_credencial');
 
 			Route::post('participante/alumno/crear_cuenta/{id}', 'AlumnoController@crearCuenta');
 			Route::get('participante/alumno/historial-asistencias/{id}', 'ClaseGrupalController@historial_asistencia_general');
+
+			//PUNTOS ACUMULADOS
+
+			Route::get('participante/alumno/puntos-acumulados/{id}', 'AlumnoController@puntos_acumulados');
+			Route::post('participante/alumno/puntos-acumulados/agregar', 'AlumnoController@agregar_remuneracion');
+			Route::post('participante/alumno/puntos-acumulados/eliminar/{id}', 'AlumnoController@eliminar_remuneracion');
+			Route::get('participante/alumno/puntos-acumulados/detalle/{id}', 'AlumnoController@editar_remuneracion');
 
 			//INSTRUCTOR
 
