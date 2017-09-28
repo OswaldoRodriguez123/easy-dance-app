@@ -1314,6 +1314,11 @@
 
 			Route::get('/certificado/','ProgresoController@certificado');
 
+			//EVALUACIONES
+			
+			Route::get('evaluaciones', 'EvaluacionController@evaluaciones_vista_alumno');
+			Route::get('evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
+
 			//LIDERES EN ACCION
 
 			Route::get('lideres-en-accion','LiderController@index');
@@ -1411,12 +1416,6 @@
 			Route::get('especiales/evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
 
 			Route::post('guardar-alumno/{id}','AlumnoController@guardarAlumno');
-
-			//EVALUACIONES
-			
-			Route::get('evaluaciones', 'EvaluacionController@evaluaciones_vista_alumno');
-			Route::get('evaluaciones/detalle/{id}','EvaluacionController@getDetalle');
-
 
 			//SUPERVISIONES
 
