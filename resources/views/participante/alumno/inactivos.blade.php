@@ -136,6 +136,7 @@
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
+                                    <th class="text-center" data-column-id="nombre" data-order="desc">Contacto</th>
                                     <th class="text-center" data-column-id="clase_grupal">Clase Grupal</th>
                                     <th class="text-center" data-column-id="estatu_e">Balance E</th>
                                     <th class="text-center" data-column-id="operacion">Acciones</th>
@@ -156,6 +157,7 @@
                                     @endif
                                     </td>
                                     <td class="text-center disabled">{{$alumno['nombre']}} {{$alumno['apellido']}}</td>
+                                    <td class="text-center disabled">{{$alumno['celular']}}</td>
                                     <td class="text-center disabled">{{$alumno['clase_grupal_nombre']}}</td>
                                     <td class="text-center disabled">
                                     <i data-toggle="modal" href="#" class="zmdi zmdi-money {{ isset($alumno['deuda']) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3 operacionModal"></i>
