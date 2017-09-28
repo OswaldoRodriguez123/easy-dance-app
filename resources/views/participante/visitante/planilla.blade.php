@@ -754,6 +754,61 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalObservacion-Visitante" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Visitante<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_observacion_alumno" id="edit_observacion_alumno"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="correo">Observación</label>
+                                    <textarea type="text" class="form-control input-sm" name="observacion" id="observacion" placeholder="Observacion" maxlength="200" onkeyup="countChar2(this)"></textarea>
+                                 </div>
+                                 
+                                 <div class="opaco-0-8 text-right">Resta <span id="charNum2">200</span> Caracteres</div>
+                                 <div class="has-error" id="error-observacion">
+                                      <span >
+                                          <small class="help-block error-span" id="error-observacion_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+                                     
+
+                               <div class="clearfix"></div> 
+
+                               <input type="hidden" name="id" value="{{$visitante->id}}"></input>
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                       <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_observacion_alumno" data-update="observacion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
     
     
             <section id="content">
@@ -943,6 +998,14 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="visitante-tipologia_id" class="capitalize">{{$visitante->tipologia}}</span></td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalObservacion-Visitante">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-observacion" class="zmdi {{ empty($visitante->observacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-correo f-22"></i> </span>
+                               <span class="f-14"> Observación </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="visitante-observacion"  data-valor="{{$visitante->observacion}}"><span>{{ str_limit($visitante->observacion, $limit = 30, $end = '...') }}</span></span> <span class="pull-right c-blanco"></td>
+                            </tr>
 
 
                            </table>
@@ -1052,6 +1115,12 @@
        $("#direccion").val(direccion);
     })
 
+    $('#modalObservacion-Visitante').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      var valor=$("#visitante-observacion").data('valor');
+       $("#observacion").val(valor);
+    })
+
     $('#modalEstatus-Visitante').on('show.bs.modal', function (event) {
       limpiarMensaje();
       var status= $("#visitante-estatus").data('valor');
@@ -1125,7 +1194,7 @@
             }
             $("#visitante-"+c.name).data('valor',c.value);
             $("#visitante-"+c.name).html(valor);
-          }else if(c.name=='direccion'){
+          }else if(c.name=='direccion' || c.name=='observacion'){
              $("#visitante-"+c.name).data('valor',c.value);
              $("#visitante-"+c.name).html(c.value.substr(0, 30) + "...");
           }else if(c.name=='como_nos_conociste_id' || c.name=='especialidad_id' || c.name=='dias_clase_id' | c.name=='instructor_id' || c.name=='tipologia_id'){
@@ -1395,12 +1464,21 @@
             });
       });
 
-        function countChar(val) {
+      function countChar(val) {
         var len = val.value.length;
         if (len >= 180) {
           val.value = val.value.substring(0, 180);
         } else {
           $('#charNum').text(180 - len);
+        }
+      };
+
+      function countChar2(val) {
+        var len = val.value.length;
+        if (len >= 200) {
+          val.value = val.value.substring(0, 200);
+        } else {
+          $('#charNum2').text(200 - len);
         }
       };
 

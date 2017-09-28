@@ -186,6 +186,7 @@ class VisitanteController extends BaseController {
             $visitante->instructor_id = $request->instructor_id;
             $visitante->interes_id = $request->interes_id;
             $visitante->tipologia_id = $request->tipologia_id;
+            $visitante->observacion = $request->observacion;
 
             if($visitante->save()){
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
@@ -380,6 +381,18 @@ class VisitanteController extends BaseController {
     public function updateTipologia(Request $request){
         $visitante = Visitante::find($request->id);
         $visitante->tipologia_id = $request->tipologia_id;
+
+        if($visitante->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+
+    public function updateObservacion(Request $request){
+        $visitante = Visitante::find($request->id);
+        $visitante->observacion = $request->observacion;
 
         if($visitante->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

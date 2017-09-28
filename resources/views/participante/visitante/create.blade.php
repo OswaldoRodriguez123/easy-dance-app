@@ -368,6 +368,23 @@
 
                           <div class="clearfix p-b-35"></div>
 
+                          <div class="col-sm-12">
+                             <div class="form-group fg-line">
+                                <label for="observacion" id="id-observacion">Observación</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la observacion" title="" data-original-title="Ayuda"></i>
+                                <div class="fg-line">
+                                <textarea type="text" class="form-control input-sm proceso" name="observacion" id="observacion" placeholder="Observación" maxlength="200" onkeyup="countChar2(this)" rows="4"></textarea>
+                                </div>
+                                <div class="opaco-0-8 text-right">Resta <span id="charNum2">200</span> Caracteres</div>
+                             <div class="has-error" id="error-observacion">
+                                  <span >
+                                      <small class="help-block error-span" id="error-observacion_mensaje" ></small>                                
+                                  </span>
+                              </div>
+                             </div>
+                           </div>
+
+                          <div class="clearfix p-b-35"></div>
+
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
                               <div class="procesando hidden">
@@ -672,7 +689,7 @@
         $("#guardar").css({"opacity": ("1")});
       })
 
-       $( "#cancelar" ).click(function() {
+      $( "#cancelar" ).click(function() {
         $("#agregar_visitante")[0].reset();
         $('#especialidad_id').selectpicker('render');
         $('#como_nos_conociste_id').selectpicker('render');
@@ -682,9 +699,9 @@
         scrollTop: $("#id-clase_grupal_id").offset().top-90,
         }, 1500);
         $("#nombre").focus();
-});
+      });
 
-       function countChar(val) {
+      function countChar(val) {
         var len = val.value.length;
         if (len >= 180) {
           val.value = val.value.substring(0, 180);
@@ -692,6 +709,16 @@
           $('#charNum').text(180 - len);
         }
       };
+
+      function countChar2(val) {
+        var len = val.value.length;
+        if (len >= 200) {
+          val.value = val.value.substring(0, 200);
+        } else {
+          $('#charNum2').text(200 - len);
+        }
+      };
+
 </script> 
 @stop
 
