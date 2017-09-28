@@ -135,8 +135,28 @@
                                                 <td class="text-center previa">{{$factura['fecha']}}</td>
                                                 <td class="text-center previa">{{ number_format($factura['total'], 2, '.' , '.') }}</td>
                                                 <td class="text-center previa">
-                                                    <i name="correo" class="zmdi zmdi-email f-20 p-r-10"></i>
-                                                    <i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer eliminar_factura"></i>
+                                                    <ul class="top-menu">
+                                                        <li class="dropdown" id="dropdown_{{$id}}">
+                                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                                               <span class="f-15 f-700" style="color:black"> 
+                                                                    <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                               </span>
+                                                            </a>
+                                                            <div class="dropup">
+                                                                <ul class="dropdown-menu dm-icon pull-right">
+
+                                                                    <li class="hidden-xs email">
+                                                                        <a><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
+                                                                    </li>
+
+                                                                    <li class="hidden-xs eliminar_factura">
+                                                                        <a class="pointer"><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>
+                                                                    </li>
+
+                                                                </ul>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
                                                 </td>
                                             </tr>
 
@@ -331,7 +351,7 @@
                     operacion += '<li class="hidden-xs email">'
                     operacion += '<a class="pointer">'
                     operacion += '<i class="zmdi zmdi-email f-16 m-r-10 boton blue"></i>'
-                    operacion += '&nbsp;Enviar Correo'
+                    operacion += 'Enviar Correo'
                     operacion += '</a></li>'
                     operacion += '<li class="hidden-xs eliminar_factura"><a class="pointer">'
                     operacion += '<i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i>'
