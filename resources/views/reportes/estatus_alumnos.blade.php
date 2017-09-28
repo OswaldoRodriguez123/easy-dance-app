@@ -137,8 +137,8 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th class="text-center" data-column-id="imagen">Imagen</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
-                                    <th class="text-center" data-column-id="cedula" data-order="desc">Cedula</th>
                                     <th class="text-center" data-column-id="fecha_nacimiento" data-order="desc">Fecha Nacimiento</th>
                                     <th class="text-center" data-column-id="estatus_e">Estatus de Alumno</th>
                                     <th class="text-center" data-column-id="clase_grupal" data-order="desc">Clase Grupal</th>
@@ -171,6 +171,8 @@
 
         route_filtrar="{{url('/')}}/reportes/estatus-alumnos";
         route_detalle="{{url('/')}}/agendar/clases-grupales/participantes/historial/";
+
+        var pagina = document.location.origin
 
         t=$('#tablelistar').DataTable({
         processing: true,
@@ -239,10 +241,20 @@
 
                       $.each(respuesta.reporte_datos, function (index, array) {
 
+                        if(array.imagen){
+                            imagen = pagina+'/assets/uploads/usuario/'+array.imagen;
+                        }else{
+                            if(array.sexo == 'M'){
+                                imagen = pagina+"/assets/img/Hombre.jpg"
+                            }else{
+                                imagen = pagina+"/assets/img/Mujer.jpg"
+                            }
+                        }
+
                         var rowId=array.inscripcion_id;
                         var rowNode=t.row.add( [
+                            ''+'<img class="lv-img" src="'+imagen+'" alt="">'+'',
                             ''+array.nombre+ ' '+array.apellido+ '',
-                            ''+array.identificacion+'',
                             ''+array.fecha_nacimiento+'',
                             ''+"<i class='zmdi zmdi-label-alt-outline f-20 p-r-3 "+array.estatus+"'></i>",
                             ''+array.clase_nombre+'',

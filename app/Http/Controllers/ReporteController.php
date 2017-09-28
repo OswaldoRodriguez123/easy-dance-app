@@ -1353,6 +1353,7 @@ class ReporteController extends BaseController
         $activos = 0;
         $riesgo = 0;
         $inactivos = 0;
+        $in = array(2,4);
 
         foreach($alumnos as $alumno){
 
@@ -1678,11 +1679,29 @@ class ReporteController extends BaseController
                 $inscripcion_id = '';
             }
 
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$alumno->id)
+                ->whereIn('usuarios_tipo.tipo',$in)
+            ->first();
+
+            if($usuario){
+
+                if($usuario->imagen){
+                    $imagen = $usuario->imagen;
+                }else{
+                    $imagen = '';
+                }
+
+            }else{
+                $imagen = '';
+            }
+
             $collection=collect($alumno);     
             $alumno_array = $collection->toArray();
             $alumno_array['estatus'] = $estatus;
             $alumno_array['clase_nombre'] = $clase_nombre;
             $alumno_array['inscripcion_id'] = $inscripcion_id;
+            $alumno_array['imagen'] = $imagen;
 
             if($request->estatus_alumno_id){
                 if($request->estatus_alumno_id == 1 && $estatus=="c-verde"){
