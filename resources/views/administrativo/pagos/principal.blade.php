@@ -163,6 +163,8 @@
         var proformas = <?php echo json_encode($proformas);?>;
         var facturas = <?php echo json_encode($facturas);?>;
 
+        var pagina = document.location.origin
+
         function formatmoney(n) {
             return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
         }
@@ -244,6 +246,27 @@
 
                     if(array.tipo == tipo || tipo == 0){
 
+                        operacion = ''
+
+                        operacion += '<ul class="top-menu">'
+                        operacion += '<li id = dropdown_'+array.id+' class="dropdown">' 
+                        operacion += '<a id = dropdown_toggle_'+array.id+' href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">' 
+                        operacion += '<span class="f-15 f-700" style="color:black">'
+                        operacion += '<i class="zmdi zmdi-wrench f-20 mousedefault" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=""></i>'
+                        operacion += '</span></a>'
+                        operacion += '<div class="dropup">'
+                        operacion += '<ul class="dropdown-menu dm-icon pull-right" style="position:absolute;">'
+                        operacion += '<li class="hidden-xs">'
+                        operacion += '<a class="pagar pointer">'
+                        operacion += '<i class="icon_a-pagar f-16 m-r-10 boton blue"></i>'
+                        operacion += '&nbsp;Pagar'
+                        operacion += '</a></li>'
+                        operacion += '<li class="hidden-xs eliminar"><a class="pointer eliminar">'
+                        operacion += '<i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i>'
+                        operacion += 'Eliminar'
+                        operacion += '</a></li>'
+                        operacion += '</ul></div></li></ul>'
+
                         nombre = array.nombre
 
                         if(nombre.length > 50)
@@ -259,11 +282,12 @@
                         ''+nombre+'',
                         ''+array.fecha_vencimiento+'',
                         ''+formatmoney(parseFloat(array.importe_neto))+'',
-                        '<i name="pagar" class="icon_a-pagar f-20 p-r-10 pointer"></i> <i class="eliminar zmdi zmdi-delete boton red f-20 p-r-10 pointer"></i>'
+                        ''+operacion+''
                         ] ).draw(false).node();
                         $( rowNode )
                             .attr('id',array.id)
                             .addClass('text-center');
+
                     }
                 });
             
@@ -293,6 +317,28 @@
                 document.getElementById('fecha').innerHTML = 'Fecha'; 
 
                 $.each(facturas, function (index, array) {
+
+                    operacion = ''
+
+                    operacion += '<ul class="top-menu">'
+                    operacion += '<li id = dropdown_'+array.id+' class="dropdown">' 
+                    operacion += '<a id = dropdown_toggle_'+array.id+' href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">' 
+                    operacion += '<span class="f-15 f-700" style="color:black">'
+                    operacion += '<i class="zmdi zmdi-wrench f-20 mousedefault" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=""></i>'
+                    operacion += '</span></a>'
+                    operacion += '<div class="dropup">'
+                    operacion += '<ul class="dropdown-menu dm-icon pull-right" style="position:absolute;">'
+                    operacion += '<li class="hidden-xs email">'
+                    operacion += '<a class="pointer">'
+                    operacion += '<i class="zmdi zmdi-email f-16 m-r-10 boton blue"></i>'
+                    operacion += '&nbsp;Enviar Correo'
+                    operacion += '</a></li>'
+                    operacion += '<li class="hidden-xs eliminar_factura"><a class="pointer">'
+                    operacion += '<i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i>'
+                    operacion += 'Eliminar'
+                    operacion += '</a></li>'
+                    operacion += '</ul></div></li></ul>'
+
                     concepto = array.concepto;
                     if(concepto.length > 50)
                     {
@@ -305,7 +351,7 @@
                     ''+concepto+'',
                     ''+array.fecha+'',
                     ''+formatmoney(parseFloat(array.total))+'',
-                    '<i name="correo" class="zmdi zmdi-email f-20 p-r-10"></i> <i class="eliminar_factura zmdi zmdi-delete boton red f-20 p-r-10 pointer"></i>'
+                    ''+operacion+''
                     ] ).draw(false).node();
                     $( rowNode )
                         .attr('id',array.id)
@@ -357,12 +403,12 @@
             $( "#inscripcion2" ).removeClass( "c-verde" );
         });
 
-        $('#tablelistar tbody').on( 'click', 'i.icon_a-pagar', function () {
+        $('#tablelistar tbody').on( 'click', '.pagar', function () {
             var id = $(this).closest('tr').attr('id');
             window.location = route_gestion + id;
         });
 
-        $('#tablelistar tbody').on( 'click', 'i.zmdi-email', function () {
+        $('#tablelistar tbody').on( 'click', '.email', function () {
 
                 var id = $(this).closest('tr').attr('id');
                 element = this;
@@ -433,7 +479,7 @@
                 });
       }
 
-    $('#tablelistar tbody').on( 'click', 'i.eliminar_factura', function () {
+    $('#tablelistar tbody').on( 'click', '.eliminar_factura', function () {
 
           var id = $(this).closest('tr').attr('id');
           element = this;
@@ -491,7 +537,7 @@
           });
       });
 
-      $('#tablelistar tbody').on( 'click', 'i.eliminar', function () {
+      $('#tablelistar tbody').on( 'click', '.eliminar', function () {
 
           var id = $(this).closest('tr').attr('id');
           element = this;
@@ -554,6 +600,29 @@
       str = str.toString();
       return str.length < max ? pad("0" + str, max) : str;
     }
+
+    $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+        var id = $(this).closest('tr').attr('id');
+        var dropdown = $(this).closest('.dropdown')
+        var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+        $('.dropdown-toggle').attr('aria-expanded','false')
+        $('.dropdown').removeClass('open')
+        $('.table-responsive').css( "overflow", "auto" );
+
+        if(!dropdown.hasClass('open')){
+            dropdown.addClass('open')
+            dropdown_toggle.attr('aria-expanded','true')
+            $('.table-responsive').css( "overflow", "inherit" );
+        }
+     
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+        $('.table-responsive').css( "overflow", "auto" );
+    })
+
 
     </script>
 @stop

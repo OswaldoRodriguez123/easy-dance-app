@@ -87,10 +87,29 @@
                                     <td class="text-center previa">{{$incidencia['fecha']}} </td>
                                     @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
                                         <td class="text-center disabled">
-                                        
-                                            <a href="{{url('/')}}/incidencias/visualizar/{{$id}}"><i class="zmdi zmdi-eye f-20 m-r-10 boton azul sa-warning"  data-original-title="Visualizar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
 
-                                            <i name="eliminar" id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i>
+                                            <ul class="top-menu">
+                                                <li class="dropdown" id="dropdown_{{$id}}">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                                       <span class="f-15 f-700" style="color:black"> 
+                                                            <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                       </span>
+                                                    </a>
+                                                    <div class="dropup">
+                                                        <ul class="dropdown-menu dm-icon pull-right">
+
+                                                            <li class="hidden-xs">
+                                                                <a onclick="procesando()" href="{{url('/')}}/incidencias/visualizar/{{$id}}"><i class="zmdi zmdi-eye f-16 boton blue"></i> Visualizar</a>
+                                                            </li>
+
+                                                            <li class="hidden-xs eliminar">
+                                                                <a class="pointer eliminar"><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </ul>
                                         </td>
                                     @endif
                                 </tr>
@@ -241,6 +260,28 @@
                 }
               });
           });
+
+        $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+            var id = $(this).closest('tr').attr('id');
+            var dropdown = $(this).closest('.dropdown')
+            var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+            $('.dropdown-toggle').attr('aria-expanded','false')
+            $('.dropdown').removeClass('open')
+            $('.table-responsive').css( "overflow", "auto" );
+
+            if(!dropdown.hasClass('open')){
+                dropdown.addClass('open')
+                dropdown_toggle.attr('aria-expanded','true')
+                $('.table-responsive').css( "overflow", "inherit" );
+            }
+         
+        });
+
+        $('.table-responsive').on('hide.bs.dropdown', function () {
+            $('.table-responsive').css( "overflow", "auto" );
+        })
 
     </script>
 
