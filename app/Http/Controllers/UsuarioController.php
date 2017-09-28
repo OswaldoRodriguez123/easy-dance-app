@@ -776,12 +776,6 @@ class UsuarioController extends BaseController {
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
-    public function index_con_reportes()
-    {
-
-        return view('inicio.index-con-reportes')->with(['talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas, 'transmisiones' => $arrayTransmisiones, 'mujeres' => $mujeres, 'hombres' => $hombres, 'egresos_generales' => $egresos_generales, 'egresos_eventos' => $egresos_eventos, 'egresos_talleres' => $egresos_talleres, 'egresos_campanas' => $egresos_campanas, 'porcentaje_general' => $porcentaje_general, 'porcentaje_evento' => $porcentaje_evento, 'porcentaje_taller' => $porcentaje_taller, 'porcentaje_campana' => $porcentaje_campana, 'ingresos_generales' => $ingresos_generales, 'ingresos_eventos' => $ingresos_eventos, 'ingresos_talleres' => $ingresos_talleres, 'ingresos_campanas' => $ingresos_campanas, 'porcentaje_ingreso_general' => $porcentaje_ingreso_general, 'porcentaje_ingreso_evento' => $porcentaje_ingreso_evento, 'porcentaje_ingreso_taller' => $porcentaje_ingreso_taller, 'porcentaje_ingreso_campana' => $porcentaje_ingreso_campana]);
-    }
-
     public function index()
     {
 
@@ -1581,11 +1575,11 @@ class UsuarioController extends BaseController {
                     $porcentaje_ingreso_campana = 0;
                 }
 
-                // return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia, 'vencimiento' => $vencimiento]); 
-
-                return view('inicio.index-con-reportes')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia, 'vencimiento' => $vencimiento, 'talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas, 'transmisiones' => $arrayTransmisiones, 'mujeres' => $mujeres, 'hombres' => $hombres, 'egresos_generales' => $egresos_generales, 'egresos_eventos' => $egresos_eventos, 'egresos_talleres' => $egresos_talleres, 'egresos_campanas' => $egresos_campanas, 'porcentaje_general' => $porcentaje_general, 'porcentaje_evento' => $porcentaje_evento, 'porcentaje_taller' => $porcentaje_taller, 'porcentaje_campana' => $porcentaje_campana, 'ingresos_generales' => $ingresos_generales, 'ingresos_eventos' => $ingresos_eventos, 'ingresos_talleres' => $ingresos_talleres, 'ingresos_campanas' => $ingresos_campanas, 'porcentaje_ingreso_general' => $porcentaje_ingreso_general, 'porcentaje_ingreso_evento' => $porcentaje_ingreso_evento, 'porcentaje_ingreso_taller' => $porcentaje_ingreso_taller, 'porcentaje_ingreso_campana' => $porcentaje_ingreso_campana]);
-                
-                
+                if($usuario_tipo == 6){
+                    return view('inicio.index')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia, 'vencimiento' => $vencimiento]); 
+                }else{
+                    return view('inicio.index-con-reportes')->with(['paises' => Paises::all() , 'especialidades' => ConfigEspecialidades::all(), 'academia' => $academia, 'vencimiento' => $vencimiento, 'talleres' => $arrayTalleres, 'clases_grupales' => $arrayClases, 'clases_personalizadas' => $arrayClasespersonalizadas, 'fiestas' => $arrayFiestas, 'citas' => $arrayCitas, 'transmisiones' => $arrayTransmisiones, 'mujeres' => $mujeres, 'hombres' => $hombres, 'egresos_generales' => $egresos_generales, 'egresos_eventos' => $egresos_eventos, 'egresos_talleres' => $egresos_talleres, 'egresos_campanas' => $egresos_campanas, 'porcentaje_general' => $porcentaje_general, 'porcentaje_evento' => $porcentaje_evento, 'porcentaje_taller' => $porcentaje_taller, 'porcentaje_campana' => $porcentaje_campana, 'ingresos_generales' => $ingresos_generales, 'ingresos_eventos' => $ingresos_eventos, 'ingresos_talleres' => $ingresos_talleres, 'ingresos_campanas' => $ingresos_campanas, 'porcentaje_ingreso_general' => $porcentaje_ingreso_general, 'porcentaje_ingreso_evento' => $porcentaje_ingreso_evento, 'porcentaje_ingreso_taller' => $porcentaje_ingreso_taller, 'porcentaje_ingreso_campana' => $porcentaje_ingreso_campana]);
+                }
             }else if($usuario_tipo == 2 || $usuario_tipo == 4){
 
                 $alumno = Alumno::find($usuario_id);
