@@ -32,15 +32,16 @@
                       <div class="row p-t-20 p-b-0">
 
 
-                      <div class="col-sm-12">
+                      <div class="col-sm-12" id="id-concepto">
                           <div class="form-group fg-line">
                             <label for="concepto" id="id-concepto">Concepto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el concepto" title="" data-original-title="Ayuda"></i>
 
                             <div class="input-group">
                               <span class="input-group-addon"><i class="icon_b-nombres f-22"></i></span>
                               <div class="fg-line">
-                                <input type="text" class="form-control input-sm input-mask proceso" name="concepto" id="concepto" placeholder="Ej. 50">
+                                <input type="text" class="form-control input-sm input-mask proceso" name="concepto" id="concepto" placeholder="Ej. Puntos acumulados por colaborador" maxlength="100" onkeyup="countChar(this)">
                               </div>
+                              <div class="opaco-0-8 text-right">Resta <span id="charNum">100</span> Caracteres</div>
                             </div>
                             <div class="has-error" id="error-concepto">
                               <span >
@@ -52,7 +53,27 @@
 
                         <div class="clearfix p-b-35"></div>
 
-                        <div class="col-sm-12">
+                        <div class="col-sm-12" id="id-fecha_vencimiento">
+                          <div class="form-group fg-line">
+                            <label for="fecha_vencimiento">Fecha de Expiración</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha de expiración" title="" data-original-title="Ayuda"></i>
+
+                            <div class="input-group">
+                              <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
+                                <div class="dtp-container fg-line">
+                                    <input name="fecha_vencimiento" id="fecha_vencimiento" class="form-control date-picker pointer" placeholder="Seleciona" type="text">
+                                </div>
+                            </div>
+                            <div class="has-error" id="error-fecha_vencimiento">
+                              <span >
+                                <small class="help-block error-span" id="error-fecha_vencimiento_mensaje" ></small>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="clearfix p-b-35"></div>
+
+                        <div class="col-sm-12" id="id-remuneracion">
                           <div class="form-group fg-line">
                             <label for="remuneracion" id="id-remuneracion">Cantidad</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la cantidad de puntos a agregar" title="" data-original-title="Ayuda"></i>
 
@@ -65,26 +86,6 @@
                             <div class="has-error" id="error-remuneracion">
                               <span >
                                 <small class="help-block error-span" id="error-remuneracion_mensaje" ></small>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="clearfix p-b-35"></div>
-
-                        <div class="col-sm-12">
-                          <div class="form-group fg-line">
-                            <label for="fecha_vencimiento" id="id-fecha_vencimiento">Fecha de Expiración</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha de expiración" title="" data-original-title="Ayuda"></i>
-
-                            <div class="input-group">
-                              <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
-                                <div class="dtp-container fg-line">
-                                    <input name="fecha_vencimiento" id="fecha_vencimiento" class="form-control date-picker pointer" placeholder="Seleciona" type="text">
-                                </div>
-                            </div>
-                            <div class="has-error" id="error-fecha_vencimiento">
-                              <span >
-                                <small class="help-block error-span" id="error-fecha_vencimiento_mensaje" ></small>
                               </span>
                             </div>
                           </div>
@@ -446,6 +447,27 @@
         var route =route_detalle+id;
         window.open(route, '_blank');
       }
+
+      function errores(merror){
+         $.each(merror, function (n, c) {
+             console.log(n);
+           $.each(this, function (name, value) {
+              //console.log(this);
+              var error=value;
+              $("#error-"+n+"_mensaje").html(error);
+              console.log(value);
+           });
+        });
+      }
+
+    function countChar(val) {
+      var len = val.value.length;
+      if (len >= 100) {
+        val.value = val.value.substring(0, 100);
+      } else {
+        $('#charNum').text(100 - len);
+      }
+    };
 
   </script>
 

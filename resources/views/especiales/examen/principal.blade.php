@@ -80,9 +80,18 @@
                                                 </a>
                                                 <div class="dropup">
                                                     <ul class="dropdown-menu dm-icon pull-right">
-                                                        <li class="hidden-xs">
-                                                            <a onclick="procesando()" href="{{url('/')}}/especiales/examenes/evaluar/{{$id}}"><i class="zmdi icon_a-examen f-16 boton blue"></i> Evaluar</a>
-                                                        </li>
+
+                                                        @if($usuario_tipo != 3)   
+                                                            <li class="hidden-xs">
+                                                                <a onclick="procesando()" href="{{url('/')}}/especiales/examenes/evaluar/{{$id}}"><i class="zmdi icon_a-examen f-16 boton blue"></i> Evaluar</a>
+                                                            </li>
+                                                        @else
+                                                            @if($usuario_id == $examen->instructor_id)
+                                                                <li class="hidden-xs">
+                                                                    <a onclick="procesando()" href="{{url('/')}}/especiales/examenes/evaluar/{{$id}}"><i class="zmdi icon_a-examen f-16 boton blue"></i> Evaluar</a>
+                                                                </li>
+                                                            @endif
+                                                        @endif
 
                                                         <li class="hidden-xs">
                                                             <a onclick="procesando()" href="{{url('/')}}/especiales/evaluaciones/{{$id}}"><i class="zmdi zmdi-hourglass-alt f-16 boton blue"></i> Historial</a>

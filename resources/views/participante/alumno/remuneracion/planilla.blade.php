@@ -29,8 +29,9 @@
                                <div class="col-sm-12">
                                  <div class="form-group fg-line">
                                     <label for="concepto">Concepto</label>
-                                    <input type="text" class="form-control input-sm" name="concepto" id="concepto" placeholder="Ej. Valeria">
-                                 </div>
+                                    <input type="text" class="form-control input-sm input-mask proceso" name="concepto" id="concepto" placeholder="Ej. Puntos acumulados por colaborador" maxlength="100" onkeyup="countChar(this)">
+                                  </div>
+                                  <div class="opaco-0-8 text-right">Resta <span id="charNum">100</span> Caracteres</div>
                                  <div class="has-error" id="error-concepto">
                                       <span >
                                           <small class="help-block error-span" id="error-concepto_mensaje" ></small>                                
@@ -558,10 +559,10 @@
 
       function countChar(val) {
         var len = val.value.length;
-        if (len >= 180) {
-          val.value = val.value.substring(0, 180);
+        if (len >= 100) {
+          val.value = val.value.substring(0, 100);
         } else {
-          $('#charNum').text(180 - len);
+          $('#charNum').text(100 - len);
         }
       };
 

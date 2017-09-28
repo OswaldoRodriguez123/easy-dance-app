@@ -802,13 +802,13 @@
 
 
     function countChar(val) {
-        var len = val.value.length;
-        if (len >= 180) {
-          val.value = val.value.substring(0, 180);
-        } else {
-          $('#charNum').text(180 - len);
-        }
-      };
+      var len = val.value.length;
+      if (len >= 180) {
+        val.value = val.value.substring(0, 180);
+      } else {
+        $('#charNum').text(180 - len);
+      }
+    };
 
 </script> 
 @stop
