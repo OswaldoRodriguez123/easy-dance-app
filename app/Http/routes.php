@@ -567,7 +567,6 @@
 
 			//PRINCIPAL
 
-			Route::get('/', 'UsuarioController@menu');
 			Route::get('/listo', 'UsuarioController@listo');
 
 			//ALUMNO
@@ -1422,8 +1421,10 @@
 			Route::get('supervision', 'SupervisionController@evaluaciones_vista_staff');
 			Route::get('supervision/detalle/{id}', 'SupervisionController@getDetalle');
 
+			//MENU
 
-
+			Route::get('/', 'UsuarioController@menu');
+			
 		});//END MIDDLEWARE INSTRUCTOR
 
 	});
