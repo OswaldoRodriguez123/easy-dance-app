@@ -17,11 +17,34 @@ use DB;
 
 class SugerenciaController extends BaseController {
 
+    public function instructor(){
 
-    public function create()
-    {
-        $instructores = Instructor::where('academia_id', Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
-        return view('sugerencia.create')->with('instructores', $instructores);
+        $usuarios = Instructor::where('academia_id', Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        $usuarios = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->select('users.*')
+            ->where('usuarios_tipo.tipo',3)
+            ->where('users.academia_id', Auth::user()->academia_id)
+            ->orderBy('users.nombre', 'asc')
+            ->distinct('users.id')
+        ->get();
+
+        return view('sugerencia.create')->with(['usuarios' => $usuarios, 'tipo' => 1]);
+    }
+
+    public function recepcion(){
+
+        $in = array(1,5,6);
+
+        $usuarios = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->select('users.*')
+            ->whereIn('usuarios_tipo.tipo',$in)
+            ->where('users.academia_id', Auth::user()->academia_id)
+            ->orderBy('users.nombre', 'asc')
+            ->distinct('users.id')
+        ->get();
+
+        return view('sugerencia.create')->with(['usuarios' => $usuarios, 'tipo' => 2]);
     }
 
 
@@ -29,12 +52,12 @@ class SugerenciaController extends BaseController {
     {
 
         $rules = [
-            'instructor_id' => 'required',
+            'id' => 'required',
             'mensaje' => 'required',
         ];
 
         $messages = [
-            'instructor_id.required' => 'Ups! El Instructor es requerido',
+            'id.required' => 'Ups! El Usuario es requerido',
             'mensaje.required' => 'Ups! El mensaje es requerido',
 
         ];
@@ -60,28 +83,20 @@ class SugerenciaController extends BaseController {
 
                 $usuario = User::find(Auth::user()->id);
 
-                $instructor = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                    ->select('users.id')
-                    ->where('usuarios_tipo.tipo_id',$request->instructor_id)
-                    ->where('usuarios_tipo.tipo',3)
-                ->first();
+                $notificacion = new Notificacion; 
 
-                if($instructor){
+                $notificacion->tipo_evento = 5;
+                $notificacion->evento_id = $sugerencia->id;
+                $notificacion->mensaje = $usuario->nombre . " " . $usuario->apellido . " ha creado una nueva consulta";
+                $notificacion->titulo = "Nueva Sugerencia";
 
-                    $notificacion = new Notificacion; 
+                if($notificacion->save()){
 
-                    $notificacion->tipo_evento = 5;
-                    $notificacion->evento_id = $sugerencia->id;
-                    $notificacion->mensaje = $usuario->nombre . " " . $usuario->apellido . " ha creado una nueva consulta";
-                    $notificacion->titulo = "Nueva Sugerencia";
-
-                    if($notificacion->save()){
-                        $usuarios_notificados = new NotificacionUsuario;
-                        $usuarios_notificados->id_usuario = $instructor->id;
-                        $usuarios_notificados->id_notificacion = $notificacion->id;
-                        $usuarios_notificados->visto = 0;
-                        $usuarios_notificados->save();
-                    }
+                    $usuarios_notificados = new NotificacionUsuario;
+                    $usuarios_notificados->id_usuario = $request->id;
+                    $usuarios_notificados->id_notificacion = $notificacion->id;
+                    $usuarios_notificados->visto = 0;
+                    $usuarios_notificados->save();
 
                 }
 

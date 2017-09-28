@@ -447,6 +447,30 @@
                       </span>
 
                     </div>
+
+                    <div class="clearfix p-b-15"></div>
+
+                    <div style="border: 1px solid rgba(0, 0, 0, 0.1); background-color:#fff">
+                      <div class="header_cuadro_alumno_borde_morado text-center f-16">Recepción - Admistración</div>
+
+                      
+                      <div class="col-sm-12">
+
+                          <div class="clearfix p-b-15"></div>
+                          <div class="text-center">
+                          <i class="icon_f-consultarle-al-instructor f-50"></i>
+                          </div>
+                          <div class="clearfix p-b-15"></div>
+                          <div class="clearfix p-b-15"></div>
+
+                      </div>
+
+                      <span class="text-center">
+
+                          <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 consulta_recepcion" style="width:100%; padding:5px"> </i> Consultar </button> 
+                      </span>
+
+                    </div>
                   
                   </div>
 
@@ -529,7 +553,12 @@
 
           $(".consulta_instructor").click(function(){
             procesando();
-            window.location = "{{url('/')}}/sugerencias/generar";
+            window.location = "{{url('/')}}/sugerencias/instructor";
+          });
+
+          $(".consulta_recepcion").click(function(){
+            procesando();
+            window.location = "{{url('/')}}/sugerencias/recepcion";
           });
          
          function atras(){

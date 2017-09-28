@@ -45,18 +45,24 @@
                             <div class="clearfix p-b-15"></div>
                               
                                   <div class="col-sm-12">
+
+                                    @if($tipo == 1)
                                  
-                                     <label for="nivel_baile" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor al que deseas consultarle" title="" data-original-title="Ayuda" data-html="true"></i>
+                                      <label for="nivel_baile" id="id-id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor al que deseas consultarle" title="" data-original-title="Ayuda" data-html="true"></i>
+                                    @else
+
+                                      <label for="nivel_baile" id="id-id">Usuario</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un usuario al que deseas consultarle" title="" data-original-title="Ayuda" data-html="true"></i>
+                                    @endif
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
                                     <div class="fg-line">
                                       <div class="select">
-                                        <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
+                                        <select class="selectpicker" name="id" id="id" data-live-search="true">
 
                                           <option value="">Selecciona</option>
-                                          @foreach ( $instructores as $instructor )
-                                          <option value = "{{$instructor['id'] }}">{{$instructor['nombre'] }} {{$instructor['apellido'] }}</option>
+                                          @foreach ( $usuarios as $usuario )
+                                            <option value = "{{$usuario['id'] }}">{{$usuario['nombre'] }} {{$usuario['apellido'] }}</option>
                                           @endforeach 
                                           
                                         

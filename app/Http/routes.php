@@ -1229,7 +1229,8 @@
 
 			//SUGERENCIAS
 
-			Route::get('sugerencias/generar', 'SugerenciaController@create');
+			Route::get('sugerencias/instructor', 'SugerenciaController@instructor');
+			Route::get('sugerencias/recepcion', 'SugerenciaController@recepcion');
 			Route::post('sugerencias/generar', 'SugerenciaController@store');
 			Route::get('sugerencias/detalle/{id}', 'SugerenciaController@planilla');
 
