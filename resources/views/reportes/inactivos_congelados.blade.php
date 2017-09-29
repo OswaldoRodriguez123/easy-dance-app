@@ -169,9 +169,9 @@
                                     <th class="text-center" data-column-id="imagen">Imagen</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
                                     <th class="text-center" data-column-id="fecha_nacimiento" data-order="desc">Fecha Nacimiento</th>
-                                    <th class="text-center" data-column-id="clase_grupal" data-order="desc">Clase Grupal</th>
                                     <th class="text-center" data-column-id="celular">Contacto Móvil</th>
                                     <th class="text-center" data-column-id="correo">Correo</th>
+                                    <th class="text-center" data-column-id="clase_grupal" data-order="desc">Clase Grupal</th>
                                     <th class="text-center" data-column-id="fecha_inactividad">Fecha Inactividad</th>
                                 </tr>
                             </thead>
@@ -245,7 +245,7 @@
         processing: true,
         serverSide: false,
         pageLength: 50, 
-        order: [[0, 'desc']],
+        order: [[6, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
@@ -323,9 +323,9 @@
                                 ''+'<img class="lv-img" src="'+imagen+'" alt="">'+'',
                                 ''+array.nombre+ ' '+array.apellido+ '',
                                 ''+array.fecha_nacimiento+'',
-                                ''+array.clase_nombre+'',
                                 ''+array.celular+'',
                                 ''+array.correo+'',
+                                ''+array.clase_nombre+'',
                                 ''+array.fecha+'',
                             ] ).draw(false).node();
 
