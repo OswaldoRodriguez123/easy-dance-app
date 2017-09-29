@@ -828,8 +828,8 @@
                                           <select class="form-control" id="horario_id" name="horario_id">
                                             <option value="">Selecciona</option>
                                             @foreach ( $horarios as $horario )
-                                              <option value = "{{ $horario->id }}">{{ $horario->nombre }}</option>
-                                            @endforeach 
+                                              <option value = "{{ $horario['id'] }}">{{ $horario['nombre']}} {{$horario['hora_inicio']}} - {{$horario['hora_final']}}</option>
+                                            @endforeach                           
                                           </select>
                                       </div> 
 

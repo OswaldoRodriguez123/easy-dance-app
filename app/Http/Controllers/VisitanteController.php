@@ -100,9 +100,29 @@ class VisitanteController extends BaseController {
     public function create()
     {
         $tipologias = Tipologia::orderBy('nombre')->get();
-        $horarios = HorarioVisitante::where('academia_id', Auth::user()->academia_id)->orderBy('nombre')->get();
+        $horarios = HorarioVisitante::where('academia_id', Auth::user()->academia_id)->orderBy('hora_inicio')->get();
+        $academia = Academia::find(Auth::user()->academia_id);
 
-        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(),'tipologias' => $tipologias, 'horarios' => $horarios]);
+        $array = array();
+
+        foreach($horarios as $horario){
+            if($academia->tipo_horario == 2){
+                $hora_inicio = Carbon::createFromFormat('H:i:s',$horario->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i:s',$horario->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i:s',$horario->hora_inicio)->format('g:i a');
+                $hora_final = Carbon::createFromFormat('H:i:s',$horario->hora_final)->format('g:i a');
+            }
+
+            $collection=collect($horario);
+            $horario_array = $collection->toArray();
+
+            $horario_array['hora_inicio']=$hora_inicio;
+            $horario_array['hora_final']=$hora_final;
+            $array[] = $horario_array;
+        }
+
+        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(),'tipologias' => $tipologias, 'horarios' => $array]);
     }
 
     public function operar($id)
@@ -468,9 +488,30 @@ class VisitanteController extends BaseController {
             $tipologias = Tipologia::orderBy('nombre')->get();
             $horarios = HorarioVisitante::where('academia_id', Auth::user()->academia_id)->orderBy('nombre')->get();
 
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            $array = array();
+
+            foreach($horarios as $horario){
+                if($academia->tipo_horario == 2){
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$horario->hora_inicio)->toTimeString();
+                    $hora_final = Carbon::createFromFormat('H:i:s',$horario->hora_final)->toTimeString();
+                }else{
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$horario->hora_inicio)->format('g:i a');
+                    $hora_final = Carbon::createFromFormat('H:i:s',$horario->hora_final)->format('g:i a');
+                }
+
+                $collection=collect($horario);
+                $horario_array = $collection->toArray();
+
+                $horario_array['hora_inicio']=$hora_inicio;
+                $horario_array['hora_final']=$hora_final;
+                $array[] = $horario_array;
+            }
+
             $edad = Carbon::createFromFormat('Y-m-d', $visitante->fecha_nacimiento)->diff(Carbon::now())->format('%y');
  
-            return view('participante.visitante.planilla')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'visitante' => $visitante, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'tipologias' => $tipologias, 'horarios' => $horarios, 'edad' => $edad, 'id' => $id]);
+            return view('participante.visitante.planilla')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'visitante' => $visitante, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'tipologias' => $tipologias, 'horarios' => $array, 'edad' => $edad, 'id' => $id]);
         }else{
             return redirect("participante/visitante"); 
         }

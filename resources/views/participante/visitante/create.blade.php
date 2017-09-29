@@ -258,26 +258,8 @@
                                  </div>
                                </div>
 
-                                                           
-                          <div class="clearfix p-b-35"></div>
-
-                          <div class="col-sm-12">
-                             <div class="form-group fg-line">
-                                <label for="observacion" id="id-observacion">Observación</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la observacion" title="" data-original-title="Ayuda"></i>
-                                <div class="fg-line">
-                                <textarea type="text" class="form-control input-sm proceso" name="observacion" id="observacion" placeholder="Observación" maxlength="200" onkeyup="countChar2(this)" rows="4"></textarea>
-                                </div>
-                                <div class="opaco-0-8 text-right">Resta <span id="charNum2">200</span> Caracteres</div>
-                             <div class="has-error" id="error-observacion">
-                                  <span >
-                                      <small class="help-block error-span" id="error-observacion_mensaje" ></small>                                
-                                  </span>
-                              </div>
-                             </div>
-                           </div>
-
-
-                               <div class="clearfix p-b-35"></div>
+             
+                              <div class="clearfix p-b-35"></div>
 
 
                            <div class="col-sm-12">
@@ -356,9 +338,7 @@
                                
                                   <label for="apellido" id="id-interes_id">Tipo de Interes</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el tipo de interes del visitante" title="" data-original-title="Ayuda"></i>
 
-                                  <div class="input-group">
-                                    <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
-                                    <div class="p-t-10">
+                                  <div class="p-t-10">
                                   <label class="radio radio-inline m-r-20">
                                       <input checked name="interes_id" id="adulto" value="1" type="radio">
                                       <i class="input-helper"></i>  
@@ -369,7 +349,6 @@
                                       <i class="input-helper"></i>  
                                       Niño <i class="zmdi fa fa-child p-l-5 f-15"></i>
                                   </label>
-                                  </div>
                                   </div>
                                <div class="has-error" id="error-interes_id">
                                     <span >
@@ -393,7 +372,7 @@
                                     <select class="selectpicker" name="horario_id" id="horario_id" data-live-search="true">
                                       <option value="">Selecciona</option>
                                       @foreach ( $horarios as $horario )
-                                        <option value = "{{ $horario->id }}">{{ $horario->nombre }}</option>
+                                        <option value = "{{ $horario['id'] }}">{{ $horario['nombre']}} {{$horario['hora_inicio']}} - {{$horario['hora_final']}}</option>
                                       @endforeach
                                     </select>
                                   </div>
@@ -452,6 +431,25 @@
                                 </div>
                              </div>
                            </div>
+
+
+                          <div class="clearfix p-b-35"></div>
+
+                          <div class="col-sm-12">
+                             <div class="form-group fg-line">
+                                <label for="observacion" id="id-observacion">Observación</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la observacion" title="" data-original-title="Ayuda"></i>
+                                <div class="fg-line">
+                                <textarea type="text" class="form-control input-sm proceso" name="observacion" id="observacion" placeholder="Observación" maxlength="200" onkeyup="countChar2(this)" rows="4"></textarea>
+                                </div>
+                                <div class="opaco-0-8 text-right">Resta <span id="charNum2">200</span> Caracteres</div>
+                             <div class="has-error" id="error-observacion">
+                                  <span >
+                                      <small class="help-block error-span" id="error-observacion_mensaje" ></small>                                
+                                  </span>
+                              </div>
+                             </div>
+                           </div>
+
 
                           <div class="clearfix p-b-35"></div>
 
