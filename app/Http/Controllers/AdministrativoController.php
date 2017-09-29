@@ -138,8 +138,9 @@ class AdministrativoController extends BaseController {
 
         foreach($staffs as $staff){
 
-            $comisiones = ConfigComision::where('config_comisiones.usuario_id', $staff->id)
-                ->where('config_comisiones.usuario_tipo',1)
+            $comisiones = Comision::where('usuario_id', $staff->id)
+                ->where('usuario_tipo',1)
+                ->where('boolean_pago', 0)
             ->sum('monto');
 
             $collection=collect($staff);     
