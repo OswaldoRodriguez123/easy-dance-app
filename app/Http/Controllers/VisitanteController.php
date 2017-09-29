@@ -15,6 +15,7 @@ use App\Academia;
 use App\Staff;
 use App\ClaseGrupal;
 use App\Tipologia;
+use App\HorarioVisitante;
 use Validator;
 use Carbon\Carbon;
 use DB;
@@ -99,8 +100,9 @@ class VisitanteController extends BaseController {
     public function create()
     {
         $tipologias = Tipologia::orderBy('nombre')->get();
+        $horarios = HorarioVisitante::where('academia_id', Auth::user()->academia_id)->orderBy('nombre')->get();
 
-        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(),'tipologias' => $tipologias]);
+        return view('participante.visitante.create')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'especialidad' => ConfigEspecialidades::all() , 'dia_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(),'tipologias' => $tipologias, 'horarios' => $horarios]);
     }
 
     public function operar($id)
@@ -186,6 +188,7 @@ class VisitanteController extends BaseController {
             $visitante->instructor_id = $request->instructor_id;
             $visitante->interes_id = $request->interes_id;
             $visitante->tipologia_id = $request->tipologia_id;
+            $visitante->horario_id = $request->horario_id;
             $visitante->observacion = $request->observacion;
 
             if($visitante->save()){
@@ -389,6 +392,17 @@ class VisitanteController extends BaseController {
         }
     }
 
+    public function updateHorario(Request $request){
+        $visitante = Visitante::find($request->id);
+        $visitante->horario_id = $request->horario_id;
+
+        if($visitante->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
 
     public function updateObservacion(Request $request){
         $visitante = Visitante::find($request->id);
@@ -426,7 +440,8 @@ class VisitanteController extends BaseController {
             ->Leftjoin('dias_de_interes', 'visitantes_presenciales.dias_clase_id', '=', 'dias_de_interes.id')
             ->Leftjoin('staff', 'visitantes_presenciales.instructor_id', '=', 'staff.id')
             ->Leftjoin('tipologias', 'visitantes_presenciales.tipologia_id', '=', 'tipologias.id')
-            ->select('visitantes_presenciales.*','config_especialidades.nombre as especialidad_nombre', 'config_especialidades.id as especialidades', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'staff.nombre as instructor_nombre', 'staff.apellido as instructor_apellido', 'dias_de_interes.nombre as dia_nombre', 'tipologias.nombre as tipologia')
+            ->Leftjoin('horarios_visitantes_presenciales', 'visitantes_presenciales.horario_id', '=', 'horarios_visitantes_presenciales.id')
+            ->select('visitantes_presenciales.*','config_especialidades.nombre as especialidad_nombre', 'config_especialidades.id as especialidades', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'staff.nombre as instructor_nombre', 'staff.apellido as instructor_apellido', 'dias_de_interes.nombre as dia_nombre', 'tipologias.nombre as tipologia', 'horarios_visitantes_presenciales.nombre as horario')
             ->where('visitantes_presenciales.id', '=', $id)
         ->first();
 
@@ -451,10 +466,11 @@ class VisitanteController extends BaseController {
             }
 
             $tipologias = Tipologia::orderBy('nombre')->get();
+            $horarios = HorarioVisitante::where('academia_id', Auth::user()->academia_id)->orderBy('nombre')->get();
 
             $edad = Carbon::createFromFormat('Y-m-d', $visitante->fecha_nacimiento)->diff(Carbon::now())->format('%y');
  
-            return view('participante.visitante.planilla')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'visitante' => $visitante, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'tipologias' => $tipologias, 'edad' => $edad, 'id' => $id]);
+            return view('participante.visitante.planilla')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'visitante' => $visitante, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'tipologias' => $tipologias, 'horarios' => $horarios, 'edad' => $edad, 'id' => $id]);
         }else{
             return redirect("participante/visitante"); 
         }

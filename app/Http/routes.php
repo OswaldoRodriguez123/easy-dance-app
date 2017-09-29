@@ -694,6 +694,7 @@
 			Route::put('participante/visitante/update/dias','VisitanteController@updateDiasDeClase');
 			Route::put('participante/visitante/update/interes','VisitanteController@updateInteres');
 			Route::put('participante/visitante/update/tipologia','VisitanteController@updateTipologia');
+			Route::put('participante/visitante/update/horario','VisitanteController@updateHorario');
 			Route::put('participante/visitante/update/observacion','VisitanteController@updateObservacion');
 
 			Route::get('participante/visitante/impresion/{id}', 'VisitanteController@impresion');

@@ -258,36 +258,75 @@
                                  </div>
                                </div>
 
+                                                           
+                          <div class="clearfix p-b-35"></div>
+
+                          <div class="col-sm-12">
+                             <div class="form-group fg-line">
+                                <label for="observacion" id="id-observacion">Observación</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la observacion" title="" data-original-title="Ayuda"></i>
+                                <div class="fg-line">
+                                <textarea type="text" class="form-control input-sm proceso" name="observacion" id="observacion" placeholder="Observación" maxlength="200" onkeyup="countChar2(this)" rows="4"></textarea>
+                                </div>
+                                <div class="opaco-0-8 text-right">Resta <span id="charNum2">200</span> Caracteres</div>
+                             <div class="has-error" id="error-observacion">
+                                  <span >
+                                      <small class="help-block error-span" id="error-observacion_mensaje" ></small>                                
+                                  </span>
+                              </div>
+                             </div>
+                           </div>
+
+
                                <div class="clearfix p-b-35"></div>
 
-                               <div class="col-sm-12">
-                                 
-                                    <label for="especialidad" id="id-especialidad_id">Especialidad de interés</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona la especialidad de interés del visitante" title="" data-original-title="Ayuda"></i>
 
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker bs-select-hidden" id="especialidad_id" name="especialidad_id" multiple="" data-max-options="5" title="Selecciona">
-                                          <option value="">Selecciona</option>
-                                          @foreach ( $especialidad as $especialidades )
-                                          <option value = "{{ $especialidades['id'] }}">{{ $especialidades['nombre'] }}</option>
-                                          @endforeach
-                                        </select>
+                           <div class="col-sm-12">
+                             <div class="form-group fg-line">
+                                <label for="nombre" id="id-ficha">Consulta de interés y preferencias</label> <!-- <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa los datos o estado de salud del participante" title="" data-original-title="Ayuda"></i> -->
+                                <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-collapse">
+                                <div class="panel-heading" role="tab" id="headingTwo">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                          <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                  <div class="panel-body">
+                                  
+
+                                  <div class="clearfix p-b-35"></div>
+
+                                  
+                                  <div class="col-sm-12">
+                                     
+                                        <label for="especialidad" id="id-especialidad_id">Especialidad de interés</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona la especialidad de interés del visitante" title="" data-original-title="Ayuda"></i>
+
+                                         <div class="input-group">
+                                          <span class="input-group-addon"><i class="icon_a-especialidad f-22"></i></span>
+                                        <div class="fg-line">
+                                          <div class="select">
+                                            <select class="selectpicker bs-select-hidden" id="especialidad_id" name="especialidad_id" multiple="" data-max-options="5" title="Selecciona">
+                                              <option value="">Selecciona</option>
+                                              @foreach ( $especialidad as $especialidades )
+                                              <option value = "{{ $especialidades['id'] }}">{{ $especialidades['nombre'] }}</option>
+                                              @endforeach
+                                            </select>
+                                          </div>
+                                        </div>
+                                        <div class="has-error" id="error-especialidades">
+                                          <span >
+                                            <small class="help-block error-span" id="error-especialidades_mensaje" ></small>                                           
+                                          </span>
+                                        </div>
                                       </div>
-                                    </div>
-                                    <div class="has-error" id="error-especialidades">
-                                      <span >
-                                        <small class="help-block error-span" id="error-especialidades_mensaje" ></small>                                           
-                                      </span>
-                                    </div>
-                                  </div>
-                               </div>
+                                   </div>
 
-                               <div class="clearfix p-b-35"></div>
+                                   <div class="clearfix p-b-35"></div>
 
-                              <div class="col-sm-12">
-                                 
+                                  <div class="col-sm-12">
+                                     
                                     <label for="dias_interes" id="id-dias_clase_id">Días de interés</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el día o los días en el que el cliente está interesado en participar" title="" data-original-title="Ayuda"></i>
 
                                      <div class="input-group">
@@ -310,7 +349,7 @@
                                   </div>
                                </div>
 
-                               <div class="clearfix p-b-35"></div>
+                              <div class="clearfix p-b-35"></div>
 
 
                               <div class="col-sm-12">
@@ -339,6 +378,35 @@
                                 </div>
                              </div>
 
+
+                             <div class="clearfix p-b-35"></div>
+
+
+                             <div class="col-sm-12">
+                                 
+                                <label for="horario_id" id="id-horario_id">Horario</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el horario del cliente" title="" data-original-title="Ayuda"></i>
+
+                                 <div class="input-group">
+                                  <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
+                                <div class="fg-line">
+                                  <div class="select">
+                                    <select class="selectpicker" name="horario_id" id="horario_id" data-live-search="true">
+                                      <option value="">Selecciona</option>
+                                      @foreach ( $horarios as $horario )
+                                        <option value = "{{ $horario->id }}">{{ $horario->nombre }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="has-error" id="error-horario_id">
+                                  <span >
+                                    <small class="help-block error-span" id="error-horario_id_mensaje" ></small>                                           
+                                  </span>
+                                </div>
+                              </div>
+                           </div>
+
+
                              <div class="clearfix p-b-35"></div>
 
 
@@ -366,20 +434,22 @@
                               </div>
                            </div>
 
-                          <div class="clearfix p-b-35"></div>
+                                  <div class="clearfix p-b-35"></div>
+                                  <div class="clearfix p-b-35"></div>
+                                  
+                                  <div class="clearfix p-b-35"></div>
 
-                          <div class="col-sm-12">
-                             <div class="form-group fg-line">
-                                <label for="observacion" id="id-observacion">Observación</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la observacion" title="" data-original-title="Ayuda"></i>
-                                <div class="fg-line">
-                                <textarea type="text" class="form-control input-sm proceso" name="observacion" id="observacion" placeholder="Observación" maxlength="200" onkeyup="countChar2(this)" rows="4"></textarea>
+                                  <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>
+
+                                  <div class="clearfix p-b-35"></div>
+                                  <hr></hr>
+
+
+
+                                    </div>
                                 </div>
-                                <div class="opaco-0-8 text-right">Resta <span id="charNum2">200</span> Caracteres</div>
-                             <div class="has-error" id="error-observacion">
-                                  <span >
-                                      <small class="help-block error-span" id="error-observacion_mensaje" ></small>                                
-                                  </span>
-                              </div>
+                                </div>
+                                </div>
                              </div>
                            </div>
 
@@ -718,6 +788,20 @@
           $('#charNum2').text(200 - len);
         }
       };
+
+      function collapse_minus(collaps){
+       $('#'+collaps).collapse('hide');
+      }
+
+      $('#collapseTwo').on('show.bs.collapse', function () {
+        $("#guardar").attr("disabled","disabled");
+        $("#guardar").css({"opacity": ("0.2")});
+      })
+
+      $('#collapseTwo').on('hide.bs.collapse', function () {
+        $("#guardar").removeAttr("disabled");
+        $("#guardar").css({"opacity": ("1")});
+      })
 
 </script> 
 @stop

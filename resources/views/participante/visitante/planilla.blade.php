@@ -809,6 +809,67 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalHorario-Visitante" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Visitante<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_horario_visitante" id="edit_horario_visitante"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="tipologia_id">Horario</label>
+
+                                      <div class="select">
+                                          <select class="form-control" id="horario_id" name="horario_id">
+                                            <option value="">Selecciona</option>
+                                            @foreach ( $horarios as $horario )
+                                              <option value = "{{ $horario->id }}">{{ $horario->nombre }}</option>
+                                            @endforeach 
+                                          </select>
+                                      </div> 
+
+                                 </div>
+                                 <div class="has-error" id="error-horario_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-horario_id_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <input type="hidden" name="id" value="{{$visitante->id}}"></input>
+                            
+
+                               <div class="clearfix"></div> 
+                              
+                          </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_horario_visitante" data-update="horario" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
     
     
             <section id="content">
@@ -997,6 +1058,14 @@
                                <span class="f-14"> Perfil del Cliente </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="visitante-tipologia_id" class="capitalize">{{$visitante->tipologia}}</span></td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalHorario-Visitante">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-horario_id" class="zmdi {{ empty($visitante->horario) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-time f-22"></i> </span>
+                               <span class="f-14"> Horario </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="visitante-horario_id" class="capitalize">{{$visitante->horario}}</span></td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalObservacion-Visitante">
                              <td>
@@ -1197,7 +1266,7 @@
           }else if(c.name=='direccion' || c.name=='observacion'){
              $("#visitante-"+c.name).data('valor',c.value);
              $("#visitante-"+c.name).html(c.value.substr(0, 30) + "...");
-          }else if(c.name=='como_nos_conociste_id' || c.name=='especialidad_id' || c.name=='dias_clase_id' | c.name=='instructor_id' || c.name=='tipologia_id'){
+          }else if(c.name=='como_nos_conociste_id' || c.name=='especialidad_id' || c.name=='dias_clase_id' || c.name=='instructor_id' || c.name=='tipologia_id'|| c.name=='horario_id'){
             
             expresion = "#"+c.name+ " option[value="+c.value+"]";
             texto = $(expresion).text();
