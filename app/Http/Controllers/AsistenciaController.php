@@ -880,6 +880,7 @@ class AsistenciaController extends BaseController
 
     public function consulta_clase_grupales(Request $request)
     {
+      $academia = Academia::find(Auth::user()->academia_id);
 
       $claseGrupal= ClaseGrupal::join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
         ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
@@ -916,14 +917,16 @@ class AsistenciaController extends BaseController
         $id=$grupal->id;
         $nombre=$grupal->nombre;
         $descripcion=$grupal->descripcion;
-        $hora_inicio=$grupal->hora_inicio;
-        $hora_final=$grupal->hora_final;
         $etiqueta=$grupal->color_etiqueta;
         $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
 
-        // $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-
-        // $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0); 
+        if($academia->tipo_horario == 2){
+          $hora_inicio = Carbon::createFromFormat('H:i:s',$grupal->hora_inicio)->toTimeString();
+          $hora_final = Carbon::createFromFormat('H:i:s',$grupal->hora_final)->toTimeString();
+        }else{
+          $hora_inicio = Carbon::createFromFormat('H:i:s',$grupal->hora_inicio)->format('g:i a');
+          $hora_final = Carbon::createFromFormat('H:i:s',$grupal->hora_final)->format('g:i a');
+        }
 
         $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha_inicio);
         $dia_de_semana = $fecha_inicio->dayOfWeek;
@@ -955,11 +958,16 @@ class AsistenciaController extends BaseController
           $id=$grupal->id;
           $nombre=$grupal->nombre;
           $descripcion=$grupal->descripcion;
-          $hora_inicio=$grupal->hora_inicio;
-          $hora_final=$grupal->hora_final;
           $etiqueta=$grupal->color_etiqueta;
           $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
 
+          if($academia->tipo_horario == 2){
+            $hora_inicio = Carbon::createFromFormat('H:i:s',$grupal->hora_inicio)->toTimeString();
+            $hora_final = Carbon::createFromFormat('H:i:s',$grupal->hora_final)->toTimeString();
+          }else{
+            $hora_inicio = Carbon::createFromFormat('H:i:s',$grupal->hora_inicio)->format('g:i a');
+            $hora_final = Carbon::createFromFormat('H:i:s',$grupal->hora_final)->format('g:i a');
+          }
 
           $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha_inicio);
           $dia_de_semana = $fecha_inicio->dayOfWeek;
@@ -995,6 +1003,7 @@ class AsistenciaController extends BaseController
 
     public function consulta_clase_grupales_alumno(Request $request)
     {
+      $academia = Academia::find(Auth::user()->academia_id);
     	
       $clases_grupales= ClaseGrupal::join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
         ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
@@ -1088,11 +1097,16 @@ class AsistenciaController extends BaseController
      		$id=$grupal->id;
      		$nombre=$grupal->nombre;
      		$descripcion=$grupal->descripcion;
-     		$hora_inicio=$grupal->hora_inicio;
-     		$hora_final=$grupal->hora_final;
      		$etiqueta=$grupal->color_etiqueta;
         $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
 
+        if($academia->tipo_horario == 2){
+          $hora_inicio = Carbon::createFromFormat('H:i:s',$grupal->hora_inicio)->toTimeString();
+          $hora_final = Carbon::createFromFormat('H:i:s',$grupal->hora_final)->toTimeString();
+        }else{
+          $hora_inicio = Carbon::createFromFormat('H:i:s',$grupal->hora_inicio)->format('g:i a');
+          $hora_final = Carbon::createFromFormat('H:i:s',$grupal->hora_final)->format('g:i a');
+        }
 
         $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha_inicio);
         $dia_de_semana = $fecha_inicio->dayOfWeek;
@@ -1125,11 +1139,16 @@ class AsistenciaController extends BaseController
         $id=$grupal->id;
         $nombre=$grupal->nombre;
         $descripcion=$grupal->descripcion;
-        $hora_inicio=$grupal->hora_inicio;
-        $hora_final=$grupal->hora_final;
         $etiqueta=$grupal->color_etiqueta;
         $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
 
+        if($academia->tipo_horario == 2){
+          $hora_inicio = Carbon::createFromFormat('H:i:s',$grupal->hora_inicio)->toTimeString();
+          $hora_final = Carbon::createFromFormat('H:i:s',$grupal->hora_final)->toTimeString();
+        }else{
+          $hora_inicio = Carbon::createFromFormat('H:i:s',$grupal->hora_inicio)->format('g:i a');
+          $hora_final = Carbon::createFromFormat('H:i:s',$grupal->hora_final)->format('g:i a');
+        }
 
         $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha_inicio);
         $dia_de_semana = $fecha_inicio->dayOfWeek;
@@ -1154,6 +1173,10 @@ class AsistenciaController extends BaseController
         }
         
       }
+
+      usort($arrayClases, function($a, $b) {
+          return $a['hora_inicio'] < $b['hora_inicio'];
+      });
 
       $deuda=$this->deuda($request->id);
       $alumno=Alumno::all();
