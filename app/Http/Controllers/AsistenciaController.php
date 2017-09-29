@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use App\Academia;
+
 use App\Taller;
 
 use App\ClaseGrupal;
