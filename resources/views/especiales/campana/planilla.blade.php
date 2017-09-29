@@ -1614,32 +1614,22 @@
                 });
             });
       function eliminar(id){
-         var route = route_eliminar + id;
-         var token = $('input:hidden[name=_token]').val();
+        
+        var route = route_eliminar + id;
+        var token = $('input:hidden[name=_token]').val();
                 
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'DELETE',
-                    dataType: 'json',
-                    data:id,
-                    success:function(respuesta){
-
-                        window.location = route_principal; 
-
-                    },
-                    error:function(msj){
-                                $("#msj-danger").fadeIn(); 
-                                var text="";
-                                console.log(msj);
-                                var merror=msj.responseJSON;
-                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                $("#msj-error").html(text);
-                                setTimeout(function(){
-                                         $("#msj-danger").fadeOut();
-                                        }, 3000);
-                                }
-                });
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'DELETE',
+            dataType: 'json',
+            data:id,
+            success:function(respuesta){
+              window.location = route_principal; 
+            },error:function(msj){
+              swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+            }                
+        });
       }
 
       $("#add").click(function(){
