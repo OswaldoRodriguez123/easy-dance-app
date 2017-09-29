@@ -102,6 +102,9 @@
                                 <li class="hidden-xs">
                                     <a href="{{url('agendar/transmisiones')}}"><i class="zmdi zmdi-camera-add f-16"></i> Generar Transmisiones</a>
                                 </li>
+                                <li class="hidden-xs">
+                                    <a href="{{url('administrativo/comisiones')}}"><i class="zmdi icon_a-pagar f-16"></i> Pagos</a>
+                                </li>
                             </ul>
                         </li>
                     @endif

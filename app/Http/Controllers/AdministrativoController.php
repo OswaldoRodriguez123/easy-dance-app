@@ -68,8 +68,6 @@ class AdministrativoController extends BaseController {
 
         if($usuario_tipo == 2 OR $usuario_tipo == 4)
         {
-
-
             $factura_join = Factura::join('alumnos', 'facturas.usuario_id', '=', 'alumnos.id')
                 ->select('alumnos.nombre as nombre', 'alumnos.apellido as apellido', 'facturas.numero_factura as factura', 'facturas.fecha as fecha', 'facturas.id', 'facturas.concepto')
                 ->where('facturas.usuario_id' , '=' , $usuario_id)
@@ -127,6 +125,39 @@ class AdministrativoController extends BaseController {
             return redirect("/"); 
         }                   
 	}
+
+    public function comisiones(){
+
+        $array = array();
+
+        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        foreach($instructores as $instructor){
+
+            $collection=collect($instructor);     
+            $instructor_array = $collection->toArray();
+
+            $instructor_array['tipo_nombre']='Instructor';
+            $instructor_array['tipo']=1;
+            $array[] = $instructor_array;
+
+        }
+
+        $staffs = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        foreach($staffs as $staff){
+
+            $collection=collect($staff);     
+            $staff_array = $collection->toArray();
+
+            $staff_array['tipo_nombre']='Staff';
+            $staff_array['tipo']=2;
+            $array[] = $staff_array;
+
+        }
+
+        return view('administrativo.comisiones')->with(['usuarios'=> $array]);
+    }
 
 	/**
 	 * Show the form for creating a new resource.

@@ -186,9 +186,6 @@
 			Route::put('configuracion/staff/update/cargo','StaffController@updateCargo');
 			Route::put('configuracion/staff/update/horario','StaffController@updateHorario');
 
-			Route::get('configuracion/staff/pagos/{id}', 'StaffController@principalpagos');
-			Route::post('configuracion/staff/pagar', 'StaffController@pagar');
-
 			Route::post('configuracion/staff/agregarpago', 'StaffController@agregarpago');
 			Route::delete('configuracion/staff/eliminarpago/{id}', 'StaffController@eliminarpago');
 			Route::post('configuracion/staff/agregarpagofijo', 'StaffController@agregarpagofijo');
@@ -459,6 +456,10 @@
 
 			// --- ADMINISTRATIVO --- 
 
+			//COMISIONES 
+
+			Route::get('administrativo/comisiones', 'AdministrativoController@comisiones');
+
 			//PAGOS
 
 			Route::get('administrativo/pagos', 'AdministrativoController@principalpagos');
@@ -562,6 +563,11 @@
 			Route::post('reportes/eliminados', 'ReporteController@EliminadosFiltros');
 			Route::get('reportes/clientes', 'ReporteController@Clientes');
 			Route::post('reportes/clientes', 'ReporteController@ClientesFiltros');
+
+			//STAFF
+
+			Route::get('configuracion/staff/pagos/{id}', 'StaffController@principalpagos');
+			Route::post('configuracion/staff/pagar', 'StaffController@pagar');
 
 			//TERMINA ADMIN
 
