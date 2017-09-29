@@ -56,7 +56,7 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-label-alt-outline f-25"></i> Reporte de Estatus de Alumno</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-label-alt-outline f-25"></i> Reporte de Inactivos y Congelados</p>
                             <hr class="linea-morada">
                                                          
                         </div>
