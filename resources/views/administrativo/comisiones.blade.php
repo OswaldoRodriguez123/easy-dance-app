@@ -156,10 +156,10 @@
                   }
       });
 
-      t
-        .columns(1)
-        .search(1)
-        .draw();
+      // t
+      //   .columns(1)
+      //   .search(1)
+      //   .draw();
 
       function previa(t){
         var id = $(t).closest('tr').attr('id');
