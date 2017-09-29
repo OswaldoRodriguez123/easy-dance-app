@@ -44,7 +44,7 @@
                             <hr class="linea-morada">                                                         
                         </div>
 
-                        <!-- <div class="col-sm-5">
+                        <div class="col-sm-5">
                          <div class="form-group fg-line ">
                             <div class="p-t-10">
                             <label class="radio radio-inline m-r-20">
@@ -62,7 +62,7 @@
                          </div>
                         </div> 
 
-                        <div class="clearfix"></div> -->
+                        <div class="clearfix"></div>
 
                         <div class="table-responsive row">
                           <div class="col-md-12">
@@ -70,7 +70,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
-                                    <!-- <th class="text-center" data-column-id="tipo" data-order="desc">Tipo</th> -->
+                                    <th class="text-center" data-column-id="tipo" data-order="desc">Tipo</th>
                                     <th class="text-center" data-column-id="cargo" data-order="desc">Cargo</th>
                                     <th class="text-center" data-column-id="comisiones" data-order="desc">Cantidad</th>
                                 </tr>
@@ -86,15 +86,14 @@
                                     {{$usuario['nombre']}} {{$usuario['apellido']}} 
                                   </td>
                                   <td class="text-center previa">
+                                    <span style="display:none">{{$usuario['tipo']}}</span>{{$usuario['tipo_nombre']}}
+                                  </td>
+                                  <td class="text-center previa">
                                     {{$usuario['cargo']}} 
                                   </td>
                                   <td class="text-center previa">
                                     {{ number_format($usuario['comisiones'], 2, '.' , '.') }} 
                                   </td>
-                                  
-                                  <!-- <td class="text-center previa">
-                                    <span style="display:none">{{$usuario['tipo']}}</span>{{$usuario['tipo_nombre']}}
-                                  </td> -->
                                 </tr>
                               @endforeach 
                                                            
@@ -156,10 +155,10 @@
                   }
       });
 
-      // t
-      //   .columns(1)
-      //   .search(1)
-      //   .draw();
+      t
+        .columns(1)
+        .search(1)
+        .draw();
 
       function previa(t){
         var id = $(t).closest('tr').attr('id');
@@ -174,21 +173,21 @@
         window.open(route, '_blank');
       }
 
-      // $('input[name="tipo"]').on('change', function(){
-      //     t
-      //     .columns(1)
-      //     .search($(this).val())
-      //     .draw();
+      $('input[name="tipo"]').on('change', function(){
+          t
+          .columns(1)
+          .search($(this).val())
+          .draw();
 
-      //     if ($(this).val() == '1') {
-      //       $( "#instructor2" ).removeClass( "c-verde" );
-      //       $( "#staff2" ).addClass( "c-verde" );
+          if ($(this).val() == '1') {
+            $( "#instructor2" ).removeClass( "c-verde" );
+            $( "#staff2" ).addClass( "c-verde" );
 
-      //     }else{
-      //       $( "#staff2" ).removeClass( "c-verde" );
-      //       $( "#instructor2" ).addClass( "c-verde" );
-      //     }
-      //  });
+          }else{
+            $( "#staff2" ).removeClass( "c-verde" );
+            $( "#instructor2" ).addClass( "c-verde" );
+          }
+       });
 
     </script>
 @stop

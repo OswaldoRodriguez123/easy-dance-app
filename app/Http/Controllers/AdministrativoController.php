@@ -143,6 +143,10 @@ class AdministrativoController extends BaseController {
                 ->where('boolean_pago', 0)
             ->sum('monto');
 
+            if(!$comisiones){
+                $comisiones = 0;
+            }
+
             $collection=collect($staff);     
             $staff_array = $collection->toArray();
 
@@ -153,18 +157,29 @@ class AdministrativoController extends BaseController {
 
         }
 
-        // $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        // foreach($instructores as $instructor){
+        foreach($instructores as $instructor){
 
-        //     $collection=collect($instructor);     
-        //     $instructor_array = $collection->toArray();
+            $comisiones = Comision::where('usuario_id', $instructor->id)
+                ->where('usuario_tipo',2)
+                ->where('boolean_pago', 0)
+            ->sum('monto');
 
-        //     $instructor_array['tipo_nombre']='Instructor';
-        //     $instructor_array['tipo']=2;
-        //     $array[] = $instructor_array;
+            if(!$comisiones){
+                $comisiones = 0;
+            }
 
-        // }
+            $collection=collect($instructor);     
+            $instructor_array = $collection->toArray();
+
+            $instructor_array['cargo']='Instructor';
+            $instructor_array['tipo_nombre']='Instructor';
+            $instructor_array['tipo']=2;
+            $instructor_array['comisiones']=$comisiones;
+            $array[] = $instructor_array;
+
+        }
 
         return view('administrativo.comisiones')->with(['usuarios'=> $array]);
     }
