@@ -4394,10 +4394,11 @@ class ReporteController extends BaseController
                         $array[] = $alumno_array;
                     }
                 }
-            }else{
-                $alumno_array['fecha'] = '';
-                $array[] = $alumno_array;
             }
+            // else{
+            //     $alumno_array['fecha'] = $fecha;
+            //     $array[] = $alumno_array;
+            // }
         }
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'reporte_datos' => $array, 200]);
