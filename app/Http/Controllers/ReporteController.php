@@ -4014,7 +4014,6 @@ class ReporteController extends BaseController
             $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
             $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
         }else{
-
             if($request->tipo){
                 if($request->tipo == 1){
                     $start = Carbon::now()->toDateString();
@@ -4278,8 +4277,9 @@ class ReporteController extends BaseController
                         $j = 1;
                     }
 
-                    $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
                     $fecha = $fecha_a_comparar;
+
+                    $dia_a_comparar = $fecha_a_comparar->dayOfWeek;
 
                     while(!in_array($dia_a_comparar,$array_dias_clases)){
 
@@ -4333,17 +4333,17 @@ class ReporteController extends BaseController
                     }
 
                     if($inasistencias >= $asistencia_roja && $asistencia_roja != 0){
-                        $estatus=false;
+                        $estatus="c-rojo";
                     }else if($inasistencias >= $asistencia_amarilla && $asistencia_amarilla != 0){
-                        $estatus=true;
+                        $estatus="c-amarillo";
                     }else{
-                        $estatus=true;
+                        $estatus="c-verder";
                     }
                 }else{
-                    $estatus=true;
+                    $estatus="c-verde";
                 }
             }else{
-                $estatus=false;
+                $estatus="c-rojo";
                 $clase_nombre = '';
                 $inscripcion_id = '';
                 $fecha = Carbon::createFromFormat('Y-m-d H:i:s',$alumno->created_at);
@@ -4372,7 +4372,7 @@ class ReporteController extends BaseController
             $alumno_array['imagen'] = $imagen;
 
             if($clase_grupal){
-                if(!$estatus){
+                if($estatus != "c-rojo"){
                     if(!$clase_grupal->deleted_at){
                         if($clase_grupal->boolean_congelacion){
                             $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);

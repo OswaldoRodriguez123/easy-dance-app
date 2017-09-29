@@ -7,6 +7,7 @@
 <link href="{{url('/')}}/assets/css/datatable/datatables.min.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/css/datatable/datatables.bootstrap.css" rel="stylesheet">
 <link href="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 @stop
 
 @section('js_vendor')
@@ -26,6 +27,8 @@
 <script src="{{url('/')}}/assets/vendors/bower_components/flot-orderBars/js/jquery.flot.orderBars.js"></script>
 
 <script src="{{url('/')}}/assets/js/flot-charts/pie-chart.js"></script>
+<script src="{{url('/')}}/assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
 
 @stop
 @section('content')
@@ -60,7 +63,9 @@
                         <!--here-->
                         <div class="col-sm-12">
                             <form name="formFiltro" id="formFiltro">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" id="boolean_fecha" name="boolean_fecha" value="0">
                                 
                                 <div class="col-md-4">
                                     <label>Sexo</label>
@@ -104,17 +109,12 @@
 
                                                         <div class="clearfix m-b-20"></div>
                                                     
-
                                                         <div class="input-group">
                                                             <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
                                                             <div class="fg-line">
                                                                     <input type="text" name = "fecha" id="fecha" class="form-control" placeholder="Personalizar">
                                                             </div>
                                                         </div>
-
-            
-
-                                                        
                                                     </div>
 
                                                     <div class="clearfix p-b-35"></div>
@@ -204,6 +204,43 @@
 
         var pagina = document.location.origin
 
+        //DateRangePicker
+        $('#fecha').daterangepicker({
+            "autoApply" : false,
+            "opens": "right",
+            "applyClass": "bgm-morado waves-effect",
+            locale : {
+                format: 'DD/MM/YYYY',
+                applyLabel : 'Aplicar',
+                cancelLabel : 'Cancelar',
+                daysOfWeek : [
+                    "Dom",
+                    "Lun",
+                    "Mar",
+                    "Mie",
+                    "Jue",
+                    "Vie",
+                    "Sab"
+                ],
+
+                monthNames: [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],        
+            }
+
+        });
+
         t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
@@ -246,7 +283,7 @@
             var token = $('input:hidden[name=_token]').val();
             var datos = $( "#formFiltro" ).serialize();
 
-            procesando();
+            // procesando();
 
             t.clear().draw();
 
@@ -265,105 +302,37 @@
                     var nAnimOut = "animated flipOutY"; 
                     if(respuesta.status=="OK"){
 
-                      var nType = 'success';
-                      var nTitle="Ups! ";
-                      var nMensaje=respuesta.mensaje;
+                        var nType = 'success';
+                        var nTitle="Ups! ";
+                        var nMensaje=respuesta.mensaje;
 
-                      $.each(respuesta.reporte_datos, function (index, array) {
+                        $.each(respuesta.reporte_datos, function (index, array) {
 
-                        if(array.imagen){
-                            imagen = pagina+'/assets/uploads/usuario/'+array.imagen;
-                        }else{
-                            if(array.sexo == 'M'){
-                                imagen = pagina+"/assets/img/Hombre.jpg"
+                            if(array.imagen){
+                                imagen = pagina+'/assets/uploads/usuario/'+array.imagen;
                             }else{
-                                imagen = pagina+"/assets/img/Mujer.jpg"
+                                if(array.sexo == 'M'){
+                                    imagen = pagina+"/assets/img/Hombre.jpg"
+                                }else{
+                                    imagen = pagina+"/assets/img/Mujer.jpg"
+                                }
                             }
-                        }
 
-                        var rowId=array.inscripcion_id;
-                        var rowNode=t.row.add( [
-                            ''+'<img class="lv-img" src="'+imagen+'" alt="">'+'',
-                            ''+array.nombre+ ' '+array.apellido+ '',
-                            ''+array.fecha_nacimiento+'',
-                            ''+array.clase_nombre+'',
-                            ''+array.celular+'',
-                            ''+array.correo+'',
-                            ''+array.fecha+'',
-                        ] ).draw(false).node();
-                        $( rowNode )
-                          .attr('id',rowId)
-                          .addClass('seleccion');
-                    });
+                            var rowId=array.inscripcion_id;
+                            var rowNode=t.row.add( [
+                                ''+'<img class="lv-img" src="'+imagen+'" alt="">'+'',
+                                ''+array.nombre+ ' '+array.apellido+ '',
+                                ''+array.fecha_nacimiento+'',
+                                ''+array.clase_nombre+'',
+                                ''+array.celular+'',
+                                ''+array.correo+'',
+                                ''+array.fecha+'',
+                            ] ).draw(false).node();
 
-                    datos = JSON.parse(JSON.stringify(respuesta));
-
-                    // estatus = respuesta.estatus
-
-                    // if(estatus[1]){
-                    //     if(estatus[1][0] == 'A'){
-                            color1 = "#E22C29"
-                            color2 = "#FFC107"
-                            color3 = "#4CAF50"
-                    //     }else{
-                    //         color2 = "#2196f3"
-                    //         color1 = "#FF4081"
-                    //     }
-                    // }
-
-                    var data1 = ''
-                    data1 += '[';
-                    $.each( datos.estatus, function( i, item ) {
-                        var estatus = item[0];
-                        var cant = item[1];
-                        data1 += '{"data":"'+cant+'","label":"'+estatus+'"},';
-                    });
-
-                    data1 = data1.substring(0, data1.length -1);
-                    data1 += ']';
-                        //GRAFICO FILTRO MES ACTUAL
-                        $("#pie-chart-procesos").html('');
-                        $(".flc-pie").html('');
-                        $.plot('#pie-chart-procesos', $.parseJSON(data1), {
-                            series: {
-                                pie: {
-                                    show: true,
-                                    stroke: { 
-                                        width: 2,
-                                    },
-                                },
-                            },
-                            legend: {
-                                container: '.flc-pie',
-                                backgroundOpacity: 0.5,
-                                noColumns: 0,
-                                backgroundColor: "white",
-                                lineWidth: 0
-                            },
-                            grid: {
-                                hoverable: true,
-                                clickable: true
-                            },
-                            tooltip: true,
-                            tooltipOpts: {
-                                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-                                shifts: {
-                                    x: 20,
-                                    y: 0
-                                },
-                                defaultTheme: false,
-                                cssClass: 'flot-tooltip'
-                            },
-                            colors: [color1, color2, color3],
-
-                            
+                            $( rowNode )
+                                .attr('id',rowId)
+                                .addClass('seleccion');
                         });
-
-                        if($('#estatus_alumno_id').val() == 0){
-                          $('.estatus').show()
-                        }else{
-                          $('.estatus').hide()
-                        }
 
                     }else{
                       var nTitle="Ups! ";
