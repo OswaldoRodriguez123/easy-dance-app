@@ -1897,7 +1897,9 @@ class UsuarioController extends BaseController {
 
                     }
 
-                    $campanas = Campana::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+                    $campanas = Campana::where('academia_id', '=' ,  Auth::user()->academia_id)
+                        ->where('boolean_promocionar',1)
+                    ->get();
 
                     foreach($campanas as $campana){
 

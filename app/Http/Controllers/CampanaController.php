@@ -105,34 +105,37 @@ class CampanaController extends BaseController {
 
             foreach($campanas as $campana){
 
-                $fecha = Carbon::createFromFormat('Y-m-d', $campana->fecha_final);
+                if($campana->boolean_promocionar){
 
-                if($fecha > Carbon::now()){
+                    $fecha = Carbon::createFromFormat('Y-m-d', $campana->fecha_final);
 
-                    $recaudado = 0;
-                    $patrocinador_monto = 0;
+                    if($fecha > Carbon::now()){
 
-                    $patrocinadores = Patrocinador::where('tipo_evento_id', '=' ,  $campana->id)
-                        ->where('tipo_evento', '=', 1)
-                    ->get();
+                        $recaudado = 0;
+                        $patrocinador_monto = 0;
 
-                    foreach($patrocinadores as $patrocinador){
+                        $patrocinadores = Patrocinador::where('tipo_evento_id', '=' ,  $campana->id)
+                            ->where('tipo_evento', '=', 1)
+                        ->get();
 
-                        if($patrocinador->tipo_moneda == 1){
-                            $patrocinador_monto = $patrocinador->monto;
-                        }else{
-                            $patrocinador_monto = $patrocinador->monto * 1000;
+                        foreach($patrocinadores as $patrocinador){
+
+                            if($patrocinador->tipo_moneda == 1){
+                                $patrocinador_monto = $patrocinador->monto;
+                            }else{
+                                $patrocinador_monto = $patrocinador->monto * 1000;
+                            }
+
+                            $recaudado = $recaudado + $patrocinador_monto;
+
                         }
-
-                        $recaudado = $recaudado + $patrocinador_monto;
-
+                        
+                        $collection=collect($campana);     
+                        $campana_array = $collection->toArray();
+                        $campana_array['total']=$recaudado;
+                        $array[$campana->id] = $campana_array;
+                
                     }
-                    
-                    $collection=collect($campana);     
-                    $campana_array = $collection->toArray();
-                    $campana_array['total']=$recaudado;
-                    $array[$campana->id] = $campana_array;
-            
                 }
             }
 
@@ -644,6 +647,7 @@ class CampanaController extends BaseController {
             $campana->link_video = $request->link_video;
             $campana->condiciones = $request->condiciones;
             $campana->presentacion = $request->presentacion;
+            $campana->boolean_promocionar = $request->boolean_promocionar;
 
             if($campana->save()){
 
@@ -1280,6 +1284,18 @@ class CampanaController extends BaseController {
 
         $campana = Campana::find($request->id);
         $campana->link_video = $request->link_video;
+
+        if($campana->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateMostrar(Request $request){
+
+        $campana = Campana::find($request->id);
+        $campana->boolean_promocionar = $request->boolean_promocionar;
 
         if($campana->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

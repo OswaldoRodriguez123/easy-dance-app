@@ -1051,6 +1051,7 @@
 			Route::put('especiales/campañas/update/imagen', 'CampanaController@updateImagen');
 			Route::put('especiales/campañas/update/presentacion', 'CampanaController@updatePresentacion');
 			Route::put('especiales/campañas/update/imagen_presentacion', 'CampanaController@updateImagenPresentacion');
+			Route::put('especiales/campañas/update/mostrar', 'CampanaController@updateMostrar');
 			Route::put('especiales/campañas/update/condiciones', 'CampanaController@updateCondiciones');
 			Route::put('especiales/campañas/update/datos', 'CampanaController@updateDatosBancarios');
 			Route::post('especiales/campañas/agregarrecompensa', 'CampanaController@agregarrecompensa');
