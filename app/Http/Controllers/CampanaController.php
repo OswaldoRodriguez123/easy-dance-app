@@ -1681,55 +1681,18 @@ class CampanaController extends BaseController {
                     ->where('inscripcion_clase_grupal.clase_grupal_id',$clase_grupal->id)
                 ->sum('patrocinadores.monto');
 
-                if(!$cantidad_recaudada){
+                if($cantidad_recaudada){
                     $cantidad_recaudada = 0;
-                }
-
-                $horarios = HorarioClaseGrupal::where('clase_grupal_id', $clase_grupal->id)->get();
-                $j = 0;
-                $len = count($horarios);
-                $dia_string = '';
-
-                $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-                $fecha_final = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_final);
-                $i = $fecha_inicio->dayOfWeek;
-
-                if($i == 1){
-
-                  $dia = 'Lunes';
-
-                }else if($i == 2){
-
-                  $dia = 'Martes';
-
-                }else if($i == 3){
-
-                  $dia = 'Miercoles';
-
-                }else if($i == 4){
-
-                  $dia = 'Jueves';
-
-                }else if($i == 5){
-
-                  $dia = 'Viernes';
-
-                }else if($i == 6){
-
-                  $dia = 'Sabado';
-
-                }else if($i == 0){
-
-                  $dia = 'Domingo';
-
-                }
- 
-                $dia_string = $dia;
                 
-                foreach($horarios as $horario){
 
-                    $fecha = Carbon::createFromFormat('Y-m-d', $horario->fecha);
-                    $i = $fecha->dayOfWeek;
+                    $horarios = HorarioClaseGrupal::where('clase_grupal_id', $clase_grupal->id)->get();
+                    $j = 0;
+                    $len = count($horarios);
+                    $dia_string = '';
+
+                    $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                    $fecha_final = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_final);
+                    $i = $fecha_inicio->dayOfWeek;
 
                     if($i == 1){
 
@@ -1760,45 +1723,83 @@ class CampanaController extends BaseController {
                       $dia = 'Domingo';
 
                     }
-                    if ($j != $len - 1) {
-                        $dia_string = $dia_string . ' ' . $dia;
-                    }else{
-                        $dia_string = $dia_string . ' y ' . $dia;
+     
+                    $dia_string = $dia;
+                    
+                    foreach($horarios as $horario){
+
+                        $fecha = Carbon::createFromFormat('Y-m-d', $horario->fecha);
+                        $i = $fecha->dayOfWeek;
+
+                        if($i == 1){
+
+                          $dia = 'Lunes';
+
+                        }else if($i == 2){
+
+                          $dia = 'Martes';
+
+                        }else if($i == 3){
+
+                          $dia = 'Miercoles';
+
+                        }else if($i == 4){
+
+                          $dia = 'Jueves';
+
+                        }else if($i == 5){
+
+                          $dia = 'Viernes';
+
+                        }else if($i == 6){
+
+                          $dia = 'Sabado';
+
+                        }else if($i == 0){
+
+                          $dia = 'Domingo';
+
+                        }
+                        if ($j != $len - 1) {
+                            $dia_string = $dia_string . ' ' . $dia;
+                        }else{
+                            $dia_string = $dia_string . ' y ' . $dia;
+                        }
+
+                        $j++;
+
                     }
 
-                    $j++;
+                    $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                        ->where('usuarios_tipo.tipo_id',$clase_grupal->instructor_id)
+                        ->where('usuarios_tipo.tipo',3)
+                    ->first();
 
-                }
+                    if($usuario){
 
-                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                    ->where('usuarios_tipo.tipo_id',$clase_grupal->instructor_id)
-                    ->where('usuarios_tipo.tipo',3)
-                ->first();
+                        if($usuario->imagen){
+                            $imagen = $usuario->imagen;
+                        }else{
+                            $imagen = '';
+                        }
 
-                if($usuario){
-
-                    if($usuario->imagen){
-                        $imagen = $usuario->imagen;
                     }else{
                         $imagen = '';
                     }
 
-                }else{
-                    $imagen = '';
+                    $collection=collect($clase_grupal);     
+                    $clase_grupal_array = $collection->toArray();
+
+                    $clase_grupal_array['cantidad_recaudada']=$cantidad_recaudada;
+                    $clase_grupal_array['dia']=$dia_string;
+                    $clase_grupal_array['instructor_imagen']=$imagen;
+
+                    if($fecha_inicio <= Carbon::now()->toDateString() && $fecha_final >=  Carbon::now()->toDateString()){
+                        $array_clase_grupal[$clase_grupal->id] = $clase_grupal_array;
+                    }
+
+                    $array_progreso[] = $clase_grupal_array;
                 }
-
-                $collection=collect($clase_grupal);     
-                $clase_grupal_array = $collection->toArray();
-
-                $clase_grupal_array['cantidad_recaudada']=$cantidad_recaudada;
-                $clase_grupal_array['dia']=$dia_string;
-                $clase_grupal_array['instructor_imagen']=$imagen;
-
-                if($fecha_inicio <= Carbon::now()->toDateString() && $fecha_final >=  Carbon::now()->toDateString()){
-                    $array_clase_grupal[$clase_grupal->id] = $clase_grupal_array;
-                }
-
-                $array_progreso[] = $clase_grupal_array;
 
             }
 
