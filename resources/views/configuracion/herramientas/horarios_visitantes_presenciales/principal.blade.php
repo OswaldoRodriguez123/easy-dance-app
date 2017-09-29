@@ -21,7 +21,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                    <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Agregar Paso<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                    <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Agregar Horario<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                 </div>
                 <div class="modal-body">                           
                     <div class="row p-t-20 p-b-0">
@@ -30,12 +30,12 @@
            
                             <div class="col-sm-12">
                                 
-                                <label for="nombre" id="id-nombre">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del paso" title="" data-original-title="Ayuda"></i>
+                                <label for="nombre" id="id-nombre">Nombre</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el nombre del horario" title="" data-original-title="Ayuda"></i>
 
                                 <div class="input-group">
-                                    <span class="input-group-addon"><i class="icon_a-tutoriales f-22"></i></span>
+                                    <span class="input-group-addon"><i class="icon_b-nombres f-22"></i></span>
                                     <div class="fg-line">
-                                        <input type="text" class="form-control input-sm proceso" name="nombre" id="nombre" placeholder="Ej. Dile que no">
+                                        <input type="text" class="form-control input-sm proceso" name="nombre" id="nombre" placeholder="Ej. Horario Nocturno">
                                     </div>
                                 </div>
                                 <div class="has-error" id="error-nombre">
@@ -43,110 +43,45 @@
                                         <small class="help-block error-span" id="error-nombre_mensaje" ></small>                               
                                     </span>
                                 </div>
+                              </div>
 
                                 <div class="clearfix p-b-35"></div>
 
-                            
-                                <label for="fecha_cobro" id="id-especialidad_id">Especialidad</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de diversas especialidades" title="" data-original-title="Ayuda"></i>
+                                <div class="col-xs-6">
+                                 
+                                      <label for="fecha_inicio" id="id-hora_inicio">Horario</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Define la hora de inicio y final del horario" title="" data-original-title="Ayuda"></i>
 
-                                <div class="input-group">
-                                  <span class="input-group-addon"><i class="icon_a icon_a-especialidad f-22"></i></span>
-                                <div class="fg-line">
-                                  <div class="select">
-                                    <select class="selectpicker" name="especialidad_id" id="especialidad_id" data-live-search="true" onchange="porcentaje" >
-
-                                      <option value="">Selecciona</option>
-                                      @foreach ( $config_especialidades as $especialidades )
-                                      <option value = "{{ $especialidades['id'] }}">{{ $especialidades['nombre'] }}</option>
-                                      @endforeach
-                                    
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="has-error" id="error-especialidad_id">
-                                  <span >
-                                    <small class="help-block error-span" id="error-especialidad_id_mensaje" ></small>                                           
-                                  </span>
-                                </div>
-                              </div>
-                           
-                               <div class="clearfix p-b-35"></div>
-
-                                
-                              <label for="ciclo" id="id-ciclo">Ciclo</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nivel" id = "pop-nivel" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Seleccione el ciclo" title="" data-original-title="Ayuda" data-html="true"></i>
-
-
-                                 <div class="input-group">
-                                  <span class="input-group-addon"><i class="icon_a-niveles f-22"></i></span>
-                                <div class="fg-line">
-                                  <div class="select">
-                                    <select class="selectpicker" name="nivel_id" id="nivel_id" data-live-search="true">
-
-                                      <option value="">Selecciona</option>
-                                      @foreach ( $config_niveles as $niveles )
-                                      <option value = "{{ $niveles['id'] }}">{{ $niveles['nombre'] }}</option>
-                                      @endforeach
-
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="has-error" id="error-nivel_id">
-                                  <span >
-                                    <small class="help-block error-span" id="error-nivel_id_mensaje" ></small>                                           
-                                  </span>
-                                </div>
-                              </div>
-
-                              <div class="clearfix p-b-35"></div>
-
-                                <label for="nivel_id" id="id-nivel_id">Nivel de baile</label> <span class="c-morado f-700 f-16">*</span> <i name = "pop-nivel" id = "pop-nivel" aria-describedby="popoversalon" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Easy dance te ofrece una selección de distintos niveles, en caso que desees asignar uno nuevo, debes dirigirte a la sección de configuración general y personalizar nuevos niveles" title="" data-original-title="Ayuda" data-html="true"></i>
-
-                                 <div class="input-group">
-                                  <span class="input-group-addon"><i class="icon_a-niveles f-22"></i></span>
-                                <div class="fg-line">
-                                  <div class="select">
-                                    <select class="selectpicker" name="ciclo" id="ciclo" data-live-search="true">
-
-                                      <option value="">Selecciona</option>
-                                      <option value="1">1</option>
-                                      <option value="2">2</option>
-                                      <option value="3">3</option>
-                                      
-
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="has-error" id="error-ciclo">
-                                  <span >
-                                    <small class="help-block error-span" id="error-ciclo_mensaje" ></small>                                           
-                                  </span>
-                                </div>
-                              </div>
-
-                              <div class="clearfix p-b-35"></div>
-
-                              <label for="id" id="id-link_video">Ingresa el link del video</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el link del video" title="" data-original-title="Ayuda"></i>
-                                  
-                                    <div class="input-group">
-                                    <span class="input-group-addon">
-                                     <i class="zmdi zmdi-videocam f-20 c-morado"></i>
-                                    </span>  
-
-                                    <div class="fg-line">                       
-                                      <input type="text" class="form-control caja input-sm" name="link_video" id="link_video" placeholder="Ingresa el link">
+                                      <div class="input-group col-xs-12">
+                                      <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
+                                      <div class="dtp-container fg-line">
+                                              <input name="hora_inicio" id="hora_inicio" class="form-control time-picker" placeholder="Desde" type="text">
+                                          </div>
                                     </div>
-                                   </div>
-                                   
-                                   <div class="has-error" id="error-link_video">
-                                    <span >
-                                     <small id="error-link_video_mensaje" class="help-block error-span" ></small>                                           
-                                    </span>
-                                    </div> 
+                                 <div class="has-error" id="error-hora_inicio">
+                                      <span >
+                                          <small class="help-block error-span" id="error-hora_inicio_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
 
-                            </div>
-                        </form>
-                    </div>
-                </div>
+                               <div class="col-xs-6">
+                                      <label for="fecha_inicio" id="id-hora_final">&nbsp;</label>
+                                      <div class="input-group col-xs-12">
+                                      <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
+                                      <div class="dtp-container fg-line">
+                                              <input name="hora_final" id="hora_final" class="form-control time-picker" placeholder="Hasta" type="text">
+                                          </div>
+                                    </div>
+                                 <div class="has-error" id="error-hora_final">
+                                      <span >
+                                          <small class="help-block error-span" id="error-hora_final_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+                            </form>
+                          </div>
+                        </div>
+                                
                       
                 <div class="clearfix p-b-35"></div>
 
@@ -198,9 +133,9 @@
                     <div class="card">
                         <div class="card-header text-right">
 
-                            <span class="f-16 p-t-0 text-success">Agregar un Paso <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
+                            <span class="f-16 p-t-0 text-success">Agregar un Horario <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-tutoriales f-25"></i> Sección de Pasos</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-time s f-25"></i> Sección de Horarios</p>
                             <hr class="linea-morada">                                                         
                         </div>
                         <div class="table-responsive row">
@@ -209,21 +144,17 @@
                             <thead>
                                 <tr>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Especialidad</th>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Ciclo</th>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nivel</th>
+                                    <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Final]</th>
                                     <th class="text-center" data-column-id="acciones" data-order="desc">Operaciones</th>
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
 
-                            @foreach ($pasos as $paso)
-                                <?php $id = $paso->id; ?>
+                            @foreach ($horarios as $horario)
+                                <?php $id = $horario['id']; ?>
                                 <tr id="{{$id}}" class="seleccion">
-                                    <td class="text-center previa">{{$paso->nombre}}</td>
-                                    <td class="text-center previa">{{$paso->especialidad}}</td>
-                                    <td class="text-center previa">{{$paso->nivel}}</td>
-                                    <td class="text-center previa">{{$paso->ciclo}}</td>
+                                    <td class="text-center previa">{{$horario['nombre']}}</td>
+                                    <td class="text-center previa">{{$horario['hora_inicio']}} - {{$horario['hora_final']}}</td>
                                     <td class="text-center disabled"> <i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i></td>
                                 </tr>
                             @endforeach 
@@ -252,8 +183,8 @@
             
     <script type="text/javascript">
 
-        route_agregar = "{{url('/')}}/configuracion/herramientas/pasos/agregar";
-        route_eliminar = "{{url('/')}}/configuracion/herramientas/pasos/eliminar/";
+        route_agregar = "{{url('/')}}/configuracion/herramientas/horarios-visitantes/agregar";
+        route_eliminar = "{{url('/')}}/configuracion/herramientas/horarios-visitantes/eliminar/";
 
         $(document).ready(function(){
 
@@ -301,7 +232,7 @@
             element = this;
 
             swal({   
-                title: "Desea eliminar el paso?",   
+                title: "Desea eliminar el horario?",   
                 text: "Confirmar eliminación!",   
                 type: "warning",   
                 showCancelButton: true,   
@@ -350,7 +281,7 @@
                             .remove()
                             .draw();
 
-                        swal("Exito!","El paso ha sido eliminado!","success");
+                        swal("Exito!","El horario ha sido eliminado!","success");
                         finprocesado();
                         
                         }
@@ -392,12 +323,10 @@
                             var nTitle="Ups! ";
                             var nMensaje="¡Excelente! El registro se ha guardado satisfactoriamente";
 
-                            var rowId=respuesta.paso.id;
+                            var rowId=respuesta.id;
                             var rowNode=t.row.add( [
-                                ''+respuesta.paso.nombre+'',
-                                ''+respuesta.especialidad+'',
-                                ''+respuesta.nivel+'',
-                                ''+respuesta.paso.ciclo+'',
+                                ''+respuesta.nombre+'',
+                                ''+respuesta.hora_inicio + ' - ' + respuesta.hora_final+'',
                                 '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer"></i>'
                             ] ).draw(false).node();
 
@@ -449,7 +378,7 @@
         });
 
         function limpiarMensaje(){
-            var campo = ["nombre", "especialidad_id", "nivel_id", "ciclo", "link_video"];
+            var campo = ["nombre", "hora_inicio", "hora_final"];
             fLen = campo.length;
             for (i = 0; i < fLen; i++) {
                 $("#error-"+campo[i]+"_mensaje").html('');

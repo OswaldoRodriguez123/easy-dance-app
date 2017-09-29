@@ -293,6 +293,12 @@
 			Route::put('configuracion/herramientas/actividades-laborales/update/descripcion', 'ActividadLaboralController@updateDescripcion');
 			Route::put('configuracion/herramientas/actividades-laborales/update/etiqueta', 'ActividadLaboralController@updateEtiqueta');
 
+			//HORARIOS VISITANTES
+
+			Route::get('configuracion/herramientas/horarios-visitantes','HerramientaController@principal_horarios');
+			Route::post('configuracion/herramientas/horarios-visitantes/agregar','HerramientaController@agregarHorario');
+			Route::delete('configuracion/herramientas/horarios-visitantes/eliminar/{id}','HerramientaController@eliminarHorario');
+
 			// HERRAMIENTAS
 
 			Route::get('configuracion/herramientas','HerramientaController@index');

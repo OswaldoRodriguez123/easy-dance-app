@@ -40,6 +40,7 @@ use App\Egreso;
 use App\Puntaje;
 use App\ConfigFormulaExito;
 use App\ManualProcedimiento;
+use App\HorarioVisitante;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -503,5 +504,99 @@ class HerramientaController extends BaseController {
                 return response()->json(['errores' => ['nombre' => [0, 'Ups! Ya posee una normativa con este nombre']], 'status' => 'ERROR'],422);
             }
         }
+    }
+
+    public function principal_horarios(){
+
+        $horarios = HorarioVisitante::where('academia_id',Auth::user()->academia_id)->get();
+        $academia = Academia::find(Auth::user()->academia_id);
+        $array = array();
+
+        foreach($horarios as $horario){
+
+            if($academia->tipo_horario == 2){
+                $hora_inicio = Carbon::createFromFormat('H:i:s',$horario->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i:s',$horario->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i:s',$horario->hora_inicio)->format('g:i a');
+                $hora_final = Carbon::createFromFormat('H:i:s',$horario->hora_final)->format('g:i a');
+            }
+
+            $collection=collect($horario);     
+            $horario_array = $collection->toArray();
+
+            $horario_array['hora_inicio']=$hora_inicio;
+            $horario_array['hora_final']=$hora_final;
+            $array[] = $horario_array;
+        }
+
+        return view('configuracion.herramientas.horarios_visitantes_presenciales.principal')->with(['horarios' => $array, 'id' => Auth::user()->academia_id]);
+        
+    }
+
+    public function agregarHorario(Request $request){
+
+        $rules = [
+            'nombre' => 'required|min:1',
+            'hora_inicio' => 'required',
+            'hora_final' => 'required',
+        ];
+
+        $messages = [
+            'nombre.required' => 'Ups! El Nombre es requerido',
+            'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
+            'hora_final.required' => 'Ups! La hora final es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            if($academia->tipo_horario == 2){
+                $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
+            }else{
+                $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
+                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
+            }
+
+            if($hora_inicio > $hora_final){
+                return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
+            }
+
+            $horario = new HorarioVisitante;
+            $horario->nombre = $request->nombre;
+            $horario->academia_id = Auth::user()->academia_id;
+            $horario->hora_inicio = $request->hora_inicio;
+            $horario->hora_final = $request->hora_final;
+
+            if($horario->save()){
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => $request->nombre, 'hora_inicio' => $request->hora_inicio, 'hora_final' => $request->hora_final, 'id' => $horario->id, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+            }
+           
+        }
+    }
+
+    public function eliminarHorario($id)
+    {
+        $horario = HorarioVisitante::find($id);
+        
+        if($horario->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El registro se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+        // return redirect("alumno");
     }
 }
