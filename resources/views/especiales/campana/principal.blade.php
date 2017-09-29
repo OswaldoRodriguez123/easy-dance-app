@@ -188,7 +188,7 @@
         serverSide: false,
         pageLength: 25,
         //bPaginate: false,    
-        order: [[0, 'asc']],
+        order: [[1, 'asc']],
         fnDrawCallback: function() {
         if ("{{count($campanas)}}" < 25) {
               $('.dataTables_paginate').hide();
