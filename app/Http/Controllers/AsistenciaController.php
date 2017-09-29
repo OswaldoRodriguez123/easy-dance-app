@@ -996,7 +996,7 @@ class AsistenciaController extends BaseController
       }
 
       usort($arrayClaseGrupal, function($a, $b) {
-          return $a['hora_inicio'] < $b['hora_inicio'];
+          return $a['hora_inicio'] > $b['hora_inicio'];
       });
 
       return response()->json(['status' => 'OK', 'clases_grupales'=>$arrayClaseGrupal, 200]);
@@ -1177,7 +1177,7 @@ class AsistenciaController extends BaseController
       }
 
       usort($arrayClases, function($a, $b) {
-          return $a['hora_inicio'] < $b['hora_inicio'];
+          return $a['hora_inicio'] > $b['hora_inicio'];
       });
 
       $deuda=$this->deuda($request->id);
