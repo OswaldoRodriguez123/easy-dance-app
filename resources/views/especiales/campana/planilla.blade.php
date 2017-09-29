@@ -1065,7 +1065,7 @@
 
             
 <!--                             <tr class="detalle" data-toggle="modal" href="#modalNombre-Campana"> -->
-                            <tr class="disabled">
+                            <tr class="disabled" data-trigger="hover" data-toggle="popover" data-placement="top" data-html="true" data-content="Este campo no puede ser editado" title="" data-original-title="Ayuda">
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-nombre" class="zmdi {{ empty($campana->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-campana f-22"></i> </span>
@@ -1089,7 +1089,7 @@
                              </td>
                              <td id="campana-eslogan" class="f-14 m-l-15 capitalize" data-valor="{{$campana->eslogan}}" >{{ str_limit($campana->eslogan, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="disabled">
+                            <tr class="disabled" data-trigger="hover" data-toggle="popover" data-placement="top" data-html="true" data-content="Este campo no puede ser editado" title="" data-original-title="Ayuda">
                             <!-- <tr class="detalle" data-toggle="modal" href="#modalCantidad-Campana"> -->
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-cantidad" class="zmdi {{ empty($campana->cantidad) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
@@ -1098,7 +1098,7 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="campana-cantidad"><span>{{ number_format($campana->cantidad, 2, '.' , '.') }}</span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="disabled">
+                            <tr class="disabled" data-trigger="hover" data-toggle="popover" data-placement="top" data-html="true" data-content="Este campo no puede ser editado" title="" data-original-title="Ayuda">
                            <!--  <tr class="detalle" data-toggle="modal" href="#modalPlazo-Campana"> -->
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-plazo" class="zmdi {{ empty($campana->plazo) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
