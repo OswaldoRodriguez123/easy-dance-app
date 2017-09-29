@@ -40,9 +40,30 @@
                     <div class="card">
                         <div class="card-header ">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-visitante-presencial f-25"></i> Sección de Comisiones</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-pagar f-25"></i> Sección de Comisiones</p>
                             <hr class="linea-morada">                                                         
                         </div>
+
+                        <div class="col-sm-5">
+                         <div class="form-group fg-line ">
+                            <div class="p-t-10">
+                            <label class="radio radio-inline m-r-20">
+                                <input name="tipo" id="staff" value="1" type="radio" checked>
+                                <i class="input-helper"></i>  
+                                Staff <i id="staff2" name="staff2" class="icon_f-staff c-verde f-20"></i>
+                            </label>
+                            <label class="radio radio-inline m-r-20">
+                                <input name="tipo" id="instructor" value="2" type="radio">
+                                <i class="input-helper"></i>  
+                                Instructor <i id="instructor2" name="instructor2" class="icon_a-instructor f-20"></i>
+                            </label>
+                            </div>
+                            
+                         </div>
+                        </div> 
+
+                        <div class="clearfix"></div>
+
                         <div class="table-responsive row">
                           <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" name="tablelistar">
@@ -63,7 +84,7 @@
                                     {{$usuario['nombre']}} {{$usuario['apellido']}} 
                                   </td>
                                   <td class="text-center previa">
-                                    {{$usuario['tipo_nombre']}}
+                                    <span style="display:none">{{$usuario['tipo']}}</span>{{$usuario['tipo_nombre']}}
                                   </td>
                                 </tr>
                               @endforeach 
@@ -87,6 +108,7 @@
 @section('js') 
             
     <script type="text/javascript">
+
 
         route_instructor = "{{url('/')}}/participante/instructor/pagos/"
         route_staff = "{{url('/')}}/configuracion/staff/pagos/"
@@ -125,18 +147,39 @@
                   }
       });
 
+      t
+        .columns(1)
+        .search(1)
+        .draw();
+
       function previa(t){
         var id = $(t).closest('tr').attr('id');
         var tipo = $(t).closest('tr').data('tipo');
-        
+
         if(tipo == 1){
-          var route =route_instructor+id;
-        }else{
           var route =route_staff+id;
+        }else{
+          var route =route_instructor+id;
         }
         
         window.open(route, '_blank');
       }
+
+      $('input[name="tipo"]').on('change', function(){
+            t
+            .columns(1)
+            .search($(this).val())
+            .draw();
+
+            if ($(this).val() == '1') {
+              $( "#instructor2" ).removeClass( "c-verde" );
+              $( "#staff2" ).addClass( "c-verde" );
+
+            }else{
+              $( "#staff2" ).removeClass( "c-verde" );
+              $( "#instructor2" ).addClass( "c-verde" );
+            }
+         });
 
     </script>
 @stop

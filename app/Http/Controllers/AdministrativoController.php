@@ -130,19 +130,7 @@ class AdministrativoController extends BaseController {
 
         $array = array();
 
-        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
-
-        foreach($instructores as $instructor){
-
-            $collection=collect($instructor);     
-            $instructor_array = $collection->toArray();
-
-            $instructor_array['tipo_nombre']='Instructor';
-            $instructor_array['tipo']=1;
-            $array[] = $instructor_array;
-
-        }
-
+        
         $staffs = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
         foreach($staffs as $staff){
@@ -151,8 +139,21 @@ class AdministrativoController extends BaseController {
             $staff_array = $collection->toArray();
 
             $staff_array['tipo_nombre']='Staff';
-            $staff_array['tipo']=2;
+            $staff_array['tipo']=1;
             $array[] = $staff_array;
+
+        }
+
+        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        foreach($instructores as $instructor){
+
+            $collection=collect($instructor);     
+            $instructor_array = $collection->toArray();
+
+            $instructor_array['tipo_nombre']='Instructor';
+            $instructor_array['tipo']=2;
+            $array[] = $instructor_array;
 
         }
 
