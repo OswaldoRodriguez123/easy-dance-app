@@ -4040,27 +4040,29 @@ class ReporteController extends BaseController
 
             $inasistencias = 0;
 
-            $query = InscripcionClaseGrupal::withTrashed()->join('clases_grupales', 'clases_grupales.id', '=', 'inscripcion_clase_grupal.clase_grupal_id')
-            ->join('config_clases_grupales','clases_grupales.clase_grupal_id','=','config_clases_grupales.id')
-            ->select('inscripcion_clase_grupal.id as inscripcion_id',
-                    'inscripcion_clase_grupal.fecha_inscripcion',
-                    'inscripcion_clase_grupal.fecha_a_comprobar',
-                    'config_clases_grupales.nombre as clase_nombre',
-                    'clases_grupales.id',
-                    'clases_grupales.fecha_inicio',
-                    'clases_grupales.fecha_final',
-                    'config_clases_grupales.asistencia_rojo',
-                    'config_clases_grupales.asistencia_amarilla',
-                    'inscripcion_clase_grupal.boolean_congelacion',
-                    'inscripcion_clase_grupal.fecha_inicio as fecha_congelacion'
-                    )
-            ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
-            // ->where('clases_grupales.deleted_at', null)
-            ->orderBy('inscripcion_clase_grupal.fecha_inscripcion', 'desc');
-
-            $clase_grupal = $query->first();
+            $clase_grupal = InscripcionClaseGrupal::withTrashed()->join('clases_grupales', 'clases_grupales.id', '=', 'inscripcion_clase_grupal.clase_grupal_id')
+                ->join('config_clases_grupales','clases_grupales.clase_grupal_id','=','config_clases_grupales.id')
+                ->select('inscripcion_clase_grupal.id as inscripcion_id',
+                        'inscripcion_clase_grupal.fecha_inscripcion',
+                        'inscripcion_clase_grupal.fecha_a_comprobar',
+                        'config_clases_grupales.nombre as clase_nombre',
+                        'clases_grupales.id',
+                        'clases_grupales.fecha_inicio',
+                        'clases_grupales.fecha_final',
+                        'config_clases_grupales.asistencia_rojo',
+                        'config_clases_grupales.asistencia_amarilla',
+                        'inscripcion_clase_grupal.boolean_congelacion',
+                        'inscripcion_clase_grupal.fecha_inicio as fecha_congelacion'
+                        )
+                ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
+                // ->where('clases_grupales.deleted_at', null)
+                ->orderBy('inscripcion_clase_grupal.fecha_inscripcion', 'desc')
+            ->first();
 
             if($clase_grupal){
+
+                $clase_nombre = $clase_grupal->clase_nombre;
+                $inscripcion_id = $clase_grupal->inscripcion_id;
 
                 //CONFIGURACIONES DE ASISTENCIAS
 
@@ -4337,20 +4339,14 @@ class ReporteController extends BaseController
                     }else{
                         $estatus=true;
                     }
-                    
                 }else{
                     $estatus=true;
                 }
             }else{
                 $estatus=false;
-            }
-
-            if($clase_grupal){
-                $clase_nombre = $clase_grupal->clase_nombre;
-                $inscripcion_id = $clase_grupal->inscripcion_id;
-            }else{
                 $clase_nombre = '';
                 $inscripcion_id = '';
+                $fecha = Carbon::createFromFormat('Y-m-d H:i:s',$alumno->created_at);
             }
 
             $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')

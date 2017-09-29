@@ -169,9 +169,10 @@
                                     <th class="text-center" data-column-id="imagen">Imagen</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
                                     <th class="text-center" data-column-id="fecha_nacimiento" data-order="desc">Fecha Nacimiento</th>
-                                    <th class="text-center" data-column-id="estatus_e">Estatus de Alumno</th>
                                     <th class="text-center" data-column-id="clase_grupal" data-order="desc">Clase Grupal</th>
                                     <th class="text-center" data-column-id="celular">Contacto Móvil</th>
+                                    <th class="text-center" data-column-id="correo">Correo</th>
+                                    <th class="text-center" data-column-id="fecha_inactividad">Fecha Inactividad</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -198,7 +199,7 @@
             
         <script type="text/javascript">
 
-        route_filtrar="{{url('/')}}/reportes/estatus-alumnos";
+        route_filtrar="{{url('/')}}/reportes/inactivos-congelados";
         route_detalle="{{url('/')}}/agendar/clases-grupales/participantes/historial/";
 
         var pagina = document.location.origin
@@ -285,9 +286,10 @@
                             ''+'<img class="lv-img" src="'+imagen+'" alt="">'+'',
                             ''+array.nombre+ ' '+array.apellido+ '',
                             ''+array.fecha_nacimiento+'',
-                            ''+"<i class='zmdi zmdi-label-alt-outline f-20 p-r-3 "+array.estatus+"'></i>",
                             ''+array.clase_nombre+'',
                             ''+array.celular+'',
+                            ''+array.correo+'',
+                            ''+array.fecha+'',
                         ] ).draw(false).node();
                         $( rowNode )
                           .attr('id',rowId)
