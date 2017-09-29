@@ -62,41 +62,70 @@
                             <form name="formFiltro" id="formFiltro">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 
-
-                                <div class="col-sm-6">
-                                    <label>Participantes</label>
+                                <div class="col-md-4">
+                                    <label>Sexo</label>
                                     <div class="fg-line">
-                                        <div class="select">
-                                            <select class="selectpicker" name="estatus_alumno_id" id="estatus_alumno_id" data-live-search="true">
-                                              <option value="1">Activos</option>
-                                              <option value="2">Riesgo de ausencia</option>
-                                              <option value="3">Inactivos</option>
-                                              <option value="0">Todos</option>
-                                            </select>
+                                      <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="sexo" id="sexo">
+                                          <option value="0">Todos</option>
+                                          <option value="M">Masculino</option>
+                                          <option value="F">Femenino</option>
+                                        </select>
+                                      </div>
+                                    </div>                          
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Fecha</label> &nbsp; &nbsp; &nbsp;
+                                    <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="tipo" id="tipo">
+                                            <option value="1">Hoy</option>
+                                            <option value="2">Mes Actual</option>
+                                            <option value="3">Mes Pasado</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group fg-line">
+                                        <label for="nombre">Personalizar</label>
+                                        <div class="panel-group p-l-10" role="tablist" aria-multiselectable="true">
+                                            <div class="panel panel-collapse">
+                                                <div class="panel-heading" role="tab" id="headingTwo">
+                                                    <h4 class="panel-title">
+                                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                          <i class="zmdi zmdi-square-down f-22 border-sombra m-r-10"></i>  Pulsa aquí 
+                                                        </a>
+                                                    </h4>
+                                                </div>
+
+                                                <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                    <div class="panel-body">
+
+                                                        <div class="clearfix m-b-20"></div>
+                                                    
+
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="zmdi zmdi-calendar"></i></span>
+                                                            <div class="fg-line">
+                                                                    <input type="text" name = "fecha" id="fecha" class="form-control" placeholder="Personalizar">
+                                                            </div>
+                                                        </div>
+
+            
+
+                                                        
+                                                    </div>
+
+                                                    <div class="clearfix p-b-35"></div>
+                                                    <div class="col-sm-12 text-center"><i class="zmdi zmdi-minus-square f-22 pointer" onclick="collapse_minus('collapseTwo')" ></i></div>   
+
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            
-                                <div class="col-sm-6">
-                                    <label>Clase Grupal</label>
-                                    <div class="fg-line">
-                                        <div class="select">
-                                            <select class="selectpicker" name="clase_grupal_id" id="clase_grupal_id" data-live-search="true">
-
-                                                <option value="0">Todas</option>
-                                                @foreach ($clases_grupales as $clase_grupal)
-                                                    <?php $id = $clase_grupal['id']; ?>
-                                                    <option value="{{$id}}">                       
-                                                        {{$clase_grupal['nombre']}} - {{$clase_grupal['dia']}} - 
-                                                        {{$clase_grupal['hora_inicio']}} / 
-                                                        {{$clase_grupal['hora_final']}} -  {{$clase_grupal['instructor_nombre']}}
-                                                        {{$clase_grupal['instructor_apellido']}}
-                                                    </option>
-                                                @endforeach                                
-                                            </select> 
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                  
                                 <div class ="clearfix m-b-20"></div>
 
@@ -398,6 +427,23 @@
         var route = route_detalle+id;
         window.open(route, '_blank');
     }
+
+    $('#collapseTwo').on('show.bs.collapse', function () {
+        $("#boolean_fecha").val('1');
+        $("#tipo").attr('disabled',true);
+        $("#tipo").addClass('disabled');
+        $("#tipo").selectpicker('refresh');
+        setTimeout(function(){ 
+            $("#fecha").click();
+        }, 500);
+    })
+
+    $('#collapseTwo').on('hide.bs.collapse', function () {
+        $("#tipo").attr('disabled',false);
+        $("#tipo").removeClass('disabled');
+        $("#tipo").selectpicker('refresh');
+        $("#boolean_fecha").val('0');
+    })
 
 </script>
 

@@ -569,6 +569,8 @@
 			Route::post('reportes/eliminados', 'ReporteController@EliminadosFiltros');
 			Route::get('reportes/clientes', 'ReporteController@Clientes');
 			Route::post('reportes/clientes', 'ReporteController@ClientesFiltros');
+			Route::get('reportes/inactivos-congelados', 'ReporteController@Inactivos_Congelados');
+			Route::post('reportes/inactivos-congelados', 'ReporteController@Inactivos_Congelados_Filtros');
 
 			//STAFF
 

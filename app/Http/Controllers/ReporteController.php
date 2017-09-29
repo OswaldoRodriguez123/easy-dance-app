@@ -3529,7 +3529,7 @@ class ReporteController extends BaseController
 
             $promotor_array['tipo']=2;
             $promotor_array['id']='2-'.$instructor->id;
-            $promotor_array['icono']="<i class='icon_a-instructor'></i>";
+            $promotor_array['icono']="<i class=';'></i>";
             $promotores['2-'.$instructor->id] = $promotor_array;
         }
 
@@ -3994,10 +3994,16 @@ class ReporteController extends BaseController
 
     }
 
-    public function Inactivos_Filtros(Request $request){
+    public function Inactivos_Congelados()
+    {
+
+        return view('reportes.inactivos_congelados');
+    }
+
+    public function Inactivos_Congelados_Filtros(Request $request){
 
         $query = Alumno::where('academia_id',Auth::user()->academia_id)
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'desc');
 
         if($request->sexo){
             $query->where('sexo', $request->sexo);
