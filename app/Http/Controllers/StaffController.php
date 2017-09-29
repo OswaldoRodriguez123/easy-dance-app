@@ -33,8 +33,7 @@ class StaffController extends BaseController
 	{
 
         $staffs = Staff::join('config_staff', 'staff.cargo', '=', 'config_staff.id')
-            ->select('staff.id', 'staff.identificacion', 'staff.nombre', 'staff.apellido', 'staff.sexo', 'config_staff.nombre as cargo')
-            ->where('staff.deleted_at', '=', null)
+            ->select('staff.*', 'config_staff.nombre as cargo')
             ->where('staff.academia_id', Auth::user()->academia_id)
         ->get();
 

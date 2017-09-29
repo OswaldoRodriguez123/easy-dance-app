@@ -131,31 +131,39 @@ class AdministrativoController extends BaseController {
         $array = array();
 
         
-        $staffs = Staff::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        $staffs = Staff::join('config_staff', 'staff.cargo', '=', 'config_staff.id')
+            ->select('staff.*', 'config_staff.nombre as cargo')
+            ->where('staff.academia_id', Auth::user()->academia_id)
+        ->get();
 
         foreach($staffs as $staff){
+
+            $comisiones = ConfigComision::where('config_comisiones.usuario_id', $staff->id)
+                ->where('config_comisiones.usuario_tipo',1)
+            ->sum('monto');
 
             $collection=collect($staff);     
             $staff_array = $collection->toArray();
 
             $staff_array['tipo_nombre']='Staff';
             $staff_array['tipo']=1;
+            $staff_array['comisiones']=$comisiones;
             $array[] = $staff_array;
 
         }
 
-        $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+        // $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
 
-        foreach($instructores as $instructor){
+        // foreach($instructores as $instructor){
 
-            $collection=collect($instructor);     
-            $instructor_array = $collection->toArray();
+        //     $collection=collect($instructor);     
+        //     $instructor_array = $collection->toArray();
 
-            $instructor_array['tipo_nombre']='Instructor';
-            $instructor_array['tipo']=2;
-            $array[] = $instructor_array;
+        //     $instructor_array['tipo_nombre']='Instructor';
+        //     $instructor_array['tipo']=2;
+        //     $array[] = $instructor_array;
 
-        }
+        // }
 
         return view('administrativo.comisiones')->with(['usuarios'=> $array]);
     }
