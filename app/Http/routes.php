@@ -488,6 +488,7 @@
 			Route::post('administrativo/pagos/factura', 'AdministrativoController@storeFactura');
 			Route::post('administrativo/pagos/eliminar-factura', 'AdministrativoController@eliminar_factura');
 			Route::post('administrativo/factura/enviar/{id}', 'AdministrativoController@enviarfactura');
+			Route::post('administrativo/pagos/devolucion/{id}', 'AdministrativoController@devolucion');
 			Route::post('administrativo/pagos/agregarcliente', 'AdministrativoController@AgregarCliente');
 
 			//PAGO CON MERCADOPAGO

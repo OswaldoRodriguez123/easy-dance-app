@@ -583,7 +583,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th style="width:7%"><input style="margin-left:2%" name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
+                                    <th class="text-center"><input name="select_all" value="1" id="example-select-all" type="checkbox" /></th>
                                     <th class="text-center" data-column-id="nombre">Producto o Servicio</th>
                                     <th class="text-center" data-column-id="cantidad">Cantidad</th>
                                     <th class="text-center" data-column-id="precio_neto" data-order="desc">Precio (Neto)</th>

@@ -84,6 +84,7 @@
                            <div class="row p-t-20 p-b-0">
                                <div class="col-sm-12">
                                 <div class="form-group">
+                                    <label for="descripcion">Descripción</label>
                                     <div class="fg-line">
                                       <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="2000 Caracteres" maxlength="2000" onkeyup="countChar(this)">{{$fiesta->descripcion}}</textarea>
                                     </div>

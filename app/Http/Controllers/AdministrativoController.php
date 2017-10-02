@@ -208,8 +208,7 @@ class AdministrativoController extends BaseController {
     public function principalpagos()
     {
 
-        $array_factura = array();
-        $array_proforma = array();
+        $array = array();
 
         // $factura_join = DB::table('facturas')
         //     ->Leftjoin('alumnos', 'facturas.alumno_id', '=', 'alumnos.id')
@@ -229,7 +228,8 @@ class AdministrativoController extends BaseController {
         //      ->orderBy('patrocinadores.monto', 'desc')
         //  ->get();
 
-        $facturas = Factura::where('academia_id' , '=' , Auth::user()->academia_id)
+        $facturas = Factura::select('id','numero_factura','concepto', 'fecha', 'usuario_tipo', 'usuario_id', 'academia_id')
+            ->where('academia_id' , '=' , Auth::user()->academia_id)
             ->OrderBy('created_at', 'desc')
             ->limit(150)
         ->get();
@@ -272,37 +272,40 @@ class AdministrativoController extends BaseController {
                 
                 $factura_array['nombre'] = $usuario->nombre . ' '. $usuario->apellido;
                 $factura_array['total']=$total;
+                $factura_array['tipo_proforma']='';
                 $factura_array['tipo_pago']=$pago;
-                $array_factura[$factura->id] = $factura_array;
+                $factura_array['tipo']=1;
+                $array[] = $factura_array;
             }
 
         }
 
-        $proformas = ItemsFacturaProforma::where('academia_id' , '=' , Auth::user()->academia_id)
+        $proformas = ItemsFacturaProforma::select('id','id as numero_factura','nombre as concepto', 'fecha_vencimiento as fecha','importe_neto as total', 'usuario_tipo', 'usuario_id', 'academia_id', 'tipo as tipo_proforma')
+            ->where('academia_id' , '=' , Auth::user()->academia_id)
         ->get();
 
-        foreach($proformas as $proforma){
+        foreach($proformas as $factura){
 
-            if($proforma->usuario_tipo == 1){
-                $usuario = Alumno::withTrashed()->find($proforma->usuario_id);
+            if($factura->usuario_tipo == 1){
+                $usuario = Alumno::withTrashed()->find($factura->usuario_id);
 
             }else{
-                $usuario = Staff::withTrashed()->find($proforma->usuario_id);
+                $usuario = Staff::withTrashed()->find($factura->usuario_id);
             }
 
             if($usuario){
-                $collection=collect($proforma);     
-                $proforma_array = $collection->toArray();
-                
-                $proforma_array['usuario']= $usuario->nombre . ' '. $usuario->apellido;
-                $array_proforma[$proforma->id] = $proforma_array;
+                $collection=collect($factura);     
+                $factura_array = $collection->toArray();
+                $factura_array['nombre']= $usuario->nombre . ' '. $usuario->apellido;
+                $factura_array['tipo_pago']='';
+                $factura_array['tipo']=2;
+                $array[] = $factura_array;
             }
-
         }
         
         $total = ItemsFacturaProforma::where('academia_id', Auth::user()->academia_id)->sum('importe_neto');
 
-        return view('administrativo.pagos.principal')->with(['facturas'=> $array_factura, 'proformas' => $array_proforma, 'total' => $total]);
+        return view('administrativo.pagos.principal')->with(['facturas' => $array, 'total' => $total]);
     }
 
 	public function generarpagos()
@@ -1435,6 +1438,92 @@ class AdministrativoController extends BaseController {
 
     }
 
+    public function devolucion(Request $request)
+    {
+        $rules = [
+
+            'razon_devolucion' => 'required',
+        ];
+
+        $messages = [
+
+            'razon_devolucion.required' => 'Ups! La razon de la cancelación es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            if($academia->password_supervision){
+                if(!Hash::check($request->password_supervision, $academia->password_supervision)) {
+                    return response()->json(['error_mensaje'=> 'Ups! La contraseña no coincide', 'status' => 'ERROR-PASSWORD'],422);
+                }
+            }
+
+            $factura = Factura::find($request->id);
+
+            if($factura){
+
+                $items_factura = ItemsFactura::where('factura_id',$factura->id)->get();
+
+                foreach($items_factura as $item_factura){
+
+                    if($item_factura->tipo == 2){
+
+                        $inventario = ConfigProductos::find($item_factura->item_id);
+
+                        if($inventario){
+
+                            $cantidad_actual = $inventario->cantidad;
+                            $cantidad_vendida = $item_factura->cantidad;
+
+                            $inventario->cantidad = $cantidad_actual + $cantidad_vendida;
+
+                            $inventario->save();
+                        }
+                    }
+
+                    $item_proforma = new ItemsFacturaProforma;
+
+                    $item_proforma->academia_id = Auth::user()->academia_id;
+                    $item_proforma->usuario_id = $factura->usuario_id;
+                    $item_proforma->usuario_tipo = $factura->usuario_tipo;
+                    $item_proforma->item_id = $item_factura->item_id;
+                    $item_proforma->nombre = $item_factura->nombre;
+                    $item_proforma->tipo = $item_factura->tipo;
+                    $item_proforma->cantidad = $item_factura->cantidad;
+                    $item_proforma->precio_neto = $item_factura->precio_neto;
+                    $item_proforma->impuesto = $item_factura->impuesto;
+                    $item_proforma->importe_neto = $item_factura->importe_neto;
+                    $item_proforma->promotor_id = $item_factura->promotor_id;
+                    $item_proforma->tipo_promotor = $item_factura->tipo_promotor;
+                    $item_proforma->servicio_producto = $item_factura->servicio_producto;
+                    $item_proforma->usuario_id_devolucion = Auth::user()->id;
+                    $item_proforma->razon_devolucion = $request->razon_devolucion;
+
+                    $item_proforma->save();
+                }
+
+                $pagos = Pago::where('factura_id',$factura->id)->delete();
+                $items_factura = ItemsFactura::where('factura_id',$factura->id)->delete();
+                
+                if($factura->delete()){
+                    return response()->json(['mensaje' => '¡Excelente! La factura se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+            }
+        }
+    }
+
     public function principalacuerdo()
     {
         $acuerdos = Acuerdo::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
@@ -1834,6 +1923,22 @@ class AdministrativoController extends BaseController {
             $tipo = $explode[2];
             $servicio_producto = $explode[3];
 
+            if($tipo == 2){
+
+                $inventario = ConfigProductos::find($item_id);
+
+                if($inventario){
+
+                    $cantidad_actual = $inventario->cantidad;
+                    $cantidad_vendida = $request->cantidad;
+                    $cantidad = $cantidad_actual - $cantidad_vendida;
+
+                    if($cantidad < 0){
+                        return response()->json(['errores' => ['cantidad' => [0, 'Ups! Este producto se ha terminado, revisa tu stock de productos']], 'status' => 'ERROR'],422);
+                    }
+                }
+            }
+
             $explode = explode("-", $request->usuario_id);
             $usuario_tipo = $explode[0];
             $usuario_id = $explode[1];
@@ -1904,21 +2009,11 @@ class AdministrativoController extends BaseController {
                         
             if($item_factura->save()){
 
-                if($tipo == 2){
-
-                    $inventario = ConfigProductos::find($item_id);
-
-                    if($inventario){
-
-                        $cantidad_actual = $inventario->cantidad;
-                        $cantidad_vendida = $request->cantidad;
-
-                        $inventario->cantidad = $cantidad_actual - $cantidad_vendida;
-
-                        $inventario->save();
-                    }
+                if($inventario){
+                    $inventario->cantidad = $cantidad;
+                    $inventario->save();
                 }
-
+              
                 $array = array(['id' => $item_factura->id, 'item_id' => $item_id , 'nombre' => $producto_servicio->nombre , 'tipo' => $tipo, 'cantidad' => $request->cantidad, 'precio_neto' => $precio_neto, 'impuesto' => intval($request->impuesto), 'importe_neto' => $importe_neto, 'operacion' => '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer"></i>']);
 
                 $last_proforma = ItemsFacturaProforma::where('fecha' , '=', Carbon::now()->toDateString())
@@ -1936,6 +2031,21 @@ class AdministrativoController extends BaseController {
     public function eliminaritem($id){
 
         $factura_proforma = ItemsFacturaProforma::find($id);
+
+        if($factura_proforma->tipo == 2){
+
+            $inventario = ConfigProductos::find($factura_proforma->item_id);
+
+            if($inventario){
+
+                $cantidad_actual = $inventario->cantidad;
+                $cantidad_vendida = $factura_proforma->cantidad;
+
+                $inventario->cantidad = $cantidad_actual + $cantidad_vendida;
+
+                $inventario->save();
+            }
+        }
 
         $impuesto = $factura_proforma->impuesto;
         $importe_neto = $factura_proforma->importe_neto;
