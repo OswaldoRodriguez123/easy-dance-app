@@ -219,6 +219,77 @@ class VisitanteController extends BaseController {
         }
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function edit($id)
+    {
+
+        $visitante = Visitante::Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
+            ->Leftjoin('config_como_nos_conociste', 'visitantes_presenciales.como_nos_conociste_id', '=', 'config_como_nos_conociste.id')
+            ->Leftjoin('dias_de_interes', 'visitantes_presenciales.dias_clase_id', '=', 'dias_de_interes.id')
+            ->Leftjoin('staff', 'visitantes_presenciales.instructor_id', '=', 'staff.id')
+            ->Leftjoin('tipologias', 'visitantes_presenciales.tipologia_id', '=', 'tipologias.id')
+            ->Leftjoin('horarios_visitantes_presenciales', 'visitantes_presenciales.horario_id', '=', 'horarios_visitantes_presenciales.id')
+            ->select('visitantes_presenciales.*','config_especialidades.nombre as especialidad_nombre', 'config_especialidades.id as especialidades', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'staff.nombre as instructor_nombre', 'staff.apellido as instructor_apellido', 'dias_de_interes.nombre as dia_nombre', 'tipologias.nombre as tipologia', 'horarios_visitantes_presenciales.nombre as horario')
+            ->where('visitantes_presenciales.id', '=', $id)
+        ->first();
+
+        if($visitante){
+
+            $especialidad_id = explode(",", $visitante->especialidades);
+
+            if($especialidad_id[0] != 0)
+            {
+                $array = array();
+
+                foreach($especialidad_id as $tmp){
+                    $especialidad = ConfigEspecialidades::find($tmp);
+                    array_push($array, $especialidad->nombre);
+                   
+                }
+
+                $especialidades = implode(",", $array);
+
+            }else{
+                $especialidades = $visitante->especialidad_nombre;
+            }
+
+            $tipologias = Tipologia::orderBy('nombre')->get();
+            $horarios = HorarioVisitante::where('academia_id', Auth::user()->academia_id)->orderBy('nombre')->get();
+
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            $array = array();
+
+            foreach($horarios as $horario){
+                if($academia->tipo_horario == 2){
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$horario->hora_inicio)->toTimeString();
+                    $hora_final = Carbon::createFromFormat('H:i:s',$horario->hora_final)->toTimeString();
+                }else{
+                    $hora_inicio = Carbon::createFromFormat('H:i:s',$horario->hora_inicio)->format('g:i a');
+                    $hora_final = Carbon::createFromFormat('H:i:s',$horario->hora_final)->format('g:i a');
+                }
+
+                $collection=collect($horario);
+                $horario_array = $collection->toArray();
+
+                $horario_array['hora_inicio']=$hora_inicio;
+                $horario_array['hora_final']=$hora_final;
+                $array[] = $horario_array;
+            }
+
+            $edad = Carbon::createFromFormat('Y-m-d', $visitante->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+ 
+            return view('participante.visitante.planilla')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'visitante' => $visitante, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'tipologias' => $tipologias, 'horarios' => $array, 'edad' => $edad, 'id' => $id]);
+        }else{
+            return redirect("participante/visitante"); 
+        }
+    }
+
     public function updateNombre(Request $request){
 
     $rules = [
@@ -432,88 +503,6 @@ class VisitanteController extends BaseController {
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-
-        $visitante = Visitante::Leftjoin('config_especialidades', 'visitantes_presenciales.especialidad_id', '=', 'config_especialidades.id')
-            ->join('config_como_nos_conociste', 'visitantes_presenciales.como_nos_conociste_id', '=', 'config_como_nos_conociste.id')
-            ->Leftjoin('dias_de_interes', 'visitantes_presenciales.dias_clase_id', '=', 'dias_de_interes.id')
-            ->Leftjoin('staff', 'visitantes_presenciales.instructor_id', '=', 'staff.id')
-            ->Leftjoin('tipologias', 'visitantes_presenciales.tipologia_id', '=', 'tipologias.id')
-            ->Leftjoin('horarios_visitantes_presenciales', 'visitantes_presenciales.horario_id', '=', 'horarios_visitantes_presenciales.id')
-            ->select('visitantes_presenciales.*','config_especialidades.nombre as especialidad_nombre', 'config_especialidades.id as especialidades', 'config_como_nos_conociste.nombre as como_nos_conociste_nombre', 'staff.nombre as instructor_nombre', 'staff.apellido as instructor_apellido', 'dias_de_interes.nombre as dia_nombre', 'tipologias.nombre as tipologia', 'horarios_visitantes_presenciales.nombre as horario')
-            ->where('visitantes_presenciales.id', '=', $id)
-        ->first();
-
-        if($visitante){
-
-            $especialidad_id = explode(",", $visitante->especialidades);
-
-            if($especialidad_id[0] != 0)
-            {
-                $array = array();
-
-                foreach($especialidad_id as $tmp){
-                    $especialidad = ConfigEspecialidades::find($tmp);
-                    array_push($array, $especialidad->nombre);
-                   
-                }
-
-                $especialidades = implode(",", $array);
-
-            }else{
-                $especialidades = $visitante->especialidad_nombre;
-            }
-
-            $tipologias = Tipologia::orderBy('nombre')->get();
-            $horarios = HorarioVisitante::where('academia_id', Auth::user()->academia_id)->orderBy('nombre')->get();
-
-            $academia = Academia::find(Auth::user()->academia_id);
-
-            $array = array();
-
-            foreach($horarios as $horario){
-                if($academia->tipo_horario == 2){
-                    $hora_inicio = Carbon::createFromFormat('H:i:s',$horario->hora_inicio)->toTimeString();
-                    $hora_final = Carbon::createFromFormat('H:i:s',$horario->hora_final)->toTimeString();
-                }else{
-                    $hora_inicio = Carbon::createFromFormat('H:i:s',$horario->hora_inicio)->format('g:i a');
-                    $hora_final = Carbon::createFromFormat('H:i:s',$horario->hora_final)->format('g:i a');
-                }
-
-                $collection=collect($horario);
-                $horario_array = $collection->toArray();
-
-                $horario_array['hora_inicio']=$hora_inicio;
-                $horario_array['hora_final']=$hora_final;
-                $array[] = $horario_array;
-            }
-
-            $edad = Carbon::createFromFormat('Y-m-d', $visitante->fecha_nacimiento)->diff(Carbon::now())->format('%y');
- 
-            return view('participante.visitante.planilla')->with(['como_nos_conociste' => ComoNosConociste::orderBy('nombre')->get(), 'visitante' => $visitante, 'config_especialidades' => ConfigEspecialidades::all(), 'especialidades' => $especialidades, 'dias_de_semana' => DiasDeInteres::all(), 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'tipologias' => $tipologias, 'horarios' => $array, 'edad' => $edad, 'id' => $id]);
-        }else{
-            return redirect("participante/visitante"); 
         }
     }
 
