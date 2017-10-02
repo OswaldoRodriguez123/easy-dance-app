@@ -144,9 +144,9 @@
                                  <div class="form-group fg-line">
                                     <label for="descripcion" id="id-descripcion">Descripción</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa las caracteristicas del producto que ofreces a tus clientes" title="" data-original-title="Ayuda"></i>
                                     <div class="fg-line">
-                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="250 Caracteres"  maxlength="250" onkeyup="countChar(this)"></textarea>
+                                      <textarea class="form-control" id="descripcion" name="descripcion" rows="8" placeholder="80 Caracteres"  maxlength="80" onkeyup="countChar(this)"></textarea>
                                     </div>
-                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">250</span> Caracteres</div>
+                                    <div class="opaco-0-8 text-right">Resta <span id="charNum">80</span> Caracteres</div>
                                  </div>
                                  <div class="has-error" id="error-descripcion">
                                       <span >
@@ -206,6 +206,30 @@
                                         </div>
                                      </div>
 
+                                  <div class="clearfix p-b-35"></div>   
+
+                                <div class="col-sm-12">
+                                   <div class="form-group fg-line ">
+                                      <label for="">Promocionar en la web</label id="id-boolean_promocionar"> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Mostrar la clase grupal en la web" title="" data-original-title="Ayuda"></i>
+                                      
+                                      <br></br>
+                                      <input type="text" id="boolean_promocionar" name="boolean_promocionar" value="" hidden="hidden">
+                                      <div class="p-t-10">
+                                        <div class="toggle-switch" data-ts-color="purple">
+                                        <span class="p-r-10 f-700 f-16">No</span><input id="promocionar" type="checkbox">
+                                        
+                                        <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                        </div>
+                                      </div>
+                                      
+                                   </div>
+                                   <div class="has-error" id="error-boolean_promocionar">
+                                        <span >
+                                            <small class="help-block error-span" id="error-boolean_promocionar_mensaje" ></small>                                           
+                                        </span>
+                                    </div>
+                                 </div>
+
                                <div class="clearfix p-b-35"></div>
 
                           <div class="modal-footer p-b-20 m-b-20">
@@ -261,6 +285,14 @@
   route_principal="{{url('/')}}/productos";
   
   $(document).ready(function(){
+
+        $("#promocionar").on('change', function(){
+          if ($("#promocionar").is(":checked")){
+            $("#boolean_promocionar").val('1');
+          }else{
+            $("#boolean_promocionar").val('0');
+          }    
+        });
 
         if("{{$incluye_iva}}" == 1){
           $("#incluye_iva").val('1');  //VALOR POR DEFECTO
@@ -536,13 +568,13 @@
     }
 
     function countChar(val) {
-        var len = val.value.length;
-        if (len >= 250) {
-          val.value = val.value.substring(0, 250);
-        } else {
-          $('#charNum').text(250 - len);
-        }
-      };
+      var len = val.value.length;
+      if (len >= 80) {
+        val.value = val.value.substring(0, 80);
+      } else {
+        $('#charNum').text(80 - len);
+      }
+    };
 
 </script> 
 @stop

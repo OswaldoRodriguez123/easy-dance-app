@@ -94,6 +94,7 @@ class ConfigProductosController extends BaseController {
         $producto->descripcion = $descripcion;
         $producto->incluye_iva = $request->incluye_iva;
         $producto->tipo = $request->tipo;
+        $producto->boolean_promocionar = $request->boolean_promocionar;
 
         if($producto->save()){
 
@@ -310,6 +311,18 @@ class ConfigProductosController extends BaseController {
 
         $producto = ConfigProductos::find($request->id);
         $producto->tipo = $request->tipo;
+
+        if($producto->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateMostrar(Request $request){
+
+        $producto = ConfigProductos::find($request->id);
+        $producto->boolean_promocionar = $request->boolean_promocionar;
 
         if($producto->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

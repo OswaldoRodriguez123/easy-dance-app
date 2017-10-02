@@ -774,6 +774,7 @@
 			Route::put('productos/update/impuesto', 'ConfigProductosController@updateImpuesto');
 			Route::put('productos/update/imagen', 'ConfigProductosController@updateImagen');
 			Route::put('productos/update/tipo', 'ConfigProductosController@updateTipo');
+			Route::put('productos/update/mostrar', 'ConfigProductosController@updateMostrar');
 
 			// SERVICIOS
 
