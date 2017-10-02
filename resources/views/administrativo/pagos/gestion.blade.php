@@ -122,10 +122,7 @@
                                     <select class="selectpicker" name="forma_pago_id" id="forma_pago_id" data-live-search="true">
                                         <option value="">Selecciona</option>
                                         @foreach ( $formas_pago as $forma )
-
-                                          @if($forma->nombre != 'Puntos Acumulados')
-                                            <option value = "{{ $forma->id }}">{{ $forma->nombre }}</option>
-                                          @endif
+                                          <option value = "{{ $forma->id }}">{{ $forma->nombre }}</option>
                                         @endforeach       
                                     </select>
                                 </div>
@@ -301,13 +298,11 @@
     if($(this).val() != 4){
       $("#monto").val(formatDot(totalglobal));
     }else{
-      if(totalglobal <= puntos_referidos)
-      {
+      if(totalglobal <= puntos_referidos){
         $("#monto").val(formatDot(totalglobal));
       }else{
-        $("#monto").val(formatDot(totalglobal));
+        $("#monto").val(formatDot(puntos_referidos));
       }
-      
     }
 
     if($(this).val() == 1 || $(this).val() == 4){
@@ -316,12 +311,10 @@
       $('#banco').prop('readonly', true);
       $('#referencia').prop('readonly', true);
 
-    }
-    else{
+    }else{
       $('#banco').prop('readonly', false);
       $('#referencia').prop('readonly', false);
     }
-
   });
 
   

@@ -11,6 +11,7 @@ use App\Instructor;
 use App\Acuerdo;
 use App\ItemsAcuerdo;
 use App\Pago;
+use App\FormasPago;
 use App\Academia;
 use App\Paises;
 use App\Impuesto;
@@ -675,7 +676,7 @@ class AdministrativoController extends BaseController {
                 ->where('academia_id', '=', Auth::user()->academia_id)
             ->first();
 
-            $formas_pago = DB::table('formas_pago')->get();
+            $formas_pago = FormasPago::all();
 
             if($factura){
 
@@ -696,12 +697,14 @@ class AdministrativoController extends BaseController {
             }
 
             if($usuario_tipo == 1){
+
                 $usuario = Alumno::withTrashed()->find($usuario_id);
 
-                $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id', $usuario_id)->first();
-                if($alumno_remuneracion){
-                    $puntos_referidos = $alumno_remuneracion->remuneracion;
-                }else{
+                $puntos_referidos = AlumnoRemuneracion::where('alumno_id', $usuario_id)
+                    ->where('fecha_vencimiento','>=',Carbon::now()->toDateString())
+                ->sum('remuneracion');
+
+                if(!$puntos_referidos){
                     $puntos_referidos = 0;
                 }
 
@@ -748,7 +751,7 @@ class AdministrativoController extends BaseController {
                 ->where('academia_id', '=', Auth::user()->academia_id)
             ->first();
 
-            $formas_pago = DB::table('formas_pago')->get();
+            $formas_pago = FormasPago::all();
 
             if($factura){
 
@@ -774,11 +777,11 @@ class AdministrativoController extends BaseController {
             if($usuario_tipo == 1){
                 $usuario = Alumno::withTrashed()->find($usuario_id);
 
-                $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id', $usuario_id)->first();
+                $puntos_referidos = AlumnoRemuneracion::where('alumno_id', $usuario_id)
+                    ->where('fecha_vencimiento','>=',Carbon::now()->toDateString())
+                ->sum('remuneracion');
 
-                if($alumno_remuneracion){
-                    $puntos_referidos = $alumno_remuneracion->remuneracion;
-                }else{
+                if(!$puntos_referidos){
                     $puntos_referidos = 0;
                 }
 
@@ -832,24 +835,24 @@ class AdministrativoController extends BaseController {
         $monto = str_replace(',', '', $request->monto);
 
         if($request->forma_pago_id == 4){
-            $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id',$request->usuario_id)->first();
-            if($alumno_remuneracion){
-                $puntos_referidos = Session::get('puntos_referidos');
-                $puntos_totales = $alumno_remuneracion->remuneracion - $puntos_referidos;
-                if($puntos_totales >= $monto){
-                    $puntos_referidos = $puntos_referidos + $monto;
-                    Session::put('puntos_referidos', $puntos_referidos);
-                }else{
-                    return response()->json(['errores' => ['monto' => [0, 'Ups! No tienes suficientes puntos acumulados']], 'status' => 'ERROR'],422);
-                }
+
+            $puntos_acumulados = AlumnoRemuneracion::where('alumno_id',$request->usuario_id)->sum('remuneracion');
+            if(!$puntos_acumulados){
+                $puntos_acumulados = 0;
+            }
+
+            $puntos_referidos = Session::get('puntos_referidos');
+            $puntos_totales = $puntos_acumulados - $puntos_referidos;
+
+            if($puntos_totales >= $monto){
+                $puntos_referidos = $puntos_referidos + $monto;
+                Session::put('puntos_referidos', $puntos_referidos);
             }else{
                 return response()->json(['errores' => ['monto' => [0, 'Ups! No tienes suficientes puntos acumulados']], 'status' => 'ERROR'],422);
             }
         }
 
-        $forma_pago = DB::table('formas_pago')
-        ->where('id' , '=' , $request->forma_pago_id)
-        ->first();
+        $forma_pago = FormasPago::find($request->forma_pago_id);
 
         $array = array(['forma_pago' => $request->forma_pago_id , 'banco' => $request->banco, 'referencia' => $request->referencia, 'monto' => $monto]);
 
@@ -933,22 +936,22 @@ class AdministrativoController extends BaseController {
  
         //PARA CONFIRGURAR EL NUMERO DE FACTURA
 
-        $numerofactura = Factura::orderBy('created_at', 'desc')
-            ->where('facturas.academia_id', '=', Auth::user()->academia_id)
+        $ultima_factura = Factura::orderBy('created_at', 'desc')
+            ->where('academia_id', '=', Auth::user()->academia_id)
         ->first();
 
-        if($numerofactura){
-           $tmp = $numerofactura->numero_factura + 1;
-           $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
+        if($ultima_factura){
+           $numero_factura = $ultima_factura->numero_factura + 1;
+           $numero_factura =  str_pad($numero_factura, 10, "0", STR_PAD_LEFT);
         }else{
             $academia = Academia::find(Auth::user()->academia_id);
             if($academia->numero_factura){
-                $tmp = $academia->numero_factura;
-                $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
+                $numero_factura = $academia->numero_factura;
+                $numero_factura =  str_pad($numero_factura, 10, "0", STR_PAD_LEFT);
             }
             else{
-                $tmp = 1;
-                $numero_factura =  str_pad($tmp, 10, "0", STR_PAD_LEFT);
+                $numero_factura = 1;
+                $numero_factura =  str_pad($numero_factura, 10, "0", STR_PAD_LEFT);
             }
         }
 
@@ -958,14 +961,14 @@ class AdministrativoController extends BaseController {
 
         if($id_proforma){
 
-            $contador = count($id_proforma);
+            $cantidad_proformas = count($id_proforma);
 
-            $id = $id_proforma[0];
-            $item_proforma = ItemsFacturaProforma::where('id', '=', $id)->first();
+            $id_proforma_concepto = $id_proforma[0];
+            $item_proforma = ItemsFacturaProforma::find($id_proforma_concepto);
 
             if($item_proforma){
 
-                if($contador > 1){
+                if($cantidad_proformas > 1){
                     $concepto = $item_proforma->cantidad . ' ' . $item_proforma->nombre . '...';
                 }else{
                     $concepto = $item_proforma->cantidad . ' ' . $item_proforma->nombre;
@@ -1006,17 +1009,40 @@ class AdministrativoController extends BaseController {
 
             $total_pago = 0;
 
-            foreach($pagos as $pago)
-            {
+            foreach($pagos as $pago){
+
                 $forma_pago = $pago[0]['forma_pago'];
                 $banco = $pago[0]['banco'];
                 $referencia = $pago[0]['referencia'];
                 $monto = $pago[0]['monto'];
 
                 if($forma_pago == 4){
-                    $alumno_remuneracion = AlumnoRemuneracion::where('alumno_id', $request->id)->first();
-                    $alumno_remuneracion->remuneracion = $alumno_remuneracion->remuneracion - $monto;
-                    $alumno_remuneracion->save();
+
+                    $monto_acumulado = $pago[0]['monto'];
+
+                    $puntos_acumulados = AlumnoRemuneracion::where('alumno_id', $request->usuario_id)
+                        ->where('fecha_vencimiento','>=',Carbon::now()->toDateString())
+                    ->get();
+
+                    foreach($puntos_acumulados as $puntos){
+
+                        if($monto_acumulado){
+
+                            if($puntos->remuneracion > $monto_acumulado){
+
+                                $puntos->remuneracion = $puntos->remuneracion - $monto_acumulado;
+                                $puntos->save();
+
+                                break;
+
+                            }else{
+
+                                $monto_acumulado = $monto_acumulado - $puntos->remuneracion;
+                                $puntos->delete();
+                                
+                            }
+                        }
+                    }
                 }
             
                 $pago = new Pago;
@@ -2009,7 +2035,7 @@ class AdministrativoController extends BaseController {
                         
             if($item_factura->save()){
 
-                if($inventario){
+                if(isset($inventario)){
                     $inventario->cantidad = $cantidad;
                     $inventario->save();
                 }
@@ -2803,7 +2829,7 @@ class AdministrativoController extends BaseController {
         $academia = Academia::find(Auth::user()->academia_id);
         $factura = DB::table('facturas')->orderBy('created_at', 'desc')->where('academia_id', '=', Auth::user()->academia_id)->first();
 
-        $formas_pago = DB::table('formas_pago')->get();
+        $formas_pago = FormasPago::all();
 
         if($factura){
 
