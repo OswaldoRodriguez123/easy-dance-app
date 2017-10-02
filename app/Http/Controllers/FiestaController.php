@@ -367,7 +367,8 @@ class FiestaController extends BaseController {
 
             $fiesta = new Fiesta;
 
-            $nombre = title_case($request->nombre);
+            $nombre = $this->slugify($request->nombre);
+            $nombre = title_case($nombre);
             $lugar = title_case($request->lugar);
             $descripcion = $request->descripcion;
 
@@ -472,7 +473,8 @@ class FiestaController extends BaseController {
     }
         $fiesta = Fiesta::find($request->id);
 
-        $nombre = title_case($request->nombre);
+        $nombre = $this->slugify($request->nombre);
+        $nombre = title_case($nombre);
 
         $fiesta->nombre = $nombre;
 

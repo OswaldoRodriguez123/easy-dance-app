@@ -393,7 +393,28 @@ class BaseController extends Controller {
     }
 
     public static function sortByName($a, $b) {
-      return strcmp($a["nombre"], $b["nombre"]);
+        return strcmp($a["nombre"], $b["nombre"]);
+    }
+
+
+    function slugify($string)
+    {
+        $string = preg_replace('~[^\\pL\d]+~u', '-', $string);
+        $string = trim($string, '-');
+     
+        if (function_exists('iconv'))
+        {
+            $string = iconv('utf-8', 'us-ascii//TRANSLIT', $string);
+        }
+
+        $string = strtolower($string);
+        $string = preg_replace('~[^-\w]+~', '', $string);
+     
+        if (empty($string))
+        {
+            return 'n-a';
+        }
+        return $string;
     }
 
 }

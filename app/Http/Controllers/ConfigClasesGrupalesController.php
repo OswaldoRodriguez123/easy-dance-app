@@ -77,7 +77,8 @@ class ConfigClasesGrupalesController extends BaseController {
 
     else{
 
-        $nombre = title_case($request->nombre);
+        $nombre = $this->slugify($request->nombre);
+        $nombre = title_case($nombre);
         $costo_inscripcion = trim($request->costo_inscripcion);
         $costo_mensualidad =  trim($request->costo_mensualidad);
 
@@ -184,7 +185,8 @@ class ConfigClasesGrupalesController extends BaseController {
 
         $clasegrupal = ConfigClasesGrupales::find($request->id);
 
-        $nombre = title_case($request->nombre);
+        $nombre = $this->slugify($request->nombre);
+        $nombre = title_case($nombre);
 
         $clasegrupal->nombre = $nombre;
 

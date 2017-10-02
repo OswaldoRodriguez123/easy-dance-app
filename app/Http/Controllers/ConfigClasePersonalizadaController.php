@@ -209,7 +209,8 @@ class ConfigClasePersonalizadaController extends BaseController {
             return response()->json(['errores' => ['color_etiqueta' => [0, 'Ups! El color de la etiqueta es requerido']], 'status' => 'ERROR'],422);
         }
 
-        $nombre = title_case($request->nombre);
+        $nombre = $this->slugify($request->nombre);
+        $nombre = title_case($nombre);
 
         $clasepersonalizada = new ClasePersonalizada;
 
@@ -300,7 +301,9 @@ class ConfigClasePersonalizadaController extends BaseController {
      public function updateNombre(Request $request){
 
         $clasepersonalizada = ClasePersonalizada::find($request->id);
-        $clasepersonalizada->nombre = $request->nombre;
+        $nombre = $this->slugify($request->nombre);
+        $nombre = title_case($nombre);
+        $clasepersonalizada->nombre = $nombre;
 
         if($clasepersonalizada->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

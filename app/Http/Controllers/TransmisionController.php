@@ -77,9 +77,7 @@ class TransmisionController extends BaseController {
 
 	        return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-	    }
-
-	    else{
+	    }else{
 
 	    	if($request->color_etiqueta == "#"){
                 return response()->json(['errores' => ['color_etiqueta' => [0, 'Ups! El color de la etiqueta es requerido']], 'status' => 'ERROR'],422);

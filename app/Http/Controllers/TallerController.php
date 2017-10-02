@@ -387,14 +387,7 @@ class TallerController extends BaseController {
 
         if ($validator->fails()){
 
-            // return redirect("/home")
-
-            // ->withErrors($validator)
-            // ->withInput();
-
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-            //dd($validator);
 
         }
 
@@ -493,7 +486,8 @@ class TallerController extends BaseController {
 
             $taller = new Taller;
 
-            $nombre = title_case($request->nombre);
+            $nombre = $this->slugify($request->nombre);
+            $nombre = title_case($nombre);
             $descripcion = $request->descripcion;
 
             $taller->academia_id = Auth::user()->academia_id;
@@ -640,22 +634,15 @@ class TallerController extends BaseController {
 
     if ($validator->fails()){
 
-        // return redirect("/home")
-
-        // ->withErrors($validator)
-        // ->withInput();
-
         return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-
-        //dd($validator);
-
     }
 
     else{
 
         $taller = Taller::find($request->id);
 
-        $nombre = title_case($request->nombre);
+        $nombre = $this->slugify($request->nombre);
+        $nombre = title_case($nombre);
 
         $taller->nombre = $nombre;
 
