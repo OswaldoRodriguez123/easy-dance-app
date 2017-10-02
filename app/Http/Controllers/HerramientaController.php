@@ -575,8 +575,8 @@ class HerramientaController extends BaseController {
             $horario = new HorarioVisitante;
             $horario->nombre = $request->nombre;
             $horario->academia_id = Auth::user()->academia_id;
-            $horario->hora_inicio = $request->hora_inicio;
-            $horario->hora_final = $request->hora_final;
+            $horario->hora_inicio = $hora_inicio;
+            $horario->hora_final = $hora_final;
 
             if($horario->save()){
 
