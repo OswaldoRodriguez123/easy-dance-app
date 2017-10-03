@@ -102,19 +102,6 @@
         serverSide: false,
         pageLength: 25,    
         order: [[0, 'asc']],
-        fnDrawCallback: function() {
-            $('.dataTables_paginate').show();
-        // if ("{{count($presupuestos)}}" < 25) {
-        //       $('.dataTables_paginate').hide();
-        //       $('#tablelistar_length').hide();
-        //   }else{
-        //      $('.dataTables_paginate').show();
-        //   }
-        // },
-        },
-        language: {
-              searchPlaceholder: "Buscar"
-        },
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
@@ -144,24 +131,8 @@
                     }
         });
     
-
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
-
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-            
-            });
+      
+        });
 
         // function previa(t){
 
@@ -236,7 +207,7 @@
 
                 var row = $(t).closest('tr').attr('id');
                 var route =route_detalle+"/"+row;
-                window.open(route, '_blank');;
+                window.open(route, '_blank');
 
         }
 

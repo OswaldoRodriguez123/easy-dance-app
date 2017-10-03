@@ -150,25 +150,9 @@
                         }
                     }
         });
-    
 
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
 
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-            });
+        });
 
         $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
                 var id = $(this).closest('tr').attr('id');

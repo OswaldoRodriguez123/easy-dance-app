@@ -261,10 +261,10 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center" data-column-id="icono"></th>
+                                            <th class="text-center" data-column-id="factura">Factura</th>
                                             <th class="text-center" data-column-id="fecha">Fecha</th>
                                             <th class="text-center" data-column-id="hora">Hora</th>
                                             <th class="text-center" data-column-id="cliente">Cliente</th>
-                                            <th class="text-center" data-column-id="tipo">Tipo</th>
                                             <th class="text-center" data-column-id="concepto">Concepto</th>
                                             <th class="text-center" data-column-id="total">Total</th>
                                         </tr>
@@ -385,7 +385,7 @@
             processing: true,
             serverSide: false,
             pageLength: 50,
-            order: [[1, 'desc'], [2, 'desc']],
+            order: [[2, 'desc'], [3, 'desc']],
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
               $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
               $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
@@ -478,16 +478,14 @@
 
                     $.each(respuesta.facturas, function (index, array) {
 
-                        concepto = toTitleCase(array.nombre)
 
                         if(array.tipo_pago != 'Devolución'){
                             icono = ''
-                            concepto_completo = concepto
                         }else{
                             icono = '<i class="zmdi zmdi-minus c-youtube m-l-10 f-20"></i>'
-                            concepto_completo = array.contenido
                         }
-                        
+
+                        concepto = toTitleCase(array.nombre)
 
                         if(concepto.length > 30){
                             concepto = concepto.substr(0, 30) + "..."
@@ -510,10 +508,10 @@
 
                         var rowNode=t.row.add( [
                             ''+icono+'',
+                            ''+array.numero_factura+'',
                             ''+array.fecha+'',
                             ''+array.hora+'',
                             ''+cliente+'',
-                            ''+array.tipo_pago+'',
                             ''+concepto+'',
                             ''+monto+''
                         ] ).draw(false).node();
@@ -526,7 +524,7 @@
                             .attr('data-html','true')
                             .attr('data-container','body')
                             .attr('title','')
-                            .attr('data-content',concepto_completo)
+                            .attr('data-content',array.contenido)
                             .attr('id',array.id)
                             .data('tipo',array.tipo)
 

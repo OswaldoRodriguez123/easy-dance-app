@@ -1968,7 +1968,7 @@ class ReporteController extends BaseController
                 }else{
                     $array_ingreso[0]['cantidad'] += $importe_neto;
                 }
-
+                
                 if($pago == 'Devolución'){
 
                     $usuario_devolucion = User::find($factura->usuario_id_devolucion);
@@ -1979,17 +1979,20 @@ class ReporteController extends BaseController
                         $usuario_devolucion = '';
                     }
 
-                    $contenido = '<p class="c-negro">Devolución<br><br>' .
+                    $contenido = '<p class="c-negro">'.$pago.'<br><br>' .
                         'Operador: ' .$usuario_devolucion. '<br>'.
                         'Razones por la que se realizó: ' . $factura->razon_devolucion . '<br>'.
                     '</p>';
                     
                 }else{
-                    $contenido = '';
+                    $contenido = '<p class="c-negro">'.$pago.'<br><br>' .
+                        'Concepto: ' .$factura->concepto. '<br>'.
+                    '</p>';
                 }
 
                 $collection=collect($factura);     
                 $factura_array = $collection->toArray();
+                $factura_array['numero_factura'] = str_pad($factura->numero_factura, 10, "0", STR_PAD_LEFT);
                 $factura_array['cliente'] = $factura->nombre . ' ' . $factura->apellido;
                 $factura_array['fecha'] = Carbon::parse($factura->fecha)->toDateString();
                 $factura_array['hora'] = Carbon::parse($factura->created_at)->toTimeString();
@@ -2107,11 +2110,16 @@ class ReporteController extends BaseController
 
             foreach($egresos as $egreso){
 
+                $contenido = '<p class="c-negro">'.$egreso->nombre_egreso.'<br><br>' .
+                    'Concepto: ' .$egreso->concepto. '<br>'.
+                '</p>';
+
                 $array_config_egreso[$egreso->config_tipo]['cantidad'] += $egreso->cantidad;
 
                 $collection=collect($egreso);     
                 $egreso_array = $collection->toArray();
                 // $egreso_array['cliente'] = $egreso->administrador_nombre . ' ' . $egreso->administrador_apellido;
+                $egreso_array['numero_factura'] = str_pad($egreso->id, 10, "0", STR_PAD_LEFT);
                 $egreso_array['cliente'] = $egreso->proveedor;
                 $egreso_array['nombre'] = $egreso->concepto;
                 $egreso_array['importe_neto'] = $egreso->cantidad;
@@ -2119,7 +2127,7 @@ class ReporteController extends BaseController
                 $egreso_array['hora'] = Carbon::parse($egreso->created_at)->toTimeString();
                 $egreso_array['tipo_pago'] = $egreso->nombre_egreso;
                 $egreso_array['tipo'] = 2;
-                $egreso_array['contenido'] = '';
+                $egreso_array['contenido'] = $contenido;
                 $array['2-'.$egreso->id] = $egreso_array;
 
                 $total_egreso = $total_egreso + $egreso->cantidad;
@@ -2213,14 +2221,19 @@ class ReporteController extends BaseController
 
                 foreach($proformas as $proforma){
 
+                    $contenido = '<p class="c-negro">Cuentas por Cobrar<br><br>' .
+                        'Concepto: ' .$proforma->concepto. '<br>'.
+                    '</p>';
+
                     $collection=collect($proforma);     
                     $proforma_array = $collection->toArray();
+                    $proforma_array['numero_factura'] = str_pad($proforma->id, 10, "0", STR_PAD_LEFT);
                     $proforma_array['cliente'] = $alumno->nombre . ' ' . $alumno->apellido;
                     $proforma_array['fecha'] = Carbon::parse($proforma->fecha)->toDateString();
                     $proforma_array['hora'] = Carbon::parse($proforma->created_at)->toTimeString();
                     $proforma_array['tipo_pago']='Cuentas por Cobrar';
                     $proforma_array['tipo'] = 3;
-                    $proforma_array['contenido'] = '';
+                    $proforma_array['contenido'] = $contenido;
                     $array['3-'.$proforma->id] = $proforma_array;
 
                     $total_proforma = $total_proforma + $proforma->importe_neto;
