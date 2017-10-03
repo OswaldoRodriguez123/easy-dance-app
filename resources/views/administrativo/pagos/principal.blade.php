@@ -182,8 +182,18 @@
                                         @foreach($facturas as $factura)
                                             <?php $id = $factura['id']; ?>
 
-                                            <tr id="{{$id}}" class="seleccion" data-tipo="{{$factura['tipo']}}">
-                                                <td><span style="display:none">{{$factura['tipo']}}</span></td>
+                                            @if($factura['tipo_pago'] != 'Devolución')
+                                                <tr id="{{$id}}" class="seleccion" data-tipo="{{$factura['tipo']}}">
+                                            @else
+                                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$factura['contenido']}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo="{{$factura['tipo']}}">
+                                            @endif
+
+                                                <td>
+                                                    <span style="display:none">{{$factura['tipo']}}</span>
+                                                    @if($factura['tipo_pago'] == 'Devolución')
+                                                        <i class="zmdi zmdi-minus c-youtube m-l-10 f-20"></i>
+                                                    @endif
+                                                </td>
                                                 <td class="text-center previa">{{str_pad($factura['numero_factura'], 10, "0", STR_PAD_LEFT)}}</td>
                                                 <td class="text-center previa">{{$factura['nombre']}}</td>
                                                 <td class="text-center previa">{{$factura['tipo_pago']}}</td>
@@ -204,13 +214,16 @@
                                                                 <ul class="dropdown-menu dm-icon pull-right">
 
                                                                     @if($factura['tipo'] == 1)
-                                                                        <li class="hidden-xs email">
-                                                                            <a><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
-                                                                        </li>
 
-                                                                         <li class="hidden-xs devolucion">
-                                                                            <a><i class="zmdi zmdi-rotate-left f-16 boton blue"></i> Devolución</a>
-                                                                        </li>
+                                                                        @if($factura['tipo_pago'] != 'Devolución')
+                                                                            <li class="hidden-xs email">
+                                                                                <a><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
+                                                                            </li>
+
+                                                                             <li class="hidden-xs devolucion">
+                                                                                <a><i class="zmdi zmdi-rotate-left f-16 boton blue"></i> Devolución</a>
+                                                                            </li>
+                                                                        @endif
 
                                                                         <li class="hidden-xs eliminar_factura">
                                                                             <a class="pointer"><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>

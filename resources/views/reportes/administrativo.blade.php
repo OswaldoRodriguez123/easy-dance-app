@@ -260,6 +260,7 @@
                                 <table class="table table-striped table-bordered text-center " id="tablelistar" >
                                     <thead>
                                         <tr>
+                                            <th class="text-center" data-column-id="icono"></th>
                                             <th class="text-center" data-column-id="fecha">Fecha</th>
                                             <th class="text-center" data-column-id="hora">Hora</th>
                                             <th class="text-center" data-column-id="cliente">Cliente</th>
@@ -384,7 +385,7 @@
             processing: true,
             serverSide: false,
             pageLength: 50,
-            order: [[0, 'desc'], [1, 'desc']],
+            order: [[1, 'desc'], [2, 'desc']],
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
               $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
               $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
@@ -473,10 +474,20 @@
 
                     t.clear().draw();
 
+                    total_ingreso = parseFloat(respuesta.total_ingreso)
+
                     $.each(respuesta.facturas, function (index, array) {
 
                         concepto = toTitleCase(array.nombre)
-                        concepto_completo = concepto
+
+                        if(array.tipo_pago != 'Devolución'){
+                            icono = ''
+                            concepto_completo = concepto
+                        }else{
+                            icono = '<i class="zmdi zmdi-minus c-youtube m-l-10 f-20"></i>'
+                            concepto_completo = array.contenido
+                        }
+                        
 
                         if(concepto.length > 30){
                             concepto = concepto.substr(0, 30) + "..."
@@ -485,7 +496,12 @@
                         cliente = toTitleCase(array.cliente)
 
                         if(array.tipo == 1){
-                            monto = '+'+formatmoney(parseFloat(array.importe_neto))
+                            if(array.tipo_pago != 'Devolución'){
+                                monto = '+'+formatmoney(parseFloat(array.importe_neto))
+                            }else{
+                                monto = '-'+formatmoney(parseFloat(array.importe_neto))
+                                total_ingreso = total_ingreso - parseFloat(array.importe_neto)
+                            }
                         }else if(array.tipo == 2){
                             monto = '-'+formatmoney(parseFloat(array.importe_neto))
                         }else{
@@ -493,6 +509,7 @@
                         }
 
                         var rowNode=t.row.add( [
+                            ''+icono+'',
                             ''+array.fecha+'',
                             ''+array.hora+'',
                             ''+cliente+'',
@@ -528,7 +545,7 @@
 
                     if(tipo == 1 || tipo == 2){
 
-                        $('#total_ingreso').text('+'+formatmoney(parseFloat(respuesta.total_ingreso)))
+                        $('#total_ingreso').text('+'+formatmoney(parseFloat(total_ingreso)))
 
                         $("#pie-chart-ingresos").html('');
                         $("#flc-pie-ingresos").html('');
@@ -702,7 +719,6 @@
                     }
 
                     if(tipo == 1 || tipo == 4){
-
                         $('.egresos').hide();
                         $('.ingresos').hide();
                         $('.proforma').show();

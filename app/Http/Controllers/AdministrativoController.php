@@ -229,7 +229,7 @@ class AdministrativoController extends BaseController {
         //      ->orderBy('patrocinadores.monto', 'desc')
         //  ->get();
 
-        $facturas = Factura::select('id','numero_factura','concepto', 'fecha', 'usuario_tipo', 'usuario_id', 'academia_id')
+        $facturas = Factura::select('id','numero_factura','concepto', 'fecha', 'usuario_tipo', 'usuario_id', 'academia_id', 'usuario_id_devolucion', 'razon_devolucion')
             ->where('academia_id' , '=' , Auth::user()->academia_id)
             ->OrderBy('created_at', 'desc')
             ->limit(150)
@@ -268,6 +268,25 @@ class AdministrativoController extends BaseController {
 
             if($usuario){
 
+                if($pago == 'Devolución'){
+
+                    $usuario_devolucion = User::find($factura->usuario_id_devolucion);
+
+                    if($usuario_devolucion){
+                        $usuario_devolucion = $usuario_devolucion->nombre . ' ' . $usuario_devolucion->apellido;
+                    }else{
+                        $usuario_devolucion = '';
+                    }
+
+                    $contenido = '<p class="c-negro">Devolución<br><br>' .
+                        'Operador: ' .$usuario_devolucion. '<br>'.
+                        'Razones por la que se realizó: ' . $factura->razon_devolucion . '<br>'.
+                    '</p>';
+                    
+                }else{
+                    $contenido = '';
+                }
+
                 $collection=collect($factura);     
                 $factura_array = $collection->toArray();
                 
@@ -275,6 +294,7 @@ class AdministrativoController extends BaseController {
                 $factura_array['total']=$total;
                 $factura_array['tipo_proforma']='';
                 $factura_array['tipo_pago']=$pago;
+                $factura_array['contenido']=$contenido;
                 $factura_array['tipo']=1;
                 $array[] = $factura_array;
             }
@@ -299,6 +319,7 @@ class AdministrativoController extends BaseController {
                 $factura_array = $collection->toArray();
                 $factura_array['nombre']= $usuario->nombre . ' '. $usuario->apellido;
                 $factura_array['tipo_pago']='';
+                $factura_array['contenido']='';
                 $factura_array['tipo']=2;
                 $array[] = $factura_array;
             }
@@ -1532,19 +1553,31 @@ class AdministrativoController extends BaseController {
                     $item_proforma->promotor_id = $item_factura->promotor_id;
                     $item_proforma->tipo_promotor = $item_factura->tipo_promotor;
                     $item_proforma->servicio_producto = $item_factura->servicio_producto;
-                    $item_proforma->usuario_id_devolucion = Auth::user()->id;
-                    $item_proforma->razon_devolucion = $request->razon_devolucion;
 
                     $item_proforma->save();
                 }
 
+                $monto = Pago::where('factura_id',$factura->id)->sum('monto');
                 $pagos = Pago::where('factura_id',$factura->id)->delete();
-                $items_factura = ItemsFactura::where('factura_id',$factura->id)->delete();
+
+                $pago = new Pago;
+
+                $pago->academia_id = Auth::user()->academia_id;
+                $pago->fecha = Carbon::now()->toDateString();
+                $pago->factura_id = $factura->id;
+                $pago->monto = $monto;
+                $pago->forma_pago = 7;
                 
-                if($factura->delete()){
-                    return response()->json(['mensaje' => '¡Excelente! La factura se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
-                }else{
-                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                if($pago->save()){
+
+                    $factura->usuario_id_devolucion = Auth::user()->id;
+                    $factura->razon_devolucion = $request->razon_devolucion;
+                    
+                    if($factura->save()){
+                        return response()->json(['mensaje' => '¡Excelente! La factura se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+                    }else{
+                        return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                    }
                 }
             }
         }

@@ -1969,6 +1969,25 @@ class ReporteController extends BaseController
                     $array_ingreso[0]['cantidad'] += $importe_neto;
                 }
 
+                if($pago == 'Devolución'){
+
+                    $usuario_devolucion = User::find($factura->usuario_id_devolucion);
+
+                    if($usuario_devolucion){
+                        $usuario_devolucion = $usuario_devolucion->nombre . ' ' . $usuario_devolucion->apellido;
+                    }else{
+                        $usuario_devolucion = '';
+                    }
+
+                    $contenido = '<p class="c-negro">Devolución<br><br>' .
+                        'Operador: ' .$usuario_devolucion. '<br>'.
+                        'Razones por la que se realizó: ' . $factura->razon_devolucion . '<br>'.
+                    '</p>';
+                    
+                }else{
+                    $contenido = '';
+                }
+
                 $collection=collect($factura);     
                 $factura_array = $collection->toArray();
                 $factura_array['cliente'] = $factura->nombre . ' ' . $factura->apellido;
@@ -1978,6 +1997,7 @@ class ReporteController extends BaseController
                 $factura_array['tipo'] = 1;
                 $factura_array['nombre'] = $factura->concepto;
                 $factura_array['importe_neto'] = $importe_neto;
+                $factura_array['contenido'] = $contenido;
                 $array[$factura->id] = $factura_array;
 
                 $total_ingreso = $total_ingreso + $importe_neto;
@@ -2099,6 +2119,7 @@ class ReporteController extends BaseController
                 $egreso_array['hora'] = Carbon::parse($egreso->created_at)->toTimeString();
                 $egreso_array['tipo_pago'] = $egreso->nombre_egreso;
                 $egreso_array['tipo'] = 2;
+                $egreso_array['contenido'] = '';
                 $array['2-'.$egreso->id] = $egreso_array;
 
                 $total_egreso = $total_egreso + $egreso->cantidad;
@@ -2199,6 +2220,7 @@ class ReporteController extends BaseController
                     $proforma_array['hora'] = Carbon::parse($proforma->created_at)->toTimeString();
                     $proforma_array['tipo_pago']='Cuentas por Cobrar';
                     $proforma_array['tipo'] = 3;
+                    $proforma_array['contenido'] = '';
                     $array['3-'.$proforma->id] = $proforma_array;
 
                     $total_proforma = $total_proforma + $proforma->importe_neto;
