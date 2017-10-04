@@ -632,8 +632,10 @@
 			Route::post('participante/alumno/eliminar_cantidad/{id}', 'AlumnoController@eliminar_cantidad');
 			Route::post('participante/alumno/cancelar_cantidad', 'AlumnoController@cancelar_cantidad');
 
+			Route::get('credenciales', 'AlumnoController@credenciales_general');
 			Route::get('participante/alumno/evaluaciones/{id}', 'EvaluacionController@evaluaciones_alumno');
 			Route::get('participante/alumno/credenciales/{id}', 'AlumnoController@credenciales');
+			Route::post('participante/alumno/credenciales/agregar', 'AlumnoController@agregar_credencial');
 			Route::post('participante/alumno/credenciales/eliminar/{id}', 'AlumnoController@eliminar_credencial');
 
 			Route::post('participante/alumno/crear_cuenta/{id}', 'AlumnoController@crearCuenta');

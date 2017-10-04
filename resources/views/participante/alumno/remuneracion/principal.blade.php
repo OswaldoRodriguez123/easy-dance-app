@@ -399,6 +399,7 @@
                         .attr('title','');
 
                       $('[data-toggle="popover"]').popover();
+                      $('#form_agregar')[0].reset();
                       $('.modal').modal('hide')
 
                     }else{

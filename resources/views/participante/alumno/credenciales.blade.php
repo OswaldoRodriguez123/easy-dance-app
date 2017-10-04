@@ -17,12 +17,156 @@
 @stop
 @section('content')
 
+            <a data-toggle="modal" href="#modalAgregar" class="btn bgm-green btn-float waves-effect m-btn"><i class="zmdi zmdi-plus"></i></a>
+
+            <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Agregar<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="form_agregar" id="form_agregar"  >
+                          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                          <div class="modal-body">                           
+                          <div class="row p-t-20 p-b-0">
+
+                          @if(isset($id))
+                            <input type="hidden" name="alumno_id" value="{{$id}}"></input>
+                          @else
+
+                            <div class="col-sm-12">
+                                <label for="alumno_id" id="id-alumno_id">Seleccionar Alumno</label> <span class="c-morado f-700 f-16">*</span> 
+
+                                 <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un alumno" title="" data-original-title="Ayuda"></i>
+
+                                 <div class="input-group">
+                                  <span class="input-group-addon"><i class="icon_a-alumnos f-22"></i></span>
+                                <div class="fg-line">
+                                  <div class="select">
+                                    <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona" data-live-search="true">
+
+                                     @foreach ( $alumnos as $alumno )
+                                      <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="has-error" id="error-alumno_id">
+                                  <span >
+                                    <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
+                                  </span>
+                                </div>
+                              </div>
+                           </div>
+
+                           <div class="clearfix p-b-20"></div>
+                          @endif
+
+                                <div class="col-sm-12">
+                                 
+                                     <label for="nivel_baile" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el instructor" title="" data-original-title="Ayuda" data-html="true"></i>
+
+                                     <div class="input-group">
+                                      <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" name="instructor_id" id="instructor_id" data-live-search="true">
+
+                                          <option value="">Selecciona</option>
+                                          @foreach ( $instructores as $instructor )
+                                          <option value = "{{$instructor['id'] }}">{{$instructor['nombre'] }} {{$instructor['apellido'] }}</option>
+                                          @endforeach 
+                                          
+                                        
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-instructor_id">
+                                      <span >
+                                        <small class="help-block error-span" id="error-instructor_id_mensaje" ></small>                                           
+                                      </span>
+                                    </div>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix p-b-20"></div>
+
+                               <div class="col-sm-12">
+                                 <div class="form-group">
+                                    <label for="cantidad">Ingresa la cantidad de credenciales</label>
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="zmdi zmdi-collection-item-1 f-22"></i></span>
+                                      <div class="fg-line">
+                                        <input type="text" class="form-control input-sm input-mask" name="cantidad" id="cantidad" data-mask="0000000" placeholder="Ej: 50">
+                                      </div>
+                                 </div>
+                                 <div class="has-error" id="error-cantidad">
+                                      <span >
+                                          <small class="help-block error-span" id="error-cantidad_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+                             </div>
+
+                                <div class="clearfix p-b-20"></div> 
+
+
+                                 <div class="col-sm-12">
+                                   <div class="form-group">
+                                      <label for="dias_vencimiento">Días de caducidad</label>
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
+                                      <div class="fg-line">
+                                        <input type="text" class="form-control input-sm input-mask" name="dias_vencimiento" id="dias_vencimiento" data-mask="0000000" placeholder="Ej: 25">
+                                      </div>
+                                   </div>
+                                   <div class="has-error" id="error-dias_vencimiento">
+                                        <span >
+                                            <small class="help-block error-span" id="error-dias_vencimiento_mensaje"  ></small>                                           
+                                        </span>
+                                    </div>
+                                 </div>
+                               </div>
+
+                       
+                               <div class="clearfix p-b-35"></div>
+
+                               
+                           </div>
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" name="guardar" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
 
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/alumno/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+
+                        @if(isset($id))
+                          <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/alumno/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        @else
+                          <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/"><i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        @endif
 
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -44,9 +188,9 @@
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-plus-circle-o f-25"></i> Sección de Credenciales</p>
                             <hr class="linea-morada">
 
-
-
-                            <span class ="f-700 f-16 opaco-0-8">Total : <span id="total">{{ $total }}</span></span>
+                            @if(isset($id))
+                              <span class ="f-700 f-16 opaco-0-8">Total : <span id="total">{{ $total }}</span></span>
+                            @endif
                          
                                                          
                         </div>
@@ -55,6 +199,9 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    @if(!isset($id))
+                                      <th class="text-center" data-column-id="alumno">Alumno</th>
+                                    @endif
                                     <th class="text-center" data-column-id="instructor">Instructor</th>
                                     <th class="text-center" data-column-id="cantidad" data-order="desc">Cantidad</th>
                                     <th class="text-center" data-column-id="fecha_vencimiento">Fecha Expiración</th>
@@ -64,14 +211,19 @@
                             <tbody>
 
                             @foreach ($credenciales as $credencial)
-                                <?php $id = $credencial->id; ?>
+                                <?php $credencial_id = $credencial->id; ?>
              
-                                <tr id="{{$id}}" class="seleccion">
-            
-                                    <td class="text-center previa">{{$credencial->nombre}} {{$credencial->apelldio}}</td>
+                                <tr id="{{$credencial_id}}" class="seleccion">
+                                    
+                                    @if(!isset($id))
+                                      <td class="text-center previa">
+                                        {{$credencial->alumno_nombre}} {{$credencial->alumno_apellido}}
+                                      </td>
+                                    @endif
+                                    <td class="text-center previa">{{$credencial->instructor_nombre}} {{$credencial->instructor_apellido}}</td>
                                     <td class="text-center previa">{{$credencial->cantidad}}</td>
                                     <td class="text-center previa">{{$credencial->fecha_vencimiento}}</td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$credencial_id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i></td>
                         
                                 </tr>
 
@@ -104,11 +256,10 @@
         route_agregar="{{url('/')}}/participante/alumno/credenciales/agregar";
         route_eliminar="{{url('/')}}/participante/alumno/credenciales/eliminar/";
 
-        var total = 0;
 
         $(document).ready(function(){
 
-        total = parseInt("{{$total}}")
+        total = parseInt("{{{$total or 0}}}")
 
         t=$('#tablelistar').DataTable({
         processing: true,
@@ -147,12 +298,6 @@
           
         });
 
-        $('#modalReferido-Alumno').on('hidden.bs.modal', function (event) {
-          limpiarMensaje();
-          $('#form_agregar')[0].reset();
-
-        })
-
         $("#guardar").click(function(){
 
             var datos = $( "#form_agregar" ).serialize(); 
@@ -180,25 +325,40 @@
                       var nTitle="Ups! ";
                       var nMensaje=respuesta.mensaje;
 
+                      var instructor = $("#instructor_id option:selected").text();
                       var concepto = respuesta.array.concepto;
-                      var remuneracion = respuesta.array.remuneracion;
+                      var cantidad = respuesta.array.cantidad;
                       var fecha_vencimiento = respuesta.array.fecha_vencimiento;
 
-                      total = total + parseInt(remuneracion);
-                      $('#total').text(total);
+                      var rowId=respuesta.array.id;
 
-                      var rowId=respuesta.id;
+                      @if(isset($id))
+
+                        total = total + parseInt(cantidad);
+                        $('#total').text(total);
+
                       var rowNode=t.row.add( [
-                      ''+concepto+'',
-                      ''+remuneracion+'',
-                      ''+fecha_vencimiento+'',
-                      '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                        ''+instructor+'',
+                        ''+cantidad+'',
+                        ''+fecha_vencimiento+'',
+                        '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                       ] ).draw(false).node();
-                      $( rowNode )
-                      .attr('id',respuesta.array.id)
-                      .addClass('seleccion');
 
-                      $("#form_agregar")[0].reset();
+                      @else
+
+                        alumno = $("#alumno_id option:selected").text();
+
+                        var rowNode=t.row.add( [
+                          ''+alumno+'',
+                          ''+instructor+'',
+                          ''+cantidad+'',
+                          ''+fecha_vencimiento+'',
+                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                        ] ).draw(false).node();
+                      @endif
+
+                      $('#form_agregar')[0].reset();
+                      $('.selectpicker').selectpicker('refresh')
                       $('.modal').modal('hide')
 
                     }else{
@@ -255,7 +415,9 @@
         }, function(isConfirm){   
         if (isConfirm) {
             procesando()
-          var token = "{{ csrf_token() }}"
+
+            var token = "{{ csrf_token() }}"
+
             $.ajax({
                  url: route_eliminar+id,
                  headers: {'X-CSRF-TOKEN': token},

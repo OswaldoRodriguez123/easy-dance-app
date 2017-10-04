@@ -230,7 +230,7 @@
                                         </li>
 
                                         <li class="hidden-xs">
-                                            <a href="{{url('configuracion/staff')}}"><i class="zmdi icon_f-staff f-16"></i> <span class="m-l-5">Credenciales</span></a>
+                                            <a href="{{url('credenciales')}}"><i class="zmdi icon_f-staff f-16"></i> <span class="m-l-5">Credenciales</span></a>
                                         </li>
 
                                         <li class="hidden-xs">

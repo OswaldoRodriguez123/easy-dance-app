@@ -1233,91 +1233,170 @@ class AlumnoController extends BaseController
             $total = 0;
 
             $credenciales = CredencialAlumno::leftJoin('instructores', 'credenciales_alumno.instructor_id', '=', 'instructores.id')
-                ->select('credenciales_alumno.*', 'instructores.nombre', 'instructores.apellido')
+                ->join('alumnos', 'credenciales_alumno.alumno_id', '=', 'alumnos.id')
+                ->select('credenciales_alumno.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
                 ->where('credenciales_alumno.alumno_id',$id)
                 ->where('credenciales_alumno.cantidad' ,">", 0)
             ->get();
 
-            $asistencias = Asistencia::join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
-                ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
-                ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->select('asistencias.fecha', 'asistencias.hora', 'config_clases_grupales.nombre as clase', 'alumnos.nombre', 'alumnos.apellido', 'asistencias.tipo', 'asistencias.tipo_id', 'asistencias.clase_grupal_id as clase_grupal_id', 'asistencias.id', 'alumnos.id as alumno_id')
-                ->where('alumnos.academia_id','=',Auth::user()->academia_id)
-                ->where('asistencias.alumno_id',$id)
-                ->orderBy('asistencias.created_at','desc')
-            ->get();
+            // $asistencias = Asistencia::join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
+            //     ->join('clases_grupales', 'asistencias.clase_grupal_id', '=', 'clases_grupales.id')
+            //     ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            //     ->select('asistencias.fecha', 'asistencias.hora', 'config_clases_grupales.nombre as clase', 'alumnos.nombre', 'alumnos.apellido', 'asistencias.tipo', 'asistencias.tipo_id', 'asistencias.clase_grupal_id as clase_grupal_id', 'asistencias.id', 'alumnos.id as alumno_id')
+            //     ->where('alumnos.academia_id','=',Auth::user()->academia_id)
+            //     ->where('asistencias.alumno_id',$id)
+            //     ->orderBy('asistencias.created_at','desc')
+            // ->get();
 
-            $array = array();
+            // $array = array();
 
-            foreach($asistencias as $asistencia){
+            // foreach($asistencias as $asistencia){
 
-              if($asistencia->tipo == 1)
-              {
-                $clasegrupal = ClaseGrupal::find($asistencia->clase_grupal_id);
-                if($clasegrupal){
-                  $instructor = Instructor::find($clasegrupal->instructor_id);
-                }
+            //   if($asistencia->tipo == 1)
+            //   {
+            //     $clasegrupal = ClaseGrupal::find($asistencia->clase_grupal_id);
+            //     if($clasegrupal){
+            //       $instructor = Instructor::find($clasegrupal->instructor_id);
+            //     }
                 
-              }else{
-                $clasegrupal = HorarioClaseGrupal::find($asistencia->tipo_id);
-                if($clasegrupal){
-                  $instructor = Instructor::find($clasegrupal->instructor_id);
-                }
-              }
+            //   }else{
+            //     $clasegrupal = HorarioClaseGrupal::find($asistencia->tipo_id);
+            //     if($clasegrupal){
+            //       $instructor = Instructor::find($clasegrupal->instructor_id);
+            //     }
+            //   }
 
-              $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
-              $i = $fecha->dayOfWeek;
+            //   $fecha = Carbon::createFromFormat('Y-m-d', $asistencia->fecha);
+            //   $i = $fecha->dayOfWeek;
 
-              if($i == 1){
+            //   if($i == 1){
 
-                $dia = 'Lunes';
+            //     $dia = 'Lunes';
 
-              }else if($i == 2){
+            //   }else if($i == 2){
 
-                $dia = 'Martes';
+            //     $dia = 'Martes';
 
-              }else if($i == 3){
+            //   }else if($i == 3){
 
-                $dia = 'Miercoles';
+            //     $dia = 'Miercoles';
 
-              }else if($i == 4){
+            //   }else if($i == 4){
 
-                $dia = 'Jueves';
+            //     $dia = 'Jueves';
 
-              }else if($i == 5){
+            //   }else if($i == 5){
 
-                $dia = 'Viernes';
+            //     $dia = 'Viernes';
 
-              }else if($i == 6){
+            //   }else if($i == 6){
 
-                $dia = 'Sabado';
+            //     $dia = 'Sabado';
 
-              }else if($i == 0){
+            //   }else if($i == 0){
 
-                $dia = 'Domingo';
+            //     $dia = 'Domingo';
 
-              }
+            //   }
 
-              if($clasegrupal)
-              {
-                $collection=collect($asistencia);     
-                $asistencia_array = $collection->toArray();
+            //   if($clasegrupal)
+            //   {
+            //     $collection=collect($asistencia);     
+            //     $asistencia_array = $collection->toArray();
                 
-                $asistencia_array['dia']=$dia;
-                $asistencia_array['instructor']=$instructor->nombre . ' ' . $instructor->apellido;
-                $asistencia_array['hora']=$asistencia->hora;
-                $array[] = $asistencia_array;
-              }
-            }
+            //     $asistencia_array['dia']=$dia;
+            //     $asistencia_array['instructor']=$instructor->nombre . ' ' . $instructor->apellido;
+            //     $asistencia_array['hora']=$asistencia->hora;
+            //     $array[] = $asistencia_array;
+            //   }
+            // }
 
             foreach($credenciales as $credencial){
                 $total = $total + $credencial->cantidad;
             }
 
-            return view('participante.alumno.credenciales')->with(['alumno' => $alumno , 'id' => $id, 'credenciales' => $credenciales, 'total' => $total, 'asistencias' => $array]);
+            return view('participante.alumno.credenciales')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'alumno' => $alumno , 'id' => $id, 'credenciales' => $credenciales, 'total' => $total]);
         }else{
             return redirect("participante/alumno"); 
         }
+    }
+
+    public function agregar_credencial(Request $request){
+
+        $rules = [
+            'alumno_id' => 'required',
+            'cantidad' => 'required|numeric',
+            'dias_vencimiento' => 'numeric',
+        ];
+
+        $messages = [
+            'alumno_id.required' => 'Ups! El alumno es requerido',
+            'cantidad.required' => 'Ups! El campo de credenciales es requerido', 
+            'cantidad.numeric' => 'Ups! El campo de credenciales en inválido , debe contener sólo números', 
+            'dias_vencimiento.numeric' => 'Ups! El campo de dias de vencimiento en inválido , debe contener sólo números',         
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }else{
+
+            $fecha_vencimiento = Carbon::now()->addDays($request->dias_vencimiento)->toDateString();
+            
+            $credencial_alumno = new CredencialAlumno;
+
+            $credencial_alumno->instructor_id = $request->instructor_id;
+            $credencial_alumno->alumno_id = $request->alumno_id;
+            $credencial_alumno->cantidad = $request->cantidad;
+            $credencial_alumno->dias_vencimiento = $request->dias_vencimiento;
+            $credencial_alumno->fecha_vencimiento = $fecha_vencimiento;
+
+            if($credencial_alumno->save()){
+
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $credencial_alumno, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function eliminar_credencial($id)
+    {
+        $credencial_alumno = CredencialAlumno::find($id);
+
+        if($credencial_alumno){
+
+            $cantidad = $credencial_alumno->cantidad;
+
+            if($credencial_alumno->delete()){
+
+                return response()->json(['mensaje' => '¡Excelente! La credencial se ha eliminado satisfactoriamente', 'status' => 'OK', 'cantidad' => $cantidad, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }else{
+            return response()->json(['mensaje' => '¡Excelente! La credencial se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }
+
+    }
+
+    public function credenciales_general()
+    {   
+
+        $credenciales = CredencialAlumno::leftJoin('instructores', 'credenciales_alumno.instructor_id', '=', 'instructores.id')
+            ->join('alumnos', 'credenciales_alumno.alumno_id', '=', 'alumnos.id')
+            ->select('credenciales_alumno.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
+            ->where('alumnos.academia_id',Auth::user()->academia_id)
+            ->where('credenciales_alumno.cantidad' ,">", 0)
+        ->get();
+
+        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        return view('participante.alumno.credenciales')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'credenciales' => $credenciales, 'alumnos' => $alumnos]);
+        
     }
 
     public function operar($id)
@@ -2262,22 +2341,6 @@ class AlumnoController extends BaseController
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
         
-    }
-
-    public function eliminar_credencial($id)
-    {
-        
-        $credencial = CredencialAlumno::find($id);
-
-        $cantidad = $credencial->remuneracion;
-        
-        if($credencial->delete()){
-
-            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 'cantidad' => $cantidad, 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-
     }
 
     public function destroy($id)
