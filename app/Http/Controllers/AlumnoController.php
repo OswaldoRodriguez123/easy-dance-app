@@ -1183,7 +1183,7 @@ class AlumnoController extends BaseController
         }
     }
 
-    public function puntos_acumulados($id)
+    public function puntos_acumulados_general($id)
     {   
 
         $array = array();
