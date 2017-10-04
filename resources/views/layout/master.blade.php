@@ -533,13 +533,11 @@
       }
     @endif
 
-    $('#dropdown_perfil').on('mouseleave', function() {
-      setTimeout(function() {
-        if(!$(this).hasClass('open')){
-          $('.sub-menu').removeClass('toggled')
-          $('.ul_sub-menu').hide()
-        }
-      }, 1000);
+    $("body").on('DOMSubtreeModified', "#dropdown_perfil", function() {
+      if(!$(this).hasClass('open')){
+        $('.sub-menu').removeClass('toggled')
+        $('.ul_sub-menu').hide()
+      }
     })
 
   </script>
