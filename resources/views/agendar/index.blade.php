@@ -921,7 +921,7 @@
                 var actionMenu = '<ul class="actions actions-alt" id="fc-actions">' +
                                     '<li class="dropdown">' +
                                         '<a href="" data-toggle="dropdown"><i class="zmdi zmdi-more-vert"></i></a>' +
-                                        '<ul class="dropdown-menu dropdown-menu-right">' +
+                                        '<ul class="dropdown-menu dropdown-menu-right dropdown-menu-calendar">' +
                                             '<li class="active">' +
                                                 '<a data-view="month" href="">Vista Mensual</a>' +
                                             '</li>' +
@@ -947,7 +947,7 @@
                 var actionMenu = '<ul class="actions actions-alt" id="fc-tipo">' +
                                     '<li class="dropdown">' +
                                         '<a href="" data-toggle="dropdown"><i class="zmdi zmdi-more-vert"></i></a>' +
-                                        '<ul class="dropdown-menu dropdown-menu-left">' +
+                                        '<ul class="dropdown-menu dropdown-menu-left dropdown-menu-calendar">' +
                                             '<li>' +
                                                 '<a class="pointer active" data-tipo="0">Todos</a>' +
                                             '</li>' +
@@ -1026,7 +1026,8 @@
                 });
 
 
-                $(".dropdown-menu a").unbind('click').bind('click', function(e) {
+
+                $(".dropdown-menu-calendar a").unbind('click').bind('click', function(e) {
 
                     if($(this).data('instructor_id') !== undefined){
                         instructor_id = $(this).data('instructor_id')
