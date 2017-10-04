@@ -10904,7 +10904,8 @@ h6 small,
 
 .sub-menu ul > li > a {
   color: #7f7f7f;
-  padding: 8px 20px 8px 50px;
+  /*padding: 8px 20px 8px 50px;*/
+  padding: 8px 20px 8px 18px;
   font-weight: 500;
   display: block;
 }

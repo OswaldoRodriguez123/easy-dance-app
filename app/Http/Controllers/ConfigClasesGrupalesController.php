@@ -97,13 +97,13 @@ class ConfigClasesGrupalesController extends BaseController {
         $clasegrupal->costo_inscripcion = $costo_inscripcion;
         $clasegrupal->costo_mensualidad = $costo_mensualidad;
         $clasegrupal->descripcion = $request->descripcion;
-        $clasegrupal->condiciones = $request->condiciones;
         $clasegrupal->incluye_iva = $request->incluye_iva;
         $clasegrupal->porcentaje_retraso = $request->porcentaje_retraso;
         $clasegrupal->tiempo_tolerancia = $request->tiempo_tolerancia;
         $clasegrupal->asistencia_rojo = $request->asistencia_rojas;
         $clasegrupal->asistencia_amarilla = $request->asistencia_amarillas;
         $clasegrupal->boolean_promociones = $request->boolean_promociones;
+        // $clasegrupal->condiciones = $request->condiciones;
 
         if($clasegrupal->save()){
 
@@ -162,7 +162,7 @@ class ConfigClasesGrupalesController extends BaseController {
 
             $servicio->save();
             
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $clasegrupal, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

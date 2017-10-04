@@ -533,6 +533,15 @@
       }
     @endif
 
+    $('#dropdown_perfil').on('mouseleave', function() {
+      setTimeout(function() {
+        if(!$(this).hasClass('open')){
+          $('.sub-menu').removeClass('toggled')
+          $('.ul_sub-menu').hide()
+        }
+      }, 1000);
+    })
+
   </script>
 		
 	@yield('js')
