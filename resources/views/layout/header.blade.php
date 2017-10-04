@@ -51,22 +51,8 @@
                                     <a href="{{url('paquetes')}}"><i class="zmdi icon_a-paquete f-16"></i> Paquetes</a>
                                 </li>
 
-                                @if($usuario_tipo == 1 || $usuario_tipo == 5)
-                                    <li class="hidden-xs">
-                                        <a href="{{url('configuracion/staff')}}"><i class="zmdi icon_f-staff f-16"></i> Staff</a>
-                                    </li>
-
-                                    <li class="hidden-xs">
-                                        <a href="{{url('configuracion/administradores')}}"><i class="zmdi zmdi-key f-16"></i> Administradores</a>
-                                    </li>
-                                @endif
-
                                 <li class="hidden-xs">
                                     <a href="{{url('blog')}}"><i class="zmdi glyphicon glyphicon-book f-16"></i> Blog</a>
-                                </li>
-
-                                <li class="hidden-xs">
-                                    <a href="{{url('llamadas')}}"><i class="zmdi zmdi-phone f-16"></i> Registro de llamadas</a>
                                 </li>
                             </ul>
                         </li>
@@ -91,11 +77,6 @@
                                 <li class="hidden-xs">
                                     <a href="{{url('mensajes')}}"><i class="zmdi zmdi-smartphone f-16"></i> Enviar Mensaje</a>
                                 </li>
-                                @if($usuario_tipo == 1 || $usuario_tipo == 5)
-                                    <li class="hidden-xs">
-                                        <a href="{{url('incidencias')}}"><i class="zmdi icon_f-incidencias f-16"></i> Generar Incidencias</a>
-                                    </li>
-                                @endif
                                 <li class="hidden-xs">
                                     <a href="{{url('agendar/citas')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Citas y Llamadas</a>
                                 </li>
@@ -218,7 +199,14 @@
                                 <a href="{{url('/')}}/perfil"><i class="zmdi zmdi-account"></i> Mi Perfil</a>
                             </li>
 
+
                             @if(Auth::check())
+                                @if($usuario_tipo == 1 || $usuario_tipo == 5)
+                                    <li class="hidden-xs">
+                                        <a href="{{url('configuracion/administradores')}}"><i class="zmdi zmdi-key f-16"></i> Administradores</a>
+                                    </li>
+                                @endif
+
                                 @if($usuario_tipo == 3)
                                     <li class="hidden-xs">
                                         <a href="{{url('perfil-profesional')}}"><i class="zmdi zmdi-account"></i> Perfil Profesional</a>
@@ -227,35 +215,90 @@
                             @endif
 
                             @if(Auth::check())
-                                @if($usuario_tipo == 3 || $usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
-                                    <li class="hidden-xs">
-                                        <a href="{{url('configuracion/eventos-laborales')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Calendario Laboral</a>
-                                    </li>
-                                @endif
-                            @endif
-
-                            @if(Auth::check())
                                 @if($usuario_tipo == 1 || $usuario_tipo == 5)
-                                    <li class="hidden-xs">
-                                        <a href="{{url('supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> Supervisiones</a>
-                                    </li>
-
                                     <li class="hidden-xs">
                                         <a href="{{url('configuracion')}}"><i class="zmdi zmdi-settings"></i> Configuración General</a>
                                     </li>
                                 @endif
 
-                                @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6 || $usuario_tipo == 3)
-                                    <li class="hidden-xs">
-                                        <a href="{{url('procedimientos')}}"><i class="zmdi icon_a-tutoriales"></i> Manuales de Procedimientos</a>
-                                    </li>
-                                @endif
+                                <li class="sub-menu">
+                                    <a>Registros</a>
+                                    <ul>   
 
-                                @if($usuario_tipo)
-                                    <li class="hidden-xs">
-                                        <a href="{{url('normativas')}}"><i class="zmdi icon_a-tutoriales"></i> Normativas</a>
-                                    </li>
-                                @endif
+                                        <li class="hidden-xs">
+                                            <a href="{{url('supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> Reservaciones</a>
+                                        </li>
+
+                                        <li class="hidden-xs">
+                                            <a href="{{url('configuracion/staff')}}"><i class="zmdi icon_f-staff f-16"></i> Credenciales</a>
+                                        </li>
+
+                                        <li class="hidden-xs">
+                                            <a href="{{url('incidencias')}}"><i class="zmdi icon_f-incidencias f-16"></i> Puntos</a>
+                                        </li>
+               
+  
+                                        <li class="hidden-xs">
+                                            <a href="{{url('configuracion/eventos-laborales')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Notas de alumnos</a>
+                                        </li>
+
+                                        <li class="hidden-xs">
+                                            <a href="{{url('procedimientos')}}"><i class="zmdi icon_a-tutoriales"></i> Encuestas realizadas</a>
+                                        </li>
+
+                                        <li class="hidden-xs">
+                                            <a href="{{url('llamadas')}}"><i class="zmdi zmdi-phone f-16"></i> Registro de llamadas</a>
+                                        </li>
+                       
+                                        <li class="hidden-xs">
+                                            <a href="{{url('participante/alumno/congelados')}}"><i class="zmdi icon_a-tutoriales"></i> Congelados</a>
+                                        </li>
+
+                                         <li class="hidden-xs">
+                                            <a href="{{url('participante/alumno')}}"><i class="zmdi icon_a-tutoriales"></i> Cuentas activas</a>
+                                        </li>
+                                 
+          
+                                    </ul>
+                                </li>
+               
+
+                                <li class="sub-menu">
+                                    <a>Sección Laboral</a>
+                                    <ul>   
+                                        @if($usuario_tipo == 1 || $usuario_tipo == 5)
+
+                                            <li class="hidden-xs">
+                                                <a href="{{url('supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> Supervisiones</a>
+                                            </li>
+
+                                            <li class="hidden-xs">
+                                                <a href="{{url('configuracion/staff')}}"><i class="zmdi icon_f-staff f-16"></i> Staff</a>
+                                            </li>
+
+                                            <li class="hidden-xs">
+                                                <a href="{{url('incidencias')}}"><i class="zmdi icon_f-incidencias f-16"></i> Generar Incidencias</a>
+                                            </li>
+                                        @endif
+      
+                                        @if($usuario_tipo == 3 || $usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
+                                            <li class="hidden-xs">
+                                                <a href="{{url('configuracion/eventos-laborales')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Calendario Laboral</a>
+                                            </li>
+
+                                            <li class="hidden-xs">
+                                                <a href="{{url('procedimientos')}}"><i class="zmdi icon_a-tutoriales"></i> Manuales de Procedimientos</a>
+                                            </li>
+                                        @endif
+
+                                        @if($usuario_tipo)
+                                            <li class="hidden-xs">
+                                                <a href="{{url('normativas')}}"><i class="zmdi icon_a-tutoriales"></i> Normativas</a>
+                                            </li>
+                                        @endif
+          
+                                    </ul>
+                                </li>
 
                             @endif 
 
