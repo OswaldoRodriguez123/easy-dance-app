@@ -41,6 +41,7 @@ use App\Puntaje;
 use App\ConfigFormulaExito;
 use App\ManualProcedimiento;
 use App\HorarioVisitante;
+use App\Ocupacion;
 use Validator;
 use Carbon\Carbon;
 use Storage;
@@ -597,6 +598,59 @@ class HerramientaController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-        // return redirect("alumno");
+    }
+
+    public function principal_ocupacion(){
+
+        $ocupaciones = Ocupacion::where('academia_id',Auth::user()->academia_id)->get();
+        
+        return view('configuracion.herramientas.ocupaciones.principal')->with(['ocupaciones' => $ocupaciones]);
+        
+    }
+
+    public function agregarOcupacion(Request $request){
+
+        $rules = [
+            'nombre' => 'required|min:1',
+        ];
+
+        $messages = [
+            'nombre.required' => 'Ups! El Nombre es requerido',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $ocupacion = new Ocupacion;
+            $ocupacion->nombre = $request->nombre;
+            $ocupacion->descripcion = $request->descripcion;
+            $ocupacion->academia_id = Auth::user()->academia_id;
+
+            if($ocupacion->save()){
+
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'nombre' => $request->nombre, 'id' => $ocupacion->id, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+            }
+           
+        }
+    }
+
+    public function eliminarOcupacion($id)
+    {
+        $ocupacion = Ocupacion::find($id);
+        
+        if($ocupacion->delete()){
+            return response()->json(['mensaje' => '¡Excelente! El registro se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 }

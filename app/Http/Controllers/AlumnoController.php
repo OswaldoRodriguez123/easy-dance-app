@@ -1183,6 +1183,42 @@ class AlumnoController extends BaseController
         }
     }
 
+    public function puntos_acumulados($id)
+    {   
+
+        $array = array();
+
+        $puntos = AlumnoRemuneracion::join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
+            ->where('academia_id',Auth::user()->academia_id)->where('remuneracion' ,">", 0)
+        ->get();
+
+        foreach($puntos as $punto){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $punto->fecha_vencimiento);
+
+            if($fecha >= Carbon::now()){
+
+                $dias_restantes = $fecha->diffInDays();
+                $status = 'Activa';
+
+            }else{
+                $dias_restantes = 0;
+                $status = 'Vencida';
+            }
+
+            $collection=collect($punto);  
+            $punto_array = $collection->toArray(); 
+            $punto_array['dias_restantes']=$dias_restantes;
+            $punto_array['status']=$status;
+
+            $array[$punto->id] = $punto_array;
+
+        }
+
+        return view('participante.alumno.remuneracion.principal')->with('puntos_totales' => $puntos_totales, 'puntos' => $array]);
+        
+    }
+
     public function credenciales($id)
     {   
 

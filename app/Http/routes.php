@@ -299,6 +299,12 @@
 			Route::post('configuracion/herramientas/horarios-visitantes/agregar','HerramientaController@agregarHorario');
 			Route::delete('configuracion/herramientas/horarios-visitantes/eliminar/{id}','HerramientaController@eliminarHorario');
 
+			//OCUPACIONES
+
+			Route::get('configuracion/herramientas/ocupaciones','HerramientaController@principal_ocupacion');
+			Route::post('configuracion/herramientas/ocupaciones/agregar','HerramientaController@agregarOcupacion');
+			Route::delete('configuracion/herramientas/ocupaciones/eliminar/{id}','HerramientaController@eliminarOcupacion');
+
 			// HERRAMIENTAS
 
 			Route::get('configuracion/herramientas','HerramientaController@index');
@@ -698,6 +704,7 @@
 			Route::put('participante/visitante/update/interes','VisitanteController@updateInteres');
 			Route::put('participante/visitante/update/tipologia','VisitanteController@updateTipologia');
 			Route::put('participante/visitante/update/horario','VisitanteController@updateHorario');
+			Route::put('participante/visitante/update/ocupacion','VisitanteController@updateOcupacion');
 			Route::put('participante/visitante/update/observacion','VisitanteController@updateObservacion');
 
 			Route::get('participante/visitante/impresion/{id}', 'VisitanteController@impresion');

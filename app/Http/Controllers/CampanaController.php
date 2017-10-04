@@ -41,8 +41,8 @@ class CampanaController extends BaseController {
 
     public function index(){
 
-        $campanas = Campana::where('campanas.academia_id' , '=' , Auth::user()->academia_id)
-            ->OrderBy('campanas.created_at')
+        $campanas = Campana::where('academia_id' , '=' , Auth::user()->academia_id)
+            ->OrderBy('created_at')
         ->get();
 
         $array=array();

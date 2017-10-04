@@ -385,7 +385,6 @@
                               </div>
                            </div>
 
-
                              <div class="clearfix p-b-35"></div>
 
 
@@ -412,6 +411,34 @@
                                 </div>
                               </div>
                            </div>
+
+
+                           <div class="clearfix p-b-35"></div>
+
+                            <div class="col-sm-12">
+                                 
+                                <label for="ocupacion_id" id="id-ocupacion_id">Ocupación</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona la ocupación del cliente" title="" data-original-title="Ayuda"></i>
+
+                                 <div class="input-group">
+                                  <span class="input-group-addon"><i class="icon_f-staff f-22"></i></span>
+                                <div class="fg-line">
+                                  <div class="select">
+                                    <select class="selectpicker" name="ocupacion_id" id="ocupacion_id" data-live-search="true">
+                                      <option value="">Selecciona</option>
+                                      @foreach ( $ocupaciones as $ocupacion )
+                                        <option value = "{{ $ocupacion->id }}">{{ $ocupacion->nombre}}</option>
+                                      @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="has-error" id="error-ocupacion_id">
+                                  <span >
+                                    <small class="help-block error-span" id="error-ocupacion_id_mensaje" ></small>                                           
+                                  </span>
+                                </div>
+                              </div>
+                           </div>
+
 
                                   <div class="clearfix p-b-35"></div>
                                   <div class="clearfix p-b-35"></div>

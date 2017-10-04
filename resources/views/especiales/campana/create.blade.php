@@ -791,8 +791,6 @@
         });
 
         $("#imagen_presentacion").bind("change", function() {
-            //alert('algo cambio');
-            
             setTimeout(function(){
               var imagen = $("#imagenb img").attr('src');
               var canvas = document.createElement("canvas");
@@ -811,7 +809,6 @@
             },500);
 
         });
-
       }); 
 
   setInterval(porcentaje, 1000);

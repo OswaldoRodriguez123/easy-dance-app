@@ -870,6 +870,68 @@
                     </div>
                 </div>
             </div>
+
+
+            <div class="modal fade" id="modalOcupacion-Visitante" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Visitante<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_ocupacion_visitante" id="edit_ocupacion_visitante"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="ocupacion_id">Ocupación</label>
+
+                                      <div class="select">
+                                          <select class="form-control" id="ocupacion_id" name="ocupacion_id">
+                                            <option value="">Selecciona</option>
+                                            @foreach ( $ocupaciones as $ocupacion )
+                                              <option value = "{{ $ocupacion->id }}">{{ $ocupacion->nombre}}</option>
+                                            @endforeach                           
+                                          </select>
+                                      </div> 
+
+                                 </div>
+                                 <div class="has-error" id="error-ocupacion_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-ocupacion_id_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+
+                               <input type="hidden" name="id" value="{{$visitante->id}}"></input>
+                            
+
+                               <div class="clearfix"></div> 
+                              
+                          </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" data-formulario="edit_ocupacion_visitante" data-update="ocupacion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
     
     
             <section id="content">
@@ -1066,6 +1128,14 @@
                                <span class="f-14"> Horario </span>
                              </td>
                              <td class="f-14 m-l-15" ><span id="visitante-horario_id" class="capitalize">{{$visitante->horario}}</span></td>
+                            </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalOcupacion-Visitante">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-ocupacion_id" class="zmdi {{ empty($visitante->ocupacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_f-staff f-22"></i> </span>
+                               <span class="f-14"> Ocupación </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="visitante-ocupacion_id" class="capitalize">{{$visitante->ocupacion}}</span></td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalObservacion-Visitante">
                              <td>
@@ -1266,7 +1336,7 @@
           }else if(c.name=='direccion' || c.name=='observacion'){
              $("#visitante-"+c.name).data('valor',c.value);
              $("#visitante-"+c.name).html(c.value.substr(0, 30) + "...");
-          }else if(c.name=='como_nos_conociste_id' || c.name=='especialidad_id' || c.name=='dias_clase_id' || c.name=='instructor_id' || c.name=='tipologia_id'|| c.name=='horario_id'){
+          }else if(c.name=='como_nos_conociste_id' || c.name=='especialidad_id' || c.name=='dias_clase_id' || c.name=='instructor_id' || c.name=='tipologia_id' || c.name=='horario_id' || c.name=='ocupacion_id'){
             
             expresion = "#"+c.name+ " option[value="+c.value+"]";
             texto = $(expresion).text();
