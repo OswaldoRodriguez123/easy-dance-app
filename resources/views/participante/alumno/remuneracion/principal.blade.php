@@ -27,10 +27,40 @@
                   </div>
                   <form name="form_agregar" id="form_agregar"  >
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="id" value="{{$id}}"></input>
                     <div class="modal-body">                           
                       <div class="row p-t-20 p-b-0">
+                      
+                      @if(isset($id))
+                        <input type="hidden" name="alumno_id" value="{{$id}}"></input>
+                      @else
 
+                        <div class="col-sm-12">
+                            <label for="alumno_id" id="id-alumno_id">Seleccionar Alumno</label> <span class="c-morado f-700 f-16">*</span> 
+
+                             <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un alumno" title="" data-original-title="Ayuda"></i>
+
+                             <div class="input-group">
+                              <span class="input-group-addon"><i class="icon_a-alumnos f-22"></i></span>
+                            <div class="fg-line">
+                              <div class="select">
+                                <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona" data-live-search="true">
+
+                                 @foreach ( $alumnos as $alumno )
+                                  <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }}</option>
+                                  @endforeach
+                                </select>
+                              </div>
+                            </div>
+                            <div class="has-error" id="error-alumno_id">
+                              <span >
+                                <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
+                              </span>
+                            </div>
+                          </div>
+                       </div>
+
+                       <div class="clearfix p-b-35"></div>
+                      @endif
 
                       <div class="col-sm-12" id="id-concepto">
                           <div class="form-group fg-line">
@@ -125,7 +155,11 @@
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/alumno/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        @if(isset($id))
+                          <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/participante/alumno/detalle/{{$id}}" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        @else
+                          <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/"><i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                        @endif
 
                         <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
@@ -154,8 +188,9 @@
                             <hr class="linea-morada">
 
 
-
-                            <span class ="f-700 f-16 opaco-0-8">Total : <span id="total">{{ $puntos_totales }}</span></span>
+                            @if(isset($id))
+                              <span class ="f-700 f-16 opaco-0-8">Total : <span id="total">{{ $puntos_totales }}</span></span>
+                            @endif
                          
                                                          
                         </div>
@@ -164,6 +199,9 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    @if(!isset($id))
+                                      <th class="text-center" data-column-id="alumno">Alumno</th>
+                                    @endif
                                     <th class="text-center" data-column-id="concepto">Concepto</th>
                                     <th class="text-center" data-column-id="cantidad" data-order="desc">Cantidad</th>
                                     <th class="text-center" data-column-id="fecha_vencimiento">Fecha Expiración</th>
@@ -175,7 +213,7 @@
 
                             @foreach ($puntos as $punto)
                                 <?php 
-                                  $id = $punto['id']; 
+                                  $alumno_id = $punto['id']; 
 
                                   $contenido = 
                                   '<p class="c-negro">' .
@@ -185,7 +223,13 @@
 
 
              
-                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion">
+                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$alumno_id}}" class="seleccion">
+
+                                    @if(!isset($id))
+                                      <td class="text-center previa">
+                                        {{$punto['nombre']}} {{$punto['apellido']}}
+                                      </td>
+                                    @endif
             
                                     <td>{{ str_limit(title_case($punto['concepto']), $limit = 30, $end = '...') }}</td>
                                     <td class="text-center previa">{{$punto['remuneracion']}}</td>
@@ -194,7 +238,7 @@
                                         <span class="{{ empty($punto['dias_restantes']) ? 'c-youtube' : '' }}">{{$punto['status']}}</span>
                                         Restan {{$punto['dias_restantes']}} Días
                                     </td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$alumno_id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i></td>
                         
                                 </tr>
 
@@ -228,7 +272,9 @@
         route_eliminar="{{url('/')}}/participante/alumno/puntos-acumulados/eliminar/";
         route_detalle="{{url('/')}}/participante/alumno/puntos-acumulados/detalle/";
 
-        total = parseInt("{{$puntos_totales}}")
+        
+        total = parseInt("{{{$puntos_totales or 0}}}")
+    
 
         $(document).ready(function(){
           t=$('#tablelistar').DataTable({
@@ -311,10 +357,13 @@
                         concepto = concepto.substr(0, 30) + "..."
                       }
 
-                      total = total + parseInt(remuneracion);
-                      $('#total').text(total);
-
                       var rowId=respuesta.id;
+
+                      @if(isset($id))
+
+                        total = total + parseInt(remuneracion);
+                        $('#total').text(total);
+
                       var rowNode=t.row.add( [
                         ''+concepto+'',
                         ''+remuneracion+'',
@@ -322,6 +371,20 @@
                         ''+estatus+'',
                         '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                       ] ).draw(false).node();
+
+                      @else
+
+                        alumno = $("#alumno_id option:selected").text();
+
+                        var rowNode=t.row.add( [
+                          ''+alumno+'',
+                          ''+concepto+'',
+                          ''+remuneracion+'',
+                          ''+fecha_vencimiento+'',
+                          ''+estatus+'',
+                          '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                        ] ).draw(false).node();
+                      @endif
 
                       $( rowNode )
                         .attr('id',respuesta.array.id)
@@ -336,7 +399,6 @@
                         .attr('title','');
 
                       $('[data-toggle="popover"]').popover();
-
                       $('.modal').modal('hide')
 
                     }else{

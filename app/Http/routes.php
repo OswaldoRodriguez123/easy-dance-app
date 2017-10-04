@@ -641,6 +641,7 @@
 
 			//PUNTOS ACUMULADOS
 
+			Route::get('puntos-acumulados', 'AlumnoController@puntos_acumulados_general');
 			Route::get('participante/alumno/puntos-acumulados/{id}', 'AlumnoController@puntos_acumulados');
 			Route::post('participante/alumno/puntos-acumulados/agregar', 'AlumnoController@agregar_remuneracion');
 			Route::delete('participante/alumno/puntos-acumulados/eliminar/{id}', 'AlumnoController@eliminar_remuneracion');

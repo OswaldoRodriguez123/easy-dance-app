@@ -1027,13 +1027,14 @@ class AlumnoController extends BaseController
 
 
         $rules = [
+            'alumno_id' => 'required',
             'concepto' => 'required',
             'remuneracion' => 'required|numeric',
             'fecha_vencimiento' => 'required',
         ];
 
         $messages = [
-
+            'alumno_id.required' => 'Ups! El alumno es requerido ',
             'concepto.required' => 'Ups! El concepto es requerido ',
             'remuneracion.required' => 'Ups! El cantidad es requerida',
             'remuneracion.numeric' => 'Ups! La cantidad es inválida , debe contener sólo números',
@@ -1059,7 +1060,7 @@ class AlumnoController extends BaseController
             $fecha_vencimiento = $fecha_vencimiento->toDateString();
           
             $remuneracion = new AlumnoRemuneracion;
-            $remuneracion->alumno_id = $request->id;
+            $remuneracion->alumno_id = $request->alumno_id;
             $remuneracion->concepto = $request->concepto;
             $remuneracion->remuneracion = $request->remuneracion;
             $remuneracion->fecha_vencimiento = $fecha_vencimiento;
@@ -1183,12 +1184,13 @@ class AlumnoController extends BaseController
         }
     }
 
-    public function puntos_acumulados_general($id)
+    public function puntos_acumulados_general()
     {   
 
         $array = array();
 
-        $puntos = AlumnoRemuneracion::join('alumnos', 'asistencias.alumno_id', '=', 'alumnos.id')
+        $puntos = AlumnoRemuneracion::join('alumnos', 'alumnos_remuneracion.alumno_id', '=', 'alumnos.id')
+            ->select('alumnos_remuneracion.*','alumnos.nombre','alumnos.apellido')
             ->where('academia_id',Auth::user()->academia_id)->where('remuneracion' ,">", 0)
         ->get();
 
@@ -1215,7 +1217,9 @@ class AlumnoController extends BaseController
 
         }
 
-        return view('participante.alumno.remuneracion.principal')->with('puntos_totales' => $puntos_totales, 'puntos' => $array]);
+        $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+
+        return view('participante.alumno.remuneracion.principal')->with(['alumnos' => $alumnos, 'puntos' => $array]);
         
     }
 

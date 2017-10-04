@@ -234,7 +234,7 @@
                                         </li>
 
                                         <li class="hidden-xs">
-                                            <a href="{{url('incidencias')}}"><i class="zmdi icon_f-incidencias f-16"></i> <span class="m-l-5">Puntos</span></a>
+                                            <a href="{{url('puntos-acumulados')}}"><i class="zmdi icon_f-incidencias f-16"></i> <span class="m-l-5">Puntos</span></a>
                                         </li>
                
   
