@@ -24,6 +24,7 @@ use App\Asistencia;
 use App\Staff;
 use App\Visitante;
 use App\HorarioClasePersonalizada;
+use App\Tipologia;
 use Mail;
 use Validator;
 use DB;
@@ -308,7 +309,9 @@ class ClasePersonalizadaController extends BaseController {
 
         usort($promotores, array($this, 'sortByName'));
 
-        return view('agendar.clase_personalizada.reservar')->with(['alumnos' => $alumnos, 'especialidad' => ConfigEspecialidades::all(), 'instructores' => $instructores, 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'precios' => $precios, 'alumno_id' => $alumno_id, 'promotores' => $promotores, 'usuario_tipo' => $usuario_tipo]);
+        $tipologias = Tipologia::orderBy('nombre')->get();
+
+        return view('agendar.clase_personalizada.reservar')->with(['alumnos' => $alumnos, 'especialidad' => ConfigEspecialidades::all(), 'instructores' => $instructores, 'condiciones' => $config_clase_personalizada->condiciones, 'clases_personalizadas' => ClasePersonalizada::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'precios' => $precios, 'alumno_id' => $alumno_id, 'promotores' => $promotores, 'usuario_tipo' => $usuario_tipo, 'tipologias' => $tipologias]);
         
     }
 
