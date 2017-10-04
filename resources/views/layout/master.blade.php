@@ -540,6 +540,12 @@
       }
     })
 
+    $("body").on('DOMSubtreeModified', ".sub-menu", function() {
+      $('.sub-menu').not(this).removeClass('toggled')
+      ul = $(this).find('.ul_sub-menu')
+      $('.ul_sub-menu').not(ul).hide()
+    })
+
   </script>
 		
 	@yield('js')
