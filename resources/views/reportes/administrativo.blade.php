@@ -478,7 +478,6 @@
 
                     $.each(respuesta.facturas, function (index, array) {
 
-
                         if(array.tipo_pago != 'Devolución'){
                             icono = ''
                         }else{
@@ -495,15 +494,15 @@
 
                         if(array.tipo == 1){
                             if(array.tipo_pago != 'Devolución'){
-                                monto = '+'+formatmoney(parseFloat(array.importe_neto))
+                                importe_neto = '+'+formatmoney(parseFloat(array.importe_neto))
                             }else{
-                                monto = '-'+formatmoney(parseFloat(array.importe_neto))
-                                total_ingreso = total_ingreso - parseFloat(array.importe_neto)
+                                importe_neto = '-'+formatmoney(parseFloat(array.importe_neto))
+                                total_ingreso -= parseFloat(array.importe_neto)
                             }
                         }else if(array.tipo == 2){
-                            monto = '-'+formatmoney(parseFloat(array.importe_neto))
+                            importe_neto = '-'+formatmoney(parseFloat(array.importe_neto))
                         }else{
-                            monto = formatmoney(parseFloat(array.importe_neto))
+                            importe_neto = formatmoney(parseFloat(array.importe_neto))
                         }
 
                         var rowNode=t.row.add( [
@@ -513,7 +512,7 @@
                             ''+array.hora+'',
                             ''+cliente+'',
                             ''+concepto+'',
-                            ''+monto+''
+                            ''+importe_neto+''
                         ] ).draw(false).node();
 
                         $( rowNode )

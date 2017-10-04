@@ -1838,7 +1838,6 @@ class ReporteController extends BaseController
 
             foreach($tipos_pago as $tipo_pago){
                 $array_pago[$tipo_pago->id] = ['nombre' => $tipo_pago->nombre, 'cantidad' => 0];
-
             }
 
             $array_ingreso[0] = ['nombre' => 'Academía Recepción', 'cantidad' => 0];
@@ -1938,8 +1937,8 @@ class ReporteController extends BaseController
                     ->where('factura_id', $factura->id)
                 ->get();
 
-                $pago = '';
                 $importe_neto = 0;
+                $pago = '';
 
                 if($tipos_pago){
 
@@ -2003,7 +2002,7 @@ class ReporteController extends BaseController
                 $factura_array['contenido'] = $contenido;
                 $array[$factura->id] = $factura_array;
 
-                $total_ingreso = $total_ingreso + $importe_neto;
+                $total_ingreso += $importe_neto;
 
             }
           
