@@ -917,6 +917,14 @@
                              </td>
                              <td class="f-14 m-l-15" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
+                            <tr class="detalle ocupacion">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10">  <i class="icon_f-staff f-22"></i> </span>
+                               <span class="f-14"> Ocupación </span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
                            </table>
                           </div>
                           
@@ -2358,6 +2366,11 @@
     $(".horario").click(function(){
       procesando();
       window.location = "{{url('/')}}/configuracion/herramientas/horarios-visitantes";
+    });
+
+    $(".ocupacion").click(function(){
+      procesando();
+      window.location = "{{url('/')}}/configuracion/herramientas/ocupaciones";
     });
 
     $('#tableactividad').on('mouseenter', function () {
