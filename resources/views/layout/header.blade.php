@@ -239,7 +239,7 @@
                
   
                                         <li class="hidden-xs">
-                                            <a href="{{url('configuracion/eventos-laborales')}}"><i class="zmdi zmdi-calendar-check f-16"></i> <span class="m-l-5">Notas de alumnos</span></a>
+                                            <a href="{{url('especiales/evaluaciones')}}"><i class="zmdi zmdi-calendar-check f-16"></i> <span class="m-l-5">Notas de alumnos</span></a>
                                         </li>
 
                                         <li class="hidden-xs">
