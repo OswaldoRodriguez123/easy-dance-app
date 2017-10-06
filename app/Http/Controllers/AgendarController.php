@@ -49,7 +49,7 @@ class AgendarController extends BaseController
         $usuario_id = Session::get('easydance_usuario_id');
         $academia = Academia::find(Auth::user()->academia_id);
 
-    	$talleres = Taller::join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
+    	$talleres = Taller::leftJoin('instructores', 'talleres.instructor_id', '=', 'instructores.id')
             ->join('config_especialidades', 'config_especialidades.id', '=', 'talleres.especialidad_id')
             ->select('talleres.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad')
             ->where('talleres.academia_id', '=' ,  Auth::user()->academia_id)
@@ -57,7 +57,7 @@ class AgendarController extends BaseController
         ->get();
 
         $horarios_talleres = Taller::join('horarios_talleres', 'talleres.id', '=', 'horarios_talleres.taller_id')
-            ->join('instructores', 'horarios_talleres.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'horarios_talleres.instructor_id', '=', 'instructores.id')
             ->join('config_especialidades', 'config_especialidades.id', '=', 'horarios_talleres.especialidad_id')
             ->select('talleres.id','horarios_talleres.fecha as fecha_inicio', 'horarios_talleres.hora_inicio', 'horarios_talleres.hora_final', 'talleres.color_etiqueta as taller_etiqueta', 'horarios_talleres.color_etiqueta', 'talleres.nombre', 'talleres.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad')
             ->where('talleres.academia_id', '=' ,  Auth::user()->academia_id)
@@ -172,7 +172,7 @@ class AgendarController extends BaseController
         }
 
 		$clasegrupal = ClaseGrupal::join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->join('config_especialidades', 'config_especialidades.id', '=', 'clases_grupales.especialidad_id')
             ->join('config_niveles_baile', 'config_niveles_baile.id', '=', 'clases_grupales.nivel_baile_id')
             ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
@@ -185,7 +185,7 @@ class AgendarController extends BaseController
             ->join('config_clases_grupales', 'config_clases_grupales.id', '=', 'clases_grupales.clase_grupal_id')
             ->join('config_especialidades', 'config_especialidades.id', '=', 'horarios_clases_grupales.especialidad_id')
             ->join('config_niveles_baile', 'config_niveles_baile.id', '=', 'clases_grupales.nivel_baile_id')
-            ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('clases_grupales.id', 'clases_grupales.fecha_final', 'clases_grupales.cantidad_hombres','clases_grupales.cantidad_mujeres', 'horarios_clases_grupales.fecha as fecha_inicio', 'horarios_clases_grupales.hora_inicio', 'horarios_clases_grupales.hora_final', 'clases_grupales.color_etiqueta as clase_etiqueta', 'horarios_clases_grupales.color_etiqueta', 'config_clases_grupales.nombre', 'config_clases_grupales.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'horarios_clases_grupales.instructor_id', 'instructores.sexo', 'config_especialidades.nombre as especialidad', 'config_niveles_baile.nombre as nivel')
             ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
@@ -402,7 +402,7 @@ class AgendarController extends BaseController
 		$query = InscripcionClasePersonalizada::join('clases_personalizadas', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
 			->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
             ->join('config_especialidades', 'config_especialidades.id', '=', 'inscripcion_clase_personalizada.especialidad_id')
-            ->join('instructores', 'instructores.id', '=', 'inscripcion_clase_personalizada.instructor_id')
+            ->leftJoin('instructores', 'instructores.id', '=', 'inscripcion_clase_personalizada.instructor_id')
             ->select('inscripcion_clase_personalizada.*','clases_personalizadas.color_etiqueta', 'alumnos.nombre', 'alumnos.apellido', 'config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.id as instructor_id', 'instructores.sexo')
             ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
             ->where('inscripcion_clase_personalizada.fecha_inicio', '>=', Carbon::now()->toDateString());
@@ -416,7 +416,7 @@ class AgendarController extends BaseController
         $query = InscripcionClasePersonalizada::join('clases_personalizadas', 'clases_personalizadas.id', '=', 'inscripcion_clase_personalizada.clase_personalizada_id')
             ->join('horarios_clases_personalizadas', 'inscripcion_clase_personalizada.id', '=', 'horarios_clases_personalizadas.clase_personalizada_id')
             ->join('config_especialidades', 'config_especialidades.id', '=', 'horarios_clases_personalizadas.especialidad_id')
-            ->join('instructores', 'instructores.id', '=', 'horarios_clases_personalizadas.instructor_id')
+            ->leftJoin('instructores', 'instructores.id', '=', 'horarios_clases_personalizadas.instructor_id')
             ->join('alumnos', 'alumnos.id', '=', 'inscripcion_clase_personalizada.alumno_id')
             ->select('inscripcion_clase_personalizada.fecha_final', 'horarios_clases_personalizadas.fecha as fecha_inicio', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final', 'clases_personalizadas.color_etiqueta as clase_etiqueta', 'horarios_clases_personalizadas.color_etiqueta', 'clases_personalizadas.nombre', 'clases_personalizadas.descripcion', 'inscripcion_clase_personalizada.id', 'alumnos.nombre', 'alumnos.apellido', 'config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.id as instructor_id', 'instructores.sexo')
             ->where('clases_personalizadas.academia_id', '=' ,  Auth::user()->academia_id)
@@ -592,7 +592,7 @@ class AgendarController extends BaseController
 		}
 
         $query = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
-            ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
             ->select('citas.*','alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.id as alumno_id', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_citas.nombre as nombre', 'instructores.id as instructor_id', 'instructores.sexo')
             ->where('citas.academia_id','=', Auth::user()->academia_id)

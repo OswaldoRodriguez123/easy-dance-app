@@ -193,7 +193,7 @@ class MultihorarioTallerController extends BaseController
         $horario = HorarioTaller::join('talleres', 'horarios_talleres.taller_id', '=', 'talleres.id')
             ->join('config_especialidades', 'horarios_talleres.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_estudios', 'horarios_talleres.estudio_id', '=', 'config_estudios.id')
-            ->join('instructores', 'horarios_talleres.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'horarios_talleres.instructor_id', '=', 'instructores.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'horarios_talleres.hora_inicio','horarios_talleres.hora_final', 'horarios_talleres.id' , 'horarios_talleres.fecha', 'talleres.id as taller_id', 'horarios_talleres.color_etiqueta')
             ->where('horarios_talleres.id', '=', $id)
         ->first();

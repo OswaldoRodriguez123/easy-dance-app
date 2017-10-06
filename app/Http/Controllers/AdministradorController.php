@@ -9,10 +9,42 @@ use App\User;
 use App\UsuarioTipo;
 use App\Sucursal;
 use App\Academia;
+
+use App\ItemsFacturaProforma;
+use App\Evaluacion;
+use App\DetalleEvaluacion;
+use App\AlumnoRemuneracion;
+use App\Factura;
+use App\ItemsFactura;
+use App\Pago;
+use App\Acuerdo;
+use App\ItemsAcuerdo;
+use App\Presupuesto;
+use App\ItemsPresupuesto;
+use App\InscripcionTaller;
+use App\InscripcionClaseGrupal;
+use App\InscripcionCoreografia;
+use App\InscripcionClasePersonalizada;
+use App\HorarioClasePersonalizada;
+use App\Asistencia;
+use App\Cita;
+use App\PerfilEvaluativo;
+use App\CredencialAlumno;
+use App\Visitante;
+use App\Alumno;
+use App\Instructor;
+use App\CredencialInstructor;
+use App\Staff;
+use App\Notificacion;
+use App\NotificacionUsuario;
+use App\Incidencia;
+use App\Sugerencia;
+use App\VencimientoClaseGrupal;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use DB;
 use Mail;
+use Carbon\Carbon;
 
 class AdministradorController extends BaseController
 {
@@ -26,14 +58,14 @@ class AdministradorController extends BaseController
         $usuarios = User::join('academias', 'users.academia_id', '=', 'academias.id')
             ->join('sucursales', 'academias.sucursal_id', '=', 'sucursales.id')
             ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-            ->select('academias.nombre as nombre_academia', 'users.*', 'sucursales.id', 'users.usuario_tipo')
+            ->select('academias.nombre as nombre_academia', 'users.*', 'users.usuario_tipo')
             ->where('sucursales.id','=', $academia->sucursal_id)
             ->where('users.id','!=',Auth::user()->id)
             ->whereIn('usuarios_tipo.tipo', $array)
             ->distinct('users.id')
         ->get();
 
-        return view('configuracion.sucursales.principal')->with('usuarios', $usuarios);
+        return view('configuracion.administradores.principal')->with('usuarios', $usuarios);
     }
     /**
      * Display a listing of the resource.
@@ -52,7 +84,7 @@ class AdministradorController extends BaseController
      */
     public function create()
     {
-        return view('configuracion.sucursales.create');
+        return view('configuracion.administradores.create');
     }
 
     /**
@@ -151,7 +183,7 @@ class AdministradorController extends BaseController
                 $usuario->nombre = $nombre;
                 $usuario->email = $correo;
                 $usuario->como_nos_conociste_id = 1;
-                $usuario->confirmation_token = str_random(40);
+                // $usuario->confirmation_token = str_random(40);
                 $usuario->password = bcrypt($request->password);
                 $usuario->usuario_tipo = $request->usuario_tipo;
 
@@ -182,6 +214,59 @@ class AdministradorController extends BaseController
             
         }
         
+    }
+
+
+    public function eliminados()
+    {
+
+        $academia = Academia::find(Auth::user()->academia_id);
+        $in = array(1, 5, 6);
+
+        $usuarios = User::join('academias', 'users.academia_id', '=', 'academias.id')
+            ->join('sucursales', 'academias.sucursal_id', '=', 'sucursales.id')
+            ->join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->select('users.*', 'academias.nombre as nombre_academia', 'users.usuario_tipo')
+            ->where('sucursales.id','=', $academia->sucursal_id)
+            ->where('users.id','!=',Auth::user()->id)
+            ->where('users.estatus',0)
+            ->whereIn('usuarios_tipo.tipo', $in)
+            ->distinct('users.id')
+        ->get();
+
+        $array = array();
+
+        foreach($usuarios as $usuario){
+
+            $administrador = User::find($usuario->deleted_at_usuario_id);
+
+            if($administrador){
+                $administrador = $administrador->nombre . ' ' . $administrador->apellido;
+            }else{
+                $administrador = '';
+            }
+
+            $collection=collect($usuario);     
+            $usuario_array = $collection->toArray();
+            $usuario_array['administrador']=$administrador;
+            $array[] = $usuario_array;
+        }
+
+        return view('configuracion.administradores.eliminados')->with('usuarios', $array);
+    }
+
+    public function restore($id)
+    {
+        $usuario = User::find($id);
+        $usuario->deleted_at_usuario_id = '';
+        $usuario->deleted_at_fecha = '';
+        $usuario->estatus = 1;
+
+        if($usuario->save()){
+            return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
     }
 
     /**
@@ -225,16 +310,126 @@ class AdministradorController extends BaseController
      * @return \Illuminate\Http\Response
      */
 
-    public function destroy($id)
+    public function deshabilitar($id)
     {
 
         $usuario = User::find($id);
         $usuario->estatus = 0;
+        $usuario->deleted_at_usuario_id = Auth::user()->id;
+        $usuario->deleted_at_fecha = Carbon::now()->toDateString();
         
         if($usuario->save()){
             return response()->json(['mensaje' => '¡Excelente! El alumno ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function destroy($id){
+
+        $usuario = User::find($id);
+
+        if($usuario){
+
+            $usuarios_tipo = UsuarioTipo::where('usuario_id',$usuario->id)->get();
+
+            foreach($usuarios_tipo as $usuario_tipo){
+                if($usuario_tipo->tipo == 2 || $usuario_tipo->tipo == 4){
+
+                    $alumno_id = $usuario_tipo->tipo_id;
+
+                    $in = array(2,4);
+                    $delete = ItemsFacturaProforma::where('usuario_id',$alumno_id)->where('usuario_tipo',1)->forceDelete();
+                    $evaluaciones = Evaluacion::where('alumno_id',$alumno_id)->get();
+
+                    foreach($evaluaciones as $evaluacion){
+                        $detalle_evaluacion = DetalleEvaluacion::where('evaluacion_id',$evaluacion->id)->forceDelete();
+                    }
+
+                    $delete = Evaluacion::where('alumno_id',$alumno_id)->forceDelete();        
+                    $delete = AlumnoRemuneracion::where('alumno_id', $alumno_id)->forceDelete();
+
+                    $facturas = Factura::where('usuario_id',$alumno_id)->where('usuario_tipo',1)->get();
+
+                    foreach($facturas as $factura)
+                    {
+                        $delete = ItemsFactura::where('factura_id',$factura->id)->forceDelete();
+                        $delete = Pago::where('factura_id',$factura->id)->forceDelete();
+                    }
+
+                    $delete = Factura::where('usuario_id',$alumno_id)->where('usuario_tipo',1)->forceDelete();
+
+                    $acuerdos = Acuerdo::where('usuario_id',$alumno_id)->where('usuario_tipo',1)->get();
+
+                    foreach($acuerdos as $acuerdo)
+                    {
+                        $delete = ItemsAcuerdo::where('acuerdo_id',$acuerdo->id)->forceDelete();
+                    }
+
+                    $delete = Acuerdo::where('usuario_id',$alumno_id)->where('usuario_tipo',1)->forceDelete();
+
+                    $presupuestos = Presupuesto::where('alumno_id',$alumno_id)->get();
+
+                    foreach($presupuestos as $presupuesto)
+                    {
+                        $delete = ItemsPresupuesto::where('presupuesto_id',$presupuesto->id)->forceDelete();
+                    }
+                    $delete = Presupuesto::where('alumno_id',$alumno_id)->forceDelete();
+                    $delete = InscripcionClaseGrupal::where('alumno_id',$alumno_id)->forceDelete();
+                    $delete = InscripcionTaller::where('alumno_id',$alumno_id)->forceDelete();
+                    $clases_personalizadas = InscripcionClasePersonalizada::where('alumno_id',$alumno_id)->get();
+                    foreach($clases_personalizadas as $clase_personalizada)
+                    {
+                        $delete = HorarioClasePersonalizada::where('clase_personalizada_id',$clase_personalizada->id)->forceDelete();
+                    }
+
+                    $delete = InscripcionClasePersonalizada::where('alumno_id',$alumno_id)->forceDelete();
+                    $delete = Asistencia::where('alumno_id',$alumno_id)->forceDelete();
+                    $delete = Cita::where('alumno_id',$alumno_id)->forceDelete();
+                    $delete = PerfilEvaluativo::where('usuario_id', $alumno_id)->forceDelete();
+                    $delete = CredencialAlumno::where('alumno_id',$alumno_id)->forceDelete();
+                    $delete = Visitante::where('alumno_id',$alumno_id)->forceDelete();
+
+                    $delete = Alumno::withTrashed()->where('id',$alumno_id)->forceDelete();
+                }else if($usuario_tipo->tipo == 3){
+
+                    $instructor_id = $usuario_tipo->tipo_id;
+
+                    $delete = CredencialInstructor::where('instructor_id',$instructor_id)->delete();
+                    $delete = Instructor::withTrashed()->where('id',$instructor_id)->forceDelete();
+                }else if($usuario_tipo->tipo == 8){
+
+                    $staff_id = $usuario_tipo->tipo_id;
+
+                    $delete = Staff::withTrashed()->where('id',$staff_id)->forceDelete();
+                }
+            }
+
+            // $delete = Familia::where('representante_id',$usuario->id)->forceDelete();
+
+            $notificaciones_usuarios = NotificacionUsuario::where('id_usuario', $usuario->id)->get();
+
+            foreach($notificaciones_usuarios as $notificacion_usuario)
+            {
+                $notificacion = Notificacion::find($notificacion_usuario->id_notificacion);
+                if($notificacion->tipo_evento == 5){
+                    $notificacion->delete();
+                }
+            }
+
+            $delete = NotificacionUsuario::where('id_usuario', $usuario->id)->forceDelete();
+            $delete = Incidencia::where('usuario_id', $usuario->id)->forceDelete();
+            $delete = Sugerencia::where('usuario_id', $usuario->id)->forceDelete();
+            $delete = VencimientoClaseGrupal::where('usuario_id', $usuario->id)->forceDelete();
+            $delete = UsuarioTipo::where('usuario_id', $usuario->id)->delete();
+            
+            if($usuario->delete()){
+                return response()->json(['mensaje' => '¡Excelente! El usuario ha sido eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+            }
+        }else{
+            return response()->json(['mensaje' => '¡Excelente! El usuario ha sido eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }
     }
 }

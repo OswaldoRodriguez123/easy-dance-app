@@ -736,7 +736,7 @@ class ConfigClasePersonalizadaController extends BaseController {
             // $clase_personalizada_join = DB::table('clases_personalizadas')
             // ->join('config_especialidades', 'clases_personalizadas.especialidad_id', '=', 'config_especialidades.id')
             // ->join('config_estudios', 'clases_personalizadas.estudio_id', '=', 'config_estudios.id')
-            // ->join('instructores', 'clases_personalizadas.instructor_id', '=', 'instructores.id')
+            // ->leftJoin('instructores', 'clases_personalizadas.instructor_id', '=', 'instructores.id')
             // ->join('alumnos', 'clases_personalizadas.alumno_id', '=', 'alumnos.id')
             // ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre' , 'clases_personalizadas.fecha_inicio as fecha_inicio', 'clases_personalizadas.hora_inicio','clases_personalizadas.hora_final', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'clases_personalizadas.id', 'clases_personalizadas.color_etiqueta', 'clases_personalizadas.tiempo_expiracion')
             // ->where('clases_personalizadas.id', '=', $id)

@@ -41,7 +41,6 @@
                     <div class="card">
                         <div class="card-header">
                             <div class ="col-md-6 text-left">  
-
                                 <ul class="top-menu">
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
@@ -64,8 +63,6 @@
                                         </ul>
                                     </li>
                                 </ul>
-
-
                             </div>
 
                             <div class ="col-md-6 text-right">                                

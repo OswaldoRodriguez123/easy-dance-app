@@ -1660,7 +1660,7 @@ class CampanaController extends BaseController {
             }
 
             $clases_grupales= ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.sexo', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id', 'clases_grupales.instructor_id', 'config_clases_grupales.imagen')
                 ->where('clases_grupales.academia_id', '=' ,  $campaña->academia_id)
                 ->orderBy('clases_grupales.hora_inicio', 'asc')
@@ -2601,7 +2601,7 @@ class CampanaController extends BaseController {
         $campana_id = $explode[1];
 
         $clasegrupal = ClaseGrupal::leftJoin('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->leftleftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'clases_grupales.id as clase_grupal_id', 'instructores.id as instructor_id')
             ->where('clases_grupales.id', '=', $clase_grupal_id)
         ->first();

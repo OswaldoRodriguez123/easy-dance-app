@@ -41,7 +41,7 @@ class TallerController extends BaseController {
     public function index(){
 
         $talleres = Taller::join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
-            ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'talleres.instructor_id', '=', 'instructores.id')
             ->select('talleres.*','config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
             ->where('talleres.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
@@ -256,7 +256,7 @@ class TallerController extends BaseController {
     {
 
         $talleres = Taller::join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
-            ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'talleres.instructor_id', '=', 'instructores.id')
             ->select('talleres.*','config_especialidades.nombre as especialidad', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
             ->where('talleres.academia_id', '=' ,  $id)
         ->get();
@@ -1387,7 +1387,7 @@ class TallerController extends BaseController {
 
         $taller_join = Taller::join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_estudios', 'talleres.estudio_id', '=', 'config_estudios.id')
-            ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'talleres.instructor_id', '=', 'instructores.id')
             ->join('academias', 'talleres.academia_id', '=', 'academias.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'talleres.nombre as taller_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_estudios.nombre as estudio_nombre', 'talleres.hora_inicio','talleres.hora_final', 'talleres.id', 'talleres.cupo_reservacion', 'talleres.fecha_inicio', 'talleres.imagen', 'talleres.descripcion', 'academias.imagen as imagen_academia', 'talleres.link_video', 'talleres.condiciones', 'academias.direccion', 'academias.estado', 'academias.facebook', 'academias.twitter', 'academias.instagram', 'academias.linkedin', 'academias.youtube', 'academias.pagina_web', 'academias.nombre as academia_nombre', 'academias.id as academia_id', 'talleres.costo')
             ->where('talleres.id','=', $id)
@@ -1475,7 +1475,7 @@ class TallerController extends BaseController {
 
         $taller = Taller::join('config_especialidades', 'talleres.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_estudios', 'talleres.estudio_id', '=', 'config_estudios.id')
-            ->join('instructores', 'talleres.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'talleres.instructor_id', '=', 'instructores.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'talleres.fecha_inicio as fecha_inicio', 'talleres.fecha_final as fecha_final' , 'talleres.hora_inicio','talleres.hora_final', 'talleres.id', 'talleres.id', 'talleres.nombre', 'talleres.costo', 'talleres.descripcion', 'talleres.cupo_minimo', 'talleres.cupo_maximo' , 'talleres.cupo_reservacion', 'talleres.link_video', 'talleres.imagen', 'talleres.color_etiqueta', 'talleres.condiciones', 'talleres.cantidad_hombres', 'talleres.cantidad_mujeres', 'talleres.boolean_promocionar')
             ->where('talleres.id', '=', $id)
         ->first();
@@ -1488,7 +1488,7 @@ class TallerController extends BaseController {
                 '=', 
                 'config_especialidades.id'
                 )
-            ->join('instructores', 
+            ->leftJoin('instructores', 
                 'horarios_talleres.instructor_id',
                 '=',
                 'instructores.id'

@@ -40,7 +40,7 @@ class MensajeController extends BaseController {
 		->get();
 
 		$clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('clases_grupales.id',
                      'clases_grupales.hora_inicio',
                      'clases_grupales.hora_final',
@@ -109,7 +109,7 @@ class MensajeController extends BaseController {
     	$mensaje = Mensaje::find($id);
 
     	$clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('clases_grupales.id',
                      'clases_grupales.hora_inicio',
                      'clases_grupales.hora_final',

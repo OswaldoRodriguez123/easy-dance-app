@@ -38,6 +38,24 @@
                     
                     <div class="card">
                         <div class="card-header text-right">
+
+                            <div class ="col-md-12 text-left">  
+                                <ul class="top-menu">
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                           <span class="f-15 f-700" style="color:black"> 
+                                                <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                           </span>
+                                        </a>
+                                        <ul class="dropdown-menu dm-icon pull-right">
+                                            <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/configuracion/administradores/eliminados"><i name="eliminados" id="eliminados" class="tm-icon zmdi zmdi-delete boton red f-25 pointer eliminados detalle"></i>&nbsp;Bandeja Eliminados</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
                             <span class="f-16 p-t-0 text-success">Agregar un administrador <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span> 
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_f-administradores f-25"></i> Sección de Administradores</p>

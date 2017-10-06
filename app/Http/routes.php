@@ -196,7 +196,10 @@
 			Route::get('configuracion/administradores','AdministradorController@principal');
 			Route::get('configuracion/administradores/agregar','AdministradorController@create');
 			Route::post('configuracion/administradores/agregar','AdministradorController@store');
-			Route::delete('configuracion/administradores/deshabilitar/{id}', 'AdministradorController@destroy');
+			Route::get('configuracion/administradores/eliminados','AdministradorController@eliminados');
+			Route::delete('configuracion/administradores/deshabilitar/{id}', 'AdministradorController@deshabilitar');
+			Route::post('configuracion/administradores/restablecer/{id}', 'AdministradorController@restore');
+			Route::delete('configuracion/administradores/eliminar/{id}', 'AdministradorController@destroy');
 
 			//INVITAR
 

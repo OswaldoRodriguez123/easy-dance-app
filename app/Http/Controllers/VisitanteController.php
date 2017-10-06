@@ -593,7 +593,7 @@ class VisitanteController extends BaseController {
         $subj = 'Información';
 
         $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.fecha_inicio', 'clases_grupales.id')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
         ->get();

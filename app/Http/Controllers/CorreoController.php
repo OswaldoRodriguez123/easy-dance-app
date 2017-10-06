@@ -52,7 +52,7 @@ class CorreoController extends BaseController {
 		->get();
 
 		$clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('clases_grupales.id',
                      'clases_grupales.hora_inicio',
                      'clases_grupales.hora_final',
@@ -188,7 +188,7 @@ class CorreoController extends BaseController {
 			->get();
 
 			$clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-	            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+	            ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
 	            ->select('clases_grupales.id',
 	                     'clases_grupales.hora_inicio',
 	                     'clases_grupales.hora_final',
@@ -289,7 +289,7 @@ class CorreoController extends BaseController {
     	$correo = Correo::find($id);
 
     	$clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('clases_grupales.id',
                      'clases_grupales.hora_inicio',
                      'clases_grupales.hora_final',

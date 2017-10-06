@@ -103,7 +103,7 @@ class ClasePersonalizadaController extends BaseController {
 
             $clases_personalizadas = InscripcionClasePersonalizada::join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
                 ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
-                ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
+                ->leftJoin('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
                 ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
                 ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
             ->get();
@@ -145,7 +145,7 @@ class ClasePersonalizadaController extends BaseController {
             $horarios_clases_personalizadas = InscripcionClasePersonalizada::join('horarios_clases_personalizadas', 'inscripcion_clase_personalizada.id', '=', 'horarios_clases_personalizadas.clase_personalizada_id')
                 ->join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
                 ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
-                ->join('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
+                ->leftJoin('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
                 ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'horarios_clases_personalizadas.fecha as fecha_inicio', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final')
                 ->where('clases_personalizadas.academia_id','=', Auth::user()->academia_id)
                 ->where('horarios_clases_personalizadas.deleted_at','=', null)
@@ -363,7 +363,7 @@ class ClasePersonalizadaController extends BaseController {
             ->join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
             ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
             ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
-            ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as clase_personalizada_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.id', 'inscripcion_clase_personalizada.fecha_inicio', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
             ->where('inscripcion_clase_personalizada.id','=', $id)
         ->first();
@@ -813,7 +813,7 @@ class ClasePersonalizadaController extends BaseController {
 
         $clase_personalizada_join = InscripcionClasePersonalizada::join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
             ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
-            ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
             ->join('alumnos', 'inscripcion_clase_personalizada.alumno_id', '=', 'alumnos.id')
             ->select('inscripcion_clase_personalizada.*','config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_personalizadas.tiempo_expiracion', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'clases_personalizadas.nombre')
             ->where('inscripcion_clase_personalizada.id', '=', $id)
@@ -838,7 +838,7 @@ class ClasePersonalizadaController extends BaseController {
                     '=', 
                     'config_especialidades.id'
                     )
-                ->join('instructores', 
+                ->leftJoin('instructores', 
                     'horarios_clases_personalizadas.instructor_id',
                     '=',
                     'instructores.id'
@@ -1279,7 +1279,7 @@ class ClasePersonalizadaController extends BaseController {
 
         $clase_personalizada = DB::table('inscripcion_clase_personalizada')
             ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
-            ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
             ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_estudios', 'inscripcion_clase_personalizada.estudio_id', '=', 'config_estudios.id')
             ->select('instructores.nombre as instructor_nombre' , 'instructores.apellido as instructor_apellido', 'config_especialidades.nombre as especialidad_nombre', 'inscripcion_clase_personalizada.hora_inicio', 'inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.fecha_inicio', 'clases_personalizadas.academia_id', 'config_estudios.nombre as estudio_nombre', 'clases_personalizadas.imagen', 'clases_personalizadas.descripcion')
@@ -1357,7 +1357,7 @@ class ClasePersonalizadaController extends BaseController {
     public function agenda($id){
 
         $clase = InscripcionClasePersonalizada::join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
-            ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
             ->join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
             ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre', 'clases_personalizadas.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_especialidades.nombre as especialidad', 'clases_personalizadas.cantidad_horas as horas_asignadas')
             ->where('inscripcion_clase_personalizada.id', '=' ,  $id)
@@ -1365,7 +1365,7 @@ class ClasePersonalizadaController extends BaseController {
 
         $horarios = InscripcionClasePersonalizada::join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
             ->join('horarios_clases_personalizadas', 'inscripcion_clase_personalizada.id', '=', 'horarios_clases_personalizadas.clase_personalizada_id')
-            ->join('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
             ->join('config_especialidades', 'horarios_clases_personalizadas.especialidad_id', '=', 'config_especialidades.id')
             ->select('inscripcion_clase_personalizada.*', 'clases_personalizadas.nombre', 'clases_personalizadas.descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_especialidades.nombre as especialidad', 'horarios_clases_personalizadas.fecha', 'horarios_clases_personalizadas.id', 'horarios_clases_personalizadas.estatus', 'horarios_clases_personalizadas.hora_inicio', 'horarios_clases_personalizadas.hora_final')
             ->where('inscripcion_clase_personalizada.id', '=' ,  $id)

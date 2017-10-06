@@ -83,7 +83,7 @@ class AsistenciaController extends BaseController
 
         $clases_personalizadas = Alumno::join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')
             ->join('inscripcion_clase_personalizada', 'asistencias.tipo_id', '=', 'inscripcion_clase_personalizada.id')
-            ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
             ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
             ->select('asistencias.fecha', 'asistencias.hora', 'clases_personalizadas.nombre as clase', 'alumnos.nombre', 'alumnos.apellido', 'asistencias.tipo', 'asistencias.tipo_id', 'asistencias.id', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor')
             ->where('clases_personalizadas.academia_id','=',Auth::user()->academia_id)
@@ -93,7 +93,7 @@ class AsistenciaController extends BaseController
         $citas = Alumno::join('asistencias', 'asistencias.alumno_id', '=', 'alumnos.id')
             ->join('citas', 'asistencias.tipo_id', '=', 'citas.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
-            ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->select('asistencias.fecha', 'asistencias.hora', 'config_citas.nombre as clase', 'alumnos.nombre', 'alumnos.apellido', 'asistencias.tipo', 'asistencias.tipo_id', 'asistencias.id', 'instructores.nombre as nombre_instructor', 'instructores.apellido as apellido_instructor')
             ->where('citas.academia_id','=',Auth::user()->academia_id)
             ->where('asistencias.tipo','=',4)
@@ -102,7 +102,7 @@ class AsistenciaController extends BaseController
         $instructores = AsistenciaInstructor::join('clases_grupales', 'asistencias_instructor.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('academias', 'asistencias_instructor.academia_id', '=', 'academias.id')
-            ->join('instructores', 'asistencias_instructor.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'asistencias_instructor.instructor_id', '=', 'instructores.id')
             ->select('asistencias_instructor.fecha', 'asistencias_instructor.hora', 'config_clases_grupales.nombre as clase', 'instructores.nombre', 'instructores.apellido', 'asistencias_instructor.hora_salida')
             ->where('academias.id','=',Auth::user()->academia_id)
         ->get();
@@ -398,7 +398,7 @@ class AsistenciaController extends BaseController
 
         $clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
           ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'inscripcion_clase_grupal.id')
-          ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+          ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
           ->select('clases_grupales.*', 'config_clases_grupales.nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
           ->where('inscripcion_clase_grupal.alumno_id','=',$usuario_id)
         ->get();
@@ -406,7 +406,7 @@ class AsistenciaController extends BaseController
         $horarios_clase_grupales = HorarioClaseGrupal::join('clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
           ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'inscripcion_clase_grupal.id')
           ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-          ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
+          ->leftJoin('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
           ->select('horarios_clases_grupales.*', 'config_clases_grupales.nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido')
           ->where('inscripcion_clase_grupal.alumno_id','=',$usuario_id)
         ->get();
@@ -705,7 +705,7 @@ class AsistenciaController extends BaseController
 
 	        $inscripcion = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
     	            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-    	            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+    	            ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
     	            ->select('instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_clases_grupales.nombre', 'clases_grupales.fecha_inicio', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id')
     	            ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
     	            ->orderBy('inscripcion_clase_grupal.fecha_inscripcion', 'desc')
@@ -887,7 +887,7 @@ class AsistenciaController extends BaseController
       $claseGrupal= ClaseGrupal::join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
         ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
         ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
-        ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+        ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
         ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id')
         ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
         ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
@@ -896,7 +896,7 @@ class AsistenciaController extends BaseController
 
       $horarios_clase_grupales= HorarioClaseGrupal::join('config_especialidades', 'horarios_clases_grupales.especialidad_id', '=', 'config_especialidades.id')
           ->join('config_estudios', 'horarios_clases_grupales.estudio_id', '=', 'config_estudios.id')
-          ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
+          ->leftJoin('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
           ->join('clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
           ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
           ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'horarios_clases_grupales.hora_inicio','horarios_clases_grupales.hora_final', 'horarios_clases_grupales.fecha as fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id', 'horarios_clases_grupales.id as horario_id')
@@ -1010,7 +1010,7 @@ class AsistenciaController extends BaseController
       $clases_grupales= ClaseGrupal::join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
         ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
         ->join('config_estudios', 'clases_grupales.estudio_id', '=', 'config_estudios.id')
-        ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+        ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
         ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id')
         ->where('clases_grupales.academia_id', '=' ,  Auth::user()->academia_id)
         ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
@@ -1019,7 +1019,7 @@ class AsistenciaController extends BaseController
 
       $horarios_clase_grupales= HorarioClaseGrupal::join('config_especialidades', 'horarios_clases_grupales.especialidad_id', '=', 'config_especialidades.id')
         ->join('config_estudios', 'horarios_clases_grupales.estudio_id', '=', 'config_estudios.id')
-        ->join('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
+        ->leftJoin('instructores', 'horarios_clases_grupales.instructor_id', '=', 'instructores.id')
         ->join('clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
         ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
         ->select('config_especialidades.nombre as especialidad_nombre', 'config_clases_grupales.nombre as nombre', 'config_clases_grupales.descripcion as descripcion', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'config_estudios.nombre as estudio_nombre', 'horarios_clases_grupales.hora_inicio','horarios_clases_grupales.hora_final', 'horarios_clases_grupales.fecha as fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.color_etiqueta', 'clases_grupales.id', 'horarios_clases_grupales.id as horario_id')
@@ -1199,7 +1199,7 @@ class AsistenciaController extends BaseController
 
     $clases_personalizadas = InscripcionClasePersonalizada::join('config_especialidades', 'inscripcion_clase_personalizada.especialidad_id', '=', 'config_especialidades.id')
       ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
-      ->join('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
+      ->leftJoin('instructores', 'inscripcion_clase_personalizada.instructor_id', '=', 'instructores.id')
       ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','inscripcion_clase_personalizada.hora_inicio','inscripcion_clase_personalizada.hora_final', 'inscripcion_clase_personalizada.id', 'inscripcion_clase_personalizada.fecha_inicio', 'inscripcion_clase_personalizada.boolean_alumno_aceptacion', 'clases_personalizadas.color_etiqueta', 'clases_personalizadas.descripcion')
       ->where('inscripcion_clase_personalizada.alumno_id','=', $request->id)
       ->where('inscripcion_clase_personalizada.fecha_inicio', '>=', Carbon::now()->format('Y-m-d'))
@@ -1208,7 +1208,7 @@ class AsistenciaController extends BaseController
     $horarios = InscripcionClasePersonalizada::join('horarios_clases_personalizadas', 'horarios_clases_personalizadas.clase_personalizada_id', '=', 'inscripcion_clase_personalizada.id')
       ->join('config_especialidades', 'horarios_clases_personalizadas.especialidad_id', '=', 'config_especialidades.id')
       ->join('clases_personalizadas', 'inscripcion_clase_personalizada.clase_personalizada_id', '=', 'clases_personalizadas.id')
-      ->join('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
+      ->leftJoin('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
       ->select('config_especialidades.nombre as especialidad_nombre', 'clases_personalizadas.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','horarios_clases_personalizadas.hora_inicio','horarios_clases_personalizadas.hora_final', 'inscripcion_clase_personalizada.id', 'horarios_clases_personalizadas.fecha', 'inscripcion_clase_personalizada.boolean_alumno_aceptacion', 'clases_personalizadas.color_etiqueta', 'clases_personalizadas.descripcion')
       ->where('inscripcion_clase_personalizada.alumno_id','=', $request->id)
       ->where('horarios_clases_personalizadas.fecha', '>=', Carbon::now()->format('Y-m-d'))
@@ -1333,7 +1333,7 @@ class AsistenciaController extends BaseController
     // $fechaActual->tz = $geoip->getTimezone();
       
     $citas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
-      ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
+      ->leftJoin('instructores', 'citas.instructor_id', '=', 'instructores.id')
       ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
       ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as nombre', 'citas.color_etiqueta')
       ->where('citas.alumno_id','=', $request->id)

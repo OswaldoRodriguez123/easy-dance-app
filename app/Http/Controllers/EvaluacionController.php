@@ -33,7 +33,7 @@ class EvaluacionController extends BaseController
     {
         $id_evaluacion=Session::get('id_evaluar');
 
-        $evaluaciones = Evaluacion::join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
+        $evaluaciones = Evaluacion::leftJoin('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
             ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen', 'alumnos.sexo')
@@ -74,7 +74,7 @@ class EvaluacionController extends BaseController
 
     public function evaluaciones($id)
     {
-        $evaluaciones = Evaluacion::join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
+        $evaluaciones = Evaluacion::leftJoin('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
             ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen', 'alumnos.sexo')
@@ -118,7 +118,7 @@ class EvaluacionController extends BaseController
 
         $in = array(2, 4);
 
-        $evaluaciones = Evaluacion::join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
+        $evaluaciones = Evaluacion::leftJoin('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
             ->join('usuarios_tipo', 'usuarios_tipo.tipo_id', '=', 'alumnos.id')
@@ -161,7 +161,7 @@ class EvaluacionController extends BaseController
 
     public function evaluaciones_alumno($id){
 
-        $evaluacion_join = Evaluacion::join('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
+        $evaluacion_join = Evaluacion::leftJoin('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
             ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen','alumnos.sexo')
@@ -472,7 +472,7 @@ class EvaluacionController extends BaseController
         $fecha_ingreso = Carbon::createFromFormat('Y-m-d H:i:s', $alumno->created_at)->format('Y-m-d');
 
         $instructor = DB::table('evaluaciones')
-                        ->join('instructores', 'evaluaciones.instructor_id','=','instructores.id')
+                        ->leftJoin('instructores', 'evaluaciones.instructor_id','=','instructores.id')
                         ->select('instructores.nombre AS instructor_nombre', 'instructores.apellido AS instructor_apellido', 'instructores.telefono', 'instructores.celular', 'instructores.facebook', 'instructores.twitter', 'instructores.instagram', 'instructores.linkedin', 'instructores.youtube', 'instructores.pagina_web')
                         ->where('evaluaciones.id','=',$id)
                     ->first();
@@ -485,7 +485,7 @@ class EvaluacionController extends BaseController
 
         $examen = DB::table('evaluaciones')
                     ->join('examenes', 'evaluaciones.examen_id','=','examenes.id')
-                    ->join('instructores', 'evaluaciones.instructor_id','=','instructores.id')
+                    ->leftJoin('instructores', 'evaluaciones.instructor_id','=','instructores.id')
                     ->join('config_tipo_examenes', 'examenes.tipo','=','config_tipo_examenes.id')
                     ->select('evaluaciones.*', 'examenes.genero','evaluaciones.porcentaje', 'config_tipo_examenes.nombre', 'examenes.proxima_fecha', 'instructores.nombre AS instructor_nombre', 'instructores.apellido AS instructor_apellido', 'instructores.telefono', 'instructores.celular', 'instructores.facebook', 'instructores.twitter', 'instructores.instagram', 'instructores.linkedin', 'instructores.youtube', 'instructores.pagina_web', 'examenes.id as examen_id')
                     ->where('evaluaciones.id','=',$id)
@@ -495,7 +495,7 @@ class EvaluacionController extends BaseController
                 ->join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                 ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio')
                 ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
                 ->where('inscripcion_clase_grupal.deleted_at', null)
@@ -598,7 +598,7 @@ class EvaluacionController extends BaseController
         
         $evaluacion = Evaluacion::join('examenes', 'evaluaciones.examen_id', '=', 'examenes.id')
             ->join('alumnos', 'evaluaciones.alumno_id', '=', 'alumnos.id')
-            ->join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'examenes.instructor_id', '=', 'instructores.id')
             ->join('config_tipo_examenes', 'examenes.tipo', '=', 'config_tipo_examenes.id')
             ->join('academias', 'examenes.academia_id', '=', 'academias.id')
             ->select('evaluaciones.*', 'examenes.nombre', 'instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'config_tipo_examenes.nombre as tipo_de_evaluacion', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.id as alumno_id', 'alumnos.sexo', 'academias.imagen', 'academias.id as academia_id')

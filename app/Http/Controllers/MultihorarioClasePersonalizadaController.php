@@ -270,7 +270,7 @@ class MultihorarioClasePersonalizadaController extends BaseController
             ->join('inscripcion_clase_personalizada', 'horarios_clases_personalizadas.clase_personalizada_id', '=', 'inscripcion_clase_personalizada.id')
             ->join('config_especialidades', 'horarios_clases_personalizadas.especialidad_id', '=', 'config_especialidades.id')
             ->join('config_estudios', 'horarios_clases_personalizadas.estudio_id', '=', 'config_estudios.id')
-            ->join('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'horarios_clases_personalizadas.instructor_id', '=', 'instructores.id')
             ->select('config_especialidades.nombre as especialidad_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_estudios.nombre as estudio_nombre', 'horarios_clases_personalizadas.hora_inicio','horarios_clases_personalizadas.hora_final', 'horarios_clases_personalizadas.id' , 'horarios_clases_personalizadas.fecha', 'inscripcion_clase_personalizada.id as clase_personalizada_id', 'horarios_clases_personalizadas.color_etiqueta')
             ->where('horarios_clases_personalizadas.id', '=', $id)
         ->first();

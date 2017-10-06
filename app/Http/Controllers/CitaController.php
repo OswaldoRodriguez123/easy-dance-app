@@ -31,7 +31,7 @@ class CitaController extends BaseController {
 	public function calendario(Request $request){
 
         $citas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
-            ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
             ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre', 'citas.color_etiqueta')
             ->where('citas.academia_id','=', Auth::user()->academia_id)
@@ -69,7 +69,7 @@ class CitaController extends BaseController {
         }
 
         $citas = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
-            ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
             ->select('citas.*','alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'alumnos.sexo', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'config_citas.nombre as tipo_nombre', 'alumnos.fecha_nacimiento', 'alumnos.id as alumno_id', 'alumnos.celular','alumnos.correo')
             ->where('citas.academia_id','=', Auth::user()->academia_id)
@@ -142,7 +142,7 @@ class CitaController extends BaseController {
     public function operar($id){
 
         $cita = Cita::join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
-            ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'citas.instructor_id', '=', 'instructores.id')
             ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
             ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.fecha', 'citas.tipo_id', 'config_citas.nombre as tipo_nombre', 'citas.color_etiqueta')
             ->where('citas.id','=', $id)
@@ -371,7 +371,7 @@ class CitaController extends BaseController {
             $cita = DB::table('citas')
                 ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
                 ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
-                ->join('instructores', 'citas.instructor_id', '=', 'instructores.id')
+                ->leftJoin('instructores', 'citas.instructor_id', '=', 'instructores.id')
                 ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_citas.nombre as tipo_nombre', 'citas.fecha', 'citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.color_etiqueta')
                 ->where('citas.id', '=', $id)
                 ->first();

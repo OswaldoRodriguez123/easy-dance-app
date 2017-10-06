@@ -27,7 +27,7 @@ class CoreografiaController extends BaseController {
  	public function principal(){
 
         $coreografias = DB::table('coreografias')
-            ->join('instructores', 'coreografias.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'coreografias.instructor_id', '=', 'instructores.id')
             ->join('config_coreografias', 'coreografias.tipo', '=', 'config_coreografias.id')
             ->join('fiestas', 'coreografias.fiesta_id', '=', 'fiestas.id')
             ->select('coreografias.id as id', 'coreografias.nombre_coreografia', 'instructores.nombre as nombre_coreografo', 'instructores.apellido as apellido_coreografo', 'fiestas.nombre as fiesta_nombre', 'config_coreografias.nombre as tipo')
@@ -206,7 +206,7 @@ class CoreografiaController extends BaseController {
     public function edit($id)
     {
         $coreografia = DB::table('coreografias')
-            ->join('instructores', 'coreografias.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'coreografias.instructor_id', '=', 'instructores.id')
             ->join('config_coreografias', 'coreografias.tipo', '=', 'config_coreografias.id')
             ->join('fiestas', 'coreografias.fiesta_id', '=', 'fiestas.id')
             ->select('coreografias.*','instructores.nombre as coreografo_nombre', 'instructores.apellido as coreografo_apellido', 'fiestas.nombre as fiesta_nombre', 'config_coreografias.nombre as tipo')

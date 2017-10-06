@@ -814,7 +814,7 @@ class AlumnoController extends BaseController
             $clases_grupales = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
                 ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.id', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.costo_mensualidad', 'inscripcion_clase_grupal.id as inscripcion_id', 'inscripcion_clase_grupal.fecha_pago', 'inscripcion_clase_grupal.boolean_programacion', 'inscripcion_clase_grupal.boolean_franela', 'inscripcion_clase_grupal.razon_entrega',  'inscripcion_clase_grupal.talla_franela', 'clases_grupales.fecha_inicio')
                 ->where('inscripcion_clase_grupal.alumno_id', $id)
                 ->where('clases_grupales.deleted_at', null)
@@ -1232,7 +1232,7 @@ class AlumnoController extends BaseController
 
             $total = 0;
 
-            $credenciales = CredencialAlumno::leftJoin('instructores', 'credenciales_alumno.instructor_id', '=', 'instructores.id')
+            $credenciales = CredencialAlumno::leftleftJoin('instructores', 'credenciales_alumno.instructor_id', '=', 'instructores.id')
                 ->join('alumnos', 'credenciales_alumno.alumno_id', '=', 'alumnos.id')
                 ->select('credenciales_alumno.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
                 ->where('credenciales_alumno.alumno_id',$id)
@@ -1386,7 +1386,7 @@ class AlumnoController extends BaseController
     public function credenciales_general()
     {   
 
-        $credenciales = CredencialAlumno::leftJoin('instructores', 'credenciales_alumno.instructor_id', '=', 'instructores.id')
+        $credenciales = CredencialAlumno::leftleftJoin('instructores', 'credenciales_alumno.instructor_id', '=', 'instructores.id')
             ->join('alumnos', 'credenciales_alumno.alumno_id', '=', 'alumnos.id')
             ->select('credenciales_alumno.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
             ->where('alumnos.academia_id',Auth::user()->academia_id)
@@ -2633,7 +2633,7 @@ class AlumnoController extends BaseController
 
         }
 
-        $delete = Alumno::withTrashed()->where('id',$id)->forceDelete();
+        $delete = Alumno::withTrashed()->find($id)->forceDelete();
 
         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
         

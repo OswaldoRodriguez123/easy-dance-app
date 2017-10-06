@@ -34,7 +34,7 @@ class ExamenController extends BaseController {
 
     public function principal()
     {
-        $examenes = Examen::join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
+        $examenes = Examen::leftJoin('instructores', 'examenes.instructor_id', '=', 'instructores.id')
             ->select('examenes.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id')
             ->where('examenes.academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
@@ -55,7 +55,7 @@ class ExamenController extends BaseController {
         }
 
         $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
@@ -133,7 +133,7 @@ class ExamenController extends BaseController {
         }
 
         $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio')
             ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
             ->where('clases_grupales.deleted_at', '=', null)
@@ -547,7 +547,7 @@ class ExamenController extends BaseController {
     public function edit($id)
     {
 
-        $examen_join = Examen::join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
+        $examen_join = Examen::leftJoin('instructores', 'examenes.instructor_id', '=', 'instructores.id')
             ->join('config_tipo_examenes', 'examenes.tipo', '=', 'config_tipo_examenes.id')
             ->select('examenes.*','instructores.nombre as instructor_nombre',
                 'instructores.apellido as instructor_apellido', 'config_tipo_examenes.nombre as tipo')
@@ -561,7 +561,7 @@ class ExamenController extends BaseController {
             $config_examenes = ConfigTipoExamen::all();
 
             $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->join('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+                ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
                 ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio')
                 ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
                 ->where('clases_grupales.deleted_at', '=', null)
@@ -633,7 +633,7 @@ class ExamenController extends BaseController {
 
     public function evaluar($id){   
         
-        $examen = Examen::join('instructores', 'examenes.instructor_id', '=', 'instructores.id')
+        $examen = Examen::leftJoin('instructores', 'examenes.instructor_id', '=', 'instructores.id')
             ->join('config_tipo_examenes', 'examenes.tipo', '=', 'config_tipo_examenes.id')
             ->select('examenes.*','instructores.nombre as instructor_nombre','instructores.apellido as instructor_apellido', 'config_tipo_examenes.nombre as tipo_de_evaluacion')
             ->where('examenes.id', '=', $id)
