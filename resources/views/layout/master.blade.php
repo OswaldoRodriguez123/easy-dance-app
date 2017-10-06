@@ -10,7 +10,7 @@
 			<!-- Vendor CSS -->
 
 			<link href="{{url('/')}}/assets/vendors/bower_components/animate.css/animate.min.css" rel="stylesheet">
-      <link href="{{url('/')}}/assets/css/bootstrap-dropdownhover.min.css" rel="stylesheet">
+      <link href="{{url('/')}}/assets/css/bootstrap-dropdownhover.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css" rel="stylesheet">
 			<link href="{{url('/')}}/assets/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">
@@ -261,7 +261,7 @@
 		
         <script src="{{url('/')}}/assets/vendors/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="{{url('/')}}/assets/js/bootstrap-dropdownhover.min.js"></script>
+        <script src="{{url('/')}}/assets/js/bootstrap-dropdownhover.js"></script>
         <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
         <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
         <script src="{{url('/')}}/assets/vendors/bower_components/moment/min/moment.min.js"></script>

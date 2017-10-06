@@ -165,7 +165,7 @@
                         </div>
                     </li>
       
-                    <li class="dropdown" id="dropdown_perfil">
+                    <li class="dropdown static" id="dropdown_perfil">
 
                         <a href="#" style="color:white" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
 
