@@ -591,46 +591,46 @@ class VisitanteController extends BaseController {
 
         $array = array();
         foreach($visitantes as $visitante){
+            if($visitante->rapidez || $visitante->calidad || $visitante->satisfaccion || $visitante->disponibilidad){
+                $fecha = Carbon::createFromFormat('Y-m-d', $visitante->fecha_encuesta);
+                $i = $fecha->dayOfWeek;
 
-            $fecha = Carbon::createFromFormat('Y-m-d', $visitante->fecha_encuesta);
-            $i = $fecha->dayOfWeek;
+                if($i == 1){
 
-            if($i == 1){
+                  $dia = 'Lunes';
 
-              $dia = 'Lunes';
+                }else if($i == 2){
 
-            }else if($i == 2){
+                  $dia = 'Martes';
 
-              $dia = 'Martes';
+                }else if($i == 3){
 
-            }else if($i == 3){
+                  $dia = 'Miercoles';
 
-              $dia = 'Miercoles';
+                }else if($i == 4){
 
-            }else if($i == 4){
+                  $dia = 'Jueves';
 
-              $dia = 'Jueves';
+                }else if($i == 5){
 
-            }else if($i == 5){
+                  $dia = 'Viernes';
 
-              $dia = 'Viernes';
+                }else if($i == 6){
 
-            }else if($i == 6){
+                  $dia = 'Sabado';
 
-              $dia = 'Sabado';
+                }else if($i == 0){
 
-            }else if($i == 0){
+                  $dia = 'Domingo';
 
-              $dia = 'Domingo';
+                }
 
+                $collection=collect($visitante);     
+                $visitante_array = $collection->toArray();
+
+                $visitante_array['dia']=$dia;
+                $array[$visitante->id] = $visitante_array;
             }
-
-            $collection=collect($visitante);     
-            $visitante_array = $collection->toArray();
-
-            $visitante_array['dia']=$dia;
-            $array[$visitante->id] = $visitante_array;
-
         }
 
         return view('participante.visitante.encuestas')->with(['visitantes' => $array]);
