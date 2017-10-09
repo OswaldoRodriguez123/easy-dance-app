@@ -1248,7 +1248,7 @@ class AlumnoController extends BaseController
 
             $total = 0;
 
-            $credenciales = CredencialAlumno::leftleftJoin('instructores', 'credenciales_alumno.instructor_id', '=', 'instructores.id')
+            $credenciales = CredencialAlumno::leftJoin('instructores', 'credenciales_alumno.instructor_id', '=', 'instructores.id')
                 ->join('alumnos', 'credenciales_alumno.alumno_id', '=', 'alumnos.id')
                 ->select('credenciales_alumno.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
                 ->where('credenciales_alumno.alumno_id',$id)
@@ -1402,7 +1402,7 @@ class AlumnoController extends BaseController
     public function credenciales_general()
     {   
 
-        $credenciales = CredencialAlumno::leftleftJoin('instructores', 'credenciales_alumno.instructor_id', '=', 'instructores.id')
+        $credenciales = CredencialAlumno::leftJoin('instructores', 'credenciales_alumno.instructor_id', '=', 'instructores.id')
             ->join('alumnos', 'credenciales_alumno.alumno_id', '=', 'alumnos.id')
             ->select('credenciales_alumno.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
             ->where('alumnos.academia_id',Auth::user()->academia_id)

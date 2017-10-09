@@ -2601,7 +2601,7 @@ class CampanaController extends BaseController {
         $campana_id = $explode[1];
 
         $clasegrupal = ClaseGrupal::leftJoin('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->leftleftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('config_clases_grupales.*', 'clases_grupales.fecha_inicio_preferencial', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final', 'clases_grupales.id as clase_grupal_id', 'instructores.id as instructor_id')
             ->where('clases_grupales.id', '=', $clase_grupal_id)
         ->first();
