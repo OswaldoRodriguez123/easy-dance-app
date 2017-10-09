@@ -1969,7 +1969,14 @@ class UsuarioController extends BaseController {
                         $total_credenciales = $total_credenciales + $credencial_alumno->cantidad;
                     }
 
-                    $puntos_referidos = AlumnoRemuneracion::where('alumno_id',$usuario_id)->sum('remuneracion');
+                    $puntos_referidos = AlumnoRemuneracion::where('alumno_id',$usuario_id)
+                        ->where('fecha_vencimiento','<=',Carbon::today())
+                    ->sum('remuneracion');
+
+                    if(!$puntos_referidos){
+                        $puntos_referidos = 0;
+                    }
+
 
                     $alumno_examenes = Evaluacion::join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
                         ->join('examenes','evaluaciones.examen_id','=','examenes.id')
