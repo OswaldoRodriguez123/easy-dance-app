@@ -588,7 +588,7 @@ class VisitanteController extends BaseController {
 
         $visitantes = Visitante::where('academia_id', '=' ,  Auth::user()->academia_id)
         ->get();
-
+        $academia = Academia::find(Auth::user()->academia_id);
         $array = array();
         foreach($visitantes as $visitante){
             if($visitante->rapidez || $visitante->calidad || $visitante->satisfaccion || $visitante->disponibilidad){
@@ -625,10 +625,17 @@ class VisitanteController extends BaseController {
 
                 }
 
+                if($academia->tipo_horario == 2){
+                    $hora_encuesta = Carbon::createFromFormat('H:i:s',$visitante->hora_encuesta)->toTimeString();
+                }else{
+                    $hora_encuesta = Carbon::createFromFormat('H:i:s',$visitante->hora_encuesta)->format('g:i a');
+                }
+
                 $collection=collect($visitante);     
                 $visitante_array = $collection->toArray();
 
                 $visitante_array['dia']=$dia;
+                $visitante_array['hora_encuesta']=$hora_encuesta;
                 $array[$visitante->id] = $visitante_array;
             }
         }
