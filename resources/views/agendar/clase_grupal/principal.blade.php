@@ -624,6 +624,21 @@
 
                                 <hr class="linea-morada"> 
 
+                                <div class="col-sm-12">
+                                    <div class="p-t-10 pull-right">
+                                        <label class="radio radio-inline m-r-20">
+                                            <input name="tipo" id="activas" value="1" type="radio" checked>
+                                            <i class="input-helper"></i>  
+                                            Activas <i id="activas2" name="activas2" class="zmdi zmdi-label-alt-outline zmdi-hc-fw c-verde f-20"></i>
+                                        </label>
+                                        <label class="radio radio-inline m-r-20">
+                                            <input name="tipo" id="finalizadas" value="2" type="radio">
+                                            <i class="input-helper"></i>  
+                                            Finalizadas <i id="finalizadas2" name="finalizadas2" class="zmdi zmdi-check zmdi-hc-fw f-20"></i>
+                                        </label>
+                                    </div>
+                                </div>
+
                                 <button class="btn btn-blanco button_izquierda" style="border:none; box-shadow: none"><i class="zmdi zmdi-chevron-left zmdi-hc-fw f-20"></i></button> <span class="span_dia f-20 c-morado">LUNES</span> <button class="btn btn-blanco button_derecha" style="border:none; box-shadow: none"><i class="zmdi zmdi-chevron-right zmdi-hc-fw f-20"></i></button>
 
                                 <div class="clearfix"></div>
@@ -653,6 +668,99 @@
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
+
+                              @foreach($clase_grupal_join as $clase_grupal)
+
+                                <?php 
+                                  $id = $clase_grupal['id'];
+
+                                  $contenido = 'Salon: ' . $clase_grupal['salon'] . '<br>' . 'Cantidad de Participantes: ' . $clase_grupal['cantidad_participantes'] . '<br>' . 'Nivel: ' . $clase_grupal['nivel'] . '<br>';
+                                ?>
+
+                                <tr data-trigger="hover" data-toggle="popover" data-placement="top" data-original-title="Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html="true" data-container="body" title="" data-content="{{$contenido}}" id="{{$id}}" data-imagen="{{$clase_grupal['imagen']}}" data-sexo="{{$clase_grupal['sexo']}}" class="seleccion">
+                                  <td>
+                                    <span style="display: none">{{$clase_grupal['dia_de_semana']}}</span>
+                                    @if($clase_grupal['inicio'] == 1)
+                                      <i class="zmdi zmdi-star zmdi-hc-fw zmdi-hc-fw c-amarillo f-20" data-html="true" data-original-title="" data-content="Esta clase grupal no ha comenzado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
+                                    @endif
+                                  </td>
+                                  <td>
+                                    {{$clase_grupal['clase_grupal_nombre']}}
+                                  </td>
+                                  <td>
+                                    {{$clase_grupal['instructor_nombre']}} {{$clase_grupal['instructor_apellido']}}
+                                  </td>
+                                  <td>
+                                    {{$clase_grupal['especialidad_nombre']}} 
+                                  </td>
+                                  <td>
+                                    {{$clase_grupal['hora_inicio']}} - {{$clase_grupal['hora_final']}}
+                                  </td>
+                                  <td>
+                                    <span style="display: none">{{$clase_grupal['estatus']}}</span>
+                                    <ul class="top-menu">
+                                      <li id = "dropdown_{{$id}}" class="dropdown">
+                                        <a id = "dropdown_toggle_{{$id}}" href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                          <span class="f-15 f-700" style="color:black">
+                                            <i class="zmdi zmdi-wrench f-20 mousedefault" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=""></i>
+                                          </span>
+                                        </a>
+                                        <div class="dropup">
+                                          <ul class="dropdown-menu dm-icon pull-right" style="position:absolute;">
+                                            <li class="hidden-xs">
+                                              <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/nivelaciones/{{$id}}">
+                                                <i class="icon_a-niveles f-16 m-r-10 boton blue"></i>
+                                                &nbsp;Nivelaciones
+                                              </a>
+                                            </li>
+                                            <li class="hidden-xs">
+                                              <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/participantes/{{$id}}">
+                                                <i class="icon_a-participantes f-16 m-r-10 boton blue"></i>
+                                                Participantes
+                                              </a>
+                                            </li>
+                                            <li class="hidden-xs">
+                                              <a class="valorar">
+                                                <i class="icon_a-examen f-16 m-r-10 boton blue"></i>
+                                                Valorar
+                                              </a>
+                                            </li>
+                                            <li class="hidden-xs">
+                                              <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/agenda/{{$id}}">
+                                                <i class="zmdi zmdi-eye f-16 boton blue"></i>
+                                                Ver Agenda
+                                              </a>
+                                            </li>
+                                              <li class="hidden-xs"> <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$id}}">
+                                                <i class="zmdi zmdi-calendar-note f-16 boton blue"></i>
+                                                Multihorario
+                                              </a>
+                                            </li>
+                                            <li class="hidden-xs"> 
+                                              <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$id}}">
+                                                <i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i>
+                                                Ver Progreso
+                                              </a>
+                                            </li>
+                                            <li class="hidden-xs cancelar">
+                                              <a>
+                                                <i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i>
+                                                Cancelar Clase
+                                              </a>
+                                            </li>
+                                            <li class="hidden-xs eliminar">
+                                              <a class="pointer eliminar">
+                                                <i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i>
+                                                Eliminar Clase
+                                              </a>
+                                            </li>
+                                          </ul>
+                                        </div>
+                                      </li>
+                                    </ul>
+                                  </td>
+                                </tr>
+                              @endforeach
 
                                                            
                             </tbody>
@@ -693,7 +801,8 @@
 
         var clases_grupales = <?php echo json_encode($clase_grupal_join);?>;
 
-        var i;
+        var dia;
+        var estatus = 1
         var hoy;
         var pagina = document.location.origin
         var clase_grupal_id
@@ -745,18 +854,18 @@
               }
           });
 
-            i = parseInt("{{$hoy}}");
-            hoy = i;
+            dia = parseInt("{{$hoy}}");
+            hoy = dia;
             
             $(".button_izquierda").removeAttr("disabled");
             $(".button_derecha").removeAttr("disabled");
 
 
-            if(i == 1){
+            if(dia == 1){
                 $(".button_izquierda").attr("disabled","disabled");
             }
 
-            if(i == 7){
+            if(dia == 7){
                 $(".button_derecha").attr("disabled","disabled");
             }
 
@@ -764,7 +873,9 @@
                 processing: true,
                 serverSide: false,
                 pageLength: 25,   
-                order: [[3, 'asc']],
+                paginate: false,   
+                bInfo: false,  
+                order: [[4, 'asc']],
                 fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                   $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
                   $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
@@ -806,9 +917,9 @@
 
             $(".button_derecha").removeAttr("disabled");
 
-            i = i - 1;
+            dia = dia - 1;
 
-            if( i <= 1){
+            if( dia <= 1){
                 $(".button_izquierda").attr("disabled","disabled");
             }else{
                 $(".button_izquierda").removeAttr("disabled");
@@ -820,9 +931,9 @@
 
             $(".button_izquierda").removeAttr("disabled");
 
-            i = i + 1;
+            dia = dia + 1;
 
-            if( i >= 7){
+            if( dia >= 7){
                 $(".button_derecha").attr("disabled","disabled");
             }else{
                 $(".button_derecha").removeAttr("disabled");
@@ -831,15 +942,15 @@
         });
 
         $('.button_dia').click(function(){
-            i = parseInt($(this).val());
+            dia = parseInt($(this).val());
 
-            if( i >= 7){
+            if( dia >= 7){
                 $(".button_derecha").attr("disabled","disabled");
             }else{
                 $(".button_derecha").removeAttr("disabled");
             }
 
-            if( i <= 1){
+            if( dia <= 1){
                 $(".button_izquierda").attr("disabled","disabled");
             }else{
                 $(".button_izquierda").removeAttr("disabled");
@@ -851,35 +962,35 @@
 
         function changeSpan(){
 
-            if(i == hoy){
+            if(dia == hoy){
                 $('.span_dia').text('HOY');
             }
             
-            else if(i == 1){
+            else if(dia == 1){
 
                 $('.span_dia').text('LUNES');
 
-            }else if(i == 2){
+            }else if(dia == 2){
 
                 $('.span_dia').text('MARTES');
 
-            }else if(i == 3){
+            }else if(dia == 3){
 
                 $('.span_dia').text('MIERCOLES');
 
-            }else if(i == 4){
+            }else if(dia == 4){
 
                 $('.span_dia').text('JUEVES');
 
-            }else if(i == 5){
+            }else if(dia == 5){
 
                 $('.span_dia').text('VIERNES');
 
-            }else if(i == 6){
+            }else if(dia == 6){
 
                 $('.span_dia').text('SABADO');
 
-            }else if(i == 7){
+            }else if(dia == 7){
 
                 $('.span_dia').text('DOMINGO');
 
@@ -887,110 +998,14 @@
 
             $(".button_dia").removeAttr("style")
 
-            $(".button_dia[value='"+i+"']").css("background-color", "#2196F3");
-            $(".button_dia[value='"+i+"']").css("color", "white");
+            $(".button_dia[value='"+dia+"']").css("background-color", "#2196F3");
+            $(".button_dia[value='"+dia+"']").css("color", "white");
 
-            rechargeClase();
+            t
+            .columns(0,5)
+            .search(dia,estatus)
+            .draw();
 
-        }
-
-
-        function rechargeClase(){
-
-            t.clear().draw();
-
-            var clase_grupal = [];
-
-             $.each(clases_grupales, function (index, array) {
-                if(i == array.dia_de_semana){
-                    clase_grupal.push(array);
-                }
-                
-            });
-
-            $.each(clase_grupal, function (index, array) {
-
-                operacion = ''
-                if(array.inicio == 0){
-                    inicio = '<i class="zmdi zmdi-star zmdi-hc-fw zmdi-hc-fw c-amarillo f-20" data-html="true" data-original-title="" data-content="Esta clase grupal no ha comenzado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>'
-                }else{
-                    inicio = '';
-                }
-
-                operacion += '<ul class="top-menu">'
-                operacion += '<li id = dropdown_'+array.id+' class="dropdown">' 
-                operacion += '<a id = dropdown_toggle_'+array.id+' href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">' 
-                operacion += '<span class="f-15 f-700" style="color:black">'
-                operacion += '<i class="zmdi zmdi-wrench f-20 mousedefault" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=""></i>'
-                operacion += '</span></a>'
-                operacion += '<div class="dropup">'
-                operacion += '<ul class="dropdown-menu dm-icon pull-right" style="position:absolute;">'
-                operacion += '<li class="hidden-xs">'
-                operacion += '<a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/nivelaciones/'+array.id+'">'
-                operacion += '<i class="icon_a-niveles f-16 m-r-10 boton blue"></i>'
-                operacion += '&nbsp;Nivelaciones'
-                operacion += '</a></li>'
-                operacion += '<li class="hidden-xs">'
-                operacion += '<a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/participantes/'+array.id+'">'
-                operacion += '<i class="icon_a-participantes f-16 m-r-10 boton blue"></i>'
-                operacion += 'Participantes'
-                operacion += '</a></li>'
-                operacion += '<li class="hidden-xs">'
-                operacion += '<a class="valorar">'
-                operacion += '<i class="icon_a-examen f-16 m-r-10 boton blue"></i>'
-                operacion += 'Valorar'
-                operacion += '</a></li>'
-                operacion += '<li class="hidden-xs">'
-                operacion += '<a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/agenda/'+array.id+'">'
-                operacion += '<i class="zmdi zmdi-eye f-16 boton blue"></i>'
-                operacion += 'Ver Agenda'
-                operacion += '</a></li>'
-                operacion += '<li class="hidden-xs"> <a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/multihorario/'+array.id+'">'
-                operacion += '<i class="zmdi zmdi-calendar-note f-16 boton blue"></i>'
-                operacion += 'Multihorario'
-                operacion += '</a></li>'
-                operacion += '<li class="hidden-xs"> <a onclick="procesando()" href="'+pagina+'/agendar/clases-grupales/progreso/'+array.id+'">'
-                operacion += '<i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i>' 
-                operacion += 'Ver Progreso'
-                operacion += '</a></li>'
-                operacion += '<li class="hidden-xs cancelar"><a>'
-                operacion += '<i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i>'
-                operacion += 'Cancelar Clase'
-                operacion += '</a></li>'
-                operacion += '<li class="hidden-xs eliminar"><a class="pointer eliminar">'
-                operacion += '<i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i>'
-                operacion += 'Eliminar Clase'
-                operacion += '</a></li>'
-                operacion += '</ul></div></li></ul>'
-
-                var contenido = 'Salon: ' + array.salon + '<br>'
-                contenido += 'Cantidad de Participantes: ' + array.cantidad_participantes + '<br>'
-                contenido += 'Nivel: ' + array.nivel + '<br>'
-   
-                var rowNode=t.row.add( [
-                ''+inicio+'',
-                ''+array.clase_grupal_nombre+'',
-                ''+array.instructor_nombre+ ' ' +array.instructor_apellido+ '',
-                ''+array.especialidad_nombre+'',
-                ''+array.hora_inicio+ ' - '+array.hora_final+'',
-                ''+operacion+''
-                ] ).draw(false).node();
-                $( rowNode )
-                    .attr('data-trigger','hover')
-                    .attr('data-toggle','popover')
-                    .attr('data-placement','top')
-                    .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;&nbsp;')
-                    .attr('data-html','true')
-                    .attr('data-container','body')
-                    .attr('title','')
-                    .attr('data-content',contenido)
-                    .attr('id',array.id)
-                    .data('imagen',array.imagen)
-                    .data('sexo',array.sexo)
-                    .addClass('seleccion');
-            });
-
-            $('[data-toggle="popover"]').popover(); 
         }
 
     function previa(t){
@@ -1455,6 +1470,27 @@
       window.open(route, '_blank');
       $('.modal').modal('hide')
     }
+
+
+    $("#activas").click(function(){
+        $( "#finalizadas2" ).removeClass( "c-verde" );
+        $( "#activas2" ).addClass( "c-verde" );
+    });
+
+    $("#finalizadas").click(function(){
+        $( "#finalizadas2" ).addClass( "c-verde" );
+        $( "#activas2" ).removeClass( "c-verde" );
+    });
+
+    $("input[name='tipo']").on('change', function(){
+      
+      estatus = $(this).val()  
+
+      t
+        .columns(0,5)
+        .search(dia,estatus)
+        .draw();
+    });
 
     </script>
 @stop

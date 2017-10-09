@@ -937,19 +937,22 @@ class AlumnoController extends BaseController
             ->sum('importe_neto');
 
             $puntos_referidos = AlumnoRemuneracion::where('alumno_id',$id)
-                ->where('fecha_vencimiento','<=',Carbon::today())
+                ->where('fecha_vencimiento','>=',Carbon::today())
             ->sum('remuneracion');
 
             if(!$puntos_referidos){
                 $puntos_referidos = 0;
             }
 
-            $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
-            $credenciales = CredencialAlumno::where('alumno_id',$id)->sum('cantidad');
+            $credenciales = CredencialAlumno::where('alumno_id',$id)
+                ->where('fecha_vencimiento','>=',Carbon::today())
+            ->sum('cantidad');
 
             if(!$credenciales){
                 $credenciales = 0;
             }
+
+            $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
 
             $perfil = PerfilEvaluativo::join('alumnos', 'perfil_evaluativo.usuario_id', '=', 'alumnos.id')
                 ->select('perfil_evaluativo.*', 'alumnos.id as alumno_id')
