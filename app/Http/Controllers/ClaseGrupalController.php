@@ -92,17 +92,18 @@ class ClaseGrupalController extends BaseController {
                 $cantidad_participantes = InscripcionClaseGrupal::where('clase_grupal_id',$clase_grupal->id)->count();
 
                 $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-                $dia_de_semana = $fecha_inicio->dayOfWeek;
-
-                if($dia_de_semana == 0){
-                    $dia_de_semana = 7;
-                } 
-
+                
                 if($fecha_inicio > Carbon::now()){
                     $inicio = 0;
                 }else{
                     $inicio = 1;
                 }
+
+                $dia_de_semana = $fecha_inicio->dayOfWeek;
+
+                if($dia_de_semana == 0){
+                    $dia_de_semana = 7;
+                } 
 
                 $fecha_final = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_final);
 
@@ -155,17 +156,18 @@ class ClaseGrupalController extends BaseController {
                 $cantidad_participantes = InscripcionClaseGrupal::where('clase_grupal_id',$clase_grupal->id)->count();
 
                 $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
-                $dia_de_semana = $fecha_inicio->dayOfWeek;
-
-                if($dia_de_semana == 0){
-                    $dia_de_semana = 7;
-                } 
 
                 if($fecha_inicio > Carbon::now()){
                     $inicio = 0;
                 }else{
                     $inicio = 1;
                 }
+
+                $dia_de_semana = $fecha_inicio->dayOfWeek;
+
+                if($dia_de_semana == 0){
+                    $dia_de_semana = 7;
+                } 
 
                 $fecha_final = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_final);
                 
