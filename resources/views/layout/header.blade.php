@@ -245,7 +245,7 @@
                                             </li>
 
                                             <li class="hidden-xs">
-                                                <a href="{{url('procedimientos')}}"><i class="zmdi icon_a-tutoriales"></i> <span class="m-l-5">Encuestas realizadas</span></a>
+                                                <a href="{{url('encuestas')}}"><i class="icon_a-visitante-presencial"></i> <span class="m-l-5">Encuestas realizadas</span></a>
                                             </li>
 
                                             <li class="hidden-xs">

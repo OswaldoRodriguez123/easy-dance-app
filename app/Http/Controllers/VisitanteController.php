@@ -9,7 +9,6 @@ use App\Instructor;
 use App\ComoNosConociste;
 use App\ConfigEspecialidades;
 use App\DiasDeInteres;
-use App\EncuestaVisitante;
 use App\Llamada;
 use App\Academia;
 use App\Staff;
@@ -540,6 +539,8 @@ class VisitanteController extends BaseController {
             $visitante->calidad = $request->calidad;
             $visitante->satisfaccion = $request->satisfaccion;
             $visitante->disponibilidad = $request->disponibilidad;
+            $visitante->fecha_encuesta = Carbon::now();
+            $visitante->hora_encuesta = Carbon::now();
 
             if($visitante->save()){
 
@@ -580,6 +581,59 @@ class VisitanteController extends BaseController {
         ->first();
 
         return view('participante.visitante.encuesta')->with(['visitante' => $visitante, 'academia' => $academia]);
+    }
+
+    public function encuestas(Request $request)
+    {
+
+        $visitantes = Visitante::where('academia_id', '=' ,  Auth::user()->academia_id)
+        ->get();
+
+        $array = array();
+        foreach($visitantes as $visitante){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $visitante->fecha_encuesta);
+            $i = $fecha->dayOfWeek;
+
+            if($i == 1){
+
+              $dia = 'Lunes';
+
+            }else if($i == 2){
+
+              $dia = 'Martes';
+
+            }else if($i == 3){
+
+              $dia = 'Miercoles';
+
+            }else if($i == 4){
+
+              $dia = 'Jueves';
+
+            }else if($i == 5){
+
+              $dia = 'Viernes';
+
+            }else if($i == 6){
+
+              $dia = 'Sabado';
+
+            }else if($i == 0){
+
+              $dia = 'Domingo';
+
+            }
+
+            $collection=collect($visitante);     
+            $visitante_array = $collection->toArray();
+
+            $visitante_array['dia']=$dia;
+            $array[$visitante->id] = $visitante_array;
+
+        }
+
+        return view('participante.visitante.encuestas')->with(['visitantes' => $array]);
     }
 
     public function enviarCorreo(Request $request){

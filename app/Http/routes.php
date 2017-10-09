@@ -713,6 +713,9 @@
 			Route::put('participante/visitante/update/ocupacion','VisitanteController@updateOcupacion');
 			Route::put('participante/visitante/update/observacion','VisitanteController@updateObservacion');
 
+			//ENCUESTAS 
+
+			Route::get('encuestas', 'VisitanteController@encuestas');
 			Route::get('participante/visitante/impresion/{id}', 'VisitanteController@impresion');
 			Route::post('participante/visitante/impresion', 'VisitanteController@storeImpresion');
 			Route::post('participante/visitante/enviar-correo', 'VisitanteController@enviarCorreo');

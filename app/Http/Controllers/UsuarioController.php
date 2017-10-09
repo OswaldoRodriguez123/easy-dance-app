@@ -735,6 +735,15 @@ class UsuarioController extends BaseController {
 
     public function seleccionar_tipo()
     {
+        $visitantes = Visitante::where('academia_id',Auth::user()->academia_id)->get();
+
+        foreach($visitantes as $visitante){
+            $visitante->fecha_encuesta = $visitante->updated_at;
+            $visitante->hora_encuesta = $visitante->updated_at;
+
+            $visitante->save();
+        }
+
         if(Auth::user()->estatus){
             $usuario_tipo = Session::get('easydance_usuario_tipo');
             
