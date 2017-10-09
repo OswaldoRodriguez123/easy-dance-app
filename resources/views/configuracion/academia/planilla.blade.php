@@ -831,9 +831,9 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="academia-tipo_horario" data-valor="{{$academia->tipo_horario}}">
                                @if($academia->tipo_horario=='1')
-                                 24 Horas </span>
-                               @else
                                  12 Horas </span>
+                               @else
+                                 24 Horas </span>
                                @endif
                              </span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
@@ -990,9 +990,9 @@
       limpiarMensaje();
       var valor=$("#academia-tipo_horario").data('valor');
       if(valor=="1"){
-        $("#24_horas").prop("checked", true);
-      }else{
         $("#12_horas").prop("checked", true);
+      }else{
+        $("#24_horas").prop("checked", true);
       }
     })
 
@@ -1022,9 +1022,9 @@
         $.each(form, function (n, c) {
           if(c.name=='tipo_horario'){
             if(c.value=='1'){              
-              var valor='24 Horas </span>';                              
-            }else if(c.value=='F'){
-              var valor='12 Horas </span>';
+              var valor='12 Horas </span>';                              
+            }else{
+              var valor='24 Horas </span>';
             }
             $("#academia-"+c.name).data('valor',c.value);
             $("#academia-"+c.name).html(valor);
