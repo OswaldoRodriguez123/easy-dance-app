@@ -93,7 +93,7 @@ class ClaseGrupalController extends BaseController {
 
                 $fecha_inicio = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
                 
-                if($fecha_inicio > Carbon::now()){
+                if($fecha_inicio >= Carbon::now()){
                     $inicio = 0;
                 }else{
                     $inicio = 1;
@@ -157,7 +157,7 @@ class ClaseGrupalController extends BaseController {
 
                 $fecha_inicio_clase = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio_clase);
 
-                if($fecha_inicio_clase > Carbon::now()){
+                if($fecha_inicio_clase >= Carbon::now()){
                     $inicio = 0;
                 }else{
                     $inicio = 1;
