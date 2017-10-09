@@ -679,7 +679,7 @@
 
                                 <tr data-trigger="hover" data-toggle="popover" data-placement="top" data-original-title="Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html="true" data-container="body" title="" data-content="{{$contenido}}" id="{{$id}}" data-imagen="{{$clase_grupal['imagen']}}" data-sexo="{{$clase_grupal['sexo']}}" class="seleccion">
                                   <td>
-                                    <span style="display: none">{{$clase_grupal['dia_de_semana']}}</span>
+                                    <span style="display: none">{{$clase_grupal['dia_de_semana']}}{{$clase_grupal['estatus']}}</span>
                                     @if($clase_grupal['inicio'] == 1)
                                       <i class="zmdi zmdi-star zmdi-hc-fw zmdi-hc-fw c-amarillo f-20" data-html="true" data-original-title="" data-content="Esta clase grupal no ha comenzado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
                                     @endif
@@ -697,7 +697,6 @@
                                     {{$clase_grupal['hora_inicio']}} - {{$clase_grupal['hora_final']}}
                                   </td>
                                   <td>
-                                    <span style="display: none">{{$clase_grupal['estatus']}}</span>
                                     <ul class="top-menu">
                                       <li id = "dropdown_{{$id}}" class="dropdown">
                                         <a id = "dropdown_toggle_{{$id}}" href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
@@ -875,7 +874,7 @@
                 pageLength: 25,   
                 paginate: false,   
                 bInfo: false,  
-                order: [[4, 'asc']],
+                order: [[5, 'asc']],
                 fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                   $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
                   $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
@@ -1001,10 +1000,7 @@
             $(".button_dia[value='"+dia+"']").css("background-color", "#2196F3");
             $(".button_dia[value='"+dia+"']").css("color", "white");
 
-            t
-            .columns(0,5)
-            .search(dia,estatus)
-            .draw();
+            search();
 
         }
 
@@ -1483,14 +1479,16 @@
     });
 
     $("input[name='tipo']").on('change', function(){
-      
       estatus = $(this).val()  
-
-      t
-        .columns(0,5)
-        .search(dia,estatus)
-        .draw();
+      search();
     });
+
+    function search(){
+      t
+        .columns(0)
+        .search([dia+''+estatus])
+        .draw();
+    }
 
     </script>
 @stop
