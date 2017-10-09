@@ -34,25 +34,28 @@
                     
                     <div class="card">
                         <div class="card-header text-center">
-                            <span class="f-25 c-morado"><i class="icon_f-consultarle-al-instructor f-25" id="id-clase_grupal_id"></i> Consultarle al profesor </span>                                                         
+                            <span class="f-25 c-morado">
+                              @if($tipo == 1)
+                                <i class="icon_f-consultarle-al-instructor f-25" id="id-clase_grupal_id"></i> Consultarle al profesor 
+                              @else
+                                 <i class="icon_f-consultarle-al-instructor f-25" id="id-clase_grupal_id"></i> Recepción - Administración 
+                              @endif
+                            </span>                                                         
                         </div>
                         
                         <div class="card-body p-b-20">
                           <form name="agregar_sugerencia" id="agregar_sugerencia">
-                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="tipo" value="{{ $tipo }}">
                             <div class="row p-l-10 p-r-10">
                             <hr>
                             <div class="clearfix p-b-15"></div>
-                              
+
+                                @if($tipo == 1)
+                            
                                   <div class="col-sm-12">
 
-                                    @if($tipo == 1)
-                                 
-                                      <label for="nivel_baile" id="id-id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor al que deseas consultarle" title="" data-original-title="Ayuda" data-html="true"></i>
-                                    @else
-
-                                      <label for="nivel_baile" id="id-id">Usuario</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un usuario al que deseas consultarle" title="" data-original-title="Ayuda" data-html="true"></i>
-                                    @endif
+                                      <label for="id" id="id-id">Instructor</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un instructor al que deseas consultarle" title="" data-original-title="Ayuda" data-html="true"></i>
 
                                      <div class="input-group">
                                       <span class="input-group-addon"><i class="icon_a-instructor f-22"></i></span>
@@ -70,18 +73,26 @@
                                       </div>
                                     </div>
                                   </div>
-                                  <div class="has-error" id="error-instructor_id">
+                                  <div class="has-error" id="error-id">
                                     <span >
-                                      <small class="help-block error-span" id="error-instructor_id_mensaje" ></small>                                           
+                                      <small class="help-block error-span" id="error-id_mensaje" ></small>                                           
                                     </span>
                                   </div>
                                </div>
     
                                <div class="clearfix p-b-35"></div>
 
+                               @endif
+
                                <div class="col-sm-12">
-                                 
-                                    <label for="mensaje" id="id-mensaje">Consulta a tu instructor</label> <span class="c-morado f-700 f-16">*</span>  <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección podrás generar consultas o dudas en relación a los niveles de baile, pasos o coreografías" title="" data-original-title="Ayuda"></i>
+                                    
+                                    @if($tipo == 1)
+                                      <label for="mensaje" id="id-mensaje">Consulta a tu instructor</label>
+                                    @else
+                                      <label for="mensaje" id="id-mensaje">Consulta a a recepción</label>
+                                    @endif
+  
+                                    <span class="c-morado f-700 f-16">*</span>  <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Desde esta sección podrás generar consultas o dudas en relación a los niveles de baile, pasos o coreografías" title="" data-original-title="Ayuda"></i>
                                     <br></br>
 
                                     <div class="fg-line">
