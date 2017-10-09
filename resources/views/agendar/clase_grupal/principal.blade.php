@@ -706,47 +706,50 @@
                                         </a>
                                         <div class="dropup">
                                           <ul class="dropdown-menu dm-icon pull-right" style="position:absolute;">
-                                            <li class="hidden-xs">
-                                              <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/nivelaciones/{{$id}}">
-                                                <i class="icon_a-niveles f-16 m-r-10 boton blue"></i>
-                                                &nbsp;Nivelaciones
-                                              </a>
-                                            </li>
-                                            <li class="hidden-xs">
-                                              <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/participantes/{{$id}}">
-                                                <i class="icon_a-participantes f-16 m-r-10 boton blue"></i>
-                                                Participantes
-                                              </a>
-                                            </li>
-                                            <li class="hidden-xs">
-                                              <a class="valorar">
-                                                <i class="icon_a-examen f-16 m-r-10 boton blue"></i>
-                                                Valorar
-                                              </a>
-                                            </li>
-                                            <li class="hidden-xs">
-                                              <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/agenda/{{$id}}">
-                                                <i class="zmdi zmdi-eye f-16 boton blue"></i>
-                                                Ver Agenda
-                                              </a>
-                                            </li>
-                                              <li class="hidden-xs"> <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$id}}">
-                                                <i class="zmdi zmdi-calendar-note f-16 boton blue"></i>
-                                                Multihorario
-                                              </a>
-                                            </li>
-                                            <li class="hidden-xs"> 
-                                              <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$id}}">
-                                                <i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i>
-                                                Ver Progreso
-                                              </a>
-                                            </li>
-                                            <li class="hidden-xs cancelar">
-                                              <a>
-                                                <i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i>
-                                                Cancelar Clase
-                                              </a>
-                                            </li>
+
+                                            @if($clase_grupal['estatus'] == 1)
+                                              <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/nivelaciones/{{$id}}">
+                                                  <i class="icon_a-niveles f-16 m-r-10 boton blue"></i>
+                                                  &nbsp;Nivelaciones
+                                                </a>
+                                              </li>
+                                              <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/participantes/{{$id}}">
+                                                  <i class="icon_a-participantes f-16 m-r-10 boton blue"></i>
+                                                  Participantes
+                                                </a>
+                                              </li>
+                                              <li class="hidden-xs">
+                                                <a class="valorar">
+                                                  <i class="icon_a-examen f-16 m-r-10 boton blue"></i>
+                                                  Valorar
+                                                </a>
+                                              </li>
+                                              <li class="hidden-xs">
+                                                <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/agenda/{{$id}}">
+                                                  <i class="zmdi zmdi-eye f-16 boton blue"></i>
+                                                  Ver Agenda
+                                                </a>
+                                              </li>
+                                                <li class="hidden-xs"> <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$id}}">
+                                                  <i class="zmdi zmdi-calendar-note f-16 boton blue"></i>
+                                                  Multihorario
+                                                </a>
+                                              </li>
+                                              <li class="hidden-xs"> 
+                                                <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$id}}">
+                                                  <i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i>
+                                                  Ver Progreso
+                                                </a>
+                                              </li>
+                                              <li class="hidden-xs cancelar">
+                                                <a>
+                                                  <i class="zmdi zmdi-close-circle-o f-20 boton red sa-warning"></i>
+                                                  Cancelar Clase
+                                                </a>
+                                              </li>
+                                            @endif
                                             <li class="hidden-xs eliminar">
                                               <a class="pointer eliminar">
                                                 <i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i>
