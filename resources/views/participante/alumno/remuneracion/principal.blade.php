@@ -292,11 +292,11 @@
         total = parseInt("{{{$puntos_totales or 0}}}")
 
         @if(isset($id))
-
+          order = 1
           column = 2
 
         @else
-
+          order = 2
           column = 3
 
         @endif
@@ -307,7 +307,7 @@
           pageLength: 25,  
           paging:false,  
           bLengthChange: false, 
-          order: [[2, 'asc']],
+          order: [[order, 'asc']],
           fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
             $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
             $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
@@ -339,7 +339,7 @@
 
           t
             .columns(column)
-            .search($(this).val())
+            .search('Activa')
             .draw();
     
         });

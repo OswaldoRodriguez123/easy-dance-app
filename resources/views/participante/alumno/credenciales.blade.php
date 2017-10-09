@@ -184,9 +184,32 @@
                     <div class="card">
                         <div class="card-header">
 
+                            <div class ="col-md-12 text-right">                                
+ 
+                                <span class="f-16 p-t-0 text-success">Agregar Credenciales<i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
+
+                            </div>
                               
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-plus-circle-o f-25"></i> Sección de Credenciales</p>
                             <hr class="linea-morada">
+
+                            <div class="col-sm-12">
+                                <div class="p-t-10 pull-right">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="activas" value="Activa" type="radio" checked>
+                                        <i class="input-helper"></i>  
+                                        Activas <i id="activas2" name="activas2" class="zmdi zmdi-label-alt-outline zmdi-hc-fw c-verde f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="finalizadas" value="Vencida" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Vencidas <i id="finalizadas2" name="finalizadas2" class="zmdi zmdi-check zmdi-hc-fw f-20"></i>
+                                    </label>
+                                </div>
+                            </div>
+
+
+                            <div class="clearfix"></div>
 
                             @if(isset($id))
                               <span class ="f-700 f-16 opaco-0-8">Total : <span id="total">{{ $total }}</span></span>
@@ -205,24 +228,29 @@
                                     <th class="text-center" data-column-id="instructor">Instructor</th>
                                     <th class="text-center" data-column-id="cantidad" data-order="desc">Cantidad</th>
                                     <th class="text-center" data-column-id="fecha_vencimiento">Fecha Expiración</th>
+                                    <th class="text-center" data-column-id="status" data-type="numeric">Status</th>
                                     <th class="text-center" data-column-id="operacion">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
 
                             @foreach ($credenciales as $credencial)
-                                <?php $credencial_id = $credencial->id; ?>
+                                <?php $credencial_id = $credencial['id']; ?>
              
                                 <tr id="{{$credencial_id}}" class="seleccion">
                                     
                                     @if(!isset($id))
                                       <td class="text-center previa">
-                                        {{$credencial->alumno_nombre}} {{$credencial->alumno_apellido}}
+                                        {{$credencial['alumno_nombre']}} {{$credencial['alumno_apellido']}}
                                       </td>
                                     @endif
-                                    <td class="text-center previa">{{$credencial->instructor_nombre}} {{$credencial->instructor_apellido}}</td>
-                                    <td class="text-center previa">{{$credencial->cantidad}}</td>
-                                    <td class="text-center previa">{{$credencial->fecha_vencimiento}}</td>
+                                    <td class="text-center previa">{{$credencial['instructor_nombre']}} {{$credencial['instructor_apellido']}}</td>
+                                    <td class="text-center previa">{{$credencial['cantidad']}}</td>
+                                    <td class="text-center previa">{{$credencial['fecha_vencimiento']}}</td>
+                                    <td class="text-center previa">
+                                        <span class="{{ empty($credencial['dias_restantes']) ? 'c-youtube' : '' }}">{{$credencial['status']}}</span>
+                                        Restan {{$credencial['dias_restantes']}} Días
+                                    </td>
                                     <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$credencial_id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i></td>
                         
                                 </tr>
@@ -257,43 +285,59 @@
         route_eliminar="{{url('/')}}/participante/alumno/credenciales/eliminar/";
 
 
+        @if(isset($id))
+          order = 2
+          column = 3
+
+        @else
+          order = 3
+          column = 4
+
+        @endif
+
+
         $(document).ready(function(){
 
-        total = parseInt("{{{$total or 0}}}")
+          total = parseInt("{{{$total or 0}}}")
 
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25,    
-        order: [[2, 'asc']],
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          // $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
-        });
+          t=$('#tablelistar').DataTable({
+          processing: true,
+          serverSide: false,
+          pageLength: 25,    
+          order: [[order, 'asc']],
+          fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+            // $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
+          },
+          language: {
+                          processing:     "Procesando ...",
+                          search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                          searchPlaceholder: "BUSCAR",
+                          lengthMenu:     "Mostrar _MENU_ Registros",
+                          info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                          infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                          infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                          infoPostFix:    "",
+                          loadingRecords: "...",
+                          zeroRecords:    "No se encontraron registros coincidentes",
+                          emptyTable:     "No hay datos disponibles en la tabla",
+                          paginate: {
+                              first:      "Primero",
+                              previous:   "Anterior",
+                              next:       "Siguiente",
+                              last:       "Ultimo"
+                          },
+                          aria: {
+                              sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                              sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                          }
+                      }
+          });
+
+          t
+            .columns(column)
+            .search('Activa')
+            .draw();
     
           
         });
@@ -461,6 +505,23 @@
                 $("#error-"+campo[i]+"_mensaje").html('');
             }
         }
+
+        $("#activas").click(function(){
+            $( "#finalizadas2" ).removeClass( "c-verde" );
+            $( "#activas2" ).addClass( "c-verde" );
+        });
+
+        $("#finalizadas").click(function(){
+            $( "#finalizadas2" ).addClass( "c-verde" );
+            $( "#activas2" ).removeClass( "c-verde" );
+        });
+
+        $("input[name='tipo']").on('change', function(){ 
+          t
+            .columns(column)
+            .search($(this).val())
+            .draw();
+        });
 
 
 

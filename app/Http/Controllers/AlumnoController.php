@@ -1327,11 +1327,32 @@ class AlumnoController extends BaseController
             //   }
             // }
 
+            $array = array();
+
             foreach($credenciales as $credencial){
                 $total = $total + $credencial->cantidad;
+
+                $fecha = Carbon::createFromFormat('Y-m-d', $credencial->fecha_vencimiento);
+
+                if($fecha >= Carbon::now()){
+
+                    $dias_restantes = $fecha->diffInDays();
+                    $status = 'Activa';
+
+                }else{
+                    $dias_restantes = 0;
+                    $status = 'Vencida';
+                }
+
+                $collection=collect($credencial);  
+                $credencial_array = $collection->toArray(); 
+                $credencial_array['dias_restantes']=$dias_restantes;
+                $credencial_array['status']=$status;
+
+                $array[$credencial->id] = $credencial_array;
             }
 
-            return view('participante.alumno.credenciales')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'alumno' => $alumno , 'id' => $id, 'credenciales' => $credenciales, 'total' => $total]);
+            return view('participante.alumno.credenciales')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'alumno' => $alumno , 'id' => $id, 'credenciales' => $array, 'total' => $total]);
         }else{
             return redirect("participante/alumno"); 
         }
@@ -1411,7 +1432,31 @@ class AlumnoController extends BaseController
 
         $alumnos = Alumno::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
 
-        return view('participante.alumno.credenciales')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'credenciales' => $credenciales, 'alumnos' => $alumnos]);
+        $array = array();
+
+        foreach($credenciales as $credencial){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $credencial->fecha_vencimiento);
+
+            if($fecha >= Carbon::now()){
+
+                $dias_restantes = $fecha->diffInDays();
+                $status = 'Activa';
+
+            }else{
+                $dias_restantes = 0;
+                $status = 'Vencida';
+            }
+
+            $collection=collect($credencial);  
+            $credencial_array = $collection->toArray(); 
+            $credencial_array['dias_restantes']=$dias_restantes;
+            $credencial_array['status']=$status;
+
+            $array[$credencial->id] = $credencial_array;
+        }
+
+        return view('participante.alumno.credenciales')->with(['instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'credenciales' => $array, 'alumnos' => $alumnos]);
         
     }
 
