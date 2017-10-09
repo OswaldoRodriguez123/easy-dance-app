@@ -680,9 +680,11 @@
                                 <tr data-trigger="hover" data-toggle="popover" data-placement="top" data-original-title="Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html="true" data-container="body" title="" data-content="{{$contenido}}" id="{{$id}}" data-imagen="{{$clase_grupal['imagen']}}" data-sexo="{{$clase_grupal['sexo']}}" class="seleccion">
                                   <td>
                                     <span style="display: none">{{$clase_grupal['dia_de_semana']}}{{$clase_grupal['estatus']}}</span>
+
                                     @if($clase_grupal['inicio'] == 1)
                                       <i class="zmdi zmdi-star zmdi-hc-fw zmdi-hc-fw c-amarillo f-20" data-html="true" data-original-title="" data-content="Esta clase grupal no ha comenzado" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
                                     @endif
+                                    
                                   </td>
                                   <td>
                                     {{$clase_grupal['clase_grupal_nombre']}}
