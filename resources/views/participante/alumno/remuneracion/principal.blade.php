@@ -187,6 +187,24 @@
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-plus-circle-o f-25"></i> Sección de Puntaje</p>
                             <hr class="linea-morada">
 
+                            <div class="col-sm-12">
+                                <div class="p-t-10 pull-right">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="activas" value="Activa" type="radio" checked>
+                                        <i class="input-helper"></i>  
+                                        Activas <i id="activas2" name="activas2" class="zmdi zmdi-label-alt-outline zmdi-hc-fw c-verde f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="finalizadas" value="Vencida" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Vencidas <i id="finalizadas2" name="finalizadas2" class="zmdi zmdi-check zmdi-hc-fw f-20"></i>
+                                    </label>
+                                </div>
+                            </div>
+
+
+                            <div class="clearfix"></div>
+
 
                             @if(isset($id))
                               <span class ="f-700 f-16 opaco-0-8">Total : <span id="total">{{ $puntos_totales }}</span></span>
@@ -202,7 +220,6 @@
                                     @if(!isset($id))
                                       <th class="text-center" data-column-id="alumno">Alumno</th>
                                     @endif
-                                    <th class="text-center" data-column-id="concepto">Concepto</th>
                                     <th class="text-center" data-column-id="cantidad" data-order="desc">Cantidad</th>
                                     <th class="text-center" data-column-id="fecha_vencimiento">Fecha Expiración</th>
                                     <th class="text-center" data-column-id="status" data-type="numeric">Status</th>
@@ -231,8 +248,7 @@
                                       </td>
                                     @endif
             
-                                    <td>{{ str_limit(title_case($punto['concepto']), $limit = 30, $end = '...') }}</td>
-                                    <td class="text-center previa">{{$punto['remuneracion']}}</td>
+                                    <td class="text-center previa">{{ number_format($punto['remuneracion'], 2, '.' , '.') }}</td>
                                     <td class="text-center previa">{{$punto['fecha_vencimiento']}}</td>
                                     <td class="text-center previa">
                                         <span class="{{ empty($punto['dias_restantes']) ? 'c-youtube' : '' }}">{{$punto['status']}}</span>
@@ -274,8 +290,16 @@
 
         
         total = parseInt("{{{$puntos_totales or 0}}}")
-    
 
+        @if(isset($id))
+
+          column = 2
+
+        @else
+
+          column = 3
+
+        @endif
         $(document).ready(function(){
           t=$('#tablelistar').DataTable({
           processing: true,
@@ -312,8 +336,12 @@
                           }
                       }
           });
+
+          t
+            .columns(column)
+            .search($(this).val())
+            .draw();
     
-          
         });
 
         $('#modalReferido-Alumno').on('hidden.bs.modal', function (event) {
@@ -531,6 +559,24 @@
         $('#charNum').text(100 - len);
       }
     };
+
+    $("#activas").click(function(){
+        $( "#finalizadas2" ).removeClass( "c-verde" );
+        $( "#activas2" ).addClass( "c-verde" );
+    });
+
+    $("#finalizadas").click(function(){
+        $( "#finalizadas2" ).addClass( "c-verde" );
+        $( "#activas2" ).removeClass( "c-verde" );
+    });
+
+    $("input[name='tipo']").on('change', function(){ 
+      t
+        .columns(column)
+        .search($(this).val())
+        .draw();
+    });
+
 
   </script>
 
