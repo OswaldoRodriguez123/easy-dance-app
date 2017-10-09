@@ -221,84 +221,91 @@
                                     </li>
                                 @endif
 
-                                <li class="sub-menu pointer">
-                                    <a><i class="zmdi fa fa-tasks f-16"></i> Registros</a>
-                                    <ul class="ul_sub-menu" style="border-top: 1px solid #F0F0F0; border-bottom: 1px solid #F0F0F0">   
+                                @if($usuario_tipo == 3 || $usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
 
-                                        <li class="hidden-xs">
-                                            <a href="{{url('supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> <span class="m-l-5">Reservaciones</span></a>
-                                        </li>
+                                    <li class="sub-menu pointer">
+                                        <a><i class="zmdi fa fa-tasks f-16"></i> Registros</a>
+                                        <ul class="ul_sub-menu" style="border-top: 1px solid #F0F0F0; border-bottom: 1px solid #F0F0F0">   
 
-                                        <li class="hidden-xs">
-                                            <a href="{{url('credenciales')}}"><i class="zmdi icon_f-staff f-16"></i> <span class="m-l-5">Credenciales</span></a>
-                                        </li>
-
-                                        <li class="hidden-xs">
-                                            <a href="{{url('puntos-acumulados')}}"><i class="zmdi icon_f-incidencias f-16"></i> <span class="m-l-5">Puntos</span></a>
-                                        </li>
-               
-  
-                                        <li class="hidden-xs">
-                                            <a href="{{url('especiales/evaluaciones')}}"><i class="zmdi zmdi-calendar-check f-16"></i> <span class="m-l-5">Notas de alumnos</span></a>
-                                        </li>
-
-                                        <li class="hidden-xs">
-                                            <a href="{{url('procedimientos')}}"><i class="zmdi icon_a-tutoriales"></i> <span class="m-l-5">Encuestas realizadas</span></a>
-                                        </li>
-
-                                        <li class="hidden-xs">
-                                            <a href="{{url('llamadas')}}"><i class="zmdi zmdi-phone f-16"></i> <span class="m-l-5">Registro de llamadas</span></a>
-                                        </li>
-                       
-                                        <li class="hidden-xs">
-                                            <a href="{{url('participante/alumno/congelados')}}"><i class="zmdi icon_a-tutoriales"></i> <span class="m-l-5">Congelados</span></a>
-                                        </li>
-
-                                         <li class="hidden-xs">
-                                            <a href="{{url('participante/alumno')}}"><i class="zmdi icon_a-tutoriales"></i> <span class="m-l-5">Cuentas activas</span></a>
-                                        </li>
-                                 
-          
-                                    </ul>
-                                </li>
-               
-
-                                <li class="sub-menu pointer">
-                                    <a><i class="zmdi icon_f-staff f-16"></i> Sección Laboral</a>
-                                    <ul class="ul_sub-menu" style="border-top: 1px solid #F0F0F0; border-bottom: 1px solid #F0F0F0">   
-                                        @if($usuario_tipo == 1 || $usuario_tipo == 5)
-
-                                            <li>
-                                                <a href="{{url('supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> <span class="m-l-5">Supervisiones</span></a>
+                                            <li class="hidden-xs">
+                                                <a href="{{url('supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> <span class="m-l-5">Reservaciones</span></a>
                                             </li>
 
                                             <li class="hidden-xs">
-                                                <a href="{{url('configuracion/staff')}}"><i class="zmdi icon_f-staff f-16"></i> <span class="m-l-5">Staff</span></a>
+                                                <a href="{{url('credenciales')}}"><i class="zmdi icon_f-staff f-16"></i> <span class="m-l-5">Credenciales</span></a>
                                             </li>
 
                                             <li class="hidden-xs">
-                                                <a href="{{url('incidencias')}}"><i class="zmdi icon_f-incidencias f-16"></i> <span class="m-l-5">Generar Incidencias</span></a>
+                                                <a href="{{url('puntos-acumulados')}}"><i class="zmdi icon_f-incidencias f-16"></i> <span class="m-l-5">Puntos</span></a>
                                             </li>
-                                        @endif
+                   
       
-                                        @if($usuario_tipo == 3 || $usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
                                             <li class="hidden-xs">
-                                                <a href="{{url('configuracion/eventos-laborales')}}"><i class="zmdi zmdi-calendar-check f-16"></i> <span class="m-l-5">Calendario Laboral</span></a>
+                                                <a href="{{url('especiales/evaluaciones')}}"><i class="zmdi zmdi-calendar-check f-16"></i> <span class="m-l-5">Notas de alumnos</span></a>
                                             </li>
 
                                             <li class="hidden-xs">
-                                                <a href="{{url('procedimientos')}}"><i class="zmdi icon_a-tutoriales"></i> <span class="m-l-5">Manuales de Procedimientos</span></a>
+                                                <a href="{{url('procedimientos')}}"><i class="zmdi icon_a-tutoriales"></i> <span class="m-l-5">Encuestas realizadas</span></a>
                                             </li>
-                                        @endif
 
-                                        @if($usuario_tipo)
                                             <li class="hidden-xs">
-                                                <a href="{{url('normativas')}}"><i class="zmdi icon_a-tutoriales"></i> <span class="m-l-5">Normativas</span></a>
+                                                <a href="{{url('llamadas')}}"><i class="zmdi zmdi-phone f-16"></i> <span class="m-l-5">Registro de llamadas</span></a>
                                             </li>
-                                        @endif
+                           
+                                            <li class="hidden-xs">
+                                                <a href="{{url('participante/alumno/congelados')}}"><i class="zmdi icon_a-tutoriales"></i> <span class="m-l-5">Congelados</span></a>
+                                            </li>
+
+                                             <li class="hidden-xs">
+                                                <a href="{{url('participante/alumno')}}"><i class="zmdi icon_a-tutoriales"></i> <span class="m-l-5">Cuentas activas</span></a>
+                                            </li>
+                                     
+              
+                                        </ul>
+                                    </li>
+
+                                @endif
+
+                                @if($usuario_tipo == 3 || $usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
+
+                                    <li class="sub-menu pointer">
+                                        <a><i class="zmdi icon_f-staff f-16"></i> Sección Laboral</a>
+                                        <ul class="ul_sub-menu" style="border-top: 1px solid #F0F0F0; border-bottom: 1px solid #F0F0F0">   
+                                            @if($usuario_tipo == 1 || $usuario_tipo == 5)
+
+                                                <li>
+                                                    <a href="{{url('supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> <span class="m-l-5">Supervisiones</span></a>
+                                                </li>
+
+                                                <li class="hidden-xs">
+                                                    <a href="{{url('configuracion/staff')}}"><i class="zmdi icon_f-staff f-16"></i> <span class="m-l-5">Staff</span></a>
+                                                </li>
+
+                                                <li class="hidden-xs">
+                                                    <a href="{{url('incidencias')}}"><i class="zmdi icon_f-incidencias f-16"></i> <span class="m-l-5">Generar Incidencias</span></a>
+                                                </li>
+                                            @endif
           
-                                    </ul>
-                                </li>
+                                            @if($usuario_tipo == 3 || $usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
+                                                <li class="hidden-xs">
+                                                    <a href="{{url('configuracion/eventos-laborales')}}"><i class="zmdi zmdi-calendar-check f-16"></i> <span class="m-l-5">Calendario Laboral</span></a>
+                                                </li>
+
+                                                <li class="hidden-xs">
+                                                    <a href="{{url('procedimientos')}}"><i class="zmdi icon_a-tutoriales"></i> <span class="m-l-5">Manuales de Procedimientos</span></a>
+                                                </li>
+                                            @endif
+
+                                            @if($usuario_tipo)
+                                                <li class="hidden-xs">
+                                                    <a href="{{url('normativas')}}"><i class="zmdi icon_a-tutoriales"></i> <span class="m-l-5">Normativas</span></a>
+                                                </li>
+                                            @endif
+              
+                                        </ul>
+                                    </li>
+
+                                @endif
 
                             @endif 
 

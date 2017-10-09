@@ -545,7 +545,7 @@ class AlumnoController extends BaseController
             'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
             'fecha_nacimiento' => 'required',
             'sexo' => 'required',
-            'correo' => 'email|max:255|unique:users,email',
+            'correo' => 'email|max:255',
         ];
 
         $messages = [
@@ -565,8 +565,7 @@ class AlumnoController extends BaseController
             'sexo.required' => 'Ups! El Sexo  es requerido ',
             'fecha_nacimiento.required' => 'Ups! La fecha de nacimiento es requerida',
             'correo.email' => 'Ups! El correo tiene una dirección inválida',
-            'correo.max' => 'El máximo de caracteres permitidos son 255',
-            'correo.unique' => 'Ups! Ya este correo ha sido registrado',
+            'correo.max' => 'El máximo de caracteres permitidos son 255'
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -582,14 +581,17 @@ class AlumnoController extends BaseController
             if($request->correo){
                 $in = array(2,4);
                 $correo = trim(strtolower($request->correo)); 
-                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                    ->select('users.id')
-                    ->where('users.email',$correo)
-                    ->whereIn('usuarios_tipo.tipo',$in)
-                ->first();
+                $usuario = User::where('email',$correo)->first();
 
                 if($usuario){
-                    return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
+                    
+                    $usuario_tipo = UsuarioTipo::whereIn('tipo',$in)
+                        ->where('usuario_id',$usuario->id)
+                    ->first();
+
+                    if($usuario_tipo){
+                        return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
+                    }
                 }
             }else{
                 $correo = '';
