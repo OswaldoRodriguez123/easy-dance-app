@@ -53,7 +53,25 @@
                         <div class="card-header text-right">
 
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-examen f-25"></i> Sección de Evaluaciones</p>
-                            <hr class="linea-morada">                                                        
+                            <hr class="linea-morada">
+
+                            <div class="col-sm-12">
+                                <div class="p-t-10 pull-right">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="activas" value="En Proceso" type="radio" checked>
+                                        <i class="input-helper"></i>  
+                                        En Proceso <i id="activas2" name="activas2" class="zmdi zmdi-label-alt-outline zmdi-hc-fw c-verde f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="finalizadas" value="Finalizada" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Finalizadas <i id="finalizadas2" name="finalizadas2" class="zmdi zmdi-check zmdi-hc-fw f-20"></i>
+                                    </label>
+                                </div>
+                            </div>
+
+
+                            <div class="clearfix"></div>                                                        
                         </div>
                         <div class="table-responsive row">
                            <div class="col-md-12">
@@ -168,6 +186,11 @@
                         }
             });
 
+            t
+            .columns(6)
+            .search('En Proceso')
+            .draw();
+
         });
 
         function loadImages(){
@@ -200,6 +223,23 @@
             
             window.open(route, '_blank');;
         }
+
+        $("#activas").click(function(){
+            $( "#finalizadas2" ).removeClass( "c-verde" );
+            $( "#activas2" ).addClass( "c-verde" );
+        });
+
+        $("#finalizadas").click(function(){
+            $( "#finalizadas2" ).addClass( "c-verde" );
+            $( "#activas2" ).removeClass( "c-verde" );
+        });
+
+        $("input[name='tipo']").on('change', function(){ 
+          t
+            .columns(6)
+            .search($(this).val())
+            .draw();
+        });
 
 
     </script>

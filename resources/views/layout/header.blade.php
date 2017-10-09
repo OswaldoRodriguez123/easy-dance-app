@@ -256,9 +256,9 @@
                                                 <a href="{{url('participante/alumno/congelados')}}"><i class="zmdi icon_a-tutoriales"></i> <span class="m-l-5">Congelados</span></a>
                                             </li>
 
-                                             <li class="hidden-xs">
+                                             <!-- <li class="hidden-xs">
                                                 <a href="{{url('participante/alumno')}}"><i class="zmdi icon_a-tutoriales"></i> <span class="m-l-5">Cuentas activas</span></a>
-                                            </li>
+                                            </li> -->
                                      
               
                                         </ul>
