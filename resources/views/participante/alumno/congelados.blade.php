@@ -100,12 +100,12 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="fecha">Fecha de Congelación</th>
-                                    <th class="text-center" data-column-id="fecha">Tiempo Restante</th>
+                                    <th class="text-center" data-column-id="imagen">Imagen</th>
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
-                                    <th class="text-center" data-column-id="clase_grupal">Clase Grupal</th>
+                                    <th class="text-center" data-column-id="fecha">Fecha Congelación</th>
+                                    <th class="text-center" data-column-id="dias_restantes">Tiempo Restante</th>
                                     <th class="text-center" data-column-id="estatu_e">Balance E</th>
                                     <th class="text-center" data-column-id="operacion">Acciones</th>
                                 </tr>
@@ -113,27 +113,98 @@
                             <tbody>
 
                             @foreach ($alumnos as $alumno)
-                                <?php $id = $alumno['inscripcion_id']; ?>
-                                <tr data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-fecha = "{{$alumno['fecha_inicio']}} - {{$alumno['fecha_final']}}" data-congelacion="{{$alumno['razon_congelacion']}}" id="row_{{$id}}" class="seleccion" >
+                                <?php 
+                                    $id = $alumno['inscripcion_id'];
+
+                                    $contenido = '';
+
+                                    if($alumno['imagen']){
+                                        $imagen = '/assets/uploads/usuario/'.$alumno['imagen'];
+                                    }else{
+                                        if($alumno['sexo'] == 'F'){
+                                            $imagen = '/assets/img/Mujer.jpg';
+                                        }else{
+                                            $imagen = '/assets/img/Hombre.jpg';
+                                        }
+                                    }
+
+
+                                    $contenido = 
+                                    '<p class="c-negro">' .
+                                        $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .
+                                        'Identificación: ' . $alumno['identificacion'] . '<br>'.
+                                        'Clase Grupal: ' . $alumno['clase_grupal_nombre'] . '<br>'.
+                                        'Cantidad que adeuda: ' . number_format($alumno['deuda'], 2, '.' , '.')  . '<br>'.
+                                        'Razon de Congelación: ' . $alumno['razon_congelacion'] . '<br>'.
+                                    '</p>'; 
+                                ?>
+                                <tr data-nombre="{{$alumno['nombre']}} {{$alumno['apellido']}}" data-fecha = "{{$alumno['fecha_inicio']}} - {{$alumno['fecha_final']}}" data-congelacion="{{$alumno['razon_congelacion']}}" data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa">
+                                        @if($alumno['imagen'])
+                                          <img class="lv-img lazy" src="{{url('/')}}/assets/img/Hombre.jpg" data-image = "{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
+                                        @else
+                                            @if($alumno['sexo'] == 'M')
+                                              <img class="lv-img lazy" src="{{url('/')}}/assets/img/Hombre.jpg" data-image = "{{url('/')}}/assets/img/Hombre.jpg" alt="">
+                                            @else
+                                              <img class="lv-img lazy" src="{{url('/')}}/assets/img/Mujer.jpg" data-image = "{{url('/')}}/assets/img/Mujer.jpg" alt="">
+                                        @endif
+                                      @endif
+                                    </td>
+                                    <td class="text-center previa">{{$alumno['identificacion']}}</td>
+                                    <td class="text-center previa">
+                                        @if($alumno['edad'] >= 18)
+                                            @if($alumno['sexo']=='F')
+                                                <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                            @else
+                                                <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                            @endif
+                                        @else
+                                            @if($alumno['sexo']=='F')
+                                                <span style="display: none">F</span><i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
+                                            @else
+                                                <span style="display: none">M</span><i class="zmdi fa fa-child f-15 c-azul"></i> </span>
+                                            @endif
+                                        @endif
+                                    </td>
+
+                                    <?php 
+                                        $tmp = explode(" ", $alumno['nombre']);
+                                        $nombre_alumno = $tmp[0];
+
+                                        $tmp = explode(" ", $alumno['apellido']);
+                                        $apellido_alumno = $tmp[0];
+                                    ?>
+
+                                    <td class="text-center previa">{{$nombre_alumno}} {{$apellido_alumno}} </td>
                                     <td class="text-center">{{$alumno['fecha_inicio']}} - {{$alumno['fecha_final']}}</td>
                                     <td class="text-center">{{$alumno['dias_vencimiento']}} Días</td>
-                                    <td class="text-center">{{$alumno['identificacion']}}</td>
-                                    <td class="text-center">
-                                    @if($alumno['sexo']=='F')
-                                    <i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
-                                    @else
-                                    <i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
-                                    @endif
+                                    <td class="text-center previa">
+                                        <i class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
                                     </td>
-                                    <td class="text-center">{{$alumno['nombre']}} {{$alumno['apellido']}}</td>
-                                    <td class="text-center">{{$alumno['clase_grupal_nombre']}}</td>
                                     <td class="text-center">
-                                    <i class="zmdi zmdi-money {{ isset($deuda[$id]) ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
-                                    </td>
-                                    <td class="text-center"> 
 
-                                    <i class="zmdi zmdi-refresh-alt f-20 p-r-10 pointer acciones" id="{{$id}}" name="descongelar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Descongelar" title="" data-original-title=""></i> 
-                                    <i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones" id="{{$id}}" name="eliminar" data-trigger="hover" data-toggle="popover" data-placement="top" data-content="Eliminar Permanentemente" title="" data-original-title=""></i></td>
+                                        <ul class="top-menu">
+                                            <li class="dropdown" id="dropdown_{{$id}}">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                                   <span class="f-15 f-700" style="color:black"> 
+                                                        <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                   </span>
+                                                </a>
+                                                <div class="dropup">
+                                                    <ul class="dropdown-menu dm-icon pull-right">
+                                                        <li class="hidden-xs descongelar pointer">
+                                                            <a><i class="zmdi zmdi zmdi-refresh-alt f-16 boton blue"></i>Descongelar</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs eliminar">
+                                                            <a><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar Permanentemente</a>
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul> 
+                                    </td>
                                 </tr>
                             @endforeach 
                                                            
@@ -159,7 +230,7 @@
 
 @section('js') 
             
-        <script type="text/javascript">
+    <script type="text/javascript">
 
         route_operacion="{{url('/')}}/participante/alumno/operaciones";
         route_restablecer="{{url('/')}}/participante/alumno/descongelar/";
@@ -167,67 +238,45 @@
 
         $(document).ready(function(){
 
-        t=$('#tablelistar').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25, 
-        order: [[0, 'desc']],
-        fnDrawCallback: function() {
-          if ("{{count($alumnos)}}" < 25) {
-                $('.dataTables_paginate').hide();
-                $('#tablelistar_length').hide();
-            }
-        },
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
+            t=$('#tablelistar').DataTable({
+            processing: true,
+            serverSide: false,
+            pageLength: 25, 
+            order: [[4, 'desc']],
+            fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
+            },
+            language: {
+                            processing:     "Procesando ...",
+                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                            searchPlaceholder: "BUSCAR",
+                            lengthMenu:     "Mostrar _MENU_ Registros",
+                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                            infoPostFix:    "",
+                            loadingRecords: "...",
+                            zeroRecords:    "No se encontraron registros coincidentes",
+                            emptyTable:     "No hay datos disponibles en la tabla",
+                            paginate: {
+                                first:      "Primero",
+                                previous:   "Anterior",
+                                next:       "Siguiente",
+                                last:       "Ultimo"
+                            },
+                            aria: {
+                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                            }
                         }
-                    }
-        });
+            });
     
 
-            if($('.chosen')[0]) {
-                $('.chosen').chosen({
-                    width: '100%',
-                    allow_single_deselect: true
-                });
-            }
-            if ($('.date-time-picker')[0]) {
-               $('.date-time-picker').datetimepicker();
-            }
+        });
 
-            if ($('.date-picker')[0]) {
-                $('.date-picker').datetimepicker({
-                    format: 'DD/MM/YYYY'
-                });
-            }
-
-            });
-
-         $("i[name=descongelar").click(function(){
-                id = this.id;
+        $(".descongelar").click(function(){
+                id = $(this).closest('tr').attr('id');
                 element = this;
                 var padre=$(this).parents('tr');
                 swal({   
@@ -254,8 +303,9 @@
                 });
             });
       function restablecer(id){
-         var route = route_restablecer + id;
-         var token = '{{ csrf_token() }}';
+        var route = route_restablecer + id;
+        var token = '{{ csrf_token() }}';
+        procesando();
                 
                 $.ajax({
                     url: route,
@@ -269,6 +319,7 @@
                             .remove()
                             .draw();
                         swal("Exito!","El alumno ha sido descongelado!","success");
+                        finprocesado()
                         // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
                     },
                     error:function(msj){
@@ -286,8 +337,8 @@
                 });
       }
 
-      $("i[name=eliminar").click(function(){
-                id = this.id;
+      $(".eliminar").click(function(){
+                id = $(this).closest('tr').attr('id');
                 element = this;
                 var padre=$(this).parents('tr');
                 swal({   
@@ -316,6 +367,7 @@
       function eliminar(id){
          var route = route_eliminar + id;
          var token = '{{ csrf_token() }}';
+         procesando();
                 
                 $.ajax({
                     url: route,
@@ -329,6 +381,7 @@
                             .remove()
                             .draw();
                         swal("Exito!","El alumno ha sido eliminado permanentemente!","success");
+                        finprocesado()
                         // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
                     },
                     error:function(msj){
@@ -344,9 +397,9 @@
                                 swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
                                 }
                 });
-      }
+        }
 
-      function previa(t){
+        function previa(t){
 
             var fecha = $(t).closest('tr').data('fecha');
             var congelacion = $(t).closest('tr').data('congelacion');
@@ -358,10 +411,26 @@
             $('#span_alumno').text(nombre);
             
             $('#modalCongelar').modal('show');
-        };
+        }
 
+        $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
 
+            var id = $(this).closest('tr').attr('id');
+            var dropdown = $(this).closest('.dropdown')
+            var dropdown_toggle = $(this).closest('.dropdown-toggle')
 
-        </script>
+            $('.dropdown-toggle').attr('aria-expanded','false')
+            $('.dropdown').removeClass('open')
+            $('.table-responsive').css( "overflow", "auto" );
+
+            if(!dropdown.hasClass('open')){
+                dropdown.addClass('open')
+                dropdown_toggle.attr('aria-expanded','true')
+                $('.table-responsive').css( "overflow", "inherit" );
+            }
+         
+        });
+
+    </script>
 
 @stop

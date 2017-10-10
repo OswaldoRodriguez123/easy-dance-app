@@ -42,7 +42,7 @@
                         <div class="card-header">
                             <div class ="col-md-6 text-left">  
                                 <ul class="top-menu">
-                                    <li class="dropdown">
+                                    <li class="dropdown ">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
                                            <span class="f-15 f-700" style="color:black"> 
                                                 <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>

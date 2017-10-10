@@ -797,19 +797,19 @@ class UsuarioController extends BaseController {
 
                 if($fecha_comprobacion < $hoy){
 
-                    $congelados = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
-                        ->where('inscripcion_clase_grupal.fecha_final','<',Carbon::now()->toDateString())
-                        ->where('inscripcion_clase_grupal.boolean_congelacion',1)
-                        ->where('clases_grupales.academia_id',Auth::user()->academia_id)
-                    ->get();
+                    // $congelados = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
+                    //     ->where('inscripcion_clase_grupal.fecha_final','<',Carbon::now()->toDateString())
+                    //     ->where('inscripcion_clase_grupal.boolean_congelacion',1)
+                    //     ->where('clases_grupales.academia_id',Auth::user()->academia_id)
+                    // ->get();
 
-                    foreach($congelados as $congelado){
-                        $congelado->fecha_inicio = '0000-00-00';
-                        $congelado->fecha_final = '0000-00-00';
-                        $congelado->boolean_congelacion = 0;
+                    // foreach($congelados as $congelado){
+                    //     $congelado->fecha_inicio = '0000-00-00';
+                    //     $congelado->fecha_final = '0000-00-00';
+                    //     $congelado->boolean_congelacion = 0;
 
-                        $congelado->save();
-                    }
+                    //     $congelado->save();
+                    // }
 
                     $evaluaciones_vencidas = Evaluacion::where('fecha_vencimiento','<',Carbon::now()->toDateString())
                         ->where('estatus',0)

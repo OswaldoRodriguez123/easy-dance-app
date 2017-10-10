@@ -498,17 +498,6 @@ class AlumnoController extends BaseController
 
     public function congelados()
     {
-        $alumnod = Alumno::join('items_factura_proforma', 'items_factura_proforma.usuario_id', '=', 'alumnos.id')
-            ->select('alumnos.id as id', 'items_factura_proforma.importe_neto', 'items_factura_proforma.fecha_vencimiento')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
-            ->where('items_factura_proforma.fecha_vencimiento','<=',Carbon::today())
-            ->where('deleted_at', '!=' ,  NULL)
-        ->get();
-
-        $collection=collect($alumnod);
-        $grouped = $collection->groupBy('id');     
-        $deuda = $grouped->toArray();
-
         $alumnos = InscripcionClaseGrupal::withTrashed()->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
@@ -521,6 +510,14 @@ class AlumnoController extends BaseController
         $array = array();
 
         foreach($alumnos as $alumno){
+
+            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                ->where('usuario_id','=',$alumno->id)
+                ->where('usuario_tipo','=',1)
+            ->sum('importe_neto');
+
+            $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+
             $fecha_final = Carbon::createFromFormat('Y-m-d',$alumno->fecha_final);
 
             $dias_vencimiento = $fecha_final->diffInDays(Carbon::now());
@@ -528,10 +525,12 @@ class AlumnoController extends BaseController
             $collection=collect($alumno);     
             $alumno_array = $collection->toArray();
             $alumno_array['dias_vencimiento']=$dias_vencimiento;
+            $alumno_array['deuda']=$deuda;
+            $alumno_array['edad']=$edad;
             $array[] = $alumno_array;
         }
 
-        return view('participante.alumno.congelados')->with(['alumnos' => $array, 'deuda' => $deuda]);
+        return view('participante.alumno.congelados')->with(['alumnos' => $array]);
     }
 
 	public function store(Request $request)
