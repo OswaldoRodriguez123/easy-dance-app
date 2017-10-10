@@ -1189,6 +1189,8 @@ class AsistenciaController extends BaseController
 
   public function consulta_clase_personalizadas_alumno(Request $request){
 
+    $academia = Academia::find(Auth::user()->academia_id);
+
     $inscripciones = InscripcionClaseGrupal::join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
         ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
         ->select('config_clases_grupales.nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'inscripcion_clase_grupal.id', 'inscripcion_clase_grupal.fecha_pago')
@@ -1274,13 +1276,19 @@ class AsistenciaController extends BaseController
 
       foreach ($clases_personalizadas as $grupal) {
 
+        if($academia->tipo_horario == 2){
+          $hora_inicio = Carbon::createFromFormat('H:i:s',$grupal->hora_inicio)->toTimeString();
+          $hora_final = Carbon::createFromFormat('H:i:s',$grupal->hora_final)->toTimeString();
+        }else{
+          $hora_inicio = Carbon::createFromFormat('H:i:s',$grupal->hora_inicio)->format('g:i a');
+          $hora_final = Carbon::createFromFormat('H:i:s',$grupal->hora_final)->format('g:i a');
+        }
+
         $fecha_start=explode('-',$grupal->fecha_inicio);
         $fecha_end=explode('-',$grupal->fecha_inicio);
         $id=$grupal->id;
         $nombre=$grupal->nombre;
         $descripcion=$grupal->descripcion;
-        $hora_inicio=$grupal->hora_inicio;
-        $hora_final=$grupal->hora_final;
         $etiqueta=$grupal->color_etiqueta;
         $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
 
@@ -1297,16 +1305,21 @@ class AsistenciaController extends BaseController
 
       foreach ($horarios as $grupal) {
 
+        if($academia->tipo_horario == 2){
+          $hora_inicio = Carbon::createFromFormat('H:i:s',$grupal->hora_inicio)->toTimeString();
+          $hora_final = Carbon::createFromFormat('H:i:s',$grupal->hora_final)->toTimeString();
+        }else{
+          $hora_inicio = Carbon::createFromFormat('H:i:s',$grupal->hora_inicio)->format('g:i a');
+          $hora_final = Carbon::createFromFormat('H:i:s',$grupal->hora_final)->format('g:i a');
+        }
+
         $fecha_start=explode('-',$grupal->fecha);
         $fecha_end=explode('-',$grupal->fecha);
         $id=$grupal->id;
         $nombre=$grupal->nombre;
         $descripcion=$grupal->descripcion;
-        $hora_inicio=$grupal->hora_inicio;
-        $hora_final=$grupal->hora_final;
         $etiqueta=$grupal->color_etiqueta;
         $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
-
 
         $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha)->format('Y-m-d');
 
@@ -1326,6 +1339,8 @@ class AsistenciaController extends BaseController
   }
 
   public function consulta_citas_alumno(Request $request){
+
+    $academia = Academia::find(Auth::user()->academia_id);
 
     $fechaActual = Carbon::now();
     // $geoip = new GeoIP();
@@ -1408,21 +1423,25 @@ class AsistenciaController extends BaseController
 
     foreach ($citas as $grupal) {
 
+      if($academia->tipo_horario == 2){
+        $hora_inicio = Carbon::createFromFormat('H:i:s',$grupal->hora_inicio)->toTimeString();
+        $hora_final = Carbon::createFromFormat('H:i:s',$grupal->hora_final)->toTimeString();
+      }else{
+        $hora_inicio = Carbon::createFromFormat('H:i:s',$grupal->hora_inicio)->format('g:i a');
+        $hora_final = Carbon::createFromFormat('H:i:s',$grupal->hora_final)->format('g:i a');
+      }
+
       $fecha_start=explode('-',$grupal->fecha);
       $fecha_end=explode('-',$grupal->fecha);
       $id=$grupal->id;
       $nombre=$grupal->nombre;
       $descripcion=$grupal->nombre;
-      $hora_inicio=$grupal->hora_inicio;
-      $hora_final=$grupal->hora_final;
       $etiqueta=$grupal->color_etiqueta;
       $instructor=$grupal->instructor_nombre . ' ' . $grupal->instructor_apellido;
 
       $fecha_inicio = Carbon::createFromFormat('Y-m-d', $grupal->fecha)->format('Y-m-d');
  
       $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha,"fecha_final"=>$grupal->fecha, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 4, 'tipo_id' => $id);
-
-        
         
     }
         

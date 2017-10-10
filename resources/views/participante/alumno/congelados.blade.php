@@ -134,7 +134,7 @@
                                         $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .
                                         'Identificación: ' . $alumno['identificacion'] . '<br>'.
                                         'Clase Grupal: ' . $alumno['clase_grupal_nombre'] . '<br>'.
-                                        'Cantidad que adeuda: ' . number_format($alumno['deuda'], 2, '.' , '.')  . '<br>'.
+                                        '<span style="border-bottom: 1px solid #F0F0F0"> Cantidad que adeuda: ' . number_format($alumno['deuda'], 2, '.' , '.')  . '</span> <br><br>'.
                                         'Razon de Congelación: ' . $alumno['razon_congelacion'] . '<br>'.
                                     '</p>'; 
                                 ?>

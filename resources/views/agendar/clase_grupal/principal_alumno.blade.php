@@ -122,17 +122,13 @@
             
     <script type="text/javascript">
 
-    route_progreso="{{url('/')}}/agendar/clases-grupales/progreso";
+        route_progreso="{{url('/')}}/agendar/clases-grupales/progreso";
 
-    $(document).on( 'click', '.previa', function () {
-        var id = this.id;
-        procesando();
+        $(document).on( 'click', '.previa', function () {
+            var id = this.id;
+            window.open(route_progreso+"/"+id, '_blank');
 
-        window.open(route_progreso+"/"+id, '_blank');
-
-      });
-
-    
+        });
 
      </script>
 
