@@ -607,6 +607,7 @@
         route_reserva="{{url('/')}}/reservacion/";
         route_reserva_alumno= "{{url('/')}}/reservaciones/reservar"
         route_inscribir= "{{url('/')}}/agendar/clases-grupales/participantes/{{$id}}"
+        route_completado= "{{url('/')}}/reservaciones/completado"
 
         var recompensa = 0;
 
@@ -751,9 +752,10 @@
                       dataType: 'json',
                       data:"&actividad_id="+id+"&actividad_tipo=1",
                       success:function(respuesta){
-                        swal("Exito!","Has reservado exitosamente","success");
-                        finprocesado();
+                        // swal("Exito!","Has reservado exitosamente","success");
+                        // finprocesado();
                         $('.modal').modal('hide');
+                        window.location = route_completado
                       },
                       error:function(msj){
                         swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');

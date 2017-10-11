@@ -18,9 +18,6 @@
 
 @section('content')
   <!-- ENHORABUENA -->
-
-  
-    
     <div class="container">
       <div class="card">
         <div class="clearfix m-20 m-b-25"></div>
