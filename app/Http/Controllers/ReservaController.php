@@ -419,8 +419,8 @@ class ReservaController extends BaseController
 
     public function store(Request $request)
     {
-       $request->merge(array('email' => trim($request->email)));
-       $request->merge(array('email_confirmation' => trim($request->email_confirmation)));
+        $request->merge(array('email' => trim($request->email)));
+        $request->merge(array('email_confirmation' => trim($request->email_confirmation)));
 
         $rules = [
             'nombre' => 'required|min:3|max:30|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
@@ -457,9 +457,7 @@ class ReservaController extends BaseController
 
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-        }
-
-        else{
+        }else{
 
 
             $tipo_reservacion = Session::get('tipo');
@@ -468,16 +466,16 @@ class ReservaController extends BaseController
 
             if($participante){
 
-                $tmp = Reservacion::where('tipo_reservacion', $tipo_reservacion)
+                $reservacion = Reservacion::where('tipo_reservacion', $tipo_reservacion)
                     ->where('tipo_reservacion_id', $request->tipo_id)
                     ->where('tipo_usuario_id',$participante->id)
                     ->where('tipo_usuario',3)
                     ->orderBy('created_at', 'desc')
                 ->first();
 
-                if($tmp){
+                if($reservacion){
 
-                    $fecha_creacion = $tmp->created_at;
+                    $fecha_creacion = $reservacion->created_at;
                     $hora_limite = $fecha_creacion->addHours(48);
 
                     if(Carbon::now() > $hora_limite){
@@ -492,8 +490,6 @@ class ReservaController extends BaseController
             }else{
                 $tiene_reservacion = null;
             }
-
-
 
             if(!$tiene_reservacion){
 
@@ -634,29 +630,26 @@ class ReservaController extends BaseController
 
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
-        }
-
-        else{
+        }else{
 
             $participante = Participante::where('correo', $request->correo_registro)->first();
 
             if($participante){
 
-                if($participante->password == $request->password_registro)
-                {
+                if($participante->password == $request->password_registro){
 
                     $tipo_reservacion = Session::get('tipo');
 
-                    $tmp = Reservacion::where('tipo_reservacion', $tipo_reservacion)
+                    $reservacion = Reservacion::where('tipo_reservacion', $tipo_reservacion)
                         ->where('tipo_reservacion_id', $request->tipo_id)
                         ->where('tipo_usuario_id',$participante->id)
                         ->where('tipo_usuario',3)
                         ->orderBy('created_at', 'desc')
                     ->first();
 
-                    if($tmp){
+                    if($reservacion){
 
-                        $fecha_creacion = $tmp->created_at;
+                        $fecha_creacion = $reservacion->created_at;
                         $hora_limite = $fecha_creacion->addHours(48);
 
                         if(Carbon::now() > $hora_limite){
