@@ -83,6 +83,7 @@ class ReservaController extends BaseController
                     }else{
                         $imagen = '';
                     }
+                    $provinencia = 'Alumno';
                 }else{
                    continue; 
                 }
@@ -92,12 +93,14 @@ class ReservaController extends BaseController
                     continue; 
                 }
                 $imagen = '';
+                $provinencia = 'Visitante';
             }else{
                 $alumno = Participante::find($reservacion->tipo_usuario_id);
                 if(!$alumno){
                     continue; 
                 }
                 $imagen = '';
+                $provinencia = 'Red Social';
             }
 
             if($reservacion->deleted_at){
@@ -119,8 +122,11 @@ class ReservaController extends BaseController
             $reservacion_array['apellido'] = $alumno->apellido;
             $reservacion_array['actividad'] = $actividad;
             $reservacion_array['sexo'] = $alumno->sexo;
+            $reservacion_array['correo'] = $alumno->correo;
+            $reservacion_array['celular'] = $alumno->celular;
             $reservacion_array['edad'] = $edad;
             $reservacion_array['estatus'] = $estatus;
+            $reservacion_array['provinencia'] = $provinencia;
             $array[] = $reservacion_array;
         
         }

@@ -81,8 +81,33 @@
                             <tbody>
 
                               @foreach ($reservaciones as $reservacion)
-                                <?php $id = $reservacion['id']; ?>
-                                <tr data-tipo="{{$reservacion['tipo_reservacion']}}" data-actividad_id="{{$reservacion['tipo_reservacion_id']}}" id="{{$id}}" class="seleccion">
+                                <?php 
+
+                                    $id = $reservacion['id']; 
+
+                                    $contenido = '';
+
+                                    if($reservacion['imagen']){
+                                        $imagen = '/assets/uploads/usuario/'.$reservacion['imagen'];
+                                    }else{
+                                        if($reservacion['sexo'] == 'F'){
+                                            $imagen = '/assets/img/Mujer.jpg';
+                                        }else{
+                                            $imagen = '/assets/img/Hombre.jpg';
+                                        }
+                                    }
+
+
+                                    $contenido = 
+                                    '<p class="c-negro">' .
+                                        $reservacion['nombre'] . ' ' . $reservacion['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .
+                                        'Número Móvil: ' . $reservacion['celular'] . '<br>'.
+                                        'Correo Electrónico: ' . $reservacion['correo'] . '<br>'.
+                                        'Provinencia: ' . $reservacion['provinencia'] . '<br>'.
+                                    '</p>';
+
+                                ?>
+                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" data-tipo="{{$reservacion['tipo_reservacion']}}" data-actividad_id="{{$reservacion['tipo_reservacion_id']}}" id="{{$id}}" class="seleccion">
                                   <td>
                                     <span style="display: none">{{$reservacion['estatus']}}</span>
                                     @if($reservacion['estatus'] == 0)
@@ -139,6 +164,9 @@
                                                         <a class="inscribir"><i class="zmdi zmdi-plus f-20"></i> Inscribir</a>
                                                     </li>
 
+                                                    <li class="hidden-xs pointer">
+                                                        <a class="ver_curso"><i class="zmdi zmdi-eye f-20"></i> Ver Curso</a>
+                                                    </li>
 
                                                     <li class="hidden-xs pointer">
                                                         <a class="eliminar"><i class="zmdi zmdi-delete boton red f-20"></i> Eliminar</a>
@@ -193,7 +221,7 @@
         order: [[5, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "disabled" );
         },
         drawCallback: function(){
           loadImages();
@@ -242,9 +270,9 @@
       });
     }
 
-    function previa(t){
+    $('#tablelistar tbody').on( 'click', '.ver_curso', function () {
 
-      var row = $(t).closest('tr');
+      var row = $(this).closest('tr');
       var id = row.data('actividad_id');
       var tipo = row.data('tipo');
 
@@ -255,7 +283,7 @@
       }
       
       window.open(route, '_blank');
-    }
+    });
 
     $('#tablelistar tbody').on( 'click', '.inscribir', function () {
 
