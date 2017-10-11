@@ -1170,7 +1170,7 @@ class ReservaController extends BaseController
         $reserva = Reservacion::find($id);
         
         if($reserva->forceDelete()){
-            
+
             $codigo = Codigo::where('item_id',$id)->where('tipo',2)->first();
 
             if($codigo){

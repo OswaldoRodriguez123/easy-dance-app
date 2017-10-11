@@ -304,7 +304,7 @@
                   var nTitle="Ups! ";
                   var nMensaje=respuesta.mensaje;
 
-                  var row = $('#'+respuesta.reservacion);
+                  var row = $('#'+respuesta.id);
                   var sexo = respuesta.sexo
 
                   if(sexo == 'F'){
@@ -315,12 +315,10 @@
                     }
                   }else{
                     valor = $(row).find('td').eq(6).html();
-                    if(valor > 0)
-                    {
+                    if(valor > 0){
                       valor_cambio = valor - 1;
                       $(row).find('td').eq(6).html(valor_cambio);
                     }
-
                   }
 
                   if(valor > 0){
