@@ -153,6 +153,8 @@ class BaseController extends Controller {
                     $url = "incidencias/visualizar/".$notificacion['evento_id'];
                 }else if($notificacion['tipo_evento'] == 8){
                     $url = "supervision/detalle/".$notificacion['evento_id'];
+                }else if($notificacion['tipo_evento'] == 9){
+                    $url = "reservaciones";
                 }else{
                     $url = "inicio";
                 }
