@@ -1188,4 +1188,186 @@ class ReservaController extends BaseController
         }
 
     }
+
+    public function storeReservaVistaAlumno(Request $request){
+
+        $rules = [
+            'actividad_id' => 'required',
+            'actividad_tipo' => 'required',
+        ];
+
+        $messages = [
+            'actividad_id.required' => 'Ups! El Nombre  es requerido',
+            'actividad_tipo.required' => 'Ups! El Nombre  es requerido',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }else{
+
+            $datos = $this->getDatosUsuario();
+
+            $alumno_id = $datos[0]['usuario_id'];
+            $alumno = Alumno::find($alumno_id);
+
+            if($request->actividad_tipo == 1){
+                $actividad = ClaseGrupal::find($request->actividad_id);
+            }else{
+                $actividad = Taller::find($request->actividad_id);
+            }
+            
+            // if($request->permitir == 0){
+                
+            //     if($alumno->sexo == 'M'){
+
+            //         if(!is_null($actividad->cantidad_hombres)){
+
+            //             if($request->actividad_tipo == 1){
+            //                    $hombres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+            //                     ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->actividad_id)
+            //                     ->where('alumnos.sexo', '=', 'M')
+            //                 ->count(); 
+            //             }else{
+            //                 $hombres = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
+            //                     ->where('inscripcion_taller.taller_id', '=', $request->actividad_id)
+            //                     ->where('alumnos.sexo', '=', 'M')
+            //                 ->count();
+            //             }
+
+            //             if($actividad->cantidad_hombres <= $hombres){
+            //                 return response()->json(['error_mensaje'=>'Ups! La cantidad de hombres permitida en esta actividad ha llegado a su limite', 'status' => 'CANTIDAD-FULL'],422);
+            //             }
+            //         }
+
+            //     }else{
+
+            //         if(!is_null($actividad->cantidad_mujeres)){
+
+            //             if($request->actividad_tipo == 1){
+            //                 $mujeres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+            //                     ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->actividad_id)
+            //                     ->where('alumnos.sexo', '=', 'F')
+            //                 ->count(); 
+            //             }else{
+            //                 $mujeres = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
+            //                     ->where('inscripcion_taller.taller_id', '=', $request->actividad_id)
+            //                     ->where('alumnos.sexo', '=', 'F')
+            //                 ->count();
+            //             }
+
+            //             if($actividad->cantidad_mujeres <= $mujeres){
+            //                 return response()->json(['error_mensaje'=>'Ups! La cantidad de mujeres permitida en esta actividad ha llegado a su limite', 'status' => 'CANTIDAD-FULL'],422);
+            //             }
+            //         }
+
+            //     }
+            // }
+
+            $find = Reservacion::where('tipo_reservacion_id', $request->actividad_id)
+                ->where('tipo_reservacion',$request->actividad_tipo)
+                ->where('tipo_usuario', 1)
+                ->where('tipo_usuario_id',$alumno_id)
+            ->first();
+
+            if($find){
+                return response()->json(['error_mensaje'=> 'Ups! Ya posees una reservación en esta actividad', 'status' => 'ERROR-RESERVA'],422);
+            }
+
+            $now = Carbon::now();
+
+            if($request->dias_expiracion){
+                $fecha_vencimiento = $now->addDays($request->dias_expiracion);
+            }else{
+                $fecha_vencimiento = $now->addDays(3);
+            }
+
+            $reservacion = New Reservacion;
+
+            $reservacion->academia_id = Auth::user()->academia_id;
+            $reservacion->tipo_usuario = 1;
+            $reservacion->tipo_usuario_id = $alumno_id;
+            $reservacion->tipo_reservacion = $request->actividad_tipo;
+            $reservacion->tipo_reservacion_id = $request->actividad_id;
+            $reservacion->fecha_vencimiento = $fecha_vencimiento;
+            $reservacion->fecha_reservacion = Carbon::now()->toDateString();
+
+            if($reservacion->save()){
+
+                if($alumno->correo){
+
+                    do{
+
+                        $codigo_validacion = str_random(8);
+                        $find = Codigo::where('codigo_validacion', $codigo_validacion)->first();
+
+                    }while ($find);
+
+                    $academia = Academia::find($reservacion->academia_id);
+
+                    $codigo = New Codigo;
+
+                    $codigo->academia_id = $reservacion->academia_id;
+                    $codigo->item_id = $reservacion->id;
+                    $codigo->tipo = 2;
+                    $codigo->codigo_validacion = $codigo_validacion;
+                    $codigo->fecha_vencimiento = $fecha_vencimiento;
+
+                    if($codigo->save()){
+
+                        if($request->tipo == 1){
+                            $actividad = 'una Clase Grupal';
+
+                        }else{
+                            $actividad = 'un Taller';
+                        }
+
+                        $subj = 'Has realizado una reservación';
+
+                        $array = [
+                            'correo' => $alumno->correo,
+                            'nombre' => $alumno->nombre,
+                            'actividad' => $actividad,
+                            'academia' => $academia->nombre,
+                            'codigo' => $codigo_validacion,
+                            'correo_academia' => $academia->correo,
+                            'telefono' => $academia->telefono,
+                            'celular' => $academia->celular,
+                            'subj' => $subj
+                        ];
+
+                        Mail::send('correo.reservacion_alumno', $array, function($msj) use ($array){
+                            $msj->subject($array['subj']);
+                            $msj->to($array['correo']);
+                        });
+                    }
+                }
+
+                if($alumno->celular){
+
+                    $celular = getLimpiarNumero($alumno->celular);
+                    $academia = Academia::find(Auth::user()->academia_id);
+
+                    if($academia->pais_id == 11 && strlen($celular) == 10){
+                        
+                        $mensaje = $alumno->nombre.'. Hemos reservado para ti una clase de baile para la fecha '.$fecha_vencimiento.', tu código para confirmar tu inscripcion es '.$codigo_validacion.'.';
+
+                        $client = new Client();
+                        
+                        $result = $client->get('https://sistemasmasivos.com/c3colombia/api/sendsms/send.php?user=coliseodelasalsa@gmail.com&password=k1-9L6A1rn&GSM='.$celular.'&SMSText='.urlencode($mensaje));
+
+                    }
+
+                }
+
+                return response()->json(['mensaje' => '¡Excelente! La reserva se ha guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+            }
+        }
+    }
 }

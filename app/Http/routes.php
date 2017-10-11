@@ -90,13 +90,15 @@
 
 	Route::get('agendar/clases-grupales/disponibles/{id}', 'ClaseGrupalController@indexconacademia');
 	Route::get('agendar/clases-grupales/progreso/{id}', 'ClaseGrupalController@progreso');
-	Route::post('agendar/clases-grupales/inscribirse', 'ClaseGrupalController@storeInscripcionVistaAlumno');
 
 	// TALLER USUARIO
 
 	Route::get('agendar/talleres/disponibles/{id}', 'TallerController@indexconacademia');
-	Route::post('agendar/talleres/inscribirse', 'TallerController@storeInscripcionVistaAlumno');
 	Route::get('agendar/talleres/progreso/{id}', 'TallerController@progreso');
+
+	// RESERVA USUARIO
+
+	Route::post('reservaciones/reservar', 'ReservaController@storeReservaVistaAlumno');
 
 	//FIESTAS USUARIO
 

@@ -123,21 +123,21 @@
 
                                   @if(Auth::check())
 
-                                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                                    @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
-                                              <button type="button" class="btn btn-blanco m-r-10 f-20 guardar"> Inscribir</button>
+                                      <button type="button" class="btn btn-blanco m-r-10 f-20 guardar"> Inscribir</button>
 
-                                            @else
+                                    @else
 
-                                              <button type="button" class="btn btn-blanco m-r-10 f-20 guardar"> Inscribirse</button>
+                                      <button type="button" class="btn btn-blanco m-r-10 f-20 guardar"> Reservar</button>
 
-                                            @endif
+                                    @endif
 
-                                          @else
+                                  @else
 
-                                            <button type="button" class="btn btn-blanco m-r-10 f-20 guardar"> Reservar</button>
+                                    <button type="button" class="btn btn-blanco m-r-10 f-20 guardar"> Reservar</button>
 
-                                        @endif
+                                  @endif
 
                                 </div>
 
@@ -174,20 +174,12 @@
     <div class="block-header">
 
       @if(Auth::check())
-
-
-      @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-      
-
-        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-grupales" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase grupal</a>
-                        
-      @endif
-
+        @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+          <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/agendar/clases-grupales" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección clase grupal</a>        
+        @endif
       @else
-
         <?php $url = "/agendar/clases-grupales" ?>
         <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
-
       @endif
 
     
@@ -343,19 +335,12 @@
                             @if(Auth::check())
 
                               @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-
                                 <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i>Inscribir</button>
-
                               @else
-
-                                <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i>Inscribirse</button>
-
-                              @endif
-
-                            @else
-
                                 <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i>Reservar</button>
-
+                              @endif
+                            @else
+                                <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i>Reservar</button>
                             @endif
 
 
@@ -380,19 +365,12 @@
                 @if(Auth::check())
 
                   @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-
                     <li class="waves-effect reservar"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Inscribir</a></li>
-
                   @else
-
-                    <li class="waves-effect reservar"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Inscribirse</a></li>
-
+                    <li class="waves-effect reservar"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Reservar</a></li>
                   @endif
-
                 @else
-
                   <li class="waves-effect reservar"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Reservar</a></li>
-
                 @endif
 
             </ul>
@@ -403,8 +381,6 @@
 
                     <div class="pmb-block m-t-0 p-t-0">
 
-<!--                         <img class="img-responsive p-b-10" src="{{url('/')}}/assets/img/caracteristicas-principal.jpg"> -->
-
                         <p class="text-center f-25 f-700 opaco-0-8">Es hora de bailar y participar en la nueva clase grupal de</p>
                                <h2 class="text-center"> {{$clase_grupal->academia_nombre}} </h2>
                                <div class="p-b-15"></div>
@@ -414,45 +390,39 @@
                         <div class="clearfix p-b-20"></div>
                         
                         @if($clase_grupal->imagen)
-                        <img src="{{url('/')}}/assets/uploads/clase_grupal/{{$clase_grupal->imagen}}" class="img-responsive opaco-0-8" alt="">
+                          <img src="{{url('/')}}/assets/uploads/clase_grupal/{{$clase_grupal->imagen}}" class="img-responsive opaco-0-8" alt="">
                         @endif
 
                         @if($clase_grupal->descripcion)
                         
-                        <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
 
-                        <div class="f-700 f-30">Descripción</div>
-                        <hr class="linea-morada">
-                        <p class="f-14">{!! nl2br($clase_grupal->descripcion) !!}</p>
+                          <div class="f-700 f-30">Descripción</div>
+                          <hr class="linea-morada">
+                          <p class="f-14">{!! nl2br($clase_grupal->descripcion) !!}</p>
 
                         @endif
-
-                        <!-- <p class="f-14">Easy Dance es una aplicación Online dirigida a la gestión de las academias de baile, con el propósito de organizar las actividades que involucran a: Directores de academias, instructores de baile, alumnos y todas aquellas personas interesadas en aprender a bailar de una manera más fácil. La aplicación se encuentra en una etapa temprana, hemos lanzado al mercado la primera fase del proyecto, en el que pondremos a prueba la adaptabilidad del mercado con el uso de las nuevas tecnologías. Nuestro equipo se encuentra laborando arduamente para ir incrementando las características de manera periódica y de ese modo ir creando de la aplicación una herramienta más completa que contribuya de manera sustancial con el ecosistema del baile.</p>
-
-                        <p class="f-14">Easy dance se encuentra en un proceso de periodo de prueba (Fase Beta) completamente abierta para cualquier academia de baile que desee integrarse, haciendo uso y prueba de nuestro proyecto piloto. Por tal motivo invitamos a toda la comunidad de baile a participar generando invitaciones a todas aquellas academias que aún no conocen la herramienta.</p>
-
-                        <p class="f-14">Así que los invitamos a estar muy atentos de todos nuestros avances, semanalmente estaremos haciendo nuevos anuncios de todas las características que se estarán actualizando dentro de la plataforma para el disfrute y organización en el ambiente del baile.</p> -->
-
 
                         @if($link_video)
 
+                            <div class="clearfix p-b-20"></div>
+                            <div class="clearfix p-b-20"></div>
+                            <div class="clearfix p-b-20"></div>
+
+                          @if($clase_grupal->titulo_video)
+
+                            <div class="f-700 f-30">{{$clase_grupal->titulo_video}}</div>
+
+                          @else
+
+                            <div class="f-700 f-30">Titulo del Video Promocional</div>
+
+                          @endif
+
+                          <hr class="linea-morada">
+
                           <div class="clearfix p-b-20"></div>
                           <div class="clearfix p-b-20"></div>
-                          <div class="clearfix p-b-20"></div>
-
-                        @if($clase_grupal->titulo_video)
-
-                        <div class="f-700 f-30">{{$clase_grupal->titulo_video}}</div>
-
-                        @else
-
-                        <div class="f-700 f-30">Titulo del Video Promocional</div>
-
-                        @endif
-                        <hr class="linea-morada">
-
-                        <div class="clearfix p-b-20"></div>
-                        <div class="clearfix p-b-20"></div>
 
                           <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
                             <div class="embed-responsive embed-responsive-4by3">
@@ -461,45 +431,39 @@
                           </div>
                         @endif
 
-                          <div class="clearfix p-b-20"></div>
-                          <div class="clearfix p-b-20"></div>
-                          <div class="clearfix p-b-20"></div>
+                        <div class="clearfix p-b-20"></div>
+                        <div class="clearfix p-b-20"></div>
+                        <div class="clearfix p-b-20"></div>
 
 
-                            <div class="col-sm-3" style="margin-left: 39%">
+                        <div class="col-sm-3" style="margin-left: 39%">
 
-                                        <div class="text-center">
+                          <div class="text-center">
 
-                                        @if(Auth::check())
+                          @if(Auth::check())
 
-                                          @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
-                                            <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Inscribir</button>
+                              <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Inscribir</button>
 
-                                            @else
+                              @else
 
-                                              <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Inscribirse</button>
+                                <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Reservar</button>
 
-                                          @endif
+                            @endif
 
-                                          @else
+                            @else
 
-                                            <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Reservar</button>
+                              <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Reservar</button>
 
-                                        @endif
+                          @endif
 
-                                        </div>
+                          </div>
 
-                                      </div>
+                        </div>
 
-                                      <div class="clearfix"></div>
-
-
-                        
-
-
+                        <div class="clearfix"></div>
                     </div>
-
                 </div>
 
                 <div role="tabpanel" class="tab-pane animated fadeInUp in" id="nuestro-equipo">
@@ -507,46 +471,45 @@
                     <div class="pmb-block m-t-0 p-t-0">
 
                     @if($clase_grupal->condiciones)
-
-                        <div class="f-700 f-30">Reglamentos</div>
-                        <br>
-                        <p class="f-14">{!! nl2br($clase_grupal->condiciones) !!}</p>
+                      <div class="f-700 f-30">Reglamentos</div>
+                      <br>
+                      <p class="f-14">{!! nl2br($clase_grupal->condiciones) !!}</p>
                     @endif
 
-                          <div class="clearfix p-b-20"></div>
-                          <div class="clearfix p-b-20"></div>
-                          <div class="clearfix p-b-20"></div>
+                    <div class="clearfix p-b-20"></div>
+                    <div class="clearfix p-b-20"></div>
+                    <div class="clearfix p-b-20"></div>
 
-                            <div class="col-sm-3" style="margin-left: 39%">
+                      <div class="col-sm-3" style="margin-left: 39%">
 
-                                        <div class="text-center">
+                        <div class="text-center">
 
-                                          @if(Auth::check())
+                          @if(Auth::check())
 
-                                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
 
-                                              <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Inscribir</button>
+                              <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Inscribir</button>
 
-                                            @else
+                            @else
 
-                                              <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Inscribirse</button>
+                              <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Reservar</button>
 
-                                            @endif
+                            @endif
 
-                                          @else
+                          @else
 
-                                            <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Reservar</button>
+                            <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Reservar</button>
 
-                                        @endif
-
-                                        </div>
-
-                                      </div>
-
-                                      <div class="clearfix"></div>
-
+                        @endif
 
                         </div>
+
+                      </div>
+
+                      <div class="clearfix"></div>
+
+
+                  </div>
                     
                 </div>
 
@@ -635,14 +598,14 @@
 @section('js') 
         
 
-        <script src="{{url('/')}}/assets/js/soon.min.js" data-auto="false"></script>
-        <script src="{{url('/')}}/assets/js/rrssb.min.js" data-auto="false"></script>
+      <script src="{{url('/')}}/assets/js/soon.min.js" data-auto="false"></script>
+      <script src="{{url('/')}}/assets/js/rrssb.min.js" data-auto="false"></script>
 
         <!-- Following is only for demo purpose. You may ignore this when you implement -->
-        <script type="text/javascript">
+      <script type="text/javascript">
 
         route_reserva="{{url('/')}}/reservacion/";
-        route_inscripcion= "{{url('/')}}/agendar/clases-grupales/inscribirse"
+        route_reserva_alumno= "{{url('/')}}/reservaciones/reservar"
         route_inscribir= "{{url('/')}}/agendar/clases-grupales/participantes/{{$id}}"
 
         var recompensa = 0;
@@ -751,23 +714,22 @@
 
         $(".guardar").click(function(){
 
-        id = "{{$id}}";
-        var token = $('input:hidden[name=_token]').val();
-        
+          id = "{{$id}}";
+          var token = $('input:hidden[name=_token]').val();
+          
+          if("{{Auth::check()}}"){
 
-        if("{{Auth::check()}}")
-        {
-          if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6){
+            if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6){
 
-            procesando();
+              procesando();
 
-            window.location = route_inscribir;
+              window.location = route_inscribir;
 
             }else{
 
               swal({   
-                    title: "Desea inscribirse en esta clase grupal?",   
-                    text: "Confirmar inscripción!",   
+                    title: "Desea reservar en esta clase grupal?",   
+                    text: "Confirmar reserva!",   
                     type: "warning",   
                     showCancelButton: true,   
                     confirmButtonColor: "#DD6B55",   
@@ -778,71 +740,56 @@
 
                 if (isConfirm) {
 
-                procesando();
+                  procesando();
 
-                var route = route_inscripcion;
+                  var route = route_reserva_alumno;
 
                   $.ajax({
                       url: route,
-                          headers: {'X-CSRF-TOKEN': token},
-                          type: 'POST',
+                      headers: {'X-CSRF-TOKEN': token},
+                      type: 'POST',
                       dataType: 'json',
-                      data:"&clase_grupal_id="+id,
+                      data:"&actividad_id="+id+"&actividad_tipo=1",
                       success:function(respuesta){
-
-                          swal("Exito!","Te has inscrito exitosamente","success");
-
+                        swal("Exito!","Has reservado exitosamente","success");
+                        finprocesado();
+                        $('.modal').modal('hide');
                       },
                       error:function(msj){
-     
-                          swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                        }
+                        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                        finprocesado();
+                        $('.modal').modal('hide');
+                      }
                   });
-                  finprocesado();
-                  $('.modal').modal('hide');
+                }
+              });
+            }
+          }else{
+
+            procesando();
+            var route = route_reserva + 1;
+                    
+            $.ajax({
+              url: route,
+                  headers: {'X-CSRF-TOKEN': token},
+                  type: 'POST',
+              dataType: 'json',
+              data:"&tipo_reservacion=1",
+              success:function(respuesta){
+                window.location=route_reserva+id; 
+              },
+              error:function(msj){
+                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
               }
             });
           }
-        }
-        else{
+        });
 
-           procesando();
-           var route = route_reserva + 1;
-                  
-                  $.ajax({
-                      url: route,
-                          headers: {'X-CSRF-TOKEN': token},
-                          type: 'POST',
-                      dataType: 'json',
-                      data:"&tipo_reservacion=1",
-                      success:function(respuesta){
-
-                          window.location=route_reserva+id; 
-
-                      },
-                      error:function(msj){
-                                  // $("#msj-danger").fadeIn(); 
-                                  // var text="";
-                                  // console.log(msj);
-                                  // var merror=msj.responseJSON;
-                                  // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                  // $("#msj-error").html(text);
-                                  // setTimeout(function(){
-                                  //          $("#msj-danger").fadeOut();
-                                  //         }, 3000);
-                                  swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                                  }
-
-
-                  });
-                }
-            });
-
-        function nl2br (str, is_xhtml) {   
-          var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
-          return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
+      function nl2br (str, is_xhtml) {   
+        var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';    
+        return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1'+ breakTag +'$2');
       }
 
 
-        </script>
+  </script>
 @stop        

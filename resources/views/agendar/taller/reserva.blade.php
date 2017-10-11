@@ -69,7 +69,7 @@
 
                                             @else
 
-                                              <button type="button" class="btn btn-blanco m-r-10 f-20 guardar"> Inscribirse</button>
+                                              <button type="button" class="btn btn-blanco m-r-10 f-20 guardar"> Reservar</button>
 
                                             @endif
 
@@ -270,7 +270,7 @@
 
                                 @else
 
-                                  <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i>Inscribirse</button>
+                                  <button class="btn-blanco m-r-10 f-20 f-700 p-l-20 p-r-20 reservar" style="width:100%; padding:5px"> </i>Reservar</button>
 
                                 @endif
 
@@ -305,7 +305,7 @@
 
                   @else
 
-                    <li class="waves-effect reservar"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Inscribirse</a></li>
+                    <li class="waves-effect reservar"><a class ="reservar" aria-controls="faqs" role="tab" data-toggle="tab">Reservar</a></li>
 
                   @endif
 
@@ -380,7 +380,7 @@
 
                                             @else
 
-                                              <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Inscribirse</button>
+                                              <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Reservar</button>
 
                                           @endif
 
@@ -430,7 +430,7 @@
 
                                             @else
 
-                                              <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Inscribirse</button>
+                                              <button type="button" class="btn btn-blanco m-r-10 f-20 reservar"> Reservar</button>
 
                                             @endif
 
@@ -541,7 +541,7 @@
         <script type="text/javascript">
 
         route_reserva="{{url('/')}}/reservacion/";
-        route_inscripcion= "{{url('/')}}/agendar/talleres/inscribirse"
+        route_reserva_alumno= "{{url('/')}}/reservaciones/reservar"
         route_inscribir= "{{url('/')}}/agendar/talleres/participantes/{{$id}}"
 
         var recompensa = 0;
@@ -640,92 +640,76 @@
 
       $(".guardar").click(function(){
 
-        id = "{{$id}}";
-        var token = $('input:hidden[name=_token]').val();
-        
+          id = "{{$id}}";
+          var token = $('input:hidden[name=_token]').val();
+          
+          if("{{Auth::check()}}"){
 
-        if("{{Auth::check()}}")
-        {
-          if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6){
+            if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6){
 
-            procesando();
+              procesando();
 
-            window.location = route_inscribir;
+              window.location = route_inscribir;
 
             }else{
 
               swal({   
-                    title: "Desea inscribirse en este taller?",   
-                    text: "Confirmar inscripción!",   
+                    title: "Desea reservar en este taller?",   
+                    text: "Confirmar reservar!",   
                     type: "warning",   
                     showCancelButton: true,   
                     confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Inscribirse!",  
+                    confirmButtonText: "Reservar!",  
                     cancelButtonText: "Cancelar",         
                     closeOnConfirm: true 
                 }, function(isConfirm){   
 
                 if (isConfirm) {
 
-                procesando();
+                  procesando();
 
-                var route = route_inscripcion;
+                  var route = route_reserva_alumno;
 
                   $.ajax({
                       url: route,
-                          headers: {'X-CSRF-TOKEN': token},
-                          type: 'POST',
+                      headers: {'X-CSRF-TOKEN': token},
+                      type: 'POST',
                       dataType: 'json',
-                      data:"&taller_id="+id,
+                      data:"&actividad_id="+id+"&actividad_tipo=2",
                       success:function(respuesta){
-
-                          swal("Exito!","Te has inscrito exitosamente","success");
-
+                        swal("Exito!","Has reservado exitosamente","success");
+                        finprocesado();
+                        $('.modal').modal('hide');
                       },
                       error:function(msj){
-     
-                          swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                        }
+                        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                        finprocesado();
+                        $('.modal').modal('hide');
+                      }
                   });
-                  finprocesado();
-                  $('.modal').modal('hide');
+                }
+              });
+            }
+          }else{
+
+            procesando();
+            var route = route_reserva + 2;
+                    
+            $.ajax({
+              url: route,
+                  headers: {'X-CSRF-TOKEN': token},
+                  type: 'POST',
+              dataType: 'json',
+              data:"&tipo_reservacion=2",
+              success:function(respuesta){
+                window.location=route_reserva+id; 
+              },
+              error:function(msj){
+                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
               }
             });
           }
-        }
-        else{
-
-           procesando();
-           var route = route_reserva + 2;
-                  
-                  $.ajax({
-                      url: route,
-                          headers: {'X-CSRF-TOKEN': token},
-                          type: 'POST',
-                      dataType: 'json',
-                      data:"&tipo_reservacion=2",
-                      success:function(respuesta){
-
-                          window.location=route_reserva+id;  
-
-                      },
-                      error:function(msj){
-                                  // $("#msj-danger").fadeIn(); 
-                                  // var text="";
-                                  // console.log(msj);
-                                  // var merror=msj.responseJSON;
-                                  // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                  // $("#msj-error").html(text);
-                                  // setTimeout(function(){
-                                  //          $("#msj-danger").fadeOut();
-                                  //         }, 3000);
-                                  swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                                  }
-
-
-                  });
-                }
-            });
+        });
 
 
         function nl2br (str, is_xhtml) {   

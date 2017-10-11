@@ -128,8 +128,6 @@
 
     $(document).on( 'click', '.previa', function () {
         var id = this.id;
-        procesando();
-
         window.open(route_progreso+"/"+id, '_blank');
 
       });
