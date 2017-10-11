@@ -2802,7 +2802,11 @@
                   .remove()
                   .draw();
 
-                swal("Exito!","La reservación ha sido eliminada!","success");
+                if(tipo == 1){
+                  swal("Exito!","La inscripción ha sido eliminada!","success");
+                }else{
+                  swal("Exito!","La reservación ha sido eliminada!","success");
+                }
                 var sexo = $(element).closest('tr').data('sexo');
 
                 if(sexo == 'F'){

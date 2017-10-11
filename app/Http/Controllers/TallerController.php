@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Taller;
 use App\HorarioTaller;
+use App\Visitante;
+use App\Participante;
 use App\Alumno;
 use App\Academia;
 use App\ConfigEstudios;
@@ -1186,10 +1188,118 @@ class TallerController extends BaseController {
             $array = array();
             $in = array(2,4);
 
+            $reservaciones = Reservacion::where('tipo_reservacion_id', '=', $id)
+                ->where('tipo_reservacion', '=', '2')
+                ->where('boolean_confirmacion', '=', 0)
+            ->get();
+
+            $now = Carbon::now();
+
+            foreach($reservaciones as $reservacion){
+
+                if($reservacion->tipo_usuario == 1){
+                    $alumno = Alumno::withTrashed()->find($reservacion->tipo_usuario_id);
+                    $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+                }else if($reservacion->tipo_usuario == 2){
+                    $alumno = Visitante::withTrashed()->find($reservacion->tipo_usuario_id);
+                    $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+                }else{
+                    $alumno = Participante::find($reservacion->tipo_usuario_id);
+                    $edad = 21;
+                }
+
+                if($alumno){
+
+                    if($alumno->sexo == 'F'){
+                        $mujeres++;
+                    }else{
+                        $hombres++;
+                    }
+
+                    $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                    $diferencia_tiempo = $now->diffInWeeks($fecha_vencimiento);
+
+                    if($diferencia_tiempo<1){
+
+                        $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                        $diferencia_tiempo = $now->diffInDays($fecha_vencimiento);
+
+                        if($diferencia_tiempo<1){
+
+                            $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                            $diferencia_tiempo = $now->diffInHours($fecha_vencimiento);
+
+                            if($diferencia_tiempo<1){
+
+                                $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                                $diferencia_tiempo = $now->diffInMinutes($fecha_vencimiento);
+
+                                if($diferencia_tiempo<1){
+
+                                    $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                                    $diferencia_tiempo = $now->diffInSeconds($fecha_vencimiento);
+
+                                    if($diferencia_tiempo==1){
+                                        $fecha_de_realizacion = "en ".$diferencia_tiempo." segundo";
+                                    }else{
+                                        $fecha_de_realizacion = "en ".$diferencia_tiempo." Segundos";
+                                    }
+                                }else{
+
+                                    if($diferencia_tiempo==1){
+                                        $fecha_de_realizacion = "en ".$diferencia_tiempo." minuto";
+                                    }else{
+                                        $fecha_de_realizacion = "en ".$diferencia_tiempo." minutos";
+                                    }
+                                }
+                            }else{
+
+                                if($diferencia_tiempo==1){
+                                    $fecha_de_realizacion = "en ".$diferencia_tiempo." hora";
+                                }else{
+                                    $fecha_de_realizacion = "en ".$diferencia_tiempo." horas";
+                                }
+                            }
+                        }else{
+
+                            if($diferencia_tiempo==1){
+                                $hora_segundos = $fecha_vencimiento->format('H:i');
+                                $fecha_de_realizacion = "Mañana a las ".$hora_segundos;
+                            }else{
+                                 $fecha_de_realizacion = "en ".$diferencia_tiempo." días";
+                            }
+                                
+                        }
+                    }else{
+                        
+                        if($diferencia_tiempo==1){
+                            $fecha_de_realizacion = "en ".$diferencia_tiempo." semana";
+                        }else{
+                            $fecha_de_realizacion = "en ".$diferencia_tiempo." semanas";
+                        }
+                    }
+
+                    $collection=collect($alumno);     
+                    $alumno_array = $collection->toArray();
+                    $alumno_array['imagen'] = '';
+                    $alumno_array['nombre'] = $alumno->nombre;
+                    $alumno_array['apellido'] = $alumno->apellido;
+                    $alumno_array['sexo'] = $alumno->sexo;
+                    $alumno_array['tipo'] = 2;
+                    $alumno_array['alumno_id'] = $alumno->id;
+                    $alumno_array['inscripcion_id'] = $reservacion->id;
+                    $alumno_array['tiempo_vencimiento'] = $fecha_de_realizacion;
+                    $alumno_array['fecha_vencimiento'] = $reservacion->fecha_vencimiento;
+                    $alumno_array['llamadas'] = 0;
+                    $alumno_array['edad'] = $edad;
+                    $array[] = $alumno_array;
+                }
+            
+            }
+
             $alumnos_inscritos = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
-                ->select('alumnos.*', 'inscripcion_taller.alumno_id')
+                ->select('alumnos.*', 'inscripcion_taller.id as inscripcion_id')
                 ->where('inscripcion_taller.taller_id', '=', $id)
-                ->where('inscripcion_taller.deleted_at', '=', null)
             ->get();
 
             foreach($alumnos_inscritos as $alumno){
@@ -1238,7 +1348,7 @@ class TallerController extends BaseController {
                 $alumno_array['deuda']=$deuda;
                 $alumno_array['edad'] = $edad;
 
-                $array[$alumno->id] = $alumno_array;
+                $array[] = $alumno_array;
 
                 if($alumno->sexo == 'F'){
                     $mujeres++;
@@ -1331,17 +1441,15 @@ class TallerController extends BaseController {
         }
     }
 
-    public function eliminarinscripcion(Request $request)
-    {
-        // $inscripcion = InscripcionClaseGrupal::find($id);
-        $inscripcion = InscripcionTaller::where('alumno_id', $request->alumno_id)->where('taller_id', $request->taller_id)->first();
+    public function eliminarinscripcion($id){
+
+        $inscripcion = InscripcionTaller::find($id);
         
         if($inscripcion->delete()){
             return response()->json(['mensaje' => '¡Excelente! El Taller se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
-
     }
 
     public function progreso($id)

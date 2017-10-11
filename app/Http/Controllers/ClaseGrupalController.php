@@ -460,97 +460,101 @@ class ClaseGrupalController extends BaseController {
 
                 if($reservacion->tipo_usuario == 1){
                     $alumno = Alumno::withTrashed()->find($reservacion->tipo_usuario_id);
+                    $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
                 }else if($reservacion->tipo_usuario == 2){
                     $alumno = Visitante::withTrashed()->find($reservacion->tipo_usuario_id);
+                    $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
                 }else{
                     $alumno = Participante::find($reservacion->tipo_usuario_id);
+                    $edad = 21;
                 }
 
-                if($alumno->sexo == 'F'){
-                    $mujeres++;
-                }else{
-                    $hombres++;
-                }
+                if($alumno){
 
-                $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
-                $diferencia_tiempo = $now->diffInWeeks($fecha_vencimiento);
-
-                if($diferencia_tiempo<1){
+                    if($alumno->sexo == 'F'){
+                        $mujeres++;
+                    }else{
+                        $hombres++;
+                    }
 
                     $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
-                    $diferencia_tiempo = $now->diffInDays($fecha_vencimiento);
+                    $diferencia_tiempo = $now->diffInWeeks($fecha_vencimiento);
 
                     if($diferencia_tiempo<1){
 
                         $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
-                        $diferencia_tiempo = $now->diffInHours($fecha_vencimiento);
+                        $diferencia_tiempo = $now->diffInDays($fecha_vencimiento);
 
                         if($diferencia_tiempo<1){
 
                             $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
-                            $diferencia_tiempo = $now->diffInMinutes($fecha_vencimiento);
+                            $diferencia_tiempo = $now->diffInHours($fecha_vencimiento);
 
                             if($diferencia_tiempo<1){
 
                                 $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
-                                $diferencia_tiempo = $now->diffInSeconds($fecha_vencimiento);
+                                $diferencia_tiempo = $now->diffInMinutes($fecha_vencimiento);
 
-                                if($diferencia_tiempo==1){
-                                    $fecha_de_realizacion = "en ".$diferencia_tiempo." segundo";
+                                if($diferencia_tiempo<1){
+
+                                    $fecha_vencimiento = Carbon::createFromFormat('Y-m-d',$reservacion->fecha_vencimiento);
+                                    $diferencia_tiempo = $now->diffInSeconds($fecha_vencimiento);
+
+                                    if($diferencia_tiempo==1){
+                                        $fecha_de_realizacion = "en ".$diferencia_tiempo." segundo";
+                                    }else{
+                                        $fecha_de_realizacion = "en ".$diferencia_tiempo." Segundos";
+                                    }
                                 }else{
-                                    $fecha_de_realizacion = "en ".$diferencia_tiempo." Segundos";
+
+                                    if($diferencia_tiempo==1){
+                                        $fecha_de_realizacion = "en ".$diferencia_tiempo." minuto";
+                                    }else{
+                                        $fecha_de_realizacion = "en ".$diferencia_tiempo." minutos";
+                                    }
                                 }
                             }else{
 
                                 if($diferencia_tiempo==1){
-                                    $fecha_de_realizacion = "en ".$diferencia_tiempo." minuto";
+                                    $fecha_de_realizacion = "en ".$diferencia_tiempo." hora";
                                 }else{
-                                    $fecha_de_realizacion = "en ".$diferencia_tiempo." minutos";
+                                    $fecha_de_realizacion = "en ".$diferencia_tiempo." horas";
                                 }
                             }
                         }else{
 
                             if($diferencia_tiempo==1){
-                                $fecha_de_realizacion = "en ".$diferencia_tiempo." hora";
+                                $hora_segundos = $fecha_vencimiento->format('H:i');
+                                $fecha_de_realizacion = "Mañana a las ".$hora_segundos;
                             }else{
-                                $fecha_de_realizacion = "en ".$diferencia_tiempo." horas";
+                                 $fecha_de_realizacion = "en ".$diferencia_tiempo." días";
                             }
+                                
                         }
                     }else{
-
+                        
                         if($diferencia_tiempo==1){
-                            $hora_segundos = $fecha_vencimiento->format('H:i');
-                            $fecha_de_realizacion = "Mañana a las ".$hora_segundos;
+                            $fecha_de_realizacion = "en ".$diferencia_tiempo." semana";
                         }else{
-                             $fecha_de_realizacion = "en ".$diferencia_tiempo." días";
+                            $fecha_de_realizacion = "en ".$diferencia_tiempo." semanas";
                         }
-                            
                     }
-                }else{
-                    
-                    if($diferencia_tiempo==1){
-                        $fecha_de_realizacion = "en ".$diferencia_tiempo." semana";
-                    }else{
-                        $fecha_de_realizacion = "en ".$diferencia_tiempo." semanas";
-                    }
+
+                    $collection=collect($alumno);     
+                    $alumno_array = $collection->toArray();
+                    $alumno_array['imagen'] = '';
+                    $alumno_array['nombre'] = $alumno->nombre;
+                    $alumno_array['apellido'] = $alumno->apellido;
+                    $alumno_array['sexo'] = $alumno->sexo;
+                    $alumno_array['tipo'] = 2;
+                    $alumno_array['alumno_id'] = $alumno->id;
+                    $alumno_array['inscripcion_id'] = $reservacion->id;
+                    $alumno_array['tiempo_vencimiento'] = $fecha_de_realizacion;
+                    $alumno_array['fecha_vencimiento'] = $reservacion->fecha_vencimiento;
+                    $alumno_array['llamadas'] = 0;
+                    $alumno_array['edad'] = $edad;
+                    $array['2-'.$alumno->id] = $alumno_array;
                 }
-
-                $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
-
-                $collection=collect($alumno);     
-                $alumno_array = $collection->toArray();
-                $alumno_array['imagen'] = '';
-                $alumno_array['nombre'] = $alumno->nombre;
-                $alumno_array['apellido'] = $alumno->apellido;
-                $alumno_array['sexo'] = $alumno->sexo;
-                $alumno_array['tipo'] = 2;
-                $alumno_array['alumno_id'] = $alumno->id;
-                $alumno_array['inscripcion_id'] = $reservacion->id;
-                $alumno_array['tiempo_vencimiento'] = $fecha_de_realizacion;
-                $alumno_array['fecha_vencimiento'] = $reservacion->fecha_vencimiento;
-                $alumno_array['llamadas'] = 0;
-                $alumno_array['edad'] = $edad;
-                $array['2-'.$alumno->id] = $alumno_array;
             
             }
 
@@ -1847,7 +1851,7 @@ class ClaseGrupalController extends BaseController {
     
         }
     }
-    
+
     public function editarinscripcion(Request $request)
     {
 

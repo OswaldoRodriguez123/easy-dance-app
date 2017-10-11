@@ -73,7 +73,7 @@
 
           
 
-<div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modalAgregar" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
@@ -106,7 +106,7 @@
                                          @foreach ( $alumnos as $alumno )
                                           <?php $exist = false; ?>
                                           @foreach ( $alumnos_inscritos as $inscripcion)
-                                            @if ($inscripcion['alumno_id']==$alumno['id'])
+                                            @if ($inscripcion['id']==$alumno['id'])
                                               <?php $exist = true; ?>
                                             @endif
                                           @endforeach
@@ -275,6 +275,7 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
+                                    <th class="text-center" data-column-id="iconos"></th>
                                     <th class="text-center" data-column-id="imagen">Imagen</th>
                                     <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                     <th class="text-center" data-column-id="sexo">Sexo</th>
@@ -286,8 +287,16 @@
                             <tbody>
 
                             @foreach ($alumnos_inscritos as $alumno)
-                                <?php $id = $alumno['id']; ?>
-                                <tr id="{{$id}}" class="seleccion" >
+                              <?php $id = $alumno['inscripcion_id']; ?>
+                              @if($alumno['tipo'] == 1)
+                                <tr data-tipo ="{{$alumno['tipo']}}" id="{{$id}}" class="seleccion" >
+                                    <td class="text-center previa"> 
+                                      <span style="display: none">1</span>
+                                      @if($alumno['activacion']) 
+                                        <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>
+
+                                      @endif
+                                    </td>
                                     <td class="text-center previa">
                                       @if($alumno['imagen'])
                                         <img class="lv-img" src="{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
@@ -323,6 +332,57 @@
                                       <i class="zmdi zmdi-delete boton red eliminar f-20 p-r-10"></i>
                                     </td>
                                 </tr>
+                                @else
+                                  <tr data-tipo ="{{$alumno['tipo']}}" data-sexo="{{$alumno['sexo']}}" id="{{$alumno['inscripcion_id']}}" class="seleccion seleccion_deleted">
+                                      <td class="text-center previa"><span style="display: none">2</span><span class="c-amarillo"><b>R</b></span></td>
+                                      <td class="text-center previa">
+
+                                        @if($alumno['sexo'] == 'M')
+                                          <img class="lv-img-lg" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                        @else
+                                          <img class="lv-img-lg" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                        @endif
+
+                                      </td>
+                                      <td class="text-center previa">{{$alumno['tiempo_vencimiento']}}</td>
+                                      <td class="text-center previa">
+                                      @if($alumno['sexo']=='F')
+                                        <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                      @else
+                                        <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                      @endif
+                                      </td>
+                                      <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
+                                      <td class="text-center previa">
+                                        <i class="zmdi zmdi-money f-20 p-r-3 c-verde"></i>
+                                      </td>
+                                      <td class="text-center">
+                                        <ul class="top-menu">
+                                          <li class="dropdown" id="dropdown_{{$id}}">
+                                              <a id="dropdown_toggle_{{$id}}" href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                                 <span class="f-15 f-700" style="color:black"> 
+                                                      <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                 </span>
+                                              </a>
+
+                                                <div class="dropup" dropdown-append-to-body>
+                                                  <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
+                                                      <li class="hidden-xs pointer">
+                                                          <a class="inscribir"><i class="zmdi zmdi-plus f-20"></i> Inscribir</a>
+                                                      </li>
+
+
+                                                      <li class="hidden-xs pointer">
+                                                          <a class="eliminar"><i class="zmdi zmdi-delete boton red f-20"></i> Eliminar</a>
+                                                      </li>
+
+                                                  </ul>
+                                              </div>
+                                          </li>
+                                        </ul>
+                                      </td>
+                                  </tr>
+                                @endif
                             @endforeach 
                                                            
                             </tbody>
@@ -353,6 +413,8 @@
         route_eliminar="{{url('/')}}/agendar/talleres/eliminarinscripcion/";
         route_update="{{url('/')}}/agendar/talleres/update";
         route_enhorabuena="{{url('/')}}/agendar/talleres/enhorabuena/";
+        route_inscribir="{{url('/')}}/reservaciones/inscribir/";
+        route_eliminar_reserva="{{url('/')}}/reservaciones/eliminar/";
 
         $(document).ready(function(){
 
@@ -681,84 +743,100 @@
             });
         });
 
-        $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+        $('#tablelistar tbody').on( 'click', '.eliminar', function () {
 
-                var id = $(this).closest('tr').attr('id');
-                // var temp = row.split('_');
-                // var id = temp[1];
-                element = this;
+          var id = $(this).closest('tr').attr('id');
+          var tipo = $(this).closest('tr').data('tipo');
 
-                swal({   
-                    title: "Desea eliminar al alumno?",   
-                    text: "Confirmar eliminación!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Eliminar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true 
-                }, function(isConfirm){   
-          if (isConfirm) {
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-                        swal("Exito!","El alumno ha sido eliminado!","success");
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar(id, element);
+          if(tipo == 1){
+            titulo = 'Desea eliminar al alumno?'
+          }else{
+            titulo = 'Desea eliminar la reservación?'
           }
-                });
-            });
+
+          element = this;
+
+          swal({   
+              title: titulo,   
+              text: "Confirmar eliminación!",   
+              type: "warning",   
+              showCancelButton: true,   
+              confirmButtonColor: "#DD6B55",   
+              confirmButtonText: "Eliminar!",  
+              cancelButtonText: "Cancelar",         
+              closeOnConfirm: true 
+          }, function(isConfirm){   
+            if (isConfirm) {  
+              eliminar(id, element);
+            }
+          });
+        });
       
         function eliminar(id, element){
-         var route = route_eliminar + id;
-         var token = "{{ csrf_token() }}";
-         var taller_id = $('input:hidden[name=taller_id]').val();
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    data: "&alumno_id=" + id + "&taller_id=" + taller_id,
-                    success:function(respuesta){
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          // finprocesado();
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
+          procesando()
+          var tipo = $(element).closest('tr').data('tipo');
+          if(tipo == 1){
+            var route = route_eliminar + id;
+          }else{
+            var route = route_eliminar_reserva + id;
+          }
+          var token = $('input:hidden[name=_token]').val();
+          $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+            dataType: 'json',
+            data: id,
+            success:function(respuesta){
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+                var nType = 'success';
+                var nTitle="Ups! ";
+                var nMensaje=respuesta.mensaje;
 
-                          t.row( $(element).parents('tr') )
-                            .remove()
-                            .draw();
-                        
-                        }
-                    },
-                    error:function(msj){
-                                $("#msj-danger").fadeIn(); 
-                                var text="";
-                                console.log(msj);
-                                var merror=msj.responseJSON;
-                                text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                $("#msj-error").html(text);
-                                setTimeout(function(){
-                                         $("#msj-danger").fadeOut();
-                                        }, 3000);
-                                }
-                });
-      }
+                t.row( $(element).parents('tr') )
+                  .remove()
+                  .draw();
 
-    // $('#modalCosto-Producto').on('show', function() {
-    //     console.log("entro");
-    //     $('#modalAgregar').css('opacity', .5);
-    // });
+                if(tipo == 1){
+                  swal("Exito!","La inscripción ha sido eliminada!","success");
+                }else{
+                  swal("Exito!","La reservación ha sido eliminada!","success");
+                }
+                var sexo = $(element).closest('tr').data('sexo');
+
+                if(sexo == 'F'){
+
+                  mujeres = mujeres - 1
+
+                  $('#span_mujeres').text(mujeres)
+
+                }else{
+                  hombres = hombres - 1
+
+                  $('#span_hombres').text(hombres)
+                }
+                finprocesado()
+              
+              }
+            },
+            error:function(msj){
+              $("#msj-danger").fadeIn(); 
+              var text="";
+              console.log(msj);
+              var merror=msj.responseJSON;
+              text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+              $("#msj-error").html(text);
+              setTimeout(function(){
+                 $("#msj-danger").fadeOut();
+              }, 3000);
+            }
+          });
+        }
 
     $(document)  
       .on('show.bs.modal', '.modal', function(event) {
@@ -809,61 +887,6 @@
       $("#costo").val($("#taller-costo").text());
     })
 
-    // $('#alumno_id').change(function(){
-
-    //     var values = $('#alumno_id').val();
-    //     var valor = '';
-    //     for(var i = 0; i < values.length; i += 1) {
-
-    //     valor = valor + ' ' + values[i];
-    //     }
-
-    //     console.log(valor);
-
-    // });
-
-    $('#alumno_id').change(function () {
-
-
-    // var selectedOptionValue = $(this).find("option:selected").text();
-
-    var last = $("option:selected:last",this);
-
-    console.log(last);
-
-    if($(last).hasClass( "inscrito" )){
-        // $(this).removeAttr("selected");
-        $(this).attr('disabled', false);
-        // .trigger("liszt:updated");
-        $('#alumno_id').selectpicker('deselectAll');
-        $('#alumno_id').selectpicker('render');
-        swal({   
-                    title: "ERROR",   
-                    text: "Ya este alumno esta inscrito",   
-                    type: "warning",   
-                    confirmButtonColor: "#ec6c62",   
-                    confirmButtonText: "Aceptar",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true 
-        });
-    }
-
-    // for (var i = 0; i < selectedOptionValue.length; i++) {
-
-    // var val = selectedOptionValue[i]; 
-    // var txt = $("#alumno_id option[value='"+val+"']").text();
-
-    //     // sendRequest.products.push({
-    //     //     'productId': val ,
-    //     //     'productName': txt 
-    //     // });
-    //     console.log(txt);
-    // }
-
-    
-        // $(".test").text(selectedText);
-    });
-
     $('input[name="tipo"]').on('change', function(){
 
         if($(this).val() == 'T'){
@@ -902,6 +925,141 @@
         }
 
     });
+
+    $('#tablelistar tbody').on( 'click', '.inscribir', function () {
+
+      var id = $(this).closest('tr').attr('id');
+
+      element = this;
+
+      swal({   
+          title: 'Desea inscribir al alumno?',   
+          text: "Confirmar inscripción!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Inscribir!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+        if (isConfirm) {  
+          inscribir(id,element);
+        }
+      });
+    });
+  
+    function inscribir(id,element){
+      procesando()
+
+      var route = route_inscribir + id;
+   
+      var token = $('input:hidden[name=_token]').val();
+      $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data: id,
+        success:function(respuesta){
+          var nFrom = $(this).attr('data-from');
+          var nAlign = $(this).attr('data-align');
+          var nIcons = $(this).attr('data-icon');
+          var nAnimIn = "animated flipInY";
+          var nAnimOut = "animated flipOutY"; 
+          if(respuesta.status=="OK"){
+
+            finprocesado();
+            var nType = 'success';
+            var nTitle="Ups! ";
+            var nMensaje=respuesta.mensaje;
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
+            alumno = respuesta.alumno;
+            inscripcion = respuesta.inscripcion
+
+            var identificacion = alumno.identificacion;    
+            var nombre = alumno.nombre;
+            var apellido = alumno.apellido;
+            
+            if(alumno.sexo=='F'){
+              imagen = '<img class="lv-img-sm" src="/assets/img/profile-pics/5.jpg" alt="">'
+              valor = $('#span_mujeres').html()
+              valor = parseInt(valor) + 1;
+              $('#span_mujeres').html(valor)
+              sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
+            }else{
+              imagen = '<img class="lv-img-sm" src="/assets/img/profile-pics/4.jpg" alt="">'
+              valor = $('#span_hombres').html()
+              valor = parseInt(valor) + 1;
+              $('#span_hombres').html(valor)
+              sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
+            }
+            
+            if(respuesta.deuda > 0){
+              deuda = '<i class="zmdi zmdi-money f-20 p-r-3 c-youtube"></i>'
+            }else{
+              deuda = '<i class="zmdi zmdi-money f-20 p-r-3 c-verde"></i>'
+            }
+
+            var rowId=inscripcion.id;
+            var rowNode=t.row.add( [
+            '',
+            ''+imagen+'',
+            ''+identificacion+'',
+            ''+sexo+'',
+            ''+nombre+ ' ' +apellido+'',
+            ''+deuda+'',
+            ''
+            ] ).draw(false).node();
+
+            $( rowNode )
+              .attr('id',rowId)
+              .data('tipo',1)
+              .addClass('seleccion');
+
+            t.row( $(element).parents('tr') )
+              .remove()
+              .draw();
+
+            window.location = route_enhorabuena + respuesta.id;
+          
+          }
+        },
+        error:function(msj){
+          $("#msj-danger").fadeIn(); 
+          var text="";
+          console.log(msj);
+          var merror=msj.responseJSON;
+          text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+          $("#msj-error").html(text);
+          setTimeout(function(){
+             $("#msj-danger").fadeOut();
+          }, 3000);
+        }
+      });
+    }
+
+    $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+        var id = $(this).closest('tr').attr('id');
+        var dropdown = $(this).closest('.dropdown')
+        var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+        $('.dropdown-toggle').attr('aria-expanded','false')
+        $('.dropdown').removeClass('open')
+        $('.table-responsive').css( "overflow", "auto" );
+
+        if(!dropdown.hasClass('open')){
+            dropdown.addClass('open')
+            dropdown_toggle.attr('aria-expanded','true')
+            $('.table-responsive').css( "overflow", "inherit" );
+        }
+     
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+        $('.table-responsive').css( "overflow", "auto" );
+    })
 
 
 
