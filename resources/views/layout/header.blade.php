@@ -228,7 +228,7 @@
                                         <ul class="ul_sub-menu" style="border-top: 1px solid #F0F0F0; border-bottom: 1px solid #F0F0F0">   
 
                                             <li class="hidden-xs">
-                                                <a href="{{url('supervisiones')}}"><i class="zmdi icon_a-reservaciones f-16"></i> <span class="m-l-5">Reservaciones</span></a>
+                                                <a href="{{url('reservaciones')}}"><i class="zmdi icon_a-reservaciones f-16"></i> <span class="m-l-5">Reservaciones</span></a>
                                             </li>
 
                                             <li class="hidden-xs">
