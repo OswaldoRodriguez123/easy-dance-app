@@ -22,142 +22,142 @@
 
 
  <div class="modal fade" id="modalAlumno" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro">Participante: <span class="span_alumno"></span> <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                        </div>
-                           <div class="modal-body">                           
-                           <div class="row p-t-20 p-b-0">
-                              <form name="form_actualizar" id="form_actualizar">
-                                <input class ="id_participante" type="hidden" name="id_participante" id="id_participante" value=""></input>
-                                <div class="col-sm-6">
-                                  <label for="nombre" id="id-tipologia_id_participante">Perfil del Cliente</label>
-                                  <div class="select">
-                                    <select class="selectpicker" name="tipologia_id_participante" id="tipologia_id_participante" data-live-search="true">
-                                      <option value="">Selecciona</option>
-                                      @foreach($tipologias as $tipologia)
-                                        <option value = "{{$tipologia->id}}">{{$tipologia->nombre}}</option>
-                                      @endforeach
-                                    </select>
-                                  </div>
-                                  <div class="has-error" id="error-tipologia_id_participante">
-                                    <span >
-                                      <small class="help-block error-span" id="error-tipologia_id_participante_mensaje" ></small>                
-                                    </span>
-                                  </div>
-                                </div>
-                             
-                               <div class="clearfix"></div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                <h4 class="modal-title c-negro">Participante: <span class="span_alumno"></span> <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+            </div>
+               <div class="modal-body">                           
+               <div class="row p-t-20 p-b-0">
+                  <form name="form_actualizar" id="form_actualizar">
+                    <input class ="id_participante" type="hidden" name="id_participante" id="id_participante" value=""></input>
+                    <div class="col-sm-6">
+                      <label for="nombre" id="id-tipologia_id_participante">Perfil del Cliente</label>
+                      <div class="select">
+                        <select class="selectpicker" name="tipologia_id_participante" id="tipologia_id_participante" data-live-search="true">
+                          <option value="">Selecciona</option>
+                          @foreach($tipologias as $tipologia)
+                            <option value = "{{$tipologia->id}}">{{$tipologia->nombre}}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                      <div class="has-error" id="error-tipologia_id_participante">
+                        <span >
+                          <small class="help-block error-span" id="error-tipologia_id_participante_mensaje" ></small>                
+                        </span>
+                      </div>
+                    </div>
+                 
+                   <div class="clearfix"></div>
 
-                               <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="nombre" id="id-nombre_participante">Nombre</label>
-                                    <input type="text" class="form-control input-sm" name="nombre_participante" id="nombre_participante" placeholder="Ej. Valeria" disabled>
-                                 </div>
-                               </div>
+                   <div class="col-sm-12">
+                     <div class="form-group fg-line">
+                        <label for="nombre" id="id-nombre_participante">Nombre</label>
+                        <input type="text" class="form-control input-sm" name="nombre_participante" id="nombre_participante" placeholder="Ej. Valeria" disabled>
+                     </div>
+                   </div>
 
-                               <div class="clearfix"></div> 
-
-
-                               <div class="col-sm-12">
-                                 <div class="form-group fg-line">
-                                    <label for="id-apellido" id="id-apellido_participante">Apellido</label>
-                                    <input type="text" class="form-control input-sm" name="apellido_participante" id="apellido_participante" placeholder="Ej. Sánchez" disabled>
-                                 </div>
-                               </div>
-
-                               <div class="clearfix"></div> 
-
-                               <div class="col-sm-12">
-                                    <div class="form-group fg-line">
-                                    <label for="apellido" id="id-fecha_nacimiento_participante">Fecha de Nacimiento</label>
-                                            <div class="dtp-container fg-line">
-                                            <input name="fecha_nacimiento_participante" id="fecha_nacimiento_participante" class="form-control date-picker" placeholder="Seleciona" type="text" disabled>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="clearfix"></div> 
-           
-                                                               
-                               <div class="col-sm-12">
-                                 <div class="form-group fg-line ">
-                                    <label for="sexo p-t-10" id="id-sexo_participante">Sexo</label>
-                                    <div class="p-t-10">
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="sexo_participante" id="mujer" value="F" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Mujer <i class="zmdi zmdi-female p-l-5 f-20"></i>
-                                    </label>
-                                    <label class="radio radio-inline m-r-20 ">
-                                        <input name="sexo_participante" id="hombre" value="M" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Hombre <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
-                                    </label>
-                                    </div>
-                                    
-                                 </div>
-                               </div>
-
-                               <div class="col-sm-12">
-
-                               <label for="apellido" id="id-correo_participante">Correo Electrónico</label>
-
-                                    <div class="form-group fg-line ">
-                                      <input type="text" class="form-control input-sm proceso" name="correo_participante" id="correo_participante" placeholder="Ej. easydance@gmail.com" disabled>
-                                      </div>
-      
-                               </div>
-
-                               <div class="clearfix"></div> 
-                               <br>
-
-                               <div class="col-sm-12">
-                                 
-                                    <label for="apellido" id="id-celular_participante">Teléfono Móvil</label>
-
-                                    <div class="form-group fg-line ">
-                                      <input type="text" class="form-control input-sm input-mask" name="celular_participante" id="celular_participante" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894" disabled>
-                                      </div>
-                               </div>
-
-                               <div class="clearfix"></div> 
-                               <br>
+                   <div class="clearfix"></div> 
 
 
-                               <div class="col-sm-12">
-                                 
-                                    <label for="apellido" id="id-telefono_participante">Teléfono Local</label> 
+                   <div class="col-sm-12">
+                     <div class="form-group fg-line">
+                        <label for="id-apellido" id="id-apellido_participante">Apellido</label>
+                        <input type="text" class="form-control input-sm" name="apellido_participante" id="apellido_participante" placeholder="Ej. Sánchez" disabled>
+                     </div>
+                   </div>
 
-                                    <div class="form-group fg-line ">
-                                      <input disabled type="text" class="form-control input-sm input-mask" name="telefono_participante" id="telefono_participante" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894" disabled>
-                                      </div>
-                               </div>
+                   <div class="clearfix"></div> 
 
-                            </form>
-                          </div>
-                        </div>
-                        <div class="modal-footer p-b-20 m-b-20">
-                            <div class="col-sm-12 text-left">
-                              <div class="procesando hidden">
-                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                              <div class="preloader pls-purple">
-                                  <svg class="pl-circular" viewBox="25 25 50 50">
-                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                  </svg>
-                              </div>
-                              </div>
-                            </div>
-                            <div class="col-sm-12">                            
-
-                              <a class="btn-blanco m-r-5 f-12" href="#" id="actualizar_participante"> Actualizar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
-
+                   <div class="col-sm-12">
+                        <div class="form-group fg-line">
+                        <label for="apellido" id="id-fecha_nacimiento_participante">Fecha de Nacimiento</label>
+                                <div class="dtp-container fg-line">
+                                <input name="fecha_nacimiento_participante" id="fecha_nacimiento_participante" class="form-control date-picker" placeholder="Seleciona" type="text" disabled>
                             </div>
                         </div>
                     </div>
+
+                    <div class="clearfix"></div> 
+
+                                                   
+                   <div class="col-sm-12">
+                     <div class="form-group fg-line ">
+                        <label for="sexo p-t-10" id="id-sexo_participante">Sexo</label>
+                        <div class="p-t-10">
+                        <label class="radio radio-inline m-r-20">
+                            <input name="sexo_participante" id="mujer" value="F" type="radio">
+                            <i class="input-helper"></i>  
+                            Mujer <i class="zmdi zmdi-female p-l-5 f-20"></i>
+                        </label>
+                        <label class="radio radio-inline m-r-20 ">
+                            <input name="sexo_participante" id="hombre" value="M" type="radio">
+                            <i class="input-helper"></i>  
+                            Hombre <i class="zmdi zmdi-male-alt p-l-5 f-20"></i>
+                        </label>
+                        </div>
+                        
+                     </div>
+                   </div>
+
+                   <div class="col-sm-12">
+
+                   <label for="apellido" id="id-correo_participante">Correo Electrónico</label>
+
+                        <div class="form-group fg-line ">
+                          <input type="text" class="form-control input-sm proceso" name="correo_participante" id="correo_participante" placeholder="Ej. easydance@gmail.com" disabled>
+                          </div>
+
+                   </div>
+
+                   <div class="clearfix"></div> 
+                   <br>
+
+                   <div class="col-sm-12">
+                     
+                        <label for="apellido" id="id-celular_participante">Teléfono Móvil</label>
+
+                        <div class="form-group fg-line ">
+                          <input type="text" class="form-control input-sm input-mask" name="celular_participante" id="celular_participante" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894" disabled>
+                          </div>
+                   </div>
+
+                   <div class="clearfix"></div> 
+                   <br>
+
+
+                   <div class="col-sm-12">
+                     
+                        <label for="apellido" id="id-telefono_participante">Teléfono Local</label> 
+
+                        <div class="form-group fg-line ">
+                          <input disabled type="text" class="form-control input-sm input-mask" name="telefono_participante" id="telefono_participante" data-mask="(000)000-0000" placeholder="Ej: (426)367-0894" disabled>
+                          </div>
+                   </div>
+
+                </form>
+              </div>
+            </div>
+            <div class="modal-footer p-b-20 m-b-20">
+                <div class="col-sm-12 text-left">
+                  <div class="procesando hidden">
+                  <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                  <div class="preloader pls-purple">
+                      <svg class="pl-circular" viewBox="25 25 50 50">
+                          <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                      </svg>
+                  </div>
+                  </div>
+                </div>
+                <div class="col-sm-12">                            
+
+                  <a class="btn-blanco m-r-5 f-12" href="#" id="actualizar_participante"> Actualizar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
                 </div>
             </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -166,40 +166,40 @@
         <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Error<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
      </div>
                     
-              <div class="modal-body">                           
-              <div class="row p-t-20 p-b-0">
+      <div class="modal-body">                           
+        <div class="row p-t-20 p-b-0">
 
-              <div class="col-md-2"></div>
-              <div class="col-md-8">
-                <div align="center"><i class="zmdi zmdi-alert-circle-o zmdi-hc-5x c-youtube"></i></div>
-                <div class="c-morado f-40 text-center"> ¡Error! </div>
-                <div class="clearfix m-20 m-b-25"></div>
-                <div class="text-center f-20">Esta clase grupal no posee valoración</div>
-                <div class="text-center f-20">No te preocupes, desde aqui puedes crearla</div>
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+              <div align="center"><i class="zmdi zmdi-alert-circle-o zmdi-hc-5x c-youtube"></i></div>
+              <div class="c-morado f-40 text-center"> ¡Error! </div>
+              <div class="clearfix m-20 m-b-25"></div>
+              <div class="text-center f-20">Esta clase grupal no posee valoración</div>
+              <div class="text-center f-20">No te preocupes, desde aqui puedes crearla</div>
 
-                <div class="clearfix m-20 m-b-25"></div>
-                <div class="clearfix m-20 m-b-25"></div>
-                
-                <div align="center">
-                <button type="submit" class="butp button5" onclick="valoracion()">Llevame</button>
-                <button type="submit" class="but2 button55" onclick="atras()"><span>En otro momento</span></button><br><br><br>
-                </div>
-                
-
-                <div class="clearfix m-20 m-b-25"></div>
-                <div class="clearfix m-20 m-b-25"></div>
-                <div class="clearfix m-20 m-b-25"></div>
-                <div class="clearfix m-20 m-b-25"></div>
-
+              <div class="clearfix m-20 m-b-25"></div>
+              <div class="clearfix m-20 m-b-25"></div>
+              
+              <div align="center">
+              <button type="submit" class="butp button5" onclick="valoracion()">Llevame</button>
+              <button type="submit" class="but2 button55" onclick="atras()"><span>En otro momento</span></button><br><br><br>
               </div>
-              <div class="col-md-2"></div>
+              
+
+              <div class="clearfix m-20 m-b-25"></div>
+              <div class="clearfix m-20 m-b-25"></div>
+              <div class="clearfix m-20 m-b-25"></div>
+              <div class="clearfix m-20 m-b-25"></div>
+
+            </div>
+            <div class="col-md-2"></div>
 
 
       
-              </div>
-              </div>
-              </div>
+          </div>
+        </div>
       </div>
+    </div>
   </div>
 
   <div class="modal fade" id="modalCongelar" tabindex="-1" role="dialog" aria-hidden="true">
@@ -1374,8 +1374,34 @@
                                       </td>
                                       <td class="text-center previa">{{$alumno['nombre']}} {{$alumno['apellido']}} </td>
                                       <td class="text-center previa">{{$alumno['tiempo_vencimiento']}}</td>
-                                      <td class="text-center previa"><label class="label estatusc-verde f-16"><i data-toggle="modal" href="#" class="zmdi zmdi-money f-20 p-r-3 operacionModal c-verde"></i></label></td>
-                                      <td class="text-center"><i class="zmdi zmdi-delete boton red eliminar f-20 p-r-10 pointer"></i></td>
+                                      <td class="text-center previa">
+                                        <i class="zmdi zmdi-money f-20 p-r-3 c-verde"></i>
+                                      </td>
+                                      <td class="text-center">
+                                        <ul class="top-menu">
+                                          <li class="dropdown" id="dropdown_{{$id}}">
+                                              <a id="dropdown_toggle_{{$id}}" href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                                 <span class="f-15 f-700" style="color:black"> 
+                                                      <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                 </span>
+                                              </a>
+
+                                                <div class="dropup" dropdown-append-to-body>
+                                                  <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
+                                                      <li class="hidden-xs pointer">
+                                                          <a class="inscribir"><i class="zmdi zmdi-plus f-20"></i> Inscribir</a>
+                                                      </li>
+
+
+                                                      <li class="hidden-xs pointer">
+                                                          <a class="eliminar"><i class="zmdi zmdi-delete boton red f-20"></i> Eliminar</a>
+                                                      </li>
+
+                                                  </ul>
+                                              </div>
+                                          </li>
+                                        </ul>
+                                      </td>
                                   </tr>
                                 @endif
                             @endforeach 
@@ -1422,6 +1448,7 @@
         route_consultar_credencial="{{url('/')}}/agendar/clases-grupales/consultar_credenciales";
         route_consulta_examen="{{url('/')}}/agendar/clases-grupales/consulta_examen/";
         route_nota_administrativa="{{url('/')}}/agendar/clases-grupales/agregar-nota-administrativa";
+        route_inscribir="{{url('/')}}/agendar/reservaciones/inscribir/";
 
         var in_credencial = <?php echo json_encode($in_credencial);?>;
 
@@ -2716,44 +2743,34 @@
         // }
 
 
-          $('.eliminar').on('click', function () {
-        // $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+        $('#tablelistar tbody').on( 'click', '.eliminar', function () {
 
-                var id = $(this).closest('tr').attr('id');
+          var id = $(this).closest('tr').attr('id');
+          var tipo = $(this).closest('tr').data('tipo');
 
-                var tipo = $(this).closest('tr').data('tipo');
-                if(tipo == 1){
-                  titulo = 'Desea eliminar al alumno?'
-                 }else{
-                  titulo = 'Desea eliminar la reservación?'
-                 }
-
-                // var temp = row.split('_');
-                // var id = temp[1];
-                element = this;
-
-                swal({   
-                    title: titulo,   
-                    text: "Confirmar eliminación!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Eliminar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true 
-                }, function(isConfirm){   
-          if (isConfirm) {
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar(id, element);
+          if(tipo == 1){
+            titulo = 'Desea eliminar al alumno?'
+          }else{
+            titulo = 'Desea eliminar la reservación?'
           }
-                });
-            });
+
+          element = this;
+
+          swal({   
+              title: titulo,   
+              text: "Confirmar eliminación!",   
+              type: "warning",   
+              showCancelButton: true,   
+              confirmButtonColor: "#DD6B55",   
+              confirmButtonText: "Eliminar!",  
+              cancelButtonText: "Cancelar",         
+              closeOnConfirm: true 
+          }, function(isConfirm){   
+            if (isConfirm) {  
+              eliminar(id, element);
+            }
+          });
+        });
       
         function eliminar(id, element){
           procesando()
@@ -2777,7 +2794,6 @@
               var nAnimIn = "animated flipInY";
               var nAnimOut = "animated flipOutY"; 
               if(respuesta.status=="OK"){
-                // finprocesado();
                 var nType = 'success';
                 var nTitle="Ups! ";
                 var nMensaje=respuesta.mensaje;
@@ -2812,9 +2828,9 @@
               text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
               $("#msj-error").html(text);
               setTimeout(function(){
-                       $("#msj-danger").fadeOut();
-                      }, 3000);
-              }
+                 $("#msj-danger").fadeOut();
+              }, 3000);
+            }
           });
         }
 
@@ -3362,10 +3378,143 @@
       $('#textarea_entrega').hide();
       $('#textarea_observacion').hide();
       $('#div_promocion').hide();
-      $('')
       $('#agregar_inscripcion')[0].reset()
       $('.selectpicker').selectpicker('refresh')
     });
+
+    $('#tablelistar tbody').on( 'click', '.inscribir', function () {
+
+      var id = $(this).closest('tr').attr('id');
+
+      element = this;
+
+      swal({   
+          title: 'Desea inscribir al alumno?',   
+          text: "Confirmar inscripción!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Inscribir!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+        if (isConfirm) {  
+          inscribir(id,element);
+        }
+      });
+    });
+  
+    function inscribir(id,element){
+      procesando()
+
+      var route = route_inscribir + id;
+   
+      var token = $('input:hidden[name=_token]').val();
+      $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data: id,
+        success:function(respuesta){
+          var nFrom = $(this).attr('data-from');
+          var nAlign = $(this).attr('data-align');
+          var nIcons = $(this).attr('data-icon');
+          var nAnimIn = "animated flipInY";
+          var nAnimOut = "animated flipOutY"; 
+          if(respuesta.status=="OK"){
+
+            finprocesado();
+            var nType = 'success';
+            var nTitle="Ups! ";
+            var nMensaje=respuesta.mensaje;
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
+            alumno = respuesta.alumno;
+            inscripcion = respuesta.inscripcion
+
+            if(inscripcion.boolean_franela == 1 && inscripcion.boolean_programacion == 1){
+
+              iconos = '<i class="zmdi c-verde zmdi-check zmdi-hc-fw f-16 f-700"></i>'
+              
+            }else{
+
+              if(inscripcion.boolean_franela == 0 && inscripcion.boolean_programacion == 0)
+              {
+                iconos = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>' + ' ' + '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>'
+              }else{
+                if(inscripcion.boolean_franela == 1){
+                  iconos = '<i class="zmdi c-youtube icon_a-examen zmdi-hc-fw f-16 f-700"></i>'
+                }else{
+                  iconos = '<i class="zmdi c-youtube icon_f-productos zmdi-hc-fw f-16 f-700"></i>'
+                }
+              }
+            }
+
+            var identificacion = alumno.identificacion;    
+            var nombre = alumno.nombre;
+            var apellido = alumno.apellido;
+            var talla_franela = inscripcion.talla_franela;
+            
+            if(alumno.sexo=='F'){
+              imagen = '<img class="lv-img-sm" src="/assets/img/profile-pics/5.jpg" alt="">'
+              valor = $('#span_mujeres').html()
+              valor = parseInt(valor) + 1;
+              $('#span_mujeres').html(valor)
+              sexo = '<i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
+            }else{
+              imagen = '<img class="lv-img-sm" src="/assets/img/profile-pics/4.jpg" alt="">'
+              valor = $('#span_hombres').html()
+              valor = parseInt(valor) + 1;
+              $('#span_hombres').html(valor)
+              sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
+            }
+            
+            if(respuesta.deuda > 0){
+              deuda = '<i class="zmdi zmdi-money f-20 p-r-3 c-youtube"></i>'
+            }else{
+              deuda = '<i class="zmdi zmdi-money f-20 p-r-3 c-verde"></i>'
+            }
+
+            var rowId=inscripcion.id;
+            var rowNode=t.row.add( [
+            '',
+            ''+imagen+'',
+            ''+identificacion+'',
+            ''+sexo+'',
+            ''+nombre+ ' ' +apellido+'',
+            '<i class="zmdi zmdi-label-alt-outline f-20 p-r-3 c-verde"></i>',
+            ''+deuda+'',
+            ''
+            ] ).draw(false).node();
+
+            $( rowNode )
+              .attr('id',rowId)
+              .data('tipo',1)
+              .data('tipo_pago',inscripcion.tipo_pago)
+              .addClass('seleccion');
+
+            t.row( $(element).parents('tr') )
+              .remove()
+              .draw();
+
+            window.location = route_enhorabuena + respuesta.id;
+          
+          }
+        },
+        error:function(msj){
+          $("#msj-danger").fadeIn(); 
+          var text="";
+          console.log(msj);
+          var merror=msj.responseJSON;
+          text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+          $("#msj-error").html(text);
+          setTimeout(function(){
+             $("#msj-danger").fadeOut();
+          }, 3000);
+        }
+      });
+    }
 
   </script>
 

@@ -17,104 +17,15 @@
 @stop
 @section('content')
 
-<div class="modal fade" id="modalReserva" tabindex="-1" role="dialog" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                                        <h4 class="modal-title c-negro"><span id="titulo">Titulo</span> <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
-                                    </div>
-                                    <form name="form_reserva" id="form_reserva"  >
-                                       <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                       <input type="hidden" id="reservacion" name="reservacion" value="">
-                                       <input type="hidden" name="tipo_usuario_id" value="{{$tipo_usuario_id}}">
-                                       <div class="modal-body">                           
-                                       <div class="row p-t-20 p-b-0">
-
-                                           <div class="col-sm-3">
-  
-                                                <img id="imagen" src="{{url('/')}}/assets/img/Hombre.jpg" style="width: 140px; height: 140px;" class="img-responsive opaco-0-8" alt="">
-
-                                                <div class="clearfix p-b-15"></div>
-    
-                                                <span class="f-15 f-700 span_instructor"></span>
-
-                                                  
-                                           </div>
-
-                                           <div class="col-sm-9">
-                                             
-                                            <p class="f-16">Disponible <i class="zmdi zmdi-female f-25 c-rosado"></i> : <span class="f-700 span_mujer"></span></p>
-
-                                            <p class="f-16">Disponible <i class="zmdi zmdi-male-alt f-25 c-azul"></i> : <span class="f-700 span_hombre"></span></p> 
-
-                                            <p class="f-16">Cupos Disponibles Total : <span class="f-700 span_total"></span></p> 
-
-                                               <div class="clearfix"></div> 
-                                               <div class="clearfix p-b-15"></div>
-
-
-                                           </div>
-
-                                           
-                                       </div>
-
-                                       <div class="row p-t-20 p-b-0">
-
-                                       <hr style="margin-top:5px">
-
-                                       <div class="col-sm-12">
-
-                                 
-                                        <label for="razon_cancelacion" id="id-razon_cancelacion">Días de reservación</label>
-                                        <br></br>
-
-                                        </div>
-
-                                        <div class="form-group">
-                                        
-                                        <div class="col-sm-3">
-                                        <label for="dias_expiracion" id="id-dias_expiracion">El participante tendrá </label>
-                                        </div>
-                                        <div class="col-sm-1">
-                                        <input type="text" class="form-control input-sm input-mask" name="dias_expiracion" id="dias_expiracion" data-mask="000" placeholder="Ej. 10">
-                                        </div>
-                                        <div class="col-sm-8">
-                                        <label for="cantidad_sesiones" id="id-cantidad_sesiones">días continuos para sostener su reserva</label>
-                                        </div>
-
-                                       </div>
-
-                                       </div></div>
-
-                                       
-                                    <div class="modal-footer p-b-20 m-b-20">
-                                        <div class="col-sm-6 text-left">
-                                          <div class="procesando hidden">
-                                          <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
-                                          <div class="preloader pls-purple">
-                                              <svg class="pl-circular" viewBox="25 25 50 50">
-                                                  <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                                              </svg>
-                                          </div>
-                                          </div>
-                                        </div>
-                                        <div class="col-sm-6">                          
-                                          <button type="button" id="guardar" class="btn-blanco btn m-r-10 f-16 guardar" > Guardar</button>
-                                        </div>
-                                    </div></form>
-                                </div>
-                            </div>
-                        </div>
-
 
             <section id="content">
                 <div class="container">
                 
                     <div class="block-header">
-                        <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menú Principal</a>
-                        
-                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
 
+                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/"><i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
+                     
+                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
                             <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
                                             
                             <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
@@ -124,44 +35,116 @@
                             <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
                                            
                             <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
-                            
                         </ul>
                     </div> 
                     
                     <div class="card">
-                        <div class="card-header text-right">
+                        <div class="card-header">
+                              
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-reservaciones f-25"></i> Sección de Reservaciones</p>
+                            <hr class="linea-morada">
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-fiesta f-25"></i> Sección de Reservaciones</p>
-                            <hr class="linea-morada">                                                           
+                            <div class="col-sm-12">
+                                <div class="p-t-10 pull-right">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="activas" value="1" type="radio" checked>
+                                        <i class="input-helper"></i>  
+                                        Activas <i id="activas2" name="activas2" class="zmdi zmdi-label-alt-outline zmdi-hc-fw c-verde f-20"></i>
+                                    </label>
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="tipo" id="finalizadas" value="0" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Inactivas <i id="finalizadas2" name="finalizadas2" class="zmdi zmdi-check zmdi-hc-fw f-20"></i>
+                                    </label>
+                                </div>
+                            </div>
+
+
+                            <div class="clearfix"></div>
+                  
                         </div>
                         <div class="table-responsive row">
                            <div class="col-md-12">
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
-                                    <th class="text-center" data-column-id="fecha">Fecha de Inicio</th>
-                                    <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Final]</th>
-                                    <th class="text-center" data-column-id="dia" data-order="desc">Día</th>
-                                    <th class="text-center" data-column-id="cupos_disponibles" data-order="desc">Cupos Disp.</th>
-                                    <th class="text-center" data-column-id="disponible_mujer" data-order="desc">Disp. <i class="zmdi zmdi-female f-25 c-rosado"></i></th>
-                                    <th class="text-center" data-column-id="disponible_hombre" data-order="desc">Disp. <i class="zmdi zmdi-male-alt f-25 c-azul"></i></th>
+                                  <th class="text-center" data-column-id="estatus"></th>
+                                  <th class="text-center" data-column-id="imagen">Imagen</th>
+                                  <th class="text-center" data-column-id="nombres">Nombres</th>
+                                  <th class="text-center" data-column-id="actividad">Actividad</th>
+                                  <th class="text-center" data-column-id="sexo">Sexo</th>
+                                  <th class="text-center" data-column-id="fecha_reservacion">Fecha Reservación</th>
+                                  <th class="text-center" data-column-id="fecha_vencimiento">Fecha Vencimiento</th>
+                                  <th class="text-center" data-column-id="operacion">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-center" >
+                            <tbody>
 
-                            @foreach ($actividades as $actividad)
-                                <?php $id = $actividad['id']; ?>
-                                <tr id="{{$id}}" data-imagen="{{$actividad['imagen']}}" class="seleccion"> 
-                                    <td class="text-center previa">{{$actividad['nombre']}}</td>
-                                    <td class="text-center previa">{{$actividad['fecha_inicio']}}</td>
-                                    <td class="text-center previa">{{$actividad['hora_inicio']}} - {{$actividad['hora_final']}}</td>
-                                    <td class="text-center previa">{{$actividad['dia_de_semana']}}</td>
-                                    <td class="text-center previa">{{$actividad['disponible']}}</td>
-                                    <td class="text-center previa">{{$actividad['cantidad_mujeres']}}</td>
-                                    <td class="text-center previa">{{$actividad['cantidad_hombres']}}</td>
+                              @foreach ($reservaciones as $reservacion)
+                                <?php $id = $reservacion['id']; ?>
+                                <tr data-tipo="{{$reservacion['tipo_reservacion']}}" data-actividad_id="{{$reservacion['tipo_reservacion_id']}}" id="{{$id}}" class="seleccion">
+                                  <td>
+                                    <span style="display: none">{{$reservacion['estatus']}}</span>
+                                    @if($reservacion['estatus'] == 0)
+                                      @if($reservacion['boolean_confirmacion'])
+                                        <i class="zmdi zmdi-check c-verde f-16"></i>
+                                      @else
+                                        <i class="zmdi zmdi-dot-circle c-amarillo f-16"></i>
+                                      @endif
+                                    @endif
+                                  </td>
+                                  <td class="text-center previa">
+                                    @if($reservacion['imagen'])
+                                      <img class="lv-img" src="{{url('/')}}/assets/uploads/usuario/{{$reservacion['imagen']}}" alt="">
+                                    @else
+                                        @if($reservacion['sexo'] == 'M')
+                                          <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
+                                        @else
+                                          <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
+                                        @endif
+                                    @endif
+                                  </td>
+                                  <td class="text-center previa">{{$reservacion['nombre']}} {{$reservacion['apellido']}} </td>
+                                  <td class="text-center previa">{{$reservacion['actividad']}}</td>
+                                  <td class="text-center previa">
+                                  @if($reservacion['sexo']=='F')
+                                    <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                  @else
+                                    <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                  @endif
+                                  </td>
+                                  <td class="text-center previa">{{$reservacion['fecha_reservacion']}}</td>
+                                  <td class="text-center previa">{{$reservacion['fecha_vencimiento']}}</td>
+                                  <td class="text-center">
+                                    @if($reservacion['estatus'] == 1)
+                                      <ul class="top-menu">
+                                        <li class="dropdown" id="dropdown_{{$id}}">
+                                            <a id="dropdown_toggle_{{$id}}" href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
+                                               <span class="f-15 f-700" style="color:black"> 
+                                                    <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                               </span>
+                                            </a>
+
+                                              <div class="dropup" dropdown-append-to-body>
+                                                <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
+                                                    <li class="hidden-xs pointer">
+                                                        <a class="inscribir"><i class="zmdi zmdi-plus f-20"></i> Inscribir</a>
+                                                    </li>
+
+
+                                                    <li class="hidden-xs pointer">
+                                                        <a class="eliminar"><i class="zmdi zmdi-delete boton red f-20"></i> Eliminar</a>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </li>
+                                      </ul>
+                                    @endif
+                                  </td>
                                 </tr>
-                            @endforeach  
+
+                              @endforeach 
                                                            
                             </tbody>
                         </table>
@@ -183,188 +166,247 @@
             </section>
 @stop
 
-@section('js')
+@section('js') 
+            
+  <script type="text/javascript">
 
-<script type="text/javascript">
+    route_inscribir="{{url('/')}}/agendar/reservaciones/inscribir/";
+    route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminar_reserva/";
+    route_clase_grupal="{{url('/')}}/agendar/clases-grupales/participantes/";
+    route_taller="{{url('/')}}/agendar/talleres/participantes/";
+    route_enhorabuena="{{url('/')}}/agendar/clases-grupales/enhorabuena/";
 
-        route_agregar="{{url('/')}}/agendar/reservaciones/agregar";
+    $(document).ready(function(){
 
-        $(document).ready(function(){
-
-        t=$('#tablelistar').DataTable({
+      t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
-        pageLength: 25,   
-        order: [[1, 'asc']],
+        pageLength: 25,    
+        order: [[5, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
-                    }
-        });
-    
+              processing:     "Procesando ...",
+              search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+              searchPlaceholder: "BUSCAR",
+              lengthMenu:     "Mostrar _MENU_ Registros",
+              info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+              infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+              infoFiltered:   "(filtrada de _MAX_ registros en total)",
+              infoPostFix:    "",
+              loadingRecords: "...",
+              zeroRecords:    "No se encontraron registros coincidentes",
+              emptyTable:     "No hay datos disponibles en la tabla",
+              paginate: {
+                  first:      "Primero",
+                  previous:   "Anterior",
+                  next:       "Siguiente",
+                  last:       "Ultimo"
+              },
+              aria: {
+                  sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                  sortDescending: ": habilitado para ordenar la columna en orden descendente"
+              }
+          }
+      });
+
+      t
+        .columns(0)
+        .search(1)
+        .draw();
+
+      
     });
 
     function previa(t){
-    var row = $(t).closest('tr');
 
+      var row = $(t).closest('tr');
+      var id = row.data('actividad_id');
+      var tipo = row.data('tipo');
 
-      var mujer = $(row).find('td').eq(5).html();
-      var hombre = $(row).find('td').eq(6).html();
-      var total = $(row).find('td').eq(4).html();
-      var titulo = $(row).find('td').eq(0).html();
-      var imagen = row.data('imagen');
-      var id = row.attr('id');
-
-      console.log(id);
-      $('.span_mujer').text(mujer)
-      $('.span_hombre').text(hombre)
-      $('.span_total').text(total)
-      $('#titulo').text(titulo)
-      $('#imagen').attr('src',imagen)
-      $('#reservacion').val(id)
-      $("#modalReserva" ).modal('show');
-
-        
+      if(tipo == 1){
+        var route = route_clase_grupal + id
+      }else{
+        var route = route_taller + id
       }
+      
+      window.open(route, '_blank');
+    }
 
-      $("#guardar").click(function(){
+    $('#tablelistar tbody').on( 'click', '.inscribir', function () {
 
-                var route = route_agregar;
-                var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#form_reserva" ).serialize(); 
-                procesando();       
-                limpiarMensaje();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:datos,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                        $('#dias_expiracion').val('');
-                        $('#modalReserva').modal('hide');
-                        finprocesado();
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
+      var id = $(this).closest('tr').attr('id');
 
-                          var row = $('#'+respuesta.reservacion);
-                          console.log(respuesta.reservacion)
-                          console.log(row)
-                          var sexo = respuesta.sexo
+      element = this;
 
-                          if(sexo == 'F')
-                          {
-                            valor = $(row).find('td').eq(5).html();
-                            if(valor > 0)
-                            {
-                              valor_cambio = valor - 1;
-                              $(row).find('td').eq(5).html(valor_cambio);
-                            }
-                            
-                          }else{
-                            valor = $(row).find('td').eq(6).html();
-                            if(valor > 0)
-                            {
-                              valor_cambio = valor - 1;
-                              $(row).find('td').eq(6).html(valor_cambio);
-                            }
-
-                          }
-
-                          if(valor > 0)
-                          {
-                            valor = $(row).find('td').eq(4).html();
-                            valor = valor - 1;
-                            $(row).find('td').eq(4).html(valor);
-                          }
-
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-
-                          finprocesado();
-
-                        }        
-
-                         notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);               
-                        
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        // if (typeof msj.responseJSON === "undefined") {
-                        //   window.location = "{{url('/')}}/error";
-                        // }
-                        // 
-                        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                        // if(msj.responseJSON.status=="ERROR"){
-                        //   console.log(msj.responseJSON.errores);
-                        //   errores(msj.responseJSON.errores);
-                        //   var nTitle="    Ups! "; 
-                        //   var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        // }else{
-                        //   var nTitle="   Ups! "; 
-                        //   var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        // }                        
-                        finprocesado();
-                        $('#modalReserva').modal('hide');
-                        // var nFrom = $(this).attr('data-from');
-                        // var nAlign = $(this).attr('data-align');
-                        // var nIcons = $(this).attr('data-icon');
-                        // var nType = 'danger';
-                        // var nAnimIn = "animated flipInY";
-                        // var nAnimOut = "animated flipOutY";                       
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-            });
-
-      function limpiarMensaje(){
-        var campo = ["dias_expiracion"];
-        fLen = campo.length;
-        for (i = 0; i < fLen; i++) {
-            $("#error-"+campo[i]+"_mensaje").html('');
+      swal({   
+          title: 'Desea inscribir al alumno?',   
+          text: "Confirmar inscripción!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Inscribir!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+        if (isConfirm) {  
+          inscribir(id,element);
         }
-      }
+      });
+    });
+  
+    function inscribir(id,element){
 
+      procesando()
+      var route = route_inscribir + id;
+   
+      var token = "{{ csrf_token() }}"
+      $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data: id,
+        success:function(respuesta){
+          var nFrom = $(this).attr('data-from');
+          var nAlign = $(this).attr('data-align');
+          var nIcons = $(this).attr('data-icon');
+          var nAnimIn = "animated flipInY";
+          var nAnimOut = "animated flipOutY"; 
+          if(respuesta.status=="OK"){
 
-    $('#modalReserva').on('show.bs.modal', function (event) {
-      limpiarMensaje();
-      $("#dias_expiracion").val(''); 
+            finprocesado();
+            var nType = 'success';
+            var nTitle="Ups! ";
+            var nMensaje=respuesta.mensaje;
+
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+
+            window.location = route_enhorabuena + respuesta.id;
+          
+          }
+        },
+        error:function(msj){
+          $("#msj-danger").fadeIn(); 
+          var text="";
+          console.log(msj);
+          var merror=msj.responseJSON;
+          text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+          $("#msj-error").html(text);
+          setTimeout(function(){
+             $("#msj-danger").fadeOut();
+          }, 3000);
+        }
+      });
+    }
+
+    $('#tablelistar tbody').on( 'click', '.eliminar', function () {
+
+      var id = $(this).closest('tr').attr('id');
+      element = this;
+
+      swal({   
+          title: "Desea eliminar la reservación?",   
+          text: "Confirmar eliminación!",   
+          type: "warning",   
+          showCancelButton: true,   
+          confirmButtonColor: "#DD6B55",   
+          confirmButtonText: "Eliminar!",  
+          cancelButtonText: "Cancelar",         
+          closeOnConfirm: true 
+      }, function(isConfirm){   
+        if (isConfirm) {  
+          eliminar(id, element);
+        }
+      });
+    });
+      
+    function eliminar(id, element){
+      procesando()
+      var route = route_eliminar + id;
+      var token = "{{ csrf_token() }}"
+      $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data: id,
+        success:function(respuesta){
+          var nFrom = $(this).attr('data-from');
+          var nAlign = $(this).attr('data-align');
+          var nIcons = $(this).attr('data-icon');
+          var nAnimIn = "animated flipInY";
+          var nAnimOut = "animated flipOutY"; 
+          if(respuesta.status=="OK"){
+            var nType = 'success';
+            var nTitle="Ups! ";
+            var nMensaje=respuesta.mensaje;
+
+            t.row( $(element).parents('tr') )
+              .remove()
+              .draw();
+
+            swal("Exito!","La reservación ha sido eliminada!","success");
+
+            finprocesado()
+          
+          }
+        },
+        error:function(msj){
+          $("#msj-danger").fadeIn(); 
+          var text="";
+          console.log(msj);
+          var merror=msj.responseJSON;
+          text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+          $("#msj-error").html(text);
+          setTimeout(function(){
+             $("#msj-danger").fadeOut();
+          }, 3000);
+        }
+      });
+    }
+
+    $("#activas").click(function(){
+        $( "#finalizadas2" ).removeClass( "c-verde" );
+        $( "#activas2" ).addClass( "c-verde" );
+    });
+
+    $("#finalizadas").click(function(){
+        $( "#finalizadas2" ).addClass( "c-verde" );
+        $( "#activas2" ).removeClass( "c-verde" );
+    });
+
+    $("input[name='tipo']").on('change', function(){ 
+      t
+        .columns(0)
+        .search($(this).val())
+        .draw();
+    });
+
+    $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+        var id = $(this).closest('tr').attr('id');
+        var dropdown = $(this).closest('.dropdown')
+        var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+        $('.dropdown-toggle').attr('aria-expanded','false')
+        $('.dropdown').removeClass('open')
+        $('.table-responsive').css( "overflow", "auto" );
+
+        if(!dropdown.hasClass('open')){
+            dropdown.addClass('open')
+            dropdown_toggle.attr('aria-expanded','true')
+            $('.table-responsive').css( "overflow", "inherit" );
+        }
+     
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+        $('.table-responsive').css( "overflow", "auto" );
     })
 
-    </script>
+  </script>
+
 @stop

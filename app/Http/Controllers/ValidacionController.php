@@ -64,7 +64,7 @@ class ValidacionController extends BaseController {
 
                             $alumno = Alumno::withTrashed()->find($reservacion->tipo_usuario_id);
 
-                        }if($reservacion->tipo_usuario == 2){
+                        }else if($reservacion->tipo_usuario == 2){
 
                             $visitante = Visitante::withTrashed()->find($reservacion->tipo_usuario_id);
                             $alumno = Alumno::withTrashed()->where('correo',$visitante->correo)->first();
@@ -184,7 +184,9 @@ class ValidacionController extends BaseController {
                     
                         if($reservacion->tipo_reservacion == 1){
 
-                            $alumnosclasegrupal = InscripcionClaseGrupal::where('alumno_id', $alumno->id)->where('clase_grupal_id', $reservacion->tipo_id)->first();
+                            $alumnosclasegrupal = InscripcionClaseGrupal::where('alumno_id', $alumno->id)
+                                ->where('clase_grupal_id', $reservacion->tipo_id)
+                            ->first();
                             
                             if(!$alumnosclasegrupal){
 
@@ -208,7 +210,8 @@ class ValidacionController extends BaseController {
 
                                     $item_factura = new ItemsFacturaProforma;
                                         
-                                    $item_factura->alumno_id = $alumno->id;
+                                    $item_factura->usuario_id = $alumno->id;
+                                    $item_factura->usuario_tipo = 1;
                                     $item_factura->academia_id =  $alumno->academia_id;
                                     $item_factura->fecha = Carbon::now()->toDateString();
                                     $item_factura->item_id = $clasegrupal->clase_grupal_id;
@@ -229,7 +232,8 @@ class ValidacionController extends BaseController {
 
                                     $item_factura = new ItemsFacturaProforma;
                                         
-                                    $item_factura->alumno_id = $alumno->id;
+                                    $item_factura->usuario_id = $alumno->id;
+                                    $item_factura->usuario_tipo = 1;
                                     $item_factura->academia_id = $alumno->academia_id;
                                     $item_factura->fecha = Carbon::now()->toDateString();
                                     $item_factura->item_id = $clasegrupal->clase_grupal_id;
@@ -248,7 +252,9 @@ class ValidacionController extends BaseController {
 
                         }else{
 
-                            $alumnostaller = InscripcionTaller::where('alumno_id', $alumno->id)->where('clase_grupal_id', $reservacion->tipo_id)->first();
+                            $alumnostaller = InscripcionTaller::where('alumno_id', $alumno->id)
+                                ->where('taller_id', $reservacion->tipo_id)
+                            ->first();
                             
                             if(!$alumnostaller){
 
@@ -263,7 +269,8 @@ class ValidacionController extends BaseController {
 
                                 $item_factura = new ItemsFacturaProforma;
                                     
-                                $item_factura->alumno_id = $alumno->id;
+                                $item_factura->usuario_id = $alumno->id;
+                                $item_factura->usuario_tipo = 1;
                                 $item_factura->academia_id = $alumno->academia_id;
                                 $item_factura->fecha = Carbon::now()->toDateString();
                                 $item_factura->item_id = $reservacion->tipo_id;
@@ -283,8 +290,10 @@ class ValidacionController extends BaseController {
                         $codigo->delete();
                         $reservacion->boolean_confirmacion = 1;
                         $reservacion->save();
+                        $reservacion->delete();
 
                         return redirect('participante/alumno/deuda/'.$alumno->id);
+
                     }else{
                     
                         return redirect('validar/invalido');
@@ -298,16 +307,22 @@ class ValidacionController extends BaseController {
                 return redirect('validar/invalido');
             }
         }else if($request->validar == 'referido'){
-            $alumno = Alumno::where('codigo_referido', trim($request->codigo_validacion))->first();
-            if($alumno){
-                $codigo_referido = trim($request->codigo_validacion);
 
-                $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get();
+            $alumno = Alumno::where('codigo_referido', trim($request->codigo_validacion))->first();
+            
+            if($alumno){
+
+                $codigo_referido = trim($request->codigo_validacion);
+                $instructores = Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)
+                    ->orderBy('nombre', 'asc')
+                ->get();
+
                  return View::make('participante.alumno.create', compact('codigo_referido', 'instructores'));
             }else{
                 return redirect('validar/invalido');
             }
         }else if($request->validar == 'regalo'){
+
             $codigo = Codigo::where('codigo_validacion', trim($request->codigo_validacion))->first();
 
             if($codigo){
