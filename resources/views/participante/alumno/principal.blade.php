@@ -402,7 +402,7 @@
             });
         });
 
-        $(".reservar").click(function(){
+        $('#tablelistar tbody').on('click', '.reservar', function () {
 
             procesando();
             var route = "{{url('/')}}/reservacion/guardar-tipo-usuario/1";
