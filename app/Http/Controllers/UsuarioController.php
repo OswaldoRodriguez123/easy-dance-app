@@ -736,13 +736,6 @@ class UsuarioController extends BaseController {
     public function seleccionar_tipo()
     {
 
-        $credenciales = CredencialAlumno::all();
-
-        foreach($credenciales as $credencial){
-            $credencial->cantidad_restante = $credencial->cantidad;
-            $credencial->save();
-        }
-
         if(Auth::user()->estatus){
             $usuario_tipo = Session::get('easydance_usuario_tipo');
             
