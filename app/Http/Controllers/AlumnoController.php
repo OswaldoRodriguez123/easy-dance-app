@@ -1380,6 +1380,18 @@ class AlumnoController extends BaseController
 
         }else{
 
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->select('users.id')
+                ->where('usuarios_tipo.tipo',3)
+                ->where('usuarios_tipo.tipo_id',$request->instructor_id)
+            ->first();
+
+            if($usuario){
+                $usuario_id_vendedor = $usuario->id;
+            }else{
+                $usuario_id_vendedor = 0;
+            }
+
             $fecha_vencimiento = Carbon::now()->addDays($request->dias_vencimiento)->toDateString();
             
             $credencial_alumno = new CredencialAlumno;
@@ -1387,6 +1399,8 @@ class AlumnoController extends BaseController
             $credencial_alumno->instructor_id = $request->instructor_id;
             $credencial_alumno->alumno_id = $request->alumno_id;
             $credencial_alumno->cantidad = $request->cantidad;
+            $credencial_alumno->cantidad_restante = $request->cantidad;
+            $credencial_alumno->usuario_id_vendedor = $usuario_id_vendedor;
             $credencial_alumno->dias_vencimiento = $request->dias_vencimiento;
             $credencial_alumno->fecha_vencimiento = $fecha_vencimiento;
 
@@ -1424,7 +1438,8 @@ class AlumnoController extends BaseController
 
         $credenciales = CredencialAlumno::leftJoin('instructores', 'credenciales_alumno.instructor_id', '=', 'instructores.id')
             ->join('alumnos', 'credenciales_alumno.alumno_id', '=', 'alumnos.id')
-            ->select('credenciales_alumno.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
+            ->leftJoin('users', 'credenciales_alumno.usuario_id_vendedor', '=', 'users.id')
+            ->select('credenciales_alumno.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'users.nombre as vendedor_nombre', 'users.apellido as vendedor_apellido')
             ->where('alumnos.academia_id',Auth::user()->academia_id)
             ->where('credenciales_alumno.cantidad' ,">", 0)
         ->get();
@@ -1447,10 +1462,13 @@ class AlumnoController extends BaseController
                 $status = 'Vencida';
             }
 
+            $cantidad_usada = $credencial->cantidad - $credencial->cantidad_restante;
+            
             $collection=collect($credencial);  
             $credencial_array = $collection->toArray(); 
             $credencial_array['dias_restantes']=$dias_restantes;
             $credencial_array['status']=$status;
+            $credencial_array['cantidad_usada']=$cantidad_usada;
 
             $array[$credencial->id] = $credencial_array;
         }

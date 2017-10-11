@@ -225,8 +225,11 @@
                                     @if(!isset($id))
                                       <th class="text-center" data-column-id="alumno">Alumno</th>
                                     @endif
-                                    <th class="text-center" data-column-id="instructor">Instructor</th>
-                                    <th class="text-center" data-column-id="cantidad" data-order="desc">Cantidad</th>
+                                    <!-- <th class="text-center" data-column-id="instructor">Instructor</th> -->
+                                    <th class="text-center" data-column-id="cantidad" data-order="desc">Cantidad de Credenciales</th>
+                                    <th class="text-center" data-column-id="usadas" data-order="desc">Usadas</th>
+                                    <th class="text-center" data-column-id="restantes" data-order="desc">Restantes</th>
+                                    <th class="text-center" data-column-id="emisor" data-order="desc">Emisor</th>
                                     <th class="text-center" data-column-id="fecha_vencimiento">Fecha Expiración</th>
                                     <th class="text-center" data-column-id="status" data-type="numeric">Status</th>
                                     <th class="text-center" data-column-id="operacion">Acciones</th>
@@ -244,14 +247,30 @@
                                         {{$credencial['alumno_nombre']}} {{$credencial['alumno_apellido']}}
                                       </td>
                                     @endif
-                                    <td class="text-center previa">{{$credencial['instructor_nombre']}} {{$credencial['instructor_apellido']}}</td>
-                                    <td class="text-center previa">{{$credencial['cantidad']}}</td>
-                                    <td class="text-center previa">{{$credencial['fecha_vencimiento']}}</td>
+                                    <!-- <td class="text-center previa">{{$credencial['instructor_nombre']}} {{$credencial['instructor_apellido']}}</td> -->
+                                    
+                                    <td class="text-center previa">
+                                      {{$credencial['cantidad']}}
+                                    </td>
+                                    <td class="text-center previa">
+                                      {{$credencial['cantidad_usada']}}
+                                    </td>
+                                    <td class="text-center previa">
+                                      {{$credencial['cantidad_restante']}}
+                                    </td>
+                                    <td class="text-center previa">
+                                      {{$credencial['vendedor_nombre']}} {{$credencial['vendedor_apellido']}}
+                                    </td>
+                                    <td>
+                                      {{$credencial['fecha_vencimiento']}}
+                                    </td>
                                     <td class="text-center previa">
                                         <span class="{{ empty($credencial['dias_restantes']) ? 'c-youtube' : '' }}">{{$credencial['status']}}</span>
                                         Restan {{$credencial['dias_restantes']}} Días
                                     </td>
-                                    <td class="text-center disabled"> <i data-toggle="modal" name="operacion" id={{$credencial_id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i></td>
+                                    <td class="text-center disabled"> 
+                                      <i id={{$credencial_id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer acciones"></i>
+                                    </td>
                         
                                 </tr>
 
@@ -286,12 +305,12 @@
 
 
         @if(isset($id))
-          order = 2
-          column = 3
+          order = 4
+          column = 5
 
         @else
-          order = 3
-          column = 4
+          order = 5
+          column = 6
 
         @endif
 

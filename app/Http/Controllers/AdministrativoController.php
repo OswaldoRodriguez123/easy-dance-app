@@ -1181,6 +1181,8 @@ class AdministrativoController extends BaseController {
                                     $credencial = new CredencialAlumno;
 
                                     $credencial->cantidad = $paquete->cantidad_clases_grupales;
+                                    $credencial->cantidad_restante = $paquete->cantidad_clases_grupales;
+                                    $credencial->usuario_id_vendedor = Auth::user()->id;
                                     $credencial->alumno_id = $request->usuario_id;
                                     $credencial->fecha_vencimiento = $fecha_vencimiento;
                                     $credencial->boolean_uso = $boolean_uso;

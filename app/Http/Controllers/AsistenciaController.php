@@ -1595,8 +1595,8 @@ class AsistenciaController extends BaseController
                   $credencial_alumno->fecha_vencimiento = $fecha_vencimiento;
                 } 
 
-                $cantidad = $credencial_alumno->cantidad - 1;
-                $credencial_alumno->cantidad = $cantidad;
+                $cantidad = $credencial_alumno->cantidad_restante - 1;
+                $credencial_alumno->cantidad_restante = $cantidad;
                 $credencial_alumno->save();
 
                 if($cantidad <= 0){
