@@ -49,15 +49,16 @@
 	// RESERVACION
 
 	Route::get('reservaciones','ReservaController@principal');
-	Route::get('agendar/reservaciones/actividades/{id}','ReservaController@actividades');
-	Route::post('agendar/reservaciones/agregar','ReservaController@guardar_reservacion');
-	Route::post('agendar/reservaciones/inscribir/{id}','ReservaController@inscribir');
+	Route::get('reservaciones/actividades/{id}','ReservaController@actividades');
+	Route::post('reservaciones/agregar','ReservaController@guardar_reservacion');
+	Route::post('reservaciones/inscribir/{id}','ReservaController@inscribir');
+	Route::post('reservaciones/eliminar/{id}', 'ReservaController@destroy');
 	Route::get('reservacion/{id}','ReservaController@reserva');
 	Route::post('reservacion/{id}', 'ReservaController@GuardarTipo');
 	Route::post('reservacion/guardar-tipo-usuario/{id}', 'ReservaController@GuardarTipoUsuario');
 	Route::post('reservar', 'ReservaController@store');
 	Route::post('reservarconusuario', 'ReservaController@storeconusuario');
-	Route::get('agendar/reservacion/completado', 'ReservaController@completado');
+	Route::get('reservaciones/completado', 'ReservaController@completado');
 
 	//EMPRESA
 
@@ -846,7 +847,6 @@
 
 			Route::get('agendar/clases-grupales/inscribir/{id}', 'ClaseGrupalController@inscribir');
 			Route::post('agendar/clases-grupales/eliminarinscripcion/{id}', 'ClaseGrupalController@eliminarinscripcion');
-			Route::post('agendar/clases-grupales/eliminar_reserva/{id}', 'ClaseGrupalController@eliminar_reserva');
 			Route::post('agendar/clases-grupales/editarinscripcion', 'ClaseGrupalController@editarinscripcion');
 			Route::post('agendar/clases-grupales/actualizar_participante', 'ClaseGrupalController@actualizar_participante');
 

@@ -178,8 +178,8 @@
             
   <script type="text/javascript">
 
-    route_inscribir="{{url('/')}}/agendar/reservaciones/inscribir/";
-    route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminar_reserva/";
+    route_inscribir="{{url('/')}}/reservaciones/inscribir/";
+    route_eliminar="{{url('/')}}/reservaciones/eliminar/";
     route_clase_grupal="{{url('/')}}/agendar/clases-grupales/participantes/";
     route_taller="{{url('/')}}/agendar/talleres/participantes/";
     route_enhorabuena="{{url('/')}}/agendar/clases-grupales/enhorabuena/";

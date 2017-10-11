@@ -197,7 +197,7 @@
 
   <script type="text/javascript">
 
-    route_agregar="{{url('/')}}/agendar/reservaciones/agregar";
+    route_agregar="{{url('/')}}/reservaciones/agregar";
     route_clase_grupal="{{url('/')}}/agendar/clases-grupales/participantes/";
     route_taller="{{url('/')}}/agendar/talleres/participantes/";
 

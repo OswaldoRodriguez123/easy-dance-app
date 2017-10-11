@@ -1432,7 +1432,6 @@
 
         route_agregar="{{url('/')}}/agendar/clases-grupales/inscribir";
         route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminarinscripcion/";
-        route_eliminar_reserva="{{url('/')}}/agendar/clases-grupales/eliminar_reserva/";
         route_congelar="{{url('/')}}/agendar/clases-grupales/congelar-alumno";
         route_update="{{url('/')}}/agendar/clases-grupales/update";
         route_enhorabuena="{{url('/')}}/agendar/clases-grupales/enhorabuena/";
@@ -1448,7 +1447,8 @@
         route_consultar_credencial="{{url('/')}}/agendar/clases-grupales/consultar_credenciales";
         route_consulta_examen="{{url('/')}}/agendar/clases-grupales/consulta_examen/";
         route_nota_administrativa="{{url('/')}}/agendar/clases-grupales/agregar-nota-administrativa";
-        route_inscribir="{{url('/')}}/agendar/reservaciones/inscribir/";
+        route_inscribir="{{url('/')}}/reservaciones/inscribir/";
+        route_eliminar_reserva="{{url('/')}}/reservaciones/eliminar/";
 
         var in_credencial = <?php echo json_encode($in_credencial);?>;
 

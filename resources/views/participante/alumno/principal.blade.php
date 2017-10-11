@@ -415,7 +415,7 @@
                 type: 'POST',
                 dataType: 'json',
                 success:function(respuesta){
-                    window.location = "{{url('/')}}/agendar/reservaciones/actividades/"+id
+                    window.location = "{{url('/')}}/reservaciones/actividades/"+id
 
                 },
                 error:function(msj){
