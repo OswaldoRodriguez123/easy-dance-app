@@ -1595,6 +1595,8 @@ class UsuarioController extends BaseController {
                 //ALUMNOS
                 if(Auth::user()->boolean_condiciones){
 
+                    $academia = Academia::find(Auth::user()->academia_id);
+
                     $contador_clase = 0;
                     $contador_taller = 0;
                     $contador_fiesta = 0;
@@ -1717,8 +1719,16 @@ class UsuarioController extends BaseController {
 
                         }
 
+                        if($academia->tipo_horario == 2){
+                            $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->toTimeString();
+                            $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->toTimeString();
+                        }else{
+                            $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_inicio)->format('g:i a');
+                            $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal->hora_final)->format('g:i a');
+                        }
 
-                        $array[]=array('nombre' => $clase_grupal->nombre , 'descripcion' => $clase_grupal->descripcion ,'imagen' => $imagen , 'url' => "/agendar/clases-grupales/progreso/{$clase_grupal->id}", 'facebook' => "/agendar/clases-grupales/progreso/{$clase_grupal->id}", 'twitter' => "Participa en la clase grupal {$clase_grupal->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/clases-grupales/progreso/{$clase_grupal->id}", 'creacion' => $clase_grupal->created_at, 'tipo' => 1, 'fecha_inicio' => $fecha_inicio, 'disponible' => $disponible, 'dias' => $dia_string, 'instructor' => $clase_grupal->instructor_nombre . ' ' . $clase_grupal->instructor_apellido, 'hora' => $clase_grupal->hora_inicio . ' - ' . $clase_grupal->hora_final, 'especialidad' => $clase_grupal->especialidad, 'fecha' => $fecha_inicio);
+
+                        $array[]=array('nombre' => $clase_grupal->nombre , 'descripcion' => $clase_grupal->descripcion ,'imagen' => $imagen , 'url' => "/agendar/clases-grupales/progreso/{$clase_grupal->id}", 'facebook' => "/agendar/clases-grupales/progreso/{$clase_grupal->id}", 'twitter' => "Participa en la clase grupal {$clase_grupal->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/clases-grupales/progreso/{$clase_grupal->id}", 'creacion' => $clase_grupal->created_at, 'tipo' => 1, 'fecha_inicio' => $fecha_inicio, 'disponible' => $disponible, 'dias' => $dia_string, 'instructor' => $clase_grupal->instructor_nombre . ' ' . $clase_grupal->instructor_apellido, 'hora' => $hora_inicio . ' - ' . $hora_final, 'especialidad' => $clase_grupal->especialidad, 'fecha' => $fecha_inicio);
 
                     }
 
@@ -1829,7 +1839,15 @@ class UsuarioController extends BaseController {
 
                             }
 
-                            $array[]=array('nombre' => $taller->nombre , 'descripcion' => $taller->descripcion ,'imagen' => $imagen , 'url' => "/agendar/talleres/progreso/{$taller->id}", 'facebook' => "/agendar/talleres/progreso/{$taller->id}", 'twitter' => "Participa en el taller {$taller->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/talleres/progreso/{$taller->id}" , 'creacion' => $taller->created_at, 'tipo' => 2, 'fecha_inicio' => $taller->fecha_inicio, 'disponible' => '', 'dias' => $dia_string, 'instructor' => $taller->instructor_nombre . ' ' . $taller->instructor_apellido, 'hora' => $taller->hora_inicio . ' - ' . $taller->hora_final, 'especialidad' => $taller->especialidad, 'fecha' => $fecha_inicio);
+                            if($academia->tipo_horario == 2){
+                                $hora_inicio = Carbon::createFromFormat('H:i:s',$taller->hora_inicio)->toTimeString();
+                                $hora_final = Carbon::createFromFormat('H:i:s',$taller->hora_final)->toTimeString();
+                            }else{
+                                $hora_inicio = Carbon::createFromFormat('H:i:s',$taller->hora_inicio)->format('g:i a');
+                                $hora_final = Carbon::createFromFormat('H:i:s',$taller->hora_final)->format('g:i a');
+                            }
+
+                            $array[]=array('nombre' => $taller->nombre , 'descripcion' => $taller->descripcion ,'imagen' => $imagen , 'url' => "/agendar/talleres/progreso/{$taller->id}", 'facebook' => "/agendar/talleres/progreso/{$taller->id}", 'twitter' => "Participa en el taller {$taller->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/talleres/progreso/{$taller->id}" , 'creacion' => $taller->created_at, 'tipo' => 2, 'fecha_inicio' => $taller->fecha_inicio, 'disponible' => '', 'dias' => $dia_string, 'instructor' => $taller->instructor_nombre . ' ' . $taller->instructor_apellido, 'hora' => $hora_inicio . ' - ' . $hora_final, 'especialidad' => $taller->especialidad, 'fecha' => $fecha_inicio);
 
                             $contador_taller = $contador_taller + 1;
                         }
@@ -1882,7 +1900,15 @@ class UsuarioController extends BaseController {
 
                             }
 
-                            $array[]=array('nombre' => $fiesta->nombre , 'descripcion' => $fiesta->descripcion ,'imagen' => $imagen , 'url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'facebook' => "/agendar/fiesta/progreso/{$fiesta->id}", 'twitter' => "Participa en la fiesta {$fiesta->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'creacion' => $fiesta->created_at, 'tipo' => 3, 'fiesta' => $fiesta->fecha_inicio, 'disponible' => '', 'dias' => $dia, 'instructor' => '', 'hora' => $fiesta->hora_inicio . ' - ' . $fiesta->hora_final, 'especialidad' => '', 'fecha' => $fecha->format('d-m-Y'));
+                            if($academia->tipo_horario == 2){
+                                $hora_inicio = Carbon::createFromFormat('H:i:s',$fiesta->hora_inicio)->toTimeString();
+                                $hora_final = Carbon::createFromFormat('H:i:s',$fiesta->hora_final)->toTimeString();
+                            }else{
+                                $hora_inicio = Carbon::createFromFormat('H:i:s',$fiesta->hora_inicio)->format('g:i a');
+                                $hora_final = Carbon::createFromFormat('H:i:s',$fiesta->hora_final)->format('g:i a');
+                            }
+
+                            $array[]=array('nombre' => $fiesta->nombre , 'descripcion' => $fiesta->descripcion ,'imagen' => $imagen , 'url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'facebook' => "/agendar/fiesta/progreso/{$fiesta->id}", 'twitter' => "Participa en la fiesta {$fiesta->nombre} te invita @EasyDanceLatino", 'twitter_url' => "/agendar/fiestas/progreso/{$fiesta->id}", 'creacion' => $fiesta->created_at, 'tipo' => 3, 'fiesta' => $fiesta->fecha_inicio, 'disponible' => '', 'dias' => $dia, 'instructor' => '', 'hora' => $hora_inicio . ' - ' . $hora_final, 'especialidad' => '', 'fecha' => $fecha->format('d-m-Y'));
 
                             $contador_fiesta = $contador_fiesta + 1;
                         }
