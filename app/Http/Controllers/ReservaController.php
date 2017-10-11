@@ -104,7 +104,11 @@ class ReservaController extends BaseController
                 $estatus = 1;
             }
 
-            $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+            if($alumno->fecha_nacimiento){
+                $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+            }else{
+                $edad = 21;
+            }
 
             $collection=collect($reservacion);     
             $reservacion_array = $collection->toArray();
