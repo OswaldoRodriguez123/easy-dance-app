@@ -1168,22 +1168,20 @@ class ReservaController extends BaseController
     public function destroy($id){
 
         $reserva = Reservacion::find($id);
-        $codigo = Codigo::where('item_id',$id)->where('tipo',2)->first();
         
-        if($reserva->delete()){
+        if($reserva->forceDelete()){
+            
+            $codigo = Codigo::where('item_id',$id)->where('tipo',2)->first();
+
             if($codigo){
 
-                if($codigo->delete())
-                {
+                if($codigo->delete()){
                     return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
-
                 }else{
-
                     return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
                 }
             }else{
                 return response()->json(['mensaje' => '¡Excelente! La Clase Grupal se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
-
             }
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
