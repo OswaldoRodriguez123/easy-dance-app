@@ -377,7 +377,7 @@
             $('.table-responsive').css( "overflow", "auto" );
         }) 
 
-        $(".email").click(function(){
+        $('#tablelistar tbody').on('click', '.email', function () {
 
             var route = route_email;
             var token = '{{ csrf_token() }}';
@@ -425,7 +425,7 @@
             });
         });
 
-        $(".eliminar").click(function(){
+        $('#tablelistar tbody').on('click', '.eliminar', function () {
             var id = $(this).closest('tr').attr('id');
             swal({   
                 title: "Desea eliminar al alumno?",   
@@ -460,7 +460,7 @@
             });
         });
 
-        $(".usuario").click(function(){
+        $('#tablelistar tbody').on('click', '.usuario', function () {
             element = this;
             var id = $(this).closest('tr').attr('id');
             swal({   
