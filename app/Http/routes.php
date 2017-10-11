@@ -154,6 +154,10 @@
 		Route::get('/inicio', 'UsuarioController@index');
 		Route::get('/index', 'UsuarioController@index_con_reportes');
 
+		//MENU
+
+		Route::get('/', 'UsuarioController@menu');
+
 		//NOTIFICACIONES
 		
 		Route::get('notificacion', 'NotificacionController@consulta');
@@ -1459,10 +1463,6 @@
 
 			Route::get('supervision', 'SupervisionController@evaluaciones_vista_staff');
 			Route::get('supervision/detalle/{id}', 'SupervisionController@getDetalle');
-
-			//MENU
-
-			Route::get('/', 'UsuarioController@menu');
 			
 		});//END MIDDLEWARE INSTRUCTOR
 

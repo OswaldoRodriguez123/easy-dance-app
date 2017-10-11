@@ -1331,49 +1331,6 @@ class TallerController extends BaseController {
         }
     }
 
-    public function storeInscripcionVistaAlumno(Request $request)
-    {
-
-        $usuario_id = Session::get('easydance_usuario_id');
-
-        $alumnostaller = InscripcionTaller::where('alumno_id', $usuario_id)->where('taller_id', $request->taller_id)->first();
-
-        if(!$alumnostaller){ 
-
-            $taller = Taller::find($request->taller_id);
-
-                $inscripcion = new InscripcionTaller;
-
-                $inscripcion->taller_id = $request->taller_id;
-                $inscripcion->alumno_id = $usuario_id;
-
-                $inscripcion->save();
-
-                $item_factura = new ItemsFacturaProforma;
-                    
-                $item_factura->alumno_id = $usuario_id;
-                $item_factura->academia_id = Auth::user()->academia_id;
-                $item_factura->fecha = Carbon::now()->toDateString();
-                $item_factura->item_id = $request->taller_id;
-                $item_factura->nombre = 'Inscripcion ' . $taller->nombre;
-                $item_factura->tipo = 5;
-                $item_factura->cantidad = 1;
-                $item_factura->precio_neto = 0;
-                $item_factura->impuesto = 0;
-                $item_factura->importe_neto = $taller->costo;
-                $item_factura->fecha_vencimiento = Carbon::now()->toDateString();
-                    
-                $item_factura->save();
-
-                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'uno' => 'uno', 200]);
-
-
-            }else{
-
-                return response()->json(['error_mensaje' => 'Ups! Ya te encuentras inscrito en este taller', 'status' => 'ERROR'],422);
-            }
-        }
-
     public function eliminarinscripcion(Request $request)
     {
         // $inscripcion = InscripcionClaseGrupal::find($id);

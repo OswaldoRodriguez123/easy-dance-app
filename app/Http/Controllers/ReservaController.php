@@ -1220,52 +1220,52 @@ class ReservaController extends BaseController
                 $actividad = Taller::find($request->actividad_id);
             }
             
-            // if($request->permitir == 0){
+            if($request->permitir == 0){
                 
-            //     if($alumno->sexo == 'M'){
+                if($alumno->sexo == 'M'){
 
-            //         if(!is_null($actividad->cantidad_hombres)){
+                    if(!is_null($actividad->cantidad_hombres)){
 
-            //             if($request->actividad_tipo == 1){
-            //                    $hombres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-            //                     ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->actividad_id)
-            //                     ->where('alumnos.sexo', '=', 'M')
-            //                 ->count(); 
-            //             }else{
-            //                 $hombres = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
-            //                     ->where('inscripcion_taller.taller_id', '=', $request->actividad_id)
-            //                     ->where('alumnos.sexo', '=', 'M')
-            //                 ->count();
-            //             }
+                        if($request->actividad_tipo == 1){
+                               $hombres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                                ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->actividad_id)
+                                ->where('alumnos.sexo', '=', 'M')
+                            ->count(); 
+                        }else{
+                            $hombres = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
+                                ->where('inscripcion_taller.taller_id', '=', $request->actividad_id)
+                                ->where('alumnos.sexo', '=', 'M')
+                            ->count();
+                        }
 
-            //             if($actividad->cantidad_hombres <= $hombres){
-            //                 return response()->json(['error_mensaje'=>'Ups! La cantidad de hombres permitida en esta actividad ha llegado a su limite', 'status' => 'CANTIDAD-FULL'],422);
-            //             }
-            //         }
+                        if($actividad->cantidad_hombres <= $hombres){
+                            return response()->json(['error_mensaje'=>'Ups! La cantidad de hombres permitida en esta actividad ha llegado a su limite', 'status' => 'CANTIDAD-FULL'],422);
+                        }
+                    }
 
-            //     }else{
+                }else{
 
-            //         if(!is_null($actividad->cantidad_mujeres)){
+                    if(!is_null($actividad->cantidad_mujeres)){
 
-            //             if($request->actividad_tipo == 1){
-            //                 $mujeres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
-            //                     ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->actividad_id)
-            //                     ->where('alumnos.sexo', '=', 'F')
-            //                 ->count(); 
-            //             }else{
-            //                 $mujeres = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
-            //                     ->where('inscripcion_taller.taller_id', '=', $request->actividad_id)
-            //                     ->where('alumnos.sexo', '=', 'F')
-            //                 ->count();
-            //             }
+                        if($request->actividad_tipo == 1){
+                            $mujeres = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+                                ->where('inscripcion_clase_grupal.clase_grupal_id', '=', $request->actividad_id)
+                                ->where('alumnos.sexo', '=', 'F')
+                            ->count(); 
+                        }else{
+                            $mujeres = InscripcionTaller::join('alumnos', 'inscripcion_taller.alumno_id', '=', 'alumnos.id')
+                                ->where('inscripcion_taller.taller_id', '=', $request->actividad_id)
+                                ->where('alumnos.sexo', '=', 'F')
+                            ->count();
+                        }
 
-            //             if($actividad->cantidad_mujeres <= $mujeres){
-            //                 return response()->json(['error_mensaje'=>'Ups! La cantidad de mujeres permitida en esta actividad ha llegado a su limite', 'status' => 'CANTIDAD-FULL'],422);
-            //             }
-            //         }
+                        if($actividad->cantidad_mujeres <= $mujeres){
+                            return response()->json(['error_mensaje'=>'Ups! La cantidad de mujeres permitida en esta actividad ha llegado a su limite', 'status' => 'CANTIDAD-FULL'],422);
+                        }
+                    }
 
-            //     }
-            // }
+                }
+            }
 
             $find = Reservacion::where('tipo_reservacion_id', $request->actividad_id)
                 ->where('tipo_reservacion',$request->actividad_tipo)

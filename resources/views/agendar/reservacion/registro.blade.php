@@ -397,304 +397,302 @@
 
 @section('js') 
             
-		<script type="text/javascript">
+	<script type="text/javascript">
 
-    route_agregar="{{url('/')}}/reservar";
-    route_agregarconusuario="{{url('/')}}/reservarconusuario";
-    route_completado="{{url('/')}}/agendar/reservacion/completado";
+        route_agregar="{{url('/')}}/reservar";
+        route_agregarconusuario="{{url('/')}}/reservarconusuario";
+        route_completado="{{url('/')}}/agendar/reservaciones/completado";
 
-    $(document).ready(function(){
+        $(document).ready(function(){
 
-      $('#email').bind("cut copy paste",function(e) {
-          e.preventDefault();
-      });
+            $('#email').bind("cut copy paste",function(e) {
+                e.preventDefault();
+            });
 
-      $('#email_confirmation').bind("cut copy paste",function(e) {
-          e.preventDefault();
-      });
+            $('#email_confirmation').bind("cut copy paste",function(e) {
+                e.preventDefault();
+            });
 
-        $(".tercero").attr("disabled","disabled");
-        $(".tercero").css({
-          "opacity": ("0.2")
+            $(".tercero").attr("disabled","disabled");
+            $(".tercero").css({
+              "opacity": ("0.2")
+            });
+
+            $('#cambio').mask('AAAAAAAAAAAAAA', {'translation': {
+
+                A: {pattern: /[A-Za-z]/}
+                }
+
+            });
         });
 
-        $('#cambio').mask('AAAAAAAAAAAAAA', {'translation': {
+        $('button[name="tercero"]').click(function(){       
 
-            A: {pattern: /[A-Za-z]/}
+            var nombre = $('#cambio').val();
+
+            $("input[name=nombre]").val(nombre);
+            $('#mostrar').text(nombre);
+
+        });
+
+        $("#cambio").keyup(function(){
+
+            if($("#cambio").val() != ""){
+
+            $(".tercero").removeAttr("disabled");
+            $(".tercero").css({
+              "opacity": ("1")
+             });
+              
+          }else{
+
+            $(".tercero").attr("disabled","disabled");
+            $(".tercero").css({
+              "opacity": ("0.2")
+            });
+          }
+        });
+
+        function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
+                    $.growl({
+                        icon: icon,
+                        title: titulo,
+                        message: mensaje,
+                        url: ''
+                    },{
+                            element: 'body',
+                            type: type,
+                            allow_dismiss: true,
+                            placement: {
+                                    from: from,
+                                    align: align
+                            },
+                            offset: {
+                                x: 20,
+                                y: 85
+                            },
+                            spacing: 10,
+                            z_index: 1070,
+                            delay: 2500,
+                            timer: 2000,
+                            url_target: '_blank',
+                            mouse_over: false,
+                            animate: {
+                                    enter: animIn,
+                                    exit: animOut
+                            },
+                            icon_type: 'class',
+                            template: '<div data-growl="container" class="alert" role="alert">' +
+                                            '<button type="button" class="close" data-growl="dismiss">' +
+                                                '<span aria-hidden="true">&times;</span>' +
+                                                '<span class="sr-only">Close</span>' +
+                                            '</button>' +
+                                            '<span data-growl="icon"></span>' +
+                                            '<span data-growl="title"></span>' +
+                                            '<span data-growl="message"></span>' +
+                                            '<a href="#" data-growl="url"></a>' +
+                                        '</div>'
+                    });
+                };
+
+          $("#guardar").click(function(){
+
+            var route = route_agregar;
+            var token = $('input:hidden[name=_token]').val();
+            var datos = $( "#agregar_usuario" ).serialize(); 
+            $("#guardar").attr("disabled","disabled");
+            procesando();
+            $("#guardar").css({
+              "opacity": ("0.2")
+            });
+            $(".cancelar").attr("disabled","disabled");
+            $(".procesando").removeClass('hidden');
+            $(".procesando").addClass('show');         
+            limpiarMensaje();
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                    dataType: 'json',
+                    data:datos,
+                success:function(respuesta){
+                  setTimeout(function(){ 
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY"; 
+                    if(respuesta.status=="OK"){
+                        finprocesado();
+                        var nType = 'success';
+                        var nTitle="Ups! ";
+                        var nMensaje=respuesta.mensaje;
+                        window.location = route_completado;
+                    }else{
+                        var nTitle="Ups! ";
+                        var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        var nType = 'danger';
+
+                        $(".procesando").removeClass('show');
+                        $(".procesando").addClass('hidden');
+                        $("#guardar").removeAttr("disabled");
+                        finprocesado();
+                        $("#guardar").css({
+                            "opacity": ("1")
+                        });
+                        $(".cancelar").removeAttr("disabled");
+                      
+                    } 
+
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);                      
+                  }, 1000);
+                },
+                error:function(msj){
+                    if(msj.responseJSON.error_mensaje){
+
+                        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+
+                    }else{
+
+                        setTimeout(function(){ 
+                      
+                            errores(msj.responseJSON.errores);
+                      
+                            var nTitle="   Ups! "; 
+                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";       
+                            var nFrom = $(this).attr('data-from');
+                            var nAlign = $(this).attr('data-align');
+                            var nIcons = $(this).attr('data-icon');
+                            var nType = 'danger';
+                            var nAnimIn = "animated flipInY";
+                            var nAnimOut = "animated flipOutY";                       
+                            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                        }, 1000);
+                    }
+                    $("#guardar").removeAttr("disabled");
+                    finprocesado();
+                    $("#guardar").css({
+                        "opacity": ("1")
+                    });
+                    $(".cancelar").removeAttr("disabled");
+                    $(".procesando").removeClass('show');
+                    $(".procesando").addClass('hidden');
+                }
+            });
+        });
+
+        $("#guardar_registro").click(function(){
+
+            var route = route_agregarconusuario;
+            var token = $('input:hidden[name=_token]').val();
+            var datos = $( "#consultar_usuario" ).serialize(); 
+            $("#guardar").attr("disabled","disabled");
+            procesando();
+            $("#guardar").css({
+              "opacity": ("0.2")
+            });
+            $(".cancelar").attr("disabled","disabled");
+            $(".procesando").removeClass('hidden');
+            $(".procesando").addClass('show');         
+            limpiarMensaje();
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                    dataType: 'json',
+                    data:datos,
+                success:function(respuesta){
+                  setTimeout(function(){ 
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY"; 
+                    if(respuesta.status=="OK"){
+                      // finprocesado();
+                      // var nType = 'success';
+                      // $("#agregar_alumno")[0].reset();
+                      // var nTitle="Ups! ";
+                      // var nMensaje=respuesta.mensaje;
+                      window.location = route_completado;
+                    }else{
+                      var nTitle="Ups! ";
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                      var nType = 'danger';
+
+                      $(".procesando").removeClass('show');
+                      $(".procesando").addClass('hidden');
+                      $("#guardar").removeAttr("disabled");
+                      finprocesado();
+                      $("#guardar").css({
+                        "opacity": ("1")
+                      });
+                      $(".cancelar").removeAttr("disabled");
+
+                      notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                    }                       
+                    
+                  }, 1000);
+                },
+                error:function(msj){
+                  if(msj.responseJSON.error_mensaje){
+
+                      swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+
+                  }else{
+
+                    setTimeout(function(){ 
+                      
+                      errores(msj.responseJSON.errores);
+                      
+                      var nTitle="   Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";       
+                      var nFrom = $(this).attr('data-from');
+                      var nAlign = $(this).attr('data-align');
+                      var nIcons = $(this).attr('data-icon');
+                      var nType = 'danger';
+                      var nAnimIn = "animated flipInY";
+                      var nAnimOut = "animated flipOutY";                       
+                      notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                    }, 1000);
+                  }
+                  $("#guardar").removeAttr("disabled");
+                  finprocesado();
+                  $("#guardar").css({
+                    "opacity": ("1")
+                  });
+                  $(".cancelar").removeAttr("disabled");
+                  $(".procesando").removeClass('show');
+                  $(".procesando").addClass('hidden');
+                }
+            });
+        });
+
+        function limpiarMensaje(){
+          var campo = ["email", "email_confirmation", "nombre", "password", "password_confirmation", "telefono", "como_nos_conociste_id", "correo_registro", "password_registro"];
+            fLen = campo.length;
+            for (i = 0; i < fLen; i++) {
+                $("#error-"+campo[i]+"_mensaje").html('');
             }
+          }
 
-        });
-    });
+        function errores(merror){
+            var campo = ["email", "email_confirmation", "nombre", "password", "password_confirmation", "telefono", "como_nos_conociste_id"];
+            var elemento="";
+            var contador=0;
+            $.each(merror, function (n, c) {
+                if(contador==0){
+                    elemento=n;
+                }
+                contador++;
 
-    $('button[name="tercero"]').click(function(){       
-
-        var nombre = $('#cambio').val();
-
-        $("input[name=nombre]").val(nombre);
-        $('#mostrar').text(nombre);
-
-    });
-
-    $("#cambio").keyup(function(){
-
-        if($("#cambio").val() != ""){
-
-        $(".tercero").removeAttr("disabled");
-        $(".tercero").css({
-          "opacity": ("1")
-         });
-          
-      }
-      else{
-
-        $(".tercero").attr("disabled","disabled");
-        $(".tercero").css({
-          "opacity": ("0.2")
-        });
-      }
-    });
-
-    function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
-                $.growl({
-                    icon: icon,
-                    title: titulo,
-                    message: mensaje,
-                    url: ''
-                },{
-                        element: 'body',
-                        type: type,
-                        allow_dismiss: true,
-                        placement: {
-                                from: from,
-                                align: align
-                        },
-                        offset: {
-                            x: 20,
-                            y: 85
-                        },
-                        spacing: 10,
-                        z_index: 1070,
-                        delay: 2500,
-                        timer: 2000,
-                        url_target: '_blank',
-                        mouse_over: false,
-                        animate: {
-                                enter: animIn,
-                                exit: animOut
-                        },
-                        icon_type: 'class',
-                        template: '<div data-growl="container" class="alert" role="alert">' +
-                                        '<button type="button" class="close" data-growl="dismiss">' +
-                                            '<span aria-hidden="true">&times;</span>' +
-                                            '<span class="sr-only">Close</span>' +
-                                        '</button>' +
-                                        '<span data-growl="icon"></span>' +
-                                        '<span data-growl="title"></span>' +
-                                        '<span data-growl="message"></span>' +
-                                        '<a href="#" data-growl="url"></a>' +
-                                    '</div>'
+                $.each(this, function (name, value) {              
+                    var error=value;
+                    $("#error-"+n+"_mensaje").html(error);             
                 });
-            };
+            });       
 
-      $("#guardar").click(function(){
-
-                var route = route_agregar;
-                var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#agregar_usuario" ).serialize(); 
-                $("#guardar").attr("disabled","disabled");
-                procesando();
-                $("#guardar").css({
-                  "opacity": ("0.2")
-                });
-                $(".cancelar").attr("disabled","disabled");
-                $(".procesando").removeClass('hidden');
-                $(".procesando").addClass('show');         
-                limpiarMensaje();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:datos,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          // finprocesado();
-                          // var nType = 'success';
-                          // $("#agregar_alumno")[0].reset();
-                          // var nTitle="Ups! ";
-                          // var nMensaje=respuesta.mensaje;
-                          window.location = route_completado;
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-
-                          $(".procesando").removeClass('show');
-                          $(".procesando").addClass('hidden');
-                          $("#guardar").removeAttr("disabled");
-                          finprocesado();
-                          $("#guardar").css({
-                            "opacity": ("1")
-                          });
-                          $(".cancelar").removeAttr("disabled");
-
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                        }                       
-                        
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      if(msj.responseJSON.error_mensaje){
-
-                          swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-
-                      }else{
-
-                        setTimeout(function(){ 
-                          
-                          errores(msj.responseJSON.errores);
-                          
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";       
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nType = 'danger';
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY";                       
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                        }, 1000);
-                      }
-                      $("#guardar").removeAttr("disabled");
-                      finprocesado();
-                      $("#guardar").css({
-                        "opacity": ("1")
-                      });
-                      $(".cancelar").removeAttr("disabled");
-                      $(".procesando").removeClass('show');
-                      $(".procesando").addClass('hidden');
-                    }
-                });
-            });
-
-      $("#guardar_registro").click(function(){
-
-                var route = route_agregarconusuario;
-                var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#consultar_usuario" ).serialize(); 
-                $("#guardar").attr("disabled","disabled");
-                procesando();
-                $("#guardar").css({
-                  "opacity": ("0.2")
-                });
-                $(".cancelar").attr("disabled","disabled");
-                $(".procesando").removeClass('hidden');
-                $(".procesando").addClass('show');         
-                limpiarMensaje();
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:datos,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          // finprocesado();
-                          // var nType = 'success';
-                          // $("#agregar_alumno")[0].reset();
-                          // var nTitle="Ups! ";
-                          // var nMensaje=respuesta.mensaje;
-                          window.location = route_completado;
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-
-                          $(".procesando").removeClass('show');
-                          $(".procesando").addClass('hidden');
-                          $("#guardar").removeAttr("disabled");
-                          finprocesado();
-                          $("#guardar").css({
-                            "opacity": ("1")
-                          });
-                          $(".cancelar").removeAttr("disabled");
-
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                        }                       
-                        
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      if(msj.responseJSON.error_mensaje){
-
-                          swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-
-                      }else{
-
-                        setTimeout(function(){ 
-                          
-                          errores(msj.responseJSON.errores);
-                          
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";       
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nType = 'danger';
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY";                       
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                        }, 1000);
-                      }
-                      $("#guardar").removeAttr("disabled");
-                      finprocesado();
-                      $("#guardar").css({
-                        "opacity": ("1")
-                      });
-                      $(".cancelar").removeAttr("disabled");
-                      $(".procesando").removeClass('show');
-                      $(".procesando").addClass('hidden');
-                    }
-                });
-            });
-
-    function limpiarMensaje(){
-      var campo = ["email", "email_confirmation", "nombre", "password", "password_confirmation", "telefono", "como_nos_conociste_id", "correo_registro", "password_registro"];
-        fLen = campo.length;
-        for (i = 0; i < fLen; i++) {
-            $("#error-"+campo[i]+"_mensaje").html('');
         }
-      }
 
-      function errores(merror){
-      var campo = ["email", "email_confirmation", "nombre", "password", "password_confirmation", "telefono", "como_nos_conociste_id"];
-      var elemento="";
-      var contador=0;
-      $.each(merror, function (n, c) {
-      if(contador==0){
-      elemento=n;
-      }
-      contador++;
-
-       $.each(this, function (name, value) {              
-          var error=value;
-          $("#error-"+n+"_mensaje").html(error);             
-       });
-    });       
-
-  }
-
-		</script>
+	</script>
 @stop
