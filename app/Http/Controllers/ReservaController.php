@@ -861,7 +861,7 @@ class ReservaController extends BaseController
 
                     if($codigo->save()){
 
-                        if($id_explode[0] == 1){
+                        if($request->tipo == 1){
                             $actividad = 'una Clase Grupal';
 
                         }else{

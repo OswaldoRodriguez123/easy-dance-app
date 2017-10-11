@@ -107,10 +107,18 @@
                                   <td class="text-center previa">{{$reservacion['nombre']}} {{$reservacion['apellido']}} </td>
                                   <td class="text-center previa">{{$reservacion['actividad']}}</td>
                                   <td class="text-center previa">
-                                  @if($reservacion['sexo']=='F')
-                                    <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                  @if($reservacion['edad'] >= 18)
+                                      @if($reservacion['sexo']=='F')
+                                          <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
+                                      @else
+                                          <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                      @endif
                                   @else
-                                    <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
+                                      @if($reservacion['sexo']=='F')
+                                          <span style="display: none">F</span><i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
+                                      @else
+                                          <span style="display: none">M</span><i class="zmdi fa fa-child f-15 c-azul"></i> </span>
+                                      @endif
                                   @endif
                                   </td>
                                   <td class="text-center previa">{{$reservacion['fecha_reservacion']}}</td>
