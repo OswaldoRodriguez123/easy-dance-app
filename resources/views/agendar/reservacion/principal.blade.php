@@ -95,13 +95,13 @@
                                   </td>
                                   <td class="text-center previa">
                                     @if($reservacion['imagen'])
-                                      <img class="lv-img" src="{{url('/')}}/assets/uploads/usuario/{{$reservacion['imagen']}}" alt="">
-                                    @else
-                                        @if($reservacion['sexo'] == 'M')
-                                          <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/4.jpg" alt="">
-                                        @else
-                                          <img class="lv-img" src="{{url('/')}}/assets/img/profile-pics/5.jpg" alt="">
-                                        @endif
+                                        <img class="lv-img lazy" src="{{url('/')}}/assets/img/Hombre.jpg" data-image = "{{url('/')}}/assets/uploads/usuario/{{$reservacion['imagen']}}" alt="">
+                                      @else
+                                          @if($reservacion['sexo'] == 'M')
+                                            <img class="lv-img lazy" src="{{url('/')}}/assets/img/Hombre.jpg" data-image = "{{url('/')}}/assets/img/Hombre.jpg" alt="">
+                                          @else
+                                            <img class="lv-img lazy" src="{{url('/')}}/assets/img/Mujer.jpg" data-image = "{{url('/')}}/assets/img/Mujer.jpg" alt="">
+                                      @endif
                                     @endif
                                   </td>
                                   <td class="text-center previa">{{$reservacion['nombre']}} {{$reservacion['apellido']}} </td>
@@ -187,6 +187,9 @@
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).attr( "onclick","previa(this)" );
         },
+        drawCallback: function(){
+          loadImages();
+        },
         language: {
               processing:     "Procesando ...",
               search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
@@ -219,6 +222,17 @@
 
       
     });
+
+    function loadImages(){
+      imagenes = $('.lazy')
+
+      $.each(imagenes, function(){
+          var row = $(this).closest('tr')
+          var image = this;
+          var src = $(image).data('image');
+          image.src = src;
+      });
+    }
 
     function previa(t){
 
