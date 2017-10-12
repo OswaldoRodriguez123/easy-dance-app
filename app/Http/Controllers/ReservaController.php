@@ -131,7 +131,112 @@ class ReservaController extends BaseController
         
         }
 
-        return view('agendar.reservacion.principal')->with(['reservaciones' => $array]);
+        $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->select('config_clases_grupales.nombre', 'clases_grupales.id', 'clases_grupales.fecha_inicio', 'clases_grupales.cantidad_hombres', 'clases_grupales.cantidad_mujeres', 'clases_grupales.hora_inicio','clases_grupales.hora_final')
+            ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+        ->get();
+
+        $talleres_join = Taller::where('academia_id','=', Auth::user()->academia_id)->get();
+        $academia = Academia::find(Auth::user()->academia_id);
+        $actividades = array();
+
+        foreach($clase_grupal_join as $clase_grupal){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+
+            if($fecha > Carbon::now()){
+
+                $i = $fecha->dayOfWeek;
+
+                if($i == 1){
+
+                  $dia = 'Lunes';
+
+                }else if($i == 2){
+
+                  $dia = 'Martes';
+
+                }else if($i == 3){
+
+                  $dia = 'Miercoles';
+
+                }else if($i == 4){
+
+                  $dia = 'Jueves';
+
+                }else if($i == 5){
+
+                  $dia = 'Viernes';
+
+                }else if($i == 6){
+
+                  $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
+
+                }
+
+                $collection=collect($clase_grupal);     
+                $clase_grupal_array = $collection->toArray();
+                $clase_grupal_array['dia_de_semana']=$dia;
+                $clase_grupal_array['tipo']=1;
+
+                $actividades[] = $clase_grupal_array;
+
+            }
+        }
+
+        foreach($talleres_join as $taller){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $taller->fecha_inicio);
+
+            if($fecha > Carbon::now()){
+
+                $i = $fecha->dayOfWeek;
+
+                if($i == 1){
+
+                  $dia = 'Lunes';
+
+                }else if($i == 2){
+
+                  $dia = 'Martes';
+
+                }else if($i == 3){
+
+                  $dia = 'Miercoles';
+
+                }else if($i == 4){
+
+                  $dia = 'Jueves';
+
+                }else if($i == 5){
+
+                  $dia = 'Viernes';
+
+                }else if($i == 6){
+
+                  $dia = 'Sabado';
+
+                }else if($i == 0){
+
+                  $dia = 'Domingo';
+
+                }
+
+                $collection=collect($taller);     
+                $taller_array = $collection->toArray();
+                $taller_array['dia_de_semana'] = $dia;
+                $taller_array['tipo']=2;
+                
+                $actividades[] = $taller_array;
+
+            }
+        }
+
+        return view('agendar.reservacion.principal')->with(['reservaciones' => $array, 'actividades' => $actividades]);
     }
 
     public function actividades($id){

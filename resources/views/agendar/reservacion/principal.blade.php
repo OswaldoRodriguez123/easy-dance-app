@@ -44,7 +44,31 @@
                             <br><br><p class="text-center opaco-0-8 f-22"><i class="icon_a-reservaciones f-25"></i> Sección de Reservaciones</p>
                             <hr class="linea-morada">
 
-                            <div class="col-sm-12">
+                            <div class="col-sm-6 text-left">
+                                 
+                              <label class="c-morado f-15">Filtro</label>
+
+                              <div class="dropdown" id="dropdown_boton">
+                                <a id="detalle_boton" role="button" data-toggle="dropdown" class="btn btn-blanco">
+                                    Todos <span class="caret"></span>
+                                </a>
+                                <ul id="dropdown_principal" class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                                  <li class="reservacion pointer" data-nombre="Todos" value="">
+                                    <a>Todos</a>
+                                  </li>
+
+                                  @foreach($actividades as $actividad)
+                                    <li class="reservacion pointer" data-nombre="{{$actividad['nombre']}}" value="{{$actividad['tipo']}}-{{$actividad['id']}}">
+                                      <a>{{$actividad['nombre']}}</a>
+                                    </li>
+                                  @endforeach
+
+                                </ul>
+                              </div>
+
+                          </div>
+
+                            <div class="col-sm-6">
                                 <div class="p-t-10 pull-right">
                                     <label class="radio radio-inline m-r-20">
                                         <input name="tipo" id="activas" value="1" type="radio" checked>
@@ -119,6 +143,7 @@
                                     @endif
                                   </td>
                                   <td class="text-center previa">
+                                    <span style="display: none">{{$reservacion['tipo_reservacion']}}-{{$reservacion['tipo_reservacion_id']}}</span>
                                     @if($reservacion['imagen'])
                                         <img class="lv-img lazy" src="{{url('/')}}/assets/img/Hombre.jpg" data-image = "{{url('/')}}/assets/uploads/usuario/{{$reservacion['imagen']}}" alt="">
                                       @else
@@ -212,6 +237,9 @@
     route_taller="{{url('/')}}/agendar/talleres/participantes/";
     route_enhorabuena="{{url('/')}}/agendar/clases-grupales/enhorabuena/";
 
+    var estatus = 1
+    var tipo_reservacion = ''
+
     $(document).ready(function(){
 
       t=$('#tablelistar').DataTable({
@@ -253,7 +281,9 @@
 
       t
         .columns(0)
-        .search(1)
+        .search(estatus)
+        .columns(1)
+        .search('')
         .draw();
 
       
@@ -429,10 +459,31 @@
     });
 
     $("input[name='tipo']").on('change', function(){ 
+      var estatus = $(this).val()
       t
         .columns(0)
-        .search($(this).val())
+        .search(estatus)
+        .columns(1)
+        .search(tipo_reservacion)
         .draw();
+    });
+
+    $('body').on('click','.reservacion',function(e){
+            
+        nombre = $(this).data('nombre')
+        tipo_reservacion = $(this).attr('value')
+
+        $('#detalle_boton').text(nombre)
+
+        t
+        .columns(0)
+        .search(estatus)
+        .columns(1)
+        .search(tipo_reservacion)
+        .draw();
+
+        $('#dropdown_boton').removeClass('open')
+        $('#detalle_boton').attr('aria-expanded',false);
     });
 
     $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
