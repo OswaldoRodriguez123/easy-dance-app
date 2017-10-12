@@ -245,6 +245,7 @@
       t=$('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
+        bLengthChange: false,
         pageLength: 25,    
         order: [[5, 'asc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
