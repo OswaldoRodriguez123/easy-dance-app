@@ -1025,6 +1025,7 @@
                                     
       
                                     <a href="{{url('/')}}/configuracion/staff/pagos/{{$alumno->id}}"><i class="zmdi zmdi-money f-20 m-r-5 boton blue sa-warning" data-original-title="Pagos" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                    <a href="{{url('/')}}/configuracion/staff/metas/{{$alumno->id}}"><i class="zmdi zmdi-money f-20 m-r-5 boton blue sa-warning" data-original-title="Metas" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                     <a href="{{url('/')}}/incidencias/generar/{{$id}}"><i class="icon_f-incidencias f-20 m-r-5 boton blue sa-warning" data-original-title="Incidencia" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                     <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$alumno->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 

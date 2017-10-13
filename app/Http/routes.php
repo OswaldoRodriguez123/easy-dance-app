@@ -599,6 +599,7 @@
 
 			Route::get('configuracion/staff/pagos/{id}', 'StaffController@principalpagos');
 			Route::post('configuracion/staff/pagar', 'StaffController@pagar');
+			Route::get('configuracion/staff/metas/{id}', 'StaffController@principalmetas');
 
 			//TERMINA ADMIN
 

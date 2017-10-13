@@ -400,7 +400,7 @@
        $("#guardar").click(function(){
 
           var route = route_factura;
-          var token = $('input:hidden[name=_token]').val();
+          var token = "{{ csrf_token() }}"
           var datos = $( "#gestionar_pago" ).serialize(); 
           procesando(); 
           limpiarMensaje();
@@ -473,189 +473,189 @@
             });
 
             var route = route_agregar;
-                  var token = $('input:hidden[name=_token]').val();
-                  var datos = $("#gestionar_pago").serialize(); 
-                  limpiarMensaje();
-                  $.ajax({
-                      url: route,
-                          headers: {'X-CSRF-TOKEN': token},
-                          type: 'POST',
-                          dataType: 'json',
-                          data:datos,
-                      success:function(respuesta){
-                        setTimeout(function(){ 
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY"; 
-                          if(respuesta.status=="OK"){
-                            var nType = 'success';
-                            $("#mujer").prop("checked", true);
-                            var nTitle="Ups! ";
-                            var nMensaje=respuesta.mensaje;
+            var token = "{{ csrf_token() }}";
+            var datos = $("#gestionar_pago").serialize(); 
+            limpiarMensaje();
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                    dataType: 'json',
+                    data:datos,
+                success:function(respuesta){
+                  setTimeout(function(){ 
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY"; 
+                    if(respuesta.status=="OK"){
+                      var nType = 'success';
+                      $("#mujer").prop("checked", true);
+                      var nTitle="Ups! ";
+                      var nMensaje=respuesta.mensaje;
 
-                            var forma_pago = respuesta.array[0].forma_pago;
-                            var banco = respuesta.array[0].banco;
-                            var referencia = respuesta.array[0].referencia;
-                            var monto = respuesta.array[0].monto;
+                      var forma_pago = respuesta.array[0].forma_pago;
+                      var banco = respuesta.array[0].banco;
+                      var referencia = respuesta.array[0].referencia;
+                      var monto = respuesta.array[0].monto;
 
-                            if(forma_pago == 'Puntos Acumulados'){
-                              puntos_referidos = puntos_referidos - monto
-                            }
-
-                            totalglobal = totalglobal - parseFloat(monto);
-
-                            var rowId=respuesta.id;
-                            var rowNode=t.row.add( [
-                            ''+forma_pago+'',
-                            ''+banco+'',
-                            ''+referencia+'',
-                            ''+formatmoney(parseFloat(monto))+'',
-                            '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
-                            ] ).draw(false).node();
-                            $( rowNode )
-                            .attr('id',rowId)
-                            // .attr('data-precio',precio_neto)
-                            .addClass('seleccion');
-                            // impuestotmp = parseFloat(monto) * (porcentaje_impuesto / 100);
-                            // subtotaltmp = parseFloat(monto) - impuestotmp;
-                            // subtotalglobal = subtotalglobal - subtotaltmp;
-                            // impuestoglobal = impuestoglobal - impuestotmp;
-                            // // subtotalglobal = subtotalglobal - parseFloat(monto);
-                            // // impuesto = subtotalglobal * (porcentaje_impuesto / 100)
-                            // total = subtotalglobal + impuestoglobal;
-
-                            // if(impuestoglobal < 0){
-                            //   subtotalglobal
-                            //   subtotalglobal = subtotalglobal + impuestoglobal;
-                            //   impuestoglobal = 0;
-                            // }
-
-                            // // console.log(subtotalglobal);
-                            // $("#subtotal").text(formatmoney(subtotalglobal));
-                            // $("#impuestototal").text(formatmoney(impuestoglobal));
-                            $('#forma_pago_id').val('');
-                            $('#forma_pago_id').selectpicker('deselectAll');
-                            $('#forma_pago_id').selectpicker('render');
-                            $('#forma_pago_id').selectpicker('refresh');
-                            $('#monto').val('');
-                            $('#banco').val('');
-                            $('#referencia').val('');
-                            $("#total").text(formatmoney(totalglobal));
-
-                            // if(total <= 0){
-                            //   $("#subtotal").text(formatmoney(0));
-                            //   $("#impuestototal").text(formatmoney(0));
-                            //   $("#total").text(formatmoney(0));
-                            // }
-
-                          }else{
-                            var nTitle="Ups! ";
-                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                            var nType = 'danger';
-                          }                       
-                          $(".procesando").removeClass('show');
-                          $(".procesando").addClass('hidden');
-                          $("#guardar").removeAttr("disabled");
-                          $(".cancelar").removeAttr("disabled");
-                          $("#add").removeAttr("disabled");
-                          $("#add").css({
-                            "opacity": ("1")
-                          });
-
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                        }, 1000);
-                      },
-                      error:function(msj){
-                        setTimeout(function(){ 
-                          if (typeof msj.responseJSON === "undefined") {
-                            window.location = "{{url('/')}}/error";
-                          }
-                          if(msj.responseJSON.status=="ERROR"){
-                            console.log(msj.responseJSON.errores);
-                            errores(msj.responseJSON.errores);
-                            var nTitle="    Ups! "; 
-                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                          }else{
-                            var nTitle="   Ups! "; 
-                            var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          }                        
-                          $("#add").removeAttr("disabled");
-                          $("#add").css({
-                            "opacity": ("1")
-                          });
-                          $(".procesando").removeClass('show');
-                          $(".procesando").addClass('hidden');
-                          var nFrom = $(this).attr('data-from');
-                          var nAlign = $(this).attr('data-align');
-                          var nIcons = $(this).attr('data-icon');
-                          var nType = 'danger';
-                          var nAnimIn = "animated flipInY";
-                          var nAnimOut = "animated flipOutY";                       
-                          notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                        }, 1000);
+                      if(forma_pago == 'Puntos Acumulados'){
+                        puntos_referidos = puntos_referidos - monto
                       }
-                  });
-                }
-                else{
 
-                  $("#error-monto_mensaje").html("El monto no puede ser mayor a la deuda");
-                  
-                  $('html,body').animate({
-                      scrollTop: $("#id-monto").offset().top-90,
-                  }, 1000);   
+                      totalglobal = totalglobal - parseFloat(monto);
+
+                      var rowId=respuesta.id;
+                      var rowNode=t.row.add( [
+                      ''+forma_pago+'',
+                      ''+banco+'',
+                      ''+referencia+'',
+                      ''+formatmoney(parseFloat(monto))+'',
+                      '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                      ] ).draw(false).node();
+                      $( rowNode )
+                      .attr('id',rowId)
+                      // .attr('data-precio',precio_neto)
+                      .addClass('seleccion');
+                      // impuestotmp = parseFloat(monto) * (porcentaje_impuesto / 100);
+                      // subtotaltmp = parseFloat(monto) - impuestotmp;
+                      // subtotalglobal = subtotalglobal - subtotaltmp;
+                      // impuestoglobal = impuestoglobal - impuestotmp;
+                      // // subtotalglobal = subtotalglobal - parseFloat(monto);
+                      // // impuesto = subtotalglobal * (porcentaje_impuesto / 100)
+                      // total = subtotalglobal + impuestoglobal;
+
+                      // if(impuestoglobal < 0){
+                      //   subtotalglobal
+                      //   subtotalglobal = subtotalglobal + impuestoglobal;
+                      //   impuestoglobal = 0;
+                      // }
+
+                      // // console.log(subtotalglobal);
+                      // $("#subtotal").text(formatmoney(subtotalglobal));
+                      // $("#impuestototal").text(formatmoney(impuestoglobal));
+                      $('#forma_pago_id').val('');
+                      $('#forma_pago_id').selectpicker('deselectAll');
+                      $('#forma_pago_id').selectpicker('render');
+                      $('#forma_pago_id').selectpicker('refresh');
+                      $('#monto').val('');
+                      $('#banco').val('');
+                      $('#referencia').val('');
+                      $("#total").text(formatmoney(totalglobal));
+
+                      // if(total <= 0){
+                      //   $("#subtotal").text(formatmoney(0));
+                      //   $("#impuestototal").text(formatmoney(0));
+                      //   $("#total").text(formatmoney(0));
+                      // }
+
+                    }else{
+                      var nTitle="Ups! ";
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                      var nType = 'danger';
+                    }                       
+                    $(".procesando").removeClass('show');
+                    $(".procesando").addClass('hidden');
+                    $("#guardar").removeAttr("disabled");
+                    $(".cancelar").removeAttr("disabled");
+                    $("#add").removeAttr("disabled");
+                    $("#add").css({
+                      "opacity": ("1")
+                    });
+
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                  }, 1000);
+                },
+                error:function(msj){
+                  setTimeout(function(){ 
+                    if (typeof msj.responseJSON === "undefined") {
+                      window.location = "{{url('/')}}/error";
+                    }
+                    if(msj.responseJSON.status=="ERROR"){
+                      console.log(msj.responseJSON.errores);
+                      errores(msj.responseJSON.errores);
+                      var nTitle="    Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                    }else{
+                      var nTitle="   Ups! "; 
+                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    }                        
+                    $("#add").removeAttr("disabled");
+                    $("#add").css({
+                      "opacity": ("1")
+                    });
+                    $(".procesando").removeClass('show');
+                    $(".procesando").addClass('hidden');
+                    var nFrom = $(this).attr('data-from');
+                    var nAlign = $(this).attr('data-align');
+                    var nIcons = $(this).attr('data-icon');
+                    var nType = 'danger';
+                    var nAnimIn = "animated flipInY";
+                    var nAnimOut = "animated flipOutY";                       
+                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                  }, 1000);
                 }
             });
+          }
+          else{
+
+            $("#error-monto_mensaje").html("El monto no puede ser mayor a la deuda");
+            
+            $('html,body').animate({
+                scrollTop: $("#id-monto").offset().top-90,
+            }, 1000);   
+          }
+      });
 
 
-            $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
-                  var padre=$(this).parents('tr');
-                  var token = $('input:hidden[name=_token]').val();
-                  var id = $(this).closest('tr').attr('id');
-                        $.ajax({
-                             url: route_eliminar+"/"+id,
-                             headers: {'X-CSRF-TOKEN': token},
-                             type: 'POST',
-                             dataType: 'json',                
-                            success: function (data) {
-                              if(data.status=='OK'){
+      $('#tablelistar tbody').on( 'click', 'i.zmdi-delete', function () {
+        var padre=$(this).parents('tr');
+        var token = "{{ csrf_token() }}"
+        var id = $(this).closest('tr').attr('id');
+        $.ajax({
+         url: route_eliminar+"/"+id,
+         headers: {'X-CSRF-TOKEN': token},
+         type: 'POST',
+         dataType: 'json',                
+        success: function (data) {
+          if(data.status=='OK'){
 
-                                  totalglobal = totalglobal + parseFloat(data.monto);
+              totalglobal = totalglobal + parseFloat(data.monto);
 
-                                  if(data.forma_pago == 4){
-                                    puntos_referidos = puntos_referidos + parseFloat(data.monto);
-                                  }
+              if(data.forma_pago == 4){
+                puntos_referidos = puntos_referidos + parseFloat(data.monto);
+              }
 
-                                  $("#total").text(formatmoney(totalglobal));
-                                  // console.log(subtotalglobal);
-                                  // totalfinal = subtotalglobal + impuestoglobal;
+              $("#total").text(formatmoney(totalglobal));
+              // console.log(subtotalglobal);
+              // totalfinal = subtotalglobal + impuestoglobal;
 
-                                  // subtotalglobal = subtotalglobal + parseFloat(data.monto);
-                                  // impuesto = subtotalglobal * (porcentaje_impuesto / 100)
-                                  // total = subtotalglobal + impuesto;
-                                   
-                                  // $("#subtotal").text(subtotalglobal.toFixed(2));
-                                  // $("#impuestototal").text(impuesto.toFixed(2));
-                                  // $("#total").text(total.toFixed(2));
-                                                   
-                              }else{
-                                swal(
-                                  'Solicitud no procesada',
-                                  'Ha ocurrido un error, intente nuevamente por favor',
-                                  'error'
-                                );
-                              }
-                            },
-                            error:function (xhr, ajaxOptions, thrownError){
-                              swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
-                            }
-                          })
+              // subtotalglobal = subtotalglobal + parseFloat(data.monto);
+              // impuesto = subtotalglobal * (porcentaje_impuesto / 100)
+              // total = subtotalglobal + impuesto;
+               
+              // $("#subtotal").text(subtotalglobal.toFixed(2));
+              // $("#impuestototal").text(impuesto.toFixed(2));
+              // $("#total").text(total.toFixed(2));
+                               
+          }else{
+            swal(
+              'Solicitud no procesada',
+              'Ha ocurrido un error, intente nuevamente por favor',
+              'error'
+            );
+          }
+        },
+        error:function (xhr, ajaxOptions, thrownError){
+          swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+        }
+      })
 
-                          t.row( $(this).parents('tr') )
-                            .remove()
-                            .draw();
-                        });
+      t.row( $(this).parents('tr') )
+        .remove()
+        .draw();
+    });
 
       function limpiarMensaje(){
         var campo = ["forma_pago_id", "monto"];
@@ -690,7 +690,7 @@
   $( "#cancelar" ).click(function() {
 
         var padre=$(this).parents('tr');
-        var token = $('input:hidden[name=_token]').val();
+        var token = "{{ csrf_token() }}"
 
             $.ajax({
                  url: route_cancelar,

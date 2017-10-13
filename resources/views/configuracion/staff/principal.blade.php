@@ -102,13 +102,17 @@
 
                                                   <div class="dropup" dropdown-append-to-body>
                                                     <ul class="dropdown-menu dm-icon pull-right" style="z-index: 999">
-                                                        
-                                                        <li class="hidden-xs">
-                                                            <a href="{{url('/')}}/incidencias/generar/{{$id}}"><i class="zmdi icon_f-incidencias f-20"></i>&nbsp;Incidencias</a>
-                                                        </li>
 
                                                         <li class="hidden-xs">
                                                             <a href="{{url('/')}}/configuracion/staff/pagos/{{$id}}"><i class="zmdi zmdi-money f-20"></i>&nbsp;Pagos</a>
+                                                        </li>
+
+                                                        <li class="hidden-xs">
+                                                            <a href="{{url('/')}}/configuracion/staff/metas/{{$id}}"><i class="zmdi zmdi-money f-20"></i>&nbsp;Metas</a>
+                                                        </li>
+                                                        
+                                                        <li class="hidden-xs">
+                                                            <a href="{{url('/')}}/incidencias/generar/{{$id}}"><i class="zmdi icon_f-incidencias f-20"></i>&nbsp;Incidencias</a>
                                                         </li>
                                                         
                                                         <li class="hidden-xs">

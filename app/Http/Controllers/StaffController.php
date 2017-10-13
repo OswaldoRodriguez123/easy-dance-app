@@ -20,6 +20,7 @@ use App\DiasDeSemana;
 use App\Alumno;
 use App\Instructor;
 use App\MetaStaff;
+use App\ItemsFactura;
 use Mail;
 use DB;
 use Validator;
@@ -1734,6 +1735,118 @@ class StaffController extends BaseController
 
             return response()->json(['mensaje' => '¡Excelente! El pago ha sido realizado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
 
+        }
+    }
+
+    public function principalmetas($id)
+    {
+
+        $staff = Staff::find($id);
+
+        if($staff){
+
+            $metas = MetaStaff::where('staff_id',$id)->get();
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            if($academia->dias_recompra){
+                $dias_recompra = $academia->dias_recompra;
+            }else{
+                $dias_recompra = 90;
+            }
+
+            $array = array();
+
+            foreach($metas as $meta){
+
+                if($meta->servicio_id == 1){
+                    $total = 0;
+                    $facturas = ItemsFactura::join('facturas', 'items_factura.factura_id', '=', 'facturas.id')
+                        ->select('items_factura.*', 'facturas.usuario_id')
+                        ->where('items_factura.tipo_promotor',1)
+                        ->where('items_factura.promotor_id',$id)
+                        ->where('items_factura.servicio_producto',1)
+                        ->where('items_factura.tipo',3)
+                    ->get();
+
+                    foreach($facturas as $factura){
+
+                        $factura_before = ItemsFactura::join('facturas', 'items_factura.factura_id', '=', 'facturas.id')
+                            ->where('items_factura.tipo_promotor',1)
+                            ->where('items_factura.promotor_id',$id)
+                            ->where('items_factura.servicio_producto',1)
+                            ->where('items_factura.tipo',3)
+                            ->where('items_factura.id','!=',$factura->id)
+                            ->where('items_factura.created_at','<',$factura->created_at)
+                        ->first(); 
+
+                        if(!$factura_before){
+                            $total += $factura->importe_neto;
+                        }
+                    }
+
+                    $porcentaje = intval(($total / $meta->monto) * 100);
+                    
+                    $collection=collect($meta);     
+                    $meta_array = $collection->toArray();
+                    
+                    $meta_array['nombre']='Inscripción';
+
+                }else if($meta->servicio_id == 2){
+
+                    $total = 0;
+                    $facturas = ItemsFactura::join('facturas', 'items_factura.factura_id', '=', 'facturas.id')
+                        ->select('items_factura.*', 'facturas.usuario_id')
+                        ->where('items_factura.tipo_promotor',1)
+                        ->where('items_factura.promotor_id',$id)
+                        ->where('items_factura.servicio_producto',1)
+                        ->where('items_factura.tipo',3)
+                    ->get();
+
+                    foreach($facturas as $factura){
+
+                        $factura_before = ItemsFactura::join('facturas', 'items_factura.factura_id', '=', 'facturas.id')
+                            ->where('items_factura.tipo_promotor',1)
+                            ->where('items_factura.promotor_id',$id)
+                            ->where('items_factura.servicio_producto',1)
+                            ->where('items_factura.tipo',3)
+                            ->where('items_factura.id','!=',$factura->id)
+                            ->where('items_factura.created_at','<',$factura->created_at)
+                        ->first(); 
+
+                        if($factura_before){
+                            $total += $factura->importe_neto;
+                        }
+                    }
+
+                    $porcentaje = intval(($total / $meta->monto) * 100);
+
+                    $collection=collect($meta);     
+                    $meta_array = $collection->toArray();
+                    
+                    $meta_array['nombre']='Recompra';
+
+                }else{
+
+                    $total = ItemsFactura::where('tipo_promotor',1)->where('promotor_id',$id)->where('servicio_producto',1)->where('tipo',9)->sum('importe_neto');
+
+                    $porcentaje = intval(($total / $meta->monto) * 100);
+                    
+                    $collection=collect($meta);     
+                    $meta_array = $collection->toArray();
+                    
+                    $meta_array['nombre']='Clases Personalizadas';
+
+                }
+
+                $meta_array['total']=$total;
+                $meta_array['porcentaje']=$porcentaje;
+                $array[$meta->id] = $meta_array;
+            }
+
+            return view('configuracion.staff.metas')->with(['id' => $id, 'metas' => $array]);
+        }else{ 
+
+            return redirect("configuracion/staff"); 
         }
     }
 
