@@ -388,7 +388,7 @@
 
             $.ajax({
                 url: route,
-                    headers: {'X-CSRF-TOKEN': token},
+                    headers: {'X-CSRF-TOKEN': "{{ csrf_token() }}"},
                     type: 'POST',
                     dataType: 'json',
                     data:datos,

@@ -230,6 +230,138 @@
                     </div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modalMeta" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                                <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Metas<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                            </div>
+                            <form name="form_meta" id="form_meta"  >
+                               <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                               <input type="hidden" name="id" value="{{ $alumno->id }}">
+                               <div class="modal-body">                           
+                               <div class="row p-t-20 p-b-0">
+
+                                  <div class="col-sm-6">
+                                    
+                                      <label id="id-servicio_id">Linea de Servicio</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el servicio de la meta" title="" data-original-title="Ayuda"></i>
+
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_a icon_a-estudio-salon f-22"></i></span>
+                                        <div class="fg-line">
+                                            <div class="select">
+                                              <div class="select">
+                                                <select class="selectpicker" data-live-search="true" name="servicio_id" id="servicio_id" data-live-search="true">
+                                                    <option value="">Seleccione</option>
+                                                    <option value="1">Inscripción</option>
+                                                    <option value="2">Recompra</option>
+                                                    <option value="3">Clases Personalizadas</option>
+                                                </select>
+                                              </div>
+                                          </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="col-sm-6">
+
+                                    <div class="form-group">
+                                        <label for="monto" id="id-monto">Monto</label> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa el monto de la meta" title="" data-original-title="Ayuda"></i>
+                                        
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_b icon_b-costo f-22"></i></span>
+                                        <div class="fg-line">
+                                        <input type="text" class="form-control input-sm input-mask" name="monto_meta" id="monto_meta" placeholder="Ej. 15000">
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="has-error" id="error-monto_meta">
+                                      <span >
+                                          <small id="error-monto_meta_mensaje" class="help-block error-span" ></small>                                           
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <div class="clearfix p-b-35"></div>
+
+                                <div class="col-md-12">
+
+                                     
+                                  <div class="card-header text-left">
+                                  <button type="button" class="btn btn-blanco m-r-10 f-10" id="addmeta" >Agregar Linea</button>
+                                  </div>
+
+                                  <br></br>
+
+                                  <div class="table-responsive row">
+                                     <div class="col-md-12">
+                                      <table class="table table-striped table-bordered text-center " id="tablemetas" >
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th class="text-center" data-column-id="servicio_producto">Servicio</th>
+                                                <th class="text-center" data-column-id="monto" data-type="numeric">Monto</th>
+                                                <th class="text-center" data-column-id="operaciones">Operaciones</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        @foreach ($metas as $meta)
+                                            <?php $id = $meta['id']; ?>
+                                            <tr id="{{$id}}" class="seleccion">
+                                                <td class="text-center">
+
+                                                @if($meta['servicio_id'] == 1)
+                                                  Inscripción
+                                                @elseif($meta['servicio_id'] == 2)
+                                                  Recompra
+                                                @else
+                                                  Clases Personalizas
+                                                @endif
+
+        
+                                                </td>
+                                                <td class="text-center">{{ number_format($meta['monto'], 2, '.' , '.') }}</td>
+                                                <td class="text-center"> <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i></td>
+                                              </tr>
+                                        @endforeach 
+                                                                       
+                                        </tbody>
+                                      </table>
+
+                                    </div>
+                                  </div> <!-- TABLE RESPONSIVE -->
+                                </div><!--  COL-SM-12 -->
+                              </div><!-- ROW -->
+
+                            <div class="clearfix p-b-35"></div>
+
+                            <div class="clearfix"></div> 
+                              <div class="modal-footer p-b-20 m-b-20">
+                                <div class="col-sm-12 text-left">
+                                  <div class="procesando hidden">
+                                  <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                                  <div class="preloader pls-purple">
+                                      <svg class="pl-circular" viewBox="25 25 50 50">
+                                          <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                      </svg>
+                                  </div>
+                                  </div>
+                                </div>
+                                <div class="col-sm-12">                            
+
+                                  <a class="btn-blanco m-r-5 f-12 dismiss" href="#">  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                                  <div class="clearfix p-b-35"></div>
+
+                                </div>
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
      
             <div class="modal fade" id="modalID-Alumno" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
@@ -998,10 +1130,15 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="instructor-pago"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
+                            <tr class="detalle" data-toggle="modal" href="#modalMeta">
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-pago" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_a-pagar f-22"></i> </span>
+                               <span class="f-14">Metas</span>
+                             </td>
+                             <td class="f-14 m-l-15" ><span id="instructor-pago"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                            </tr>
                           
-
-
-                           
                            </table>
                           </div>
                           
@@ -1036,6 +1173,9 @@
     route_agregar_pago="{{url('/')}}/configuracion/staff/agregarpagofijo";
     route_eliminar_pago="{{url('/')}}/configuracion/staff/eliminarpagofijo/";
 
+    route_agregar_meta="{{url('/')}}/configuracion/staff/agregarmeta";
+    route_eliminar_meta="{{url('/')}}/configuracion/staff/eliminarmeta/";
+
     var linea_servicio = <?php echo json_encode($linea_servicio);?>;
 
     $(document).ready(function(){
@@ -1061,6 +1201,7 @@
       });
 
       $('#monto_minimo').mask('000,000,000,000', {reverse: true});
+      $('#monto_meta').mask('000,000,000,000', {reverse: true});
 
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInLeftBig';
@@ -1592,51 +1733,90 @@
         });
 
   var h=$('#tablepagos').DataTable({
-        processing: true,
-        serverSide: false,
-        pageLength: 25,
-        bPaginate: false,  
-        bSort:false, 
-        bInfo:false,
-        order: [[0, 'asc']],
-        fnDrawCallback: function() {
-          $('.dataTables_paginate').hide();
-        },
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-        },
-        language: {
-                        processing:     "Procesando ...",
-                        search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                        searchPlaceholder: "BUSCAR",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
+    processing: true,
+    serverSide: false,
+    pageLength: 25,
+    bPaginate: false,  
+    bSort:false, 
+    bInfo:false,
+    order: [[0, 'asc']],
+    fnDrawCallback: function() {
+      $('.dataTables_paginate').hide();
+    },
+    fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+      $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+    },
+    language: {
+                    processing:     "Procesando ...",
+                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                    searchPlaceholder: "BUSCAR",
+                    lengthMenu:     "Mostrar _MENU_ Registros",
+                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                    infoPostFix:    "",
+                    loadingRecords: "...",
+                    zeroRecords:    "No se encontraron registros coincidentes",
+                    emptyTable:     "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first:      "Primero",
+                        previous:   "Anterior",
+                        next:       "Siguiente",
+                        last:       "Ultimo"
+                    },
+                    aria: {
+                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
                     }
-        });
+                }
+    });
+
+    var m=$('#tablemetas').DataTable({
+    processing: true,
+    serverSide: false,
+    pageLength: 25,
+    bPaginate: false,  
+    bSort:false, 
+    bInfo:false,
+    order: [[0, 'asc']],
+    fnDrawCallback: function() {
+      $('.dataTables_paginate').hide();
+    },
+    fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+      $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+    },
+    language: {
+                    processing:     "Procesando ...",
+                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                    searchPlaceholder: "BUSCAR",
+                    lengthMenu:     "Mostrar _MENU_ Registros",
+                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                    infoPostFix:    "",
+                    loadingRecords: "...",
+                    zeroRecords:    "No se encontraron registros coincidentes",
+                    emptyTable:     "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first:      "Primero",
+                        previous:   "Anterior",
+                        next:       "Siguiente",
+                        last:       "Ultimo"
+                    },
+                    aria: {
+                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                    }
+                }
+    });
 
     $("#addpago").click(function(){
 
 
       $("#addpago").attr("disabled","disabled");
-        $("#addpago").css({
-          "opacity": ("0.2")
-        });
+      $("#addpago").css({
+        "opacity": ("0.2")
+      });
 
       var route = route_agregar_pago;
       var token = $('input:hidden[name=_token]').val();
@@ -1747,81 +1927,251 @@
 
   $('#tablepagos tbody').on( 'click', 'i.zmdi-delete', function () {
 
-                var id = $(this).closest('tr').attr('id');
-                element = this;
+    var id = $(this).closest('tr').attr('id');
+    element = this;
 
-                swal({   
-                    title: "Desea eliminar esta configuración?",   
-                    text: "Confirmar eliminación!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Eliminar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true 
-                }, function(isConfirm){   
-          if (isConfirm) {
+    swal({   
+        title: "Desea eliminar esta configuración?",   
+        text: "Confirmar eliminación!",   
+        type: "warning",   
+        showCancelButton: true,   
+        confirmButtonColor: "#DD6B55",   
+        confirmButtonText: "Eliminar!",  
+        cancelButtonText: "Cancelar",         
+        closeOnConfirm: true 
+    }, function(isConfirm){   
+      if (isConfirm) {
+        var nFrom = $(this).attr('data-from');
+        var nAlign = $(this).attr('data-align');
+        var nIcons = $(this).attr('data-icon');
+        var nType = 'success';
+        var nAnimIn = $(this).attr('data-animation-in');
+        var nAnimOut = $(this).attr('data-animation-out')
+                    // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                    eliminar_pago(id, element);
+      }
+    });
+  });
+      
+  function eliminar_pago(id, element){
+    var route = route_eliminar_pago + id;
+    var token = "{{ csrf_token() }}";
+    procesando();
+            
+    $.ajax({
+        url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'DELETE',
+        dataType: 'json',
+        data:id,
+        success:function(respuesta){
             var nFrom = $(this).attr('data-from');
             var nAlign = $(this).attr('data-align');
             var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar_pago(id, element);
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY"; 
+            if(respuesta.status=="OK"){
+              var nType = 'success';
+              var nTitle="Ups! ";
+              var nMensaje=respuesta.mensaje;
+
+              // $("#tipo_id option[value='"+respuesta.id+"']").removeAttr("disabled");
+              // $("#tipo_id option[value='"+respuesta.id+"']").data("icon","");
+
+              // $('#tipo_id').selectpicker('refresh');
+
+              h.row( $(element).parents('tr') )
+                .remove()
+                .draw();
+
+              swal("Exito!","La configuración ha sido eliminada!","success");
+              finprocesado()
+            
+            }
+        },
+        error:function(msj){
+          $("#msj-danger").fadeIn(); 
+          var text="";
+          console.log(msj);
+          var merror=msj.responseJSON;
+          text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+          $("#msj-error").html(text);
+          setTimeout(function(){
+                   $("#msj-danger").fadeOut();
+                  }, 3000);
           }
-                });
+    });
+  }
+
+  $("#addmeta").click(function(){
+
+
+    $("#addmeta").attr("disabled","disabled");
+    $("#addmeta").css({
+      "opacity": ("0.2")
+    });
+
+    var route = route_agregar_meta;
+    var token = "{{ csrf_token() }}";
+    var datos = $( "#form_meta" ).serialize(); 
+    limpiarMensaje();
+
+    $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'POST',
+        dataType: 'json',
+        data:datos,
+        success:function(respuesta){
+          setTimeout(function(){ 
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY"; 
+            if(respuesta.status=="OK"){
+              var nType = 'success';
+              var nTitle="Ups! ";
+              var nMensaje=respuesta.mensaje;
+              $("#form_meta")[0].reset();
+              $('.selectpicker').selectpicker('refresh')
+
+              if(respuesta.array.servicio_id == 1){
+                servicio = 'Inscripción'
+              }else if(respuesta.array.servicio_id == 2){
+                servicio = 'Recompra'
+              }else{
+                servicio = 'Clases Personalizadas'
+              }
+
+              monto = formatmoney(parseFloat(respuesta.array.monto))
+
+              var rowId=respuesta.array.id;
+              var rowNode=m.row.add( [
+              ''+servicio+'',
+              ''+monto+'',
+              '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+              ] ).draw(false).node();
+              $( rowNode )
+              .attr('id',rowId)
+              .addClass('seleccion');
+
+            }else{
+              var nTitle="Ups! ";
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              var nType = 'danger';
+            }                       
+            $("#addmeta").removeAttr("disabled");
+            $("#addmeta").css({
+              "opacity": ("1")
+            });
+
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+          }, 1000);
+        },
+        error:function(msj){
+          setTimeout(function(){ 
+            // if (typeof msj.responseJSON === "undefined") {
+            //   window.location = "{{url('/')}}/error";
+            // }
+            if(msj.responseJSON.status=="ERROR"){
+              console.log(msj.responseJSON.errores);
+              errores(msj.responseJSON.errores);
+              var nTitle="    Ups! "; 
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+            }else{
+              var nTitle="   Ups! "; 
+              var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+            }
+            $("#addmeta").removeAttr("disabled");
+            $("#addmeta").css({
+              "opacity": ("1")
+            });                        
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nType = 'danger';
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY";                       
+            notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+          }, 1000);
+        }
+    });
+
+  });
+
+  $('#tablemetas tbody').on( 'click', 'i.zmdi-delete', function () {
+
+    var id = $(this).closest('tr').attr('id');
+    element = this;
+
+    swal({   
+        title: "Desea eliminar esta configuración?",   
+        text: "Confirmar eliminación!",   
+        type: "warning",   
+        showCancelButton: true,   
+        confirmButtonColor: "#DD6B55",   
+        confirmButtonText: "Eliminar!",  
+        cancelButtonText: "Cancelar",         
+        closeOnConfirm: true 
+    }, function(isConfirm){   
+      if (isConfirm) {
+        var nFrom = $(this).attr('data-from');
+        var nAlign = $(this).attr('data-align');
+        var nIcons = $(this).attr('data-icon');
+        var nType = 'success';
+        var nAnimIn = $(this).attr('data-animation-in');
+        var nAnimOut = $(this).attr('data-animation-out')
+        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+        eliminar_meta(id, element);
+      }
+    });
   });
       
-        function eliminar_pago(id, element){
-         var route = route_eliminar_pago + id;
-         var token = "{{ csrf_token() }}";
-         procesando();
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'DELETE',
-                    dataType: 'json',
-                    data:id,
-                    success:function(respuesta){
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
+  function eliminar_meta(id, element){
+    var route = route_eliminar_meta + id;
+    var token = "{{ csrf_token() }}";
+    procesando();
+            
+    $.ajax({
+        url: route,
+        headers: {'X-CSRF-TOKEN': token},
+        type: 'DELETE',
+        dataType: 'json',
+        data:id,
+        success:function(respuesta){
+            var nFrom = $(this).attr('data-from');
+            var nAlign = $(this).attr('data-align');
+            var nIcons = $(this).attr('data-icon');
+            var nAnimIn = "animated flipInY";
+            var nAnimOut = "animated flipOutY"; 
+            if(respuesta.status=="OK"){
+              var nType = 'success';
+              var nTitle="Ups! ";
+              var nMensaje=respuesta.mensaje;
 
-                          // $("#tipo_id option[value='"+respuesta.id+"']").removeAttr("disabled");
-                          // $("#tipo_id option[value='"+respuesta.id+"']").data("icon","");
+              m.row( $(element).parents('tr') )
+                .remove()
+                .draw();
 
-                          // $('#tipo_id').selectpicker('refresh');
-
-                          h.row( $(element).parents('tr') )
-                            .remove()
-                            .draw();
-
-                          swal("Exito!","La configuración ha sido eliminada!","success");
-                          finprocesado()
-                        
-                        }
-                    },
-                    error:function(msj){
-                      $("#msj-danger").fadeIn(); 
-                      var text="";
-                      console.log(msj);
-                      var merror=msj.responseJSON;
-                      text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                      $("#msj-error").html(text);
-                      setTimeout(function(){
-                               $("#msj-danger").fadeOut();
-                              }, 3000);
-                      }
-                });
-           }
+              swal("Exito!","La configuración ha sido eliminada!","success");
+              finprocesado()
+            
+            }
+        },
+        error:function(msj){
+          $("#msj-danger").fadeIn(); 
+          var text="";
+          console.log(msj);
+          var merror=msj.responseJSON;
+          text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+          $("#msj-error").html(text);
+          setTimeout(function(){
+                   $("#msj-danger").fadeOut();
+                  }, 3000);
+          }
+    });
+  }
 
     $(".dismiss").click(function(){
       procesando();

@@ -206,13 +206,17 @@ class InstructorController extends BaseController {
             $direccion = $request->direccion;
             $correo = trim(strtolower($request->correo));
 
-            $usuario = User::where('email',$correo)->first();
+            if($correo){
 
-            if($usuario){
-                $tipos_usuario = UsuarioTipo::where('usuario_id',$usuario->id);
-                foreach($tipos_usuario as $tipo){
+                $usuario = User::where('email',$correo)->first();
 
-                    if($tipo == 3){
+                if($usuario){
+
+                    $usuario_tipo = UsuarioTipo::where('tipo',8)
+                        ->where('usuario_id',$usuario->id)
+                    ->first();
+
+                    if($usuario_tipo){
                         return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
                     }
                 }

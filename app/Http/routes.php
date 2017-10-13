@@ -200,7 +200,10 @@
 			Route::post('configuracion/staff/agregarpagofijo', 'StaffController@agregarpagofijo');
 			Route::delete('configuracion/staff/eliminarpagofijo/{id}', 'StaffController@eliminarpagofijo');
 
-			// SUCURSAL
+			Route::post('configuracion/staff/agregarmeta', 'StaffController@agregar_meta');
+			Route::delete('configuracion/staff/eliminarmeta/{id}', 'StaffController@eliminar_meta');
+
+			// ADMINISTRADORES
 
 			Route::get('configuracion/administradores','AdministradorController@principal');
 			Route::get('configuracion/administradores/agregar','AdministradorController@create');
@@ -273,6 +276,7 @@
 			Route::put('configuracion/academia/update/administrativo', 'AcademiaController@updateAdministrativo');
 			Route::put('configuracion/academia/update/password', 'AcademiaController@updatePassword');
 			Route::put('configuracion/academia/update/horario', 'AcademiaController@updateHorario');
+			Route::put('configuracion/academia/update/dias', 'AcademiaController@updateDias');
 
 			//PASOS
 

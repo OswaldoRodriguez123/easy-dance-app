@@ -19,6 +19,7 @@ use App\UsuarioTipo;
 use App\DiasDeSemana;
 use App\Alumno;
 use App\Instructor;
+use App\MetaStaff;
 use Mail;
 use DB;
 use Validator;
@@ -82,7 +83,7 @@ class StaffController extends BaseController
 	        'fecha_nacimiento' => 'required',
 	        'sexo' => 'required',
 	        'cargo' => 'required',
-            'correo' => 'email|max:255|unique:users,email',
+            'correo' => 'email|max:255',
 	    ];
 
 	    $messages = [
@@ -106,7 +107,6 @@ class StaffController extends BaseController
             'correo.required' => 'Ups! El correo es requerido',
             'correo.email' => 'Ups! El correo tiene una dirección inválida',
             'correo.max' => 'El máximo de caracteres permitidos son 255',
-            'correo.unique' => 'Ups! Ya este correo ha sido registrado',
 	    ];
 
 	    $validator = Validator::make($request->all(), $rules, $messages);
@@ -133,14 +133,18 @@ class StaffController extends BaseController
 	        $correo = trim(strtolower($request->correo));
 
             if($correo){
-                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                    ->select('users.id')
-                    ->where('users.email',$correo)
-                    ->where('usuarios_tipo.tipo',8)
-                ->first();
+
+                $usuario = User::where('email',$correo)->first();
 
                 if($usuario){
-                    return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
+
+                    $usuario_tipo = UsuarioTipo::where('tipo',8)
+                        ->where('usuario_id',$usuario->id)
+                    ->first();
+
+                    if($usuario_tipo){
+                        return response()->json(['errores' => ['correo' => [0, 'Ups! Ups! Ya este correo ha sido registrado']], 'status' => 'ERROR'],422);
+                    }
                 }
             }
 
@@ -325,7 +329,9 @@ class StaffController extends BaseController
             $collection=collect($tmp2);   
             $pagos = $collection->toArray();
 
-            return view('configuracion.staff.planilla')->with(['alumno' => $staff, 'id' => $id, 'horarios' => $horarios, 'dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff, 'comisiones' => $pagos,  'linea_servicio' => $linea_servicio]);
+            $metas = MetaStaff::where('staff_id',$id)->get();
+
+            return view('configuracion.staff.planilla')->with(['alumno' => $staff, 'id' => $id, 'horarios' => $horarios, 'dias_de_semana' => $dia_de_semana, 'config_staff' => $config_staff, 'comisiones' => $pagos,  'linea_servicio' => $linea_servicio, 'metas' => $metas]);
         }else{
            return redirect("/configuracion/staff"); 
         }
@@ -1730,6 +1736,65 @@ class StaffController extends BaseController
 
         }
     }
-    
+
+    public function agregar_meta(Request $request){
+        
+        $rules = [
+            'servicio_id' => 'required',
+            'monto_meta' => 'required',
+        ];
+
+        $messages = [
+
+            'servicio_id.required' => 'Ups! El Servicio es requerido',
+            'monto_meta.required' => 'Ups! El monto es requerido',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+
+            $meta = MetaStaff::where('staff_id',$request->id)->where('servicio_id',$request->servicio_id)->first();
+
+            if(!$meta){
+
+                $monto = floatval(str_replace(',', '', $request->monto_meta));
+
+                $meta = new MetaStaff;
+
+                $meta->staff_id = $request->id;                   
+                $meta->servicio_id = $request->servicio_id;
+                $meta->monto = $monto;
+
+                if($meta->save()){
+
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $meta, 'id' => $meta->id, 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+
+            }else{
+                return response()->json(['errores' => ['servicio_id' => [0, 'Ups! Ya posee una meta configurada para este servicio']], 'status' => 'ERROR'],422);
+            }          
+        }
+    }
+
+    public function eliminar_meta($id){
+
+        $meta = MetaStaff::find($id);
+
+        if($meta->delete()){
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+
+    }
 
 }

@@ -722,4 +722,16 @@ class AcademiaController extends BaseController {
         }
     }
 
+    public function updateDias(Request $request){
+
+        $academia = Academia::find(Auth::user()->academia_id);
+        $academia->dias_recompra = $request->dias_recompra;
+        
+        if($academia->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
 }
