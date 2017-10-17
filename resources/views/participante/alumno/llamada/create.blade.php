@@ -60,6 +60,39 @@
                             <hr>
                             <div class="clearfix p-b-15"></div>
 
+                            <div class="col-sm-12">
+                                 
+                                    <label for="apellido" id="id-asunto_llamada_id">Asunto de la llamada </label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el asunto de la llamada" title="" data-original-title="Ayuda"></i>
+
+                                    <div class="input-group">
+                                      <span class="input-group-addon"><i class="zmdi zmdi-label-alt-outline f-22"></i></span>
+                                      <div class="p-t-10">
+                                    <label class="radio radio-inline m-r-20">
+                                        <input name="asunto_llamada_id" id="inasistencia" value="1" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Inasistencia a clases         
+                                    </label>
+                                    <label class="radio radio-inline m-r-20 ">
+                                        <input name="asunto_llamada_id" id="ofrecimiento" value="2" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Ofrecimiento de un servicio
+                                    </label>
+                                    <label class="radio radio-inline m-r-20 ">
+                                        <input name="asunto_llamada_id" id="informacion" value="3" type="radio">
+                                        <i class="input-helper"></i>  
+                                        Información especial 
+                                    </label>
+                                    </div>
+                                    </div>
+                                 <div class="has-error" id="error-asunto_llamada_id">
+                                      <span >
+                                          <small class="help-block error-span" id="error-asunto_llamada_id_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix p-b-35"></div>
+
                                 <div class="col-sm-12">
                                  
                                     <label for="apellido" id="id-status">Estatus</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el status de la llamada" title="" data-original-title="Ayuda"></i>
@@ -92,29 +125,10 @@
                                </div>
 
                                <div class="clearfix p-b-35"></div>
-
-                                  <div class="col-sm-12">
-                                    
-                                      <label for="hora_llamada" id="id-hora_llamada">Hora de llamada</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la hora en que se realizo la llamada" title="" data-original-title="Ayuda"></i>
-                                      <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="hora_llamada" id="hora_llamada" class="form-control time-picker proceso pointer" placeholder="Selecciona" type="text">
-                                          </div>
-
-                                    </div>
-                                    <div class="has-error" id="error-hora_llamada">
-                                        <span >
-                                            <small class="help-block error-span" id="error-hora_llamada_mensaje" ></small>                                           
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="clearfix p-b-35"></div>
                                   
-                                  <div class="col-sm-12">
+                                  <div id="div_descripcion" class="col-sm-12" style="display: none">
                                  
-                                    <label for="nombre" id="id-observacion">Descripción</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Crea una buena primera impresión  presenta los objetivos de tu fiesta  y persuade a tus  clientes  para que obtengan más información. Esta información básica será vista por todos tus alumnos" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-observacion">Resultado / Descripción</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Crea una buena primera impresión  presenta los objetivos de tu fiesta  y persuade a tus  clientes  para que obtengan más información. Esta información básica será vista por todos tus alumnos" title="" data-original-title="Ayuda"></i>
 
                                     <br></br>
 
@@ -127,46 +141,33 @@
                                           <small class="help-block error-span" id="error-observacion_mensaje" ></small>                                
                                       </span>
                                   </div>
+
+                                <div class="clearfix p-b-35"></div>
                                </div>
-                               <div class="clearfix p-b-35"></div>
 
-                                <div class="col-sm-12">
-                                    
-                                      <label for="hora_llamada" id="id-hora_llamada">Fecha de siguiente llamada</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha en que se realizara la siguiente llamada" title="" data-original-title="Ayuda"></i>
-                                      <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="fecha_siguiente" id="fecha_siguiente" class="form-control date-picker proceso pointer" placeholder="Selecciona" type="text" disabled>
-                                          </div>
-
-                                    </div>
-                                    <div class="has-error" id="error-fecha_siguiente">
+                               <div class="col-sm-12" id="div_reprogramar" style="display: none">
+                                   <div class="form-group fg-line ">
+                                      <label for="">Reprogramar llamada</label id="id-iva"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si reprogramaras la llamada" title="" data-original-title="Ayuda"></i>
+                                      
+                                      <br></br>
+                                      <input type="text" id="reprogramar" name="reprogramar" value="" hidden="hidden">
+                                      <div class="p-t-10">
+                                        <div class="toggle-switch" data-ts-color="purple">
+                                        <span class="p-r-10 f-700 f-16">No</span><input id="switch_reprogramar" type="checkbox">
+                                        
+                                        <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
+                                        </div>
+                                      </div>
+                                      
+                                   </div>
+                                   <div class="has-error" id="error-impuesto">
                                         <span >
-                                            <small class="help-block error-span" id="error-fecha_siguiente_mensaje" ></small>                                           
+                                            <small class="help-block error-span" id="error-impuesto_mensaje" ></small>                                           
                                         </span>
                                     </div>
-                                </div>
+                                 </div>
 
-                                <div class="clearfix p-b-35"></div>
-                              
-                                  <div class="col-sm-12">
-                                    
-                                      <label for="hora_llamada" id="id-hora_llamada">Hora de siguiente llamada</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la hora en que se realizara la siguiente llamada" title="" data-original-title="Ayuda"></i>
-                                      <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
-                                      <div class="dtp-container fg-line">
-                                              <input name="hora_siguiente" id="hora_siguiente" class="form-control time-picker proceso pointer" placeholder="Selecciona" type="text" disabled>
-                                          </div>
-
-                                    </div>
-                                    <div class="has-error" id="error-hora_siguiente">
-                                        <span >
-                                            <small class="help-block error-span" id="error-hora_siguiente_mensaje" ></small>                                           
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div class="clearfix p-b-35"></div>
+                           <div class="clearfix p-b-35"></div>
 
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
@@ -205,24 +206,32 @@
 
   route_principal="{{url('/')}}/participante/alumno/llamadas/{{$id}}";
   route_agregar="{{url('/')}}/participante/alumno/llamadas/agregar";
+  route_citas="{{url('/')}}/agendar/citas/agregar";
   
   $(document).ready(function(){
 
-    $('input[name=status]').change(function() {
-            val = $(this).val();
+    $("#reprogramar").val('1');  //VALOR POR DEFECTO
+    $("#switch_reprogramar").attr("checked", true); //VALOR POR DEFECTO
 
-            if(val == 2 || val == 3)
-            {
-              $("#fecha_siguiente").removeAttr("disabled");
-              $("#hora_siguiente").removeAttr("disabled");
-            }else{
-              $("#fecha_siguiente").val('');
-              $("#hora_siguiente").val('');
-              $("#fecha_siguiente").attr("disabled","disabled");
-              $("#hora_siguiente").attr("disabled","disabled");
-            }
-        });
+    $("#switch_reprogramar").on('change', function(){
+      if ($("#switch_reprogramar").is(":checked")){
+        $("#reprogramar").val('1');
+      }else{
+        $("#reprogramar").val('0');
+      }    
     });
+
+    $('input[name=status]').change(function() {
+        val = $(this).val();
+        if(val == 1){
+          $("#div_descripcion").show();
+          $("#div_reprogramar").hide();
+        }else{
+          $("#div_reprogramar").show();
+          $("#div_descripcion").hide();
+        }
+    });
+  });
 
     $("#guardar").click(function(){
 
@@ -249,7 +258,11 @@
                           var nTitle="Exito! ";
                           var nMensaje=respuesta.mensaje;
 
-                          window.location = route_principal;
+                          if(respuesta.estatus != 1 && respuesta.reprogramar == 1){
+                            window.location = route_citas;
+                          }else{
+                            window.location = route_principal;
+                          }
                          
 
                         }else{
@@ -331,7 +344,7 @@
             };
 
       function limpiarMensaje(){
-      var campo = ["status", "observacion", "hora_llamada", "fecha_siguiente", "hora_siguiente"];
+      var campo = ["asunto_llamada_id","status", "observacion"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -360,23 +373,21 @@
   }
 
   $( "#cancelar" ).click(function() {
-        $("#form_guardar")[0].reset();
-        $("#fecha_siguiente").attr("disabled","disabled");
-        $("#hora_siguiente").attr("disabled","disabled");
-        limpiarMensaje();
-        $('html,body').animate({
-        scrollTop: $("#id-status").offset().top-90,
-        }, 1000);
-      });
+    $("#form_guardar")[0].reset();
+    limpiarMensaje();
+    $('html,body').animate({
+    scrollTop: $("#id-status").offset().top-90,
+    }, 1000);
+  });
 
-       function countChar(val) {
-        var len = val.value.length;
-        if (len >= 180) {
-          val.value = val.value.substring(0, 180);
-        } else {
-          $('#charNum').text(180 - len);
-        }
-      };
+   function countChar(val) {
+    var len = val.value.length;
+    if (len >= 180) {
+      val.value = val.value.substring(0, 180);
+    } else {
+      $('#charNum').text(180 - len);
+    }
+  };
 </script> 
 @stop
 

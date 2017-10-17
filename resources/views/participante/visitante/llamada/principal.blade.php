@@ -72,10 +72,9 @@
                                 <tr>
                                     <th></th>
                                     <th>Estatus</th>
+                                    <th>Asunto</th>
                                     <th>Observación</th>
                                     <th>Hora de llamada</th>
-                                    <th>Fecha siguiente llamada</th>
-                                    <th>Hora siguiente llamada</th>
                                     <th>Tiempo de Respuesta</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -120,6 +119,7 @@
 
                                   @endif
                                   </td>
+                                  <td>{{$llamada->asunto}}</td>
                                   <td>{{ str_limit(title_case($llamada->observacion), $limit = 30, $end = '...') }}</td>
                                   <td>
 
@@ -129,18 +129,6 @@
                                         {{\Carbon\Carbon::createFromFormat('H:i:s',$llamada->hora_llamada)->format('g:i a')}}
                                     @endif
                
-                                  </td>
-                                  <td>{{$llamada->fecha_siguiente}}</td>
-                                  <td>
-                                    @if($llamada->hora_siguiente != '00:00:00')
-                                      @if($tipo_horario == 2)
-                                          {{\Carbon\Carbon::createFromFormat('H:i:s',$llamada->hora_siguiente)->format('H:i')}}
-                                      @else
-                                          {{\Carbon\Carbon::createFromFormat('H:i:s',$llamada->hora_siguiente)->format('g:i a')}}
-                                      @endif
-                                    @else
-                                      {{$llamada->hora_siguiente}}
-                                    @endif
                                   </td>
                                   <td>{{$tiempo_respuesta}}</td>
                                   <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer eliminar"></i></td>

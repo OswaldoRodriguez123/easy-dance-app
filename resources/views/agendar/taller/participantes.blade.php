@@ -344,7 +344,11 @@
                                         @endif
 
                                       </td>
-                                      <td class="text-center previa">{{$alumno['tiempo_vencimiento']}}</td>
+                                      <td class="text-center previa"> 
+                                        @if(isset($alumno['tiempo_vencimiento']))
+                                          {{$alumno['tiempo_vencimiento']}}
+                                        @endif
+                                      </td>
                                       <td class="text-center previa">
                                       @if($alumno['sexo']=='F')
                                         <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
