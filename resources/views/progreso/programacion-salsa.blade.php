@@ -17,7 +17,6 @@
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 <script src="{{url('/')}}/assets/js/eosMenu.js"></script>
-<script src="https://player.vimeo.com/api/player.js"></script>
 @stop
 @section('content')
 
@@ -451,8 +450,6 @@
       $('.ciclo').addClass('disabled');
 
     });
-
-    var vi_player = new Vimeo.Player('video_vimeo');
     
     $('.eos-item').click(function(e) {
 
