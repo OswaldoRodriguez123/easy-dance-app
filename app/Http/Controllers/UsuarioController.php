@@ -1578,19 +1578,20 @@ class UsuarioController extends BaseController {
                 
                 if(!$alumno){
                     return view('inicio.cuenta-deshabilitada');
-                }else{
-                    if(Session::has('fecha_comprobacion')){
-
-                        $fecha_comprobacion = Session::get('fecha_comprobacion');
-                        $hoy = Carbon::now()->toDateString();
-
-                        if($fecha_comprobacion < $hoy){
-                            return $this->inactividad();
-                        }
-                    }else{
-                        return $this->inactividad();
-                    }
                 }
+                // else{
+                //     if(Session::has('fecha_comprobacion')){
+
+                //         $fecha_comprobacion = Session::get('fecha_comprobacion');
+                //         $hoy = Carbon::now()->toDateString();
+
+                //         if($fecha_comprobacion < $hoy){
+                //             return $this->inactividad();
+                //         }
+                //     }else{
+                //         return $this->inactividad();
+                //     }
+                // }
 
                 //ALUMNOS
                 if(Auth::user()->boolean_condiciones){
