@@ -382,6 +382,7 @@ class ProgresoController extends BaseController {
             }
 
             $pasos = Paso::where('academia_id',$clase_grupal->academia_id)
+                ->orderBy('nombre')
                 ->where('especialidad_id',$especialidad_id)
             ->get();
 
