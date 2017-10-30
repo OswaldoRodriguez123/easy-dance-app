@@ -180,7 +180,7 @@ class ProgresoController extends BaseController {
 
             $collection=collect($clase_grupal);     
             $clase_grupal_array = $collection->toArray();
-            $clase_grupal_array['tipo'] = 1;
+            $clase_grupal_array['tipo'] = 2;
             $array[] = $clase_grupal_array;
         }
 
@@ -205,7 +205,7 @@ class ProgresoController extends BaseController {
 
             $collection=collect($clase_grupal);     
             $clase_grupal_array = $collection->toArray();
-            $clase_grupal_array['tipo'] = 2;
+            $clase_grupal_array['tipo'] = 1;
             $array[] = $clase_grupal_array;
         }
 
@@ -220,6 +220,11 @@ class ProgresoController extends BaseController {
         $explode = explode("-",$id);
         $id = $explode[0];
         $especialidad_id = $explode[1];
+
+        if($especialidad_id == 2){
+            $especialidad_id == 21;
+        }
+        
         $clase_grupal = ClaseGrupal::find($id);
       
         if($clase_grupal){

@@ -17,7 +17,6 @@
 <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
 <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
 <script src="{{url('/')}}/assets/js/eosMenu.js"></script>
-
 @stop
 @section('content')
 
