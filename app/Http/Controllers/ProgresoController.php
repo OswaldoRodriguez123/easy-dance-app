@@ -222,7 +222,7 @@ class ProgresoController extends BaseController {
         $especialidad_id = $explode[1];
 
         if($especialidad_id == 2){
-            $especialidad_id == 20;
+            $especialidad_id = 20;
         }
 
         $clase_grupal = ClaseGrupal::find($id);
@@ -347,8 +347,6 @@ class ProgresoController extends BaseController {
                 ->where('especialidad_id',$especialidad_id)
                 ->orderBy('nombre')
             ->get();
-
-            dd($pasos);
 
             if($especialidad_id != 1){
                 return view('progreso.programacion-salsa')->with(['clase_1' => $clase_1, 'clase_2' => $clase_2, 'clase_3' => $clase_3, 'clase_4' => $clase_4, 'clase_5' => $clase_5, 'clase_6' => $clase_6, 'clase_7' => $clase_7, 'clase_8' => $clase_8, 'clase_9' => $clase_9, 'clase_10' => $clase_10, 'clase_11' => $clase_11, 'clase_12' => $clase_12, 'notas' => $notas, 'id' => $id, 'pasos' => $pasos, 'permisos' => $permisos]); 
