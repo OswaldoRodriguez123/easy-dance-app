@@ -436,15 +436,18 @@
 
       @if($usuario_tipo != 3)
 
-        $('.disabled').attr('data-trigger','hover');
-        $('.disabled').attr('data-toggle','popover');
-        $('.disabled').attr('data-placement','right');
-        $('.disabled').attr('data-content','<p class="c-negro">Aún no posees la credencial para ver este vídeo</p>');
-        $('.disabled').attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;');
-        $('.disabled').attr('data-html','true');
-        $('.disabled').attr('title','');
+        // $('.disabled').attr('data-trigger','hover');
+        // $('.disabled').attr('data-toggle','popover');
+        // $('.disabled').attr('data-placement','right');
+        // $('.disabled').attr('data-content','<p class="c-negro">Aún no posees la credencial para ver este vídeo</p>');
+        // $('.disabled').attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;');
+        // $('.disabled').attr('data-html','true');
+        // $('.disabled').attr('title','');
 
-        $('[data-toggle="popover"]').popover(); 
+        // $('[data-toggle="popover"]').popover(); 
+
+        $('.disabled').addClass('video_url');
+        $('.video_url').removeClass('disabled')
       @endif
 
       $('.ciclo').addClass('disabled');
