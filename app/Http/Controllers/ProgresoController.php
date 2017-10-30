@@ -222,9 +222,9 @@ class ProgresoController extends BaseController {
         $especialidad_id = $explode[1];
 
         if($especialidad_id == 2){
-            $especialidad_id == 21;
+            $especialidad_id == 20;
         }
-        
+
         $clase_grupal = ClaseGrupal::find($id);
       
         if($clase_grupal){
