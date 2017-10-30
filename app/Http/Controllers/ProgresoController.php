@@ -172,16 +172,6 @@ class ProgresoController extends BaseController {
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
             ->where('inscripcion_clase_grupal.alumno_id','=', $usuario_id)
-            ->where('clases_grupales.especialidad_id','=', 20)
-        ->get();
-
-        $horarios_clase_grupales = ClaseGrupal::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
-            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('horarios_clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'clases_grupales.id')
-            ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'horarios_clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
-            ->where('inscripcion_clase_grupal.alumno_id','=', $usuario_id)
-            ->where('horarios_clases_grupales.especialidad_id','=', 20)
-            ->where('clases_grupales.deleted_at',null)
         ->get();
 
         $array = array();
@@ -191,13 +181,6 @@ class ProgresoController extends BaseController {
             $collection=collect($clase_grupal);     
             $clase_grupal_array = $collection->toArray();
             $clase_grupal_array['tipo'] = 1;
-            $array[] = $clase_grupal_array;
-        }
-
-        foreach($horarios_clase_grupales as $clase_grupal){
-            $collection=collect($clase_grupal);     
-            $clase_grupal_array = $collection->toArray();
-            $clase_grupal_array['tipo'] = 2;
             $array[] = $clase_grupal_array;
         }
 
@@ -214,29 +197,12 @@ class ProgresoController extends BaseController {
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
             ->where('inscripcion_clase_grupal.alumno_id','=', $usuario_id)
-            ->where('clases_grupales.especialidad_id','=', 1)
-        ->get();
-
-        $horarios_clase_grupales = ClaseGrupal::join('inscripcion_clase_grupal', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
-            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-            ->join('horarios_clases_grupales', 'horarios_clases_grupales.clase_grupal_id', '=', 'horarios_clases_grupales.id')
-            ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'horarios_clases_grupales.id', 'config_clases_grupales.imagen', 'config_clases_grupales.descripcion')
-            ->where('inscripcion_clase_grupal.alumno_id','=', $usuario_id)
-            ->where('horarios_clases_grupales.especialidad_id','=', 1)
-            ->where('clases_grupales.deleted_at',null)
         ->get();
 
         $array = array();
 
         foreach($clases_grupales as $clase_grupal){
 
-            $collection=collect($clase_grupal);     
-            $clase_grupal_array = $collection->toArray();
-            $clase_grupal_array['tipo'] = 1;
-            $array[] = $clase_grupal_array;
-        }
-
-        foreach($horarios_clase_grupales as $clase_grupal){
             $collection=collect($clase_grupal);     
             $clase_grupal_array = $collection->toArray();
             $clase_grupal_array['tipo'] = 2;
@@ -253,18 +219,9 @@ class ProgresoController extends BaseController {
 
         $explode = explode("-",$id);
         $id = $explode[0];
-        $tipo = $explode[1];
-
-        if($tipo == 1){
-            $clase_grupal = ClaseGrupal::find($id);
-            $especialidad_id = $clase_grupal->especialidad_id;
-        }else{
-            $horario = HorarioClaseGrupal::find($id);
-            $clase_grupal = ClaseGrupal::find($horario->clase_grupal_id);
-            $id = $clase_grupal->id;
-            $especialidad_id = $horario->especialidad_id;
-        }
-
+        $especialidad_id = $explode[1];
+        $clase_grupal = ClaseGrupal::find($id);
+      
         if($clase_grupal){
 
             $progreso = Progreso::where('clase_grupal_id',$id)->first();
