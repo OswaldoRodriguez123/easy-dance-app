@@ -896,9 +896,11 @@
 
 
       function buscarAlumno(t){
+
         procesando();
 
         $('#clases_grupales_alumno').empty();
+        d.clear().draw();
 
         var row = $(t).closest('tr');
 
