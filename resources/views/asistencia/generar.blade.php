@@ -79,25 +79,41 @@
                        </div>
                        
 
-                       <div class="col-sm-9">
-                           <label for="asistencia_clase_grupal_id" class="f-16">Nombre de la clase</label>
-                              <div class="select">
-                                <select class="selectpicker form-control" name="asistencia_clase_grupal_id" id="asistencia_clase_grupal_id" data-live-search="true">
+                      <div class="col-sm-9">
+                        <label for="asistencia_clase_grupal_id" class="f-16">Nombre de la clase</label>
+                        <div class="select">
+                          <select class="selectpicker form-control" name="asistencia_clase_grupal_id" id="asistencia_clase_grupal_id" data-live-search="true">
+                            <option value="">Selecciona</option>
+                          </select>
+                        </div>
+                        <div class="has-error text-danger" id="error-asistencia_clase_grupal_id">
+                          <span >
+                            <small class="help-block error-span" id="error-asistencia_clase_grupal_id_mensaje" ></small>
+                          </span>
+                        </div>
 
-                                  <option value="">Selecciona</option>
-                                  
-                                </select>
-                              </div>
-                            <div class="has-error text-danger" id="error-asistencia_clase_grupal_id">
-                              <span >
-                                  <small class="help-block error-span" id="error-asistencia_clase_grupal_id_mensaje" ></small>                                
-                              </span>
+                        <div class="table-responsive row">
+                          <div class="col-md-12">
+                            <table class="table table-striped table-bordered text-center " id="tabledeudas" >
+                              <thead>
+                                <tr>
+                                  <th class="text-center" data-column-id="nombre">Producto o Servicio</th>
+                                  <th class="text-center" data-column-id="cantidad">Cantidad</th>
+                                  <th class="text-center" data-column-id="precio_neto" data-order="desc">Precio (Neto)</th>
+                                  <th class="text-center" data-column-id="impuesto" data-order="desc">Impuesto</th>
+                                  <th class="text-center" data-column-id="importe_neto" data-order="desc">Importe (Neto)</th>
+                                  <th class="text-center" data-column-id="estatus" data-order="desc">Estatus</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                                           
+                              </tbody>
+                            </table>
                           </div>
+                        </div>
+                      </div>
 
-
-                       </div>
-
-                       <div class="clearfix"></div> 
+                      <div class="clearfix"></div> 
 
                    </div>
                    
@@ -492,6 +508,7 @@
       route_agregar_asistencia_staff="{{url('/')}}/asistencia/agregar/staff";
       route_historial = "{{url('/')}}/participante/alumno/historial/";
       route_consulta_estatus="{{url('/')}}/asistencia/consulta/estatus";
+      route_pendientes="{{url('/')}}/administrativo/pagos/itemspendientes/";
 
       var tipo = 1;
 
@@ -536,6 +553,44 @@
                       }
                   }
       });
+
+      d=$('#tabledeudas').DataTable({
+        processing: true,
+        serverSide: false,
+        bPaginate: false,
+        bInfo:false,
+        bFilter:false,
+        order: [[0, 'desc']],
+        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
+          $('td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "disabled");
+        },
+        language: {
+                      processing:     "Procesando ...",
+                    search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                    searchPlaceholder: "BUSCAR",
+                    lengthMenu:     "Mostrar _MENU_ Registros",
+                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                    infoPostFix:    "",
+                    loadingRecords: "...",
+                    zeroRecords:    "No se encontraron registros coincidentes",
+                    emptyTable:     "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first:      "Primero",
+                        previous:   "Anterior",
+                        next:       "Siguiente",
+                        last:       "Ultimo"
+                    },
+                    aria: {
+                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                    }
+                }
+
+      });
+
       function loadImages(){
         imagenes = $('.lazy')
 
@@ -947,8 +1002,6 @@
               $("#status_economico").removeClass("c-youtube");
               $("#status_economico").addClass("c-verde");
             }
-            finprocesado();
-            $('#modalAsistencia').modal('show');
           },
           error:function(msj){
             finprocesado();
@@ -994,6 +1047,100 @@
             }, 1000);             
           }
         });
+
+        var route = route_pendientes + '1-'+alumno_id;
+
+        $.ajax({
+          url: route,
+          headers: {'X-CSRF-TOKEN': token},
+          type: 'POST',
+          dataType: 'json',
+          success:function(respuesta){
+            setTimeout(function(){ 
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY"; 
+              if(respuesta.status=="OK"){
+
+                $.each(respuesta.items, function (index, array) {
+
+                  if(array[0].estatus == 0){
+                    estatus = '<span class="c-youtube">Vencida</span>'
+                  }else{
+                    estatus = '<span>Por Cobrar</span>'
+                  }
+
+                  nombre = array[0].nombre;
+
+                  if(nombre.length > 15){
+                    nombre = nombre.substr(0, 30) + "..."
+                  }
+
+                  var rowId=array[0].id;
+                  var rowNode=d.row.add( [
+                    ''+nombre+'',
+                    ''+array[0].cantidad+'',
+                    ''+formatmoney(parseFloat(array[0].precio_neto))+'',
+                    ''+array[0].impuesto+'',
+                    ''+formatmoney(parseFloat(array[0].importe_neto))+'',
+                    ''+estatus+'',
+                  ] ).draw(false).node();
+                  $( rowNode )
+                  .attr('id',rowId)
+                  .attr('fecha_vencimiento',array[0].fecha_vencimiento)
+                  .attr('tipo',array[0].tipo)
+                  .addClass('seleccion')
+                  .attr('data-trigger','hover')
+                  .attr('data-toggle','popover')
+                  .attr('data-placement','top')
+                  .attr('data-content','<p class="c-negro">'+array[0].nombre+'</p>')
+                  .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;')
+                  .attr('data-container','body')
+                  .attr('data-html','true')
+                  .attr('title','');
+             
+                });
+
+                $('[data-toggle="popover"]').popover();
+
+                finprocesado();
+                $('#modalAsistencia').modal('show');
+
+              }else{
+                var nTitle="Ups! ";
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                var nType = 'danger';
+              }                       
+            }, 1000);
+            
+          },
+          error:function(msj){
+            setTimeout(function(){ 
+              // if (typeof msj.responseJSON === "undefined") {
+              //   window.location = "{{url('/')}}/error";
+              // }
+              if(msj.responseJSON.status=="ERROR"){
+                errores(msj.responseJSON.errores);
+                var nTitle="    Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+              }else{
+                var nTitle="   Ups! "; 
+                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+              }
+                                    
+              var nFrom = $(this).attr('data-from');
+              var nAlign = $(this).attr('data-align');
+              var nIcons = $(this).attr('data-icon');
+              var nType = 'danger';
+              var nAnimIn = "animated flipInY";
+              var nAnimOut = "animated flipOutY";                       
+              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+            }, 1000);
+          }
+        }); 
+
       }
 
 
@@ -1261,6 +1408,10 @@
       }
       
   });
+
+  function formatmoney(n) {
+    return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+  }
 
   </script>
 
