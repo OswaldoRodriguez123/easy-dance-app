@@ -539,6 +539,8 @@
             
     <script type="text/javascript">
 
+        var pagina = document.location.origin
+
         route_filtrar="{{url('/')}}/reportes/presenciales";
         route_detalle="{{url('/')}}/participante/visitante/detalle";
         route_encuesta="{{url('/')}}/participante/visitante/encuesta/";
@@ -588,8 +590,8 @@
             pageLength: 25, 
             order: [[1, 'desc']],
             fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center, disabled" );
-              // $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
+              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).attr( "onclick","previa(this)" );
             },
             language: {
                             processing:     "Procesando ...",
@@ -760,8 +762,6 @@
 
             });
 
-           
-    
         });
 
          $("#guardar").click(function(){
@@ -820,11 +820,60 @@
                                     total = total + 1
                                 }
 
-                                if(array.rapidez != 0 || array.calidad != 0 || array.satisfaccion != 0 || array.disponibilidad != 0){
-                                    accion = '<i class="icon_a-examen f-20 boton blue sa-warning pointer encuesta" data-original-title="" data-content="Ver Encuesta" data-toggle="popover" data-placement="top" title="" type="button" data-trigger="hover"></i>'
-                                }else{
-                                    accion = ''
+                                // if(array.rapidez != 0 || array.calidad != 0 || array.satisfaccion != 0 || array.disponibilidad != 0){
+                                //     accion = '<i class="icon_a-examen f-20 boton blue sa-warning pointer encuesta" data-original-title="" data-content="Ver Encuesta" data-toggle="popover" data-placement="top" title="" type="button" data-trigger="hover"></i>'
+                                // }else{
+                                //     accion = ''
+                                // }
+
+                                operacion = ''
+
+                                operacion += '<ul class="top-menu">'
+                                operacion += '<li id = dropdown_'+array.id+' class="dropdown">' 
+                                operacion += '<a id = dropdown_toggle_'+array.id+' href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">' 
+                                operacion += '<span class="f-15 f-700" style="color:black">'
+                                operacion += '<i class="zmdi zmdi-wrench f-20 mousedefault" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=""></i>'
+                                operacion += '</span></a>'
+                                operacion += '<div class="dropup">'
+                                operacion += '<ul class="dropdown-menu dm-icon pull-right" style="position:absolute;">'
+
+                                if(array.correo){
+                                  operacion += '<li class="hidden-xs email">'
+                                  operacion += '<a onclick="procesando()">'
+                                  operacion += '<i class="zmdi zmdi-email f-16 boton blue"></i>'
+                                  operacion += 'Enviar Correo'
+                                  operacion += '</a></li>'
                                 }
+
+                                operacion += '<li class="hidden-xs">'
+                                operacion += '<a onclick="procesando()" href="'+pagina+'/participante/visitante/impresion/'+array.id+'">'
+                                operacion += '<i class="zmdi icon_a-examen f-20 boton blue"></i>'
+                                operacion += 'Realizar encuesta'
+                                operacion += '</a></li>'
+
+                                operacion += '<li class="hidden-xs">'
+                                operacion += '<a onclick="procesando()" href="'+pagina+'/participante/alumno/agregar/'+array.id+'">'
+                                operacion += '<i class="zmdi zmdi-trending-up f-20 boton blue"></i>'
+                                operacion += 'Transferir'
+                                operacion += '</a></li>'
+
+                                operacion += '<li class="hidden-xs">'
+                                operacion += '<a onclick="procesando()" href="'+pagina+'/participante/visitante/llamadas/'+array.id+'">'
+                                operacion += '<i class="zmdi zmdi-phone f-20 boton blue"></i>'
+                                operacion += 'Llamadas'
+                                operacion += '</a></li>'
+
+                                operacion += '<li class="hidden-xs reservar">'
+                                operacion += '<a onclick="procesando()">'
+                                operacion += '<i class="zmdi icon_a-reservaciones f-16 boton blue"></i>'
+                                operacion += 'Reservar'
+                                operacion += '</a></li>'
+
+                                operacion += '<li class="hidden-xs eliminar"><a class="pointer eliminar">'
+                                operacion += '<i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i>'
+                                operacion += 'Eliminar'
+                                operacion += '</a></li>'
+                                operacion += '</ul></div></li></ul>'
 
                                 var rowNode=t.row.add( [
                                 ''+cliente+'',
@@ -834,7 +883,7 @@
                                 ''+sexo+'',
                                 ''+array.celular+'',
                                 ''+array.especialidad+'',
-                                ''+accion+'',
+                                ''+operacion+'',
                                 ] ).draw(false).node();
                                 $( rowNode )
                                     .attr('id',array.id)
@@ -1131,11 +1180,11 @@
 
     }
 
-     function previa(t){
-        var id = $(t).closest('tr').attr('id');
-        var route =route_detalle+"/"+id;
-        window.open(route, '_blank');;
-      }
+    function previa(t){
+      var id = $(t).closest('tr').attr('id');
+      var route =route_detalle+"/"+id;
+      window.open(route, '_blank');;
+    }
 
     function collapse_minus(collaps){
         $('#'+collaps).collapse('hide');
@@ -1163,6 +1212,138 @@
         var route =route_encuesta+id;
         window.open(route, '_blank');
     });
+
+    $('#tablelistar tbody').on('click', '.email', function(){
+
+      var route = route_email;
+      var token = '{{ csrf_token() }}';
+      var id = $(this).closest('tr').attr('id');
+          
+          $.ajax({
+              url: route,
+                  headers: {'X-CSRF-TOKEN': token},
+                  type: 'POST',
+              dataType: 'json',
+              data:"&usuario_tipo=3&usuario_id="+id,
+              success:function(respuesta){
+
+                  procesando();
+                  window.location="{{url('/')}}/correo/"+id   
+
+              },
+              error:function(msj){
+                          // $("#msj-danger").fadeIn(); 
+                          // var text="";
+                          // console.log(msj);
+                          // var merror=msj.responseJSON;
+                          // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                          // $("#msj-error").html(text);
+                          // setTimeout(function(){
+                          //          $("#msj-danger").fadeOut();
+                          //         }, 3000);
+                          swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                          }
+          });
+      });
+
+      $('#tablelistar tbody').on('click', '.reservar', function(){
+
+        procesando();
+        var route = "{{url('/')}}/reservacion/guardar-tipo-usuario/2";
+        var token = '{{ csrf_token() }}';
+        var id = $(this).closest('tr').attr('id');
+            
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+            dataType: 'json',
+            success:function(respuesta){
+                window.location = "{{url('/')}}/reservaciones/actividades/"+id
+
+            },
+            error:function(msj){
+                        // $("#msj-danger").fadeIn(); 
+                        // var text="";
+                        // console.log(msj);
+                        // var merror=msj.responseJSON;
+                        // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                        // $("#msj-error").html(text);
+                        // setTimeout(function(){
+                        //          $("#msj-danger").fadeOut();
+                        //         }, 3000);
+                        finprocesado();
+                        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                        }
+        });
+    })
+
+    $('#tablelistar tbody').on('click', '.eliminar', function(){
+            var id = $(this).closest('tr').attr('id');
+            swal({   
+                title: "Desea eliminar al visitante?",   
+                text: "Confirmar eliminación!",   
+                type: "warning",   
+                showCancelButton: true,   
+                confirmButtonColor: "#DD6B55",   
+                confirmButtonText: "Eliminar!",  
+                cancelButtonText: "Cancelar",         
+                closeOnConfirm: true 
+            }, function(isConfirm){   
+      if (isConfirm) {
+        var route = route_eliminar + id;
+        var token = '{{ csrf_token() }}';
+            
+            $.ajax({
+                url: route,
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'DELETE',
+                dataType: 'json',
+                data:id,
+                success:function(respuesta){
+
+                    procesando();
+                    window.location = route_principal; 
+
+                },
+                error:function(msj){
+                            // $("#msj-danger").fadeIn(); 
+                            // var text="";
+                            // console.log(msj);
+                            // var merror=msj.responseJSON;
+                            // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                            // $("#msj-error").html(text);
+                            // setTimeout(function(){
+                            //          $("#msj-danger").fadeOut();
+                            //         }, 3000);
+                            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                            }
+            });
+            }
+        });
+    });
+
+    $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+
+      var id = $(this).closest('tr').attr('id');
+      var dropdown = $(this).closest('.dropdown')
+      var dropdown_toggle = $(this).closest('.dropdown-toggle')
+
+      $('.dropdown-toggle').attr('aria-expanded','false')
+      $('.dropdown').removeClass('open')
+      $('.table-responsive').css( "overflow", "auto" );
+
+      if(!dropdown.hasClass('open')){
+          dropdown.addClass('open')
+          dropdown_toggle.attr('aria-expanded','true')
+          $('.table-responsive').css( "overflow", "inherit" );
+      }
+   
+    });
+
+    $('.table-responsive').on('hide.bs.dropdown', function () {
+      $('.table-responsive').css( "overflow", "auto" );
+    }) 
 
 </script>
 
