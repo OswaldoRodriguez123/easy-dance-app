@@ -122,7 +122,7 @@ class InstructorController extends BaseController {
         'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento' => 'required',
         'sexo' => 'required',
-        'correo' => 'required|email|max:255|unique:users,email',
+        'correo' => 'required|email|max:255',
     ];
 
     $messages = [
@@ -145,7 +145,6 @@ class InstructorController extends BaseController {
         'correo.required' => 'Ups! El correo es requerido',
         'correo.email' => 'Ups! El correo tiene una dirección inválida',
         'correo.max' => 'El máximo de caracteres permitidos son 255',
-        'correo.unique' => 'Ups! Ya este correo ha sido registrado',
     ];
 
     $validator = Validator::make($request->all(), $rules, $messages);
@@ -212,7 +211,7 @@ class InstructorController extends BaseController {
 
                 if($usuario){
 
-                    $usuario_tipo = UsuarioTipo::where('tipo',8)
+                    $usuario_tipo = UsuarioTipo::where('tipo',3)
                         ->where('usuario_id',$usuario->id)
                     ->first();
 
@@ -1543,6 +1542,23 @@ class InstructorController extends BaseController {
         $instructor = Instructor::find($id);
         
         if($instructor->forceDelete()){
+
+            if($instructor->correo){
+
+                $usuario = User::where('email',$instructor->correo)->first();
+
+                if($usuario){
+
+                    $usuario_tipo = UsuarioTipo::where('tipo',3)
+                        ->where('usuario_id',$usuario->id)
+                    ->first();
+
+                    if($usuario_tipo){
+                        $usuario_tipo->delete();
+                    }
+                }
+            }
+
             return response()->json(['mensaje' => '¡Excelente! El instructor se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);

@@ -1199,6 +1199,22 @@ class StaffController extends BaseController
     {
         
         $staff = Staff::withTrashed()->find($id);
+
+        if($staff->correo){
+
+            $usuario = User::where('email',$staff->correo)->first();
+
+            if($usuario){
+
+                $usuario_tipo = UsuarioTipo::where('tipo',8)
+                    ->where('usuario_id',$usuario->id)
+                ->first();
+
+                if($usuario_tipo){
+                    $usuario_tipo->delete();
+                }
+            }
+        }
         
         if($staff->delete()){
             return response()->json(['mensaje' => '¡Excelente! El staff ha sido eliminado satisfactoriamente', 'status' => 'OK', 200]);

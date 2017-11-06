@@ -518,6 +518,9 @@
                                 hora_inicio: '{{$clasepersonalizada['hora_inicio_tooltip']}}',
                                 hora_final: '{{$clasepersonalizada['hora_final_tooltip']}}',
                                 instructor_id: '{{$clasepersonalizada['instructor_id']}}',
+                                correo: '{{$clasepersonalizada['correo']}}',
+                                telefono: '{{$clasepersonalizada['telefono']}}',
+                                celular: '{{$clasepersonalizada['celular']}}',
                             },
                         @endforeach
 
@@ -823,6 +826,10 @@
                             var imagen_instructor = tmp[3]
                             var sexo = tmp[4]
                             var hora = event.hora_inicio + ' - ' + event.hora_final
+                            var correo = event.correo
+                            var telefono = event.telefono
+                            var celular = event.celular
+
 
                             if(imagen_instructor){
                                 imagen = '/assets/uploads/instructor/'+imagen_instructor
@@ -843,8 +850,11 @@
 
 
                             var contenido = sexo_instructor + ' ' + instructor + ' <img class="lv-img-sm" src="http://'+location.host+imagen+'" alt="">' + '<br>'
-                            contenido += 'Especialidad: ' + especialidad + '<br>'
                             contenido += 'Nombre: ' + nombre + '<br>'
+                            contenido += 'Correo: ' + correo + '<br>'
+                            contenido += 'Telefono: ' + telefono + '<br>'
+                            contenido += 'Celular: ' + celular + '<br>'
+                            contenido += 'Especialidad: ' + especialidad + '<br>'
                             contenido += 'Hora: ' + hora + '<br>'
 
                             eventElement.find(".fc-title").append("  <i class='icon_a-clase-personalizada'></i>");
