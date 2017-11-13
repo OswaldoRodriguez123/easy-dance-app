@@ -209,7 +209,7 @@
             var id = $(t).closest('tr').attr('id');
             var estatus = $(t).closest('tr').data('estatus');
 
-            if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6)
+            if("{{$usuario_tipo}}" == 1 || "{{$usuario_tipo}}" == 3 || "{{$usuario_tipo}}" == 5 || "{{$usuario_tipo}}" == 6)
             {
                 if(estatus == 1){
                     var route =route_detalle+"/"+id;
