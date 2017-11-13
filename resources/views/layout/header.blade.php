@@ -235,18 +235,26 @@
                                                 <a href="{{url('credenciales')}}"><i class="zmdi icon_f-staff f-16"></i> <span class="m-l-5">Credenciales</span></a>
                                             </li>
 
-                                            <li class="hidden-xs">
-                                                <a href="{{url('puntos-acumulados')}}"><i class="zmdi icon_f-incidencias f-16"></i> <span class="m-l-5">Puntos</span></a>
-                                            </li>
+                                            @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
+
+                                                <li class="hidden-xs">
+                                                    <a href="{{url('puntos-acumulados')}}"><i class="zmdi icon_f-incidencias f-16"></i> <span class="m-l-5">Puntos</span></a>
+                                                </li>
+
+                                            @endif
                    
       
                                             <li class="hidden-xs">
                                                 <a href="{{url('especiales/evaluaciones')}}"><i class="zmdi zmdi-calendar-check f-16"></i> <span class="m-l-5">Notas de alumnos</span></a>
                                             </li>
 
-                                            <li class="hidden-xs">
-                                                <a href="{{url('encuestas')}}"><i class="icon_a-visitante-presencial"></i> <span class="m-l-5">Encuestas realizadas</span></a>
-                                            </li>
+                                            @if($usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
+
+                                                <li class="hidden-xs">
+                                                    <a href="{{url('encuestas')}}"><i class="icon_a-visitante-presencial"></i> <span class="m-l-5">Encuestas realizadas</span></a>
+                                                </li>
+
+                                            @endif
 
                                             <li class="hidden-xs">
                                                 <a href="{{url('llamadas')}}"><i class="zmdi zmdi-phone f-16"></i> <span class="m-l-5">Registro de llamadas</span></a>
@@ -269,7 +277,7 @@
                                 @if($usuario_tipo == 3 || $usuario_tipo == 1 || $usuario_tipo == 5 || $usuario_tipo == 6)
 
                                     <li class="sub-menu pointer">
-                                        <a><i class="zmdi icon_f-staff f-16"></i> Sección Laboral</a>
+                                        <a><i class="zmdi icon_f-staff f-16"></i> Área Laboral</a>
                                         <ul class="ul_sub-menu" style="border-top: 1px solid #F0F0F0; border-bottom: 1px solid #F0F0F0">   
                                             @if($usuario_tipo == 1 || $usuario_tipo == 5)
 

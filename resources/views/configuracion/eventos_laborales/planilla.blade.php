@@ -325,17 +325,20 @@
                 
                     <div class="block-header">
                        <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/eventos-laborales" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Eventos</a>
-                       <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
-                            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
-                                            
-                            <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
-                                            
-                            <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
-                                            
-                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
-                                           
-                            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
-                        </ul>
+                       @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                        
+                            <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+                                <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
+                                                
+                                <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
+                                                
+                                <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
+                                                
+                                <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
+                                               
+                                <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+                            </ul>
+                        @endif
                     </div> 
                     
                     <div class="card">
@@ -350,9 +353,6 @@
                             <div class="text-center p-t-30">       
                               <div class="row p-b-15 ">
                                 <div class="col-md-12" data-src="/assets/img/ayuda-configuracion.jpg">
-                                  <!--<div class="text-center">
-                                    <img src="{{url('/')}}/assets/img/detalle_alumnos.jpg" class="img-responsive img-efecto text-center" alt="">
-                                  </div>-->
                                   <ul class="ca-menu-planilla">
                                     <li>
                                         <a href="#" class="disabled">
@@ -365,24 +365,25 @@
                                     </li>
                                   </ul>
 
-                                  <div class="col-sm-12 text-center"> 
+                                  @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                                    <div class="col-sm-12 text-center"> 
 
-                                  <br></br>
+                                      <br></br>
 
-                                  <span class="f-16 f-700">Acciones</span>
+                                      <span class="f-16 f-700">Acciones</span>
 
-                                  <hr></hr>
-                                  
-                                  <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$evento->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
+                                      <hr></hr>
+                                      
+                                      <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$evento->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
-                                  <br></br>
-                                
-                                  <hr></hr>
+                                      <br></br>
+                                    
+                                      <hr></hr>
 
-                                  <br></br>
-<!--                                   <a class="btn-blanco m-r-10 f-18 guardar" id="guardar" href="#"> Ver Progreso <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a> -->
-                                   
-                                </div>
+                                      <br></br>
+                                     
+                                    </div>
+                                  @endif
 
                                 </div>                
                               </div>
@@ -397,7 +398,16 @@
 
                           <div class="col-sm-12">
                            <table class="table table-striped table-bordered">
-                            <tr class="detalle" data-toggle="modal" href="#modalStaff-Evento">
+                            
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+
+                              <tr class="detalle" data-toggle="modal" href="#modalStaff-Evento">
+
+                            @else
+
+                              <tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-staff_id" class="zmdi {{ empty($evento->staff_nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_f-staff f-22"></i> </span>
@@ -405,7 +415,16 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="evento-staff_id" class="capitalize">{{$evento->staff_nombre}} {{$evento->staff_apellido}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalNombre-Evento">
+                            
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+
+                              <tr class="detalle" data-toggle="modal" href="#modalNombre-Evento">
+
+                            @else
+
+                              <tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-actividad_id" class="zmdi {{ empty($evento->nombre) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="icon_a icon_a-fiesta f-22"></i> </span>
@@ -413,7 +432,16 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="evento-actividad_id" class="capitalize">{{$evento->nombre}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalFecha-Evento">
+                            
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+
+                              <tr class="detalle" data-toggle="modal" href="#modalFecha-Evento">
+
+                            @else
+
+                              <tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha" class="zmdi {{ empty($evento->fecha) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-calendar-check f-22"></i> </span>
@@ -421,7 +449,16 @@
                              </td>
                              <td class="f-14 m-l-15"><span id="evento-fecha">{{ \Carbon\Carbon::createFromFormat('Y-m-d',$evento->fecha)->format('d/m/Y')}}</span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalHorario-Evento">
+                            
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+
+                              <tr class="detalle" data-toggle="modal" href="#modalHorario-Evento">
+
+                            @else
+
+                              <tr class="disabled">
+
+                            @endif
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-hora_inicio" class="zmdi {{ empty($evento->hora_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-alarm f-22"></i> </span>
@@ -449,7 +486,16 @@
 
                               </span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-Evento">
+                            
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+
+                              <tr class="detalle" data-toggle="modal" href="#modalEtiqueta-Evento">
+
+                            @else
+
+                              <tr class="disabled">
+
+                            @endif
                                <td>
                                  <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-color_etiqueta" class="zmdi  {{ empty($evento->color_etiqueta) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                  <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-invert-colors f-22"></i> </span>

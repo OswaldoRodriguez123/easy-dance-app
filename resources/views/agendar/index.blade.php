@@ -602,7 +602,7 @@
 
                         if(end>timestamp){
 
-                            if("{{$usuario_tipo}}" != 2 && "{{$usuario_tipo}}" != 4){
+                            if("{{$usuario_tipo}}" != 2 && "{{$usuario_tipo}}" != 3 && "{{$usuario_tipo}}" != 4){
                                 $('#addNew-event').modal('show');   
                                 $('#addNew-event input:text').val('');
                                 $('#getStart').val(start);

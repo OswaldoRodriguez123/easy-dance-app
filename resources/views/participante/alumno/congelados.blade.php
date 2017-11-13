@@ -73,19 +73,20 @@
                     <div class="block-header">
                         <a class="btn-blanco m-r-10 f-16" href="/" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Menú Principal</a>
                         
-                        <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
-
-                            <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
-                                            
-                            <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
-                                            
-                            <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
-                                            
-                            <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
-                                           
-                            <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
-                            
-                        </ul>
+                        @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                        
+                            <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
+                                <li><a href="#modalParticipantes" class="azul" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-participantes f-30 text-center" style="color:#2196f3;"></div><p style=" font-size: 10px; color:#2196f3;">Participantes</p></a></li>
+                                                
+                                <li role="presentation" name="agendar"><a class="amarillo" href="#modalAgendar" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-agendar f-30 text-center" style="color:#FFD700;"></div><p style=" font-size: 10px; color:#FFD700;">Agendar</p></a></li>
+                                                
+                                <li role="presentation"><a href="#modalEspeciales" class="rosa" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_a icon_a-especiales f-30 text-center" style="color:#e91e63;"></div><p style=" font-size: 10px; color:#e91e63;">Especiales</p></a></li>
+                                                
+                                <li role="presentation"><a class="verde" href="{{url('/')}}/administrativo/pagos/generar" aria-controls="punto_venta" style="padding:0 5px 0 0;"><div class="icon_a icon_a-punto-de-venta f-30 text-center" style="color:#4caf50;"></div><p style=" font-size: 10px; color:#4caf50;">Punto de Venta</p></a></li>
+                                               
+                                <li role="presentation"><a class="rojo" href="#modalReportes" data-toggle="modal" style="padding:0 5px 0 0;"><div class="icon_d icon_d-reporte f-30 text-center" style="color:#f44336;"></div><p style=" font-size: 10px; color:#f44336;">Reportes</p></a></li>
+                            </ul>
+                        @endif
                     </div> 
                     
                     <div class="card">
@@ -107,7 +108,9 @@
                                     <th class="text-center" data-column-id="fecha">Fecha Congelación</th>
                                     <th class="text-center" data-column-id="dias_restantes">Tiempo Restante</th>
                                     <th class="text-center" data-column-id="estatu_e">Balance E</th>
-                                    <th class="text-center" data-column-id="operacion">Acciones</th>
+                                    @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                                        <th class="text-center" data-column-id="operacion">Acciones</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -181,30 +184,32 @@
                                     <td class="text-center previa">
                                         <i class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
                                     </td>
-                                    <td class="text-center">
+                                    @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                                        <td class="text-center">
 
-                                        <ul class="top-menu">
-                                            <li class="dropdown" id="dropdown_{{$id}}">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
-                                                   <span class="f-15 f-700" style="color:black"> 
-                                                        <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
-                                                   </span>
-                                                </a>
-                                                <div class="dropup">
-                                                    <ul class="dropdown-menu dm-icon pull-right">
-                                                        <li class="hidden-xs descongelar pointer">
-                                                            <a><i class="zmdi zmdi zmdi-refresh-alt f-16 boton blue"></i>Descongelar</a>
-                                                        </li>
+                                            <ul class="top-menu">
+                                                <li class="dropdown" id="dropdown_{{$id}}">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
+                                                       <span class="f-15 f-700" style="color:black"> 
+                                                            <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
+                                                       </span>
+                                                    </a>
+                                                    <div class="dropup">
+                                                        <ul class="dropdown-menu dm-icon pull-right">
+                                                            <li class="hidden-xs descongelar pointer">
+                                                                <a><i class="zmdi zmdi zmdi-refresh-alt f-16 boton blue"></i>Descongelar</a>
+                                                            </li>
 
-                                                        <li class="hidden-xs eliminar">
-                                                            <a><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar Permanentemente</a>
-                                                        </li>
+                                                            <li class="hidden-xs eliminar">
+                                                                <a><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar Permanentemente</a>
+                                                            </li>
 
-                                                    </ul>
-                                                </div>
-                                            </li>
-                                        </ul> 
-                                    </td>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </ul> 
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach 
                                                            

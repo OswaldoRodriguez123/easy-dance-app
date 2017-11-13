@@ -412,7 +412,6 @@
 			Route::get('configuracion/eventos-laborales/agregar','EventoLaboralController@create');
 			Route::post('configuracion/eventos-laborales/agregar','EventoLaboralController@store');
 			Route::delete('configuracion/eventos-laborales/eliminar/{id}', 'EventoLaboralController@destroy');
-			Route::get('configuracion/eventos-laborales/detalle/{id}','EventoLaboralController@edit');
 
 			Route::put('configuracion/eventos-laborales/update/staff', 'EventoLaboralController@updateStaff');
 			Route::put('configuracion/eventos-laborales/update/nombre', 'EventoLaboralController@updateNombre');
@@ -477,10 +476,6 @@
 
 			Route::get('blog/publicar', 'BlogController@publicar');
 			Route::post('blog/publicar', 'BlogController@store');
-
-			//LLAMADAS
-
-			Route::get('llamadas', 'LlamadaController@index');
 
 			// --- ADMINISTRATIVO --- 
 
@@ -617,7 +612,6 @@
 			Route::get('participante/alumno/eliminados', 'AlumnoController@eliminados');
 			Route::post('participante/alumno/restablecer/{id}', 'AlumnoController@restore');
 			Route::delete('participante/alumno/eliminar_permanentemente/{id}', 'AlumnoController@eliminar_permanentemente');
-			Route::get('participante/alumno/congelados', 'AlumnoController@congelados');
 			Route::post('participante/alumno/descongelar/{id}', 'AlumnoController@descongelar');
 			Route::get('participante/alumno/inactivos', 'AlumnoController@inactivos');
 			Route::post('participante/alumno/activar/{id}', 'AlumnoController@activar');
@@ -1375,8 +1369,13 @@
 
 		Route::group(['middleware' => ['instructor']], function() {
 
+			//CONGELADOS
+
+			Route::get('participante/alumno/congelados', 'AlumnoController@congelados');
+
 			//LLAMADAS
 
+			Route::get('llamadas', 'LlamadaController@index');
 			Route::get('participante/alumno/llamadas/{id}', 'AlumnoController@indexLlamada');
 			Route::get('participante/alumno/llamadas/agregar/{id}', 'AlumnoController@createLlamada');
 			Route::post('participante/alumno/llamadas/agregar', 'AlumnoController@storeLlamada');
@@ -1395,6 +1394,7 @@
 			
 			Route::get('configuracion/eventos-laborales','EventoLaboralController@principal');
 			Route::get('configuracion/eventos-laborales/calendario','EventoLaboralController@calendario');
+			Route::get('configuracion/eventos-laborales/detalle/{id}','EventoLaboralController@edit');
 
 			//PERFIL Y PAGOS
 

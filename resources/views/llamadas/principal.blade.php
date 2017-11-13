@@ -83,11 +83,8 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="tipo"></th>
                                     <th class="text-center" data-column-id="usuario_tipo"></th>
                                     <th class="text-center" data-column-id="nombres">Nombre y Apellido</th>
-                                    <th class="text-center" data-column-id="fecha_siguiente">Fecha de Proxima Llamada</th>
-                                    <th class="text-center" data-column-id="dia">Día</th>
                                     <th class="text-center" data-column-id="tipologia">Perfil del Cliente</th>
 <!--                                     <th class="text-center" data-column-id="operacion">Acciones</th> -->
                                 </tr>
@@ -108,11 +105,9 @@
                                     
 
                                 ?>
-                                @if($llamada['tipo'] == 1)
-                                    <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo="1" data-usuario_tipo="{{$llamada['usuario_tipo']}}" data-usuario_id="{{$llamada['usuario_id']}}">
-                                @else
-                                    <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion seleccion_deleted" data-tipo="0" data-usuario_tipo="{{$llamada['usuario_tipo']}}" data-usuario_id="{{$llamada['usuario_id']}}">
-                                @endif
+
+                                <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo="1" data-usuario_tipo="{{$llamada['usuario_tipo']}}" data-usuario_id="{{$llamada['usuario_id']}}">
+
                                     
                                     <?php 
                                         $tmp = explode(" ", $llamada['nombre']);
@@ -122,11 +117,8 @@
                                         $apellido = $tmp[0];
                                     ?>
                                     
-                                    <td class="text-center"><span style="display:none">{{$llamada['tipo']}}</span></td>
                                     <td class="text-center"><span style="display:none">{{$llamada['usuario_tipo']}}</span></td>
                                     <td class="text-center">{{$nombre}} {{$apellido}} </td>
-                                    <td class="text-center">{{$llamada['fecha_siguiente']}}</td>
-                                    <td class="text-center">{{$llamada['dia']}}</td>
                                     <td class="text-center">{{$llamada['tipologia']}}</td>
                                     <!-- <td class="text-center disabled"> 
                                         <i name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i>
