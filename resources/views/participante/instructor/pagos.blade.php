@@ -95,8 +95,9 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
- 
-                                    <th style="width:7%;"><input style="margin-left:49%;" name="select_all" value="1" id="select_all" type="checkbox" /></th>
+                                    @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                                      <th style="width:7%;"><input style="margin-left:49%;" name="select_all" value="1" id="select_all" type="checkbox" /></th>
+                                    @endif
                                     <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
                                     <th class="text-center" data-column-id="hora" data-order="asc">Hora</th>
                                     <th class="text-center" data-column-id="hora" data-order="asc">Día</th>
@@ -110,12 +111,14 @@
 
                               @foreach($pagos_comisiones as $pago)
                                 <tr id="{{$pago['id']}}" class="seleccion" data-monto="{{$pago['monto']}}" >
-                                  <td class="text-center previa">
-                                    <span id="boolean_pago_{{$pago['id']}}" style="display: none">{{$pago['boolean_pago']}}</span>
-                                    @if($pago['boolean_pago'] == 0)
-                                      <input name="select_check" id="select_check_{{$pago['id']}}" type="checkbox" />
-                                    @endif
-                                  </td>
+                                  @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                                    <td class="text-center previa">
+                                      <span id="boolean_pago_{{$pago['id']}}" style="display: none">{{$pago['boolean_pago']}}</span>
+                                      @if($pago['boolean_pago'] == 0)
+                                        <input name="select_check" id="select_check_{{$pago['id']}}" type="checkbox" />
+                                      @endif
+                                    </td>
+                                  @endif
                                   <td class="text-center previa">{{$pago['fecha']}}</td>
                                   <td class="text-center previa">{{$pago['hora']}}</td>
                                   <td class="text-center previa">{{$pago['dia']}}</td>
