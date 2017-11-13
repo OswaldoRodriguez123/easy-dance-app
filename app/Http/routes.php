@@ -409,8 +409,6 @@
 
 			//EVENTOS LABORALES
 
-			Route::get('configuracion/eventos-laborales/agregar','EventoLaboralController@create');
-			Route::post('configuracion/eventos-laborales/agregar','EventoLaboralController@store');
 			Route::delete('configuracion/eventos-laborales/eliminar/{id}', 'EventoLaboralController@destroy');
 
 			Route::put('configuracion/eventos-laborales/update/staff', 'EventoLaboralController@updateStaff');
@@ -1394,6 +1392,8 @@
 			
 			Route::get('configuracion/eventos-laborales','EventoLaboralController@principal');
 			Route::get('configuracion/eventos-laborales/calendario','EventoLaboralController@calendario');
+			Route::get('configuracion/eventos-laborales/agregar','EventoLaboralController@create');
+			Route::post('configuracion/eventos-laborales/agregar','EventoLaboralController@store');
 			Route::get('configuracion/eventos-laborales/detalle/{id}','EventoLaboralController@edit');
 
 			//PERFIL Y PAGOS
