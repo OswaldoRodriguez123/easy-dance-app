@@ -8,6 +8,7 @@ use App\Alumno;
 use App\AlumnoRemuneracion;
 use App\Staff;
 use App\Instructor;
+use App\PagoInstructor;
 use App\Acuerdo;
 use App\ItemsAcuerdo;
 use App\Pago;
@@ -170,6 +171,16 @@ class AdministrativoController extends BaseController {
             if(!$comisiones){
                 $comisiones = 0;
             }
+
+            $pagos = PagoInstructor::where('instructor_id', $instructor->id)
+                ->where('boolean_pago', 0)
+            ->sum('monto');
+
+            if(!$pagos){
+                $pagos = 0;
+            }
+
+            $comisiones = $comisiones + $pagos;
 
             $collection=collect($instructor);     
             $instructor_array = $collection->toArray();
