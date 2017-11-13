@@ -471,20 +471,14 @@ class ClasePersonalizadaController extends BaseController {
     {
         $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-        if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-
-        {
+        if($usuario_tipo == 1 OR $usuario_tipo == 3 OR $usuario_tipo == 5 || $usuario_tipo == 6){
 
             $rules = [
-
                 'alumno_id' => 'required',
-
             ];
 
             $messages = [
-
                 'alumno_id.required' => 'Ups! El Alumno es requerido',
-
             ];
 
             $validator = Validator::make($request->all(), $rules, $messages);
@@ -555,7 +549,6 @@ class ClasePersonalizadaController extends BaseController {
 
             $clasepersonalizada = new CitaClasePersonalizada;
             
-            
             $clasepersonalizada->academia_id = Auth::user()->academia_id;
             $clasepersonalizada->usuario_id = $usuario_id;
             $clasepersonalizada->clase_personalizada_id = $request->clase_personalizada_id;
@@ -565,7 +558,6 @@ class ClasePersonalizadaController extends BaseController {
             $clasepersonalizada->hora_final = $request->hora_final;
             $clasepersonalizada->especialidad_id = $request->especialidad_id;
 
-            // return redirect("/home");
             if($clasepersonalizada->save()){
 
                 $academia = Academia::find(Auth::user()->academia_id);
@@ -619,8 +611,7 @@ class ClasePersonalizadaController extends BaseController {
                 Session::forget('instructor_id');
                 Session::forget('id_alumno');
 
-                if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-                {
+                if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6){
 
                     return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $usuario_id, 200]);
                 }else{

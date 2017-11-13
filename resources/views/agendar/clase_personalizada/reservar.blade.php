@@ -925,41 +925,42 @@
                               </div>
                             </div>
 
+                            <div class="clearfix p-b-35"></div>
 
+                          @endif
 
-                               <div class="clearfix p-b-35"></div>
+                            @if($usuario_tipo == 1 || $usuario_tipo == 3 || $usuario_tipo == 5 || $usuario_tipo == 6)
 
-
-                            <div class="col-sm-12">
+                                <div class="col-sm-12">
                                  
 
-                                    <label for="alumno_id" id="id-alumno_id">Seleccionar Alumno</label> <span class="c-morado f-700 f-16">*</span> 
+                                  <label for="alumno_id" id="id-alumno_id">Seleccionar Alumno</label> <span class="c-morado f-700 f-16">*</span> 
 
-                                    <i name = "pop-alumno" id = "pop-alumno" aria-describedby="popoverinstructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un participante, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de alumnos y procede a registrarlo. Desde esta sección puedes crearla <br> <a data-toggle='modal' href='#modalAlumno' class='redirect pointer'> Crear <i class='icon_a-alumnos f-22'></i></a>" title="" data-original-title="Ayuda" data-html="true"></i>
+                                  <i name = "pop-alumno" id = "pop-alumno" aria-describedby="popoverinstructor" class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona un participante, en caso de no poseerlo o deseas crear un nuevo registro, dirígete a la sección de alumnos y procede a registrarlo. Desde esta sección puedes crearla <br> <a data-toggle='modal' href='#modalAlumno' class='redirect pointer'> Crear <i class='icon_a-alumnos f-22'></i></a>" title="" data-original-title="Ayuda" data-html="true"></i>
 
-                                     <div class="input-group">
-                                      <span class="input-group-addon"><i class="icon_a-alumnos f-22"></i></span>
-                                    <div class="fg-line">
-                                      <div class="select">
-                                        <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona" data-live-search="true">
+                                   <div class="input-group">
+                                    <span class="input-group-addon"><i class="icon_a-alumnos f-22"></i></span>
+                                  <div class="fg-line">
+                                    <div class="select">
+                                      <select class="selectpicker" id="alumno_id" name="alumno_id" title="Selecciona" data-live-search="true">
 
-                                         @foreach ( $alumnos as $alumno )
-                                          <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
-                                          @endforeach
-                                        </select>
-                                      </div>
-                                    </div>
-                                    <div class="has-error" id="error-alumno_id">
-                                      <span >
-                                        <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
-                                      </span>
+                                       @foreach ( $alumnos as $alumno )
+                                        <option value = "{{ $alumno['id'] }}">{{ $alumno['nombre'] }} {{ $alumno['apellido'] }} {{ $alumno['identificacion'] }}</option>
+                                        @endforeach
+                                      </select>
                                     </div>
                                   </div>
-                               </div>
+                                  <div class="has-error" id="error-alumno_id">
+                                    <span >
+                                      <small class="help-block error-span" id="error-alumno_id_mensaje" ></small>                                           
+                                    </span>
+                                  </div>
+                                </div>
+                             </div>
 
-                               <div class="clearfix p-b-35"></div>
+                              <div class="clearfix p-b-35"></div>
 
-                              @endif
+                            @endif
 
 
                             <div class="col-sm-12">
@@ -1070,7 +1071,11 @@
                                </div>
 
                                <div class="clearfix p-b-35"></div>
-                                    <div class="col-sm-12">
+
+                               @if($usuario_tipo == 1 || $usuario_tipo == 2 ||  $usuario_tipo == 4 || $usuario_tipo == 5 || $usuario_tipo == 6)
+
+                                  
+                                  <div class="col-sm-12">
                                  
                                     <label for="instructor" id="id-instructor_id">Instructor</label> <span class="c-morado f-700 f-16">*</span> 
 
@@ -1105,9 +1110,11 @@
                                   </div>
                                </div>
 
-
-
                                <div class="clearfix p-b-35"></div>
+
+                               @else
+                                <input type="hidden" name="instructor_id" value="{{ $usuario_id }}">
+                               @endif
 
                                @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                                 <div class="col-sm-12">
@@ -1204,7 +1211,7 @@
                 </div>
             </section>
 
-            <nav class="navbar navbar-default navbar-fixed-bottom">
+            <!-- <nav class="navbar navbar-default navbar-fixed-bottom">
               <div class="container">
                 
                 <div class="col-xs-1 p-t-15 f-700 text-center" id="text-progreso" >40%</div>
@@ -1215,7 +1222,7 @@
                   </div>
                 </div>
               </div>
-            </nav>
+            </nav> -->
 @stop
 @section('js') 
 <script type="text/javascript">
