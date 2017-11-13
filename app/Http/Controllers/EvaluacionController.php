@@ -33,12 +33,22 @@ class EvaluacionController extends BaseController
     {
         $id_evaluacion=Session::get('id_evaluar');
 
-        $evaluaciones = Evaluacion::leftJoin('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
+        $datos = $this->getDatosUsuario();
+
+        $usuario_id = $datos[0]['usuario_id'];
+        $usuario_tipo = $datos[0]['usuario_tipo'];
+
+        $query = Evaluacion::leftJoin('instructores', 'evaluaciones.instructor_id', '=', 'instructores.id')
             ->join('alumnos','evaluaciones.alumno_id','=','alumnos.id')
             ->join('examenes','evaluaciones.examen_id','=','examenes.id')
             ->select('evaluaciones.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'instructores.id as instructor_id','alumnos.nombre as alumno_nombre','alumnos.apellido as alumno_apellido','alumnos.identificacion', 'alumnos.id as alumno_id', 'examenes.nombre as nombreExamen', 'alumnos.sexo')
-            ->where('evaluaciones.academia_id', '=' ,  Auth::user()->academia_id)
-        ->get();
+            ->where('evaluaciones.academia_id', '=' ,  Auth::user()->academia_id);
+
+        if($usuario_tipo == 3){
+            $query->where('instructores.id','=', $usuario_id);
+        }
+
+        $evaluaciones = $query->get();
 
         $in = array(2, 4);
         $array = array();
