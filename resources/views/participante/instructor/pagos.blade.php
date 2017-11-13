@@ -261,7 +261,6 @@
           var route = route_pagar;
           var token = "{{ csrf_token() }}";
           var datos = "&pendientes="+getChecked();
-          limpiarMensaje();
 
           $.ajax({
               url: route,
