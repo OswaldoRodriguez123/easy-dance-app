@@ -104,7 +104,7 @@
                                     <th class="text-center" data-column-id="nombre" data-order="desc">Nombre</th>
                                     <th class="text-center" data-column-id="especialidad" data-order="desc">Especialidad</th>
                                     <th class="text-center" data-column-id="hora" data-order="desc">Hora [Inicio - Final]</th>
-                                    <th class="text-center operacion" data-column-id="operacion" data-order="desc">Operaciones</th>
+<!--                                     <th class="text-center operacion" data-column-id="operacion" data-order="desc">Operaciones</th> -->
                                 </tr>
                             </thead>
                             <tbody class="text-center" >
@@ -359,13 +359,13 @@
                 operacion += 'Ver Progreso'
                 operacion += '</a></li>'
                 operacion += '</ul></div></li></ul>'
-   
+                
                 var rowNode=t.row.add( [
                 ''+inicio+'',
                 ''+array.clase_grupal_nombre+'',
                 ''+array.especialidad_nombre+'',
                 ''+array.hora_inicio+ ' '+array.hora_final+'',
-                ''+operacion+'',
+                // ''+operacion+'',
                 ] ).draw(false).node();
                 $( rowNode )
                     .attr('id',array.id)
