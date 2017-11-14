@@ -2091,3 +2091,7 @@ a{
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
 }
+
+.sub-menu > a::before, .sub-menu > a::after {
+    top: 6px;
+}
