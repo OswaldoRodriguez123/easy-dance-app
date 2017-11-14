@@ -554,6 +554,43 @@ class AcademiaController extends BaseController {
         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
+    public function updateImagenHorizontal(Request $request)
+    {       
+            
+        if($request->imageHorizontalBase64){
+            $base64_string = substr($request->imageHorizontalBase64, strpos($request->imageHorizontalBase64, ",")+1);
+            $path = storage_path();
+            $split = explode( ';', $request->imageHorizontalBase64 );
+            $type =  explode( '/',  $split[0]);
+
+            $ext = $type[1];
+            
+            if($ext == 'jpeg' || 'jpg'){
+                $extension = '.jpg';
+            }elseif($ext == 'png'){
+                $extension = '.png';
+            }
+
+            $nombre_img = "academia2-". Auth::user()->academia_id . $extension;
+            $image = base64_decode($base64_string);
+
+            // \Storage::disk('academia')->put($nombre_img,  $image);
+
+            $img = Image::make($image)->resize(1440, 500);
+            $img->save('assets/uploads/academia/'.$nombre_img);
+
+        }else{
+            $nombre_img = "";
+        }
+
+        $academia = Academia::find(Auth::user()->academia_id);
+
+        $academia->imagen_horizontal = $nombre_img;
+        $academia->save();
+
+        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+    }
+
     public function updateRedes(Request $request){
 
         if($request->link_video){

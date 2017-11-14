@@ -1,22 +1,21 @@
 @extends('layout.master')
 
 @section('css_vendor')
-<link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
-<link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
 
-<!--     <link href="{{url('/')}}/assets/css/styles.min.css" rel="stylesheet"> -->
-    <link href="{{url('/')}}/assets/css/soon.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="{{url('/')}}/assets/css/rrssb.css" />
-    <!-- <link href="{{url('/')}}/assets/css/css_jn.css" rel="stylesheet"> -->
-
+  <link href="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css" rel="stylesheet">
+  <link href="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.min.css" rel="stylesheet">
+  <link href="{{url('/')}}/assets/css/soon.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{url('/')}}/assets/css/rrssb.css" />
 
 @stop
 
 @section('js_vendor')
-<script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
-<script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
 
-<script src="{{url('/')}}/assets/vendors/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+  <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+  <script src="{{url('/')}}/assets/vendors/bower_components/chosen/chosen.jquery.min.js"></script>
+
+  <script src="{{url('/')}}/assets/vendors/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
 @stop
 
 @section('content')
@@ -82,57 +81,65 @@
 
 
 <div class="modal fade" id="modalConfiguracion" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
-                            <h4 class="modal-title c-negro"> <h4>
-          <!-- <div class="iconox-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-              <title>Confirma tu academia</title>
-              <circle fill="#692A5A" cx="16" cy="16" r="16"/>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                <h4 class="modal-title c-negro"> <h4>
+<!-- <div class="iconox-icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <title>Confirma tu academia</title>
+  <circle fill="#692A5A" cx="16" cy="16" r="16"/>
 <img src="{{url('/')}}/assets/img/icono_easydance2.png"  height="26" width="28" style="margin-top: -30px; margin-left: 3px;"/></svg>
 </div> -->Bienvenid@ </h4> <!-- <button type="button" data-dismiss="modal" class="close c-negro f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> --></h4>
-                        </div>
-                                  
-<div class="modal-body">                           
-<div class="row p-t-20 p-b-0">
-<input type="hidden" name="_token" value="{{ csrf_token() }}">
-<div class="col-md-offset-5">
-                    <div class="text-center"><img src="{{url('/')}}/assets/img/PEGGY.png" style="max-height: 150px; max-width: 150px;" class="img-responsive opaco-0-8" alt=""></div>
-                    </div>
-
-                    <div class="clearfix m-20 m-b-25"></div>
-
-<div class="col-sm-11"><br>
-<p align="left" style="font-size: 20px;">Bienvenid@, <b> {{Auth::user()->nombre}} </b><br>
-<text style="font-size: 16px;">Dedica un momento para ayudarnos a configurar tu perfil evaluativo.</text></p>
-</div>
-
-<div class="clearfix m-20 m-b-25"></div>
-
-                
-                              <div class="col-sm-12 col-sd-12 text-center"><br><br><br>
-
-                              <button type="submit" class="butp button5" onclick="configuracion()">Llévame</button>
-                              <button type="submit" class="but2 button55" onclick="atras()"><span>Más Tarde</span></button><br><br><br>
-
-                            <br><br><br><br>
-                            </div>
-                            </div>
-                            </div>
-                    </div>
-                </div>
             </div>
+                      
+            <div class="modal-body">                           
+              <div class="row p-t-20 p-b-0">
+              <input type="hidden" name="_token" value="{{ csrf_token() }}">
+              <div class="col-md-offset-5">
+                <div class="text-center"><img src="{{url('/')}}/assets/img/PEGGY.png" style="max-height: 150px; max-width: 150px;" class="img-responsive opaco-0-8" alt=""></div>
+              </div>
+
+              <div class="clearfix m-20 m-b-25"></div>
+
+              <div class="col-sm-11"><br>
+                <p align="left" style="font-size: 20px;">Bienvenid@, <b> {{Auth::user()->nombre}} </b><br>
+                <text style="font-size: 16px;">Dedica un momento para ayudarnos a configurar tu perfil evaluativo.</text></p>
+              </div>
+
+              <div class="clearfix m-20 m-b-25"></div>
+      
+              <div class="col-sm-12 col-sd-12 text-center"><br><br><br>
+
+                <button type="submit" class="butp button5" onclick="configuracion()">Llévame</button>
+                <button type="submit" class="but2 button55" onclick="atras()"><span>Más Tarde</span></button><br><br><br>
+
+                <br><br><br><br>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
 
 <a href="{{url('/')}}/agendar" class="btn bgm-blue btn-float waves-effect m-btn" data-trigger="hover" data-toggle="popover" data-placement="left" data-content="" title="" data-original-title="Agendar clase personalizada"><i class="zmdi zmdi-calendar"></i></a>
 <div class="container">
     <div class="card">
     <div class="card-body p-b-20">
       <div class="row p-l-10 p-r-10">
-      <div class="col-sm-12">
-        
-        <a href="{{url('/')}}/invitar"> <img class="opaco-0-8 img-responsive" src="{{url('/')}}/assets/img/banner_tuclasedebaile.jpg" alt=""></a>
-      </div>
+        <div class="col-sm-12">
+          
+          <a href="{{url('/')}}/invitar"> 
+
+            @if($academia->imagen_horizontal)
+              <img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/uploads/academia/{{$academia->imagen_horizontal}}" alt="">
+            @else
+              <img class="img-responsive opaco-0-8" src="{{url('/')}}/assets/img/banner.png" alt="">
+            @endif
+            
+          </a>
+
+        </div>
           <div class="col-sm-3" style="background: #f8f8f8 ; margin-left: 5px; padding-left: 10px; padding-right: 10px; min-height: 600px">
               <div style="padding-top:10px">
                  

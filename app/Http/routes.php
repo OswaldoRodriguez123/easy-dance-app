@@ -271,6 +271,7 @@
 
 			Route::put('configuracion/academia/update/contacto', 'AcademiaController@updateContacto');
 			Route::put('configuracion/academia/update/imagen', 'AcademiaController@updateImagen');
+			Route::put('configuracion/academia/update/imagen_horizontal', 'AcademiaController@updateImagenHorizontal');
 			Route::put('configuracion/academia/update/redes', 'AcademiaController@updateRedes');
 			Route::post('configuracion/academia/update/especiales', 'AcademiaController@updateEspeciales');
 			Route::put('configuracion/academia/update/administrativo', 'AcademiaController@updateAdministrativo');
