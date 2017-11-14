@@ -161,7 +161,6 @@
           $('body').find(':checkbox').prop('checked', false);
           $('#pendientes').prop('checked',true)
 
-          
           t=$('#tablelistar').DataTable({
           @if($usuario_tipo != 3)
             "columnDefs": [ {

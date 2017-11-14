@@ -20,6 +20,64 @@
 
   <section id="content">
 
+    <div class="modal fade" id="modalPago" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                  <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Estatus de Pago<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="table-responsive row">
+                    <div class="col-md-12">
+                      <table class="table table-striped table-bordered text-center " id="tabledeudas" >
+                        <thead>
+                          <tr>
+                            <th class="text-center" data-column-id="nombre">Producto o Servicio</th>
+                            <th class="text-center" data-column-id="cantidad">Cantidad</th>
+                            <th class="text-center" data-column-id="precio_neto">Precio Neto</th>
+                            <th class="text-center" data-column-id="impuesto">Cantidad</th>
+                            <th class="text-center" data-column-id="importe_neto" data-order="desc">Importe (Neto)</th>
+                            <th class="text-center" data-column-id="fecha_vencimiento" data-order="desc">Fecha Vencimiento</th>
+                            <th class="text-center" data-column-id="estatus" data-order="desc">Estatus</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                                                     
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div><!--  COL-SM-12 -->
+              </div><!-- ROW -->
+
+              <div class="clearfix p-b-35"></div>
+
+              <div class="clearfix"></div> 
+                <div class="modal-footer p-b-20 m-b-20">
+                  <div class="col-sm-12 text-left">
+                    <div class="procesando hidden">
+                    <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                    <div class="preloader pls-purple">
+                        <svg class="pl-circular" viewBox="25 25 50 50">
+                            <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                        </svg>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12">                            
+
+                    <a class="btn-blanco m-r-5 f-12 boton_pagar"> Pagar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                    <div class="clearfix p-b-35"></div>
+
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
     <div class="modal fade" id="modalAsistencia" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -41,15 +99,13 @@
 
                             <p class="p-l-10" id="asistencia-nombre-alumno"> </p>
 
-                            <p class="p-l-10">Participa en :  </p>
-
-                            <p class="p-l-10" id = "clases_grupales_alumno"></p>
 
                             <span class="f-16 f-700" id="acciones" name="acciones">Acciones</span>
 
                             <hr id="acciones_linea" name ="acciones_linea"></hr>
                             
-                            <a id="url_pagar" name="url_pagar"><i class="icon_a-pagar f-25 m-r-5 boton blue sa-warning" data-original-title="Pagar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                            <a class="boton_pagar" ><i class="icon_a-pagar f-25 m-r-5 boton blue sa-warning" data-original-title="Pagar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                             <a data-toggle="modal" href="#modalPago"><i class="zmdi zmdi-label-alt-outline f-25 m-r-5 boton blue sa-warning pointer" data-original-title="Ver Estatus" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                               
                        </div>
 
@@ -92,25 +148,9 @@
                           </span>
                         </div>
 
-                        <div class="table-responsive row">
-                          <div class="col-md-12">
-                            <table class="table table-striped table-bordered text-center " id="tabledeudas" >
-                              <thead>
-                                <tr>
-                                  <th class="text-center" data-column-id="nombre">Producto o Servicio</th>
-                                  <th class="text-center" data-column-id="cantidad">Cantidad</th>
-                                  <th class="text-center" data-column-id="precio_neto" data-order="desc">Precio (Neto)</th>
-                                  <th class="text-center" data-column-id="impuesto" data-order="desc">Impuesto</th>
-                                  <th class="text-center" data-column-id="importe_neto" data-order="desc">Importe (Neto)</th>
-                                  <th class="text-center" data-column-id="estatus" data-order="desc">Estatus</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                                           
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
+                        <p class="p-l-10">Participa en :  </p>
+                        <p class="p-l-10" id = "clases_grupales_alumno"></p>
+
                       </div>
 
                       <div class="clearfix"></div> 
@@ -507,8 +547,6 @@
       route_agregar_asistencia_instructor="{{url('/')}}/asistencia/agregar/instructor";
       route_agregar_asistencia_staff="{{url('/')}}/asistencia/agregar/staff";
       route_historial = "{{url('/')}}/participante/alumno/historial/";
-      route_consulta_estatus="{{url('/')}}/asistencia/consulta/estatus";
-      route_pendientes="{{url('/')}}/administrativo/pagos/itemspendientes/";
 
       var tipo = 1;
 
@@ -921,7 +959,7 @@
 
         $('#asistencia_id_alumno').val(alumno_id);
         $('#asistencia-nombre-alumno').text(nombre_alumno);
-        $("#url_pagar").attr("href", "{{url('/')}}/participante/alumno/deuda/"+alumno_id);
+        $(".boton_pagar").attr("href", "{{url('/')}}/participante/alumno/deuda/"+alumno_id);
 
         $("#asistencia-horario").text("---");
 
@@ -957,11 +995,11 @@
                 restan = 'Resta '
                 dias = ' dia'
               }
-              $('#clases_grupales_alumno').append('<p>' + array.nombre + ' <br>' + array.hora_inicio + ' / ' + array.hora_final + ' <br> ' + array.dia + ' ' + nota_administrativa)
+              $('#clases_grupales_alumno').append('<div class="col-sm-3" style="padding-left:0px">' + array.nombre + ' <br>' + array.hora_inicio + ' / ' + array.hora_final + ' <br> ' + array.dia + ' ' + nota_administrativa + '</div>')
               if(array.fecha_pago){
-                $('#clases_grupales_alumno').append(' <br> ' + 'Fecha de Pago: ' + array.fecha_pago + ' <br> ' + restan + array.diferencia + dias + '</p>')
+                $('#clases_grupales_alumno').append('<div class="col-sm-6">' + 'Fecha de Pago: ' + array.fecha_pago + ' <br> ' + restan + array.diferencia + dias + '</div>')
               }else{
-                $('#clases_grupales_alumno').append('</p>')
+                $('#clases_grupales_alumno').append('<div class="clearfix p-b-35"></div>')
               }
             });
 
@@ -1004,145 +1042,66 @@
               $("#status_economico").removeClass("c-youtube");
               $("#status_economico").addClass("c-verde");
             }
+
+            $("#asistencia-estado_ausencia").removeClass('c-verde')
+            $("#asistencia-estado_ausencia").removeClass('c-amarillo')
+            $("#asistencia-estado_ausencia").removeClass('c-rojo')
+            $('#pertenece').val('')
+            $('#credencial').val('')
+            $("#asistencia-estado_ausencia").addClass(respuesta.estatus)
+            $("#asistencia-credenciales").text(respuesta.credenciales)
+
+            $.each(respuesta.items, function (index, array) {
+
+              if(array[0].estatus == 0){
+                estatus = '<span class="c-youtube">Vencida</span>'
+              }else{
+                estatus = '<span>Por Cobrar</span>'
+              }
+
+              nombre = array[0].nombre;
+
+              if(nombre.length > 15){
+                nombre = nombre.substr(0, 30) + "..."
+              }
+
+              var rowId=array[0].id;
+              var rowNode=d.row.add( [
+                ''+nombre+'',
+                ''+array[0].cantidad+'',
+                ''+formatmoney(parseFloat(array[0].precio_neto))+'',
+                ''+array[0].impuesto+'',
+                ''+formatmoney(parseFloat(array[0].importe_neto))+'',
+                ''+array[0].fecha_vencimiento+'',
+                ''+estatus+'',
+              ] ).draw(false).node();
+              $( rowNode )
+              .attr('id',rowId)
+              .attr('fecha_vencimiento',array[0].fecha_vencimiento)
+              .attr('tipo',array[0].tipo)
+              .addClass('seleccion')
+              .attr('data-trigger','hover')
+              .attr('data-toggle','popover')
+              .attr('data-placement','top')
+              .attr('data-content','<p class="c-negro">'+array[0].nombre+'</p>')
+              .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;')
+              .attr('data-container','body')
+              .attr('data-html','true')
+              .attr('title','');
+         
+            });
+
+            $('[data-toggle="popover"]').popover();
+
+            finprocesado();
+            $('#modalAsistencia').modal('show');
+
           },
           error:function(msj){
             finprocesado();
             console.log(msj);
-
           } 
         });
-
-        $("#asistencia-estado_ausencia").removeClass('c-verde')
-        $("#asistencia-estado_ausencia").removeClass('c-amarillo')
-        $("#asistencia-estado_ausencia").removeClass('c-rojo')
-        $('#pertenece').val('')
-        $('#credencial').val('')
-
-        var route = route_consulta_estatus;
-
-        $.ajax({
-          url: route,
-          headers: {'X-CSRF-TOKEN': token},
-          type: 'POST',
-          dataType: 'json',
-          data:"&alumno_id="+alumno_id,
-          success:function(respuesta){
-            $("#asistencia-estado_ausencia").addClass(respuesta.estatus)
-            $("#asistencia-credenciales").text(respuesta.credenciales)
-          },
-          error:function (msj, ajaxOptions, thrownError){
-            setTimeout(function(){ 
-              // if (typeof msj.responseJSON === "undefined") {
-              //   window.location = "{{url('/')}}/error";
-              // }
-              var nType = 'danger';
-              if(msj.responseJSON.status=="ERROR"){
-                errores(msj.responseJSON.errores);
-                var nTitle=" Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-              }else{
-                var nTitle=" Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              }
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                
-            }, 1000);             
-          }
-        });
-
-        var route = route_pendientes + '1-'+alumno_id;
-
-        $.ajax({
-          url: route,
-          headers: {'X-CSRF-TOKEN': token},
-          type: 'POST',
-          dataType: 'json',
-          success:function(respuesta){
-            setTimeout(function(){ 
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY"; 
-              if(respuesta.status=="OK"){
-
-                $.each(respuesta.items, function (index, array) {
-
-                  if(array[0].estatus == 0){
-                    estatus = '<span class="c-youtube">Vencida</span>'
-                  }else{
-                    estatus = '<span>Por Cobrar</span>'
-                  }
-
-                  nombre = array[0].nombre;
-
-                  if(nombre.length > 15){
-                    nombre = nombre.substr(0, 30) + "..."
-                  }
-
-                  var rowId=array[0].id;
-                  var rowNode=d.row.add( [
-                    ''+nombre+'',
-                    ''+array[0].cantidad+'',
-                    ''+formatmoney(parseFloat(array[0].precio_neto))+'',
-                    ''+array[0].impuesto+'',
-                    ''+formatmoney(parseFloat(array[0].importe_neto))+'',
-                    ''+estatus+'',
-                  ] ).draw(false).node();
-                  $( rowNode )
-                  .attr('id',rowId)
-                  .attr('fecha_vencimiento',array[0].fecha_vencimiento)
-                  .attr('tipo',array[0].tipo)
-                  .addClass('seleccion')
-                  .attr('data-trigger','hover')
-                  .attr('data-toggle','popover')
-                  .attr('data-placement','top')
-                  .attr('data-content','<p class="c-negro">'+array[0].nombre+'</p>')
-                  .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;')
-                  .attr('data-container','body')
-                  .attr('data-html','true')
-                  .attr('title','');
-             
-                });
-
-                $('[data-toggle="popover"]').popover();
-
-                finprocesado();
-                $('#modalAsistencia').modal('show');
-
-              }else{
-                var nTitle="Ups! ";
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                var nType = 'danger';
-              }                       
-            }, 1000);
-            
-          },
-          error:function(msj){
-            setTimeout(function(){ 
-              // if (typeof msj.responseJSON === "undefined") {
-              //   window.location = "{{url('/')}}/error";
-              // }
-              if(msj.responseJSON.status=="ERROR"){
-                errores(msj.responseJSON.errores);
-                var nTitle="    Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-              }else{
-                var nTitle="   Ups! "; 
-                var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-              }
-                                    
-              var nFrom = $(this).attr('data-from');
-              var nAlign = $(this).attr('data-align');
-              var nIcons = $(this).attr('data-icon');
-              var nType = 'danger';
-              var nAnimIn = "animated flipInY";
-              var nAnimOut = "animated flipOutY";                       
-              notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-            }, 1000);
-          }
-        }); 
-
       }
 
 
@@ -1414,6 +1373,27 @@
   function formatmoney(n) {
     return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
   }
+
+  $(document).on({
+    'show.bs.modal': function () {
+        var zIndex = 1040 + (10 * $('.modal:visible').length);
+        $(this).css('z-index', zIndex);
+        setTimeout(function() {
+            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+        }, 0);
+    },
+    'hidden.bs.modal': function() {
+        if ($('.modal:visible').length > 0) {
+            // restore the modal-open class to the body element, so that scrolling works
+            // properly after de-stacking a modal.
+
+          if($('.modal').hasClass('in')) {
+            $('body').addClass('modal-open');
+          }    
+
+        }
+    }
+  }, '.modal');
 
   </script>
 
