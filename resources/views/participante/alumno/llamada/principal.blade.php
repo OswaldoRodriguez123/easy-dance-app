@@ -176,7 +176,8 @@
       t = $('#tablelistar').DataTable({
         processing: true,
         serverSide: false,
-        pageLength: 25,   
+        pageLength: 25,
+        bPaginate: false,   
         order: [[1, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );

@@ -376,7 +376,7 @@
     $("#form_guardar")[0].reset();
     limpiarMensaje();
     $('html,body').animate({
-    scrollTop: $("#id-status").offset().top-90,
+    scrollTop: $("#id-asunto_llamada_id").offset().top-90,
     }, 1000);
   });
 
