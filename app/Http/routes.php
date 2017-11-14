@@ -1020,6 +1020,7 @@
 			Route::put('agendar/citas/update/instructor', 'CitaController@updateInstructor');
 			Route::put('agendar/citas/update/horario', 'CitaController@updateHorario');
 			Route::put('agendar/citas/update/etiqueta', 'CitaController@updateEtiqueta');
+			Route::put('agendar/citas/update/observacion', 'CitaController@updateObservacion');
 
 			//TRANSMISIONES
 

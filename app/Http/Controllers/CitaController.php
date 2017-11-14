@@ -226,6 +226,7 @@ class CitaController extends BaseController {
             $cita->color_etiqueta = $request->color_etiqueta;
             $cita->boolean_mostrar = $boolean_mostrar;
             $cita->cita_llamada = $request->cita_llamada;
+            $cita->observacion = $request->observacion;
 
             if($cita->save()){
 
@@ -372,7 +373,7 @@ class CitaController extends BaseController {
                 ->join('config_citas', 'citas.tipo_id', '=', 'config_citas.id')
                 ->join('alumnos', 'citas.alumno_id', '=', 'alumnos.id')
                 ->leftJoin('instructores', 'citas.instructor_id', '=', 'instructores.id')
-                ->select('alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_citas.nombre as tipo_nombre', 'citas.fecha', 'citas.hora_inicio','citas.hora_final', 'citas.id', 'citas.color_etiqueta')
+                ->select('citas.*', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido','config_citas.nombre as tipo_nombre')
                 ->where('citas.id', '=', $id)
                 ->first();
 
@@ -520,6 +521,17 @@ class CitaController extends BaseController {
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
             }
+        }
+    }
+
+    public function updateObservacion(Request $request){
+        $cita = Cita::find($request->id);
+        $cita->observacion = $request->observacion;
+
+        if($cita->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
     }
 
