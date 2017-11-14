@@ -1102,22 +1102,6 @@ class ClaseGrupalController extends BaseController {
         }
     }
 
-    public function agregar_nota_administrativa(Request $request)
-    {
-
-        $clasegrupal = InscripcionClaseGrupal::withTrashed()->find($request->nota_administrativa_inscripcion_clase_grupal_id);
-
-        $clasegrupal->nota_administrativa = $request->nota_administrativa;
-       
-        if($clasegrupal->save()){
-           
-            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'id' => $clasegrupal->id, 200]);
-        }else{
-            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
-        }
-        
-    }
-
     public function progreso($id)
     {
 

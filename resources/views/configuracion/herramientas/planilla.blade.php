@@ -2155,6 +2155,7 @@
                 m.row($(padre))
                   .remove()
                   .draw();
+                finprocesado();
                                    
               }else{
                 swal(

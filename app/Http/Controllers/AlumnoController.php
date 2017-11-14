@@ -52,6 +52,7 @@ use App\Staff;
 use App\CredencialAlumno;
 use App\LlamadaAlumno;
 use App\Tipologia;
+use App\NotaAdministrativa;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Image;
@@ -2957,4 +2958,59 @@ class AlumnoController extends BaseController
         }
     }
 
+    public function agregar_nota_administrativa(Request $request)
+    {
+
+        $rules = [
+            'descripcion' => 'required',
+        ];
+
+        $messages = [
+
+            'descripcion.required' => 'Ups! La nota administrativa es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }else{
+
+            $nota_administrativa = new NotaAdministrativa;
+            $nota_administrativa->alumno_id = $request->nota_administrativa_alumno_id;
+            $nota_administrativa->descripcion = $request->descripcion;
+            $nota_administrativa->fecha = Carbon::now();
+            $nota_administrativa->hora = Carbon::now();
+            $nota_administrativa->usuario_id = Auth::user()->id;
+           
+            if($nota_administrativa->save()){
+
+                $usuario = User::find(Auth::user()->id);
+                $usuario = $usuario->nombre . ' ' . $usuario->apellido;
+               
+                return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'nota_administrativa' => $nota_administrativa, 'usuario' => $usuario, 200]);
+            }else{
+                return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+            }
+        }
+    }
+
+    public function eliminar_nota_administrativa($id)
+    {
+        $nota_administrativa = NotaAdministrativa::find($id);
+
+        if($nota_administrativa->delete()){
+            return response()->json(['mensaje' => '¡Excelente! La credencial se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function consultar_notas_administrativas($id)
+    {
+        $notas_administrativas = NotaAdministrativa::where('alumno_id',$id)->get();
+        return response()->json(['status' => 'OK', 'notas_administrativas' => $notas_administrativas, 200]);
+    }
 }

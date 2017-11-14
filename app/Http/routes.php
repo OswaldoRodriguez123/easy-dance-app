@@ -652,6 +652,10 @@
 			Route::post('participante/alumno/crear_cuenta/{id}', 'AlumnoController@crearCuenta');
 			Route::get('participante/alumno/historial-asistencias/{id}', 'ClaseGrupalController@historial_asistencia_general');
 
+			Route::post('participante/alumno/consulta-notas-administrativas/{id}', 'AlumnoController@consultar_notas_administrativas');
+			Route::post('participante/alumno/agregar-nota-administrativa', 'AlumnoController@agregar_nota_administrativa');
+			Route::post('participante/alumno/eliminar-nota-administrativa/{id}', 'AlumnoController@eliminar_nota_administrativa');
+
 			//PUNTOS ACUMULADOS
 
 			Route::get('puntos-acumulados', 'AlumnoController@puntos_acumulados_general');
@@ -1423,7 +1427,6 @@
 			Route::post('agendar/clases-grupales/cancelar', 'ClaseGrupalController@cancelarClase');
 			Route::post('agendar/clases-grupales/actualizar-cancelacion', 'ClaseGrupalController@update_cancelacion');
 			Route::delete('agendar/clases-grupales/eliminar-cancelacion/{id}', 'ClaseGrupalController@eliminar_cancelacion');
-			Route::post('agendar/clases-grupales/agregar-nota-administrativa', 'ClaseGrupalController@agregar_nota_administrativa');
 
 			//NIVELACIONES CLASES GRUPALES
 

@@ -1139,7 +1139,7 @@ class SupervisionController extends BaseController {
     	$config_supervisiones = ConceptoSupervision::where('supervision_id',$id)->get();
 
     	foreach($config_supervisiones as $configuracion){
-    		$horarios = HorarioSupervision::where('supervision_id',$configuracion->id)->delete();
+    		$horarios = HorarioSupervision::where('concepto_id',$configuracion->id)->delete();
     		$configuracion->delete();
     	}
     	
