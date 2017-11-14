@@ -10,7 +10,7 @@ use App\Academia;
 use App\Alumno;
 use App\Instructor;
 use App\Asistencia;
-use App\Llamada;
+use App\LlamadaAlumno;
 use App\InscripcionClaseGrupal;
 use App\User;
 use App\Notificacion;
@@ -81,7 +81,7 @@ class CitaController extends BaseController {
         foreach($citas as $cita){
 
             $edad = Carbon::createFromFormat('Y-m-d', $cita->fecha_nacimiento)->diff(Carbon::now())->format('%y');
-            $llamadas = Llamada::where('usuario_id',$cita->alumno_id)->where('usuario_tipo',2)->count();
+            $llamadas = LlamadaAlumno::where('usuario_id',$cita->alumno_id)->where('usuario_tipo',2)->count();
 
             $inscripcion_clase_grupal = InscripcionClaseGrupal::where('alumno_id',$cita->alumno_id)->first();
 

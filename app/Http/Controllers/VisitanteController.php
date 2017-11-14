@@ -9,7 +9,7 @@ use App\Instructor;
 use App\ComoNosConociste;
 use App\ConfigEspecialidades;
 use App\DiasDeInteres;
-use App\Llamada;
+use App\LlamadaVisitante;
 use App\Academia;
 use App\Staff;
 use App\ClaseGrupal;
@@ -705,10 +705,7 @@ class VisitanteController extends BaseController {
     public function indexLlamada($id){
 
         $interesado = Visitante::find($id);
-        $llamadas = Llamada::Leftjoin('llamadas_asuntos', 'llamadas.asunto_llamada_id', '=', 'llamadas_asuntos.id')
-            ->select('llamadas.*', 'llamadas_asuntos.nombre as asunto')
-            ->where('llamadas.usuario_id', $id)
-            ->where('llamadas.usuario_tipo',1)
+        $llamadas = LlamadaVisitante::where('visitante_id', $id)
         ->get();
 
         return view('participante.visitante.llamada.principal')->with(['id' => $id, 'llamadas' => $llamadas, 'interesado' => $interesado]);
@@ -726,46 +723,61 @@ class VisitanteController extends BaseController {
 
     public function storeLlamada(Request $request){
 
-        $rules = [
-            'asunto_llamada_id' => 'required',
-            'status' => 'required',
+        if($request->status != 1){
 
-        ];
+            $rules = [
+                'fecha_siguiente' => 'required',
+                'hora_siguiente' => 'required',
 
-        $messages = [
-            'asunto_llamada_id.required' => 'Ups! El Asunto es requerido',
-            'status.required' => 'Ups! El Estatus es requerido',
+            ];
 
-        ];
+            $messages = [
+                'fecha_siguiente.required' => 'Ups! La fecha es requerida',
+                'hora_siguiente.required' => 'Ups! La hora es requerida',
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+            ];
 
-        if ($validator->fails()){
+            $validator = Validator::make($request->all(), $rules, $messages);
 
-            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
-        }else{
+            if ($validator->fails()){
 
-            $llamada = new Llamada;
-            
-            $llamada->usuario_id = $request->id;
-            $llamada->usuario_tipo = 1;
-            $llamada->asunto_llamada_id = $request->asunto_llamada_id;
-            $llamada->observacion = $request->observacion;
-            $llamada->status = $request->status;
-            $llamada->fecha_llamada = Carbon::now();
-            $llamada->hora_llamada = Carbon::now();
-
-            if($llamada->save()){
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'estatus' => $request->status, 'reprogramar' => $request->reprogramar, 200]);
-            }else{
-                return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+                return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
             }
+
+            $fecha_siguiente = Carbon::createFromFormat('d/m/Y', $request->fecha_siguiente);
+
+            if($fecha_siguiente < Carbon::now()){
+                return response()->json(['errores' => ['fecha_siguiente' => [0, 'Ups! ha ocurrido un error. La fecha de inicio no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+            }
+
+            $hora_siguiente = $request->hora_siguiente;
+
+        }else{
+            $fecha_siguiente = '';
+            $hora_siguiente = '';
         }
+
+        $llamada = new LlamadaVisitante;
+        
+        $llamada->visitante_id = $request->id;
+        $llamada->observacion = $request->observacion;
+        $llamada->status = $request->status;
+        $llamada->fecha_llamada = Carbon::now();
+        $llamada->hora_llamada = Carbon::now();
+        $llamada->fecha_siguiente = $fecha_siguiente;
+        $llamada->hora_siguiente = $hora_siguiente;
+
+        if($llamada->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'estatus' => $request->status, 'reprogramar' => $request->reprogramar, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);
+        }
+        
     }
 
     public function eliminarLlamada($id){
 
-        $llamada=Llamada::find($id);
+        $llamada=LlamadaVisitante::find($id);
         $llamada->delete();
       
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);

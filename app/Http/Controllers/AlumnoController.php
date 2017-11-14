@@ -50,7 +50,7 @@ use App\Incidencia;
 use App\Sugerencia;
 use App\Staff;
 use App\CredencialAlumno;
-use App\Llamada;
+use App\LlamadaAlumno;
 use App\Tipologia;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
@@ -987,7 +987,7 @@ class AlumnoController extends BaseController
 
             $tipologias = Tipologia::orderBy('nombre')->get();
 
-            $llamadas = Llamada::where('usuario_id', $id)->where('usuario_tipo',2)->count();
+            $llamadas = LlamadaAlumno::where('usuario_id', $id)->where('usuario_tipo',2)->count();
 
             return view('participante.alumno.planilla')->with(['alumno' => $alumno , 'id' => $id, 'total' => $total, 'clases_grupales' => $array, 'descripcion' => $descripcion, 'perfil' => $tiene_perfil, 'imagen' => $imagen, 'puntos_referidos' => $puntos_referidos, 'instructores' => Staff::where('cargo',1)->where('academia_id', Auth::user()->academia_id)->get(), 'edad' => $edad, 'tipo_pago' => $tipo_pago, 'credenciales' => $credenciales, 'usuario' => $usuario, 'tipologias' => $tipologias, 'llamadas' => $llamadas]);
         }else{
@@ -2786,7 +2786,7 @@ class AlumnoController extends BaseController
 
         $interesado = Alumno::find($id);
 
-        $llamadas = Llamada::Leftjoin('llamadas_asuntos', 'llamadas.asunto_llamada_id', '=', 'llamadas_asuntos.id')
+        $llamadas = LlamadaAlumno::Leftjoin('llamadas_asuntos', 'llamadas.asunto_llamada_id', '=', 'llamadas_asuntos.id')
             ->select('llamadas.*', 'llamadas_asuntos.nombre as asunto')
             ->where('llamadas.usuario_id', $id)
             ->where('llamadas.usuario_tipo',2)
@@ -2833,7 +2833,7 @@ class AlumnoController extends BaseController
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
         }else{
 
-            $llamada = new Llamada;
+            $llamada = new LlamadaAlumno;
 
             $llamada->usuario_id = $request->id;
             $llamada->usuario_tipo = 2;
@@ -2855,7 +2855,7 @@ class AlumnoController extends BaseController
 
     public function eliminarLlamada($id){
 
-      $llamada=Llamada::find($id);
+      $llamada=LlamadaAlumno::find($id);
       $llamada->delete();
       
       return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);

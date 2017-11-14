@@ -55,39 +55,6 @@
                             <hr>
                             <div class="clearfix p-b-15"></div>
 
-                                <div class="col-sm-12">
-                                 
-                                    <label for="apellido" id="id-asunto_llamada_id">Asunto de la llamada </label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el asunto de la llamada" title="" data-original-title="Ayuda"></i>
-
-                                    <div class="input-group">
-                                      <span class="input-group-addon"><i class="zmdi zmdi-label-alt-outline f-22"></i></span>
-                                      <div class="p-t-10">
-                                    <label class="radio radio-inline m-r-20">
-                                        <input name="asunto_llamada_id" id="inasistencia" value="1" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Inasistencia a clases         
-                                    </label>
-                                    <label class="radio radio-inline m-r-20 ">
-                                        <input name="asunto_llamada_id" id="ofrecimiento" value="2" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Ofrecimiento de un servicio
-                                    </label>
-                                    <label class="radio radio-inline m-r-20 ">
-                                        <input name="asunto_llamada_id" id="informacion" value="3" type="radio">
-                                        <i class="input-helper"></i>  
-                                        Información especial 
-                                    </label>
-                                    </div>
-                                    </div>
-                                 <div class="has-error" id="error-asunto_llamada_id">
-                                      <span >
-                                          <small class="help-block error-span" id="error-asunto_llamada_id_mensaje" ></small>                                
-                                      </span>
-                                  </div>
-                               </div>
-
-                               <div class="clearfix p-b-35"></div>
-
                                <div class="col-sm-12">
                                  
                                     <label for="apellido" id="id-status">Estatus</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Selecciona el status de la llamada" title="" data-original-title="Ayuda"></i>
@@ -96,7 +63,7 @@
                                       <span class="input-group-addon"><i class="zmdi zmdi-label-alt-outline f-22"></i></span>
                                       <div class="p-t-10">
                                     <label class="radio radio-inline m-r-20">
-                                        <input name="status" id="informacion_efectiva" value="1" type="radio">
+                                        <input name="status" id="informacion_efectiva" value="1" type="radio" checked>
                                         <i class="input-helper"></i>  
                                           Información efectiva 
                                     </label>
@@ -120,10 +87,10 @@
                                </div>
 
                                <div class="clearfix p-b-35"></div>
-                                  
-                                  <div id="div_descripcion" class="col-sm-12" style="display: none">
+
+                               <div class="col-sm-12">
                                  
-                                    <label for="nombre" id="id-observacion">Resultado / Descripción</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Crea una buena primera impresión  presenta los objetivos de tu fiesta  y persuade a tus  clientes  para que obtengan más información. Esta información básica será vista por todos tus alumnos" title="" data-original-title="Ayuda"></i>
+                                    <label for="nombre" id="id-observacion">Observación</label><i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Crea una buena primera impresión  presenta los objetivos de tu fiesta  y persuade a tus  clientes  para que obtengan más información. Esta información básica será vista por todos tus alumnos" title="" data-original-title="Ayuda"></i>
 
                                     <br></br>
 
@@ -136,31 +103,52 @@
                                           <small class="help-block error-span" id="error-observacion_mensaje" ></small>                                
                                       </span>
                                   </div>
-
-                                <div class="clearfix p-b-35"></div>
                                </div>
+                                  
 
-                               <div class="col-sm-12" id="div_reprogramar" style="display: none">
-                                   <div class="form-group fg-line ">
-                                      <label for="">Reprogramar llamada</label id="id-iva"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si reprogramaras la llamada" title="" data-original-title="Ayuda"></i>
-                                      
-                                      <br></br>
-                                      <input type="text" id="reprogramar" name="reprogramar" value="" hidden="hidden">
-                                      <div class="p-t-10">
-                                        <div class="toggle-switch" data-ts-color="purple">
-                                        <span class="p-r-10 f-700 f-16">No</span><input id="switch_reprogramar" type="checkbox">
-                                        
-                                        <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                        </div>
-                                      </div>
-                                      
-                                   </div>
-                                   <div class="has-error" id="error-impuesto">
-                                        <span >
-                                            <small class="help-block error-span" id="error-impuesto_mensaje" ></small>                                           
-                                        </span>
+                              <div class="clearfix p-b-35"></div>
+
+
+                              <div id="div_reprogramar" style="display: none">
+                               
+                                <div class="col-sm-12">
+                                 
+                                  <label for="fecha_siguiente" id="id-fecha_siguiente">Fecha de la Proxima Llamada</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha" title="" data-original-title="Ayuda"></i>
+
+                                  <div class="input-group">
+                                  <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
+                                  <div class="dtp-container fg-line">
+                                      <input name="fecha_siguiente" id="fecha_siguiente" class="form-control date-picker proceso pointer" placeholder="Selecciona" type="text">
+                                  </div>
+                                </div>
+                                 <div class="has-error" id="error-fecha_siguiente">
+                                      <span >
+                                          <small class="help-block error-span" id="error-fecha_siguiente_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+    
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="col-sm-12">
+                           
+                                <label for="hora_siguiente" id="id-hora_siguiente">Hora de la Proxima Llamada</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la hora" title="" data-original-title="Ayuda"></i>
+
+                                <div class="input-group col-xs-12">
+                                <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
+                                <div class="dtp-container fg-line">
+                                        <input name="hora_siguiente" id="hora_siguiente" class="form-control time-picker" placeholder="Hora" type="text">
                                     </div>
-                                 </div>
+                                </div>
+                             <div class="has-error" id="error-hora_siguiente">
+                                  <span >
+                                      <small class="help-block error-span" id="error-hora_siguiente_mensaje" ></small>                                
+                                  </span>
+                              </div>
+                             </div>
+
+                             <div class="clearfix p-b-35"></div>
+                          </div>
 
                            <div class="clearfix p-b-35"></div>
                                
@@ -207,25 +195,12 @@
   
   $(document).ready(function(){
 
-    $("#reprogramar").val('1');  //VALOR POR DEFECTO
-    $("#switch_reprogramar").attr("checked", true); //VALOR POR DEFECTO
-
-    $("#switch_reprogramar").on('change', function(){
-      if ($("#switch_reprogramar").is(":checked")){
-        $("#reprogramar").val('1');
-      }else{
-        $("#reprogramar").val('0');
-      }    
-    });
-
     $('input[name=status]').change(function() {
         val = $(this).val();
         if(val == 1){
-          $("#div_descripcion").show();
           $("#div_reprogramar").hide();
         }else{
           $("#div_reprogramar").show();
-          $("#div_descripcion").hide();
         }
     });
   });
@@ -255,11 +230,9 @@
                   var nTitle="Exito! ";
                   var nMensaje=respuesta.mensaje;
 
-                  if(respuesta.estatus != 1 && respuesta.reprogramar == 1){
-                    window.location = route_citas;
-                  }else{
-                    window.location = route_principal;
-                  }
+                  
+                  window.location = route_principal;
+                  
               
                 }else{
                   var nTitle="Ups! ";
@@ -340,7 +313,7 @@
     };
 
       function limpiarMensaje(){
-      var campo = ["asunto_llamada_id", "status", "observacion"];
+      var campo = ["status", "observacion", "fecha_siguiente", "hora_siguiente"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');

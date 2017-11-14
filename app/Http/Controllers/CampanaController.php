@@ -22,7 +22,7 @@ use App\ConfigEgreso;
 use App\ClaseGrupal;
 use App\HorarioClaseGrupal;
 use App\InscripcionClaseGrupal;
-use App\Llamada;
+use App\LlamadaAlumno;
 use App\Observacion;
 use App\ConfigServicios;
 use Validator;
@@ -2682,7 +2682,7 @@ class CampanaController extends BaseController {
                     $imagen = '';
                 }
 
-                $llamadas = Llamada::where('usuario_id',$alumno->id)->where('usuario_tipo',2)->count();
+                $llamadas = LlamadaAlumno::where('usuario_id',$alumno->id)->where('usuario_tipo',2)->count();
 
                 $collection=collect($alumno);     
                 $alumno_array = $collection->toArray();

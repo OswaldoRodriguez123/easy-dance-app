@@ -42,7 +42,7 @@ use App\Staff;
 use App\Visitante;
 use App\User;
 use App\Promocion;
-use App\Llamada;
+use App\LlamadaAlumno;
 use App\Tipologia;
 use PulkitJalan\GeoIP\GeoIP;
 
@@ -889,7 +889,7 @@ class ClaseGrupalController extends BaseController {
                     $imagen = '';
                 }
 
-                $llamadas = Llamada::where('usuario_id',$alumno->id)->where('usuario_tipo',2)->count();
+                $llamadas = LlamadaAlumno::where('usuario_id',$alumno->id)->where('usuario_tipo',2)->count();
                 $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
 
                 $collection=collect($alumno);     

@@ -72,10 +72,11 @@
                                 <tr>
                                     <th></th>
                                     <th>Estatus</th>
-                                    <th>Asunto</th>
                                     <th>Observación</th>
                                     <th>Hora de llamada</th>
                                     <th>Tiempo de Respuesta</th>
+                                    <th>Fecha de la proxima llamada</th>
+                                    <th>Hora de la proxima llamada</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -119,7 +120,6 @@
 
                                   @endif
                                   </td>
-                                  <td>{{$llamada->asunto}}</td>
                                   <td>{{ str_limit(title_case($llamada->observacion), $limit = 30, $end = '...') }}</td>
                                   <td>
 
@@ -131,6 +131,20 @@
                
                                   </td>
                                   <td>{{$tiempo_respuesta}}</td>
+
+                                  <td>{{$llamada->fecha_siguiente}}</td>
+
+                                  <td>
+
+                                    @if($llamada->hora_siguiente)
+                                      @if($tipo_horario == 2)
+                                          {{\Carbon\Carbon::createFromFormat('H:i:s',$llamada->hora_siguiente)->format('H:i')}}
+                                      @else
+                                          {{\Carbon\Carbon::createFromFormat('H:i:s',$llamada->hora_siguiente)->format('g:i a')}}
+                                      @endif
+                                    @endif
+               
+                                  </td>
                                   <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer eliminar"></i></td>
                                     
                                 </tr>

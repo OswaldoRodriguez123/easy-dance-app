@@ -477,8 +477,12 @@ class ProgresoController extends BaseController {
     public function certificado()
     {
 
+
+
         $academia = Academia::find(Auth::user()->academia_id);
         $usuario_id = Session::get('easydance_usuario_id');
+
+        return view('progreso.certificado')->with(['certificado' => 'basico.jpg', 'academia' => $academia, 'nivel' => 'BÁSICO']);
 
         $id = $_GET['id'];
         $tipo = $_GET['tipo'];
