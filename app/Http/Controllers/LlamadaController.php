@@ -96,7 +96,7 @@ class LlamadaController extends BaseController {
  	        $llamada_array['fecha_visita']=$fecha_visita;
 	        $llamada_array['dia']='';
 	        $llamada_array['fecha_siguiente']='';
-	        $llamada_array['tipo']=$tipo;
+	        $llamada_array['tipo']=0;
  	        $llamada_array['usuario_tipo']=2;
  	        $array[] = $llamada_array;
 
