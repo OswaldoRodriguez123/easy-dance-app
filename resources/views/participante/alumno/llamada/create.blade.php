@@ -210,8 +210,10 @@
   
   $(document).ready(function(){
 
-    $("#reprogramar").val('1');  //VALOR POR DEFECTO
-    $("#switch_reprogramar").attr("checked", true); //VALOR POR DEFECTO
+    $('#modalCita').on('hidden.bs.modal', function () {
+      $("#reprogramar").val('0');  //VALOR POR DEFECTO
+      $("#switch_reprogramar").attr("checked", false); //VALOR POR DEFECTO
+    });
 
     $("#switch_reprogramar").on('change', function(){
       if ($("#switch_reprogramar").is(":checked")){

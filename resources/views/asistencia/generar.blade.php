@@ -988,19 +988,9 @@
                 nota_administrativa = '';
               }
 
-              if(array.diferencia > 1){
-                restan = 'Restan '
-                dias = ' dias'
-              }else{
-                restan = 'Resta '
-                dias = ' dia'
-              }
-              $('#clases_grupales_alumno').append('<div class="col-sm-3" style="padding-left:0px">' + array.nombre + ' <br>' + array.hora_inicio + ' / ' + array.hora_final + ' <br> ' + array.dia + ' ' + nota_administrativa + '</div>')
-              if(array.fecha_pago){
-                $('#clases_grupales_alumno').append('<div class="col-sm-6">' + 'Fecha de Pago: ' + array.fecha_pago + ' <br> ' + restan + array.diferencia + dias + '</div>')
-              }else{
-                $('#clases_grupales_alumno').append('<div class="clearfix p-b-35"></div>')
-              }
+              $('#clases_grupales_alumno').append('<div class="col-sm-12" style="padding-left:0px">' + array.nombre + ' <br>' + array.hora_inicio + ' / ' + array.hora_final + ' <br> ' + array.dia + ' ' + nota_administrativa + '</div>')
+              $('#clases_grupales_alumno').append('<div class="clearfix p-b-35"></div>')
+
             });
 
             $('[data-toggle="popover"]').popover(); 
