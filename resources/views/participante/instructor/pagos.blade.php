@@ -366,8 +366,7 @@
               var route = route_devolver;
               var token = "{{ csrf_token() }}";
               var datos = "&pagos="+getChecked();
-              limpiarMensaje();
-
+  
               $.ajax({
                   url: route,
                       headers: {'X-CSRF-TOKEN': token},
