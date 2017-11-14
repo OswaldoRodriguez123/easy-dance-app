@@ -145,29 +145,47 @@
                                 <div class="clearfix p-b-35"></div>
                                </div>
 
-                               <div class="col-sm-12" id="div_reprogramar" style="display: none">
-                                   <div class="form-group fg-line ">
-                                      <label for="">Reprogramar llamada</label id="id-iva"> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda pointer" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Indica si reprogramaras la llamada" title="" data-original-title="Ayuda"></i>
-                                      
-                                      <br></br>
-                                      <input type="text" id="reprogramar" name="reprogramar" value="" hidden="hidden">
-                                      <div class="p-t-10">
-                                        <div class="toggle-switch" data-ts-color="purple">
-                                        <span class="p-r-10 f-700 f-16">No</span><input id="switch_reprogramar" type="checkbox">
-                                        
-                                        <label for="estilo-switch" class="ts-helper"></label><span class="m-t-0 p-t-0 p-l-10 f-700 f-16">Si</span>
-                                        </div>
-                                      </div>
-                                      
-                                   </div>
-                                   <div class="has-error" id="error-impuesto">
-                                        <span >
-                                            <small class="help-block error-span" id="error-impuesto_mensaje" ></small>                                           
-                                        </span>
-                                    </div>
-                                 </div>
+                               <div id="div_reprogramar" style="display: none">
+                               
+                                <div class="col-sm-12">
+                                 
+                                  <label for="fecha_siguiente" id="id-fecha_siguiente">Fecha de la Proxima Llamada</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la fecha" title="" data-original-title="Ayuda"></i>
 
-                           <div class="clearfix p-b-35"></div>
+                                  <div class="input-group">
+                                  <span class="input-group-addon"><i class="zmdi zmdi-calendar-check f-22"></i></span>
+                                  <div class="dtp-container fg-line">
+                                      <input name="fecha_siguiente" id="fecha_siguiente" class="form-control date-picker proceso pointer" placeholder="Selecciona" type="text">
+                                  </div>
+                                </div>
+                                 <div class="has-error" id="error-fecha_siguiente">
+                                      <span >
+                                          <small class="help-block error-span" id="error-fecha_siguiente_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+    
+                              <div class="clearfix p-b-35"></div>
+
+                              <div class="col-sm-12">
+                           
+                                <label for="hora_siguiente" id="id-hora_siguiente">Hora de la Proxima Llamada</label> <span class="c-morado f-700 f-16">*</span> <i class="p-l-5 tm-icon zmdi zmdi-help ayuda mousedefault" data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Ingresa la hora" title="" data-original-title="Ayuda"></i>
+
+                                <div class="input-group col-xs-12">
+                                <span class="input-group-addon"><i class="zmdi zmdi-time f-22"></i></span>
+                                <div class="dtp-container fg-line">
+                                        <input name="hora_siguiente" id="hora_siguiente" class="form-control time-picker" placeholder="Hora" type="text">
+                                    </div>
+                                </div>
+                             <div class="has-error" id="error-hora_siguiente">
+                                  <span >
+                                      <small class="help-block error-span" id="error-hora_siguiente_mensaje" ></small>                                
+                                  </span>
+                              </div>
+                             </div>
+
+                             <div class="clearfix p-b-35"></div>
+                          </div>
+
 
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
@@ -210,17 +228,13 @@
   
   $(document).ready(function(){
 
-    $('#modalCita').on('hidden.bs.modal', function () {
-      $("#reprogramar").val('0');  //VALOR POR DEFECTO
-      $("#switch_reprogramar").attr("checked", false); //VALOR POR DEFECTO
-    });
-
-    $("#switch_reprogramar").on('change', function(){
-      if ($("#switch_reprogramar").is(":checked")){
-        $("#reprogramar").val('1');
-      }else{
-        $("#reprogramar").val('0');
-      }    
+    $('input[name=status]').change(function() {
+        val = $(this).val();
+        if(val == 1){
+          $("#div_reprogramar").hide();
+        }else{
+          $("#div_reprogramar").show();
+        }
     });
 
     $('input[name=status]').change(function() {
@@ -237,116 +251,112 @@
 
     $("#guardar").click(function(){
 
-                var route = route_agregar;
-                var token = $('input:hidden[name=_token]').val();
-                var datos = $( "#form_guardar" ).serialize(); 
-                procesando(); 
-                limpiarMensaje();      
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                        dataType: 'json',
-                        data:datos,
-                    success:function(respuesta){
-                      setTimeout(function(){ 
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";  
-                        if(respuesta.status=="OK"){
-                          var nType = 'success';
-                          var nTitle="Exito! ";
-                          var nMensaje=respuesta.mensaje;
+          var route = route_agregar;
+          var token = $('input:hidden[name=_token]').val();
+          var datos = $( "#form_guardar" ).serialize(); 
+          procesando(); 
+          limpiarMensaje();      
+          $.ajax({
+              url: route,
+                  headers: {'X-CSRF-TOKEN': token},
+                  type: 'POST',
+                  dataType: 'json',
+                  data:datos,
+              success:function(respuesta){
+                setTimeout(function(){ 
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY";  
+                  if(respuesta.status=="OK"){
+                    var nType = 'success';
+                    var nTitle="Exito! ";
+                    var nMensaje=respuesta.mensaje;
 
-                          if(respuesta.estatus != 1 && respuesta.reprogramar == 1){
-                            window.location = route_citas;
-                          }else{
-                            window.location = route_principal;
-                          }
-                         
+                    window.location = route_principal;
+                   
 
-                        }else{
-                          var nTitle="Ups! ";
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                          var nType = 'danger';
-                        }
+                  }else{
+                    var nTitle="Ups! ";
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    var nType = 'danger';
+                  }
 
-                        finprocesado();
+                  finprocesado();
 
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);                       
-                        
-                      }, 1000);
-                    },
-                    error:function(msj){
-                      setTimeout(function(){ 
-                        if(msj.responseJSON.status=="ERROR"){
-                          errores(msj.responseJSON.errores);
-                          var nTitle="    Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
-                        }else{
-                          var nTitle="   Ups! "; 
-                          var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                        }                        
-                        finprocesado();
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nType = 'danger';
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY";
-                        var nTitle = 'Error!';               
-                        notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
-                      }, 1000);
-                    }
-                });
-            });
+                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);                       
+                  
+                }, 1000);
+              },
+              error:function(msj){
+                setTimeout(function(){ 
+                  if(msj.responseJSON.status=="ERROR"){
+                    errores(msj.responseJSON.errores);
+                    var nTitle="    Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                  }else{
+                    var nTitle="   Ups! "; 
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                  }                        
+                  finprocesado();
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nType = 'danger';
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY";
+                  var nTitle = 'Error!';               
+                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                }, 1000);
+              }
+          });
+      });
 
-            function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
-                $.growl({
-                    icon: icon,
-                    title: titulo,
-                    message: mensaje,
-                    url: ''
-                },{
-                        element: 'body',
-                        type: type,
-                        allow_dismiss: true,
-                        placement: {
-                                from: from,
-                                align: align
-                        },
-                        offset: {
-                            x: 20,
-                            y: 85
-                        },
-                        spacing: 10,
-                        z_index: 1070,
-                        delay: 2500,
-                        timer: 2000,
-                        url_target: '_blank',
-                        mouse_over: false,
-                        animate: {
-                                enter: animIn,
-                                exit: animOut
-                        },
-                        icon_type: 'class',
-                        template: '<div data-growl="container" class="alert" role="alert">' +
-                                        '<button type="button" class="close" data-growl="dismiss">' +
-                                            '<span aria-hidden="true">&times;</span>' +
-                                            '<span class="sr-only">Close</span>' +
-                                        '</button>' +
-                                        '<span data-growl="icon"></span>' +
-                                        '<span data-growl="title"></span>' +
-                                        '<span data-growl="message"></span>' +
-                                        '<a href="#" data-growl="url"></a>' +
-                                    '</div>'
-                });
-            };
+      function notify(from, align, icon, type, animIn, animOut, mensaje, titulo){
+          $.growl({
+              icon: icon,
+              title: titulo,
+              message: mensaje,
+              url: ''
+          },{
+                  element: 'body',
+                  type: type,
+                  allow_dismiss: true,
+                  placement: {
+                          from: from,
+                          align: align
+                  },
+                  offset: {
+                      x: 20,
+                      y: 85
+                  },
+                  spacing: 10,
+                  z_index: 1070,
+                  delay: 2500,
+                  timer: 2000,
+                  url_target: '_blank',
+                  mouse_over: false,
+                  animate: {
+                          enter: animIn,
+                          exit: animOut
+                  },
+                  icon_type: 'class',
+                  template: '<div data-growl="container" class="alert" role="alert">' +
+                                  '<button type="button" class="close" data-growl="dismiss">' +
+                                      '<span aria-hidden="true">&times;</span>' +
+                                      '<span class="sr-only">Close</span>' +
+                                  '</button>' +
+                                  '<span data-growl="icon"></span>' +
+                                  '<span data-growl="title"></span>' +
+                                  '<span data-growl="message"></span>' +
+                                  '<a href="#" data-growl="url"></a>' +
+                              '</div>'
+          });
+      };
 
       function limpiarMensaje(){
-      var campo = ["asunto_llamada_id","status", "observacion"];
+      var campo = ["asunto_llamada_id", "status", "observacion", "fecha_siguiente", "hora_siguiente"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');

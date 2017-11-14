@@ -225,7 +225,6 @@ class CitaController extends BaseController {
             $cita->hora_final = $hora_final;
             $cita->color_etiqueta = $request->color_etiqueta;
             $cita->boolean_mostrar = $boolean_mostrar;
-            $cita->cita_llamada = $request->cita_llamada;
             $cita->observacion = $request->observacion;
 
             if($cita->save()){

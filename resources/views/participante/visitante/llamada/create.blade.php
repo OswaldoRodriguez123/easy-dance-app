@@ -150,10 +150,6 @@
                              <div class="clearfix p-b-35"></div>
                           </div>
 
-                           <div class="clearfix p-b-35"></div>
-                               
-
-
                           <div class="modal-footer p-b-20 m-b-20">
                             <div class="col-sm-12 text-left">
                               <div class="procesando hidden">
@@ -191,7 +187,6 @@
 
   route_principal="{{url('/')}}/participante/visitante/llamadas/{{$id}}";
   route_agregar="{{url('/')}}/participante/visitante/llamadas/agregar";
-  route_citas="{{url('/')}}/agendar/citas/agregar";
   
   $(document).ready(function(){
 

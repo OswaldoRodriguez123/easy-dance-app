@@ -81,10 +81,10 @@
                                 <tr>
                                     <th></th>
                                     <th>Estatus</th>
-                                    <th>Asunto</th>
-                                    <th>Observación</th>
                                     <th>Hora de llamada</th>
                                     <th>Tiempo de Respuesta</th>
+                                    <th>Fecha de la proxima llamada</th>
+                                    <th>Hora de la proxima llamada</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -101,11 +101,12 @@
 
                                   $contenido = 
                                   '<p class="c-negro">' .
-                                      'Observación: ' . $llamada->observacion . '<br>'.
+                                      'Asunto de la llamada: ' . $llamada->asunto . '<br>'.
+                                      'Resultado / Descripción: ' . $llamada->observacion . '<br>'.
                                   '</p>'; 
 
-
                                 ?>
+
                                 <?php $id = $llamada->id; ?>
                                 <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion">
 
@@ -113,22 +114,20 @@
 
                                   <td>
 
-                                  @if($llamada->status == 1)
+                                    @if($llamada->status == 1)
 
-                                     <label class="label label-success"> </label>
+                                       <label class="label label-success"> </label>
 
-                                  @elseif($llamada->status == 2)
+                                    @elseif($llamada->status == 2)
 
-                                    <label class="label label-danger"> </label>
+                                      <label class="label label-danger"> </label>
 
-                                  @else
+                                    @else
 
-                                    <label class="label label-warning"> </label>
+                                      <label class="label label-warning"> </label>
 
-                                  @endif
+                                    @endif
                                   </td>
-                                  <td>{{$llamada->asunto}}</td>
-                                  <td>{{ str_limit(title_case($llamada->observacion), $limit = 30, $end = '...') }}</td>
                                   <td>
 
                                     @if($tipo_horario == 2)
@@ -139,6 +138,25 @@
                
                                   </td>
                                   <td>{{$tiempo_respuesta}}</td>
+
+                                  <td>
+                                    @if($llamada->fecha_siguiente != '0000-00-00')
+                                      {{$llamada->fecha_siguiente}}
+                                    @endif
+                                  </td>
+
+                                  <td>
+
+                                    @if($llamada->hora_siguiente != '00:00:00')
+                                      @if($tipo_horario == 2)
+                                          {{\Carbon\Carbon::createFromFormat('H:i:s',$llamada->hora_siguiente)->format('H:i')}}
+                                      @else
+                                          {{\Carbon\Carbon::createFromFormat('H:i:s',$llamada->hora_siguiente)->format('g:i a')}}
+                                      @endif
+                                    @endif
+               
+                                  </td>
+
                                   <td class="text-center disabled"> <i id={{$id}} class="zmdi zmdi-delete boton red f-20 p-r-10 pointer eliminar"></i></td>
                                     
                                 </tr>
@@ -178,7 +196,7 @@
         serverSide: false,
         pageLength: 25,
         bPaginate: false,   
-        order: [[1, 'desc']],
+        order: [[0, 'desc'],[2, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass("disabled");

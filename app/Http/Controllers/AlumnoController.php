@@ -2814,17 +2814,38 @@ class AlumnoController extends BaseController
 
     public function storeLlamada(Request $request){
 
-        $rules = [
-            'asunto_llamada_id' => 'required',
-            'status' => 'required',
+        if($request->status != 1){
 
-        ];
+            $rules = [
+                'asunto_llamada_id' => 'required',
+                'status' => 'required',
+                'fecha_siguiente' => 'required',
+                'hora_siguiente' => 'required',
 
-        $messages = [
-            'asunto_llamada_id.required' => 'Ups! El Asunto es requerido',
-            'status.required' => 'Ups! El Estatus es requerido',
+            ];
 
-        ];
+            $messages = [
+                'asunto_llamada_id.required' => 'Ups! El Asunto es requerido',
+                'status.required' => 'Ups! El Estatus es requerido',
+                'fecha_siguiente.required' => 'Ups! La fecha es requerida',
+                'hora_siguiente.required' => 'Ups! La hora es requerida',
+
+            ];
+
+        }else{
+
+            $rules = [
+                'asunto_llamada_id' => 'required',
+                'status' => 'required',
+
+            ];
+
+            $messages = [
+                'asunto_llamada_id.required' => 'Ups! El Asunto es requerido',
+                'status.required' => 'Ups! El Estatus es requerido',
+
+            ];
+        }
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
@@ -2832,6 +2853,21 @@ class AlumnoController extends BaseController
 
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
         }else{
+
+            if($request->fecha_siguiente){
+
+                $fecha_siguiente = Carbon::createFromFormat('d/m/Y', $request->fecha_siguiente);
+
+                if($fecha_siguiente < Carbon::now()){
+                    return response()->json(['errores' => ['fecha_siguiente' => [0, 'Ups! ha ocurrido un error. La fecha de inicio no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+                }
+
+                $hora_siguiente = $request->hora_siguiente;
+
+            }else{
+                $fecha_siguiente = '';
+                $hora_siguiente = '';
+            }
 
             $llamada = new LlamadaAlumno;
 
@@ -2842,10 +2878,12 @@ class AlumnoController extends BaseController
             $llamada->status = $request->status;
             $llamada->fecha_llamada = Carbon::now();
             $llamada->hora_llamada = Carbon::now();
+            $llamada->fecha_siguiente = $fecha_siguiente;
+            $llamada->hora_siguiente = $hora_siguiente;
 
             if($llamada->save()){
 
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'estatus' => $request->status, 'reprogramar' => $request->reprogramar, 200]);
+                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
 
             }else{
                 return response()->json(['errores'=>'error', 'status' => 'ERROR'],422);

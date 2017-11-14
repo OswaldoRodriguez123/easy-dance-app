@@ -225,6 +225,10 @@
                                                                     <a onclick="procesando()" href="{{url('/')}}/participante/alumno/evaluaciones/{{$id}}"><i class="zmdi glyphicon glyphicon-search f-16 boton blue"></i>Valoración</a>
                                                                 </li>
 
+                                                                <li class="hidden-xs">
+                                                                    <a onclick="procesando()" href="{{url('/')}}/participante/alumno/llamadas/{{$id}}"><i class="zmdi zmdi-phone f-16 boton blue"></i>Llamadas</a>
+                                                                </li>
+
                                                                 <li class="hidden-xs reservar pointer">
                                                                     <a><i class="zmdi icon_a-reservaciones f-16 boton blue"></i>Reservar</a>
                                                                 </li>

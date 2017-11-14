@@ -42,9 +42,9 @@
                     
                     <div class="card">
                         <div class="card-header text-right">
-                            <span class="f-16 p-t-0 text-success">Agregar una Cita o Llamada<i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
+                            <span class="f-16 p-t-0 text-success">Agregar una Cita<i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-25 "></i></span>
 
-                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-calendar-check f-25"></i> Sección de Citas y Llamadas</p>
+                            <br><br><p class="text-center opaco-0-8 f-22"><i class="zmdi zmdi-calendar-check f-25"></i> Sección de Citas</p>
                             <hr class="linea-morada">  
 
                             <div class="col-sm-12">

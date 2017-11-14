@@ -78,7 +78,7 @@
                                     <a href="{{url('mensajes')}}"><i class="zmdi zmdi-smartphone f-16"></i> Enviar Mensaje</a>
                                 </li>
                                 <li class="hidden-xs">
-                                    <a href="{{url('agendar/citas')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Citas y Llamadas</a>
+                                    <a href="{{url('agendar/citas')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Generar Citas</a>
                                 </li>
                                 <li class="hidden-xs">
                                     <a href="{{url('agendar/transmisiones')}}"><i class="zmdi zmdi-camera-add f-16"></i> Generar Transmisiones</a>
