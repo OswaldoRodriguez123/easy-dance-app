@@ -160,6 +160,9 @@
             
     <script type="text/javascript">
 
+        var tipo = 1
+        var usuario_tipo = ''
+
         $(document).ready(function(){
 
             route_llamada_alumno="{{url('/')}}/participante/alumno/llamadas/";
@@ -199,10 +202,8 @@
                             }
             });
 
-            t
-            .columns(0)
-            .search(1)
-            .draw();
+            rechargeTable()
+
         });
 
         function previa(t){
@@ -223,19 +224,15 @@
 
         $('input[name=tipo]').on('change', function(){
 
-            t
-            .columns(0)
-            .search($(this).val())
-            .draw();
-    
+            tipo = $(this).val()
+            rechargeTable()
+
         });
 
         $('#usuario_tipo').on('change', function(){
 
-            t
-            .columns(1)
-            .search($(this).val())
-            .draw();
+            usuario_tipo = $(this).val()
+            rechargeTable()
     
         });
 
@@ -248,6 +245,15 @@
             $( "#finalizadas2" ).addClass( "c-verde" );
             $( "#activas2" ).removeClass( "c-verde" );
         });
+
+        function rechargeTable(){
+            t
+                .columns(0)
+                .search(tipo)
+                .columns(1)
+                .search(usuario_tipo)
+                .draw();
+        }
 
     </script>
 
