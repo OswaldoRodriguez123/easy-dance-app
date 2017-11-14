@@ -80,7 +80,7 @@ class LlamadaController extends BaseController {
  	        $array[] = $llamada_array;
 		}
 
-		 $llamadas = LlamadaAlumno::join('alumnos', 'llamadas.usuario_id', '=', 'alumnos.id')
+		$llamadas = LlamadaAlumno::join('alumnos', 'llamadas.usuario_id', '=', 'alumnos.id')
  			->leftJoin('tipologias', 'alumnos.tipologia_id', '=', 'tipologias.id')
  		   	->select('llamadas.*','alumnos.nombre','alumnos.apellido','tipologias.nombre as tipologia', 'alumnos.id as usuario_id')
  			->where('llamadas.usuario_tipo',2)

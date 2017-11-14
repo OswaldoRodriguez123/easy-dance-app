@@ -49,6 +49,8 @@ use Illuminate\Support\Facades\Auth;
 use Image;
 use DB;
 use Session;
+use App\LlamadaVisitante;
+use App\LlamadaAlumno;
 
 
 class UsuarioController extends BaseController {
@@ -735,6 +737,29 @@ class UsuarioController extends BaseController {
 
     public function seleccionar_tipo()
     {
+
+        $llamadas = LlamadaAlumno::join('visitantes_presenciales', 'llamadas.usuario_id', '=', 'visitantes_presenciales.id')
+            ->select('llamadas.*')
+            ->where('llamadas.usuario_tipo',1)
+            ->where('visitantes_presenciales.academia_id',Auth::user()->academia_id)
+        ->get();
+
+        foreach($llamadas as $llamada){
+
+            $llamada_visitante = new LlamadaVisitante;
+        
+            $llamada_visitante->visitante_id = $llamada->usuario_id;
+            $llamada_visitante->observacion = $llamada->observacion;
+            $llamada_visitante->status = $llamada->status;
+            $llamada_visitante->fecha_llamada = $llamada->fecha_llamada;
+            $llamada_visitante->hora_llamada = $llamada->hora_llamada;
+            $llamada_visitante->fecha_siguiente = '';
+            $llamada_visitante->hora_siguiente = '';
+
+            $llamada_visitante->save();
+            $llamada->delete();
+
+        }
 
         if(Auth::user()->estatus){
             $usuario_tipo = Session::get('easydance_usuario_tipo');
