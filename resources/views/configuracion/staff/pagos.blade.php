@@ -267,7 +267,6 @@
               var route = route_pagar;
               var token = "{{ csrf_token() }}";
               var datos = "&pagos="+getChecked();
-              limpiarMensaje();
 
               $.ajax({
                   url: route,
@@ -363,7 +362,6 @@
               var route = route_devolver;
               var token = "{{ csrf_token() }}";
               var datos = "&pagos="+getChecked();
-              limpiarMensaje();
 
               $.ajax({
                   url: route,
@@ -440,15 +438,7 @@
           });
         });
 
-        function limpiarMensaje(){
-          var campo = ["monto"];
-            fLen = campo.length;
-            for (i = 0; i < fLen; i++) {
-                $("#error-"+campo[i]+"_mensaje").html('');
-            }
-          }
-
-          function errores(merror){
+        function errores(merror){
           var elemento="";
           var contador=0;
           $.each(merror, function (n, c) {
