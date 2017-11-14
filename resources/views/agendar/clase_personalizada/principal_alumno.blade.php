@@ -123,7 +123,6 @@
   
     $(document).on( 'click', '.previa', function () {
         var id = this.id;
-        procesando();
 
         if("{{Auth::check()}}")
         {
@@ -140,7 +139,9 @@
                       data:"&tipo_reservacion=3",
                       success:function(respuesta){
 
-                          window.open(route_reserva+id, '_blank'); 
+                        procesando();
+
+                        window.location = route_reserva+id; 
 
                       },
                       error:function(msj){
