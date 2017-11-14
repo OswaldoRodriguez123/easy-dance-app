@@ -593,6 +593,7 @@
 
 			Route::get('configuracion/staff/pagos/{id}', 'StaffController@principalpagos');
 			Route::post('configuracion/staff/pagar', 'StaffController@pagar');
+			Route::post('configuracion/staff/devolver', 'StaffController@devolver');
 			Route::get('configuracion/staff/metas/{id}', 'StaffController@principalmetas');
 
 			//TERMINA ADMIN
@@ -691,6 +692,7 @@
 			Route::post('participante/instructor/agregarpago', 'InstructorController@agregarpago');
 			Route::delete('participante/instructor/eliminarpago/{id}', 'InstructorController@eliminarpago');
 			Route::post('participante/instructor/pagar', 'InstructorController@pagar');
+			Route::post('participante/instructor/devolver', 'InstructorController@devolver');
 
 			Route::post('participante/instructor/agregarcomisionfija', 'InstructorController@agregarcomisionfija');
 			Route::delete('participante/instructor/eliminarcomisionfija/{id}', 'InstructorController@eliminarcomisionfija');

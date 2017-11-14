@@ -2111,6 +2111,56 @@ class InstructorController extends BaseController {
         }
     }
 
+    public function devolver(Request $request){
+
+        $rules = [
+            'pendientes' => 'required',
+        ];
+
+        $messages = [
+
+            'pendientes.required' => 'Ups! Debe seleccionar un pago',
+            
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }else{
+        
+            $pendientes = explode(",", $request->pendientes);
+            $array = array();
+
+            foreach($pendientes as $pendiente)
+            {   
+                if($pendiente != ''){
+
+                    $explode = explode('-',$pendiente);
+                    $tipo = $explode[0];
+                    $id = $explode[1];
+
+                    if($tipo == 1){
+                        $pago = PagoInstructor::find($id);
+                    }else{
+                        $pago = Comision::find($id);
+                    }
+
+                    $pago->boolean_pago = 0;
+                    $pago->save();
+
+                    array_push($array,$pendiente);
+
+                }
+            }
+
+            return response()->json(['mensaje' => '¡Excelente! El pago ha sido realizado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
+
+        }
+    }
+
     public function agregarcomisionfija(Request $request)
     {
         

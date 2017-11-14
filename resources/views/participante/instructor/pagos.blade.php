@@ -60,6 +60,7 @@
 
 	                        <div class="col-md-offset-10">
 	                          <button type="button" class="btn btn-blanco m-r-10 f-14 guardar" name= "pagar" id="pagar" style="opacity: 0.2" disabled> Pagar <i class="icon_a-pagar"></i></button>
+                            <button type="button" class="btn btn-blanco m-r-10 f-14" name= "devolver" id="devolver" style="opacity: 0.2; display: none" disabled> Devolver <i class="icon_a-pagar"></i></button>
 	                        </div>
 
                         @endif
@@ -95,8 +96,8 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-                                      <th style="width:7%;"><input style="margin-left:49%;" name="select_all" value="1" id="select_all" type="checkbox" /></th>
+                                    @if($usuario_tipo != 3)
+                                      <th class="text-center"><input name="select_all" id="select_all" value="1" id="example-select-all" type="checkbox" /></th>
                                     @endif
                                     <th class="text-center" data-column-id="fecha" data-order="asc">Fecha</th>
                                     <th class="text-center" data-column-id="hora" data-order="asc">Hora</th>
@@ -111,14 +112,13 @@
 
                               @foreach($pagos_comisiones as $pago)
                                 <tr id="{{$pago['id']}}" class="seleccion" data-monto="{{$pago['monto']}}" >
-                                  @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-                                    <td class="text-center previa">
-                                      <span id="boolean_pago_{{$pago['id']}}" style="display: none">{{$pago['boolean_pago']}}</span>
-                                      @if($pago['boolean_pago'] == 0)
+                                  @if($usuario_tipo != 3)
+                                      <td class="text-center previa">
+                                        <span id="boolean_pago_{{$pago['id']}}" style="display: none">{{$pago['boolean_pago']}}</span>
+
                                         <input name="select_check" id="select_check_{{$pago['id']}}" type="checkbox" />
-                                      @endif
-                                    </td>
-                                  @endif
+                                      </td>
+                                    @endif
                                   <td class="text-center previa">{{$pago['fecha']}}</td>
                                   <td class="text-center previa">{{$pago['hora']}}</td>
                                   <td class="text-center previa">{{$pago['dia']}}</td>
@@ -154,8 +154,9 @@
         <script type="text/javascript">
 
         route_pagar="{{url('/')}}/participante/instructor/pagar";
+        route_devolver="{{url('/')}}/participante/instructor/devolver";
 
-        var total = "{{$total}}"
+        var total = parseFloat("{{$total}}")
 
         function formatmoney(n) {
             return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
@@ -164,10 +165,12 @@
         $(document).ready(function(){
 
           t=$('#tablelistar').DataTable({
-          "columnDefs": [ {
-            "targets": [ 0 ],
-            "orderable": false
-          } ],
+          @if($usuario_tipo != 3)
+            "columnDefs": [ {
+              "targets": [ 0 ],
+              "orderable": false
+            } ],
+          @endif
           processing: true,
           serverSide: false,
           pageLength: 50, 
@@ -212,6 +215,7 @@
 
          $('input[name="tipo"]').on('change', function(){
 
+            $(this).closest('body').find(':checkbox').prop('checked', false);
 
             t
             .columns(0)
@@ -224,8 +228,13 @@
               $( "#pagadas2" ).addClass( "c-verde" );
 
               $('#monto').css('opacity', '0');
-              $('#select_all').hide();
               $('#pagar').hide();
+              $('#devolver').show();
+
+              $("#devolver").attr("disabled","disabled");
+              $("#devolver").css({
+                "opacity": ("0.2")
+              });
             } else  {
 
               $( "#pagadas2" ).removeClass( "c-verde" );
@@ -233,12 +242,13 @@
 
               $('#monto').css('opacity', '1');
 
-              if("{{$usuario_tipo}}" != 3)
-              {
-                $('#select_all').show();
-              }
-
               $('#pagar').show();
+              $('#devolver').hide();
+
+              $("#pagar").attr("disabled","disabled");
+              $("#pagar").css({
+                "opacity": ("0.2")
+              });
             }
          });
 
@@ -281,15 +291,22 @@
                     var nMensaje=respuesta.mensaje;
 
                     $.each(respuesta.array, function (i, id) {
-                      monto = $('#'+id).data('monto')
+                      monto = parseFloat($('#'+id).data('monto'))
                       total = total - monto;
                       $('#total').text(formatmoney(parseFloat(total)));
                       boolean_pago = $('#boolean_pago_'+id);
                       boolean_pago.text(1);
-                      select_check = $('#select_check_'+id);
-                      select_check.hide();
+                      // select_check = $('#select_check_'+id);
+                      // select_check.hide();
                       UpdateTD = boolean_pago.parent('td');
                       t.cell(UpdateTD).data(UpdateTD.html()).draw();
+                    });
+
+                    $(this).closest('body').find(':checkbox').prop('checked', false);
+
+                    $("#pagar").attr("disabled","disabled");
+                    $("#pagar").css({
+                      "opacity": ("0.2")
                     });
                     
                   }else{
@@ -330,6 +347,102 @@
       });
     });
 
+    $("#devolver").click(function(){
+
+          swal({   
+            title: "Desea devolver el pago?",   
+            text: "Devolver pago!",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Consignar!",  
+            cancelButtonText: "Cancelar",         
+            closeOnConfirm: true 
+            }, function(isConfirm){   
+            if (isConfirm) {
+                
+              procesando();
+
+              var route = route_devolver;
+              var token = "{{ csrf_token() }}";
+              var datos = "&pagos="+getChecked();
+              limpiarMensaje();
+
+              $.ajax({
+                  url: route,
+                      headers: {'X-CSRF-TOKEN': token},
+                      type: 'POST',
+                      dataType: 'json',
+                      data:datos,
+                  success:function(respuesta){
+                    setTimeout(function(){ 
+                      var nFrom = $(this).attr('data-from');
+                      var nAlign = $(this).attr('data-align');
+                      var nIcons = $(this).attr('data-icon');
+                      var nAnimIn = "animated flipInY";
+                      var nAnimOut = "animated flipOutY"; 
+                      if(respuesta.status=="OK"){
+                        var nType = 'success';
+                        var nTitle="Ups! ";
+                        var nMensaje=respuesta.mensaje;
+
+                        $.each(respuesta.array, function (i, id) {
+                          monto = parseFloat($('#'+id).data('monto'))
+                          total = total + monto;
+                          $('#total').text(formatmoney(parseFloat(total)));
+                          boolean_pago = $('#boolean_pago_'+id);
+                          boolean_pago.text(0);
+                          // select_check = $('#select_check_'+id);
+                          // select_check.hide();
+                          UpdateTD = boolean_pago.parent('td');
+                          t.cell(UpdateTD).data(UpdateTD.html()).draw();
+                        });
+
+                        $(this).closest('body').find(':checkbox').prop('checked', false);
+
+                        $("#devolver").attr("disabled","disabled");
+                        $("#devolver").css({
+                          "opacity": ("0.2")
+                        });
+                        
+                      }else{
+                        var nTitle="Ups! ";
+                        var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                        var nType = 'danger';
+                      }
+                      finprocesado();                  
+                      notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                    }, 1000);
+                  },
+                  error:function(msj){
+                    setTimeout(function(){ 
+                      if (typeof msj.responseJSON === "undefined") {
+                        window.location = "{{url('/')}}/error";
+                      }
+                      if(msj.responseJSON.status=="ERROR"){
+                        console.log(msj.responseJSON.errores);
+                        errores(msj.responseJSON.errores);
+                        var nTitle="    Ups! "; 
+                        var nMensaje="Ha ocurrido un error, intente nuevamente por favor";            
+                      }else{
+                        var nTitle="   Ups! "; 
+                        var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                      }                       
+                      var nFrom = $(this).attr('data-from');
+                      var nAlign = $(this).attr('data-align');
+                      var nIcons = $(this).attr('data-icon');
+                      var nType = 'danger';
+                      var nAnimIn = "animated flipInY";
+                      var nAnimOut = "animated flipOutY";   
+                      finprocesado();
+                      notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje,nTitle);
+                    }, 1000);
+                  }
+              });
+            }
+          });
+        });
+
   function getChecked(){
       var checked = [];
       $('#tablelistar tr').each(function (i, row) {
@@ -346,48 +459,68 @@
     }
 
 
-  $('#select_all').on('click', function(){
-      // Check/uncheck all checkboxes in the table
-      var rows = t.rows({ 'search': 'applied' }).nodes();
-      $('input[type="checkbox"]', rows).prop('checked', this.checked);
+    $('#select_all').on('click', function(){
+          // Check/uncheck all checkboxes in the table
+          var rows = t.rows({ 'search': 'applied' }).nodes();
+          $('input[type="checkbox"]', rows).prop('checked', this.checked);
 
-      values = getChecked();
+          values = getChecked();
 
-      if(values.length > 0){
+          if(values.length > 0){
 
-        $("#pagar").removeAttr("disabled");
-        $("#pagar").css({
-          "opacity": ("1")
-        });
+            $("#pagar").removeAttr("disabled");
+            $("#pagar").css({
+              "opacity": ("1")
+            });
 
-      }else{
-        $("#pagar").attr("disabled","disabled");
-        $("#pagar").css({
-          "opacity": ("0.2")
-        });
-      }
+            $("#devolver").removeAttr("disabled");
+            $("#devolver").css({
+              "opacity": ("1")
+            });
 
-   });
+          }else{
 
-  $('#tablelistar tbody').on( 'click', 'input[type="checkbox"]', function () {
-      values = getChecked();
+            $("#pagar").attr("disabled","disabled");
+            $("#pagar").css({
+              "opacity": ("0.2")
+            });
 
-      if(values.length > 0){
+            $("#devolver").attr("disabled","disabled");
+            $("#devolver").css({
+              "opacity": ("0.2")
+            });
+          }
 
-        $("#pagar").removeAttr("disabled");
-        $("#pagar").css({
-          "opacity": ("1")
-        });
+       });
 
-      }else{
-        $("#pagar").attr("disabled","disabled");
-        $("#pagar").css({
-          "opacity": ("0.2")
-        });
-      }
+      $('#tablelistar tbody').on( 'click', 'input[type="checkbox"]', function () {
+          values = getChecked();
 
+          if(values.length > 0){
 
-  });
+            $("#pagar").removeAttr("disabled");
+            $("#pagar").css({
+              "opacity": ("1")
+            });
+
+            $("#devolver").removeAttr("disabled");
+            $("#devolver").css({
+              "opacity": ("1")
+            });
+
+          }else{
+
+            $("#pagar").attr("disabled","disabled");
+            $("#pagar").css({
+              "opacity": ("0.2")
+            });
+
+            $("#devolver").attr("disabled","disabled");
+            $("#devolver").css({
+              "opacity": ("0.2")
+            });
+          }
+      });
 
 
     </script>

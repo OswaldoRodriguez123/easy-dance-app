@@ -1754,6 +1754,53 @@ class StaffController extends BaseController
         }
     }
 
+    public function devolver(Request $request)
+    {
+        $rules = [
+            'pagos' => 'required',
+        ];
+
+        $messages = [
+
+            'pagos.required' => 'Ups! Debe seleccionar un pago',
+            
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        else{
+        
+            $pagos = explode(",", $request->pagos);
+            $array = array();
+
+            foreach($pagos as $pago_staff)
+            {
+                if($pago_staff != ''){
+
+                    $pago = Comision::find($pago_staff);
+                    $pago->boolean_pago = 0;
+                    $pago->fecha = Carbon::now()->toDateString();
+                    $pago->hora = Carbon::now()->toTimeString();
+
+                    $pago->save();
+
+                    array_push($array,$pago_staff);
+
+                }
+            }
+
+            return response()->json(['mensaje' => '¡Excelente! El pago ha sido realizado satisfactoriamente', 'status' => 'OK', 'array' => $array, 200]);
+
+        }
+    }
+
     public function principalmetas($id)
     {
 
