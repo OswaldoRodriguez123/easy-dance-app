@@ -365,7 +365,7 @@
 
               var route = route_devolver;
               var token = "{{ csrf_token() }}";
-              var datos = "&pagos="+getChecked();
+              var datos = "&pendientes="+getChecked();
   
               $.ajax({
                   url: route,
