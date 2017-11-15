@@ -2999,12 +2999,27 @@ class AlumnoController extends BaseController
         }
     }
 
+    public function actualizar_nota_administrativa(Request $request)
+    {
+        $nota_administrativa = NotaAdministrativa::find($request->id);
+        $nota_administrativa->boolean_visto = $request->boolean_visto;
+       
+        if($nota_administrativa->save()){
+           
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'boolean_visto' => $request->boolean_visto, 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+     
+    }
+
     public function eliminar_nota_administrativa($id)
     {
         $nota_administrativa = NotaAdministrativa::find($id);
+        $boolean_visto = $nota_administrativa->boolean_visto;
 
         if($nota_administrativa->delete()){
-            return response()->json(['mensaje' => '¡Excelente! La credencial se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
+            return response()->json(['mensaje' => '¡Excelente! La credencial se ha eliminado satisfactoriamente', 'status' => 'OK', 'boolean_visto' => $boolean_visto, 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }

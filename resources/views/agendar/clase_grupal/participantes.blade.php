@@ -1495,6 +1495,7 @@
         route_eliminar_reserva="{{url('/')}}/reservaciones/eliminar/";
         route_consulta_notas_administrativas="{{url('/')}}/participante/alumno/consulta-notas-administrativas/";
         route_agregar_nota="{{url('/')}}/participante/alumno/agregar-nota-administrativa";
+        route_actualizar_nota="{{url('/')}}/participante/alumno/actualizar-nota-administrativa";
         route_eliminar_nota="{{url('/')}}/participante/alumno/eliminar-nota-administrativa/";
 
         var in_credencial = <?php echo json_encode($in_credencial);?>;
@@ -2789,13 +2790,21 @@
                       descripcion = descripcion.substr(0, 30) + "..."
                   }
 
+                  if(!array.boolean_visto){
+                    operacion = '<input class="mini-checkbox" type="checkbox">'
+                  }else{
+                    operacion = '<input class="mini-checkbox" type="checkbox" checked>'
+                  }
+
+                  operacion += ' <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+
                   var rowId=array.id;
                   var rowNode=n.row.add( [
                     ''+usuario+'',
                     ''+fecha+'',
                     ''+hora+'',
                     ''+descripcion+'',
-                    '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                    ''+operacion+''
                   ] ).draw(false).node();
 
                   $( rowNode )
@@ -3632,13 +3641,16 @@
                     descripcion = descripcion.substr(0, 30) + "..."
                 }
 
+                operacion = '<input class="mini-checkbox" type="checkbox">'
+                operacion += ' <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+
                 var rowId=respuesta.nota_administrativa.id;
                 var rowNode=n.row.add( [
                   ''+usuario+'',
                   ''+fecha+'',
                   ''+hora+'',
                   ''+descripcion+'',
-                  '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                  ''+operacion+''
                 ] ).draw(false).node();
 
                 $( rowNode )
@@ -3758,6 +3770,44 @@
           }
         });   
       });
+
+    $('#tablenota tbody').on( 'click', 'input[type="checkbox"]', function () {
+    var padre=$(this).parents('tr');
+    var token = $('input:hidden[name=_token]').val();
+    var id = $(this).closest('tr').attr('id');
+
+    if($(this).is(':checked')){
+      boolean_visto = 1
+    }else{
+      boolean_visto = 0
+    }
+
+    var route = route_actualizar_nota
+
+    $.ajax({
+       url: route,
+       headers: {'X-CSRF-TOKEN': token},
+       type: 'POST',
+       dataType: 'json', 
+       data: "&id="+id+"&boolean_visto="+boolean_visto,               
+      success: function (data) {
+        if(data.status=='OK'){
+
+
+        }else{
+          swal(
+            'Solicitud no procesada',
+            'Ha ocurrido un error, intente nuevamente por favor',
+            'error'
+          );
+          finprocesado();
+        }
+      },
+      error:function (xhr, ajaxOptions, thrownError){
+        swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+      }
+    })
+  });   
 
   </script>
 

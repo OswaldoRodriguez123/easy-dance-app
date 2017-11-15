@@ -654,6 +654,7 @@
 
 			Route::post('participante/alumno/consulta-notas-administrativas/{id}', 'AlumnoController@consultar_notas_administrativas');
 			Route::post('participante/alumno/agregar-nota-administrativa', 'AlumnoController@agregar_nota_administrativa');
+			Route::post('participante/alumno/actualizar-nota-administrativa', 'AlumnoController@actualizar_nota_administrativa');
 			Route::post('participante/alumno/eliminar-nota-administrativa/{id}', 'AlumnoController@eliminar_nota_administrativa');
 
 			//PUNTOS ACUMULADOS

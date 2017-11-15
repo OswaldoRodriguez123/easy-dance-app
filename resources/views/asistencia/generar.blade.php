@@ -649,6 +649,7 @@
       route_agregar_asistencia_staff="{{url('/')}}/asistencia/agregar/staff";
       route_historial = "{{url('/')}}/participante/alumno/historial/";
       route_agregar_nota="{{url('/')}}/participante/alumno/agregar-nota-administrativa";
+      route_actualizar_nota="{{url('/')}}/participante/alumno/actualizar-nota-administrativa";
       route_eliminar_nota="{{url('/')}}/participante/alumno/eliminar-nota-administrativa/";
 
       var tipo = 1;
@@ -1155,7 +1156,6 @@
             });
 
             $('#asistencia_clase_grupal_id').selectpicker('refresh')
-
             $('#asistencia-estado_economico').text(respuesta.deuda);
 
             if(respuesta.deuda > 0){
@@ -1236,13 +1236,22 @@
                   descripcion = descripcion.substr(0, 30) + "..."
               }
 
+              if(!array.boolean_visto){
+                cantidad_notas++;
+                operacion = '<input class="mini-checkbox" type="checkbox">'
+              }else{
+                operacion = '<input class="mini-checkbox" type="checkbox" checked>'
+              }
+
+              operacion += ' <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+
               var rowId=array.id;
               var rowNode=n.row.add( [
                 ''+usuario+'',
                 ''+fecha+'',
                 ''+hora+'',
                 ''+descripcion+'',
-                '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                ''+operacion+''
               ] ).draw(false).node();
 
               $( rowNode )
@@ -1255,8 +1264,6 @@
                 .attr('data-container','#modalNota-content')
                 .attr('title','')
                 .attr('data-content',contenido);
-
-              cantidad_notas++;
 
             });
 
@@ -1594,6 +1601,9 @@
                 cantidad_notas = parseInt($('.nota_cantidad').text())
                 cantidad_notas++;
 
+                operacion = '<input class="mini-checkbox" type="checkbox">'
+                operacion += ' <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+
                 $('.nota_cantidad').text(cantidad_notas)
                 $('.nota_cantidad').removeClass('nota_vacia')
                 
@@ -1603,7 +1613,7 @@
                   ''+fecha+'',
                   ''+hora+'',
                   ''+descripcion+'',
-                  '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
+                  ''+operacion+''
                 ] ).draw(false).node();
 
                 $( rowNode )
@@ -1676,36 +1686,37 @@
 
     });
 
-    $('#tablenota tbody').on( 'click', 'i.zmdi-delete', function () {
-      var padre=$(this).parents('tr');
-      var token = $('input:hidden[name=_token]').val();
-      var id = $(this).closest('tr').attr('id');
-      var route = route_eliminar_nota+id;
-      swal({   
-          title: "Desea eliminar la nota?",   
-          text: "Confirmar eliminación!",   
-          type: "warning",   
-          showCancelButton: true,   
-          confirmButtonColor: "#DD6B55",   
-          confirmButtonText: "Eliminar!",  
-          cancelButtonText: "Cancelar",         
-          closeOnConfirm: true 
-      }, function(isConfirm){   
-      if (isConfirm) {
-          procesando();
-          $.ajax({
-               url: route,
-               headers: {'X-CSRF-TOKEN': token},
-               type: 'POST',
-               dataType: 'json',                
-              success: function (data) {
-                if(data.status=='OK'){
+  $('#tablenota tbody').on( 'click', 'i.zmdi-delete', function () {
+    var padre=$(this).parents('tr');
+    var token = $('input:hidden[name=_token]').val();
+    var id = $(this).closest('tr').attr('id');
+    var route = route_eliminar_nota+id;
+    swal({   
+        title: "Desea eliminar la nota?",   
+        text: "Confirmar eliminación!",   
+        type: "warning",   
+        showCancelButton: true,   
+        confirmButtonColor: "#DD6B55",   
+        confirmButtonText: "Eliminar!",  
+        cancelButtonText: "Cancelar",         
+        closeOnConfirm: true 
+    }, function(isConfirm){   
+    if (isConfirm) {
+        procesando();
+        $.ajax({
+             url: route,
+             headers: {'X-CSRF-TOKEN': token},
+             type: 'POST',
+             dataType: 'json',                
+            success: function (data) {
+              if(data.status=='OK'){
 
-                  swal("Hecho!","Eliminado con éxito!","success");
-                  n.row($(padre))
-                    .remove()
-                    .draw();
+                swal("Hecho!","Eliminado con éxito!","success");
+                n.row($(padre))
+                  .remove()
+                  .draw();
 
+                if(!data.boolean_visto){
                   cantidad_notas = parseInt($('.nota_cantidad').text())
                   cantidad_notas--;
 
@@ -1714,25 +1725,79 @@
                   if(cantidad_notas == 0){
                     $('.nota_cantidad').addClass('nota_vacia')
                   }
-                  
-                  finprocesado();
-                             
-                }else{
-                  swal(
-                    'Solicitud no procesada',
-                    'Ha ocurrido un error, intente nuevamente por favor',
-                    'error'
-                  );
-                  finprocesado();
                 }
-              },
-              error:function (xhr, ajaxOptions, thrownError){
-                swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+                
+                finprocesado();
+                           
+              }else{
+                swal(
+                  'Solicitud no procesada',
+                  'Ha ocurrido un error, intente nuevamente por favor',
+                  'error'
+                );
+                finprocesado();
               }
-            })
+            },
+            error:function (xhr, ajaxOptions, thrownError){
+              swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+            }
+          })
+        }
+      });   
+    });
+
+  $('#tablenota tbody').on( 'click', 'input[type="checkbox"]', function () {
+    var padre=$(this).parents('tr');
+    var token = $('input:hidden[name=_token]').val();
+    var id = $(this).closest('tr').attr('id');
+
+    if($(this).is(':checked')){
+      boolean_visto = 1
+    }else{
+      boolean_visto = 0
+    }
+
+    var route = route_actualizar_nota
+
+    $.ajax({
+       url: route,
+       headers: {'X-CSRF-TOKEN': token},
+       type: 'POST',
+       dataType: 'json', 
+       data: "&id="+id+"&boolean_visto="+boolean_visto,               
+      success: function (data) {
+        if(data.status=='OK'){
+
+          cantidad_notas = parseInt($('.nota_cantidad').text())
+
+          if(boolean_visto){
+            cantidad_notas--;
+          }else{
+            cantidad_notas++;
           }
-        });   
-      });
+
+          $('.nota_cantidad').text(cantidad_notas)
+
+          if(cantidad_notas == 0){
+            $('.nota_cantidad').addClass('nota_vacia')
+          }else{
+            $('.nota_cantidad').removeClass('nota_vacia')
+          }
+
+        }else{
+          swal(
+            'Solicitud no procesada',
+            'Ha ocurrido un error, intente nuevamente por favor',
+            'error'
+          );
+          finprocesado();
+        }
+      },
+      error:function (xhr, ajaxOptions, thrownError){
+        swal('Solicitud no procesada','Ha ocurrido un error, intente nuevamente por favor','error');
+      }
+    })
+  });   
 
   $(".dismiss").click(function(){
       procesando()
@@ -1746,7 +1811,7 @@
         var nMensaje="¡Excelente! Los cambios se han actualizado satisfactoriamente";
         notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
 
-        $('.modal').modal('hide');
+        $('#modalNota').modal('hide');
         finprocesado();
       }, 3000);
     });

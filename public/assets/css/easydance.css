@@ -2125,3 +2125,7 @@ a{
 .nota_vacia{
     background: #5e5e5e !important;
 }
+
+.mini-checkbox{
+    width: 30px;
+}
