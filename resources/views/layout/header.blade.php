@@ -125,7 +125,7 @@
                             @if($notificaciones_pendientes > 0)
                                 <i class="tmn-counts" id="numero_actual">{{$notificaciones_pendientes}}</i>
                             @else
-                                <i class="tmn-counts" id="numero_actual" style="background: #5e5e5e">{{$notificaciones_pendientes}}</i>
+                                <i class="tmn-counts empty_count" id="numero_actual">{{$notificaciones_pendientes}}</i>
                             @endif
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg pull-right">

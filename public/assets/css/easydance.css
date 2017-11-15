@@ -2095,3 +2095,33 @@ a{
 .sub-menu > a::before, .sub-menu > a::after {
     top: 6px;
 }
+
+.nota_menu {
+    position: relative;
+    display: inline-block;
+    margin: 0 1px;
+}
+
+.nota_menu > a {
+    color: #fff;
+    display: block;
+    text-align: center;
+    z-index: 1;
+    position: relative;
+}
+
+.nota_menu > a > .nota_cantidad {
+    position: absolute;
+    font-style: normal;
+    background: #f44336;
+    padding: 1px 5px;
+    border-radius: 2px;
+    right: -4px;
+    top: -3px;
+    font-size: 10px;
+    line-height: 15px;
+}
+
+.nota_vacia{
+    background: #5e5e5e !important;
+}

@@ -48,6 +48,8 @@ use App\HorarioBloqueado;
 
 use App\ItemsFacturaProforma;
 
+use App\NotaAdministrativa;
+
 use Carbon\Carbon;
 
 use DB;
@@ -1519,7 +1521,12 @@ class AsistenciaController extends BaseController
           $array_items[] = array(['id' => $item_factura->id, 'item_id' => $item_factura->item_id , 'nombre' => $item_factura->nombre , 'tipo' => $item_factura->tipo, 'cantidad' => $item_factura->cantidad, 'precio_neto' => $item_factura->precio_neto, 'impuesto' => intval($item_factura->impuesto), 'importe_neto' => $item_factura->importe_neto, 'estatus' =>$estatus, 'fecha_vencimiento' => $item_factura->fecha_vencimiento]);
       }
 
-		  return response()->json(['status' => 'OK', 'clases_grupales'=>$arrayClases, 'deuda' => $deuda, 'inscripciones' => $array, 'credenciales' => $credenciales, 'estatus' => $estatus, 'items' => $array_items, 200]);
+      $notas_administrativas = NotaAdministrativa::join('users', 'notas_administrativas.usuario_id', '=', 'users.id')
+            ->select('notas_administrativas.*', 'users.nombre as usuario')
+            ->where('notas_administrativas.alumno_id',$request->id)
+        ->get();
+
+		  return response()->json(['status' => 'OK', 'clases_grupales'=>$arrayClases, 'deuda' => $deuda, 'inscripciones' => $array, 'credenciales' => $credenciales, 'estatus' => $estatus, 'items' => $array_items, 'notas_administrativas' => $notas_administrativas, 200]);
     	
     }
 

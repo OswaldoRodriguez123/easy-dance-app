@@ -2989,6 +2989,8 @@ class AlumnoController extends BaseController
 
                 $usuario = User::find(Auth::user()->id);
                 $usuario = $usuario->nombre . ' ' . $usuario->apellido;
+
+                $nota_administrativa = NotaAdministrativa::find($nota_administrativa->id);
                
                 return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'nota_administrativa' => $nota_administrativa, 'usuario' => $usuario, 200]);
             }else{
@@ -3010,7 +3012,11 @@ class AlumnoController extends BaseController
 
     public function consultar_notas_administrativas($id)
     {
-        $notas_administrativas = NotaAdministrativa::where('alumno_id',$id)->get();
+        $notas_administrativas = NotaAdministrativa::join('users', 'notas_administrativas.usuario_id', '=', 'users.id')
+            ->select('notas_administrativas.*', 'users.nombre as usuario')
+            ->where('notas_administrativas.alumno_id',$id)
+        ->get();
+
         return response()->json(['status' => 'OK', 'notas_administrativas' => $notas_administrativas, 200]);
     }
 }

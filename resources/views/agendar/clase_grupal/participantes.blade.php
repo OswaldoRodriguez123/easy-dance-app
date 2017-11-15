@@ -998,7 +998,7 @@
 
             <div class="modal fade" id="modalNota" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
+                    <div class="modal-content" id="modalNota-content">
                         <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
                             <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Nota Administrativa<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
                         </div>
@@ -1041,11 +1041,11 @@
                               <table class="table table-striped table-bordered text-center " id="tablenota" >
                               <thead>
                                   <tr>
-                                    <th class="text-center" data-column-id="usuario"></th>
-                                    <th class="text-center" data-column-id="fecha"></th>
-                                    <th class="text-center" data-column-id="hora"></th>
-                                    <th class="text-center" data-column-id="descripcion"></th>
-                                    <th class="text-center" data-column-id="operacion"></th>
+                                    <th class="text-center" data-column-id="usuario">Usuario</th>
+                                    <th class="text-center" data-column-id="fecha">Fecha</th>
+                                    <th class="text-center" data-column-id="hora">Hora</th>
+                                    <th class="text-center" data-column-id="descripcion">Descripción</th>
+                                    <th class="text-center" data-column-id="operacion">Acciones</th>
                                   </tr>
                               </thead>
                               <tbody>
@@ -1646,7 +1646,7 @@
           order: [[1, 'desc'],[2, 'desc']],
           fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
             $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).addClass( "text-center" );
-            $('td:eq(0),td:eq(1)', nRow).addClass( "disabled" );
+            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).addClass( "disabled" );
           },
           language: {
                           processing:     "Procesando ...",
@@ -2760,6 +2760,7 @@
         $(".nota_administrativa").on('click', function(){
 
           procesando();
+          n.clear().draw();
 
           var alumno_id = $(this).closest('tr').data('alumno_id');
           $('#nota_administrativa_alumno_id').val(alumno_id);
@@ -2775,22 +2776,43 @@
             success:function(respuesta){
               setTimeout(function(){ 
 
-                $('[data-toggle="popover"]').popover(); 
-
                 $.each(respuesta.notas_administrativas, function (index, array) {
+
+                  var usuario = array.usuario;
+                  var fecha = array.fecha;
+                  var hora = array.hora;
+                  var descripcion = array.descripcion;
+
+                  var contenido = 'Descripcion: ' + descripcion + '<br>'
+
+                  if(descripcion.length > 30){
+                      descripcion = descripcion.substr(0, 30) + "..."
+                  }
 
                   var rowId=array.id;
                   var rowNode=n.row.add( [
-                    ''+array.descripcion+'',
+                    ''+usuario+'',
+                    ''+fecha+'',
+                    ''+hora+'',
+                    ''+descripcion+'',
                     '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                   ] ).draw(false).node();
 
                   $( rowNode )
                     .attr('id',rowId)
-                    .addClass('disabled');
+                    .attr('data-trigger','hover')
+                    .attr('data-toggle','popover')
+                    .attr('data-placement','top')
+                    .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;&nbsp;')
+                    .attr('data-html','true')
+                    .attr('data-container','#modalNota-content')
+                    .attr('title','')
+                    .attr('data-content',contenido);
 
                 });
                   
+                $('[data-toggle="popover"]').popover();
+
                 finprocesado();
                 $('#modalNota').modal('show');
       
@@ -3604,6 +3626,12 @@
                 var hora = respuesta.nota_administrativa.hora;
                 var descripcion = respuesta.nota_administrativa.descripcion;
 
+                var contenido = 'Descripcion: ' + descripcion + '<br>'
+
+                if(descripcion.length > 30){
+                    descripcion = descripcion.substr(0, 30) + "..."
+                }
+
                 var rowId=respuesta.nota_administrativa.id;
                 var rowNode=n.row.add( [
                   ''+usuario+'',
@@ -3615,7 +3643,17 @@
 
                 $( rowNode )
                   .attr('id',rowId)
+                  .attr('data-trigger','hover')
+                  .attr('data-toggle','popover')
+                  .attr('data-placement','top')
+                  .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;&nbsp;')
+                  .attr('data-html','true')
+                  .attr('data-container','#modalNota-content')
+                  .attr('title','')
+                  .attr('data-content',contenido)
                   .addClass('seleccion');
+
+                $('[data-toggle="popover"]').popover();
 
                 $("#agregar_nota")[0].reset();
 
