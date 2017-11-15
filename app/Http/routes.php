@@ -1365,6 +1365,8 @@
 			Route::get('programacion/{id}','ProgresoController@programacion');
 			Route::get('/certificados','ProgresoController@certificados');
 			Route::get('/certificado/{hash_id}','ProgresoController@certificado');
+			Route::get('/validar-certificado','ProgresoController@validar_certificado');
+			Route::post('/validar-certificado/{hash_id}','ProgresoController@validar');
 
 			//EVALUACIONES
 			

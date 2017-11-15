@@ -110,7 +110,7 @@
                 <div class="card-body p-b-20">
                     <div class="row p-20">
                         <div class="col-sm-12 f-20 p-10">
-                            NOTA: Si desea puede verificar la autenticidad de este certificado a través de <b><a href="{{url('/')}}/verificar-certificado" target="_blank">{{url('/')}}/verificar-certificado</a></b> e ingresando el siguiente código
+                            NOTA: Si desea puede verificar la autenticidad de este certificado a través de <b><a href="{{url('/')}}/validar-certificado" target="_blank">{{url('/')}}/verificar-certificado</a></b> e ingresando el siguiente código
                             de validación: {{$certificado->hash_id}}
 
                         </div>

@@ -536,6 +536,26 @@ class ProgresoController extends BaseController {
         }
     }
 
+    public function validar_certificado()
+    {
+
+        return view('progreso.validar');
+      
+    }
+
+    public function validar($hash_id)
+    {
+
+        $certificado = Certificado::where('hash_id', $hash_id)->first();
+
+        if($certificado){
+            return response()->json(['status' => 'OK', 200]);
+        }else{
+            return response()->json(['status' => 'ERROR'],422);
+        }
+    }
+
+
     public function certificado($hash_id)
     {
 
