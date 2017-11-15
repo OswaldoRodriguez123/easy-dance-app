@@ -897,6 +897,8 @@
                           
                           @foreach($clases_grupales as $clase_grupal)
 
+                            <?php $clase_grupal_id = $clase_grupal['id'] ?>
+
                             <div class="col-sm-12">
 
                               <span class="f-18 opaco-0-8 clase_grupal clase-grupal-{{$clase_grupal['inscripcion_id']}} c-morado pointer f-700" id="{{$clase_grupal['inscripcion_id']}}" data-costo="{{$clase_grupal['costo_mensualidad']}}" data-fecha="{{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal['fecha_pago'])->format('d/m/Y')}}">{{$clase_grupal['nombre']}} -  {{$clase_grupal['dias_de_semana']}} -  Desde: {{$clase_grupal['hora_inicio']}}  /   Hasta: {{$clase_grupal['hora_final']}}  -  {{$clase_grupal['instructor_nombre']}} {{$clase_grupal['instructor_apellido']}} - Fecha de pago: <span id="fecha_pago_{{$clase_grupal['inscripcion_id']}}"> {{ \Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal['fecha_pago'])->format('d/m/Y')}} - Dias de vencimiento: {{\Carbon\Carbon::createFromFormat('Y-m-d',$clase_grupal['fecha_pago'])->diffInDays(\Carbon\Carbon::now())}}</span> - Talla: <span class = "talla_franela-{{$clase_grupal['inscripcion_id']}}">{{$clase_grupal['talla_franela']}}</span></span> 
@@ -915,6 +917,8 @@
                                   @endif
                                 @endif
                               @endif
+
+                              <a href="{{url('/')}}/agendar/clases-grupales/detalle/{{$clase_grupal_id}}" target="_blank" class="c-azul">Ver Clase Grupal</a>
 
 
 
