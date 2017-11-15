@@ -115,7 +115,6 @@
                             <table class="table table-striped table-bordered text-center " id="tablelistar" >
                             <thead>
                                 <tr>
-                                    <th class="text-center" data-column-id="organizador"></th>
                                     <th class="text-center" data-column-id="nombre">Staff</th>
                                     <th class="text-center" data-column-id="instructor">Supervisor</th>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
@@ -131,7 +130,6 @@
                             @foreach ($evaluaciones as $evaluacion)
                                 <?php $id = $evaluacion['id']; ?>
                                 <tr id="{{$id}}" class="seleccion">
-                                    <td class="text-center previa"><span style="display: none">{{$id}}</span></td>
                                     <td class="text-center previa">{{$evaluacion['nombre']}} {{$evaluacion['apellido']}}</td>
                                     <td class="text-center previa">{{$evaluacion['supervisor']}}</td>
                                     <td class="text-center previa">{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$evaluacion['created_at'])->format('d-m-Y')}}</td>
@@ -181,7 +179,7 @@
         processing: true,
         serverSide: false,
         pageLength: 25,   
-        order: [[0, 'desc']],
+        order: [[2, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
