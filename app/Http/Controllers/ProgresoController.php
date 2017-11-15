@@ -486,7 +486,7 @@ class ProgresoController extends BaseController {
             $usuario_id = Session::get('easydance_usuario_id');
             $usuario_id = 797;
 
-            $basico = Certificado::where('nivel', 'BASICO')
+            $basico = Certificado::where('nivel', 1)
                 ->where('alumno_id', $usuario_id)
             ->first();
 
@@ -497,7 +497,7 @@ class ProgresoController extends BaseController {
                 $basico_id = '';
             }
 
-            $intermedio = Certificado::where('nivel', 'INTERMEDIO')
+            $intermedio = Certificado::where('nivel', 2)
                 ->where('alumno_id', $usuario_id)
             ->first();
 
@@ -508,7 +508,7 @@ class ProgresoController extends BaseController {
                 $intermedio_id = '';
             }
 
-            $avanzado = Certificado::where('nivel', 'AVANZADO')
+            $avanzado = Certificado::where('nivel', 3)
                 ->where('alumno_id', $usuario_id)
             ->first();
 
@@ -519,7 +519,7 @@ class ProgresoController extends BaseController {
                 $avanzado_id = '';
             }
 
-            $master = Certificado::where('nivel', 'MASTER')
+            $master = Certificado::where('nivel', 4)
                 ->where('alumno_id', $usuario_id)
             ->first();
 

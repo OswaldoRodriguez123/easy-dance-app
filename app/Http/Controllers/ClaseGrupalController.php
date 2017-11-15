@@ -44,6 +44,7 @@ use App\User;
 use App\Promocion;
 use App\LlamadaAlumno;
 use App\Tipologia;
+use App\Certificado;
 use PulkitJalan\GeoIP\GeoIP;
 
 
@@ -3201,100 +3202,192 @@ class ClaseGrupalController extends BaseController {
     {
         $id = $request->id;
 
-        $clase_1 = Progreso::where('clase_grupal_id',$id)->where('tipo',1)->first();
-        $clase_2 = Progreso::where('clase_grupal_id',$id)->where('tipo',2)->first();
-        $clase_3 = Progreso::where('clase_grupal_id',$id)->where('tipo',3)->first();
-        $clase_4 = Progreso::where('clase_grupal_id',$id)->where('tipo',4)->first();
-        $clase_5 = Progreso::where('clase_grupal_id',$id)->where('tipo',5)->first();
-        $clase_6 = Progreso::where('clase_grupal_id',$id)->where('tipo',6)->first();
-        $clase_7 = Progreso::where('clase_grupal_id',$id)->where('tipo',7)->first();
-        $clase_8 = Progreso::where('clase_grupal_id',$id)->where('tipo',8)->first();
-        $clase_9 = Progreso::where('clase_grupal_id',$id)->where('tipo',9)->first();
-        $clase_10 = Progreso::where('clase_grupal_id',$id)->where('tipo',10)->first();
-        $clase_11 = Progreso::where('clase_grupal_id',$id)->where('tipo',11)->first();
-        $clase_12 = Progreso::where('clase_grupal_id',$id)->where('tipo',12)->first();
+        $inscripciones = InscripcionClaseGrupal::where('clase_grupal_id',$id)->get();
 
+        $nivel_1 = Progreso::where('clase_grupal_id',$id)->where('tipo',1)->first();
+        $nivel_2 = Progreso::where('clase_grupal_id',$id)->where('tipo',2)->first();
+        $nivel_3 = Progreso::where('clase_grupal_id',$id)->where('tipo',3)->first();
+        $nivel_4 = Progreso::where('clase_grupal_id',$id)->where('tipo',4)->first();
+        $nivel_5 = Progreso::where('clase_grupal_id',$id)->where('tipo',5)->first();
+        $nivel_6 = Progreso::where('clase_grupal_id',$id)->where('tipo',6)->first();
+        $nivel_7 = Progreso::where('clase_grupal_id',$id)->where('tipo',7)->first();
+        $nivel_8 = Progreso::where('clase_grupal_id',$id)->where('tipo',8)->first();
+        $nivel_9 = Progreso::where('clase_grupal_id',$id)->where('tipo',9)->first();
+        $nivel_10 = Progreso::where('clase_grupal_id',$id)->where('tipo',10)->first();
+        $nivel_11 = Progreso::where('clase_grupal_id',$id)->where('tipo',11)->first();
+        $nivel_12 = Progreso::where('clase_grupal_id',$id)->where('tipo',12)->first();
 
+        $nivel_1->clase_1 = $request->b1c1;
+        $nivel_1->clase_2 = $request->b1c2;
+        $nivel_1->clase_3 = $request->b1c3;
+        $nivel_1->clase_4 = $request->b1c4;
+        $nivel_1->save();
 
-        $clase_1->clase_1 = $request->b1c1;
-        $clase_1->clase_2 = $request->b1c2;
-        $clase_1->clase_3 = $request->b1c3;
-        $clase_1->clase_4 = $request->b1c4;
-        $clase_1->save();
+        $nivel_2->clase_1 = $request->b2c1;
+        $nivel_2->clase_2 = $request->b2c2;
+        $nivel_2->clase_3 = $request->b2c3;
+        $nivel_2->clase_4 = $request->b2c4;
+        $nivel_2->save();
 
+        $nivel_3->clase_1 = $request->b3c1;
+        $nivel_3->clase_2 = $request->b3c2;
+        $nivel_3->clase_3 = $request->b3c3;
+        $nivel_3->clase_4 = $request->b3c4;
+        $nivel_3->save();
 
-        $clase_2->clase_1 = $request->b2c1;
-        $clase_2->clase_2 = $request->b2c2;
-        $clase_2->clase_3 = $request->b2c3;
-        $clase_2->clase_4 = $request->b2c4;
-        $clase_2->save();
+        if($request->b3c4){
+            foreach($inscripciones as $inscripcion){
 
+                $certificado = Certificado::where('nivel',1)->where('alumno_id',$inscripcion->alumno_id)->first();
 
-        $clase_3->clase_1 = $request->b3c1;
-        $clase_3->clase_2 = $request->b3c2;
-        $clase_3->clase_3 = $request->b3c3;
-        $clase_3->clase_4 = $request->b3c4;
-        $clase_3->save();
+                if(!$certificado){
 
-        $clase_4->clase_1 = $request->i1c1;
-        $clase_4->clase_2 = $request->i1c2;
-        $clase_4->clase_3 = $request->i1c3;
-        $clase_4->clase_4 = $request->i1c4;
-        $clase_4->save();
+                    do{
+                        $hash_id = str_random(8);
+                        $find = Certificado::where('hash_id', $hash_id)->first();
+                    }while ($find);
 
+                    $certificado = new Certificado;
+                    $certificado->alumno_id = $inscripcion->alumno_id;
+                    $certificado->clase_grupal_id = $id;
+                    $certificado->nivel = 1;
+                    $certificado->fecha = Carbon::now();
+                    $certificado->hora = Carbon::now();
+                    $certificado->hash_id = $hash_id;
 
-        $clase_5->clase_1 = $request->i2c1;
-        $clase_5->clase_2 = $request->i2c2;
-        $clase_5->clase_3 = $request->i2c3;
-        $clase_5->clase_4 = $request->i2c4;
-        $clase_5->save();
+                    $certificado->save();
+                }
+            }
+        }
 
+        $nivel_4->clase_1 = $request->i1c1;
+        $nivel_4->clase_2 = $request->i1c2;
+        $nivel_4->clase_3 = $request->i1c3;
+        $nivel_4->clase_4 = $request->i1c4;
+        $nivel_4->save();
 
-        $clase_6->clase_1 = $request->i3c1;
-        $clase_6->clase_2 = $request->i3c2;
-        $clase_6->clase_3 = $request->i3c3;
-        $clase_6->clase_4 = $request->i3c4;
-        $clase_6->save();
+        $nivel_5->clase_1 = $request->i2c1;
+        $nivel_5->clase_2 = $request->i2c2;
+        $nivel_5->clase_3 = $request->i2c3;
+        $nivel_5->clase_4 = $request->i2c4;
+        $nivel_5->save();
 
+        $nivel_6->clase_1 = $request->i3c1;
+        $nivel_6->clase_2 = $request->i3c2;
+        $nivel_6->clase_3 = $request->i3c3;
+        $nivel_6->clase_4 = $request->i3c4;
+        $nivel_6->save();
 
+        if($request->i3c4){
+            foreach($inscripciones as $inscripcion){
 
-        $clase_7->clase_1 = $request->a1c1;
-        $clase_7->clase_2 = $request->a1c2;
-        $clase_7->clase_3 = $request->a1c3;
-        $clase_7->clase_4 = $request->a1c4;
-        $clase_7->save();
+                $certificado = Certificado::where('nivel',2)->where('alumno_id',$inscripcion->alumno_id)->first();
 
+                if(!$certificado){
 
-        $clase_8->clase_1 = $request->a2c1;
-        $clase_8->clase_2 = $request->a2c2;
-        $clase_8->clase_3 = $request->a2c3;
-        $clase_8->clase_4 = $request->a2c4;
-        $clase_8->save();
+                    do{
+                        $hash_id = str_random(8);
+                        $find = Certificado::where('hash_id', $hash_id)->first();
+                    }while ($find);
 
+                    $certificado = new Certificado;
+                    $certificado->alumno_id = $inscripcion->alumno_id;
+                    $certificado->clase_grupal_id = $id;
+                    $certificado->nivel = 2;
+                    $certificado->fecha = Carbon::now();
+                    $certificado->hora = Carbon::now();
+                    $certificado->hash_id = $hash_id;
 
-        $clase_9->clase_1 = $request->a3c1;
-        $clase_9->clase_2 = $request->a3c2;
-        $clase_9->clase_3 = $request->a3c3;
-        $clase_9->clase_4 = $request->a3c4;
-        $clase_9->save();
+                    $certificado->save();
+                }
+            }
+        }
 
-        $clase_10->clase_1 = $request->m1c1;
-        $clase_10->clase_2 = $request->m1c2;
-        $clase_10->clase_3 = $request->m1c3;
-        $clase_10->clase_4 = $request->m1c4;
-        $clase_10->save();
+        $nivel_7->clase_1 = $request->a1c1;
+        $nivel_7->clase_2 = $request->a1c2;
+        $nivel_7->clase_3 = $request->a1c3;
+        $nivel_7->clase_4 = $request->a1c4;
+        $nivel_7->save();
 
-        $clase_11->clase_1 = $request->m2c1;
-        $clase_11->clase_2 = $request->m2c2;
-        $clase_11->clase_3 = $request->m2c3;
-        $clase_11->clase_4 = $request->m2c4;
-        $clase_11->save();
+        $nivel_8->clase_1 = $request->a2c1;
+        $nivel_8->clase_2 = $request->a2c2;
+        $nivel_8->clase_3 = $request->a2c3;
+        $nivel_8->clase_4 = $request->a2c4;
+        $nivel_8->save();
 
-        $clase_12->clase_1 = $request->m3c1;
-        $clase_12->clase_2 = $request->m3c2;
-        $clase_12->clase_3 = $request->m3c3;
-        $clase_12->clase_4 = $request->m3c4;
-        $clase_12->save();
+        $nivel_9->clase_1 = $request->a3c1;
+        $nivel_9->clase_2 = $request->a3c2;
+        $nivel_9->clase_3 = $request->a3c3;
+        $nivel_9->clase_4 = $request->a3c4;
+        $nivel_9->save();
+
+        if($request->a3c4){
+            foreach($inscripciones as $inscripcion){
+
+                $certificado = Certificado::where('nivel',3)->where('alumno_id',$inscripcion->alumno_id)->first();
+
+                if(!$certificado){
+
+                    do{
+                        $hash_id = str_random(8);
+                        $find = Certificado::where('hash_id', $hash_id)->first();
+                    }while ($find);
+
+                    $certificado = new Certificado;
+                    $certificado->alumno_id = $inscripcion->alumno_id;
+                    $certificado->clase_grupal_id = $id;
+                    $certificado->nivel = 3;
+                    $certificado->fecha = Carbon::now();
+                    $certificado->hora = Carbon::now();
+                    $certificado->hash_id = $hash_id;
+
+                    $certificado->save();
+                }
+            }
+        }
+
+        $nivel_10->clase_1 = $request->m1c1;
+        $nivel_10->clase_2 = $request->m1c2;
+        $nivel_10->clase_3 = $request->m1c3;
+        $nivel_10->clase_4 = $request->m1c4;
+        $nivel_10->save();
+
+        $nivel_11->clase_1 = $request->m2c1;
+        $nivel_11->clase_2 = $request->m2c2;
+        $nivel_11->clase_3 = $request->m2c3;
+        $nivel_11->clase_4 = $request->m2c4;
+        $nivel_11->save();
+
+        $nivel_12->clase_1 = $request->m3c1;
+        $nivel_12->clase_2 = $request->m3c2;
+        $nivel_12->clase_3 = $request->m3c3;
+        $nivel_12->clase_4 = $request->m3c4;
+        $nivel_12->save();
+
+        if($request->m3c4){
+            foreach($inscripciones as $inscripcion){
+
+                $certificado = Certificado::where('nivel',4)->where('alumno_id',$inscripcion->alumno_id)->first();
+
+                if(!$certificado){
+
+                    do{
+                        $hash_id = str_random(8);
+                        $find = Certificado::where('hash_id', $hash_id)->first();
+                    }while ($find);
+
+                    $certificado = new Certificado;
+                    $certificado->alumno_id = $inscripcion->alumno_id;
+                    $certificado->clase_grupal_id = $id;
+                    $certificado->nivel = 4;
+                    $certificado->fecha = Carbon::now();
+                    $certificado->hora = Carbon::now();
+                    $certificado->hash_id = $hash_id;
+
+                    $certificado->save();
+                }
+            }
+        }
 
         return response()->json(['mensaje' => '¡Excelente! El Alumno se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
     

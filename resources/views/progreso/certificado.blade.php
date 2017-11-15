@@ -19,15 +19,15 @@
     <section id="content">
         <?php
 
-            if($certificado->nivel == 'BASICO'){
+            if($certificado->nivel == 1){
                 $nivel = 'BÁSICO';
                 $border = '#4C7C40';
 
-            }else if($certificado->nivel == 'INTERMEDIO'){
+            }else if($certificado->nivel == 2){
                 $nivel = 'INTERMEDIO';
                 $border = '#1E3E77';
 
-            }else if($certificado->nivel == 'AVANZADO'){
+            }else if($certificado->nivel == 3){
                 $nivel = 'AVANZADO';
                 $border = '#B3602A';
 
