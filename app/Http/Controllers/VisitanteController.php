@@ -788,6 +788,7 @@ class VisitanteController extends BaseController {
   
         $visitantes = Visitante::select('nombre','apellido','correo')
             ->where('academia_id',Auth::user()->academia_id)
+            ->orderBy('nombre')
         ->get();
 
         Excel::create("Visitantes", function ($excel) use ($visitantes) {
