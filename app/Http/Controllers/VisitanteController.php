@@ -24,6 +24,7 @@ use Mail;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use PulkitJalan\GeoIP\GeoIP;
+use Maatwebsite\Excel\Facades\Excel;
 
 class VisitanteController extends BaseController {
 
@@ -781,6 +782,23 @@ class VisitanteController extends BaseController {
         $llamada->delete();
       
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+    }
+
+    public function exportarVisitantes(){
+  
+        $visitantes = Visitante::select('nombre','apellido','correo')
+            ->where('academia_id',Auth::user()->academia_id)
+        ->get();
+
+        Excel::create("FileName", function ($excel) use ($visitantes) {
+            $excel->setTitle("Visitantes Presenciales");
+            $excel->sheet("Visitantes Presenciales", function ($sheet) use ($visitantes) {
+                $sheet->fromArray($visitantes, null, 'A2', null, false);
+                $sheet->row(1, array("nombre", "apellido", "correo"));
+            });
+        })->download('xls');
+        
+        return back();
     }
 
 }

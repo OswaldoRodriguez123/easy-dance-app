@@ -728,6 +728,8 @@
 			Route::put('participante/visitante/update/ocupacion','VisitanteController@updateOcupacion');
 			Route::put('participante/visitante/update/observacion','VisitanteController@updateObservacion');
 
+			Route::get('participante/visitante/exportar', 'VisitanteController@exportarVisitantes');
+
 			//ENCUESTAS 
 
 			Route::get('encuestas', 'VisitanteController@encuestas');
