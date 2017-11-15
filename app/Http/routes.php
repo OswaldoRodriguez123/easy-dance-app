@@ -241,6 +241,7 @@
 			Route::get('supervisiones/evaluar/{id}', 'SupervisionController@evaluar');
 			Route::get('supervisiones/agenda/{id}', 'SupervisionController@agenda');
 			Route::post('supervisiones/evaluar', 'SupervisionController@storeEvaluacion');
+			Route::get('supervisiones/evaluaciones', 'SupervisionController@evaluaciones');
 			Route::get('supervisiones/evaluaciones/{id}', 'SupervisionController@evaluaciones_por_supervision');
 			Route::get('supervisiones/evaluaciones', 'SupervisionController@evaluaciones');
 			Route::get('supervisiones/evaluaciones/detalle/{id}', 'SupervisionController@getDetalle');

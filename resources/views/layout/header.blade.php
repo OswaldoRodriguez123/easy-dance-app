@@ -77,6 +77,11 @@
                                 <li class="hidden-xs">
                                     <a href="{{url('mensajes')}}"><i class="zmdi zmdi-smartphone f-16"></i> Enviar Mensaje</a>
                                 </li>
+                                @if($usuario_tipo == 1 || $usuario_tipo == 5)
+                                    <li class="hidden-xs">
+                                        <a href="{{url('supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> Generar Supervisiones</a>
+                                    </li>
+                                @endif
                                 <li class="hidden-xs">
                                     <a href="{{url('agendar/citas')}}"><i class="zmdi zmdi-calendar-check f-16"></i> Generar Citas</a>
                                 </li>
@@ -282,7 +287,7 @@
                                             @if($usuario_tipo == 1 || $usuario_tipo == 5)
 
                                                 <li>
-                                                    <a href="{{url('supervisiones')}}"><i class="zmdi icon_f-staff f-16"></i> <span class="m-l-5">Supervisiones</span></a>
+                                                    <a href="{{url('supervisiones/evaluaciones')}}"><i class="zmdi icon_f-staff f-16"></i> <span class="m-l-5">Supervisiones</span></a>
                                                 </li>
 
                                                 <li class="hidden-xs">
