@@ -17,11 +17,13 @@ use App\Examen;
 use App\Instructor;
 use App\Evaluacion;
 use App\DetalleEvaluacion;
+use App\Certificado;
 use Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use Illuminate\Support\Facades\Session;
+
 
 class ProgresoController extends BaseController {
 
@@ -474,80 +476,78 @@ class ProgresoController extends BaseController {
     
     }
 
-    public function certificado()
+    public function certificados()
     {
 
+        if(Auth::check()){
 
+            $porcentaje = 0;
 
-        $academia = Academia::find(Auth::user()->academia_id);
-        $usuario_id = Session::get('easydance_usuario_id');
+            $usuario_id = Session::get('easydance_usuario_id');
+            $usuario_id = 797;
 
-        return view('progreso.certificado')->with(['certificado' => 'basico.jpg', 'academia' => $academia, 'nivel' => 'BÁSICO']);
+            $basico = Certificado::where('nivel', 'BASICO')
+                ->where('alumno_id', $usuario_id)
+            ->first();
 
-        $id = $_GET['id'];
-        $tipo = $_GET['tipo'];
-
-        $find = InscripcionClaseGrupal::where('clase_grupal_id', $id)->where('alumno_id',$usuario_id)->first();
-
-        if($find){
-
-            $progreso = Progreso::where('clase_grupal_id',$id)->first();
-
-            if($progreso){
-                if($tipo == 1){
-                    $clase = Progreso::where('clase_grupal_id',$id)->where('tipo',3)->first();
-
-                    if($clase){
-
-                        if($clase->clase_4){
-                            return view('progreso.certificado')->with(['certificado' => 'basico.jpg', 'academia' => $academia, 'nivel' => 'BÁSICO']);
-                        }else{
-                            return redirect("/inicio"); 
-                        }
-                    }
-                }else if($tipo == 2){
-                    $clase = Progreso::where('clase_grupal_id',$id)->where('tipo',6)->first();
-
-                    if($clase){
-
-                        if($clase->clase_4){
-                            return view('progreso.certificado')->with(['certificado' => 'intermedio.jpg', 'academia' => $academia, 'nivel' => 'INTERMEDIO']);
-                        }else{
-                            return redirect("/inicio"); 
-                        }
-                    }
-                }
-                else if($tipo == 3){
-                    $clase = Progreso::where('clase_grupal_id',$id)->where('tipo',9)->first();
-
-                    if($clase){
-
-                        if($clase->clase_4){
-                           return view('progreso.certificado')->with(['certificado' => 'avanzado.jpg', 'academia' => $academia, 'nivel' => 'AVANZADO']);
-                        }else{
-                            return redirect("/inicio"); 
-                        }
-                    }
-                }
-                else if($tipo == 4){
-                    $clase = Progreso::where('clase_grupal_id',$id)->where('tipo',12)->first();
-
-                    if($clase){
-
-                        if($clase->clase_4){
-                            return view('progreso.certificado')->with(['certificado' => 'master.jpg', 'academia' => $academia, 'nivel' => 'MASTER']);
-                        }else{
-                            return redirect("/inicio"); 
-                        }
-                    }
-                }else{
-                    return redirect("/inicio"); 
-                }
-                
+            if($basico){
+                $basico_id = $basico->hash_id;
+                $porcentaje += 25;
             }else{
-                return redirect("/inicio"); 
+                $basico_id = '';
             }
 
+            $intermedio = Certificado::where('nivel', 'INTERMEDIO')
+                ->where('alumno_id', $usuario_id)
+            ->first();
+
+            if($intermedio){
+                $intermedio_id = $intermedio->hash_id;
+                $porcentaje += 25;
+            }else{
+                $intermedio_id = '';
+            }
+
+            $avanzado = Certificado::where('nivel', 'AVANZADO')
+                ->where('alumno_id', $usuario_id)
+            ->first();
+
+            if($avanzado){
+                $avanzado_id = $avanzado->hash_id;
+                $porcentaje += 25;
+            }else{
+                $avanzado_id = '';
+            }
+
+            $master = Certificado::where('nivel', 'MASTER')
+                ->where('alumno_id', $usuario_id)
+            ->first();
+
+            if($master){
+                $master_id = $master->hash_id;
+                $porcentaje += 25;
+            }else{
+                $master_id = '';
+            }
+
+            return view('progreso.certificados')->with(['porcentaje' => $porcentaje, 'basico' => $basico_id, 'intermedio' => $intermedio_id, 'avanzado' => $avanzado_id, 'master' => $master_id]);
+        }else{
+            return redirect("/inicio"); 
+        }
+    }
+
+    public function certificado($hash_id)
+    {
+
+        $certificado = Certificado::join('alumnos', 'certificados.alumno_id', '=', 'alumnos.id')
+            ->join('academias', 'alumnos.academia_id', '=', 'academias.id')
+            ->select('certificados.*', 'alumnos.nombre', 'alumnos.apellido', 'academias.nombre as academia', 'academias.imagen')
+            ->where('certificados.hash_id', $hash_id)
+        ->first();
+
+        if($certificado){
+            $fecha = Carbon::createFromFormat('Y-m-d', $certificado->fecha)->format('d-m-Y');
+            return view('progreso.certificado')->with(['certificado' => $certificado, 'fecha' => $fecha]);
         }else{
             return redirect("/inicio"); 
         }

@@ -82,6 +82,10 @@
                                            @endif
                                         @endif
 
+                                        <br><br>
+
+                                        <b class="f-16"><a href="{{url('/')}}/certificados"> Ver Certificados</a></b>
+
                                     </div>
 
                                     <div class="col-sm-4">
@@ -89,7 +93,7 @@
                                         <span id="titulo_1" class="f-14 opaco-0-8 f-700"> TITULO 1</span> <span class="pull-right f-14 opaco-0-8 f-700"><span id="barra_1_span">0</span> % COMPLETADA</span>
 
                                                                             
-                                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43; height: 25px";>
+                                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43; height: 20px";>
                                             <div id="barra_1" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
                                         </div>
 
@@ -110,7 +114,7 @@
 
                                         <span id="titulo_2" class="f-14 opaco-0-8 f-700"> TITULO 2</span> <span class="pull-right f-14 opaco-0-8 f-700"><span id="barra_2_span">0</span> % COMPLETADA</span>
                                     
-                                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43; height: 25px";>
+                                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43; height: 20px";>
                                             <div id="barra_2" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
                                         </div>
 
@@ -130,7 +134,7 @@
 
                                         <span id="titulo_3" class="f-14 opaco-0-8 f-700"> TITULO 3</span> <span class="pull-right f-14 opaco-0-8 f-700"><span id="barra_3_span">0</span> % COMPLETADA</span>
                                     
-                                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43; height: 25px";>
+                                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43; height: 20px";>
                                             <div id="barra_3" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
                                         </div>
 

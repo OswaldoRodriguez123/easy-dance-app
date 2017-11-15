@@ -527,11 +527,11 @@ class AcademiaController extends BaseController {
             $type =  explode( '/',  $split[0]);
 
             $ext = $type[1];
-            
-            if($ext == 'jpeg' || 'jpg'){
-                $extension = '.jpg';
-            }elseif($ext == 'png'){
+                        
+            if($ext == 'png'){
                 $extension = '.png';
+            }else{
+                $extension = '.jpg';
             }
 
             $nombre_img = "academia-". Auth::user()->academia_id . $extension;

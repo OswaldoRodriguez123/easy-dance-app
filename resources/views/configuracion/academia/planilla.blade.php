@@ -1089,6 +1089,14 @@
             
             setTimeout(function(){
               var imagen = $("#imagena img").attr('src');
+              var extension = imagen.substring("data:image/".length, imagen.indexOf(";base64"))
+              
+              if(extension == 'jpeg'){
+                extension = "image/jpeg"
+              }else{
+                extension = "image/png"
+              }
+
               var canvas = document.createElement("canvas");
      
               var context=canvas.getContext("2d");
@@ -1100,7 +1108,7 @@
 
               context.drawImage(img, 0, 0);
        
-              var newimage = canvas.toDataURL("image/jpeg", 0.8);
+              var newimage = canvas.toDataURL(extension, 0.8);
               var image64 = $("input:hidden[name=imageBase64]").val(newimage);
             },500);
 

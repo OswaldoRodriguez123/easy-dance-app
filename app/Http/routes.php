@@ -1363,8 +1363,8 @@
 			Route::get('programacion/salsa','ProgresoController@programacionsalsa');
 			Route::get('programacion/bachata','ProgresoController@programacionbachata');
 			Route::get('programacion/{id}','ProgresoController@programacion');
-
-			Route::get('/certificado/','ProgresoController@certificado');
+			Route::get('/certificados','ProgresoController@certificados');
+			Route::get('/certificado/{hash_id}','ProgresoController@certificado');
 
 			//EVALUACIONES
 			

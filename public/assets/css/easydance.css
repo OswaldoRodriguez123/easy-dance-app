@@ -190,6 +190,10 @@ button.btn-blanco:hover{
     opacity: 0.3;
 }
 
+.opaco-0-2{
+    opacity: 0.2;
+}
+
 .thumbnail  {    
     border: 1px solid #ff9800 !important;    
 }
@@ -1901,12 +1905,33 @@ a{
     float:right;
 }
 
+.linea_negra {
+  border-color:black
+}
+
 .linea_transparente {
   border:none;
   border-top:1px solid #ccc;
   color:#fff;
   background-color:#fff;
   height:1px;
+}
+
+.pacifico{
+    font-family: 'Pacifico', cursive;
+}
+
+.certificado_border {
+    border: 12px solid;
+    border-radius: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.no_margin_buttom{
+    margin-bottom: 0px;
 }
 
 .table_blogger {
@@ -2019,6 +2044,11 @@ a{
 
 .certificado{
     margin-left: 30%; 
+    padding: 5%; 
+    border:1px solid;
+}
+
+.certificados{
     padding: 5%; 
     border:1px solid;
 }
