@@ -56,6 +56,7 @@ use App\NotaAdministrativa;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Image;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class AlumnoController extends BaseController
@@ -3033,5 +3034,22 @@ class AlumnoController extends BaseController
         ->get();
 
         return response()->json(['status' => 'OK', 'notas_administrativas' => $notas_administrativas, 200]);
+    }
+
+    public function exportar(){
+  
+        $alumnos = Alumno::select('nombre','apellido','correo')
+            ->where('academia_id',Auth::user()->academia_id)
+        ->get();
+
+        Excel::create("Alumnos", function ($excel) use ($alumnos) {
+            $excel->setTitle("Alumnos");
+            $excel->sheet("Alumnos", function ($sheet) use ($alumnos) {
+                $sheet->fromArray($alumnos, null, 'A2', null, false);
+                $sheet->row(1, array("nombre", "apellido", "correo"));
+            });
+        })->download('xls');
+        
+        return back();
     }
 }

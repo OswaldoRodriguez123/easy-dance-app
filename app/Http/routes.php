@@ -658,6 +658,8 @@
 			Route::post('participante/alumno/actualizar-nota-administrativa', 'AlumnoController@actualizar_nota_administrativa');
 			Route::post('participante/alumno/eliminar-nota-administrativa/{id}', 'AlumnoController@eliminar_nota_administrativa');
 
+			Route::get('participante/alumno/exportar', 'AlumnoController@exportar');
+
 			//PUNTOS ACUMULADOS
 
 			Route::get('puntos-acumulados', 'AlumnoController@puntos_acumulados_general');
@@ -728,7 +730,7 @@
 			Route::put('participante/visitante/update/ocupacion','VisitanteController@updateOcupacion');
 			Route::put('participante/visitante/update/observacion','VisitanteController@updateObservacion');
 
-			Route::get('participante/visitante/exportar', 'VisitanteController@exportarVisitantes');
+			Route::get('participante/visitante/exportar', 'VisitanteController@exportar');
 
 			//ENCUESTAS 
 
