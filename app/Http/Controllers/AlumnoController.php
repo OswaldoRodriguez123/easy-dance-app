@@ -3040,6 +3040,7 @@ class AlumnoController extends BaseController
   
         $alumnos = Alumno::select('nombre','apellido','correo')
             ->where('academia_id',Auth::user()->academia_id)
+            ->orderBy('nombre')
         ->get();
 
         Excel::create("Alumnos", function ($excel) use ($alumnos) {
