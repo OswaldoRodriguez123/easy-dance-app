@@ -52,70 +52,66 @@
 
 
     
-     <!--                    <aside id="chat" class="sidebar c-overflow">
-                          
-                          <div class="row">
-                            <div class="col-md-12">
-                              <br>
-                                <div class="chat-search">
-                                        <input type="text" id="buscar" class="form-control" placeholder="Buscar Alumno e Instructor">
-                                </div>
-                                <div class="well p-b-35">
+  <!--    <aside id="chat" class="sidebar c-overflow">
+      <div class="row">
+        <div class="col-md-12">
+          <br>
+            <div class="chat-search">
+                    <input type="text" id="buscar" class="form-control" placeholder="Buscar Alumno e Instructor">
+            </div>
+            <div class="well p-b-35">
 
-                                  <span class="f-14 p-t-20 text-success">Ver listado <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-16 "></i></span> <button class="btn btn-default btn-icon waves-effect waves-circle waves-float" style="margin-left:10%" name="listado" id="listado"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></button>  
+              <span class="f-14 p-t-20 text-success">Ver listado <i class="p-l-5 zmdi zmdi-arrow-right zmdi-hc-fw f-16 "></i></span> <button class="btn btn-default btn-icon waves-effect waves-circle waves-float" style="margin-left:10%" name="listado" id="listado"><i class="zmdi zmdi-eye zmdi-hc-fw"></i></button>  
 
-                                </div>
+            </div>
 
-                                <table class="table" id="tablelistar_asistencia" >
+            <table class="table" id="tablelistar_asistencia" >
 
-                                  <thead>
-                                    <tr class="hidden">    
-                                      <th class="text-center" >Nombres</th>                                    
-                                    </tr>
-                                  </thead>
-                                  <tbody id="aside_body">
-                                  
+              <thead>
+                <tr class="hidden">    
+                  <th class="text-center" >Nombres</th>                                    
+                </tr>
+              </thead>
+              <tbody id="aside_body">
+              
 
-                                                                   
-                                  </tbody>
-                                </table>
-                              </div>
-                          </div>
-                        </aside> -->
-		
-		
-		
-                		<!-- Page Loader -->
-                        <div class="page-loader">
-                            <div class="preloader pls-blue">
-                                <svg class="pl-circular" viewBox="25 25 50 50">
-                                    <circle class="plc-path" cx="50" cy="50" r="20" />
-                                </svg>
+                                               
+              </tbody>
+            </table>
+          </div>
+      </div>
+    </aside> -->
 
-                                <p>Cargando...</p>
-                            </div>
-                        </div>
-                		
-                		<!-- Javascript Libraries -->
+  	<!-- Page Loader -->
+    <div class="page-loader">
+        <div class="preloader pls-blue">
+            <svg class="pl-circular" viewBox="25 25 50 50">
+                <circle class="plc-path" cx="50" cy="50" r="20" />
+            </svg>
 
-                    <!-- Procesando -->
-                    <div id="loader-procesando" tg-loader="" class="loader">
-                      <div class="progress progress-striped active">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%; height: 8px;">
-                        <span class="sr-only">45% Complete</span>
-                        </div>
-                      </div>
+            <p>Cargando...</p>
+        </div>
+    </div>
 
-                    <div class="container">
-                      <p class="f-25"><div class="clearfix"></div>
-                      <div class="preloader pl-xl">
-                        <span class="f-16">Procesando...</span>
-                        <svg class="pl-circular" viewBox="25 25 50 50">
-                        <circle class="plc-path" cx="50" cy="50" r="20"></circle>
-                        </svg>
-                      </div></p>
-                      </div>
-                    </div>
+    <!-- Procesando -->
+    <div id="loader-procesando" tg-loader="" class="loader">
+      <div class="progress progress-striped active">
+        <div class="progress-bar" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%; height: 8px;">
+        <span class="sr-only">45% Complete</span>
+        </div>
+      </div>
+
+    <div class="container">
+      <p class="f-25"><div class="clearfix"></div>
+      <div class="preloader pl-xl">
+        <span class="f-16">Procesando...</span>
+        <svg class="pl-circular" viewBox="25 25 50 50">
+        <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+        </svg>
+      </div></p>
+      </div>
+    </div>
+    <!-- Procesando -->
 
   <div class="modal fade" id="modalParticipantes" role="dialog">
     <div class="modal-dialog modal-lg">
@@ -257,31 +253,33 @@
       </div>
     </div>
   </div>
-<!-- Procesando -->
-		
-        <script src="{{url('/')}}/assets/vendors/bower_components/jquery/dist/jquery.min.js"></script>
-        <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="{{url('/')}}/assets/js/bootstrap-dropdownhover.js"></script>
-        <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
-        <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
-        <script src="{{url('/')}}/assets/vendors/bower_components/moment/min/moment.min.js"></script>
-        <script src="{{url('/')}}/assets/vendors/bower_components/Waves/dist/waves.min.js"></script>
-        <script src="{{url('/')}}/assets/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
-        <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
-        <script src="{{url('/')}}/assets/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-    		<script src="{{url('/')}}/assets/vendors/fileinput/fileinput.min.js"></script>
-        <script src="{{url('/')}}/assets/vendors/input-mask/input-mask.min.js"></script>
-        <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/languages/es.js"></script>
-        <script src="{{url('/')}}/assets/js/functions.js"></script>
 
-        
-        <!-- Placeholder for IE9 -->
-        <!--[if IE 9 ]>
-            <script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
-        <![endif]-->
 
-        
-        @yield('js_vendor')
+  <!-- Javascript Libraries -->
+
+  <script src="{{url('/')}}/assets/vendors/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="{{url('/')}}/assets/js/bootstrap-dropdownhover.js"></script>
+  <script src="{{url('/')}}/assets/vendors/datatable/jquery.dataTables.min.js"></script>
+  <script src="{{url('/')}}/assets/vendors/datatable/datatables.bootstrap.js"></script>
+  <script src="{{url('/')}}/assets/vendors/bower_components/moment/min/moment.min.js"></script>
+  <script src="{{url('/')}}/assets/vendors/bower_components/Waves/dist/waves.min.js"></script>
+  <script src="{{url('/')}}/assets/vendors/bootstrap-growl/bootstrap-growl.min.js"></script>
+  <script src="{{url('/')}}/assets/vendors/bower_components/bootstrap-sweetalert/lib/sweet-alert.min.js"></script>
+  <script src="{{url('/')}}/assets/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="{{url('/')}}/assets/vendors/fileinput/fileinput.min.js"></script>
+  <script src="{{url('/')}}/assets/vendors/input-mask/input-mask.min.js"></script>
+  <script src="{{url('/')}}/assets/vendors/bower_components/eonasdan-bootstrap-datetimepicker/build/js/languages/es.js"></script>
+  <script src="{{url('/')}}/assets/js/functions.js"></script>
+
+  
+  <!-- Placeholder for IE9 -->
+  <!--[if IE 9 ]>
+      <script src="vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js"></script>
+  <![endif]-->
+
+  
+  @yield('js_vendor')
 
 		<script> 
     

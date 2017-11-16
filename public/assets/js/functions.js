@@ -905,7 +905,32 @@ $(document).ready(function(){
       $('html,body').animate({
             scrollTop: $("#id-"+elemento).offset().top-90,
       }, 1000);          
+    }
 
-  }
+    $('.modal-backdrop').on('click', function(e) {
 
+        var objs = $(this).find("input");
+
+        objs.each(function(index, obj) {
+
+            if (obj.hasAttribute('name')) {
+                if ($(obj).val() != "") {
+                    swal({   
+                        title: "Atención",   
+                        text: "Aún no has guardado tu mensaje, ¿Deseas retirarte?",   
+                        type: "warning",   
+                        showCancelButton: true,   
+                        confirmButtonColor: "#DD6B55",   
+                        confirmButtonText: "Aceptar",  
+                        cancelButtonText: "Cancelar",         
+                        closeOnConfirm: true 
+                    }, function(isConfirm){   
+                        if (isConfirm) {
+                            $(this).modal('hide');
+                        }
+                    });
+                }
+            }
+        });
+    });
 });

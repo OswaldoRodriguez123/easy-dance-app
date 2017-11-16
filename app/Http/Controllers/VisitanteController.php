@@ -751,7 +751,12 @@ class VisitanteController extends BaseController {
                 return response()->json(['errores' => ['fecha_siguiente' => [0, 'Ups! ha ocurrido un error. La fecha de inicio no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
             }
 
-            $hora_siguiente = $request->hora_siguiente;
+            $academia = Academia::find(Auth::user()->academia_id);
+            if($academia->tipo_horario == 2){
+                $hora_siguiente = Carbon::createFromFormat('H:i',$request->hora_siguiente)->toTimeString();
+            }else{
+                $hora_siguiente = Carbon::createFromFormat('H:i a',$request->hora_siguiente)->toTimeString();
+            }
 
         }else{
             $fecha_siguiente = '';

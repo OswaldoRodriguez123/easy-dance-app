@@ -59,10 +59,10 @@
                         <div class="card-header ">
 
                             <div class="col-sm-6 text-left">
-                                <p>Interesado: <b>{{$interesado->nombre}}</b></p>
+                                <p>Interesado: <b>{{$interesado->nombre}} {{$interesado->apellido}}</b></p>
                                 <p>Correo: <b>{{$interesado->correo}}</b></p>
-                                <p>Telefono: <b>{{$interesado->telefono_local}}</b></p>
-                                <p>Celular: <b>{{$interesado->telefono_movil}}</b></p>
+                                <p>Telefono: <b>{{$interesado->telefono}}</b></p>
+                                <p>Celular: <b>{{$interesado->celular}}</b></p>
                             </div>
 
                             <div class="col-sm-6 text-right">
@@ -83,8 +83,8 @@
                                     <th>Estatus</th>
                                     <th>Hora de llamada</th>
                                     <th>Tiempo de Respuesta</th>
-                                    <th>Fecha de la proxima llamada</th>
-                                    <th>Hora de la proxima llamada</th>
+                                    <th>Fecha de la próxima llamada</th>
+                                    <th>Hora de la próxima llamada</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
