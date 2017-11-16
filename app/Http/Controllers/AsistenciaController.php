@@ -2093,11 +2093,11 @@ class AsistenciaController extends BaseController
                 }
               }
             }else{
-              if($asistencia->hora_salida == '00:00:00'){
-                $asistencia->hora_salida = $hora_actual;
-              }else{
-                return response()->json(['status' => 'ERROR', 'mensaje' => "Ups! El instructor ya checkeo entrada y salida en esta clase grupal"],422);
-              }
+              // if($asistencia->hora_salida == '00:00:00'){
+              //   $asistencia->hora_salida = $hora_actual;
+              // }else{
+                return response()->json(['status' => 'ERROR', 'mensaje' => "Ups! El instructor ya posee una asistencia en esta clase grupal el dia de hoy"],422);
+              // }
             }
 
             if($asistencia->save()){
