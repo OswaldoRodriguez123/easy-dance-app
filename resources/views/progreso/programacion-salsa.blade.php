@@ -89,7 +89,7 @@
                                     <!-- NIVELACION 1 -->
                                     
                                     <div class="col-sm-3">
-                                    <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/basico.jpg"></img>
+                                    <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/1.jpg"></img>
 
                                      
                                         <div class="eos-menu" id="nivelacion_1">
@@ -161,7 +161,7 @@
 
                                     
                                     <div class="col-sm-3">
-                                    <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/intermedio.jpg"></img>
+                                    <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/2.jpg"></img>
 
                                         <div class="eos-menu" id="nivelacion_2">
                                           <div class="eos-menu-title">Welcome To eosMenu</div>
@@ -232,7 +232,7 @@
                                     <!-- NIVELACION 3 -->
                                     
                                     <div class="col-sm-3">
-                                    <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/avanzado.jpg"></img>
+                                    <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/3.jpg"></img>
                                         <div class="eos-menu" id="nivelacion_3">
                                           <div class="eos-menu-title">Welcome To eosMenu</div>
                                           <div class="eos-menu-content">
@@ -299,7 +299,7 @@
                                     <!-- NIVELACION 4 -->
                                     
                                     <div class="col-sm-3">
-                                    <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/master.jpg"></img>
+                                    <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/4.jpg"></img>
                                         <div class="eos-menu" id="nivelacion_4">
                                           <div class="eos-menu-title">Welcome To eosMenu</div>
                                           <div class="eos-menu-content">

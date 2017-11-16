@@ -96,7 +96,7 @@
                                             <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/1.jpg"></img>
 
                                         </div>
-
+                                        <br>
                                         <span id="basico_span">Por alcanzar</span>
                                         <br>
                                         <i id="basico_icon" class="zmdi zmdi-dot-circle c-amarillo f-20 opaco-0-5"></i>
@@ -122,6 +122,7 @@
                                             <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/2.jpg"></img>
 
                                         </div>
+                                        <br>
                                         <span id="intermedio_span">Por alcanzar</span>
                                         <br>
                                         <i id="intermedio_icon" class="zmdi zmdi-dot-circle c-amarillo f-20 opaco-0-5"></i>
@@ -147,6 +148,7 @@
                                             <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/3.jpg"></img>
 
                                         </div>
+                                        <br>
                                         <span id="avanzado_span">Por alcanzar</span>
                                         <br>
                                         <i id="avanzado_icon" class="zmdi zmdi-dot-circle c-amarillo f-20 opaco-0-5"></i>
@@ -172,13 +174,14 @@
                                             <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/4.jpg"></img>
 
                                         </div>
+                                        <br>
                                         <span id="master_span">Por alcanzar</span>
                                         <br>
                                         <i id="master_icon" class="zmdi zmdi-dot-circle c-amarillo f-20 opaco-0-5"></i>
                                     </div>
                                   
                                  
-                                <br><br><br>
+                                    <div class="clearfix m-b-20"></div>
                             
                                 
                                 </div>
