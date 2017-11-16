@@ -55,7 +55,7 @@
                             </div>
 
                             <div class="col-sm-3 text-right">
-                                <a href="{{url('/')}}/programacion/{{$id}}" class="f-16 text-success f-700">Ver programación de las clases</a>
+                                <a href="{{url('/')}}/certificados" class="f-16 text-success f-700">Ver sección de certificados <i class="zmdi zmdi-eye"></i></a>
                             </div>
 
                             <hr class="linea-morada">                                                         
@@ -73,18 +73,16 @@
                                         <br><br>
                                         
                                         @if(Auth::user()->imagen)
-                                            <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" alt="" width="250px" height="auto">  
+                                            <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" alt="" width="200px" height="auto">  
                                         @else
                                          @if(Auth::user()->sexo=='F')
-                                              <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="" width="250px" height="auto">        
+                                              <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="" width="200px" height="auto">        
                                            @else
-                                              <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="" width="250px" height="auto">
+                                              <img id="foto_perfil" class="img-circle" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="" width="200px" height="auto">
                                            @endif
                                         @endif
 
                                         <br><br>
-
-                                        <b class="f-16"><a href="{{url('/')}}/certificados"> Ver Certificados</a></b>
 
                                     </div>
 
@@ -155,15 +153,23 @@
                                 <div class="col-sm-4">
 
                                     <div id="certificado" class="opaco-0-3 certificado">
-                                        <h4 class="text-center" id="titulo_certificado">ESTÁS BAILANDO PARA OBTENER ESTE CERTIFICADO PARA EL CICLO BÁSICO</h4>
-                                        
-                                        <div class="text-center p-t-10">
-                                            <a class ="f-15 f-700" style="display:none" id="link_certificado">Ver Certificado</a>
+
+                                        <div id="certificado_estrellas" class="rating-list text-center">
+
+                                            <div class="rl-star">
+                                                <span id="certificado_puntaje" class="f-15 m-r-5"></span>
+                                                <i id="certificado_estrella_1" class="zmdi zmdi-star active"></i>
+                                                <i id="certificado_estrella_2" class="zmdi zmdi-star active"></i>
+                                                <i id="certificado_estrella_3" class="zmdi zmdi-star active"></i>
+                                                <i id="certificado_estrella_4" class="zmdi zmdi-star active"></i>
+                                                <i id="certificado_estrella_5" class="zmdi zmdi-star active"></i>
+                                       
+                                            </div>
                                         </div>
 
-                                        <div class="clearfix"></div>
+                                        <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/1.jpg"></img>
 
-                                        <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/basico.jpg"></img>
+                                        <h4 class="text-center" id="titulo_certificado">ESTÁS BAILANDO PARA OBTENER ESTE CERTIFICADO PARA EL CICLO BÁSICO</h4>
 
                                         <div id="certificado_estrellas" class="rating-list text-center" style="display: none">
                                             <div class="rl-star">

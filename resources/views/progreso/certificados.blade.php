@@ -32,21 +32,34 @@
                         <div class="card-body p-b-20">
                             <div class="row">
                                 <div class="container">
-                                    <div class="clearfix" style="margin-bottom: 50px"></div>
-                                    
-                                    <div class="col-sm-4"> 
-                                        
-                                        @if(Auth::user()->imagen)
-                                            <img id="foto_perfil" class="img-circle img-responsive" src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" alt="" width="75px" height="auto">  
-                                        @else
-                                         @if(Auth::user()->sexo=='F')
-                                              <img id="foto_perfil" class="img-circle img-responsive" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="" width="75px" height="auto">        
-                                           @else
-                                              <img id="foto_perfil" class="img-circle img-responsive" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="" width="75px" height="auto">
-                                           @endif
-                                        @endif
 
-                                        <span class="f-14">{{Auth::user()->nombre}} {{Auth::user()->apellido}}</span>
+                                    <div class="col-sm-12">
+
+                                        <div id="id-foto_perfil" class="clearfix" style="margin-bottom: 50px"></div>
+                                        
+                                        <div class="col-sm-4"> 
+                                            
+                                            @if(Auth::user()->imagen)
+                                                <img id="foto_perfil" class="img-circle img-responsive" src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" alt="" width="75px" height="auto">  
+                                            @else
+                                             @if(Auth::user()->sexo=='F')
+                                                  <img id="foto_perfil" class="img-circle img-responsive" src="{{url('/')}}/assets/img/profile-pics/1.jpg" alt="" width="75px" height="auto">        
+                                               @else
+                                                  <img id="foto_perfil" class="img-circle img-responsive" src="{{url('/')}}/assets/img/profile-pics/2.jpg" alt="" width="75px" height="auto">
+                                               @endif
+                                            @endif
+
+                                            <span class="f-14">{{Auth::user()->nombre}} {{Auth::user()->apellido}}</span>
+                                        </div>
+
+                                        <div class="col-sm-8">
+                                            <h2 class="opaco-0-8">Avanza con determinación hasta lograr tus objetivos</h2>
+                                        </div>
+
+                                        <div class="clearfix"></div>
+
+                                        <hr class="linea-morada">
+
                                     </div>
 
                                     <div class="clearfix m-b-20"></div>
@@ -67,7 +80,7 @@
                                         </div>
                                             <div class="clearfix"></div>
 
-                                            <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/basico.jpg"></img>
+                                            <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/1.jpg"></img>
 
                                         </div>
 
@@ -93,7 +106,7 @@
                                                 </div>
                                             </div>
 
-                                            <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/intermedio.jpg"></img>
+                                            <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/2.jpg"></img>
 
                                         </div>
                                         <span id="intermedio_span">Por alcanzar</span>
@@ -118,7 +131,7 @@
                                                 </div>
                                             </div>
 
-                                            <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/avanzado.jpg"></img>
+                                            <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/3.jpg"></img>
 
                                         </div>
                                         <span id="avanzado_span">Por alcanzar</span>
@@ -143,7 +156,7 @@
                                                 </div>
                                             </div>
 
-                                            <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/master.jpg"></img>
+                                            <img class="img-responsive" src="{{url('/')}}/assets/img/certificados/4.jpg"></img>
 
                                         </div>
                                         <span id="master_span">Por alcanzar</span>
@@ -184,6 +197,15 @@
         route_certificado="{{url('/')}}/certificado/";
 
         $(document).ready(function(){
+
+            setTimeout(function(){ 
+
+                $('html,body').animate({
+                      scrollTop: $("#id-foto_perfil").offset().top-90,
+                      }, 1000);
+
+            }, 1000);
+      
 
             if("{{$porcentaje}}" == "25"){
                 $('#basico').removeClass('opaco-0-2')
