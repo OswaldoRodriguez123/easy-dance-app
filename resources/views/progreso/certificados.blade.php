@@ -35,9 +35,9 @@
 
                                     <div class="col-sm-12">
 
-                                        <div id="id-foto_perfil" class="clearfix" style="margin-bottom: 50px"></div>
+                                        <div id="id-foto_perfil" class="clearfix m-t-20"></div>
                                         
-                                        <div class="col-sm-4"> 
+                                        <div class="col-sm-12"> 
                                             
                                             @if(Auth::user()->imagen)
                                                 <img id="foto_perfil" class="img-circle img-responsive" src="{{url('/')}}/assets/uploads/usuario/{{Auth::user()->imagen}}" alt="" width="75px" height="auto">  
@@ -52,13 +52,26 @@
                                             <span class="f-14">{{Auth::user()->nombre}} {{Auth::user()->apellido}}</span>
                                         </div>
 
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-12 text-center">
                                             <h2 class="opaco-0-8">Avanza con determinación hasta lograr tus objetivos</h2>
+                                        </div>
+
+                                        <div class="clearfix m-b-30"></div>
+
+                                        <div class="col-sm-4 col-sm-offset-4 text-center">
+
+                                            <span class="f-14 opaco-0-8 f-700">
+                                            <span id="barra_span">{{$porcentaje}}</span> % COMPLETADA</span>
+                                        
+                                            <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43; height: 15px";>
+                                                <div id="barra_progreso" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentaje}}%;">
+                                                </div>
+                                            </div>
+
                                         </div>
 
                                         <div class="clearfix"></div>
 
-                                        <hr class="linea-morada">
 
                                     </div>
 
@@ -162,20 +175,6 @@
                                         <span id="master_span">Por alcanzar</span>
                                         <br>
                                         <i id="master_icon" class="zmdi zmdi-dot-circle c-amarillo f-20 opaco-0-5"></i>
-                                    </div>
-
-                                    <div class="clearfix m-b-30"></div>
-
-                                    <div class="col-sm-4 col-sm-offset-4 text-center">
-
-                                        <span class="f-14 opaco-0-8 f-700">
-                                        <span id="barra_span">{{$porcentaje}}</span> % COMPLETADA</span>
-                                    
-                                        <div class="progress progress-striped m-b-10" style="border:1px solid; color:#4E1E43; height: 15px";>
-                                            <div id="barra_progreso" class="progress-bar progress-bar-morado" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: {{$porcentaje}}%;">
-                                            </div>
-                                        </div>
-
                                     </div>
                                   
                                  
