@@ -1785,8 +1785,8 @@
   route_principal="{{url('/')}}/participante/instructor";
   route_email="{{url('/')}}/correo/sesion";
 
-  route_agregar_pago="{{url('/')}}/participante/instructor/agregarpago";
-  route_eliminar_pago="{{url('/')}}/participante/instructor/eliminarpago/";
+  route_agregar_pago="{{url('/')}}/participante/instructor/agregarpagofijo";
+  route_eliminar_pago="{{url('/')}}/participante/instructor/eliminarpagofijo/";
 
   route_agregar_comision="{{url('/')}}/participante/instructor/agregarcomisionfija";
   route_eliminar_comision="{{url('/')}}/participante/instructor/eliminarcomisionfija/";
@@ -2360,82 +2360,6 @@
         }
       };
 
-      $('#tablepagos tbody').on( 'click', 'i.zmdi-delete', function () {
-
-                var id = $(this).closest('tr').attr('id');
-                element = this;
-
-                swal({   
-                    title: "Desea eliminar esta configuración?",   
-                    text: "Confirmar eliminación!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Eliminar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true 
-                }, function(isConfirm){   
-          if (isConfirm) {
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-                        swal("Exito!","La configuración ha sido eliminada!","success");
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar_pago(id, element);
-          }
-                });
-            });
-      
-        function eliminar_pago(id, element){
-         var route = route_eliminar_pago + id;
-         var token = "{{ csrf_token() }}";
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'DELETE',
-                    dataType: 'json',
-                    data:id,
-                    success:function(respuesta){
-                        var nFrom = $(this).attr('data-from');
-                        var nAlign = $(this).attr('data-align');
-                        var nIcons = $(this).attr('data-icon');
-                        var nAnimIn = "animated flipInY";
-                        var nAnimOut = "animated flipOutY"; 
-                        if(respuesta.status=="OK"){
-                          // finprocesado();
-                          var nType = 'success';
-                          var nTitle="Ups! ";
-                          var nMensaje=respuesta.mensaje;
-
-                          $("#clase_grupal_id option[value='"+respuesta.id+"']").removeAttr("disabled");
-                          $("#clase_grupal_id option[value='"+respuesta.id+"']").data("icon","");
-
-                          $('#clase_grupal_id').selectpicker('refresh');
-
-                          h.row( $(element).parents('tr') )
-                            .remove()
-                            .draw();
-                        
-                        }
-                    },
-                    error:function(msj){
-                      $("#msj-danger").fadeIn(); 
-                      var text="";
-                      console.log(msj);
-                      var merror=msj.responseJSON;
-                      text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                      $("#msj-error").html(text);
-                      setTimeout(function(){
-                               $("#msj-danger").fadeOut();
-                              }, 3000);
-                      }
-                });
-           }
-
 
     $(".dismiss").click(function(){
       procesando();
@@ -2454,14 +2378,52 @@
       }, 2000);
     });
 
+    h=$('#tablepagos').DataTable({
+      processing: true,
+      serverSide: false,
+      pageLength: 50, 
+      order: [[0, 'desc']],
+      fnDrawCallback: function() {
+      if ("{{count($pagos_instructor)}}" < 50) {
+            $('.dataTables_paginate').hide();
+            $('#tablelistar_length').hide();
+        }
+      },
+      fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+        $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
+      },
+      language: {
+                      processing:     "Procesando ...",
+                      search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                      searchPlaceholder: "BUSCAR",
+                      lengthMenu:     " ",
+                      info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                      infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                      infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                      infoPostFix:    "",
+                      loadingRecords: "...",
+                      zeroRecords:    "No se encontraron registros coincidentes",
+                      emptyTable:     "No hay datos disponibles en la tabla",
+                      paginate: {
+                          first:      "Primero",
+                          previous:   "Anterior",
+                          next:       "Siguiente",
+                          last:       "Ultimo"
+                      },
+                      aria: {
+                          sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                          sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                      }
+                  }
+
+    });
 
     $("#add").click(function(){
 
-
       $("#add").attr("disabled","disabled");
-        $("#add").css({
-          "opacity": ("0.2")
-        });
+      $("#add").css({
+        "opacity": ("0.2")
+      });
 
       var route = route_agregar_pago;
       var token = $('input:hidden[name=_token]').val();
@@ -2561,48 +2523,83 @@
             }, 1000);
           }
       });
-
     });
 
-    h=$('#tablepagos').DataTable({
-      processing: true,
-      serverSide: false,
-      pageLength: 50, 
-      order: [[0, 'desc']],
-      fnDrawCallback: function() {
-      if ("{{count($pagos_instructor)}}" < 50) {
-            $('.dataTables_paginate').hide();
-            $('#tablelistar_length').hide();
-        }
-      },
-      fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-        $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-      },
-      language: {
-                      processing:     "Procesando ...",
-                      search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                      searchPlaceholder: "BUSCAR",
-                      lengthMenu:     " ",
-                      info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                      infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                      infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                      infoPostFix:    "",
-                      loadingRecords: "...",
-                      zeroRecords:    "No se encontraron registros coincidentes",
-                      emptyTable:     "No hay datos disponibles en la tabla",
-                      paginate: {
-                          first:      "Primero",
-                          previous:   "Anterior",
-                          next:       "Siguiente",
-                          last:       "Ultimo"
-                      },
-                      aria: {
-                          sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                          sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                      }
-                  }
+    $('#tablepagos tbody').on( 'click', 'i.zmdi-delete', function () {
 
-    });
+        var id = $(this).closest('tr').attr('id');
+        element = this;
+
+        swal({   
+            title: "Desea eliminar esta configuración?",   
+            text: "Confirmar eliminación!",   
+            type: "warning",   
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Eliminar!",  
+            cancelButtonText: "Cancelar",         
+            closeOnConfirm: true 
+        }, function(isConfirm){   
+      if (isConfirm) {
+        var nFrom = $(this).attr('data-from');
+        var nAlign = $(this).attr('data-align');
+        var nIcons = $(this).attr('data-icon');
+        var nType = 'success';
+        var nAnimIn = $(this).attr('data-animation-in');
+        var nAnimOut = $(this).attr('data-animation-out')
+                    swal("Exito!","La configuración ha sido eliminada!","success");
+                    // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
+                    eliminar_pago(id, element);
+          }
+        });
+      });
+      
+      function eliminar_pago(id, element){
+        var route = route_eliminar_pago + id;
+        var token = "{{ csrf_token() }}";
+            
+        $.ajax({
+            url: route,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'DELETE',
+            dataType: 'json',
+            data:id,
+            success:function(respuesta){
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nAnimIn = "animated flipInY";
+                var nAnimOut = "animated flipOutY"; 
+                if(respuesta.status=="OK"){
+                  // finprocesado();
+                  var nType = 'success';
+                  var nTitle="Ups! ";
+                  var nMensaje=respuesta.mensaje;
+
+                  $("#clase_grupal_id option[value='"+respuesta.id+"']").removeAttr("disabled");
+                  $("#clase_grupal_id option[value='"+respuesta.id+"']").data("icon","");
+
+                  $('#clase_grupal_id').selectpicker('refresh');
+
+                  h.row( $(element).parents('tr') )
+                    .remove()
+                    .draw();
+                
+                }
+            },
+            error:function(msj){
+              $("#msj-danger").fadeIn(); 
+              var text="";
+              console.log(msj);
+              var merror=msj.responseJSON;
+              text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+              $("#msj-error").html(text);
+              setTimeout(function(){
+                       $("#msj-danger").fadeOut();
+                      }, 3000);
+              }
+        });
+    }
 
     var k=$('#tablecomisiones').DataTable({
         processing: true,

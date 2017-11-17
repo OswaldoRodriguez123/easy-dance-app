@@ -13,6 +13,7 @@ use App\Academia;
 use App\Cuotas;
 use App\DiasDeSemana;
 use App\ConfigEstudios;
+use App\ConfigProductos;
 use App\ConfigServicios;
 use App\ConfigEspecialidades;
 use App\ConfigClasesGrupales;
@@ -45,6 +46,8 @@ use App\Promocion;
 use App\LlamadaAlumno;
 use App\Tipologia;
 use App\Certificado;
+use App\ConfigComision;
+use App\ConfigPagosInstructor;
 use PulkitJalan\GeoIP\GeoIP;
 
 
@@ -1227,9 +1230,37 @@ class ClaseGrupalController extends BaseController {
             Session::forget('horario'); 
         }
 
+        if (Session::has('pagos_instructor')) {
+            Session::forget('pagos_instructor'); 
+        }
+
+        if (Session::has('comisiones')) {
+            Session::forget('comisiones'); 
+        }
+
         $academia = Academia::find(Auth::user()->academia_id);
 
-        return view('agendar.clase_grupal.create')->with(['config_clases_grupales' => ConfigClasesGrupales::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'dias_de_semana' => DiasDeSemana::all(), 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'incluye_iva' => $academia->incluye_iva]);
+        $array = array();
+
+        $config_servicio=ConfigServicios::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        foreach($config_servicio as $item){
+
+            $array[]=array('id' => '1-'.$item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo'], 'costo' => $item['costo']);
+        }
+
+        $config_producto=ConfigProductos::where('academia_id', '=' ,  Auth::user()->academia_id)->get();
+
+        foreach($config_producto as $item){
+
+            $array[]=array('id' => '2-'.$item['id'], 'nombre' => $item['nombre'] , 'tipo' => $item['tipo'], 'costo' => $item['costo']);
+           
+        }
+
+        $collection=collect($array);   
+        $linea_servicio = $collection->toArray();
+
+        return view('agendar.clase_grupal.create')->with(['config_clases_grupales' => ConfigClasesGrupales::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'dias_de_semana' => DiasDeSemana::all(), 'config_especialidades' => ConfigEspecialidades::all(), 'config_estudios' => ConfigEstudios::where('academia_id', '=' ,  Auth::user()->academia_id)->get(), 'config_niveles' => ConfigNiveles::where('academia_id', Auth::user()->academia_id)->orWhere('academia_id', null)->orderBy('nombre')->get(), 'instructores' => Instructor::where('academia_id', '=' ,  Auth::user()->academia_id)->orderBy('nombre', 'asc')->get(), 'incluye_iva' => $academia->incluye_iva, 'linea_servicio' => $linea_servicio]);
     }
 
     public function agregarhorario(Request $request){
@@ -1493,6 +1524,49 @@ class ClaseGrupalController extends BaseController {
             $clasegrupal->cantidad_mujeres = $cantidad_mujeres;
 
             if($clasegrupal->save()){
+
+                $pagos_instructor = Session::get('pagos_instructor');
+
+                foreach($pagos_instructor as $pago){
+
+                    $tipo = $pago['tipo'];
+                    $monto = $pago['monto'];
+
+                    $config_pagos = new ConfigPagosInstructor;
+
+                    $config_pagos->clase_grupal_id = $clasegrupal->id;
+                    $config_pagos->instructor_id = $request->instructor_id;
+                    $config_pagos->tipo = $tipo;
+                    $config_pagos->monto = $monto;
+
+                    $config_pagos->save();
+                }
+
+                $comisiones = Session::get('comisiones');
+
+                foreach($comisiones as $comision){
+
+                    $servicio_producto_id = $comision['servicio_producto_id'];
+                    $servicio_producto_tipo = $comision['servicio_producto_tipo'];
+                    $tipo = $comision['tipo'];
+                    $monto = $comision['monto'];
+                    $monto_porcentaje = $comision['monto_porcentaje'];
+                    $monto_minimo = $comision['monto_minimo'];
+
+                    $config_pagos = new ConfigComision;
+                    
+                    $config_pagos->usuario_id = $request->instructor_id;
+                    $config_pagos->usuario_tipo = 2;
+                    $config_pagos->servicio_producto_id = $servicio_producto_id;
+                    $config_pagos->servicio_producto_tipo = $servicio_producto_tipo;
+                    $config_pagos->tipo = $tipo;
+                    $config_pagos->monto = $monto;
+                    $config_pagos->monto_porcentaje = $monto_porcentaje;
+                    $config_pagos->monto_minimo = $monto_minimo;
+
+                    $config_pagos->save();
+                }
+
 
                 $config_clase_grupal = ConfigClasesGrupales::withTrashed()->join('clases_grupales','config_clases_grupales.id','=','clases_grupales.clase_grupal_id')
                     ->select('config_clases_grupales.nombre')

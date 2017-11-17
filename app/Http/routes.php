@@ -697,13 +697,19 @@
 			Route::put('participante/instructor/update/credencial','InstructorController@updateCredencial');
 
 			Route::get('participante/instructor/pagos/{id}', 'InstructorController@principalpagos');
-			Route::post('participante/instructor/agregarpago', 'InstructorController@agregarpago');
-			Route::delete('participante/instructor/eliminarpago/{id}', 'InstructorController@eliminarpago');
+			Route::post('participante/instructor/agregarpagofijo', 'InstructorController@agregarpagofijo');
+			Route::delete('participante/instructor/eliminarpagofijo/{id}', 'InstructorController@eliminarpagofijo');
 			Route::post('participante/instructor/pagar', 'InstructorController@pagar');
 			Route::post('participante/instructor/devolver', 'InstructorController@devolver');
 
 			Route::post('participante/instructor/agregarcomisionfija', 'InstructorController@agregarcomisionfija');
 			Route::delete('participante/instructor/eliminarcomisionfija/{id}', 'InstructorController@eliminarcomisionfija');
+
+			Route::post('participante/instructor/agregarpago', 'InstructorController@agregarpago');
+			Route::delete('participante/instructor/eliminarpago/{id}', 'InstructorController@eliminarpago');
+
+			Route::post('participante/instructor/agregarcomision', 'InstructorController@agregarcomision');
+			Route::delete('participante/instructor/eliminarcomision/{id}', 'InstructorController@eliminarcomision');
 
 			//VISITANTE
 

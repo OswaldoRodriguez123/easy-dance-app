@@ -1873,7 +1873,7 @@ class InstructorController extends BaseController {
     }
 
 
-    public function agregarpago(Request $request)
+    public function agregarpagofijo(Request $request)
     {
         
         $rules = [
@@ -1909,7 +1909,6 @@ class InstructorController extends BaseController {
                     $posee_pago = ConfigPagosInstructor::where('instructor_id', $request->id)
                         ->where('clase_grupal_id', $clase_grupal)
                     ->first();
-
 
                     if(!$posee_pago){
 
@@ -2049,7 +2048,7 @@ class InstructorController extends BaseController {
         }
     }
 
-    public function eliminarpago($id)
+    public function eliminarpagofijo($id)
     {
 
         $pago = ConfigPagosInstructor::find($id);
@@ -2279,5 +2278,142 @@ class InstructorController extends BaseController {
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
         }
+    }
+
+    public function agregarpago(Request $request){
+        
+        $rules = [
+            'cantidad' => 'required|numeric',
+            'tipo_pago' => 'required'
+        ];
+
+        $messages = [
+
+            'cantidad.required' => 'Ups! El Monto es requerido',
+            'cantidad.numeric' => 'Ups! El Monto es invalido, solo se aceptan numeros',
+            
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }else{
+
+            $array = array('tipo' => $request->tipo_pago , 'monto' => $request->cantidad);
+            Session::push('pagos_instructor', $array);
+
+            $items = Session::get('pagos_instructor');
+            end( $items );
+            $contador = key( $items );
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
+
+        }
+    }
+
+    public function eliminarpago($id){
+
+        $arreglo = Session::get('pagos_instructor');
+        unset($arreglo[$id]);
+        Session::forget('pagos_instructor');
+        Session::push('pagos_instructor', $arreglo);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+    }
+
+    public function agregarcomision(Request $request){
+
+        $rules = [
+            'cantidad' => 'required|min:1',
+            'tipo_pago' => 'required',
+            'servicio_producto_id' => 'required',
+        ];
+
+        $messages = [
+
+            'cantidad.required' => 'Ups! El Monto es requerido',
+            'cantidad.numeric' => 'Ups! El Monto es invalido, solo se aceptan numeros',
+            'servicio_producto_id.required' => 'Ups! El Servicio es requerido',
+            
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }else{
+
+            $monto = floatval(str_replace(',', '', $request->cantidad));
+
+            if($request->tipo_pago == 1){
+                if($monto > 100){
+                    return response()->json(['errores' => ['cantidad' => [0, 'Ups! El porcentaje no puede ser mayor a 100']], 'status' => 'ERROR'],422);
+                }
+            }
+
+            if($request->servicio_producto_id == '0-0' || !$request->servicio_producto_id){
+                return response()->json(['errores' => ['servicio_producto_id' => [0, 'Ups! Debe seleccionar un servicio']], 'status' => 'ERROR'],422);
+            }
+
+            $explode = explode('-',$request->servicio_producto_id);
+
+            $servicio_producto_tipo = $explode[0];
+            $servicio_producto_id = $explode[1];
+
+            if($servicio_producto_tipo == 1){
+                $servicio_producto = ConfigServicios::withTrashed()->find($servicio_producto_id);
+            }else{
+                $servicio_producto = ConfigProductos::withTrashed()->find($servicio_producto_id);
+            }
+            
+            if($monto  > $servicio_producto->costo){
+                return response()->json(['errores' => ['cantidad' => [0, 'Ups! La comisión no puede ser mayor al costo']], 'status' => 'ERROR'],422);
+            }
+
+            if($request->monto_minimo){
+
+                $monto_minimo = floatval(str_replace(',', '', $request->monto_minimo));
+
+                if($monto_minimo  > $servicio_producto->costo){
+                    return response()->json(['errores' => ['monto_minimo' => [0, 'Ups! El monto mínimo no puede ser mayor al costo']], 'status' => 'ERROR'],422);
+                }
+            }else{
+                $monto_minimo = '';
+            }
+
+            if($request->tipo == 1){
+                $porcentaje = $monto / 100;
+                $monto_porcentaje = $servicio_producto->costo * $porcentaje;
+            }else{
+                $monto_porcentaje = '';
+            }
+
+            $array = array('servicio_producto_id' => $servicio_producto_id, 'servicio_producto_tipo' => $servicio_producto_tipo, 'tipo' => $request->tipo_pago, 'monto' => $monto, 'monto_porcentaje' => $monto_porcentaje, 'monto_minimo' => $monto_minimo, 'nombre' => $servicio_producto->nombre);
+            Session::push('comisiones', $array);
+
+            $items = Session::get('comisiones');
+            end( $items );
+            $contador = key( $items );
+
+            return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 'array' => $array, 'id' => $contador, 200]);
+
+        }
+    }
+
+    public function eliminarcomision($id){
+
+        $arreglo = Session::get('comisiones');
+        unset($arreglo[$id]);
+        Session::forget('comisiones');
+        Session::push('comisiones', $arreglo);
+
+        return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
     }
 }
