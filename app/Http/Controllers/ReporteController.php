@@ -2247,8 +2247,7 @@ class ReporteController extends BaseController
 
     public function Camiseta_Programacion(){
 
-        $inscritos = DB::table('inscripcion_clase_grupal')
-            ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+        $inscritos = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
             ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
@@ -2256,8 +2255,7 @@ class ReporteController extends BaseController
             ->where('alumnos.academia_id','=', Auth::user()->academia_id)
         ->get();
 
-        $clases_grupales= DB::table('clases_grupales')
-            ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+        $clases_grupales= ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
             ->select('config_clases_grupales.nombre as nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido',  'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.fecha_inicio','clases_grupales.fecha_final', 'clases_grupales.id')
             ->where('clases_grupales.deleted_at', '=', null)
@@ -2326,20 +2324,19 @@ class ReporteController extends BaseController
     public function Camiseta_ProgramacionFiltros(Request $request)
     {
 
-        $query = DB::table('inscripcion_clase_grupal')
-            ->join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
+        $query = InscripcionClaseGrupal::join('alumnos', 'inscripcion_clase_grupal.alumno_id', '=', 'alumnos.id')
             ->join('clases_grupales', 'inscripcion_clase_grupal.clase_grupal_id', '=', 'clases_grupales.id')
             ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
             ->join('config_especialidades', 'clases_grupales.especialidad_id', '=', 'config_especialidades.id')
             ->select('alumnos.nombre', 'alumnos.apellido', 'alumnos.sexo', 'alumnos.fecha_nacimiento','inscripcion_clase_grupal.fecha_inscripcion as fecha', 'config_especialidades.nombre as especialidad', 'config_clases_grupales.nombre as curso', 'inscripcion_clase_grupal.id', 'alumnos.celular')
-            ->where('alumnos.academia_id','=', Auth::user()->academia_id);
-
+            ->where('alumnos.academia_id','=', Auth::user()->academia_id)
+            ->where('clases_grupales.fecha_inicio', '<=', Carbon::now()->toDateString())
+            ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString());
 
         if($request->clase_grupal_id)
         {
             $query->where('clases_grupales.id','=', $request->clase_grupal_id);
         }
-
 
         if($request->tipo == 0){
             $query->where('inscripcion_clase_grupal.boolean_franela',1);
@@ -2350,15 +2347,31 @@ class ReporteController extends BaseController
             $query->where('inscripcion_clase_grupal.boolean_programacion',1);
         }
 
-        $inscritos = $query->get();
+        $camisetas_programaciones = $query->get();
+
+        $franelas = 0;
+        $programaciones = 0;
+
+        foreach($camisetas_programaciones as $camiseta_programacion){
+            if(!$camiseta_programacion->boolean_franela){
+                $franelas++;
+            }
+
+            if(!$camiseta_programacion->boolean_programacion){
+                $programaciones++;
+            }
+        }
 
         return response()->json(
             [
-                'inscritos'         => $inscritos,
-                'mensaje'           => '¡Excelente! El reporte se ha generado satisfactoriamente',
-                'status'            => 'OK'
+                'camisetas_programaciones'  => $camisetas_programaciones,
+                'franelas'                  => $franelas,
+                'programaciones'            => $programaciones,
+                'mensaje'                   => '¡Excelente! El reporte se ha generado satisfactoriamente',
+                'status'                    => 'OK'
 
-            ]);
+            ]
+        );
 
     }
 
@@ -3817,20 +3830,20 @@ class ReporteController extends BaseController
         }
 
         if($request->boolean_fecha){
-            $fecha = explode(' - ', $request->fecha);
+            $fecha = explode(' - ', $request->fecha2);
             $start = Carbon::createFromFormat('d/m/Y',$fecha[0])->toDateString();
             $end = Carbon::createFromFormat('d/m/Y',$fecha[1])->toDateString();
             $query->whereBetween('alumnos.deleted_at', [$start,$end]);
         }else{
 
-            if($request->tipo){
-                if($request->tipo == 1){
+            if($request->fecha){
+                if($request->fecha == 1){
                     $start = Carbon::now()->toDateString();
                     $end = Carbon::now()->addDay()->toDateString();  
-                }else if($request->tipo == 2){
+                }else if($request->fecha == 2){
                     $start = Carbon::now()->startOfMonth()->toDateString();
                     $end = Carbon::now()->endOfMonth()->toDateString();  
-                }else if($request->tipo == 3){
+                }else if($request->fecha == 3){
                     $start = Carbon::now()->startOfMonth()->subMonth()->toDateString();
                     $end = Carbon::now()->endOfMonth()->subMonth()->toDateString();  
                 }
@@ -3840,10 +3853,36 @@ class ReporteController extends BaseController
         }
 
         $eliminados = $query->get();
+        $array = array();
+        $in = array(2,4);
+
+        foreach($eliminados as $eliminado){
+
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$eliminado->id)
+                ->whereIn('usuarios_tipo.tipo',$in)
+            ->first();
+
+            if($usuario){
+                if($usuario->imagen){
+                    $imagen = $usuario->imagen;
+                }else{
+                    $imagen = '';
+                }
+
+            }else{
+                $imagen = '';
+            }
+
+            $collection=collect($eliminado);     
+            $eliminado_array = $collection->toArray();
+            $eliminado_array['imagen'] = $imagen;
+            $array[] = $eliminado_array;
+        }
 
         return response()->json(
             [
-                'eliminados'         => $eliminados,
+                'eliminados'         => $array,
                 'mensaje'           => '¡Excelente! El reporte se ha generado satisfactoriamente'
 
             ]);

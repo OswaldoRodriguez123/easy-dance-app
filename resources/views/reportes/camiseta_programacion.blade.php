@@ -63,29 +63,24 @@
 
                         <div class="col-sm-12">
                             <form name="formFiltro" id="formFiltro">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="hidden" id="boolean_fecha" name="boolean_fecha" value="0">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                <input type="hidden" id="boolean_fecha" name="boolean_fecha" value="0">
 
-                            <div class="col-md-6">
-                                <label>Clase Grupal</label>
+                                <div class="col-md-6">
+                                    <label>Clase Grupal</label>
 
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="clase_grupal_id" id="clase_grupal_id">
+                                          <option value="0">Todas</option>
+                                          @foreach ( $clases_grupales as $clase_grupal )
+                                            <option value = "{{ $clase_grupal['id'] }}"> {{ $clase_grupal['nombre'] }} - {{ $clase_grupal['hora_inicio'] }}  / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['dia'] }} - {{ $clase_grupal['instructor_nombre'] }}  {{ $clase_grupal['instructor_apellido'] }} </option>
 
-                                <div class="fg-line">
-                                  <div class="select">
-                                    <select class="selectpicker" data-live-search="true" name="clase_grupal_id" id="clase_grupal_id">
-                                      <option value="0">Todas</option>
-                                      @foreach ( $clases_grupales as $clase_grupal )
-                                        <option value = "{{ $clase_grupal['id'] }}"> {{ $clase_grupal['nombre'] }} - {{ $clase_grupal['hora_inicio'] }}  / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['dia'] }} - {{ $clase_grupal['instructor_nombre'] }}  {{ $clase_grupal['instructor_apellido'] }} </option>
-
-                                      @endforeach
-                                    </select>
-                                  </div>
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>   
                                 </div>
-                                  
-
-                                    
-                            </div>
-
 
                                 <div class="col-md-6">
                                     <label>Tipo</label> &nbsp; &nbsp; &nbsp;
@@ -99,18 +94,16 @@
                                       </div>
                                 </div>
 
-                               <div class="clearfix m-b-20"></div>
+                                <div class="clearfix m-b-20"></div>
 
-                               
 
-                                 <!-- <div class="clearfix m-b-10"></div> -->
-
-                                 
-
-                                 <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="guardar" >Filtrar</button>
+                                <button type="button" class="btn btn-blanco m-r-10 f-10 guardar" id="guardar" >Filtrar</button>
 
                                 <div class ="clearfix m-b-10"></div>
                                 <div class ="clearfix m-b-10"></div>
+
+                                <span>Franelas: <span id="franelas">0</span></span><br>
+                                <span>Programaciones: <span id="programaciones">0</span></span>
 
                             </form>
                         </div>
@@ -272,7 +265,7 @@
                       var nMensaje=respuesta.mensaje;
 
                         
-                        $.each(respuesta.inscritos, function (index, array) {
+                        $.each(respuesta.camisetas_programaciones, function (index, array) {
                             var rowNode=t.row.add( [
                             ''+array.fecha+'',
                             ''+array.nombre+'',
@@ -287,6 +280,8 @@
                                 .addClass('seleccion');
                         });
 
+                        $('#franelas').text(respuesta.franelas)
+                        $('#programaciones').text(respuesta.programaciones)
                 
                     }else{
                       var nTitle="Ups! ";

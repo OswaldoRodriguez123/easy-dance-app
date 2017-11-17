@@ -152,6 +152,7 @@
                                     <thead>
                                         <tr>
                                             <th class="text-center" data-column-id="fecha">Fecha de Eliminacion</th>
+                                            <th class="text-center" data-column-id="imagen">Imagen</th>
                                             <th class="text-center" data-column-id="id" data-type="numeric">Id</th>
                                             <th class="text-center" data-column-id="sexo">Sexo</th>
                                             <th class="text-center" data-column-id="nombre" data-order="desc">Nombres</th>
@@ -183,6 +184,8 @@
     <script type="text/javascript">
 
         route_filtrar="{{url('/')}}/reportes/eliminados";
+
+        var pagina = document.location.origin
 
         $(document).ready(function(){
 
@@ -227,7 +230,7 @@
                 processing: true,
                 serverSide: false,
                 pageLength: 25, 
-                order: [[1, 'desc']],
+                order: [[0, 'desc']],
                 fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
                   $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center, disabled" );
                 },
@@ -300,8 +303,19 @@
                                     sexo = '<i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
                                 }
 
+                                if(array.imagen){
+                                    imagen = pagina+'/assets/uploads/usuario/'+array.imagen;
+                                }else{
+                                    if(array.sexo == 'M'){
+                                        imagen = pagina+"/assets/img/Hombre.jpg"
+                                    }else{
+                                        imagen = pagina+"/assets/img/Mujer.jpg"
+                                    }
+                                }
+
                                 var rowNode=t.row.add( [
                                     ''+array.deleted_at+'',
+                                    ''+'<img class="lv-img" src="'+imagen+'" alt="">'+'',
                                     ''+array.identificacion+'',
                                     ''+sexo+'',
                                     ''+array.nombre+ ' ' +array.apellido+'',
