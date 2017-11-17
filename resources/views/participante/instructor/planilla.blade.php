@@ -141,8 +141,9 @@
                                             <th class="text-center" data-column-id="clase_grupal">Clase Grupal</th>
                                             <th class="text-center" data-column-id="clase_grupal">Día</th>
                                             <th class="text-center" data-column-id="clase_grupal">Hora</th>
-                                            <th class="text-center" data-column-id="tipo" data-type="numeric">Tipo</th>
+                                            <th class="text-center" data-column-id="tipo">Tipo</th>
                                             <th class="text-center" data-column-id="monto" data-type="numeric">Monto</th>
+                                            <th class="text-center" data-column-id="estatus">Estatus</th>
                                             <th class="text-center" data-column-id="operaciones">Acciones</th>
 
                                         </tr>
@@ -171,6 +172,13 @@
     
                                             </td>
                                             <td class="text-center">{{$pago['monto']}}</td>
+                                            <td class="text-center">
+                                              @if(!$pago['finalizo'])
+                                                <span>Activa</span>
+                                              @else
+                                                <span class="c-youtube">Vencida</span>
+                                              @endif
+                                            </td>
                                             <td class="text-center"> <i class="zmdi zmdi-delete boton red f-20 p-r-10"></i></td>
                                           </tr>
                                     @endforeach 
