@@ -1451,6 +1451,7 @@ class AsistenciaController extends BaseController
 
       $fechaActual = Carbon::now();
       $diaActual = $fechaActual->dayOfWeek;
+      $fecha_actual=$fechaActual->toDateString();
 
       $collection = collect($clases_grupales);
 
@@ -1490,7 +1491,18 @@ class AsistenciaController extends BaseController
             $bloqueado = 1;
           } 	
 
-     			$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 1, 'tipo_id' => $id, 'bloqueado' => $bloqueado);
+          $asistencia = Asistencia::where('alumno_id',$request->id)
+            ->where('clase_grupal_id',$id)
+            ->where('fecha',$fecha_actual)
+          ->first();
+
+          if(!$asistencia){
+            $asistencia = 0;
+          }else{
+            $asistencia = 1;
+          }  
+
+     			$arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 1, 'tipo_id' => $id, 'bloqueado' => $bloqueado, 'asistencia' => $asistencia);
 
      	  }
 		    
@@ -1527,12 +1539,22 @@ class AsistenciaController extends BaseController
 
           if(!$horario_bloqueado){
             $bloqueado = 0;
-
           }else{
             $bloqueado = 1;
           }          
 
-          $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 2, 'tipo_id' => $grupal->horario_id, 'bloqueado' => $bloqueado);
+          $asistencia = Asistencia::where('alumno_id',$request->id)
+            ->where('clase_grupal_id',$id)
+            ->where('fecha',$fecha_actual)
+          ->first();
+
+          if(!$asistencia){
+            $asistencia = 0;
+          }else{
+            $asistencia = 1;
+          }  
+
+          $arrayClases[]=array("id"=>$id,"nombre"=>$nombre, "descripcion"=>$descripcion,"fecha_inicio"=>$grupal->fecha_inicio,"fecha_final"=>$grupal->fecha_final, "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, "etiqueta"=>$etiqueta, "instructor" => $instructor, 'tipo' => 2, 'tipo_id' => $grupal->horario_id, 'bloqueado' => $bloqueado, 'asistencia' => $asistencia);
 
         }
       }
@@ -1540,8 +1562,6 @@ class AsistenciaController extends BaseController
       usort($arrayClases, function($a, $b) {
           return $a['hora_inicio'] > $b['hora_inicio'];
       });
-
-      $alumno=Alumno::all();
 
       $deuda = $this->deuda($request->id);
       $inscripciones = $this->inscripciones($request->id);
@@ -1639,9 +1659,6 @@ class AsistenciaController extends BaseController
         }
         
       }
-        
-
-      $alumno=Alumno::all();
 
       $deuda = $this->deuda($request->id);
       $inscripciones = $this->inscripciones($request->id);
@@ -1703,9 +1720,6 @@ class AsistenciaController extends BaseController
         
     }
         
-
-    $alumno=Alumno::all();
-
     $deuda = $this->deuda($request->id);
     $inscripciones = $this->inscripciones($request->id);
     $credenciales = $this->credenciales($request->id);

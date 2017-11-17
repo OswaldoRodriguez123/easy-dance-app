@@ -1144,7 +1144,13 @@
               opt.value = array.id+'-Desde:'+array.hora_inicio+' Hasta:'+array.hora_final+'-'+array.tipo+'-'+array.tipo_id;
 
               if(!array.bloqueado){
-                valor = array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor
+
+                if(!array.asistencia){
+                  valor = array.nombre +'  -   Desde:'+array.hora_inicio+'  /   Hasta:'+array.hora_final + '  -  ' + array.instructor
+                }else{
+                  valor = "<span title='Ya posee una asistencia' class='c-youtube'><i class='glyphicon glyphicon-remove'></i> "+array.nombre +"  -   Desde:"+array.hora_inicio+"  /   Hasta:"+array.hora_final + "  -  "+ array.instructor+"</span>"
+                  opt.setAttribute('disabled', true);
+                }
               }else{
                 valor = "<span title='Clase Bloqueada' class='c-youtube'><i class='glyphicon glyphicon-remove'></i> "+array.nombre +"  -   Desde:"+array.hora_inicio+"  /   Hasta:"+array.hora_final + "  -  "+ array.instructor+"</span>"
                 opt.setAttribute('disabled', true);
