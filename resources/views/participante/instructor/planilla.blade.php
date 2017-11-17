@@ -151,7 +151,12 @@
 
                                     @foreach ($pagos_instructor as $pago)
                                         <?php $id = $pago['id']; ?>
-                                        <tr id="{{$id}}" class="seleccion" >
+                                        
+                                          @if(!$pago['finalizo'])
+                                              <tr id="{{$id}}" class="disabled">
+                                          @else
+                                              <tr id="{{$id}}" class="disabled seleccion_deleted" >
+                                          @endif
                                             <td class="text-center">{{$pago['nombre']}}</td>
                                             <td class="text-center">{{$pago['dia']}}</td>
                                             <td class="text-center">{{$pago['hora_inicio']}} / {{$pago['hora_final']}}</td>

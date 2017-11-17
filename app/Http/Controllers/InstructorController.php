@@ -1223,6 +1223,7 @@ class InstructorController extends BaseController {
             $clases_grupales = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
                 ->select('clases_grupales.*','config_clases_grupales.nombre')
                 ->where('clases_grupales.instructor_id', $id)
+                ->where('clases_grupales.fecha_final', '>=', Carbon::now()->toDateString())
                 ->OrderBy('clases_grupales.hora_inicio')
             ->get();
 
@@ -1292,8 +1293,8 @@ class InstructorController extends BaseController {
 
             $pagos_instructor = ConfigPagosInstructor::join('clases_grupales', 'configuracion_pagos_instructor.clase_grupal_id', '=', 'clases_grupales.id')
                 ->join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
-                ->select('configuracion_pagos_instructor.*', 'config_clases_grupales.nombre as nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio')
-                ->where('clases_grupales.instructor_id', $id)
+                ->select('configuracion_pagos_instructor.*', 'config_clases_grupales.nombre as nombre', 'clases_grupales.hora_inicio', 'clases_grupales.hora_final', 'clases_grupales.fecha_inicio', 'clases_grupales.fecha_final')
+                ->where('configuracion_pagos_instructor.instructor_id', $id)
             ->get();
 
             $pagos = array();
@@ -1333,11 +1334,21 @@ class InstructorController extends BaseController {
 
                 }
 
+                $fecha_final = Carbon::createFromFormat('Y-m-d', $pago->fecha_final);
+
+
+                if($fecha_final >= Carbon::now()){
+                    $finalizo = 0;
+                }else{
+                    $finalizo = 1;
+                }
+
 
                 $collection=collect($pago);     
                 $pago_array = $collection->toArray();
 
                 $pago_array['dia']=$dia;
+                $pago_array['finalizo']=$finalizo;
                 $pagos[] = $pago_array;
             }
 
