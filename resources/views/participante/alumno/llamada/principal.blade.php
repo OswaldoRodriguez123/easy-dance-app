@@ -59,10 +59,8 @@
                         <div class="card-header ">
 
                             <div class="col-sm-6 text-left">
-                                <p>Interesado: <b>{{$interesado->nombre}} {{$interesado->apellido}}</b></p>
-                                <p>Correo: <b>{{$interesado->correo}}</b></p>
-                                <p>Telefono: <b>{{$interesado->telefono}}</b></p>
-                                <p>Celular: <b>{{$interesado->celular}}</b></p>
+                                <p>Interesado: <b>{{$interesado->nombre}} {{$interesado->apellido}}</b> <b>{{$interesado->correo}}</b></p>
+                                <p>Telefonos: <b>{{$interesado->telefono}}</b> / <b>{{$interesado->celular}}</b></p>
                             </div>
 
                             <div class="col-sm-6 text-right">
