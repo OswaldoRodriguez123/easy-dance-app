@@ -116,7 +116,7 @@
 
                                     @if($llamada->status == 1)
 
-                                       <label class="label label-success"> </label>
+                                      <label class="label label-success"> </label>
 
                                     @elseif($llamada->status == 2)
 
@@ -186,7 +186,7 @@
             
     <script type="text/javascript">
 
-        route_detalle="{{url('/')}}/participante/alumno/detalle";
+        route_detalle="{{url('/')}}/participante/alumno/llamadas/detalle";
         route_eliminar="{{url('/')}}/participante/alumno/llamadas/eliminar/";
             
         $(document).ready(function() {
@@ -199,7 +199,7 @@
         order: [[0, 'desc'],[2, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).addClass("disabled");
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
         },
         language: {
                        processing:     "Procesando ...",
@@ -287,11 +287,17 @@
                 });
       }
 
+      // function previa(t){
+      //   var row = $(t).closest('tr');
+      //   var observacion = row.data('observacion');
+      //   $('#observacion').text(observacion)
+      //   $('#modalObservacion').modal('show')
+      // }
+
       function previa(t){
-        var row = $(t).closest('tr');
-        var observacion = row.data('observacion');
-        $('#observacion').text(observacion)
-        $('#modalObservacion').modal('show')
+        var id = $(t).closest('tr').attr('id');
+        var route =route_detalle+"/"+id;
+        window.open(route, '_blank');
       }
 
     </script>

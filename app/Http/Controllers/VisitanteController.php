@@ -789,6 +789,96 @@ class VisitanteController extends BaseController {
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
+    public function editLlamada($id){
+
+        $llamada = LlamadaVisitante::find($id);
+
+        if($llamada){
+            return view('participante.visitante.llamada.planilla')->with(['id' => $id, 'llamada' => $llamada]);
+        }else{
+            return redirect("participante/visitante"); 
+        }
+    }
+
+    public function updateStatus(Request $request){
+
+        $rules = [
+            'status' => 'required',
+        ];
+
+        $messages = [
+
+            'status.required' => 'Ups! El Status es requerido ',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }
+
+        $llamada = LlamadaVisitante::find($request->id);
+        $llamada->status = $request->status;
+
+        if($llamada->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateFechaSiguiente(Request $request){
+
+        if($request->fecha_siguiente){
+
+            $fecha_siguiente = Carbon::createFromFormat('d/m/Y', $request->fecha_siguiente);
+
+            if($fecha_siguiente < Carbon::now()){
+                return response()->json(['errores' => ['fecha_siguiente' => [0, 'Ups! ha ocurrido un error. La fecha de inicio no puede ser menor al dia de hoy']], 'status' => 'ERROR'],422);
+            }
+        }else{
+            $fecha_siguiente = '';
+           
+        }
+
+        $llamada = LlamadaVisitante::find($request->id);
+        $llamada->fecha_siguiente = $fecha_siguiente;
+
+        if($llamada->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
+    public function updateHoraSiguiente(Request $request){
+
+        if($request->hora_siguiente){
+            
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            if($academia->tipo_horario == 2){
+                $hora_siguiente = Carbon::createFromFormat('H:i',$request->hora_siguiente)->toTimeString();
+            }else{
+                $hora_siguiente = Carbon::createFromFormat('H:i a',$request->hora_siguiente)->toTimeString();
+            }
+
+        }else{
+            $hora_siguiente = '';
+        }
+
+        $llamada = LlamadaVisitante::find($request->id);
+        $llamada->hora_siguiente = $hora_siguiente;
+
+        if($llamada->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
     public function exportar(){
   
         $visitantes = Visitante::select('nombre','apellido','correo')
