@@ -81,6 +81,18 @@
                                 </div>
 
                                 <div class="col-md-4">
+                                    <label>Tipo</label>
+                                    <div class="fg-line">
+                                      <div class="select">
+                                        <select class="selectpicker" data-live-search="true" name="sexo" id="sexo">
+                                          <option value="1">Inactivos</option>
+                                          <option value="2">Congelados</option>
+                                        </select>
+                                      </div>
+                                    </div>                          
+                                </div>
+
+                                <div class="col-md-4">
                                     <label>Fecha</label> &nbsp; &nbsp; &nbsp;
                                     <div class="select">
                                         <select class="selectpicker" data-live-search="true" name="tipo" id="tipo">
@@ -90,6 +102,8 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                <div class="clearfix m-b-20"></div> 
 
                                 <div class="col-sm-4">
                                     <div class="form-group fg-line">
@@ -200,7 +214,6 @@
         <script type="text/javascript">
 
         route_filtrar="{{url('/')}}/reportes/inactivos-congelados";
-        route_detalle="{{url('/')}}/agendar/clases-grupales/participantes/historial/";
 
         var pagina = document.location.origin
 
@@ -247,8 +260,8 @@
         pageLength: 50, 
         order: [[6, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4)', nRow).addClass( "text-center" );
-          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3)', nRow).attr( "onclick","previa(this)" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
+          $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "disabled" );
         },
         language: {
                         processing:     "Procesando ...",
@@ -390,13 +403,6 @@
            });
         });       
 
-    }
-
-    function previa(t){
-        procesando()
-        var id = $(t).closest('tr').attr('id');
-        var route = route_detalle+id;
-        window.open(route, '_blank');
     }
 
     $('#collapseTwo').on('show.bs.collapse', function () {
