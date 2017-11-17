@@ -321,6 +321,12 @@
 
                         $.each(respuesta.reporte_datos, function (index, array) {
 
+                            if(array.boolean_congelacion){
+                                popover = 'popover'
+                            }else{
+                                popover = ''
+                            }
+
                             if(array.imagen){
                                 imagen = pagina+'/assets/uploads/usuario/'+array.imagen;
                             }else{
@@ -343,9 +349,19 @@
                             ] ).draw(false).node();
 
                             $( rowNode )
+                                .attr('data-trigger','hover')
+                                .attr('data-toggle', popover)
+                                .attr('data-placement','top')
+                                .attr('data-original-title','Ayuda &nbsp;&nbsp;&nbsp;&nbsp;')
+                                .attr('data-html','true')
+                                .attr('data-container','body')
+                                .attr('title','')
+                                .attr('data-content',array.razon_congelacion)
                                 .attr('id',rowId)
                                 .addClass('seleccion');
                         });
+
+                        $('[data-toggle="popover"]').popover(); 
 
                     }else{
                       var nTitle="Ups! ";

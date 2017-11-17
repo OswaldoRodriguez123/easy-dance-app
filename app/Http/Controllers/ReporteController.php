@@ -4086,10 +4086,10 @@ class ReporteController extends BaseController
                         'config_clases_grupales.asistencia_rojo',
                         'config_clases_grupales.asistencia_amarilla',
                         'inscripcion_clase_grupal.boolean_congelacion',
+                        'inscripcion_clase_grupal.razon_cogenlacion',
                         'inscripcion_clase_grupal.fecha_inicio as fecha_congelacion'
                         )
                 ->where('inscripcion_clase_grupal.alumno_id', $alumno->id)
-                // ->where('clases_grupales.deleted_at', null)
                 ->orderBy('inscripcion_clase_grupal.fecha_inscripcion', 'desc')
             ->first();
 
@@ -4411,7 +4411,7 @@ class ReporteController extends BaseController
                     }
                 }else{
                     if($clase_grupal->boolean_congelacion){
-                        $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+                        $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_congelacion);
                         if($fecha >= $start && $fecha <= $end){
                             $alumno_array['fecha'] = $fecha->toDateString();
                             $array[] = $alumno_array;
