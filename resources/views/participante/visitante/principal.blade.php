@@ -114,24 +114,24 @@
 
                                             @if($visitante['correo'])
                                               <li class="hidden-xs email">
-                                                  <a onclick="procesando()"><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
+                                                  <a><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
                                               </li>
                                             @endif
 
                                             <li class="hidden-xs">
-                                                <a onclick="procesando()" href="{{url('/')}}/participante/visitante/impresion/{{$id}}"><i class="zmdi icon_a-examen f-16 boton blue"></i> Realizar encuesta</a>
+                                                <a href="{{url('/')}}/participante/visitante/impresion/{{$id}}"><i class="zmdi icon_a-examen f-16 boton blue"></i> Realizar encuesta</a>
                                             </li>
 
                                             <li class="hidden-xs">
-                                                <a onclick="procesando()" href="{{url('/')}}/participante/alumno/agregar/{{$id}}"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>
+                                                <a href="{{url('/')}}/participante/alumno/agregar/{{$id}}"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>
                                             </li>
 
                                             <li class="hidden-xs">
-                                                <a onclick="procesando()" href="{{url('/')}}/participante/visitante/llamadas/{{$id}}"><i class="zmdi zmdi-phone f-16 boton blue"></i> Llamadas</a>
+                                                <a href="{{url('/')}}/participante/visitante/llamadas/{{$id}}"><i class="zmdi zmdi-phone f-16 boton blue"></i> Llamadas</a>
                                             </li>
 
                                             <li class="hidden-xs reservar pointer">
-                                                <a onclick="procesando()"><i class="zmdi icon_a-reservaciones f-16 boton blue"></i>Reservar</a>
+                                                <a><i class="zmdi icon_a-reservaciones f-16 boton blue"></i>Reservar</a>
                                             </li>
 
                                             <li class="hidden-xs eliminar">

@@ -200,7 +200,7 @@
 
                                                                 @if($alumno['deuda'])
                                                                     <li class="hidden-xs">
-                                                                        <a onclick="procesando()" href="{{url('/')}}/participante/alumno/deuda/{{$id}}"><i class="icon_a-pagar f-16 m-r-10 boton blue"></i> Pagar</a>
+                                                                        <a href="{{url('/')}}/participante/alumno/deuda/{{$id}}"><i class="icon_a-pagar f-16 m-r-10 boton blue"></i> Pagar</a>
                                                                     </li>
                                                                 @endif
 
@@ -218,15 +218,15 @@
                                                                 @endif
 
                                                                 <li class="hidden-xs">
-                                                                    <a onclick="procesando()" href="{{url('/')}}/participante/alumno/transferir/{{$id}}"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>
+                                                                    <a href="{{url('/')}}/participante/alumno/transferir/{{$id}}"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>
                                                                 </li>
 
                                                                 <li class="hidden-xs">
-                                                                    <a onclick="procesando()" href="{{url('/')}}/participante/alumno/evaluaciones/{{$id}}"><i class="zmdi glyphicon glyphicon-search f-16 boton blue"></i>Valoración</a>
+                                                                    <a href="{{url('/')}}/participante/alumno/evaluaciones/{{$id}}"><i class="zmdi glyphicon glyphicon-search f-16 boton blue"></i>Valoración</a>
                                                                 </li>
 
                                                                 <li class="hidden-xs">
-                                                                    <a onclick="procesando()" href="{{url('/')}}/participante/alumno/llamadas/{{$id}}"><i class="zmdi zmdi-phone f-16 boton blue"></i>Llamadas</a>
+                                                                    <a href="{{url('/')}}/participante/alumno/llamadas/{{$id}}"><i class="zmdi zmdi-phone f-16 boton blue"></i>Llamadas</a>
                                                                 </li>
 
                                                                 <li class="hidden-xs reservar pointer">
