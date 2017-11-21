@@ -2560,8 +2560,6 @@
         var nType = 'success';
         var nAnimIn = $(this).attr('data-animation-in');
         var nAnimOut = $(this).attr('data-animation-out')
-                    swal("Exito!","La configuración ha sido eliminada!","success");
-                    // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
                     eliminar_pago(id, element);
           }
         });
@@ -2570,6 +2568,7 @@
       function eliminar_pago(id, element){
         var route = route_eliminar_pago + id;
         var token = "{{ csrf_token() }}";
+        procesando()
             
         $.ajax({
             url: route,
@@ -2584,7 +2583,6 @@
                 var nAnimIn = "animated flipInY";
                 var nAnimOut = "animated flipOutY"; 
                 if(respuesta.status=="OK"){
-                  // finprocesado();
                   var nType = 'success';
                   var nTitle="Ups! ";
                   var nMensaje=respuesta.mensaje;
@@ -2593,6 +2591,9 @@
                   $("#clase_grupal_id option[value='"+respuesta.id+"']").data("icon","");
 
                   $('#clase_grupal_id').selectpicker('refresh');
+
+                  swal("Exito!","La configuración ha sido eliminada!","success");
+                  finprocesado()
 
                   h.row( $(element).parents('tr') )
                     .remove()

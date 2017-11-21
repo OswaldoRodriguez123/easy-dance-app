@@ -418,6 +418,7 @@
 			Route::put('configuracion/eventos-laborales/update/fecha', 'EventoLaboralController@updateFecha');
 			Route::put('configuracion/eventos-laborales/update/horario', 'EventoLaboralController@updateHorario');
 			Route::put('configuracion/eventos-laborales/update/etiqueta', 'EventoLaboralController@updateEtiqueta');
+			Route::put('configuracion/eventos-laborales/update/clase_grupal', 'EventoLaboralController@updateClaseGrupal');
 
 			//CONFIG SUPERVISIONES
 

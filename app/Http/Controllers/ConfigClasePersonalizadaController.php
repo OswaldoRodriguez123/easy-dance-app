@@ -1002,8 +1002,7 @@ class ConfigClasePersonalizadaController extends BaseController {
         $academia = Academia::find($id);
         $usuario_tipo = Session::get('easydance_usuario_tipo');
 
-        $instructores = DB::table('instructores')
-            ->Leftjoin('perfil_instructor', 'perfil_instructor.instructor_id', '=', 'instructores.id')
+        $instructores = Instructor::Leftjoin('perfil_instructor', 'perfil_instructor.instructor_id', '=', 'instructores.id')
             ->select('instructores.*' , 'perfil_instructor.*', 'instructores.id as id')
             ->where('academia_id', $id)
             ->where('boolean_promocionar', 1)
@@ -1032,16 +1031,14 @@ class ConfigClasePersonalizadaController extends BaseController {
 
 
         if($config_clase_personalizada->video_promocional){
-
             $parts = parse_url($config_clase_personalizada->video_promocional);
             $partes = explode( '=', $parts['query'] );
             $link_video = $partes[1];
-
         }else{
             $link_video = '';
         }
 
-        return view('configuracion.clase_personalizada.promocionar')->with(['link_video' => $link_video, 'academia' => $academia, 'instructores_academia' => $instructores, 'id' => $id, 'config_clase_personalizada' => $config_clase_personalizada, 'usuario_tipo' => $usuario_tipo]);
+        return view('configuracion.clase_personalizada.promocionar')->with(['link_video' => $link_video, 'academia' => $academia, 'instructores' => $instructores, 'id' => $id, 'config_clase_personalizada' => $config_clase_personalizada, 'usuario_tipo' => $usuario_tipo]);
     }
 
     public function destroy($id)

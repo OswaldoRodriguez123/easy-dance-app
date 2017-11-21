@@ -126,8 +126,7 @@
   
     $(document).on( 'click', '.previa', function () {
         var id = this.id;
-        procesando();
-        window.open(route, '_blank');_detalle+"/"+id;
+        window.open(route_detalle+"/"+id, '_blank');
 
         // if("{{Auth::check()}}")
         // {

@@ -402,7 +402,7 @@
                             },
                             tooltip: true,
                             tooltipOpts: {
-                                content: "%p.0%, %s", 
+                                content: "Cantidad: %n ... %p.0%, %s", 
                                 shifts: {
                                     x: 20,
                                     y: 0

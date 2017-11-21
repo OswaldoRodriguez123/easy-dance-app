@@ -466,7 +466,7 @@
                             },
                             tooltip: true,
                             tooltipOpts: {
-                                content: "%n, %s", 
+                                content: "Cantidad: %n ... %n, %s", 
                                 shifts: {
                                     x: 20,
                                     y: 0

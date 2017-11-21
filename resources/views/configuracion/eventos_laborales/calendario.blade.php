@@ -101,15 +101,15 @@
                         {
                             <?php
                         
-                                $fecha_start=explode('-',$evento->fecha);
-                                $fecha_end=explode('-',$evento->fecha);
-                                $hora_start=explode(':',$evento->hora_inicio);
-                                $hora_end=explode(':',$evento->hora_final);
+                                $fecha_start=explode('-',$evento["fecha"]);
+                                $fecha_end=explode('-',$evento["fecha"]);
+                                $hora_start=explode(':',$evento["hora_inicio"]);
+                                $hora_end=explode(':',$evento["hora_final"]);
 
-                                if(\Carbon\Carbon::parse($evento->fecha) >= \Carbon\Carbon::now()->subDay()){
-                                    $etiqueta = $evento->color_etiqueta;
+                                if(\Carbon\Carbon::parse($evento['fecha']) >= \Carbon\Carbon::now()->subDay()){
+                                    $etiqueta = $evento['color_etiqueta'];
                                     $actividad = 'actividad';
-                                    $url = "detalle/{$evento->id}";
+                                    $url = "detalle/{$evento['id']}";
                                 }else{
                                     $etiqueta = '#B8B8B8';
                                     $actividad = 'disabled';
@@ -117,20 +117,24 @@
                                 }
                        
                             ?>
-                            id: 'evento-{{$evento->id}}',
-                            title: "{{$evento->nombre}}" ,
+                            id: 'evento-{{$evento["id"]}}',
+                            title: "{{$evento['nombre']}}" ,
                             start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
                             end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
                             allDay: false,
                             backgroundColor:'{{$etiqueta}}',
                             className: '{{$actividad}}',
                             url: '{{$url}}',
-                            cargo: '{{$evento->cargo}}',
-                            dia: '{{$evento->dia}}',
-                            sexo: '{{$evento->sexo}}',
-                            staff: '{{$evento->staff}}',
-                            imagen: '{{$evento->imagen}}',
-                            descripcion: <?php echo json_encode(title_case($evento->descripcion)) ?>,
+                            cargo: '{{$evento["cargo"]}}',
+                            dia: '{{$evento["dia"]}}',
+                            sexo: '{{$evento["sexo"]}}',
+                            staff: '{{$evento["staff"]}}',
+                            clase_grupal_nombre: '{{$evento["clase_grupal_nombre"]}}',
+                            instructor: '{{$evento["instructor"]}}',
+                            especialidad: '{{$evento["especialidad"]}}',
+                            nivel: '{{$evento["nivel"]}}',
+                            hora: '{{$evento["hora"]}}',
+                            descripcion: <?php echo json_encode(title_case($evento['descripcion'])) ?>,
                         },
                         @endforeach 
             
@@ -212,6 +216,14 @@
                         contenido += 'Evento: ' + event.title + '<br>'
                         contenido += 'Dia de Semana: ' + dia + '<br>'
                         contenido += 'Descripción: ' + event.descripcion + '<br>'
+
+                        if(event.clase_grupal_nombre){
+                            contenido += event.clase_grupal_nombre + '<br>'
+                            contenido += event.instructor + '<br>'
+                            contenido += event.especialidad + '<br>'
+                            contenido += event.nivel + '<br>'
+                            contenido += event.hora + '<br>'
+                        }
                        
                         $(eventElement).attr('data-trigger','hover');
                         $(eventElement).attr('data-toggle','popover');

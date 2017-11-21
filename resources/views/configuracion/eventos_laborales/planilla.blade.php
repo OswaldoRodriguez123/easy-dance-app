@@ -320,6 +320,72 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalClaseGrupal-Evento" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Evento <button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_clase_grupal_evento" id="edit_clase_grupal_evento"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                                <div class="col-sm-12">
+
+                                  <label for="nombre" id="id-tipo_evento_id">Clase Grupal</label> <span class="c-morado f-700 f-16">*</span>
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_a icon_a-clases-grupales f-22"></i></span>
+                                        <div class="fg-line">
+                                        <div class="select">
+                                          <select class="selectpicker" name="tipo_evento_id" id="tipo_evento_id" data-live-search="true" >
+
+                                            <option value="">Selecciona</option>
+                                            @foreach ( $clases_grupales as $clase_grupal )
+                                              <option value = "{{ $clase_grupal['id'] }}">{{ $clase_grupal['clase_grupal_nombre'] }} - {{ $clase_grupal['dia_de_semana'] }} - {{ $clase_grupal['hora_inicio'] }} / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['instructor_nombre'] }} {{ $clase_grupal['instructor_apellido'] }}</option>
+                                            @endforeach
+                                          
+                                          </select>
+                                        </div>
+                                      </div>
+                                      </div>
+                                   <div class="has-error" id="error-tipo_evento_id">
+                                        <span >
+                                            <small class="help-block error-span" id="error-tipo_evento_id_mensaje" ></small>                                
+                                        </span>
+                                    </div>
+                               </div>
+
+                               <input type="hidden" name="id" id="id" value="{{$evento->id}}"></input>
+                              
+
+                               <div class="clearfix"></div> 
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" id="guardar" href="#" data-formulario="edit_clase_grupal_evento" data-update="clase_grupal" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>  
+
             <section id="content">
                 <div class="container">
                 
@@ -505,6 +571,24 @@
                                 <span id="evento-color_etiqueta">{{$evento->color_etiqueta}}</span> &nbsp; <i id="color_etiqueta_container" class="color_etiqueta_container" style="background-color: {{$evento->color_etiqueta}}"></i><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span>
                                
                                 </td>
+
+                                @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+
+                                  <tr class="detalle" data-toggle="modal" href="#modalClaseGrupal-Evento">
+
+                                @else
+
+                                  <tr class="disabled">
+
+                                @endif
+                                 <td>
+                                   <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-tipo_tipo_evento_id" class="zmdi  {{ empty($evento->tipo_evento_id) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                                   <span class="m-l-10 m-r-10"> <i class="icon_a-clases-grupales f-22"></i> </span>
+                                   <span class="f-14"> Clase Grupal </span>
+                                 </td>
+                                 <td  class="f-14 m-l-15">
+                                    <span id="evento-tipo_evento_id">{{$evento->clase_grupal}}</span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                                </tr>
                               </tr>
                
                             
@@ -538,6 +622,11 @@
 
     $(document).ready(function(){
 
+        if("{{$evento->tipo_evento_id}}" == 1){
+          $('#tipo_evento_id').val("{{$evento->tipo_evento_id}}")
+          $('#tipo_evento_id').selectpicker('refresh')
+        }
+
         $('body,html').animate({scrollTop : 0}, 500);
         var animation = 'fadeInLeftBig';
         //var cardImg = $(this).closest('#content').find('h1');
@@ -566,8 +655,6 @@
       $("#hora_final").val($("#evento-hora_final").text().trim()); 
     })
 
-
-
     function limpiarMensaje(){
         var campo = ["staff_id", "fecha", "hora_inicio", "hora_final", "cargo"];
         fLen = campo.length;
@@ -590,7 +677,7 @@
 
       function campoValor(form){
         $.each(form, function (n, c) {
-         if(c.name=='staff_id' || c.name=="actividad_id"){
+         if(c.name=='staff_id' || c.name=="actividad_id" || c.name=="tipo_evento_id"){
             
             expresion = "#"+c.name+ " option[value="+c.value+"]";
             texto = $(expresion).text();

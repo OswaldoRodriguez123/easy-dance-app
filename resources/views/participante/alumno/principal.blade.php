@@ -41,7 +41,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class ="col-md-6 text-left">  
-                            <ul class="top-menu">
+                            <ul class="top-menu p-l-40">
                                 <li class="dropdown ">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft">
                                        <span class="f-15 f-700" style="color:black"> 

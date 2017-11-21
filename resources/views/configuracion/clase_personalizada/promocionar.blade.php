@@ -241,7 +241,7 @@
                         
                         
 
-                        @foreach($instructores_academia as $instructor)
+                        @foreach($instructores as $instructor)
                         <div class ="detalle instructor" id ="{{$instructor->id}}">
                           <a class="opaco-0-8 f-20" style="padding-left:5px; color:#5e5e5e">  
                           {{$instructor->nombre}} {{$instructor->apellido}}
@@ -346,230 +346,175 @@
 
                     <div class="pmb-block m-t-0 p-t-0">
 
-                        @if(count($instructores_academia) > 0)
+                      @if(count($instructores) > 0)
 
-                          <img name="imagen_artistica" id="imagen_artistica" src="{{url('/')}}/assets/uploads/instructor/{{$instructores_academia[0]->imagen_artistica}}" class="img-responsive opaco-0-8" alt="">
-
-                        @endif
-
-                        
+                        <img name="imagen_artistica" id="imagen_artistica" src="{{url('/')}}/assets/uploads/instructor/{{$instructores[0]->imagen_artistica}}" class="img-responsive opaco-0-8" alt="">
 
                         <div class="circulos_instructor" style="display: none">
 
-                        <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
 
-                        <div class="f-700 f-30">Experiencia laboral como instructor </div>
-                        <hr class="linea-morada">
+                          <div class="f-700 f-30">Experiencia laboral como instructor </div>
+                          <hr class="linea-morada">
 
-                        @if(count($instructores_academia) > 0)
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="tiempo_experiencia_instructor" id ="tiempo_experiencia_instructor"> {{$instructores[0]->tiempo_experiencia_instructor}}</div>
+                            <span class="span_circulo"> Años de experiencia</span>
+                          </div>
 
-                          
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="genero_instructor" id ="genero_instructor"> {{$instructores[0]->genero_instructor}}</div>
+                            <span class="span_circulo"> Géneros que domina</span>
+                          </div>
 
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="tiempo_experiencia_instructor" id ="tiempo_experiencia_instructor"> {{$instructores_academia[0]->tiempo_experiencia_instructor}}</div>
-                              <span class="span_circulo"> Años de experiencia</span>
-                            </div>
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="cantidad_horas" id ="cantidad_horas"> {{$instructores[0]->cantidad_horas}}</div>
+                            <span class="span_circulo"> Horas impartidas</span>
+                          </div>
 
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="genero_instructor" id ="genero_instructor"> {{$instructores_academia[0]->genero_instructor}}</div>
-                              <span class="span_circulo"> Géneros que domina</span>
-                            </div>
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="titulos_instructor" id ="titulos_instructor"> {{$instructores[0]->titulos_instructor}}</div>
+                            <span class="span_circulo"> Títulos y reconocimientos </span>
+                          </div>
 
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="cantidad_horas" id ="cantidad_horas"> {{$instructores_academia[0]->cantidad_horas}}</div>
-                              <span class="span_circulo"> Horas impartidas</span>
-                            </div>
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="organizador" id ="organizador"> {{$instructores[0]->organizador}}</div>
+                            <span class="span_circulo"> Organizador de eventos</span>
+                          </div>
 
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="titulos_instructor" id ="titulos_instructor"> {{$instructores_academia[0]->titulos_instructor}}</div>
-                              <span class="span_circulo"> Títulos y reconocimientos </span>
-                            </div>
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="invitacion_evento" id ="invitacion_evento"> {{$instructores[0]->invitacion_evento}}</div>
+                            <span class="span_circulo"> Invitaciones a eventos</span>
+                          </div>
 
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="organizador" id ="organizador"> {{$instructores_academia[0]->organizador}}</div>
-                              <span class="span_circulo"> Organizador de eventos</span>
-                            </div>
-
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="invitacion_evento" id ="invitacion_evento"> {{$instructores_academia[0]->invitacion_evento}}</div>
-                              <span class="span_circulo"> Invitaciones a eventos</span>
-                            </div>
-
-                          
-                          
-
-                        @endif
-                        <hr class="linea-morada">
+                            
+                          <hr class="linea-morada">
 
                         </div>
-                        
-                        
+              
 
                         <div class="div_descripcion" style="display: none">
-
-                        <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
 
                           <div class="f-700 f-30">Perfil del instructor</div>
                           <hr class="linea-morada">
                           <p class="f-14" name="descripcion_instructor" id="descripcion_instructor">
 
-                          @if(count($instructores_academia) > 0)
-
-                            {!! nl2br($instructores_academia[0]->descripcion) !!}
-
-                          @endif
+                            {!! nl2br($instructores[0]->descripcion) !!}
 
                           </p>
-
                         </div>
 
-                        @if(count($instructores_academia) > 0)
-
+ 
                         <p class="text-center">
                                
-                                <a name="facebook" id="facebook" href="{{ empty($instructores_academia[0]->facebook) ? '' : $instructores_academia[0]->facebook}}" target="_blank"><i class="{{ empty($instructores_academia[0]->facebook) ? '' : 'zmdi zmdi-facebook-box f-25 c-facebook m-l-5'}}"></i></a>
+                          <a name="facebook" id="facebook" href="{{ empty($instructores[0]->facebook) ? '' : $instructores[0]->facebook}}" target="_blank"><i class="{{ empty($instructores[0]->facebook) ? '' : 'zmdi zmdi-facebook-box f-25 c-facebook m-l-5'}}"></i></a>
 
-                                <a name="twitter" id="twitter" href="{{ empty($instructores_academia[0]->twitter) ? '' : $instructores_academia[0]->twitter}}" target="_blank"><i class="{{ empty($instructores_academia[0]->twitter) ? '' : 'zmdi zmdi-twitter-box f-25 c-twitter m-l-5'}}"></i></a>
+                          <a name="twitter" id="twitter" href="{{ empty($instructores[0]->twitter) ? '' : $instructores[0]->twitter}}" target="_blank"><i class="{{ empty($instructores[0]->twitter) ? '' : 'zmdi zmdi-twitter-box f-25 c-twitter m-l-5'}}"></i></a>
 
-                                <a name="instagram" id="instagram" href="{{ empty($instructores_academia[0]->instagram) ? '' : $instructores_academia[0]->instagram}}" target="_blank"><i class="{{ empty($instructores_academia[0]->instagram) ? '' : 'zmdi zmdi-instagram f-25 c-instagram m-l-5'}}"></i></a>
+                          <a name="instagram" id="instagram" href="{{ empty($instructores[0]->instagram) ? '' : $instructores[0]->instagram}}" target="_blank"><i class="{{ empty($instructores[0]->instagram) ? '' : 'zmdi zmdi-instagram f-25 c-instagram m-l-5'}}"></i></a>
 
-                                <a name="linkedin" id="linkedin" href="{{ empty($instructores_academia[0]->linkedin) ? '' : $instructores_academia[0]->linkedin}}" target="_blank"><i class="{{ empty($instructores_academia[0]->linkedin) ? '' : 'zmdi zmdi-linkedin-box f-25 c-linkedin m-l-5'}}"></i></a>
+                          <a name="linkedin" id="linkedin" href="{{ empty($instructores[0]->linkedin) ? '' : $instructores[0]->linkedin}}" target="_blank"><i class="{{ empty($instructores[0]->linkedin) ? '' : 'zmdi zmdi-linkedin-box f-25 c-linkedin m-l-5'}}"></i></a>
 
-                                <a name="youtube" id="youtube" href="{{ empty($instructores_academia[0]->youtube) ? '' : $instructores_academia[0]->youtube}}" target="_blank"><i class="{{ empty($instructores_academia[0]->youtube) ? '' : 'zmdi zmdi-collection-video f-25 c-youtube m-l-5'}}"></i></a>
+                          <a name="youtube" id="youtube" href="{{ empty($instructores[0]->youtube) ? '' : $instructores[0]->youtube}}" target="_blank"><i class="{{ empty($instructores[0]->youtube) ? '' : 'zmdi zmdi-collection-video f-25 c-youtube m-l-5'}}"></i></a>
 
-                                <a name="pagina_web" id="pagina_web" href="{{ empty($instructores_academia[0]->pagina_web) ? '' : $instructores_academia[0]->pagina_web}}" target="_blank"><i class="{{ empty($instructores_academia[0]->pagina_web) ? '' : 'zmdi zmdi zmdi-google-earth zmdi-hc-fw f-25 c-verde m-l-5'}}"></i></a>
-                              
-                                
-                              </p>
-
-                          @endif
-
-                          
-
-                        @if(count($instructores_academia) > 0)
+                          <a name="pagina_web" id="pagina_web" href="{{ empty($instructores[0]->pagina_web) ? '' : $instructores[0]->pagina_web}}" target="_blank"><i class="{{ empty($instructores[0]->pagina_web) ? '' : 'zmdi zmdi zmdi-google-earth zmdi-hc-fw f-25 c-verde m-l-5'}}"></i></a>
+                        </p>
 
                         <div class="div_promocional" style="display: none">
 
-                        <div class="clearfix p-b-20"></div>
-                        <div class="clearfix p-b-20"></div>
-                        <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
 
-                            <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
-                              <div class="embed-responsive embed-responsive-4by3" name="video_promocional_frame" id="video_promocional_frame">
-                                <iframe name="video_promocional" id="video_promocional" class="embed-responsive-item" src=""></iframe>
-                              </div>
+                          <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
+                            <div class="embed-responsive embed-responsive-4by3" name="video_promocional_frame" id="video_promocional_frame">
+                              <iframe name="video_promocional" id="video_promocional" class="embed-responsive-item" src=""></iframe>
                             </div>
+                          </div>
                         </div>
-                          @endif
 
                         
-
                         <div class="circulos_instructor" style="display: none">
 
-                        <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
 
-                        <div class="f-700 f-30">Experiencia como bailarín </div>
-                        <hr class="linea-morada">
+                          <div class="f-700 f-30">Experiencia como bailarín </div>
+                          <hr class="linea-morada">
 
-                        @if(count($instructores_academia) > 0)
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="tiempo_experiencia_bailador" id ="tiempo_experiencia_bailador"> {{$instructores[0]->tiempo_experiencia_bailador}}</div>
+                            <span class="span_circulo"> Años de experiencia</span>
+                          </div>
 
-                        
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="tiempo_experiencia_bailador" id ="tiempo_experiencia_bailador"> {{$instructores_academia[0]->tiempo_experiencia_bailador}}</div>
-                              <span class="span_circulo"> Años de experiencia</span>
-                            </div>
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="genero_bailador" id ="genero_bailador"> {{$instructores[0]->genero_bailador}}</div>
+                            <span class="span_circulo"> Géneros que domina</span>
+                          </div>
 
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="genero_bailador" id ="genero_bailador"> {{$instructores_academia[0]->genero_bailador}}</div>
-                              <span class="span_circulo"> Géneros que domina</span>
-                            </div>
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="participacion_coreografia" id ="participacion_coreografia"> {{$instructores[0]->participacion_coreografia}}</div>
+                            <span class="span_circulo"> Participación en coreografías</span>
+                          </div>
 
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="participacion_coreografia" id ="participacion_coreografia"> {{$instructores_academia[0]->participacion_coreografia}}</div>
-                              <span class="span_circulo"> Participación en coreografías</span>
-                            </div>
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="montajes" id ="montajes"> {{$instructores[0]->montajes}}</div>
+                            <span class="span_circulo"> Montajes coreográficos </span>
+                          </div>
 
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="montajes" id ="montajes"> {{$instructores_academia[0]->montajes}}</div>
-                              <span class="span_circulo"> Montajes coreográficos </span>
-                            </div>
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="titulos_bailador" id ="titulos_bailador"> {{$instructores[0]->titulos_bailador}}</div>
+                            <span class="span_circulo"> Títulos y reconocimientos</span>
+                          </div>
 
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="titulos_bailador" id ="titulos_bailador"> {{$instructores_academia[0]->titulos_bailador}}</div>
-                              <span class="span_circulo"> Títulos y reconocimientos</span>
-                            </div>
+                          <div class="container_circulo">
+                            <div class="circulo_instructor f-25 f-700" name ="participacion_escenario" id ="participacion_escenario"> {{$instructores[0]->participacion_escenario}}</div>
+                            <span class="span_circulo"> Participación en escenarios y shows</span>
+                          </div>
 
-                            <div class="container_circulo">
-                              <div class="circulo_instructor f-25 f-700" name ="participacion_escenario" id ="participacion_escenario"> {{$instructores_academia[0]->participacion_escenario}}</div>
-                              <span class="span_circulo"> Participación en escenarios y shows</span>
-                            </div>
-
-                          
-                          
-
-                        @endif
-                        <hr class="linea-morada">
+                                
+                          <hr class="linea-morada">
 
                         </div>
                         
-                        
-
                         <div class="div_resumen" style="display: none">
-
-                        <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
 
                           <div class="f-700 f-30">Resumen artístico</div>
                           <hr class="linea-morada">
                           <p class="f-14" name="resumen_artistico" id="resumen_artistico">
 
-                          @if(count($instructores_academia) > 0)
-
-                            {!! nl2br($instructores_academia[0]->resumen_artistico) !!}
-
-                          @endif
+                            {!! nl2br($instructores[0]->resumen_artistico) !!}
 
                           </p>
-
                         </div>
 
-                        @if(count($instructores_academia) > 0)
 
                         <div class="div_testimonial" style="display: none">
-
-                        <div class="clearfix p-b-20"></div>
-                        <div class="clearfix p-b-20"></div>
-                        <div class="clearfix p-b-20"></div>
-
-
-                            <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
-                              <div class="embed-responsive embed-responsive-4by3" name="video_testimonial_frame" id="video_testimonial_frame">
-                                <iframe name="video_testimonial" id="video_testimonial" class="embed-responsive-item" src=""></iframe>
-                              </div>
+                          <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
+                          <div class="clearfix p-b-20"></div>
+                          <div class="col-sm-offset-1 col-sm-10 m-b-20">                                   
+                            <div class="embed-responsive embed-responsive-4by3" name="video_testimonial_frame" id="video_testimonial_frame">
+                              <iframe name="video_testimonial" id="video_testimonial" class="embed-responsive-item" src=""></iframe>
                             </div>
+                          </div>
                         </div>
 
 
-                        @endif
+                      @endif
 
-                        <div class="clearfix p-b-20"></div>
-                        <div class="clearfix p-b-20"></div>
-                        <div class="clearfix p-b-20"></div>
+                      <div class="clearfix p-b-20"></div>
+                      <div class="clearfix p-b-20"></div>
+                      <div class="clearfix p-b-20"></div>
 
-                        <div class="col-sm-3" style="margin-left: 35%">
+                      <div class="col-sm-3" style="margin-left: 35%">
+                        <div class="text-center">
 
-
-                                <div class="text-center">
-
-                                  <a class="btn btn-blanco m-r-10 f-20 reservar"> ¡ Quiero Reservar ! </a>
-
-                                </div>
-
-                              </div>
-
-                        
-
+                          <a class="btn btn-blanco m-r-10 f-20 reservar"> ¡ Quiero Reservar ! </a>
+                        </div>
+                      </div>
                     </div>
-                    
                 </div>
 
 
@@ -658,12 +603,19 @@
 
 @section('js') 
         
-        <script src="{{url('/')}}/assets/js/rrssb.min.js" data-auto="false"></script>
+      <script src="{{url('/')}}/assets/js/rrssb.min.js" data-auto="false"></script>
+      <script type="text/javascript">
 
-        <!-- Following is only for demo purpose. You may ignore this when you implement -->
-        <script type="text/javascript">
+        var instructores = <?php echo json_encode($instructores);?>;
 
-        var instructores = <?php echo json_encode($instructores_academia);?>;
+        function isURL(str) {
+          var res = str.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+          if(res == null){
+            return false;
+          }else{
+            return true;
+          }
+        }
 
         $(document).ready(function() {
 
@@ -780,124 +732,147 @@
 
           id = this.id;
 
-          var instructor = $.grep(instructores, function(e){ return e.id == id; });
+          $.each(instructores, function (index, array) {
 
-          $.each(instructor, function (index, array) {
+            if(id == $(this).attr('id')){
 
-            if(array.descripcion)
-            {
-              $('.div_descripcion').show();
-              $("#descripcion_instructor").html(nl2br(array.descripcion));
-            }else{
-              $('.div_descripcion').hide();
-            }
+              if(array.descripcion)
+              {
+                $('.div_descripcion').show();
+                $("#descripcion_instructor").html(nl2br(array.descripcion));
+              }else{
+                $('.div_descripcion').hide();
+              }
 
-            if(array.resumen_artistico)
-            {
-              $('.div_resumen').show();
-              $("#resumen_artistico").html(nl2br(array.resumen_artistico));
-            }else{
-              $('.div_resumen').hide();
-            }
+              if(array.resumen_artistico)
+              {
+                $('.div_resumen').show();
+                $("#resumen_artistico").html(nl2br(array.resumen_artistico));
+              }else{
+                $('.div_resumen').hide();
+              }
 
-            if(array.tiempo_experiencia_instructor != null)
-            {
+              if(array.tiempo_experiencia_instructor != null)
+              {
 
-              $(".circulos_instructor").show();
+                $(".circulos_instructor").show();
 
-              $("#tiempo_experiencia_instructor").html(array.tiempo_experiencia_instructor);
-              $("#genero_instructor").html(array.genero_instructor);
-              $("#cantidad_horas").html(array.cantidad_horas);
-              $("#titulos_instructor").html(array.titulos_instructor);
-              $("#invitacion_evento").html(array.invitacion_evento);
-              $("#organizador").html(array.organizador);
+                $("#tiempo_experiencia_instructor").html(array.tiempo_experiencia_instructor);
+                $("#genero_instructor").html(array.genero_instructor);
+                $("#cantidad_horas").html(array.cantidad_horas);
+                $("#titulos_instructor").html(array.titulos_instructor);
+                $("#invitacion_evento").html(array.invitacion_evento);
+                $("#organizador").html(array.organizador);
 
-              $("#tiempo_experiencia_bailador").html(array.tiempo_experiencia_bailador);
-              $("#genero_bailador").html(array.genero_bailador);
-              $("#participacion_coreografia").html(array.participacion_coreografia);
-              $("#montajes").html(array.montajes);
-              $("#titulos_bailador").html(array.titulos_bailador);
-              $("#participacion_escenario").html(array.participacion_escenario);
+                $("#tiempo_experiencia_bailador").html(array.tiempo_experiencia_bailador);
+                $("#genero_bailador").html(array.genero_bailador);
+                $("#participacion_coreografia").html(array.participacion_coreografia);
+                $("#montajes").html(array.montajes);
+                $("#titulos_bailador").html(array.titulos_bailador);
+                $("#participacion_escenario").html(array.participacion_escenario);
 
-            }else{
-              $(".circulos_instructor").hide();
-            }
+              }else{
+                $(".circulos_instructor").hide();
+              }
 
 
-            if(array.imagen_artistica){
-              $("#imagen_artistica").attr('src', "{{url('/')}}/assets/uploads/instructor/"+array.imagen_artistica);
-              $("#imagen_artistica").show();
-            }else{
-              $("#imagen_artistica").hide();
-            }
+              if(array.imagen_artistica){
+                $("#imagen_artistica").attr('src', "{{url('/')}}/assets/uploads/instructor/"+array.imagen_artistica);
+                $("#imagen_artistica").show();
+              }else{
+                $("#imagen_artistica").hide();
+              }
 
-            var video_promocional = array.video_promocional.split('=');
+              var video_promocional = array.video_promocional.split('=');
 
-            if(video_promocional[1])
-            {
-              $("#video_promocional").attr('src', "http://www.youtube.com/embed/"+video_promocional[1]);
-              $(".div_promocional").show();
-            }else{
-              $(".div_promocional").hide();
-            }
+              if(video_promocional[1])
+              {
+                $("#video_promocional").attr('src', "http://www.youtube.com/embed/"+video_promocional[1]);
+                $(".div_promocional").show();
+              }else{
+                $(".div_promocional").hide();
+              }
 
-            var video_testimonial = array.video_testimonial.split('=');
+              var video_testimonial = array.video_testimonial.split('=');
 
-            if(video_testimonial[1])
-            {
-              $("#video_testimonial").attr('src', "http://www.youtube.com/embed/"+video_testimonial[1]);
-              $(".div_testimonial").show();
+              if(video_testimonial[1])
+              {
+                $("#video_testimonial").attr('src', "http://www.youtube.com/embed/"+video_testimonial[1]);
+                $(".div_testimonial").show();
 
-            }else{
-              $(".div_testimonial").hide();
-            }
+              }else{
+                $(".div_testimonial").hide();
+              }
 
-            if(array.facebook)
-            {
-              $("#facebook").attr('href', array.facebook);
-              $("#facebook").show();
-            }else{
-              $("#facebook").hide();
-            }
+              if(array.facebook)
+              {
+                if(isURL(array.facebook)){
+                  $("#facebook").attr('href', array.facebook);
+                }else{
+                  $("#facebook").attr('href', "https://www.facebook.com/"+array.facebook);
+                }
+                
+                $('#facebook').addClass('zmdi zmdi-facebook-box f-25 c-facebook m-l-5');
+                $("#facebook").show();
+              }else{
+                $("#facebook").hide();
+              }
 
-            if(array.twitter)
-            {
-              $("#twitter").attr('href', array.twitter);
-              $("#twitter").show();
-            }else{
-              $("#twitter").hide();
-            }
+              if(array.twitter)
+              {
+                if(isURL(array.twitter)){
+                  $("#twitter").attr('href', array.twitter);
+                }else{
+                  $("#twitter").attr('href', "https://www.twitter.com/"+array.twitter);
+                }
+                $('#twitter').addClass('zmdi zmdi-twitter-box f-25 c-twitter');
+                $("#twitter").show();
+              }else{
+                $("#twitter").hide();
+              }
 
-            if(array.instagram)
-            {
-              $("#instagram").attr('href', array.instagram);
-              $("#instagram").show();
-            }else{
-              $("#instagram").hide();
-            }
+              if(array.instagram)
+              {
+                if(isURL(array.instagram)){
+                  $("#instagram").attr('href', array.instagram);
+                }else{
+                  $("#instagram").attr('href', "https://www.instagram.com/"+array.instagram);
+                }
+                $('#instagram').addClass('zmdi zmdi-instagram f-25 c-instagram m-l-5');
+                $("#instagram").show();
+              }else{
+                $("#instagram").hide();
+              }
 
-            if(array.linkedin)
-            {
-              $("#linkedin").attr('href', array.linkedin);
-              $("#linkedin").show();
-            }else{
-              $("#linkedin").hide();
-            }
+              if(array.linkedin)
+              {
+                if(isURL(array.linkedin)){
+                  $("#linkedin").attr('href', array.linkedin);
+                }else{
+                  $("#linkedin").attr('href', "https://www.linkedin.com/"+array.linkedin);
+                }
+                $('#linkedin').addClass('zmdi zmdi-linkedin-box f-25 c-linkedin m-l-5');
+                $("#linkedin").show();
+              }else{
+                $("#linkedin").hide();
+              }
 
-            if(array.pagina_web)
-            {
-              $("#pagina_web").attr('href', array.pagina_web);
-              $("#pagina_web").show();
-            }else{
-              $("#pagina_web").hide();
-            }
+              if(array.pagina_web)
+              {
+                $("#pagina_web").attr('href', array.pagina_web);
+                $("#pagina_web").show();
+              }else{
+                $("#pagina_web").hide();
+              }
 
-            if(array.youtube)
-            {
-              $("#youtube").attr('href', array.youtube);
-              $("#youtube").show();
-            }else{
-              $("#youtube").hide();
+              if(array.youtube)
+              {
+                $("#youtube").attr('href', array.youtube);
+                $('#youtube').addClass('zmdi zmdi-collection-video f-25 c-youtube');
+                $("#youtube").show();
+              }else{
+                $("#youtube").hide();
+              }
             }
 
             });
