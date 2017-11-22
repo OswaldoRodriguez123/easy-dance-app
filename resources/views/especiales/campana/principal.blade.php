@@ -110,7 +110,7 @@
                                                             </li>
 
                                                             <li class="hidden-xs">
-                                                                <a onclick="procesando()" href="{{url('/')}}/especiales/campañas/progreso/{{$id}}"><i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i> Progreso</a>
+                                                                <a href="{{url('/')}}/especiales/campañas/progreso/{{$id}}"><i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i> Progreso</a>
                                                             </li>
                    
 

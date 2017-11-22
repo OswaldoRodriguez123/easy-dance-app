@@ -180,167 +180,167 @@
             $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).attr( "onclick","previa(this)" );
           },
           language: {
-                      processing:     "Procesando ...",
-                      search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                      searchPlaceholder: "BUSCAR",
-                      lengthMenu:     "Mostrar _MENU_ Registros",
-                      info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                      infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                      infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                      infoPostFix:    "",
-                      loadingRecords: "...",
-                      zeroRecords:    "No se encontraron registros coincidentes",
-                      emptyTable:     "No hay datos disponibles en la tabla",
-                      paginate: {
-                          first:      "Primero",
-                          previous:   "Anterior",
-                          next:       "Siguiente",
-                          last:       "Ultimo"
-                      },
-                      aria: {
-                          sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                          sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                      }
-                  }
-      });
+              processing:     "Procesando ...",
+              search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+              searchPlaceholder: "BUSCAR",
+              lengthMenu:     "Mostrar _MENU_ Registros",
+              info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+              infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+              infoFiltered:   "(filtrada de _MAX_ registros en total)",
+              infoPostFix:    "",
+              loadingRecords: "...",
+              zeroRecords:    "No se encontraron registros coincidentes",
+              emptyTable:     "No hay datos disponibles en la tabla",
+              paginate: {
+                  first:      "Primero",
+                  previous:   "Anterior",
+                  next:       "Siguiente",
+                  last:       "Ultimo"
+              },
+              aria: {
+                  sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                  sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                }
+            }
+        });
 
-      function previa(t){
-        var id = $(t).closest('tr').attr('id');
-        var route =route_detalle+"/"+id;
-        window.open(route, '_blank');
-      }
+        function previa(t){
+          var id = $(t).closest('tr').attr('id');
+          var route =route_detalle+"/"+id;
+          window.open(route, '_blank');
+        }
 
-      $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
+        $('#tablelistar tbody').on('mouseenter', 'a.dropdown-toggle', function () {
 
-            var id = $(this).closest('tr').attr('id');
-            var dropdown = $(this).closest('.dropdown')
-            var dropdown_toggle = $(this).closest('.dropdown-toggle')
+              var id = $(this).closest('tr').attr('id');
+              var dropdown = $(this).closest('.dropdown')
+              var dropdown_toggle = $(this).closest('.dropdown-toggle')
 
-            $('.dropdown-toggle').attr('aria-expanded','false')
-            $('.dropdown').removeClass('open')
+              $('.dropdown-toggle').attr('aria-expanded','false')
+              $('.dropdown').removeClass('open')
+              $('.table-responsive').css( "overflow", "auto" );
+
+              if(!dropdown.hasClass('open')){
+                  dropdown.addClass('open')
+                  dropdown_toggle.attr('aria-expanded','true')
+                  $('.table-responsive').css( "overflow", "inherit" );
+              }
+           
+          });
+
+          $('.table-responsive').on('hide.bs.dropdown', function () {
             $('.table-responsive').css( "overflow", "auto" );
+          }) 
 
-            if(!dropdown.hasClass('open')){
-                dropdown.addClass('open')
-                dropdown_toggle.attr('aria-expanded','true')
-                $('.table-responsive').css( "overflow", "inherit" );
-            }
-         
+          $(".email").click(function(){
+
+              var route = route_email;
+              var token = '{{ csrf_token() }}';
+              var id = $(this).closest('tr').attr('id');
+                  
+                  $.ajax({
+                      url: route,
+                          headers: {'X-CSRF-TOKEN': token},
+                          type: 'POST',
+                      dataType: 'json',
+                      data:"&usuario_tipo=3&usuario_id="+id,
+                      success:function(respuesta){
+
+                          procesando();
+                          window.location="{{url('/')}}/correo/"+id   
+
+                      },
+                      error:function(msj){
+                                  // $("#msj-danger").fadeIn(); 
+                                  // var text="";
+                                  // console.log(msj);
+                                  // var merror=msj.responseJSON;
+                                  // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                                  // $("#msj-error").html(text);
+                                  // setTimeout(function(){
+                                  //          $("#msj-danger").fadeOut();
+                                  //         }, 3000);
+                                  swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                                  }
+                  });
         });
 
-        $('.table-responsive').on('hide.bs.dropdown', function () {
-          $('.table-responsive').css( "overflow", "auto" );
-        }) 
+        $(".reservar").click(function(){
 
-        $(".email").click(function(){
+          procesando();
+          var route = "{{url('/')}}/reservacion/guardar-tipo-usuario/2";
+          var token = '{{ csrf_token() }}';
+          var id = $(this).closest('tr').attr('id');
+              
+          $.ajax({
+              url: route,
+                  headers: {'X-CSRF-TOKEN': token},
+                  type: 'POST',
+              dataType: 'json',
+              success:function(respuesta){
+                  window.location = "{{url('/')}}/reservaciones/actividades/"+id
 
-            var route = route_email;
-            var token = '{{ csrf_token() }}';
-            var id = $(this).closest('tr').attr('id');
-                
-                $.ajax({
-                    url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'POST',
-                    dataType: 'json',
-                    data:"&usuario_tipo=3&usuario_id="+id,
-                    success:function(respuesta){
+              },
+              error:function(msj){
+                          // $("#msj-danger").fadeIn(); 
+                          // var text="";
+                          // console.log(msj);
+                          // var merror=msj.responseJSON;
+                          // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                          // $("#msj-error").html(text);
+                          // setTimeout(function(){
+                          //          $("#msj-danger").fadeOut();
+                          //         }, 3000);
+                          finprocesado();
+                          swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                          }
+          });
+      })
 
-                        procesando();
-                        window.location="{{url('/')}}/correo/"+id   
+      $(".eliminar").click(function(){
+              var id = $(this).closest('tr').attr('id');
+              swal({   
+                  title: "Desea eliminar al visitante?",   
+                  text: "Confirmar eliminación!",   
+                  type: "warning",   
+                  showCancelButton: true,   
+                  confirmButtonColor: "#DD6B55",   
+                  confirmButtonText: "Eliminar!",  
+                  cancelButtonText: "Cancelar",         
+                  closeOnConfirm: true 
+              }, function(isConfirm){   
+        if (isConfirm) {
+          var route = route_eliminar + id;
+          var token = '{{ csrf_token() }}';
+              
+              $.ajax({
+                  url: route,
+                      headers: {'X-CSRF-TOKEN': token},
+                      type: 'DELETE',
+                  dataType: 'json',
+                  data:id,
+                  success:function(respuesta){
 
-                    },
-                    error:function(msj){
-                                // $("#msj-danger").fadeIn(); 
-                                // var text="";
-                                // console.log(msj);
-                                // var merror=msj.responseJSON;
-                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                // $("#msj-error").html(text);
-                                // setTimeout(function(){
-                                //          $("#msj-danger").fadeOut();
-                                //         }, 3000);
-                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                                }
-                });
+                      procesando();
+                      window.location = route_principal; 
+
+                  },
+                  error:function(msj){
+                              // $("#msj-danger").fadeIn(); 
+                              // var text="";
+                              // console.log(msj);
+                              // var merror=msj.responseJSON;
+                              // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
+                              // $("#msj-error").html(text);
+                              // setTimeout(function(){
+                              //          $("#msj-danger").fadeOut();
+                              //         }, 3000);
+                              swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+                              }
+              });
+              }
+          });
       });
 
-      $(".reservar").click(function(){
-
-        procesando();
-        var route = "{{url('/')}}/reservacion/guardar-tipo-usuario/2";
-        var token = '{{ csrf_token() }}';
-        var id = $(this).closest('tr').attr('id');
-            
-        $.ajax({
-            url: route,
-                headers: {'X-CSRF-TOKEN': token},
-                type: 'POST',
-            dataType: 'json',
-            success:function(respuesta){
-                window.location = "{{url('/')}}/reservaciones/actividades/"+id
-
-            },
-            error:function(msj){
-                        // $("#msj-danger").fadeIn(); 
-                        // var text="";
-                        // console.log(msj);
-                        // var merror=msj.responseJSON;
-                        // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                        // $("#msj-error").html(text);
-                        // setTimeout(function(){
-                        //          $("#msj-danger").fadeOut();
-                        //         }, 3000);
-                        finprocesado();
-                        swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                        }
-        });
-    })
-
-    $(".eliminar").click(function(){
-            var id = $(this).closest('tr').attr('id');
-            swal({   
-                title: "Desea eliminar al visitante?",   
-                text: "Confirmar eliminación!",   
-                type: "warning",   
-                showCancelButton: true,   
-                confirmButtonColor: "#DD6B55",   
-                confirmButtonText: "Eliminar!",  
-                cancelButtonText: "Cancelar",         
-                closeOnConfirm: true 
-            }, function(isConfirm){   
-      if (isConfirm) {
-        var route = route_eliminar + id;
-        var token = '{{ csrf_token() }}';
-            
-            $.ajax({
-                url: route,
-                    headers: {'X-CSRF-TOKEN': token},
-                    type: 'DELETE',
-                dataType: 'json',
-                data:id,
-                success:function(respuesta){
-
-                    procesando();
-                    window.location = route_principal; 
-
-                },
-                error:function(msj){
-                            // $("#msj-danger").fadeIn(); 
-                            // var text="";
-                            // console.log(msj);
-                            // var merror=msj.responseJSON;
-                            // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                            // $("#msj-error").html(text);
-                            // setTimeout(function(){
-                            //          $("#msj-danger").fadeOut();
-                            //         }, 3000);
-                            swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                            }
-            });
-            }
-        });
-    });
-
-    </script>
+  </script>
 @stop
