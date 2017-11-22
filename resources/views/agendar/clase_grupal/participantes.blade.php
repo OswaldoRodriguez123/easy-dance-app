@@ -1372,7 +1372,7 @@
                                                       </li>
 
                                                       <li class="hidden-xs">
-                                                          <a href="{{url('/')}}/agendar/clases-grupales/participantes/historial/{{$id}}"><i class="zmdi zmdi-shield-check f-20"></i> Asistencia</a>
+                                                          <a href="{{url('/')}}/agendar/clases-grupales/participantes/historial/{{$id}}" target="_blank"><i class="zmdi zmdi-shield-check f-20"></i> Asistencia</a>
                                                       </li>
 
                                                        <li class="hidden-xs">
