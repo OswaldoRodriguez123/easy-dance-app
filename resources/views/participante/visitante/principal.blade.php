@@ -267,7 +267,6 @@
 
         $(".reservar").click(function(){
 
-          procesando();
           var route = "{{url('/')}}/reservacion/guardar-tipo-usuario/2";
           var token = '{{ csrf_token() }}';
           var id = $(this).closest('tr').attr('id');
