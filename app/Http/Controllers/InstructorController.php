@@ -1808,9 +1808,9 @@ class InstructorController extends BaseController {
             foreach($comisiones as $comision){
 
                 if($comision->servicio_producto_tipo == 1){
-                    $servicio_producto = ConfigServicios::find($comision->servicio_producto_id);
+                    $servicio_producto = ConfigServicios::withTrashed()->find($comision->servicio_producto_id);
                 }else{
-                    $servicio_producto = ConfigProductos::find($comision->servicio_producto_id);
+                    $servicio_producto = ConfigProductos::withTrashed()->find($comision->servicio_producto_id);
                 }
 
                 if($servicio_producto){
