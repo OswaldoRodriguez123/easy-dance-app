@@ -83,6 +83,7 @@
                                     <th class="text-center" data-column-id="staff" data-order="desc">Staff</th>
                                     <th class="text-center" data-column-id="actividad" data-order="desc">Actividad</th>
                                     <th class="text-center" data-column-id="fecha">Fecha</th>
+                                    <th class="text-center" data-column-id="clase_grupal">Clase Grupal</th>
                                     @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                                         <th class="text-center" data-column-id="operacion" data-order="desc">Acciones</th>
                                     @endif
@@ -112,6 +113,7 @@
                                     <td class="text-center previa">{{$evento['staff_nombre']}} {{$evento['staff_apellido']}}</td>
                                     <td class="text-center previa">{{ str_limit(title_case($evento['nombre']), $limit = 30, $end = '...') }}</td>
                                     <td class="text-center previa">{{$evento['fecha']}}</td>
+                                    <td class="text-center previa">{{$evento['clase_grupal']}}</td>
                                     @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                                         <td class="text-center previa">
                                             @if($evento['tipo'] == 'A')

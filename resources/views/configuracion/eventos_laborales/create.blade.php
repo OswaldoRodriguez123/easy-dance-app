@@ -103,6 +103,33 @@
                                   </div>
                                </div>
 
+                               <div class="clearfix p-b-35"></div>
+
+                               <div class="col-sm-12">
+
+                                  <label for="nombre" id="id-tipo_evento_id">Clase Grupal</label> <span class="c-morado f-700 f-16">*</span>
+                                      <div class="input-group">
+                                        <span class="input-group-addon"><i class="icon_a icon_a-clases-grupales f-22"></i></span>
+                                        <div class="fg-line">
+                                        <div class="select">
+                                          <select class="selectpicker" name="tipo_evento_id" id="tipo_evento_id" data-live-search="true" >
+
+                                            <option value="">Selecciona</option>
+                                            @foreach ( $clases_grupales as $clase_grupal )
+                                              <option value = "{{ $clase_grupal['id'] }}">{{ $clase_grupal['clase_grupal_nombre'] }} - {{ $clase_grupal['dia_de_semana'] }} - {{ $clase_grupal['hora_inicio'] }} / {{ $clase_grupal['hora_final'] }} - {{ $clase_grupal['instructor_nombre'] }} {{ $clase_grupal['instructor_apellido'] }}</option>
+                                            @endforeach
+                                          
+                                          </select>
+                                        </div>
+                                      </div>
+                                      </div>
+                                   <div class="has-error" id="error-tipo_evento_id">
+                                        <span >
+                                            <small class="help-block error-span" id="error-tipo_evento_id_mensaje" ></small>                                
+                                        </span>
+                                    </div>
+                               </div>
+
                                <!-- <div class="clearfix p-b-35"></div>
 
                                <div class="col-sm-12">
@@ -614,7 +641,6 @@
               $('#hora_final').val('')
               limpiarMensaje();
 
-          
             }else{
               var nTitle="Ups! ";
               var nMensaje="Ha ocurrido un error, intente nuevamente por favor";

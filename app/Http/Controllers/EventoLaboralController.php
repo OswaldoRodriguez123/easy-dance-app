@@ -139,7 +139,9 @@ class EventoLaboralController extends BaseController
     {
     	$eventos_laborales = EventoLaboral::join('staff', 'eventos_laborales.staff_id', '=', 'staff.id')
             ->leftJoin('actividades_laborales', 'eventos_laborales.actividad_id', '=', 'actividades_laborales.id')
-            ->select('actividades_laborales.nombre','actividades_laborales.descripcion','eventos_laborales.*', 'staff.nombre as staff_nombre', 'staff.apellido as staff_apellido')
+            ->leftJoin('clases_grupales', 'eventos_laborales.tipo_evento_id', '=', 'clases_grupales.id')
+            ->leftJoin('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->select('actividades_laborales.nombre','actividades_laborales.descripcion','eventos_laborales.*', 'staff.nombre as staff_nombre', 'staff.apellido as staff_apellido', 'config_clases_grupales.nombre as clase_grupal')
             ->where('staff.academia_id','=', Auth::user()->academia_id)
         ->get();
 
@@ -170,7 +172,60 @@ class EventoLaboralController extends BaseController
         $staffs = Staff::where('academia_id', Auth::user()->academia_id)->get();
         $actividades = ActividadLaboral::where('academia_id', Auth::user()->academia_id)->get();
 
-        return view('configuracion.eventos_laborales.create')->with([ 'staffs' => $staffs, 'config_staff' => $config_staff, 'actividades' => $actividades]);
+        $clase_grupal_join = ClaseGrupal::join('config_clases_grupales', 'clases_grupales.clase_grupal_id', '=', 'config_clases_grupales.id')
+            ->leftJoin('instructores', 'clases_grupales.instructor_id', '=', 'instructores.id')
+            ->select('config_clases_grupales.nombre as clase_grupal_nombre', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'clases_grupales.hora_inicio','clases_grupales.hora_final', 'clases_grupales.id', 'clases_grupales.fecha_inicio')
+            ->where('clases_grupales.academia_id','=', Auth::user()->academia_id)
+            ->where('clases_grupales.deleted_at', '=', null)
+            ->orderBy('clases_grupales.hora_inicio', 'asc')
+        ->get();
+
+        $array = array();
+
+        foreach($clase_grupal_join as $clase_grupal){
+
+            $fecha = Carbon::createFromFormat('Y-m-d', $clase_grupal->fecha_inicio);
+            $i = $fecha->dayOfWeek;
+
+            if($i == 1){
+
+              $dia = 'Lunes';
+
+            }else if($i == 2){
+
+              $dia = 'Martes';
+
+            }else if($i == 3){
+
+              $dia = 'Miercoles';
+
+            }else if($i == 4){
+
+              $dia = 'Jueves';
+
+            }else if($i == 5){
+
+              $dia = 'Viernes';
+
+            }else if($i == 6){
+
+              $dia = 'Sabado';
+
+            }else if($i == 0){
+
+              $dia = 'Domingo';
+
+            }
+
+            $collection=collect($clase_grupal);     
+            $clase_grupal_array = $collection->toArray();
+            
+            $clase_grupal_array['dia_de_semana']=$dia;
+
+            $array[$clase_grupal->id] = $clase_grupal_array;
+        }
+
+        return view('configuracion.eventos_laborales.create')->with([ 'staffs' => $staffs, 'config_staff' => $config_staff, 'actividades' => $actividades, 'clases_grupales' => $array]);
     }
 
     public function store(Request $request)
@@ -232,6 +287,7 @@ class EventoLaboralController extends BaseController
 	        $evento->staff_id = $request->staff_id;
 	        $evento->fecha = $fecha;
 	        $evento->actividad_id = $request->actividad_id;
+            $evento->tipo_evento_id = $request->tipo_evento_id;
 	        $evento->hora_inicio = $hora_inicio;
 	        $evento->hora_final = $hora_final;
 
@@ -239,7 +295,6 @@ class EventoLaboralController extends BaseController
 
                 $actividad = ActividadLaboral::find($request->actividad_id);
                 $staff = Staff::find($request->staff_id);
-
 
 	        	return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', "evento" => $evento, 'actividad' => $actividad->nombre, "staff" => $staff->nombre . ' ' . $staff->apellido, 'status' => 'OK', 200]);
 	        }else{
