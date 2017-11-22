@@ -370,22 +370,22 @@
       var route_edit_notificacion="{{url('/')}}/notificacion_revisado";
 
       $('#numero_de_notificaciones').on('click', function(e){
-          $("#numero_actual").text(0);
-          var route = route_edit_notificacion;
-          var token = "{{ csrf_token() }}"
-          $.ajax({
-            url: route,
-            headers: {'X-CSRF-TOKEN': token},
-            type: 'POST',
-            dataType: 'json',
-            success:function(respuesta){  
-                console.log(respuesta);             
-            },
-            error:function(msj){
-                console.log(msj);              
-            }
-          });
-      });
+        $("#numero_actual").text(0);
+        var route = route_edit_notificacion;
+        var token = "{{ csrf_token() }}"
+        $.ajax({
+          url: route,
+          headers: {'X-CSRF-TOKEN': token},
+          type: 'POST',
+          dataType: 'json',
+          success:function(respuesta){  
+              console.log(respuesta);             
+          },
+          error:function(msj){
+              console.log(msj);              
+          }
+        });
+    });
 
     //eliminar notificaciones
     route_eliminar="{{url('/')}}/notificacion_eliminadas";
@@ -461,48 +461,47 @@
 
     var asistencia=$('#tablelistar_asistencia').DataTable({
         
-        processing: true,
-        serverSide: false,
-        //pageLength: 25,
-        order: [[0, 'asc']],
-        paging: false,  
-        fnDrawCallback: function() {
-          //if ($('#tablelistar_asistencia tr').length < 25) {
-              $('.dataTables_paginate').hide();
-          //}
-          $("#tablelistar_asistencia_info").hide();
-          $("#tablelistar_asistencia_filter").hide();
-        },   
-        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {          
-          $('td:eq(0)', nRow).attr( "onclick","buscar(this)" );
-        },  
-        language: {
-                        processing:     "Procesando ...",
-                        search:         "",
-                        lengthMenu:     "Mostrar _MENU_ Registros",
-                        info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                        infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                        infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                        infoPostFix:    "",
-                        loadingRecords: "...",
-                        zeroRecords:    "No se encontraron registros coincidentes",
-                        emptyTable:     "No hay datos disponibles en la tabla",
-                        paginate: {
-                            first:      "Primero",
-                            previous:   "Anterior",
-                            next:       "Siguiente",
-                            last:       "Ultimo"
-                        },
-                        aria: {
-                            sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                            sortDescending: ": habilitado para ordenar la columna en orden descendente"
-                        }
+      processing: true,
+      serverSide: false,
+      order: [[0, 'asc']],
+      paging: false,  
+      fnDrawCallback: function() {
+        $('.dataTables_paginate').hide();
+        $("#tablelistar_asistencia_info").hide();
+        $("#tablelistar_asistencia_filter").hide();
+      },   
+      fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {          
+        $('td:eq(0)', nRow).attr( "onclick","buscar(this)" );
+      },  
+      language: {
+                    processing:     "Procesando ...",
+                    search:         "",
+                    lengthMenu:     "Mostrar _MENU_ Registros",
+                    info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                    infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                    infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                    infoPostFix:    "",
+                    loadingRecords: "...",
+                    zeroRecords:    "No se encontraron registros coincidentes",
+                    emptyTable:     "No hay datos disponibles en la tabla",
+                    paginate: {
+                        first:      "Primero",
+                        previous:   "Anterior",
+                        next:       "Siguiente",
+                        last:       "Ultimo"
+                    },
+                    aria: {
+                        sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                        sortDescending: ": habilitado para ordenar la columna en orden descendente"
                     }
-        });
+                }
+    });
 
+    $('#modalReportes').on('shown.bs.modal', function(e) {
+      e.preventDefault();
+    });
 
     $('.rojo').on('click', function(e) {
-      e.preventDefault();
       procesando();
       window.location = "{{url('/')}}/reportes"
     })

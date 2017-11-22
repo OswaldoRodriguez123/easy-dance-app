@@ -2017,7 +2017,7 @@ class ReporteController extends BaseController
             // ->select('egresos.*', 'tipos_egresos.nombre as nombre_egreso', 'users.nombre as administrador_nombre','users.apellido as administrador_apellido')
             // ->where('egresos.academia_id', '=', Auth::user()->academia_id);
 
-             $query = Egreso::join('tipos_egresos', 'egresos.tipo', '=', 'tipos_egresos.id')
+             $query = Egreso::leftJoin('tipos_egresos', 'egresos.tipo', '=', 'tipos_egresos.id')
                 ->select('egresos.*', 'tipos_egresos.nombre as nombre_egreso')
             ->where('egresos.academia_id', '=', Auth::user()->academia_id);
 
@@ -2072,7 +2072,6 @@ class ReporteController extends BaseController
 
             foreach($config_egreso as $egreso){
                 $array_config_egreso[$egreso->id] = ['nombre' => $egreso->nombre, 'cantidad' => 0];
-
             }
 
             if($request->servicio_tipo == 0 || $request->servicio_tipo == 6){
