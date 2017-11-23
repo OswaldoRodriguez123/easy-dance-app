@@ -1251,7 +1251,8 @@ class AlumnoController extends BaseController
 
             $credenciales = CredencialAlumno::leftJoin('instructores', 'credenciales_alumno.instructor_id', '=', 'instructores.id')
                 ->join('alumnos', 'credenciales_alumno.alumno_id', '=', 'alumnos.id')
-                ->select('credenciales_alumno.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido')
+                ->leftJoin('users', 'credenciales_alumno.usuario_id_vendedor', '=', 'users.id')
+                ->select('credenciales_alumno.*', 'instructores.nombre as instructor_nombre', 'instructores.apellido as instructor_apellido', 'alumnos.nombre as alumno_nombre', 'alumnos.apellido as alumno_apellido', 'users.nombre as vendedor_nombre', 'users.apellido as vendedor_apellido')
                 ->where('credenciales_alumno.alumno_id',$id)
                 ->where('credenciales_alumno.cantidad' ,">", 0)
             ->get();
