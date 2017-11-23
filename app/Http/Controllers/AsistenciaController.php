@@ -889,7 +889,7 @@ class AsistenciaController extends BaseController
       $credenciales = CredencialAlumno::where('alumno_id',$id)
         ->where('cantidad' ,'>', 0)
         ->where('fecha_vencimiento','>=', Carbon::now()->toDateString())
-      ->sum('cantidad');
+      ->sum('cantidad_restante');
 
       if(!$credenciales){
         $credenciales = 0;
