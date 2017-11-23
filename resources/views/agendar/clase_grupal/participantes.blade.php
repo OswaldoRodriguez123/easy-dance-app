@@ -2523,9 +2523,13 @@
 
                     });
 
+                    $('[data-toggle="popover"]').popover(); 
                     $('#total_credenciales_alumno').text(respuesta.total_credenciales)
-
-                    finprocesado();
+                    $('#alumno_id_credencial').val(alumno_id);
+                    $('#credencial_alumno').text(nombre);
+                  
+                    finprocesado();                      
+                    $('#modalCredencial').modal('show');
 
                   }else{
                     var nTitle="Ups! ";
@@ -2541,9 +2545,9 @@
               },
               error:function(msj){
                 setTimeout(function(){ 
-                  // if (typeof msj.responseJSON === "undefined") {
-                  //   window.location = "{{url('/')}}/error";
-                  // }
+                  if (typeof msj.responseJSON === "undefined") {
+                    window.location = "{{url('/')}}/error";
+                  }
                   finprocesado();
                   if(msj.responseJSON.status=="ERROR"){
                     console.log(msj.responseJSON.errores);
@@ -2566,117 +2570,104 @@
 
               }
           });
- 
-          $('[data-toggle="popover"]').popover(); 
-
-
-          $('#alumno_id_credencial').val(alumno_id);
-          $('#credencial_alumno').text(nombre);
-          
-          setTimeout(function(){ 
-            $('#modalCredencial').modal('show');
-          }, 1000);
-
         });
 
         $("#agregar_credencial").click(function(){
 
-              $("#agregar_credencial").attr("disabled","disabled");
-              $("#agregar_credencial").css({
-                "opacity": ("0.2")
-              });
-
-              var route = route_credencial;
-              var token = $('input:hidden[name=_token]').val();
-              var datos = $( "#form_credencial" ).serialize();         
-              limpiarMensaje();
-              $.ajax({
-                url: route,
-                headers: {'X-CSRF-TOKEN': token},
-                type: 'POST',
-                dataType: 'json',
-                data:datos,
-                success:function(respuesta){
-                  setTimeout(function(){ 
-                    var nFrom = $(this).attr('data-from');
-                    var nAlign = $(this).attr('data-align');
-                    var nIcons = $(this).attr('data-icon');
-                    var nAnimIn = "animated flipInY";
-                    var nAnimOut = "animated flipOutY"; 
-                    if(respuesta.status=="OK"){
-
-                      if({{$usuario_tipo}} != 3)
-
-                        accion = '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer">'
-
-                      else{
-                        if(respuesta.credencial_alumno.instructor_id == "{{$usuario_id}}"){
-                          accion = '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer">'
-                        }else{
-                          accion = '<i data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Esta credencial no puede ser eliminada porque fue asignada por un administrador" title="" data-original-title="Ayuda" class="zmdi zmdi-lock-outline f-20 p-r-10 pointer">'
-                        }
-                      }
-
-                      $('[data-toggle="popover"]').popover(); 
-
-                      var nType = 'success';
-                      var nTitle="Ups! ";
-                      var nMensaje=respuesta.mensaje;
-
-                      var rowId=respuesta.credencial_alumno.id;
-                      var rowNode=c.row.add( [
-                        ''+respuesta.credencial_alumno.cantidad+'',
-                        ''+respuesta.fecha_vencimiento+'',
-                        ''+respuesta.credencial_alumno.dias_vencimiento+'',
-                        ''+accion+''
-                      ] ).draw(false).node();
-
-                      $( rowNode )
-                        .attr('id',rowId)
-                        .addClass('disabled');
-
-                      $('#form_credencial')[0].reset();
-
-                      if(respuesta.total_credenciales){
-                        $('#total_credenciales').text(respuesta.total_credenciales)
-                      }
-
-                      total_credenciales_alumno = parseInt($('#total_credenciales_alumno').text())
-                      total_credenciales_alumno = total_credenciales_alumno + parseInt(respuesta.cantidad)
-
-                      $('#total_credenciales_alumno').text(total_credenciales_alumno)
-                      
-                    }else{
-                      var nTitle="Ups! ";
-                      var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
-                      var nType = 'danger';
-                    }  
-
-                    $("#agregar_credencial").removeAttr("disabled");
-                    $("#agregar_credencial").css({
-                      "opacity": ("1")
-                    });
-
-                    notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
-                  }, 1000);
-                },
-                error:function(msj){
-                  setTimeout(function(){ 
-                    // if (typeof msj.responseJSON === "undefined") {
-                    //   window.location = "{{url('/')}}/error";
-                    // }
-
-                    $("#agregar_credencial").removeAttr("disabled");
-                    $("#agregar_credencial").css({
-                      "opacity": ("1")
-                    });
-
-                    swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-
-                  }, 1000);
-                }
+            $("#agregar_credencial").attr("disabled","disabled");
+            $("#agregar_credencial").css({
+              "opacity": ("0.2")
             });
+
+            var route = route_credencial;
+            var token = $('input:hidden[name=_token]').val();
+            var datos = $( "#form_credencial" ).serialize();         
+            limpiarMensaje();
+            $.ajax({
+              url: route,
+              headers: {'X-CSRF-TOKEN': token},
+              type: 'POST',
+              dataType: 'json',
+              data:datos,
+              success:function(respuesta){
+                setTimeout(function(){ 
+                  var nFrom = $(this).attr('data-from');
+                  var nAlign = $(this).attr('data-align');
+                  var nIcons = $(this).attr('data-icon');
+                  var nAnimIn = "animated flipInY";
+                  var nAnimOut = "animated flipOutY"; 
+                  if(respuesta.status=="OK"){
+
+                    if("{{$usuario_tipo}}" != 3){
+                      accion = '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer">'
+                    }else{
+                      if(respuesta.credencial_alumno.instructor_id == "{{$usuario_id}}"){
+                        accion = '<i class="zmdi zmdi-delete boton red f-20 p-r-10 pointer">'
+                      }else{
+                        accion = '<i data-trigger="hover" data-toggle="popover" data-placement="right" data-content="Esta credencial no puede ser eliminada porque fue asignada por un administrador" title="" data-original-title="Ayuda" class="zmdi zmdi-lock-outline f-20 p-r-10 pointer">'
+                      }
+                    }
+
+                    $('[data-toggle="popover"]').popover(); 
+
+                    var nType = 'success';
+                    var nTitle="Ups! ";
+                    var nMensaje=respuesta.mensaje;
+
+                    var rowId=respuesta.credencial_alumno.id;
+                    var rowNode=c.row.add( [
+                      ''+respuesta.credencial_alumno.cantidad+'',
+                      ''+respuesta.fecha_vencimiento+'',
+                      ''+respuesta.credencial_alumno.dias_vencimiento+'',
+                      ''+accion+''
+                    ] ).draw(false).node();
+
+                    $( rowNode )
+                      .attr('id',rowId)
+                      .addClass('disabled');
+
+                    $('#form_credencial')[0].reset();
+
+                    if(respuesta.total_credenciales){
+                      $('#total_credenciales').text(respuesta.total_credenciales)
+                    }
+
+                    total_credenciales_alumno = parseInt($('#total_credenciales_alumno').text())
+                    total_credenciales_alumno = total_credenciales_alumno + parseInt(respuesta.cantidad)
+
+                    $('#total_credenciales_alumno').text(total_credenciales_alumno)
+                    
+                  }else{
+                    var nTitle="Ups! ";
+                    var nMensaje="Ha ocurrido un error, intente nuevamente por favor";
+                    var nType = 'danger';
+                  }  
+
+                  $("#agregar_credencial").removeAttr("disabled");
+                  $("#agregar_credencial").css({
+                    "opacity": ("1")
+                  });
+
+                  notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut,nMensaje);
+                }, 1000);
+              },
+              error:function(msj){
+                setTimeout(function(){ 
+                  // if (typeof msj.responseJSON === "undefined") {
+                  //   window.location = "{{url('/')}}/error";
+                  // }
+
+                  $("#agregar_credencial").removeAttr("disabled");
+                  $("#agregar_credencial").css({
+                    "opacity": ("1")
+                  });
+
+                  swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+
+                }, 1000);
+              }
           });
+        });
 
         $('#tablecredencial tbody').on( 'click', 'i.zmdi-delete', function () {
 
