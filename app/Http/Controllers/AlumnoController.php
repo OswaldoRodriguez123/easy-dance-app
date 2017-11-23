@@ -1345,10 +1345,13 @@ class AlumnoController extends BaseController
                     $status = 'Vencida';
                 }
 
+                $cantidad_usada = $credencial->cantidad - $credencial->cantidad_restante;
+
                 $collection=collect($credencial);  
                 $credencial_array = $collection->toArray(); 
                 $credencial_array['dias_restantes']=$dias_restantes;
                 $credencial_array['status']=$status;
+                $credencial_array['cantidad_usada']=$cantidad_usada;
 
                 $array[$credencial->id] = $credencial_array;
             }
