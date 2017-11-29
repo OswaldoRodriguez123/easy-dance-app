@@ -3178,7 +3178,7 @@ class AlumnoController extends BaseController
             $excel->setTitle("Alumnos");
             $excel->sheet("Alumnos", function ($sheet) use ($alumnos) {
                 $sheet->fromArray($alumnos, null, 'A2', null, false);
-                $sheet->row(1, array("nombre", "apellido", "correo"));
+                $sheet->row(1, array("nombre", "apellido", "correo", "celular", "telefono"));
             });
         })->download('xls');
         

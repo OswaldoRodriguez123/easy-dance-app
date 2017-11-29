@@ -881,7 +881,7 @@ class VisitanteController extends BaseController {
 
     public function exportar(){
   
-        $visitantes = Visitante::select('nombre','apellido','correo')
+        $visitantes = Visitante::select('nombre', 'apellido', 'correo', "celular", "telefono")
             ->where('academia_id',Auth::user()->academia_id)
             ->orderBy('nombre')
         ->get();
