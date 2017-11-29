@@ -3169,7 +3169,7 @@ class AlumnoController extends BaseController
 
     public function exportar(){
   
-        $alumnos = Alumno::select('nombre','apellido','correo')
+        $alumnos = Alumno::select('nombre','apellido','correo', 'celular', 'telefono')
             ->where('academia_id',Auth::user()->academia_id)
             ->orderBy('nombre')
         ->get();
