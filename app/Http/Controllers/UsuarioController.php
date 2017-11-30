@@ -1425,15 +1425,18 @@ class UsuarioController extends BaseController {
                         $imagen = '';
                     }
 
-
                     $alumno = Alumno::find($cita->alumno_id);
 
-                    if($alumno->tipo_pago == 1){
-                        $tipo_pago = 'Contado';
-                    }else if($alumno->tipo_pago == 2){
-                        $tipo_pago = 'Credito';
+                    if($alumno){
+	                    if($alumno->tipo_pago == 1){
+	                        $tipo_pago = 'Contado';
+	                    }else if($alumno->tipo_pago == 2){
+	                        $tipo_pago = 'Credito';
+	                    }else{
+	                        $tipo_pago = 'Sin Confirmar';
+	                    }
                     }else{
-                        $tipo_pago = 'Sin Confirmar';
+                    	$tipo_pago = '';
                     }
 
                     $id=$instructor."!".$descripcion."!".$imagen."!".$sexo."!".$hora_inicio. ' - ' .$hora_final."!".$tipo_pago;
