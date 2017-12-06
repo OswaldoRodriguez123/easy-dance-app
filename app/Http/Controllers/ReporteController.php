@@ -677,7 +677,7 @@ class ReporteController extends BaseController
         $array_prensas = array('Prensa', $prensa);
         $array_television = array('Televisión', $television);
         $array_radios = array('Radio', $radio);
-        $array_lugar = array('Ubicación/Lugar', $lugar);
+        $array_lugar = array('Tráfico Organico', $lugar);
         $array_otros = array('Otros', $otros);
 
         array_push($array_conociste, $array_amigo);
@@ -2761,7 +2761,7 @@ class ReporteController extends BaseController
         $array_prensas = array('Prensa', $prensa);
         $array_television = array('Televisión', $television);
         $array_radios = array('Radio', $radio);
-        $array_lugar = array('Ubicación/Lugar', $lugar);
+        $array_lugar = array('Tráfico Organico', $lugar);
         $array_otros = array('Otros', $otros);
 
         array_push($array_conociste, $array_amigo);
@@ -3004,7 +3004,7 @@ class ReporteController extends BaseController
         $array_prensas = array('Prensa', $prensa);
         $array_television = array('Televisión', $television);
         $array_radios = array('Radio', $radio);
-        $array_lugar = array('Ubicación/Lugar', $lugar);
+        $array_lugar = array('Tráfico Organico', $lugar);
         $array_otros = array('Otros', $otros);
 
         array_push($array_conociste, $array_amigo);

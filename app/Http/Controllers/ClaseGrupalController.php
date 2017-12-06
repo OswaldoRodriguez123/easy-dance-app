@@ -1527,44 +1527,48 @@ class ClaseGrupalController extends BaseController {
 
                 $pagos_instructor = Session::get('pagos_instructor');
 
-                foreach($pagos_instructor as $pago){
+                if($pagos_instructor){
+                    foreach($pagos_instructor as $pago){
 
-                    $tipo = $pago['tipo'];
-                    $monto = $pago['monto'];
+                        $tipo = $pago['tipo'];
+                        $monto = $pago['monto'];
 
-                    $config_pagos = new ConfigPagosInstructor;
+                        $config_pagos = new ConfigPagosInstructor;
 
-                    $config_pagos->clase_grupal_id = $clasegrupal->id;
-                    $config_pagos->instructor_id = $request->instructor_id;
-                    $config_pagos->tipo = $tipo;
-                    $config_pagos->monto = $monto;
+                        $config_pagos->clase_grupal_id = $clasegrupal->id;
+                        $config_pagos->instructor_id = $request->instructor_id;
+                        $config_pagos->tipo = $tipo;
+                        $config_pagos->monto = $monto;
 
-                    $config_pagos->save();
+                        $config_pagos->save();
+                    }
                 }
 
                 $comisiones = Session::get('comisiones');
 
-                foreach($comisiones as $comision){
+                if($comisiones){
+                    foreach($comisiones as $comision){
 
-                    $servicio_producto_id = $comision['servicio_producto_id'];
-                    $servicio_producto_tipo = $comision['servicio_producto_tipo'];
-                    $tipo = $comision['tipo'];
-                    $monto = $comision['monto'];
-                    $monto_porcentaje = $comision['monto_porcentaje'];
-                    $monto_minimo = $comision['monto_minimo'];
+                        $servicio_producto_id = $comision['servicio_producto_id'];
+                        $servicio_producto_tipo = $comision['servicio_producto_tipo'];
+                        $tipo = $comision['tipo'];
+                        $monto = $comision['monto'];
+                        $monto_porcentaje = $comision['monto_porcentaje'];
+                        $monto_minimo = $comision['monto_minimo'];
 
-                    $config_pagos = new ConfigComision;
-                    
-                    $config_pagos->usuario_id = $request->instructor_id;
-                    $config_pagos->usuario_tipo = 2;
-                    $config_pagos->servicio_producto_id = $servicio_producto_id;
-                    $config_pagos->servicio_producto_tipo = $servicio_producto_tipo;
-                    $config_pagos->tipo = $tipo;
-                    $config_pagos->monto = $monto;
-                    $config_pagos->monto_porcentaje = $monto_porcentaje;
-                    $config_pagos->monto_minimo = $monto_minimo;
+                        $config_pagos = new ConfigComision;
+                        
+                        $config_pagos->usuario_id = $request->instructor_id;
+                        $config_pagos->usuario_tipo = 2;
+                        $config_pagos->servicio_producto_id = $servicio_producto_id;
+                        $config_pagos->servicio_producto_tipo = $servicio_producto_tipo;
+                        $config_pagos->tipo = $tipo;
+                        $config_pagos->monto = $monto;
+                        $config_pagos->monto_porcentaje = $monto_porcentaje;
+                        $config_pagos->monto_minimo = $monto_minimo;
 
-                    $config_pagos->save();
+                        $config_pagos->save();
+                    }
                 }
 
 
