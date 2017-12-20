@@ -1553,6 +1553,7 @@ class InstructorController extends BaseController {
         $instructor = Instructor::find($id);
         $delete = CredencialInstructor::where('instructor_id',$id)->delete();
         $delete = AsistenciaInstructor::where('instructor_id',$id)->delete();
+        $delete = PerfilInstructor::where('instructor_id',$id)->delete();
         
         if($instructor->forceDelete()){
 
