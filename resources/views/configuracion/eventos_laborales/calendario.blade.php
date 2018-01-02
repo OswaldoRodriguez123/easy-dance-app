@@ -104,7 +104,6 @@
                                 $fecha_start=explode('-',$evento["fecha"]);
                                 $fecha_end=explode('-',$evento["fecha"]);
                                 $hora_start=explode(':',$evento["hora_inicio"]);
-                                $hora_end=explode(':',$evento["hora_final"]);
 
                                 if(\Carbon\Carbon::parse($evento['fecha']) >= \Carbon\Carbon::now()->subDay()){
                                     $etiqueta = $evento['color_etiqueta'];
@@ -120,7 +119,7 @@
                             id: 'evento-{{$evento["id"]}}',
                             title: "{{$evento['nombre']}}" ,
                             start: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
-                            end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_end[0]}}, {{$hora_end[1]}}, {{$hora_end[2]}}),
+                            end: new Date({{$fecha_start[0]}}, {{$fecha_start[1]-1}}, {{$fecha_start[2]}},{{$hora_start[0]}}, {{$hora_start[1]}}, {{$hora_start[2]}}),
                             allDay: false,
                             backgroundColor:'{{$etiqueta}}',
                             className: '{{$actividad}}',

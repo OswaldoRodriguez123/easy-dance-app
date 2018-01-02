@@ -95,17 +95,15 @@ class EventoLaboralController extends BaseController
 
                     if($academia->tipo_horario == 2){
                         $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal_join->hora_inicio)->toTimeString();
-                        $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal_join->hora_final)->toTimeString();
                     }else{
                         $hora_inicio = Carbon::createFromFormat('H:i:s',$clase_grupal_join->hora_inicio)->format('g:i a');
-                        $hora_final = Carbon::createFromFormat('H:i:s',$clase_grupal_join->hora_final)->format('g:i a');
                     }
 
                     $clase_grupal_nombre = 'Clase Grupal: ' . $clase_grupal_join->nombre;
                     $instructor = $sexo_instructor . ' ' . $clase_grupal_join->instructor_nombre . ' ' . $clase_grupal_join->instructor_apellido;
                     $especialidad = 'Especialidad: ' . $clase_grupal_join->especialidad;
                     $nivel = 'Nivel: ' . $clase_grupal_join->nivel;
-                    $hora = 'Hora: ' . $hora_inicio . ' - ' . $hora_final;
+                    $hora = 'Hora: ' . $hora_inicio;
                 }else{
                     $clase_grupal_nombre = '';
                     $instructor = '';
@@ -236,7 +234,6 @@ class EventoLaboralController extends BaseController
             'actividad_id' => 'required',
 	        'fecha' => 'required',
 	        'hora_inicio' => 'required',
-	        'hora_final' => 'required',
 	    ];
 
 	    $messages = [
@@ -245,7 +242,6 @@ class EventoLaboralController extends BaseController
             'actividad_id.required' => 'Ups! La actividad es requerida',
 	        'fecha.required' => 'Ups! La fecha es requerida',
 	        'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
-	        'hora_final.required' => 'Ups! La hora final es requerida',
 
 	    ];
 
@@ -272,10 +268,8 @@ class EventoLaboralController extends BaseController
 
             if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
-                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
             }else{
                 $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
-                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
             }
 
 	        if($hora_inicio > $hora_final){
@@ -289,7 +283,6 @@ class EventoLaboralController extends BaseController
 	        $evento->actividad_id = $request->actividad_id;
             $evento->tipo_evento_id = $request->tipo_evento_id;
 	        $evento->hora_inicio = $hora_inicio;
-	        $evento->hora_final = $hora_final;
 
 	        if($evento->save()){
 
@@ -469,13 +462,11 @@ class EventoLaboralController extends BaseController
 
 	    $rules = [
 	        'hora_inicio' => 'required',
-	        'hora_final' => 'required',
 	    ];
 
 	    $messages = [
 
 	        'hora_inicio.required' => 'Ups! La hora de inicio es requerida',
-	        'hora_final.required' => 'Ups! La hora final es requerida',
 	    ];
 
 	    $validator = Validator::make($request->all(), $rules, $messages);
@@ -492,20 +483,13 @@ class EventoLaboralController extends BaseController
 
             if($academia->tipo_horario == 2){
                 $hora_inicio = Carbon::createFromFormat('H:i',$request->hora_inicio)->toTimeString();
-                $hora_final = Carbon::createFromFormat('H:i',$request->hora_final)->toTimeString();
             }else{
                 $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
-                $hora_final = Carbon::createFromFormat('H:i a',$request->hora_final)->toTimeString();
             }
-
-	        if($hora_inicio > $hora_final){
-	            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
-	        }
 
 	        $evento = EventoLaboral::find($request->id);
 
 	        $evento->hora_inicio = $hora_inicio;
-	        $evento->hora_final = $hora_final;
 
 	        if($evento->save()){
 	            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);

@@ -260,13 +260,13 @@
                                 </div>
 
                                 <div class="col-sm-1">
-                                  <label for="fecha" id="id-hora_inicio">Horario </label>
+                                  <label for="fecha" id="id-hora_inicio">Hora</label>
                                 </div>
 
-                                <div class="col-sm-2">
+                                <div class="col-sm-4">
                                    
                                   <div class="dtp-container fg-line">
-                                    <input name="hora_inicio" id="hora_inicio" class="form-control time-picker pointer" placeholder="Desde" type="text">
+                                    <input name="hora_inicio" id="hora_inicio" class="form-control time-picker pointer" placeholder="Hora" type="text">
                                   </div>
                                   <div class="has-error" id="error-hora_inicio">
                                       <span >
@@ -275,7 +275,7 @@
                                   </div>
                                 </div>
 
-                                <div class="col-sm-2" id="id-hora_final">
+                                <!-- <div class="col-sm-2" id="id-hora_final">
                                    
                                   <div class="dtp-container fg-line">
                                     <input name="hora_final" id="hora_final" class="form-control time-picker pointer" placeholder="Hasta" type="text">
@@ -285,7 +285,7 @@
                                           <small class="help-block error-span" id="error-hora_final_mensaje" ></small>                                
                                       </span>
                                   </div>
-                                </div>
+                                </div> -->
                               </div>
 
                               <div class="clearfix p-b-35"></div>

@@ -527,7 +527,6 @@
           });
 
           $(".clase_personalizada").click(function(){
-            procesando();
             window.location = "{{url('/')}}/agendar/clases-personalizadas/progreso/{{$academia->id}}";
           });
 

@@ -117,6 +117,10 @@
                                     @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                                         <td class="text-center previa">
                                             @if($evento['tipo'] == 'A')
+
+                                                @if($evento['tipo_evento_id'])
+                                                    <a href="{{url('/')}}/agendar/clases-grupales/detalle/{{$evento['tipo_evento_id']}}"><i class="icon_a-clases-grupales f-16 m-r-5 boton blue"  data-original-title="Ir a la clase grupal" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                                @endif
                                                 <i class="zmdi zmdi-delete boton red eliminar f-20 p-r-10"></i>
                                             @endif
                                         </td>

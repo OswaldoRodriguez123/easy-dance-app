@@ -212,15 +212,6 @@
                                           <small class="help-block error-span" id="error-hora_inicio_mensaje" ></small>                                
                                       </span>
                                   </div>
-                                 <div class="form-group fg-line">
-                                    <label for="telefono">Hora Final</label>
-                                    <input type="text" class="form-control time-picker input-sm" name="hora_final" id="hora_final" placeholder="Ej. 00:00">
-                                 </div>                                 
-                                 <div class="has-error" id="error-hora_final">
-                                      <span >
-                                          <small class="help-block error-span" id="error-hora_final_mensaje" ></small>                                
-                                      </span>
-                                  </div>
                                </div>
 
                                <div class="clearfix"></div> 
@@ -390,7 +381,8 @@
                 <div class="container">
                 
                     <div class="block-header">
-                       <a class="btn-blanco m-r-10 f-16" href="{{url('/')}}/configuracion/eventos-laborales" onclick="procesando()"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Sección Eventos</a>
+                       <?php $url = "/configuracion/eventos-laborales/$id" ?>
+                        <a class="btn-blanco m-r-10 f-16" href="{{ empty($_SERVER['HTTP_REFERER']) ? $url : $_SERVER['HTTP_REFERER'] }}"> <i class="zmdi zmdi-chevron-left zmdi-hc-fw"></i> Volver</a>
                        @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                         
                             <ul class="tab-nav tab-menu" role="tablist" data-menu-color="azul" style="float: right; margin-top: -10px; width: 40%;">
@@ -439,6 +431,10 @@
                                       <span class="f-16 f-700">Acciones</span>
 
                                       <hr></hr>
+
+                                      @if($evento->tipo_evento_id)
+                                        <a href="{{url('/')}}/agendar/clases-grupales/detalle/{{$evento->tipo_evento_id}}"><i class="icon_a-clases-grupales f-16 m-r-5 boton blue"  data-original-title="Ir a la clase grupal" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                      @endif
                                       
                                       <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$evento->id}}" name="eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
@@ -538,17 +534,6 @@
                                     {{\Carbon\Carbon::createFromFormat('H:i:s',$evento->hora_inicio)->format('g:i a')}}
                                 @endif
                               </span> 
-
-                              - 
-
-                              <span id="evento-hora_final">
-
-                              @if($tipo_horario == 2)
-                                  {{\Carbon\Carbon::createFromFormat('H:i:s',$evento->hora_final)->format('H:i')}}
-
-                              @else
-                                  {{\Carbon\Carbon::createFromFormat('H:i:s',$evento->hora_final)->format('g:i a')}}
-                              @endif
 
                               </span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
@@ -652,11 +637,10 @@
     $('#modalHorario-Evento').on('show.bs.modal', function (event) {
       limpiarMensaje();
       $("#hora_inicio").val($("#evento-hora_inicio").text().trim()); 
-      $("#hora_final").val($("#evento-hora_final").text().trim()); 
     })
 
     function limpiarMensaje(){
-        var campo = ["staff_id", "fecha", "hora_inicio", "hora_final", "cargo"];
+        var campo = ["staff_id", "fecha", "hora_inicio", "cargo"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');

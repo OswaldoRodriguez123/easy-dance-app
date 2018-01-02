@@ -711,13 +711,13 @@
 
                                             @if($clase_grupal['estatus'] == 1)
                                               <li class="hidden-xs">
-                                                <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/nivelaciones/{{$id}}">
+                                                <a href="{{url('/')}}/agendar/clases-grupales/nivelaciones/{{$id}}">
                                                   <i class="icon_a-niveles f-16 m-r-10 boton blue"></i>
                                                   &nbsp;Nivelaciones
                                                 </a>
                                               </li>
                                               <li class="hidden-xs">
-                                                <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/participantes/{{$id}}">
+                                                <a href="{{url('/')}}/agendar/clases-grupales/participantes/{{$id}}">
                                                   <i class="icon_a-participantes f-16 m-r-10 boton blue"></i>
                                                   Participantes
                                                 </a>
@@ -729,18 +729,19 @@
                                                 </a>
                                               </li>
                                               <li class="hidden-xs">
-                                                <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/agenda/{{$id}}">
+                                                <a href="{{url('/')}}/agendar/clases-grupales/agenda/{{$id}}">
                                                   <i class="zmdi zmdi-eye f-16 boton blue"></i>
                                                   Ver Agenda
                                                 </a>
                                               </li>
-                                                <li class="hidden-xs"> <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$id}}">
+                                              <li class="hidden-xs"> 
+                                                <a href="{{url('/')}}/agendar/clases-grupales/multihorario/{{$id}}">
                                                   <i class="zmdi zmdi-calendar-note f-16 boton blue"></i>
                                                   Multihorario
                                                 </a>
                                               </li>
                                               <li class="hidden-xs"> 
-                                                <a onclick="procesando()" href="{{url('/')}}/agendar/clases-grupales/progreso/{{$id}}">
+                                                <a href="{{url('/')}}/agendar/clases-grupales/progreso/{{$id}}">
                                                   <i class="icon_e-ver-progreso f-16 m-r-10 boton blue"></i>
                                                   Ver Progreso
                                                 </a>
