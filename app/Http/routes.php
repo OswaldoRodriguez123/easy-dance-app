@@ -740,6 +740,7 @@
 			Route::get('participante/visitante/llamadas/detalle/{id}', 'VisitanteController@editLlamada');
 
 			Route::put('participante/visitante/llamadas/update/status','VisitanteController@updateStatus');
+			Route::put('participante/visitante/llamadas/update/observacion','VisitanteController@updateObservacionLlamada');
 			Route::put('participante/visitante/llamadas/update/fecha_siguiente','VisitanteController@updateFechaSiguiente');
 			Route::put('participante/visitante/llamadas/update/hora_siguiente','VisitanteController@updateHoraSiguiente');
 
@@ -1410,6 +1411,7 @@
 
 			Route::put('participante/alumno/llamadas/update/asunto','AlumnoController@updateAsunto');
 			Route::put('participante/alumno/llamadas/update/status','AlumnoController@updateStatus');
+			Route::put('participante/alumno/llamadas/update/observacion','AlumnoController@updateObservacion');
 			Route::put('participante/alumno/llamadas/update/fecha_siguiente','AlumnoController@updateFechaSiguiente');
 			Route::put('participante/alumno/llamadas/update/hora_siguiente','AlumnoController@updateHoraSiguiente');
 

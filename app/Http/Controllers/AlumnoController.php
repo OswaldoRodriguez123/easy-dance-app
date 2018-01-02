@@ -2982,6 +2982,18 @@ class AlumnoController extends BaseController
         }
     }
 
+    public function updateObservacion(Request $request){
+
+        $llamada = LlamadaAlumno::find($request->id);
+        $llamada->observacion = $request->observacion;
+
+        if($llamada->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
     public function updateFechaSiguiente(Request $request){
 
         if($request->fecha_siguiente){

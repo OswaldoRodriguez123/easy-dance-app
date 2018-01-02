@@ -52,6 +52,13 @@
                             <div class="col-sm-6 text-left">
                                 <p>Interesado: <b>{{$interesado->nombre}} {{$interesado->apellido}}</b> <b>{{$interesado->correo}}</b></p>
                                 <p>Telefonos: <b>{{$interesado->telefono}}</b> / <b>{{$interesado->celular}}</b></p>
+                                <p>Inscrito: 
+                                  @if($interesado->cliente)
+                                    <i class="zmdi c-verde zmdi-check zmdi-hc-fw"></i>
+                                  @else
+                                    <i class="zmdi c-amarillo zmdi-dot-circle zmdi-hc-fw"></i>
+                                  @endif
+                                </p>
                             </div>
 
                             <div class="col-sm-6 text-right">
@@ -184,7 +191,8 @@
         serverSide: false,
         pageLength: 25,   
         bPaginate: false, 
-        order: [[0, 'desc'],[2, 'desc']],
+        order: [[4, 'desc'],[5, 'desc']],
+        // order: [[0, 'desc'],[2, 'desc']],
         fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
           $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );

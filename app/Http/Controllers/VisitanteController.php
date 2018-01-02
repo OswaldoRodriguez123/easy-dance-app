@@ -829,6 +829,18 @@ class VisitanteController extends BaseController {
         }
     }
 
+    public function updateObservacionLlamada(Request $request){
+
+        $llamada = LlamadaVisitante::find($request->id);
+        $llamada->observacion = $request->observacion;
+
+        if($llamada->save()){
+            return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+        }else{
+            return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+        }
+    }
+
     public function updateFechaSiguiente(Request $request){
 
         if($request->fecha_siguiente){

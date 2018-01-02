@@ -161,6 +161,58 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="modalObservacion-Llamada" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header bg-gris-oscuro p-t-10 p-b-10">
+                            <h4 class="modal-title c-negro"><i class="zmdi zmdi-edit m-r-5"></i> Editar Llamada<button type="button" data-dismiss="modal" class="close c-gris f-25" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button></h4>
+                        </div>
+                        <form name="edit_observacion_llamada" id="edit_observacion_llamada"  >
+                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                           <div class="modal-body">                           
+                           <div class="row p-t-20 p-b-0">
+                               <div class="col-sm-12">
+                                 <div class="form-group fg-line">
+                                    <label for="edad">Observación</label>
+                                    <textarea class="form-control" id="observacion" name="observacion" rows="8" placeholder="250 Caracteres"></textarea>
+                                 </div>
+                                 <div class="has-error" id="error-observacion">
+                                      <span >
+                                          <small class="help-block error-span" id="error-observacion_mensaje" ></small>                                
+                                      </span>
+                                  </div>
+                               </div>
+
+                               <div class="clearfix"></div> 
+
+                               <input type="hidden" name="id" value="{{$llamada->id}}"></input>
+
+                               
+                               
+                           </div>
+                           
+                        </div>
+                        <div class="modal-footer p-b-20 m-b-20">
+                            <div class="col-sm-12 text-left">
+                              <div class="procesando hidden">
+                              <span class="text-top p-t-20 m-t-0 f-15 p-r-10">Procesando</span>
+                              <div class="preloader pls-purple">
+                                  <svg class="pl-circular" viewBox="25 25 50 50">
+                                      <circle class="plc-path" cx="50" cy="50" r="20"></circle>
+                                  </svg>
+                              </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-12">                            
+
+                              <a class="btn-blanco m-r-5 f-12 guardar" href="#" id="guardar" href="#" data-formulario="edit_observacion_llamada" data-update="observacion" >  Guardar <i class="zmdi zmdi-chevron-right zmdi-hc-fw"></i></a>
+
+                            </div>
+                        </div></form>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal fade" id="modalFechaProxima-Llamada" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-sm">
                     <div class="modal-content">
@@ -400,6 +452,21 @@
                               </td>
                             </tr>
                             @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
+                              <tr class="detalle" data-toggle="modal" href="#modalObservacion-Llamada">
+
+                            @else
+
+                              <tr class="disabled">
+
+                            @endif
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-observacion" class="zmdi {{ empty($llamada->observacion) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="icon_b-cuentales-historia f-22"></i> </span>
+                               <span class="f-14"> Observación </span>
+                             </td>
+                             <td id="llamada-observacion" class="f-14 m-l-15 capitalize" data-valor="{{$llamada->observacion}}" >{{ str_limit($llamada->observacion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
+                            @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
                               <tr class="detalle" data-toggle="modal" href="#modalFechaProxima-Llamada">
 
                             @else
@@ -490,6 +557,11 @@
 
       });
 
+    $('#modalObservacion-Llamada').on('show.bs.modal', function (event) {
+      limpiarMensaje();
+      var observacion=$("#llamada-observacion").data('valor');
+       $("#observacion").val(observacion);
+    })
     $('#modalFechaProxima-Llamada').on('show.bs.modal', function (event) {
       limpiarMensaje();
       $("#fecha_siguiente").val($("#llamada-fecha_siguiente").text().trim()); 
@@ -500,7 +572,7 @@
     })
 
     function limpiarMensaje(){
-        var campo = ["fecha_siguiente", "hora_siguiente", "estatus", "asunto_llamada_id"];
+        var campo = ["observacion", "fecha_siguiente", "hora_siguiente", "estatus", "asunto_llamada_id"];
         fLen = campo.length;
         for (i = 0; i < fLen; i++) {
             $("#error-"+campo[i]+"_mensaje").html('');
@@ -522,7 +594,11 @@
 
       function campoValor(form){
         $.each(form, function (n, c) {
-          if(c.name=='asunto_llamada_id'){
+          if(c.name=='observacion'){
+             $("#llamada-"+c.name).data('valor',c.value);
+             $("#llamada-"+c.name).html(c.value.toLowerCase().substr(0, 30) + "...");
+            //$("#alumno-"+c.name).text(c.value.substr(0, 30));
+          }else if(c.name=='asunto_llamada_id'){
 
             if(c.value=='1'){ 
               var valor='Inasistencia a clases </span>';                              
