@@ -2891,6 +2891,7 @@ class AlumnoController extends BaseController
             $llamada->hora_llamada = Carbon::now();
             $llamada->fecha_siguiente = $fecha_siguiente;
             $llamada->hora_siguiente = $hora_siguiente;
+            $llamada->administrador_id = Auth::user()->id;
 
             if($llamada->save()){
 

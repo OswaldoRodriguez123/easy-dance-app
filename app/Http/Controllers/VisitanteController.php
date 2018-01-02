@@ -772,6 +772,7 @@ class VisitanteController extends BaseController {
         $llamada->hora_llamada = Carbon::now();
         $llamada->fecha_siguiente = $fecha_siguiente;
         $llamada->hora_siguiente = $hora_siguiente;
+        $llamada->administrador_id = Auth::user()->id;
 
         if($llamada->save()){
             return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'estatus' => $request->status, 'reprogramar' => $request->reprogramar, 200]);
