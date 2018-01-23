@@ -272,10 +272,6 @@ class EventoLaboralController extends BaseController
                 $hora_inicio = Carbon::createFromFormat('H:i a',$request->hora_inicio)->toTimeString();
             }
 
-	        if($hora_inicio > $hora_final){
-	            return response()->json(['errores' => ['hora_inicio' => [0, 'Ups! La hora de inicio es mayor a la hora final']], 'status' => 'ERROR'],422);
-	        }
-
 	        $evento = new EventoLaboral;
 	        
 	        $evento->staff_id = $request->staff_id;
