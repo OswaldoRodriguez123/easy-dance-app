@@ -1160,15 +1160,20 @@ class ClasePersonalizadaController extends BaseController {
                    'id' => $inscripcion_clase_personalizada->id
                 ];
 
-                Mail::send('correo.clase_personalizada_instructor', $array, function($msj) use ($array){
-                    $msj->subject($array['subj']);
-                    $msj->to($array['correo']);
-                });
+                if($instructor->correo){
+                    Mail::send('correo.clase_personalizada_instructor', $array, function($msj) use ($array){
+                        $msj->subject($array['subj']);
+                        $msj->to($array['correo']);
+                    });
+                }
 
-                Mail::send('correo.clase_personalizada_alumno', $array2, function($msj) use ($array2){
-                    $msj->subject($array2['subj']);
-                    $msj->to($array2['correo']);
-                });
+                
+                if($alumno->correo){
+                    Mail::send('correo.clase_personalizada_alumno', $array2, function($msj) use ($array2){
+                        $msj->subject($array2['subj']);
+                        $msj->to($array2['correo']);
+                    });
+                }
 
                 Session::forget('id_alumno');
 
@@ -1209,8 +1214,6 @@ class ClasePersonalizadaController extends BaseController {
             $hora_string = $inscripcion_clase_personalizada->fecha . ' ' . $inscripcion_clase_personalizada->hora_inicio;
         }
 
-        
-        
         $hora = Carbon::createFromFormat('Y-m-d H:i:s', $hora_string);
         $hora_limite = $hora->subHours($clasepersonalizada->tiempo_expiracion);
 
