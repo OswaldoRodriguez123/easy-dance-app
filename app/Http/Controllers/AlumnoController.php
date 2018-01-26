@@ -1386,18 +1386,6 @@ class AlumnoController extends BaseController
 
         }else{
 
-            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                ->select('users.id')
-                ->where('usuarios_tipo.tipo',3)
-                ->where('usuarios_tipo.tipo_id',$request->instructor_id)
-            ->first();
-
-            if($usuario){
-                $usuario_id_vendedor = $usuario->id;
-            }else{
-                $usuario_id_vendedor = 0;
-            }
-
             $fecha_vencimiento = Carbon::now()->addDays($request->dias_vencimiento)->toDateString();
             
             $credencial_alumno = new CredencialAlumno;
@@ -1406,7 +1394,7 @@ class AlumnoController extends BaseController
             $credencial_alumno->alumno_id = $request->alumno_id;
             $credencial_alumno->cantidad = $request->cantidad;
             $credencial_alumno->cantidad_restante = $request->cantidad;
-            $credencial_alumno->usuario_id_vendedor = $usuario_id_vendedor;
+            $credencial_alumno->usuario_id_vendedor = Auth::user()->id;
             $credencial_alumno->dias_vencimiento = $request->dias_vencimiento;
             $credencial_alumno->fecha_vencimiento = $fecha_vencimiento;
 

@@ -1945,25 +1945,25 @@
               setTimeout(function() {
                 if(respuesta.status=='OK'){
 
-                  if(update == 'imagen'){
-                    if(respuesta.imagen != '')
-                    {
-                      $('#foto_perfil').attr('src', "{{url('/')}}/assets/uploads/usuario/"+respuesta.imagen+"?timestamp=" + new Date().getTime());
-                      $('#imagen_perfil').attr('src', "{{url('/')}}/assets/uploads/usuario/"+respuesta.imagen+"?timestamp=" + new Date().getTime());
-                    }            
-                    else
-                    {
-                        if('{{$alumno->sexo}}' =='F')
-                        {
-                          $('#foto_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/1.jpg" )
-                          $('#imagen_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/1.jpg" )
-                        }              
-                        else{
-                          $('#foto_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/2.jpg" )
-                          $('#imagen_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/2.jpg" )
-                        } 
-                    }
-                  }  
+                  // if(update == 'imagen'){
+                  //   if(respuesta.imagen != '')
+                  //   {
+                  //     $('#foto_perfil').attr('src', "{{url('/')}}/assets/uploads/usuario/"+respuesta.imagen+"?timestamp=" + new Date().getTime());
+                  //     $('#imagen_perfil').attr('src', "{{url('/')}}/assets/uploads/usuario/"+respuesta.imagen+"?timestamp=" + new Date().getTime());
+                  //   }            
+                  //   else
+                  //   {
+                  //       if('{{$alumno->sexo}}' =='F')
+                  //       {
+                  //         $('#foto_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/1.jpg" )
+                  //         $('#imagen_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/1.jpg" )
+                  //       }              
+                  //       else{
+                  //         $('#foto_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/2.jpg" )
+                  //         $('#imagen_perfil').attr('src', "{{url('/')}}/assets/img/profile-pics/2.jpg" )
+                  //       } 
+                  //   }
+                  // }  
 
                   checkbox = $('input:checkbox:checked')
 

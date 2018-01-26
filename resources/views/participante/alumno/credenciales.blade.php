@@ -32,7 +32,7 @@
                           <div class="row p-t-20 p-b-0">
 
                           @if(isset($id))
-                            <input type="hidden" name="alumno_id" value="{{$id}}"></input>
+                            <input type="hidden" id="id-alumno_id" name="alumno_id" value="{{$id}}"></input>
                           @else
 
                             <div class="col-sm-12">
@@ -392,6 +392,7 @@
                       var concepto = respuesta.array.concepto;
                       var cantidad = respuesta.array.cantidad;
                       var fecha_vencimiento = respuesta.array.fecha_vencimiento;
+                      var emisor = "{{Auth::user()->nombre}}"
 
                       var rowId=respuesta.array.id;
 
@@ -401,9 +402,12 @@
                         $('#total').text(total);
 
                       var rowNode=t.row.add( [
-                        ''+instructor+'',
                         ''+cantidad+'',
+                        '0',
+                        ''+cantidad+'',
+                        ''+emisor+'',
                         ''+fecha_vencimiento+'',
+                        'Activa',
                         '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                       ] ).draw(false).node();
 
@@ -413,9 +417,12 @@
 
                         var rowNode=t.row.add( [
                           ''+alumno+'',
-                          ''+instructor+'',
                           ''+cantidad+'',
+                          '0',
+                          ''+cantidad+'',
+                          ''+emisor+'',
                           ''+fecha_vencimiento+'',
+                          'Activa',
                           '<i class="zmdi zmdi-delete boton red f-20 p-r-10"></i>'
                         ] ).draw(false).node();
                       @endif
@@ -541,6 +548,27 @@
             .search($(this).val())
             .draw();
         });
+
+        function errores(merror){
+          var elemento="";
+          var contador=0;
+          $.each(merror, function (n, c) {
+          if(contador==0){
+          elemento=n;
+          }
+          contador++;
+
+           $.each(this, function (name, value) {              
+              var error=value;
+              $("#error-"+n+"_mensaje").html(error);             
+           });
+        });
+
+        $('html,body').animate({
+              scrollTop: $("#id-"+elemento).offset().top-90,
+        }, 1000);          
+
+      }
 
 
 
