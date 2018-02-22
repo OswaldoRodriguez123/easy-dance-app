@@ -1980,13 +1980,14 @@ class UsuarioController extends BaseController {
                         ->first();
 
                         if($instructor){
+                            if($instructor->imagen){
+                                $imagen = $instructor->imagen;
+                            }else{
+                                $imagen = '';
+                            }
 
-                          if($instructor->imagen){
-                            $imagen = $instructor->imagen;
-                          }else{
+                        }else{
                             $imagen = '';
-                          }
-
                         }
 
                         $collection=collect($credencial_alumno);     
