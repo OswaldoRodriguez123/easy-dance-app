@@ -640,6 +640,7 @@
 			Route::post('participante/alumno/update/entrega', 'AlumnoController@updateEntrega');
 			Route::put('participante/alumno/update/referido', 'AlumnoController@updateReferido');
 			Route::put('participante/alumno/update/imagen', 'AlumnoController@updateImagen');
+			Route::put('participante/alumno/update/password', 'AlumnoController@updatePassword');
 
 			Route::post('participante/alumno/agregar_cantidad', 'AlumnoController@agregar_cantidad');
 			Route::post('participante/alumno/eliminar_cantidad/{id}', 'AlumnoController@eliminar_cantidad');
