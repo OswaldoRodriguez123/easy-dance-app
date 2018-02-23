@@ -2437,16 +2437,16 @@ class AlumnoController extends BaseController
             return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
 
         }else{
+            $in = array(2,4);
 
             $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                 ->select('users.id')
                 ->where('usuarios_tipo.tipo_id',$request->id)
-                ->where('usuarios_tipo.tipo',2)
+                ->whereIn('usuarios_tipo.tipo',$in)
             ->first();
 
             if($usuario){
 
-                $usuario = User::find($usuario->id);
                 $usuario->password = bcrypt($request->password);
 
                 if($usuario->save()){
