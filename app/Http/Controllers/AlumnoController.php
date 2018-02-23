@@ -1602,53 +1602,6 @@ class AlumnoController extends BaseController
         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
     }
 
-    public function updateImagen(Request $request)
-    {  
-        $in = array(2,4);
-
-        $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-            ->select('users.id')
-            ->where('usuarios_tipo.tipo_id',$request->id)
-            ->whereIn('usuarios_tipo.tipo',$in)
-        ->first();
-
-        if($usuario){
-                 
-            if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
-
-                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
-                $path = storage_path();
-                $split = explode( ';', $request->imageBase64 );
-                $type =  explode( '/',  $split[0]);
-
-                $ext = $type[1];
-                
-                if($ext == 'jpeg' || 'jpg'){
-                    $extension = '.jpg';
-                }
-
-                if($ext == 'png'){
-                    $extension = '.png';
-                }
-
-                $nombre_img = "usuario-". $usuario->id . $extension;
-                $image = base64_decode($base64_string);
-
-                // \Storage::disk('usuario')->put($nombre_img,  $image);
-                $img = Image::make($image)->resize(300, 300);
-                $img->save('assets/uploads/usuario/'.$nombre_img);
-
-            }else{
-                $nombre_img = "";
-            }
-            
-            $usuario->imagen = $nombre_img;
-            $usuario->save(); 
-        }
-
-        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'imagen' => $nombre_img, 200]);
-    }
-
     public function updateTipoPago(Request $request){
         $alumno = Alumno::find($request->id);
         $alumno->tipo_pago = $request->tipo_pago;
@@ -2415,6 +2368,53 @@ class AlumnoController extends BaseController
         
     }
 
+    public function updateImagen(Request $request)
+    {  
+        $in = array(2,4);
+
+        $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+            ->select('users.id')
+            ->where('usuarios_tipo.tipo_id',$request->id)
+            ->whereIn('usuarios_tipo.tipo',$in)
+        ->first();
+
+        if($usuario){
+                 
+            if($request->imageBase64 AND $request->imageBase64 != 'data:,'){
+
+                $base64_string = substr($request->imageBase64, strpos($request->imageBase64, ",")+1);
+                $path = storage_path();
+                $split = explode( ';', $request->imageBase64 );
+                $type =  explode( '/',  $split[0]);
+
+                $ext = $type[1];
+                
+                if($ext == 'jpeg' || 'jpg'){
+                    $extension = '.jpg';
+                }
+
+                if($ext == 'png'){
+                    $extension = '.png';
+                }
+
+                $nombre_img = "usuario-". $usuario->id . $extension;
+                $image = base64_decode($base64_string);
+
+                // \Storage::disk('usuario')->put($nombre_img,  $image);
+                $img = Image::make($image)->resize(300, 300);
+                $img->save('assets/uploads/usuario/'.$nombre_img);
+
+            }else{
+                $nombre_img = "";
+            }
+            
+            $usuario->imagen = $nombre_img;
+            $usuario->save(); 
+        }
+
+        return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'imagen' => $nombre_img, 200]);
+    }
+
     public function updatePassword(Request $request){
 
         $rules = [
@@ -2444,7 +2444,7 @@ class AlumnoController extends BaseController
             $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
                 ->select('users.id')
                 ->where('usuarios_tipo.tipo_id',$request->id)
-                ->where('usuarios_tipo.tipo',$in)
+                ->whereIn('usuarios_tipo.tipo',$in)
             ->first();
 
             if($usuario){
@@ -2457,7 +2457,7 @@ class AlumnoController extends BaseController
                     return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
                 }
             }else{
-                return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                return response()->json(['mensaje' => '¡Excelente!', 'status' => 'OK', 200]);
             }
         }
     }
