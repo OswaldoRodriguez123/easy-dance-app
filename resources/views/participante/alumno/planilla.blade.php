@@ -1410,13 +1410,13 @@
                              </td>
                               <td class="f-14 m-l-15" id="alumno-tipo_pago">{{$tipo_pago}}<span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalImagen-Alumno">
-                             <td width="50%"> 
-                              <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagen" class="zmdi {{ empty($imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      
-                              <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image f-22"></i> </span>
-                              <span class="f-14">Imagen </span>
-                             </td>
-                             <td class="f-14 m-l-15"><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
+                            <tr id="tr_imagen" class="detalle" data-toggle="modal" href="#modalImagen-Alumno" {{ empty($usuario) ? style = "display:none" : '' }}>
+                              <td width="50%"> 
+                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagen" class="zmdi {{ empty($imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                      
+                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image f-22"></i> </span>
+                                <span class="f-14">Imagen </span>
+                              </td>
+                              <td class="f-14 m-l-15"><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                             </tr>
                             <tr class="detalle" data-toggle="modal" href="#modalID-Alumno">
                              <td width="50%"> 
@@ -1537,9 +1537,9 @@
                              </td>
                              <td class="f-14 m-l-15" ><span id="alumno-tipologia_id" class="capitalize">{{$alumno->tipologia}}</span></td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalContrasena-Alumno">
+                            <tr id="tr_contrasena" class="detalle" data-toggle="modal" href="#modalContrasena-Alumno" {{ empty($usuario) ? style = "display:none" : '' }}>
                              <td>
-                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-empresa" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-contrasena" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-lock-outline zmdi-hc-fw f-22"></i> </span>
                                <span class="f-14"> Contraseña </span>
                              </td>
@@ -2736,6 +2736,8 @@
               swal('Exito!','La cuenta ha sido creada','success');
               $(element).hide();
               $('.email').show();
+              $('#tr_imagen').show();
+              $('#tr_contrasena').show();
 
             },
             error:function(msj){

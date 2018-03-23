@@ -2410,6 +2410,8 @@ class AlumnoController extends BaseController
             
             $usuario->imagen = $nombre_img;
             $usuario->save(); 
+        }else{
+            $nombre_img = "";
         }
 
         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 'imagen' => $nombre_img, 200]);
