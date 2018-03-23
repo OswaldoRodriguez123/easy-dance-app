@@ -1315,8 +1315,8 @@
                                   <div class="col-sm-12 text-left"> 
 
                                   <br></br>
-                                   
-                                  
+
+                          
                                   <table class="table table-striped table-bordered">
                                     <tr class="detalle historial">
                                       <td></td>
@@ -1345,6 +1345,15 @@
                                       <td class="f-14 m-l-15" data-original-title="" data-content="Ver Llamadas" data-toggle="popover" data-placement="bottom" title="" type="button" data-trigger="hover"><span class="f-12 f-700">Llamadas: </span><span class = "f-12 f-700" id="llamadas" name="llamadas">{{$llamadas}}</span></td>
                                     </tr>
                                   </table>
+
+                                  @if(!$usuario)
+                                    <table class="table table-striped table-bordered" id="no_posee_cuenta">
+                                      <tr class="detalle">
+                                        <td></td>
+                                        <td class="f-14 m-l-15"><span class="f-12 f-700 c-youtube">No Posee Cuenta</td>
+                                      </tr>
+                                    </table>
+                                  @endif
 
                                   
 
@@ -2738,6 +2747,7 @@
               $('.email').show();
               $('#tr_imagen').show();
               $('#tr_contrasena').show();
+              $('#no_posee_cuenta').hide();
 
             },
             error:function(msj){
