@@ -31,21 +31,21 @@
                                   <div class="form-group">
                                       <label for="p-t-10"></label>
                                       <div class="p-t-10">
-                                        <label class="radio radio-inline m-r-20">
-                                            <input name="tipo_imagen" id="snapshot" value="1" type="radio" checked>
-                                            <i class="input-helper"></i>  
-                                            Tomar Foto 
-                                        </label>
                                         <label class="radio radio-inline m-r-20 ">
-                                            <input name="tipo_imagen" id="upload" value="2" type="radio">
+                                            <input name="tipo_imagen" id="upload" value="2" type="radio" checked>
                                             <i class="input-helper"></i>  
                                             Subir Foto 
+                                        </label>
+                                        <label class="radio radio-inline m-r-20">
+                                            <input name="tipo_imagen" id="snapshot" value="1" type="radio">
+                                            <i class="input-helper"></i>  
+                                            Tomar Foto 
                                         </label>
                                       </div>
                                    </div>
                                 </div>
 
-                              <div class="col-sm-12 snapshot">
+                              <div class="col-sm-12 snapshot" style="display: none">
                                 <div class="p-b-20">
                                   @if($imagen)
                                     <img id="img_snapshot" class="img-responsive" src="{{url('/')}}/assets/uploads/usuario/{{$imagen}}"> 
@@ -64,7 +64,7 @@
 
                               </div>
 
-                              <div class="col-sm-12 upload" style="display: none">
+                              <div class="col-sm-12 upload">
 
                                 <label for="id">Cargar Imagen</label>
                                 <div class="clearfix p-b-15"></div>
@@ -1797,16 +1797,17 @@
     $('#modalImagen-Alumno').on('show.bs.modal', function (event) {
       limpiarMensaje();
 
-      Webcam.set({
-        width: 300,
-        height: 300,
-        image_format: 'jpeg',
-        jpeg_quality: 90
-      });
+      if($('#snapshot').is(':checked')){
+        Webcam.set({
+          width: 300,
+          height: 300,
+          image_format: 'jpeg',
+          jpeg_quality: 90
+        });
 
-      Webcam.attach('#webcam');
-      $('#snapshot').prop('checked',true)
-      
+        Webcam.attach('#webcam');
+        // $('#snapshot').prop('checked',true)
+      }
     })
 
     $('#modalImagen-Alumno').on('hidden.bs.modal', function (event) {
