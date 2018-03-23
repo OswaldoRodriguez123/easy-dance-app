@@ -1350,7 +1350,7 @@
                                     <table class="table table-striped table-bordered" id="no_posee_cuenta">
                                       <tr class="detalle">
                                         <td></td>
-                                        <td class="f-14 m-l-15"><span class="f-12 f-700 c-youtube">No Posee Cuenta</td>
+                                        <td class="f-14 m-l-15"><span class="f-12 f-700 c-youtube text-center">No Posee Cuenta</td>
                                       </tr>
                                     </table>
                                   @endif
@@ -1366,16 +1366,15 @@
                                   <span class="f-16 f-700">Acciones</span>
 
                                   <hr></hr>
-
-                                  @if($total)
-                                    <a href="{{url('/')}}/participante/alumno/deuda/{{$id}}"><i class="icon_a-pagar f-20 m-r-5 boton blue sa-warning" data-original-title="Pagar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  @endif
                                   
                                   @if($usuario)
                                     <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   @else
                                     <a class="email" style="display:none"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                     <a class="usuario"><i class="zmdi zmdi-alert-circle-o f-20 m-r-5 boton blue sa-warning" data-original-title="Crear Cuenta" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                  @endif
+                                  @if($total)
+                                    <a href="{{url('/')}}/participante/alumno/deuda/{{$id}}"><i class="icon_a-pagar f-20 m-r-5 boton blue sa-warning" data-original-title="Pagar" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   @endif
                                   <a href="{{url('/')}}/participante/alumno/transferir/{{$id}}"><i class="zmdi zmdi-trending-up zmdi-hc-fw f-20 m-r-5 boton blue sa-warning" data-original-title="Transferir" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
                                   <a href="{{url('/')}}/participante/alumno/evaluaciones/{{$id}}"><i class="zmdi glyphicon glyphicon-search f-20 m-r-5 boton blue sa-warning" data-original-title="Valoración" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
