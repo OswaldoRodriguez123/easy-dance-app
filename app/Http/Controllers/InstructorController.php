@@ -1556,23 +1556,13 @@ class InstructorController extends BaseController {
         $delete = PerfilInstructor::where('instructor_id',$id)->delete();
         
         if($instructor->forceDelete()){
+            $usuario_tipo = UsuarioTipo::where('tipo',3)
+                ->where('usuario_id',$id)
+            ->first();
 
-            if($instructor->correo){
-
-                $usuario = User::where('email',$instructor->correo)->first();
-
-                if($usuario){
-
-                    $usuario_tipo = UsuarioTipo::where('tipo',3)
-                        ->where('usuario_id',$usuario->id)
-                    ->first();
-
-                    if($usuario_tipo){
-                        $usuario_tipo->delete();
-                    }
-                }
+            if($usuario_tipo){
+                $usuario_tipo->delete();
             }
-
             return response()->json(['mensaje' => '¡Excelente! El instructor se ha eliminado satisfactoriamente', 'status' => 'OK', 200]);
         }else{
             return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
