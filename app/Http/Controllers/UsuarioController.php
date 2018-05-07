@@ -1418,9 +1418,12 @@ class UsuarioController extends BaseController {
                     $instructor = $cita->instructor_nombre . ' ' .$cita->instructor_apellido;
                     $sexo = $cita->sexo;
                     $instructor_imagen = Instructor::find($cita->instructor_id);               
-                    
-                    if($instructor_imagen->imagen){
-                        $imagen = $instructor_imagen->imagen;
+                    if($instructor_imagen){
+                        if($instructor_imagen->imagen){
+                            $imagen = $instructor_imagen->imagen;
+                        }else{
+                            $imagen = '';
+                        }
                     }else{
                         $imagen = '';
                     }
