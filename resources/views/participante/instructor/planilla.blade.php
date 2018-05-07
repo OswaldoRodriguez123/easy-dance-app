@@ -1683,6 +1683,7 @@
                                   </ul>
 
                                   <div class="col-sm-12 text-left"> 
+                                    <br></br>
                                     @if(!$usuario)
                                       <table class="table table-striped table-bordered" id="no_posee_cuenta">
                                         <tr class="detalle">

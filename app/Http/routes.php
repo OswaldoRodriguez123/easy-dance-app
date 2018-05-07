@@ -696,6 +696,7 @@
 			Route::put('participante/instructor/update/redes', 'InstructorController@updateRedes');
 			Route::put('participante/instructor/update/avanzado','InstructorController@updateAvanzado');
 			Route::put('participante/instructor/update/imagen','InstructorController@updateImagen');
+			Route::put('participante/instructor/update/password', 'AlumnoController@updatePassword');
 			Route::put('participante/instructor/update/credencial','InstructorController@updateCredencial');
 
 			Route::get('participante/instructor/pagos/{id}', 'InstructorController@principalpagos');
