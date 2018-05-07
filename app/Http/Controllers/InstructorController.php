@@ -1400,7 +1400,7 @@ class InstructorController extends BaseController {
 
             $cantidad_clases = $cantidad_clases + $cantidad_horarios;
 
-            return view('participante.instructor.planilla')->with(['instructor' => $instructor, 'credencial' => $credencial, 'clases_grupales' => $array, 'pagos_instructor' => $pagos, 'imagen' => $imagen, 'comisiones' => $comisiones,  'linea_servicio' => $linea_servicio, 'id' => $id, 'cantidad_clases' => $cantidad_clases]);
+            return view('participante.instructor.planilla')->with(['instructor' => $instructor, 'credencial' => $credencial, 'clases_grupales' => $array, 'pagos_instructor' => $pagos, 'imagen' => $imagen, 'comisiones' => $comisiones,  'linea_servicio' => $linea_servicio, 'id' => $id, 'cantidad_clases' => $cantidad_clases, 'usuario' => $usuario]);
         }else{
            return redirect("participante/instructor"); 
         }
@@ -2420,5 +2420,61 @@ class InstructorController extends BaseController {
 
         return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
 
+    }
+
+    public function crearCuenta($id){
+
+        $instructor = Instructor::find($id);
+
+        if($instructor){
+
+            if($instructor->correo){
+
+                $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                    ->where('usuarios_tipo.tipo_id',$instructor->id)
+                    ->where('usuarios_tipo.tipo',3)
+                ->first();
+
+                if(!$usuario){
+
+                    $password = str_random(8);
+                                
+                    $usuario = new User;
+
+                    $usuario->academia_id = Auth::user()->academia_id;
+                    $usuario->nombre = $instructor->nombre;
+                    $usuario->apellido = $instructor->apellido;
+                    $usuario->telefono = $instructor->telefono;
+                    $usuario->celular = $instructor->celular;
+                    $usuario->sexo = $instructor->sexo;
+                    $usuario->email = $instructor->correo;
+                    $usuario->como_nos_conociste_id = 1;
+                    $usuario->direccion = $instructor->direccion;
+                    // $usuario->confirmation_token = str_random(40);
+                    $usuario->password = bcrypt($password);
+                    $usuario->usuario_id = $instructor->id;
+                    $usuario->usuario_tipo = 3; 
+
+                    $usuario->save();
+
+                    $usuario_tipo = new UsuarioTipo;
+                    $usuario_tipo->usuario_id = $usuario->id;
+                    $usuario_tipo->tipo = 3;
+                    $usuario_tipo->tipo_id = $instructor->id;
+                    $usuario_tipo->save();
+                  
+                    return response()->json(['mensaje' => '¡Excelente! Los campos se han guardado satisfactoriamente', 'status' => 'OK', 200]);
+
+                }else{
+                    return response()->json(['error_mensaje' => 'Ups! El instructor ya posee una cuenta'], 422);
+                }
+
+            }else{
+                return response()->json(['error_mensaje' => 'Ups! El instructor no posee correo electronico para crear su cuenta'], 422);
+            }
+
+        }else{
+            return response()->json(['error_mensaje' => 'Ups! No Hemos encontrado la siguiente información del identificador asociada a tu cuenta', 'status' => 'ERROR'],422);
+        }
     }
 }

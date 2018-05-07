@@ -1609,22 +1609,37 @@
                                     </li>
                                   </ul>
 
+                                  <div class="col-sm-12 text-left"> 
+                                    @if(!$usuario)
+                                      <table class="table table-striped table-bordered" id="no_posee_cuenta">
+                                        <tr class="detalle">
+                                          <td></td>
+                                          <td class="f-14 m-l-15"><span class="f-12 f-700 c-youtube text-center">No Posee Cuenta</span></td>
+                                        </tr>
+                                      </table>
+                                    @endif
+                                  </div>
+
                                   <div class="col-sm-12 text-center"> 
 
-                                  <br></br>
+                                    <br></br>
 
-                                  <span class="f-16 f-700">Acciones</span>
+                                    <span class="f-16 f-700">Acciones</span>
 
-                                  <hr></hr>
+                                    <hr></hr>
+                                    @if($usuario)
+                                      <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                    @else
+                                      <a class="email" style="display:none"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                      <a class="usuario"><i class="zmdi zmdi-alert-circle-o f-20 m-r-5 boton blue sa-warning" data-original-title="Crear Cuenta" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                    @endif
+                                    <a href="{{url('/')}}/participante/instructor/pagos/{{$instructor->id}}"><i class="zmdi zmdi-money f-20 m-r-5 boton blue sa-warning" data-original-title="Pagos" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
+                                    <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$instructor->id}}" name= "eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
 
-                                  <a href="{{url('/')}}/participante/instructor/pagos/{{$instructor->id}}"><i class="zmdi zmdi-money f-20 m-r-5 boton blue sa-warning" data-original-title="Pagos" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <a class="email"><i class="zmdi zmdi-email f-20 m-r-5 boton blue sa-warning" data-original-title="Enviar Correo" data-toggle="tooltip" data-placement="bottom" title=""></i></a>
-                                  <i class="zmdi zmdi-delete boton red f-20 m-r-10 boton red sa-warning" id="{{$instructor->id}}" name= "eliminar" data-original-title="Eliminar" data-toggle="tooltip" data-placement="bottom" title=""></i>
-
-                                  <br></br>
+                                    <br></br>
                                     
                                    
-                                </div>
+                                  </div>
 
                                 </div>                
                               </div>
@@ -1704,7 +1719,7 @@
                              </td>
                              <td id="instructor-direccion" class="f-14 m-l-15 capitalize" data-valor="{{$instructor->direccion}}" >{{ str_limit($instructor->direccion, $limit = 30, $end = '...') }} <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
-                            <tr class="detalle" data-toggle="modal" href="#modalImagen-Instructor">
+                            <tr id="tr_imagen" class="detalle" data-toggle="modal" href="#modalImagen-Instructor" {{ empty($usuario) ? 'style = display:none' : '' }}>
                              <td>
                                <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-imagePerfilBase64" class="zmdi {{ empty($instructor->imagen) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>
                                <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-collection-folder-image zmdi-hc-fw f-22"></i> </span>
@@ -1768,6 +1783,14 @@
                                <td class="f-14 m-l-15" ><span id="instructor-pago"></span><span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span></td>
                               </tr>
                             @endif
+                            <tr id="tr_contrasena" class="detalle" data-toggle="modal" href="#modalContrasena-Instructor" {{ empty($usuario) ? 'style = display:none' : '' }}>
+                             <td>
+                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-contrasena" class="zmdi c-verde zmdi-check zmdi-hc-fw"></i></span>
+                               <span class="m-l-10 m-r-10"> <i class="zmdi zmdi-lock-outline zmdi-hc-fw f-22"></i> </span>
+                               <span class="f-14"> Contraseña </span>
+                             </td>
+                             <td class="f-14 m-l-15" > <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
+                            </tr>
 
                            </table>
 
@@ -1803,6 +1826,7 @@
 
   route_agregar_comision="{{url('/')}}/participante/instructor/agregarcomisionfija";
   route_eliminar_comision="{{url('/')}}/participante/instructor/eliminarcomisionfija/";
+  route_agregar="{{url('/')}}/participante/instructor/crear_cuenta/";
 
   var linea_servicio = <?php echo json_encode($linea_servicio);?>;
 
@@ -3038,6 +3062,48 @@
         $("#comisiones").show();
         $("#pagos").hide();
       }    
+    });
+
+    $(".usuario").click(function(){
+      element = this;
+      swal({   
+        title: "Desea crearle la cuenta al instructor?",   
+        text: "Confirmar creación!",   
+        type: "warning",   
+        showCancelButton: true,   
+        confirmButtonColor: "#DD6B55",   
+        confirmButtonText: "Crear!",  
+        cancelButtonText: "Cancelar",         
+        closeOnConfirm: true 
+      }, function(isConfirm){   
+        if (isConfirm) {
+
+          procesando();
+          var token = '{{ csrf_token() }}';
+          var route = route_agregar + "{{$id}}";
+                
+          $.ajax({
+            url: route,
+            headers: {'X-CSRF-TOKEN': token},
+            type: 'POST',
+            dataType: 'json',
+            success:function(respuesta){
+              finprocesado();
+              swal('Exito!','La cuenta ha sido creada','success');
+              $(element).hide();
+              $('.email').show();
+              $('#tr_imagen').show();
+              $('#tr_contrasena').show();
+              $('#no_posee_cuenta').hide();
+
+            },
+            error:function(msj){
+              swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
+              finprocesado();
+            }
+          });
+        }
+      });
     });
 
    </script> 

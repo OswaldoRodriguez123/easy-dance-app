@@ -713,6 +713,8 @@
 			Route::post('participante/instructor/agregarcomision', 'InstructorController@agregarcomision');
 			Route::delete('participante/instructor/eliminarcomision/{id}', 'InstructorController@eliminarcomision');
 
+			Route::post('participante/instructor/crear_cuenta/{id}', 'InstructorController@crearCuenta');
+
 			//VISITANTE
 
 			Route::get('participante/visitante', 'VisitanteController@index');
