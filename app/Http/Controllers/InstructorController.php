@@ -122,7 +122,7 @@ class InstructorController extends BaseController {
         'apellido' => 'required|min:3|max:20|regex:/^[a-záéíóúàèìòùäëïöüñ\s]+$/i',
         'fecha_nacimiento' => 'required',
         'sexo' => 'required',
-        'correo' => 'required|email|max:255',
+        'correo' => 'email|max:255',
     ];
 
     $messages = [
@@ -142,7 +142,6 @@ class InstructorController extends BaseController {
         'apellido.regex' => 'Ups! El apellido es inválido , debe ingresar sólo letras',
         'sexo.required' => 'Ups! El Sexo  es requerido ',
         'fecha_nacimiento.required' => 'Ups! La fecha de nacimiento es requerida',
-        'correo.required' => 'Ups! El correo es requerido',
         'correo.email' => 'Ups! El correo tiene una dirección inválida',
         'correo.max' => 'El máximo de caracteres permitidos son 255',
     ];
@@ -1166,6 +1165,50 @@ class InstructorController extends BaseController {
         }
 
         return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+    }
+
+    public function updatePassword(Request $request){
+
+        $rules = [
+            'password' => 'required|min:6|confirmed',
+            'password_confirmation' => 'required',
+        ];
+
+        $messages = [
+
+            'password.required' => 'Ups! La contraseña es requerida',
+            'password.confirmed' => 'Ups! Las contraseñas introducidas no coinciden, intenta de nuevo',
+            'password.min' => 'Ups! La contraseña debe contener un mínimo de 6 caracteres',
+            'password_confirmation.required' => 'Ups! La contraseña es requerida',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()){
+
+            return response()->json(['errores'=>$validator->messages(), 'status' => 'ERROR'],422);
+
+        }else{
+
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->select('users.id')
+                ->where('usuarios_tipo.tipo_id',$request->id)
+                ->where('usuarios_tipo.tipo',3)
+            ->first();
+
+            if($usuario){
+
+                $usuario->password = bcrypt($request->password);
+
+                if($usuario->save()){
+                    return response()->json(['mensaje' => '¡Excelente! Los cambios se han actualizado satisfactoriamente', 'status' => 'OK', 200]);
+                }else{
+                    return response()->json(['errores'=>'error', 'status' => 'ERROR-SERVIDOR'],422);
+                }
+            }else{
+                return response()->json(['mensaje' => '¡Excelente!', 'status' => 'OK', 200]);
+            }
+        }
     }
 
 
