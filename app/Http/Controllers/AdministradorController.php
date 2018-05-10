@@ -386,7 +386,6 @@ class AdministradorController extends BaseController
                     {
                         $delete = HorarioClasePersonalizada::where('clase_personalizada_id',$clase_personalizada->id)->forceDelete();
                     }
-                    $delete = HorarioClasePersonalizada::where('alumno_id',$alumno_id)->forceDelete();
                     $delete = InscripcionClasePersonalizada::where('alumno_id',$alumno_id)->forceDelete();
                     $delete = Asistencia::where('alumno_id',$alumno_id)->forceDelete();
                     $delete = Cita::where('alumno_id',$alumno_id)->forceDelete();
