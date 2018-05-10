@@ -416,8 +416,10 @@ class AdministradorController extends BaseController
             foreach($notificaciones_usuarios as $notificacion_usuario)
             {
                 $notificacion = Notificacion::find($notificacion_usuario->id_notificacion);
-                if($notificacion->tipo_evento == 5){
-                    $notificacion->delete();
+                if($notificacion){
+                    if($notificacion->tipo_evento == 5){
+                        $notificacion->delete();
+                    }
                 }
             }
 
