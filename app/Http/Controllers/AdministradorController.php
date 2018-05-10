@@ -401,7 +401,7 @@ class AdministradorController extends BaseController
                 }else if($usuario_tipo->tipo == 8){
 
                     $staff_id = $usuario_tipo->tipo_id;
-                    $delete = AsistenciaStaff::withTrashed()->where('staff_id',$staff_id)->delete();
+                    $delete = AsistenciaStaff::where('staff_id',$staff_id)->delete();
                     $delete = Staff::withTrashed()->where('id',$staff_id)->forceDelete();
                 }
             }
