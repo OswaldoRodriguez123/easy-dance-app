@@ -36,6 +36,7 @@ use App\Instructor;
 use App\CredencialInstructor;
 use App\Staff;
 use App\AsistenciaStaff;
+use App\HorarioStaff;
 use App\Notificacion;
 use App\NotificacionUsuario;
 use App\Incidencia;
@@ -401,6 +402,7 @@ class AdministradorController extends BaseController
                 }else if($usuario_tipo->tipo == 8){
 
                     $staff_id = $usuario_tipo->tipo_id;
+                    $delete = HorarioStaff::where('staff_id',$staff_id)->delete();
                     $delete = AsistenciaStaff::where('staff_id',$staff_id)->delete();
                     $delete = Staff::withTrashed()->where('id',$staff_id)->forceDelete();
                 }
