@@ -33,6 +33,7 @@ use App\CredencialAlumno;
 use App\Visitante;
 use App\Alumno;
 use App\Instructor;
+use App\PerfilInstructor;
 use App\CredencialInstructor;
 use App\Staff;
 use App\AsistenciaStaff;
@@ -399,6 +400,7 @@ class AdministradorController extends BaseController
                     $instructor_id = $usuario_tipo->tipo_id;
 
                     $delete = CredencialInstructor::where('instructor_id',$instructor_id)->delete();
+                    $delete = PerfilInstructor::where('instructor_id',$instructor_id)->delete();
                     $delete = Instructor::withTrashed()->where('id',$instructor_id)->forceDelete();
                 }else if($usuario_tipo->tipo == 8){
 
