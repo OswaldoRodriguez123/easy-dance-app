@@ -42,6 +42,7 @@ use App\NotificacionUsuario;
 use App\Incidencia;
 use App\Sugerencia;
 use App\VencimientoClaseGrupal;
+use App\NotaAdministrativa;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use DB;
@@ -420,6 +421,7 @@ class AdministradorController extends BaseController
                 }
             }
 
+            $delete = NotaAdministrativa::where('usuario_id', $usuario->id)->delete();
             $delete = NotificacionUsuario::where('id_usuario', $usuario->id)->forceDelete();
             $delete = Incidencia::where('usuario_id', $usuario->id)->forceDelete();
             $delete = Sugerencia::where('usuario_id', $usuario->id)->forceDelete();
