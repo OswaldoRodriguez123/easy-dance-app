@@ -2959,7 +2959,7 @@ class ClaseGrupalController extends BaseController {
             $usuario_tipo = Session::get('easydance_usuario_tipo');
 
             $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
-                ->where('usuarios_tipo.tipo_id',$clase_grupal->instructor_id)
+                ->where('usuarios_tipo.tipo_id',$clase_grupal_join->instructor_id)
                 ->where('usuarios_tipo.tipo',3)
             ->first();
 
