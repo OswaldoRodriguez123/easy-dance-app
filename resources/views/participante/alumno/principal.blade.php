@@ -107,145 +107,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-
-                                @foreach ($alumnos as $alumno)
-                                    <?php 
-
-                                        $id = $alumno['id']; 
-
-                                        $contenido = '';
-
-                                        if($alumno['imagen']){
-                                            $imagen = '/assets/uploads/usuario/'.$alumno['imagen'];
-                                        }else{
-                                            if($alumno['sexo'] == 'F'){
-                                                $imagen = '/assets/img/Mujer.jpg';
-                                            }else{
-                                                $imagen = '/assets/img/Hombre.jpg';
-                                            }
-                                        }
-
-
-                                        $contenido = 
-                                        '<p class="c-negro">' .
-                                            $alumno['nombre'] . ' ' . $alumno['apellido'] . ' ' . ' ' .  '<img class="lv-img-lg" src="'.$imagen.'" alt=""><br><br>' .
-
-                                            'Cantidad que adeuda: ' . number_format($alumno['deuda'], 2, '.' , '.')  . '<br>'.
-                                            'Número Móvil: ' . $alumno['celular'] . '<br>'.
-                                            'Correo Electrónico: ' . $alumno['correo'] . '<br>'.
-                                            'Edad: ' . $alumno['edad'] . '<br>'.
-                                        '</p>';
-
-                                    ?>
-
-                                    @if($alumno['deleted_at'] == null)
-                                        <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion" data-tipo = "1">
-                                    @else
-                                        <tr data-trigger = "hover" data-toggle = "popover" data-placement = "top" data-content = "{{$contenido}}" data-original-title = "Ayuda &nbsp;&nbsp;&nbsp;&nbsp;" data-html = "true" data-container = "body" title= "" id="{{$id}}" class="seleccion seleccion_deleted" data-tipo = "2">
-                                    @endif
-                                        <td class="text-center previa"> @if($alumno['activacion']) <i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i> @endif</td>
-                                        <td class="text-center previa">
-                                            @if($alumno['imagen'])
-                                                <img class="lv-img lazy" src="{{url('/')}}/assets/img/Hombre.jpg" data-image = "{{url('/')}}/assets/uploads/usuario/{{$alumno['imagen']}}" alt="">
-                                            @else
-                                                @if($alumno['sexo'] == 'M')
-                                                    <img class="lv-img lazy" src="{{url('/')}}/assets/img/Hombre.jpg" data-image = "{{url('/')}}/assets/img/Hombre.jpg" alt="">
-                                                @else
-                                                    <img class="lv-img lazy" src="{{url('/')}}/assets/img/Mujer.jpg" data-image = "{{url('/')}}/assets/img/Mujer.jpg" alt="">
-                                            @endif
-                                          @endif
-                                        </td>
-                                        <td class="text-center previa">{{$alumno['identificacion']}}</td>
-                                        <td class="text-center previa">
-                                            @if($alumno['edad'] >= 18)
-                                                @if($alumno['sexo']=='F')
-                                                    <span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>
-                                                @else
-                                                    <span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>
-                                                @endif
-                                            @else
-                                                @if($alumno['sexo']=='F')
-                                                    <span style="display: none">F</span><i class="zmdi fa fa-child f-15 c-rosado"></i> </span>
-                                                @else
-                                                    <span style="display: none">M</span><i class="zmdi fa fa-child f-15 c-azul"></i> </span>
-                                                @endif
-                                            @endif
-                                        </td>
-
-                                        <?php 
-                                            $explode = explode(" ", $alumno['nombre']);
-                                            $nombre_alumno = $explode[0];
-
-                                            $explode = explode(" ", $alumno['apellido']);
-                                            $apellido_alumno = $explode[0];
-                                        ?>
-
-                                        <td class="text-center previa">{{$nombre_alumno}} {{$apellido_alumno}} </td>
-                                        <td class="text-center previa">
-                                            <i class="zmdi zmdi-money {{ $alumno['deuda'] ? 'c-youtube ' : 'c-verde' }} zmdi-hc-fw f-20 p-r-3"></i>
-                                        </td>
-                                        <td class="text-center disabled"> 
-                                            @if($alumno['deleted_at'] == null)
-                                                <!-- <i name="operacion" id={{$id}} class="zmdi zmdi-wrench f-20 p-r-10 pointer acciones"></i> -->
-
-                                                <ul class="top-menu">
-                                                    <li class="dropdown" id="dropdown_{{$id}}">
-                                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_{{$id}}">
-                                                           <span class="f-15 f-700" style="color:black"> 
-                                                                <i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>
-                                                           </span>
-                                                        </a>
-                                                        <div class="dropup">
-                                                            <ul class="dropdown-menu dm-icon pull-right">
-
-                                                                @if($alumno['deuda'])
-                                                                    <li class="hidden-xs">
-                                                                        <a href="{{url('/')}}/participante/alumno/deuda/{{$id}}"><i class="icon_a-pagar f-16 m-r-10 boton blue"></i> Pagar</a>
-                                                                    </li>
-                                                                @endif
-
-                                                                @if($alumno['usuario'])
-                                                                    <li class="hidden-xs email pointer">
-                                                                        <a><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
-                                                                    </li>
-                                                                @else
-                                                                    <li class="hidden-xs usuario pointer">
-                                                                        <a><i class="zmdi zmdi-alert-circle-o f-16 boton blue"></i> Crear Cuenta</a>
-                                                                    </li>
-                                                                    <li class="hidden-xs email pointer" style="display:none">
-                                                                        <a><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>
-                                                                    </li>
-                                                                @endif
-
-                                                                <li class="hidden-xs">
-                                                                    <a href="{{url('/')}}/participante/alumno/transferir/{{$id}}"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>
-                                                                </li>
-
-                                                                <li class="hidden-xs">
-                                                                    <a href="{{url('/')}}/participante/alumno/evaluaciones/{{$id}}"><i class="zmdi glyphicon glyphicon-search f-16 boton blue"></i>Valoración</a>
-                                                                </li>
-
-                                                                <li class="hidden-xs">
-                                                                    <a href="{{url('/')}}/participante/alumno/llamadas/{{$id}}"><i class="zmdi zmdi-phone f-16 boton blue"></i>Llamadas</a>
-                                                                </li>
-
-                                                                <li class="hidden-xs reservar pointer">
-                                                                    <a><i class="zmdi icon_a-reservaciones f-16 boton blue"></i>Reservar</a>
-                                                                </li>
-
-                                                                <li class="hidden-xs eliminar pointer">
-                                                                    <a><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>
-                                                                </li>
-
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    <!-- endcan -->
-                                @endforeach 
                                                            
                             </tbody>
                         </table>
@@ -273,44 +134,251 @@
         route_eliminar="{{url('/')}}/participante/alumno/eliminar/";
         route_principal="{{url('/')}}/participante/alumno";
         route_agregar="{{url('/')}}/participante/alumno/crear_cuenta/";
+        route_listado = "{{url('/')}}/participante/alumno/listado"
+        host = location.host
+        var t
+        var token = '{{ csrf_token() }}';
+        $('#tablelistar').DataTable();
+        
+        getListado()
 
-        t=$('#tablelistar').DataTable({
-            processing: true,
-            serverSide: false,
-            pageLength: 25,    
-            deferRender: true,
-            order: [[4, 'asc']],
-            fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
-              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
-              $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
-            },
-            drawCallback: function(){
-                loadImages();
-            },
-            language: {
-                processing:     "Procesando ...",
-                search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
-                searchPlaceholder: "BUSCAR",
-                lengthMenu:     "Mostrar _MENU_ Registros",
-                info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
-                infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
-                infoFiltered:   "(filtrada de _MAX_ registros en total)",
-                infoPostFix:    "",
-                loadingRecords: "...",
-                zeroRecords:    "No se encontraron registros coincidentes",
-                emptyTable:     "No hay datos disponibles en la tabla",
-                paginate: {
-                    first:      "Primero",
-                    previous:   "Anterior",
-                    next:       "Siguiente",
-                    last:       "Ultimo"
-                },
-                aria: {
-                    sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
-                    sortDescending: ": habilitado para ordenar la columna en orden descendente"
+        function getListado(){
+            procesando()
+            $.ajax({
+                url: route_listado,
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                success:function(respuesta){
+                    t = $('#tablelistar').DataTable({
+                        data: respuesta,
+                        processing: true,
+                        serverSide: false,
+                        pageLength: 25,    
+                        deferRender: true,
+                        order: [[4, 'asc']],
+                        destroy: true,
+                        drawCallback: function(){
+                            loadImages();
+                        },
+                        columns: [
+                            { data: 'activacion' },
+                            { data: 'imagen' },
+                            { data: 'identificacion' },
+                            { data: 'edad' },
+                            { data: 'nombre' },
+                            { data: 'deuda' },
+                            { data: 'deleted_at' },
+                        ],
+                        'createdRow': function( row, data, dataIndex ) {
+                            id = data.id;
+                            deuda = data.deuda
+                            if(data.imagen != ''){
+                                imagen = '/assets/uploads/usuario/'+data.imagen;
+                            }else{
+                                if(data.sexo == 'F'){
+                                    imagen = '/assets/img/Mujer.jpg';
+                                }else{
+                                    imagen = '/assets/img/Hombre.jpg';
+                                }
+                            }
+                            contenido =     '<p class="c-negro">'
+                            contenido +=        data.nombre + ' ' + data.apellido + ' ' + ' ' +  '<img class="lv-img-lg" src="'+imagen+'" alt=""><br><br>'
+                            contenido +=        'Cantidad que adeuda: ' + deuda  + '<br>'
+                            contenido +=        'Número Móvil: ' + data.celular + '<br>'
+                            contenido +=        'Correo Electrónico: ' + data.correo + '<br>'
+                            contenido +=        'Edad: ' + data.edad + '<br>'
+                            contenido +=    '</p>';
+
+                            if(data.deleted_at == null){
+                                tipo = 1
+                                seleccion = 'seleccion'
+                            }else{
+                                tipo = 2
+                                seleccion = 'seleccion seleccion_deleted'
+                            }
+                            $(row)
+                                .data('trigger','hover')
+                                .data('toggle','popover')
+                                .data('placement','top')
+                                .data('content',contenido)
+                                .data('original-title',"Ayuda &nbsp;&nbsp;&nbsp;&nbsp;")
+                                .data('html',"true")
+                                .data('container',"body")
+                                .data('tipo',tipo)
+                                .addClass('text-center')
+                                .addClass(seleccion)
+                                .attr("id", id);
+                        },
+                        "columnDefs": [
+                            {
+                                "targets": 0,
+                                "render": function (data, type, row) {
+                                    if(data != '') {
+                                        activacion = '<i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                                    }else{
+                                        activacion = ''
+                                    }
+                                    return "<div class='previa'>"+ activacion +"</div>";
+                                }
+                            },
+                            {
+                                "targets": 1,
+                                "render": function (data, type, row) {
+                                    if(data != '') {
+                                        imagen = '<img class="lv-img lazy" src="/assets/img/Hombre.jpg" data-image = "/assets/uploads/usuario/'+data+'" alt="">';
+                                    }else{
+                                        if(row.sexo == 'M') {
+                                            imagen = '<img class="lv-img lazy" src="/assets/img/Hombre.jpg" data-image = "/assets/img/Hombre.jpg" alt="">'
+                                        }else{
+                                            imagen = '<img class="lv-img lazy" src="/assets/img/Hombre.jpg" data-image = "/assets/img/Hombre.jpg" alt="">'
+                                        }
+                                    }
+                                    return "<div class='previa'>"+ imagen +"</div>";
+                                }
+                            },
+                            {
+                                "targets": 2,
+                                "render": function (data, type, row) {
+                                    return "<div class='previa'>"+ data +"</div>";
+                                }
+                            },
+                            {
+                                "targets": 3,
+                                "render": function (data, type, row) {
+                                    if(data >= 18) {
+                                        if(row.sexo == 'F') {
+                                            sexo = '<span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
+                                        }else{
+                                            sexo = '<span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
+                                        }
+                                    }else{
+                                        if(row.sexo == 'F') {
+                                            sexo = '<span style="display: none">F</span><i class="zmdi fa fa-child f-15 c-rosado"></i> </span>'
+                                        }else{
+                                            sexo = '<span style="display: none">M</span><i class="zmdi fa fa-child f-15 c-azul"></i> </span>'
+                                        }
+                                    }
+                                    return "<div class='previa'>"+ sexo +"</div>";
+                                }
+                            },
+                            {
+                                "targets": 4,
+                                "render": function (data, type, row) {
+                                    nombre = row.nombre
+                                    nombre = nombre.split(' ');
+                                    nombre = nombre[0];
+                                    apellido = row.apellido
+                                    apellido = apellido.split(' ');
+                                    apellido = apellido[0];
+                                    return "<div class='previa'>"+ nombre + ' ' + apellido +"</div>";
+                                }
+                            },
+                            {
+                                "targets": 5,
+                                "render": function (data, type, row) {
+                                    if(data > 0) {
+                                        deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20 p-r-3"></i>';
+                                    }else{
+                                        deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20 p-r-3"></i>';
+                                    }
+                                    return "<div class='previa'>"+ deuda +"</div>";
+                                }
+                            },
+                            {
+                                "targets": 6,
+                                "render": function (data, type, row) {
+                                    id = row.id;
+                                    if(data == null){
+                                        Acciones = ''
+                                        Acciones += '<ul class="top-menu">';
+                                        Acciones +=     '<li class="dropdown" id="dropdown_"'+id+'>'
+                                        Acciones +=         '<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_'+id+'">'
+                                        Acciones +=             '<span class="f-15 f-700" style="color:black">'
+                                        Acciones +=                 '<i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=""></i>'
+                                        Acciones +=             '</span>'
+                                        Acciones +=         '</a>'
+                                        Acciones +=         '<div class="dropup">'
+                                        Acciones +=             '<ul class="dropdown-menu dm-icon pull-right">'
+
+                                        if(row.deuda > 0){
+                                            Acciones +=             '<li class="hidden-xs">'
+                                            Acciones +=                 '<a href="/participante/alumno/deuda/'+id+'"><i class="icon_a-pagar f-16 m-r-10 boton blue"></i> Pagar</a>'
+                                            Acciones +=             '</li>'
+                                        }
+                                        if(row.usuario){
+                                            Acciones +=             '<li class="hidden-xs email pointer">'
+                                            Acciones +=                 '<a><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>'
+                                            Acciones +=             '</li>'
+                                        }else{
+                                            Acciones +=             '<li class="hidden-xs usuario pointer">'
+                                            Acciones +=                 '<a><i class="zmdi zmdi-alert-circle-o f-16 boton blue"></i> Crear Cuenta</a>'
+                                            Acciones +=             '</li>'
+                                            Acciones +=             '<li class="hidden-xs email pointer" style="display:none">'
+                                            Acciones +=                 '<a><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>'
+                                            Acciones +=             '</li>'
+                                        }
+
+                                        Acciones +=                 '<li class="hidden-xs">'
+                                        Acciones +=                     '<a href="/participante/alumno/transferir/'+id+'"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>'
+                                        Acciones +=                 '</li>'
+                                        
+                                        Acciones +=                 '<li class="hidden-xs">'
+                                        Acciones +=                     '<a href="/participante/alumno/evaluaciones/'+id+'"><i class="zmdi glyphicon glyphicon-search f-16 boton blue"></i>Valoración</a>'
+                                        Acciones +=                 '</li>'
+
+                                        Acciones +=                 '<li class="hidden-xs">'
+                                        Acciones +=                     '<a href="/participante/alumno/llamadas/'+id+'"><i class="zmdi zmdi-phone f-16 boton blue"></i>Llamadas</a>'
+                                        Acciones +=                 '</li>'
+
+                                        Acciones +=                 '<li class="hidden-xs reservar pointer">'
+                                        Acciones +=                     '<a><i class="zmdi icon_a-reservaciones f-16 boton blue"></i>Reservar</a>'
+                                        Acciones +=                 '</li>'
+
+                                        Acciones +=                 '<li class="hidden-xs eliminar pointer">'
+                                        Acciones +=                     '<a><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>'
+                                        Acciones +=                 '</li>'
+
+                                        Acciones +=             '</ul>'
+                                        Acciones +=         '</div>'
+                                        Acciones +=     '</li>'
+                                        Acciones += '</ul>'
+                                    }else{
+                                        Acciones  = ''
+                                    }
+                                    return "<div style='text-align: center'>"+ Acciones +"</div>";
+                                }
+                            },
+                        ],
+                        language: {
+                            processing:     "Procesando ...",
+                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                            searchPlaceholder: "BUSCAR",
+                            lengthMenu:     "Mostrar _MENU_ Registros",
+                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                            infoPostFix:    "",
+                            loadingRecords: "...",
+                            zeroRecords:    "No se encontraron registros coincidentes",
+                            emptyTable:     "No hay datos disponibles en la tabla",
+                            paginate: {
+                                first:      "Primero",
+                                previous:   "Anterior",
+                                next:       "Siguiente",
+                                last:       "Ultimo"
+                            },
+                            aria: {
+                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                            }
+                        }
+                    });
                 }
-            }
-        });
+            });
+            $('[data-toggle="popover"]').popover(); 
+            finprocesado();
+        }
 
         function loadImages(){
             imagenes = $('.lazy')
@@ -322,9 +390,9 @@
                 image.src = src;
             });
         }
-
-        function previa(t){
-            var row = $(t).closest('tr');
+        
+        $(document).on('click', '.previa', function () {
+            var row = $(this).closest('tr');
             var tipo = row.data('tipo');
 
             if(tipo == '1'){
@@ -332,7 +400,7 @@
                 var route =route_detalle+"/"+id;
                 window.open(route, '_blank');
             }
-        }
+        });
 
         $("i[name=operacion").click(function(){
             var route =route_operacion+"/"+this.id;
@@ -384,7 +452,6 @@
         $('#tablelistar tbody').on('click', '.email', function () {
 
             var route = route_email;
-            var token = '{{ csrf_token() }}';
             var id = $(this).closest('tr').attr('id');
                 
             $.ajax({
@@ -410,7 +477,6 @@
 
             procesando();
             var route = "{{url('/')}}/reservacion/guardar-tipo-usuario/1";
-            var token = '{{ csrf_token() }}';
             var id = $(this).closest('tr').attr('id');
                 
             $.ajax({
@@ -443,7 +509,6 @@
             }, function(isConfirm){   
                 if (isConfirm) {
                     var route = route_eliminar + id;
-                    var token = '{{ csrf_token() }}';
                         
                     $.ajax({
                         url: route,
@@ -480,7 +545,6 @@
                 if (isConfirm) {
 
                     procesando();
-                    var token = '{{ csrf_token() }}';
                     var route = route_agregar + id;
                         
                     $.ajax({

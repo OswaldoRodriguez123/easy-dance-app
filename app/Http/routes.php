@@ -607,7 +607,6 @@
 			//ALUMNO
 
 			Route::get('participante/alumno', 'AlumnoController@principal');
-			Route::get('participante/alumno2', 'AlumnoController@principal2');
 			Route::post('participante/alumno/listado', 'AlumnoController@getListado');
 			Route::post('participante/alumno/agregar', 'AlumnoController@store');
 			Route::get('participante/alumno/agregar', 'AlumnoController@create');
