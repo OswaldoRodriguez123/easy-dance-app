@@ -180,11 +180,11 @@
                                 }
                             }
                             contenido =     '<p class="c-negro">'
-                            contenido +=        data.nombre + ' ' + data.apellido + ' ' + ' ' +  '<img class="lv-img-lg" src="'+imagen+'" alt=""><br><br>' +
-                            contenido +=        'Cantidad que adeuda: ' + deuda.toFixed(2);  + '<br>'+
-                            contenido +=        'Número Móvil: ' + data.celular + '<br>' +
-                            contenido +=        'Correo Electrónico: ' + data.correo + '<br>' +
-                            contenido +=        'Edad: ' + data.edad + '<br>'+
+                            contenido +=        data.nombre + ' ' + data.apellido + ' ' + ' ' +  '<img class="lv-img-lg" src="'+imagen+'" alt=""><br><br>'
+                            contenido +=        'Cantidad que adeuda: ' + deuda.toFixed(2);  + '<br>'
+                            contenido +=        'Número Móvil: ' + data.celular + '<br>'
+                            contenido +=        'Correo Electrónico: ' + data.correo + '<br>'
+                            contenido +=        'Edad: ' + data.edad + '<br>'
                             contenido +=    '</p>';
 
                             if(data.deleted_at == null){
