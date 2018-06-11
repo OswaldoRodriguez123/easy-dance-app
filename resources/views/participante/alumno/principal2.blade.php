@@ -293,7 +293,7 @@
                                         Acciones +=     '<li class="dropdown" id="dropdown_"'+id+'>'
                                         Acciones +=         '<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_'+id+'">'
                                         Acciones +=             '<span class="f-15 f-700" style="color:black">'
-                                        Acciones +=                 '<i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>'
+                                        Acciones +=                 '<i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=""></i>'
                                         Acciones +=             '</span>'
                                         Acciones +=         '</a>'
                                         Acciones +=         '<div class="dropup">'
