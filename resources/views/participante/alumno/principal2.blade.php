@@ -205,7 +205,7 @@
                                 .data('tipo',tipo)
                                 .addClass('text-center')
                                 .addClass(seleccion)
-                                .attr("id", id);
+                                .attr("id", id)
                                 .attr("onclick","previa(this)");
                         },
                         "columnDefs": [
