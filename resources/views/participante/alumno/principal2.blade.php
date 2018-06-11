@@ -225,7 +225,7 @@
                                 "targets": 1,
                                 "render": function (data, type, row) {
                                     if(data != '') {
-                                        imagen = '<img class="lv-img lazy" src="'+host+'/assets/img/Hombre.jpg" data-image = "'+host+'/assets/uploads/usuario/"'+imagen+' alt="">';
+                                        imagen = '<img class="lv-img lazy" src="'+host+'/assets/img/Hombre.jpg" data-image = "'+host+'/assets/uploads/usuario/"'+data+' alt="">';
                                     }else{
                                         if(row.sexo == 'M') {
                                             imagen = '<img class="lv-img lazy" src="'+host+'/assets/img/Hombre.jpg" data-image = "'+host+'/assets/img/Hombre.jpg" alt="">'
