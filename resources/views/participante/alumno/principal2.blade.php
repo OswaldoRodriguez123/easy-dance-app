@@ -171,6 +171,9 @@
                         'createdRow': function( row, data, dataIndex ) {
                             id = data.id;
                             deuda = data.deuda
+                            if(deuda){
+                                deuda = deuda.toFixed(2);
+                            }
                             if(data.imagen != ''){
                                 imagen = host+'/assets/uploads/usuario/'+data.imagen;
                             }else{
@@ -182,7 +185,7 @@
                             }
                             contenido =     '<p class="c-negro">'
                             contenido +=        data.nombre + ' ' + data.apellido + ' ' + ' ' +  '<img class="lv-img-lg" src="'+imagen+'" alt=""><br><br>'
-                            contenido +=        'Cantidad que adeuda: ' + deuda.toFixed(2);  + '<br>'
+                            contenido +=        'Cantidad que adeuda: ' + deuda  + '<br>'
                             contenido +=        'Número Móvil: ' + data.celular + '<br>'
                             contenido +=        'Correo Electrónico: ' + data.correo + '<br>'
                             contenido +=        'Edad: ' + data.edad + '<br>'
