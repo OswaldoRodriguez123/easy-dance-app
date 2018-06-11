@@ -134,6 +134,7 @@
         route_eliminar="{{url('/')}}/participante/alumno/eliminar/";
         route_principal="{{url('/')}}/participante/alumno";
         route_agregar="{{url('/')}}/participante/alumno/crear_cuenta/";
+        route_listado = "{{url('/')}}/participante/alumno/listado"
         host = location.host
         var t
         var token = '{{ csrf_token() }}';
@@ -142,7 +143,7 @@
 
         function getListado(){
             $.ajax({
-                url: "{{url('/')}}/participante/alumno/listado",
+                url: route_listado,
                 headers: {'X-CSRF-TOKEN': token},
                 type: 'POST',
                 dataType: 'json',
