@@ -206,8 +206,7 @@
                                 .data('tipo',tipo)
                                 .addClass('text-center')
                                 .addClass(seleccion)
-                                .attr("id", id)
-                                .attr("onclick","previa(this)");
+                                .attr("id", id);
                         },
                         "columnDefs": [
                             {
@@ -387,9 +386,9 @@
                 image.src = src;
             });
         }
-
-        function previa(t){
-            var row = $(t).closest('tr');
+        
+        $(document).on('click', '.previa', function () {
+            var row = $(this).closest('tr');
             var tipo = row.data('tipo');
 
             if(tipo == '1'){
