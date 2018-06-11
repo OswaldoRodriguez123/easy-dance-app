@@ -142,6 +142,7 @@
         getListado()
 
         function getListado(){
+            procesando()
             $.ajax({
                 url: route_listado,
                 headers: {'X-CSRF-TOKEN': token},
@@ -374,6 +375,8 @@
                     });
                 }
             });
+            $('[data-toggle="popover"]').popover(); 
+            finprocesado();
         }
 
         function loadImages(){
