@@ -133,7 +133,9 @@ class AlumnoController extends BaseController
     }
     public function principal2()
 	{
-
+		return view('participante.alumno.principal2');
+    }
+    public function getListado(){
         $in = array(2,4);
 
         $alumnos = Alumno::withTrashed()
@@ -197,9 +199,8 @@ class AlumnoController extends BaseController
             $array[$alumno->id] = $alumno_array;
 
         }
-
-		return view('participante.alumno.principal2')->with(['alumnos' => $array]);
-	}
+        return $array;
+    }
 
 
     public function eliminados()

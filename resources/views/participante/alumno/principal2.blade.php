@@ -134,7 +134,247 @@
         route_eliminar="{{url('/')}}/participante/alumno/eliminar/";
         route_principal="{{url('/')}}/participante/alumno";
         route_agregar="{{url('/')}}/participante/alumno/crear_cuenta/";
+        host = location.host
+        var t
+        var token = '{{ csrf_token() }}';
         
+        getListado()
+
+        function getListado(){
+            $.ajax({
+                url: "{{url('/')}}/participante/alumno/listado",
+                headers: {'X-CSRF-TOKEN': token},
+                type: 'POST',
+                dataType: 'json',
+                success:function(respuesta){
+                    t = $('#tablelistar').DataTable({
+                        data: respuesta,
+                        processing: true,
+                        serverSide: false,
+                        pageLength: 25,    
+                        deferRender: true,
+                        order: [[4, 'asc']],
+                        destroy: true,
+                        drawCallback: function(){
+                            loadImages();
+                        },
+                        columns: [
+                            { data: 'activacion' },
+                            { data: 'imagen' },
+                            { data: 'identificacion' },
+                            { data: 'edad' },
+                            { data: 'nombre' },
+                            { data: 'deuda' },
+                            { data: 'deleted_at' },
+                        ],
+                        'createdRow': function( row, data, dataIndex ) {
+                            id = data.id;
+                            deuda = data.deuda
+                            if(data.imagen != ''){
+                                imagen = host+'/assets/uploads/usuario/'+data.imagen;
+                            }else{
+                                if(data.sexo == 'F'){
+                                    imagen = host+'/assets/img/Mujer.jpg';
+                                }else{
+                                    imagen = host+'/assets/img/Hombre.jpg';
+                                }
+                            }
+                            contenido =     '<p class="c-negro">'
+                            contenido +=        data.nombre + ' ' + data.apellido + ' ' + ' ' +  '<img class="lv-img-lg" src="'+imagen+'" alt=""><br><br>' +
+                            contenido +=        'Cantidad que adeuda: ' + deuda.toFixed(2);  + '<br>'+
+                            contenido +=        'Número Móvil: ' + data.celular + '<br>' +
+                            contenido +=        'Correo Electrónico: ' + data.correo + '<br>' +
+                            contenido +=        'Edad: ' + data.edad + '<br>'+
+                            contenido +=    '</p>';
+
+                            if(data.deleted_at == null){
+                                tipo = 1
+                                seleccion = 'seleccion'
+                            }else{
+                                tipo = 2
+                                seleccion = 'seleccion seleccion_deleted'
+                            }
+                            $(row)
+                                .data('trigger','hover')
+                                .data('toggle','popover')
+                                .data('placement','top')
+                                .data('content',contenido)
+                                .data('original-title',"Ayuda &nbsp;&nbsp;&nbsp;&nbsp;")
+                                .data('html',"true")
+                                .data('container',"body")
+                                .data('tipo',tipo)
+                                .addClass('text-center')
+                                .addClass(seleccion)
+                                .attr("id", id);
+                                .attr("onclick","previa(this)");
+                        },
+                        "columnDefs": [
+                            {
+                                "targets": 0,
+                                "render": function (data, type, row) {
+                                    if(data != '') {
+                                        activacion = '<i class="zmdi zmdi-alert-circle-o zmdi-hc-fw c-youtube f-20" data-html="true" data-original-title="" data-content="Cuenta sin confirmar" data-toggle="popover" data-placement="right" title="" type="button" data-trigger="hover"></i>';
+                                    }else{
+                                        activacion = ''
+                                    }
+                                    return "<div class='previa'>"+ activacion +"</div>";
+                                }
+                            },
+                            {
+                                "targets": 1,
+                                "render": function (data, type, row) {
+                                    if(data != '') {
+                                        imagen = '<img class="lv-img lazy" src="'+host+'/assets/img/Hombre.jpg" data-image = "'+host+'/assets/uploads/usuario/"'+imagen+' alt="">';
+                                    }else{
+                                        if(row.sexo == 'M') {
+                                            imagen = '<img class="lv-img lazy" src="'+host+'/assets/img/Hombre.jpg" data-image = "'+host+'/assets/img/Hombre.jpg" alt="">'
+                                        }else{
+                                            imagen = '<img class="lv-img lazy" src="'+host+'/assets/img/Hombre.jpg" data-image = "'+host+'/assets/img/Hombre.jpg" alt="">'
+                                        }
+                                    }
+                                    return "<div class='previa'>"+ imagen +"</div>";
+                                }
+                            },
+                            {
+                                "targets": 2,
+                                "render": function (data, type, row) {
+                                    return "<div class='previa'>"+ data +"</div>";
+                                }
+                            },
+                            {
+                                "targets": 3,
+                                "render": function (data, type, row) {
+                                    if(data >= 18) {
+                                        if(row.sexo == 'F') {
+                                            sexo = '<span style="display: none">F</span><i class="zmdi zmdi-female f-25 c-rosado"></i> </span>'
+                                        }else{
+                                            sexo = '<span style="display: none">M</span><i class="zmdi zmdi-male-alt f-25 c-azul"></i> </span>'
+                                        }
+                                    }else{
+                                        if(row.sexo == 'F') {
+                                            sexo = '<span style="display: none">F</span><i class="zmdi fa fa-child f-15 c-rosado"></i> </span>'
+                                        }else{
+                                            sexo = '<span style="display: none">M</span><i class="zmdi fa fa-child f-15 c-azul"></i> </span>'
+                                        }
+                                    }
+                                    return "<div class='previa'>"+ sexo +"</div>";
+                                }
+                            },
+                            {
+                                "targets": 4,
+                                "render": function (data, type, row) {
+                                    nombre = row.nombre
+                                    nombre = nombre.split(' ');
+                                    nombre = nombre[0];
+                                    apellido = row.apellido
+                                    apellido = apellido.split(' ');
+                                    apellido = apellido[0];
+                                    return "<div class='previa'>"+ nombre + ' ' + apellido +"</div>";
+                                }
+                            },
+                            {
+                                "targets": 5,
+                                "render": function (data, type, row) {
+                                    if(data > 0) {
+                                        deuda = '<i class="zmdi zmdi-money c-youtube zmdi-hc-fw f-20 p-r-3"></i>';
+                                    }else{
+                                        deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20 p-r-3"></i>';
+                                    }
+                                    return "<div class='previa'>"+ deuda +"</div>";
+                                }
+                            },
+                            {
+                                "targets": 6,
+                                "render": function (data, type, row) {
+                                    id = row.id;
+                                    if(data == null){
+                                        Acciones = ''
+                                        Acciones += '<ul class="top-menu">';
+                                        Acciones +=     '<li class="dropdown" id="dropdown_"'+id+'>'
+                                        Acciones +=         '<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_'+id+'">'
+                                        Acciones +=             '<span class="f-15 f-700" style="color:black">'
+                                        Acciones +=                 '<i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>'
+                                        Acciones +=             '</span>'
+                                        Acciones +=         '</a>'
+                                        Acciones +=         '<div class="dropup">'
+                                        Acciones +=             '<ul class="dropdown-menu dm-icon pull-right">'
+
+                                        if(row.deuda > 0){
+                                            Acciones +=             '<li class="hidden-xs">'
+                                            Acciones +=                 '<a href="'+host+'/participante/alumno/deuda/'+id+'"><i class="icon_a-pagar f-16 m-r-10 boton blue"></i> Pagar</a>'
+                                            Acciones +=             '</li>'
+                                        }
+                                        if(row.usuario){
+                                            Acciones +=             '<li class="hidden-xs email pointer">'
+                                            Acciones +=                 '<a><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>'
+                                            Acciones +=             '</li>'
+                                        }else{
+                                            Acciones +=             '<li class="hidden-xs usuario pointer">'
+                                            Acciones +=                 '<a><i class="zmdi zmdi-alert-circle-o f-16 boton blue"></i> Crear Cuenta</a>'
+                                            Acciones +=             '</li>'
+                                            Acciones +=             '<li class="hidden-xs email pointer" style="display:none">'
+                                            Acciones +=                 '<a><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>'
+                                            Acciones +=             '</li>'
+                                        }
+
+                                        Acciones +=                 '<li class="hidden-xs">'
+                                        Acciones +=                     '<a href="'+host+'/participante/alumno/transferir/'+id+'"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>'
+                                        Acciones +=                 '</li>'
+                                        
+                                        Acciones +=                 '<li class="hidden-xs">'
+                                        Acciones +=                     '<a href="'+host+'/participante/alumno/evaluaciones/'+id+'"><i class="zmdi glyphicon glyphicon-search f-16 boton blue"></i>Valoración</a>'
+                                        Acciones +=                 '</li>'
+
+                                        Acciones +=                 '<li class="hidden-xs">'
+                                        Acciones +=                     '<a href="'+host+'/participante/alumno/llamadas/'+id+'"><i class="zmdi zmdi-phone f-16 boton blue"></i>Llamadas</a>'
+                                        Acciones +=                 '</li>'
+
+                                        Acciones +=                 '<li class="hidden-xs reservar pointer">'
+                                        Acciones +=                     '<a><i class="zmdi icon_a-reservaciones f-16 boton blue"></i>Reservar</a>'
+                                        Acciones +=                 '</li>'
+
+                                        Acciones +=                 '<li class="hidden-xs eliminar pointer">'
+                                        Acciones +=                     '<a><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>'
+                                        Acciones +=                 '</li>'
+
+                                        Acciones +=             '</ul>'
+                                        Acciones +=         '</div>'
+                                        Acciones +=     '</li>'
+                                        Acciones += '</ul>'
+                                    }else{
+                                        Acciones  = ''
+                                    }
+                                    return "<div style='text-align: center'>"+ Acciones +"</div>";
+                                }
+                            },
+                        ],
+                        language: {
+                            processing:     "Procesando ...",
+                            search:         '<div class="input-group"><span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>',
+                            searchPlaceholder: "BUSCAR",
+                            lengthMenu:     "Mostrar _MENU_ Registros",
+                            info:           "Mostrando _START_ a _END_ de _TOTAL_ Registros",
+                            infoEmpty:      "Mostrando 0 a 0 de 0 Registros",
+                            infoFiltered:   "(filtrada de _MAX_ registros en total)",
+                            infoPostFix:    "",
+                            loadingRecords: "...",
+                            zeroRecords:    "No se encontraron registros coincidentes",
+                            emptyTable:     "No hay datos disponibles en la tabla",
+                            paginate: {
+                                first:      "Primero",
+                                previous:   "Anterior",
+                                next:       "Siguiente",
+                                last:       "Ultimo"
+                            },
+                            aria: {
+                                sortAscending:  ": habilitado para ordenar la columna en orden ascendente",
+                                sortDescending: ": habilitado para ordenar la columna en orden descendente"
+                            }
+                        }
+                    });
+                });
+            }
+        }
 
         function loadImages(){
             imagenes = $('.lazy')
@@ -208,7 +448,6 @@
         $('#tablelistar tbody').on('click', '.email', function () {
 
             var route = route_email;
-            var token = '{{ csrf_token() }}';
             var id = $(this).closest('tr').attr('id');
                 
             $.ajax({
@@ -234,7 +473,6 @@
 
             procesando();
             var route = "{{url('/')}}/reservacion/guardar-tipo-usuario/1";
-            var token = '{{ csrf_token() }}';
             var id = $(this).closest('tr').attr('id');
                 
             $.ajax({
@@ -267,7 +505,6 @@
             }, function(isConfirm){   
                 if (isConfirm) {
                     var route = route_eliminar + id;
-                    var token = '{{ csrf_token() }}';
                         
                     $.ajax({
                         url: route,
@@ -304,7 +541,6 @@
                 if (isConfirm) {
 
                     procesando();
-                    var token = '{{ csrf_token() }}';
                     var route = route_agregar + id;
                         
                     $.ajax({
