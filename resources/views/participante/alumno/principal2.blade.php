@@ -134,10 +134,10 @@
         route_eliminar="{{url('/')}}/participante/alumno/eliminar/";
         route_principal="{{url('/')}}/participante/alumno";
         route_agregar="{{url('/')}}/participante/alumno/crear_cuenta/";
-        data = "{{$alumnos}}"
+        alumnos = "{{$alumnos}}"
         host = location.host
         t = $('#tablelistar').DataTable({
-            data: data,
+            data: alumnos,
             processing: true,
             serverSide: false,
             pageLength: 25,    
@@ -168,7 +168,13 @@
                         imagen = host+'/assets/img/Hombre.jpg';
                     }
                 }
-
+                contenido =     '<p class="c-negro">'
+                contenido +=        data.nombre + ' ' + data.apellido + ' ' + ' ' +  '<img class="lv-img-lg" src="'+imagen+'" alt=""><br><br>' +
+                contenido +=        'Cantidad que adeuda: ' + deuda.toFixed(2);  + '<br>'+
+                contenido +=        'Número Móvil: ' + data.celular + '<br>' +
+                contenido +=        'Correo Electrónico: ' + data.correo + '<br>' +
+                contenido +=        'Edad: ' + data.edad + '<br>'+
+                contenido +=    '</p>';
 
                 if(data.deleted_at == null){
                     tipo = 1
@@ -181,6 +187,7 @@
                     .data('trigger','hover')
                     .data('toggle','popover')
                     .data('placement','top')
+                    .data('content',contenido)
                     .data('original-title',"Ayuda &nbsp;&nbsp;&nbsp;&nbsp;")
                     .data('html',"true")
                     .data('container',"body")
