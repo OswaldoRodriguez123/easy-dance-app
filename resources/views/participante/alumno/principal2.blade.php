@@ -171,9 +171,6 @@
                         'createdRow': function( row, data, dataIndex ) {
                             id = data.id;
                             deuda = data.deuda
-                            if(deuda){
-                                deuda = deuda.toFixed(2);
-                            }
                             if(data.imagen != ''){
                                 imagen = host+'/assets/uploads/usuario/'+data.imagen;
                             }else{
