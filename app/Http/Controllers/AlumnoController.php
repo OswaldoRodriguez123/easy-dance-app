@@ -196,7 +196,7 @@ class AlumnoController extends BaseController
             $alumno_array['imagen']=$imagen;
             $alumno_array['usuario']=$usuario;
             $alumno_array['edad']=$edad;
-            $array[$alumno->id] = $alumno_array;
+            array_push($array,$alumno_array);
 
         }
         return $array;
