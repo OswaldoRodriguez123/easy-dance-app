@@ -130,6 +130,75 @@ class AlumnoController extends BaseController
         }
 
 		return view('participante.alumno.principal')->with(['alumnos' => $array]);
+    }
+    public function principal2()
+	{
+
+        $in = array(2,4);
+
+        $alumnos = Alumno::withTrashed()
+            ->Leftjoin('tipologias', 'alumnos.tipologia_id', '=', 'tipologias.id')
+            ->select('alumnos.*','tipologias.nombre as tipologia')
+            ->where('academia_id', '=' ,  Auth::user()->academia_id)
+            ->where('tipo', 1)
+            ->orderBy('alumnos.nombre', 'asc')
+        ->get();
+
+        $array = array();
+
+        foreach($alumnos as $alumno){
+
+            $deuda = ItemsFacturaProforma::where('fecha_vencimiento','<=',Carbon::today())
+                ->where('usuario_id','=',$alumno->id)
+                ->where('usuario_tipo','=',1)
+            ->sum('importe_neto');
+
+            $activacion = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id', $alumno->id)
+                ->whereIn('usuarios_tipo.tipo', $in)
+                ->where('users.confirmation_token', '!=', null)
+            ->first();
+
+            $edad = Carbon::createFromFormat('Y-m-d', $alumno->fecha_nacimiento)->diff(Carbon::now())->format('%y');
+
+            $usuario = User::join('usuarios_tipo', 'usuarios_tipo.usuario_id', '=', 'users.id')
+                ->where('usuarios_tipo.tipo_id',$alumno->id)
+                ->whereIn('usuarios_tipo.tipo',$in)
+            ->first();
+
+            if($usuario){
+
+                if($usuario->imagen){
+                    $imagen = $usuario->imagen;
+                    $usuario = 1;
+                }else{
+                    $imagen = '';
+                    $usuario = 0;
+                }
+
+            }else{
+                $imagen = '';
+                $usuario = 0;
+            }
+
+            if($activacion){
+                $activacion = 1;
+            }else{
+                $activacion = 0;
+            }
+            
+            $collection=collect($alumno);     
+            $alumno_array = $collection->toArray();
+            $alumno_array['activacion']=$activacion;
+            $alumno_array['deuda']=$deuda;
+            $alumno_array['imagen']=$imagen;
+            $alumno_array['usuario']=$usuario;
+            $alumno_array['edad']=$edad;
+            $array[$alumno->id] = $alumno_array;
+
+        }
+
+		return view('participante.alumno.principal2')->with(['alumnos' => $array]);
 	}
 
 
