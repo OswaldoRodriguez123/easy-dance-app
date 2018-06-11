@@ -181,7 +181,7 @@
                     seleccion = 'seleccion'
                 }else{
                     tipo = 2
-                    seleccion ='seleccion seleccion_deleted'
+                    seleccion = 'seleccion seleccion_deleted'
                 }
                 $(row)
                     .data('trigger','hover')
@@ -276,63 +276,9 @@
                     "targets": 6,
                     "render": function (data, type, row) {
                         id = row.id;
-                        if(data == null){
-                            Acciones = ''
-                            Acciones += '<ul class="top-menu">';
-                            Acciones +=     '<li class="dropdown" id="dropdown_"'+id+'>'
-                            Acciones +=         '<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-animations="fadeInLeft fadeInLeft fadeInLeft fadeInLeft" id="dropdown_toggle_'+id+'">'
-                            Acciones +=             '<span class="f-15 f-700" style="color:black">'
-                            Acciones +=                 '<i id ="pop-operaciones" name="pop-operaciones" class="zmdi zmdi-wrench f-20 mousedefault" aria-describedby="popoveroperaciones" data-html="true" data-toggle="popover" data-placement="top" title="" type="button" data-original-title="" data-content=''></i>'
-                            Acciones +=             '</span>'
-                            Acciones +=         '</a>'
-                            Acciones +=         '<div class="dropup">'
-                            Acciones +=             '<ul class="dropdown-menu dm-icon pull-right">'
-
-                            if(row.deuda > 0){
-                                Acciones +=             '<li class="hidden-xs">'
-                                Acciones +=                 '<a href="'+host+'/participante/alumno/deuda/'+id+'"><i class="icon_a-pagar f-16 m-r-10 boton blue"></i> Pagar</a>'
-                                Acciones +=             '</li>'
-                            }
-                            if(row.usuario){
-                                Acciones +=             '<li class="hidden-xs email pointer">'
-                                Acciones +=                 '<a><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>'
-                                Acciones +=             '</li>'
-                            }else{
-                                Acciones +=             '<li class="hidden-xs usuario pointer">'
-                                Acciones +=                 '<a><i class="zmdi zmdi-alert-circle-o f-16 boton blue"></i> Crear Cuenta</a>'
-                                Acciones +=             '</li>'
-                                Acciones +=             '<li class="hidden-xs email pointer" style="display:none">'
-                                Acciones +=                 '<a><i class="zmdi zmdi-email f-16 boton blue"></i> Enviar Correo</a>'
-                                Acciones +=             '</li>'
-                            }
-
-                            Acciones +=                 '<li class="hidden-xs">'
-                            Acciones +=                     '<a href="'+host+'/participante/alumno/transferir/'+id+'"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>'
-                            Acciones +=                 '</li>'
-                            
-                            Acciones +=                 '<li class="hidden-xs">'
-                            Acciones +=                     '<a href="'+host+'/participante/alumno/evaluaciones/'+id+'"><i class="zmdi glyphicon glyphicon-search f-16 boton blue"></i>Valoración</a>'
-                            Acciones +=                 '</li>'
-
-                            Acciones +=                 '<li class="hidden-xs">'
-                            Acciones +=                     '<a href="'+host+'/participante/alumno/llamadas/'+id+'"><i class="zmdi zmdi-phone f-16 boton blue"></i>Llamadas</a>'
-                            Acciones +=                 '</li>'
-
-                            Acciones +=                 '<li class="hidden-xs reservar pointer">'
-                            Acciones +=                     '<a><i class="zmdi icon_a-reservaciones f-16 boton blue"></i>Reservar</a>'
-                            Acciones +=                 '</li>'
-
-                            Acciones +=                 '<li class="hidden-xs eliminar pointer">'
-                            Acciones +=                     '<a><i class="zmdi zmdi-delete boton red f-20 boton red sa-warning"></i> Eliminar</a>'
-                            Acciones +=                 '</li>'
-
-                            Acciones +=             '</ul>'
-                            Acciones +=         '</div>'
-                            Acciones +=     '</li>'
-                            Acciones += '</ul>'
-                        }else{
+                        
                             Acciones  = ''
-                        }
+                        
                         return "<div style='text-align: center'>"+ Acciones +"</div>";
                     }
                 },
