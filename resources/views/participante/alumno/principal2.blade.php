@@ -372,8 +372,8 @@
                             }
                         }
                     });
-                });
-            }
+                }
+            });
         }
 
         function loadImages(){
