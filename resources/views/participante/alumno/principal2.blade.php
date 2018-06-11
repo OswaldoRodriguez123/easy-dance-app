@@ -172,12 +172,12 @@
                             id = data.id;
                             deuda = data.deuda
                             if(data.imagen != ''){
-                                imagen = host+'/assets/uploads/usuario/'+data.imagen;
+                                imagen = '/assets/uploads/usuario/'+data.imagen;
                             }else{
                                 if(data.sexo == 'F'){
-                                    imagen = host+'/assets/img/Mujer.jpg';
+                                    imagen = '/assets/img/Mujer.jpg';
                                 }else{
-                                    imagen = host+'/assets/img/Hombre.jpg';
+                                    imagen = '/assets/img/Hombre.jpg';
                                 }
                             }
                             contenido =     '<p class="c-negro">'
@@ -225,12 +225,12 @@
                                 "targets": 1,
                                 "render": function (data, type, row) {
                                     if(data != '') {
-                                        imagen = '<img class="lv-img lazy" src="'+host+'/assets/img/Hombre.jpg" data-image = "'+host+'/assets/uploads/usuario/"'+data+' alt="">';
+                                        imagen = '<img class="lv-img lazy" src="/assets/img/Hombre.jpg" data-image = "/assets/uploads/usuario/"'+data+' alt="">';
                                     }else{
                                         if(row.sexo == 'M') {
-                                            imagen = '<img class="lv-img lazy" src="'+host+'/assets/img/Hombre.jpg" data-image = "'+host+'/assets/img/Hombre.jpg" alt="">'
+                                            imagen = '<img class="lv-img lazy" src="/assets/img/Hombre.jpg" data-image = "/assets/img/Hombre.jpg" alt="">'
                                         }else{
-                                            imagen = '<img class="lv-img lazy" src="'+host+'/assets/img/Hombre.jpg" data-image = "'+host+'/assets/img/Hombre.jpg" alt="">'
+                                            imagen = '<img class="lv-img lazy" src="/assets/img/Hombre.jpg" data-image = "/assets/img/Hombre.jpg" alt="">'
                                         }
                                     }
                                     return "<div class='previa'>"+ imagen +"</div>";
@@ -302,7 +302,7 @@
 
                                         if(row.deuda > 0){
                                             Acciones +=             '<li class="hidden-xs">'
-                                            Acciones +=                 '<a href="'+host+'/participante/alumno/deuda/'+id+'"><i class="icon_a-pagar f-16 m-r-10 boton blue"></i> Pagar</a>'
+                                            Acciones +=                 '<a href="/participante/alumno/deuda/'+id+'"><i class="icon_a-pagar f-16 m-r-10 boton blue"></i> Pagar</a>'
                                             Acciones +=             '</li>'
                                         }
                                         if(row.usuario){
@@ -319,15 +319,15 @@
                                         }
 
                                         Acciones +=                 '<li class="hidden-xs">'
-                                        Acciones +=                     '<a href="'+host+'/participante/alumno/transferir/'+id+'"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>'
+                                        Acciones +=                     '<a href="/participante/alumno/transferir/'+id+'"><i class="zmdi zmdi-trending-up f-16 boton blue"></i> Transferir</a>'
                                         Acciones +=                 '</li>'
                                         
                                         Acciones +=                 '<li class="hidden-xs">'
-                                        Acciones +=                     '<a href="'+host+'/participante/alumno/evaluaciones/'+id+'"><i class="zmdi glyphicon glyphicon-search f-16 boton blue"></i>Valoración</a>'
+                                        Acciones +=                     '<a href="/participante/alumno/evaluaciones/'+id+'"><i class="zmdi glyphicon glyphicon-search f-16 boton blue"></i>Valoración</a>'
                                         Acciones +=                 '</li>'
 
                                         Acciones +=                 '<li class="hidden-xs">'
-                                        Acciones +=                     '<a href="'+host+'/participante/alumno/llamadas/'+id+'"><i class="zmdi zmdi-phone f-16 boton blue"></i>Llamadas</a>'
+                                        Acciones +=                     '<a href="/participante/alumno/llamadas/'+id+'"><i class="zmdi zmdi-phone f-16 boton blue"></i>Llamadas</a>'
                                         Acciones +=                 '</li>'
 
                                         Acciones +=                 '<li class="hidden-xs reservar pointer">'
