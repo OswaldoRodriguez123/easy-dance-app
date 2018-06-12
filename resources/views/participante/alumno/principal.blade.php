@@ -158,6 +158,10 @@
                         deferRender: true,
                         order: [[4, 'asc']],
                         destroy: true,
+                        fnRowCallback: function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+                            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5),td:eq(6)', nRow).addClass( "text-center" );
+                            $('td:eq(0),td:eq(1),td:eq(2),td:eq(3),td:eq(4),td:eq(5)', nRow).attr( "onclick","previa(this)" );
+                        },
                         drawCallback: function(){
                             loadImages();
                         },
@@ -198,14 +202,14 @@
                                 seleccion = 'seleccion seleccion_deleted'
                             }
                             $(row)
-                                .data('trigger','hover')
-                                .data('toggle','popover')
-                                .data('placement','top')
-                                .data('content',contenido)
-                                .data('original-title',"Ayuda &nbsp;&nbsp;&nbsp;&nbsp;")
-                                .data('html',"true")
-                                .data('container',"body")
-                                .data('tipo',tipo)
+                                .attr('data-trigger','hover')
+                                .attr('data-toggle','popover')
+                                .attr('data-placement','top')
+                                .attr('data-content',contenido)
+                                .attr('data-original-title',"Ayuda &nbsp;&nbsp;&nbsp;&nbsp;")
+                                .attr('data-html',"true")
+                                .attr('data-container',"body")
+                                .attr('data-tipo',tipo)
                                 .addClass('text-center')
                                 .addClass(seleccion)
                                 .attr("id", id);
@@ -219,7 +223,7 @@
                                     }else{
                                         activacion = ''
                                     }
-                                    return "<div class='previa'>"+ activacion +"</div>";
+                                    return activacion;
                                 }
                             },
                             {
@@ -234,13 +238,13 @@
                                             imagen = '<img class="lv-img lazy" src="/assets/img/Hombre.jpg" data-image = "/assets/img/Hombre.jpg" alt="">'
                                         }
                                     }
-                                    return "<div class='previa'>"+ imagen +"</div>";
+                                    return imagen;
                                 }
                             },
                             {
                                 "targets": 2,
                                 "render": function (data, type, row) {
-                                    return "<div class='previa'>"+ data +"</div>";
+                                    return data;
                                 }
                             },
                             {
@@ -259,7 +263,7 @@
                                             sexo = '<span style="display: none">M</span><i class="zmdi fa fa-child f-15 c-azul"></i> </span>'
                                         }
                                     }
-                                    return "<div class='previa'>"+ sexo +"</div>";
+                                    return sexo;
                                 }
                             },
                             {
@@ -271,7 +275,7 @@
                                     apellido = row.apellido
                                     apellido = apellido.split(' ');
                                     apellido = apellido[0];
-                                    return "<div class='previa'>"+ nombre + ' ' + apellido +"</div>";
+                                    return nombre + ' ' + apellido;
                                 }
                             },
                             {
@@ -282,7 +286,7 @@
                                     }else{
                                         deuda = '<i class="zmdi zmdi-money c-verde zmdi-hc-fw f-20 p-r-3"></i>';
                                     }
-                                    return "<div class='previa'>"+ deuda +"</div>";
+                                    return deuda;
                                 }
                             },
                             {
