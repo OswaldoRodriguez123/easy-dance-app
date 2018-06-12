@@ -213,6 +213,7 @@
                                 .addClass('text-center')
                                 .addClass(seleccion)
                                 .attr("id", id);
+                            $('[data-toggle="popover"]').popover(); 
                         },
                         "columnDefs": [
                             {
@@ -380,7 +381,6 @@
                     });
                 }
             });
-            $('[data-toggle="popover"]').popover(); 
             finprocesado();
         }
 
@@ -393,6 +393,7 @@
                 var src = $(image).data('image');
                 image.src = src;
             });
+            $('[data-toggle="popover"]').popover(); 
         }
         
         $(document).on('click', '.previa', function () {
