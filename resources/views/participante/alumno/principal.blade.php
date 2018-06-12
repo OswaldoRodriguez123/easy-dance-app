@@ -396,8 +396,8 @@
             $('[data-toggle="popover"]').popover(); 
         }
         
-        $(document).on('click', '.previa', function () {
-            var row = $(this).closest('tr');
+        function previa(t){
+            var row = $(t).closest('tr');
             var tipo = row.data('tipo');
 
             if(tipo == '1'){
@@ -405,7 +405,7 @@
                 var route =route_detalle+"/"+id;
                 window.open(route, '_blank');
             }
-        });
+        }
 
         $("i[name=operacion").click(function(){
             var route =route_operacion+"/"+this.id;
