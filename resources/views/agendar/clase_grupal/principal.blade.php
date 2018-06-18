@@ -805,6 +805,7 @@
         route_examen="{{url('/')}}/especiales/examenes/agregar/";
 
         var clases_grupales = <?php echo json_encode($clase_grupal_join);?>;
+        var token = $('input:hidden[name=_token]').val();
 
         var dia;
         var estatus = 1
@@ -1051,7 +1052,6 @@
 
     function trasladar(){
       var route = route_trasladar;
-      var token = $('input:hidden[name=_token]').val();
       var datos = $( "#form_trasladar" ).serialize();
 
       procesando();
@@ -1138,7 +1138,6 @@
           if (isConfirm) {
           procesando();
           var route = route_cancelar;
-          var token = '{{ csrf_token() }}';
           var datos = $( "#cancelar_una_clase" ).serialize(); 
           $.ajax({
             url: route,
@@ -1207,7 +1206,6 @@
           if (isConfirm) {
           procesando();
          var route = route_cancelar;
-         var token = '{{ csrf_token() }}';
          var datos = $( "#cancelar_varias_clases" ).serialize(); 
                 $.ajax({
                     url: route,
@@ -1276,7 +1274,6 @@
           if (isConfirm) {
           procesando();
          var route = route_cancelar;
-         var token = '{{ csrf_token() }}';
          var datos = $( "#cancelar_varias_clases" ).serialize(); 
                 $.ajax({
                     url: route,
@@ -1321,40 +1318,42 @@
     $('#modalTrasladar-ClaseGrupal').modal('show')
   });
 
-  $('#tablelistar tbody').on( 'click', 'a.eliminar', function () {
+    $('#tablelistar tbody').on( 'click', 'a.eliminar', function () {
         var id = $(this).closest('tr').attr('id');
-                swal({   
-                    title: "Desea eliminar la clase grupal",   
-                    text: "Tenga en cuenta que los horarios creados para esta clase grupal tambien seran eliminados!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Eliminar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true 
-                }, function(isConfirm){   
-          if (isConfirm) {
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-                        // swal("Done!","It was succesfully deleted!","success");
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar(id);
-          }
-                });
-            });
-      function eliminar(id){
-         var route = route_eliminar + id;
-         var token = $('input:hidden[name=_token]').val();
-         procesando();
-                
+        swal({   
+            title: "Para eliminar la clase grupal necesita colocar la clave de supervisión",   
+            text: "Confirmar eliminación!",   
+            type: "input",  
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Aceptar",  
+            cancelButtonText: "Cancelar",         
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "Coloque la clave de supervisión"
+        }, function(inputValue){
+
+            if (inputValue === false) return false;
+
+            if (inputValue === "") {
+                swal.showInputError("Ups! La clave de supervisión es requerida");
+                return false
+            }else{
+
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nType = 'success';
+                var nAnimIn = $(this).attr('data-animation-in');
+                var nAnimOut = $(this).attr('data-animation-out')
+                var route = route_eliminar;
+                var datos = "&id="+id+"&password_supervision="+inputValue
+                procesando();
                 $.ajax({
                     url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'DELETE',
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                    data: datos,
                     dataType: 'json',
                     success:function(respuesta){
 
@@ -1362,23 +1361,20 @@
 
                     },
                     error:function(msj){
-                                // $("#msj-danger").fadeIn(); 
-                                // var text="";
-                                // console.log(msj);
-                                // var merror=msj.responseJSON;
-                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                // $("#msj-error").html(text);
-                                // setTimeout(function(){
-                                //          $("#msj-danger").fadeOut();
-                                //         }, 3000);
-                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                                }
+                        finprocesado();
+                        if(msj.responseJSON.status == "ERROR-PASSWORD"){
+                            swal.showInputError("Ups! La clave de supervisión es incorrecta");
+                        }else{
+                            swal('Solicitud no procesada','Ups! Ha ocurrido un error, intente nuevamente','error');
+                        }
+                    }
                 });
-      }
+            }
+        });
+    });
 
     function consulta_estatus_alumnos(){
       var route = route_consulta;
-      var token = "{{ csrf_token() }}";
 
       $.ajax({
           url: route,
@@ -1438,7 +1434,6 @@
     $('#tablelistar tbody').on('click', '.valorar', function () {
 
       var id = $(this).closest('tr').attr('id');
-      var token = "{{ csrf_token() }}"
       clase_grupal_id = id
       procesando();
 

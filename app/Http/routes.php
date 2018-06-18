@@ -850,7 +850,7 @@
 
 			Route::post('agendar/clases-grupales/agregar', 'ClaseGrupalController@store');
 			Route::get('agendar/clases-grupales/agregar', 'ClaseGrupalController@create');
-			Route::delete('agendar/clases-grupales/eliminar/{id}', 'ClaseGrupalController@destroy');
+			Route::post('agendar/clases-grupales/eliminar', 'ClaseGrupalController@destroy');
 			Route::post('agendar/clases-grupales/inscribir', 'ClaseGrupalController@storeInscripcion');
 			Route::post('agendar/clases-grupales/alumnos', 'ClaseGrupalController@getAlumnos');
 			Route::post('agendar/clases-grupales/alumnos/eliminar', 'ClaseGrupalController@eliminarAlumnos');

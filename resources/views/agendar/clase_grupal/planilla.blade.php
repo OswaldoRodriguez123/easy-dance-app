@@ -2548,60 +2548,60 @@
         })
        
     })
-
     $(".eliminar").click(function(){
-                swal({   
-                    title: "Desea eliminar la clase grupal",   
-                    text: "Tenga en cuenta que los horarios creados para esta clase grupal tambien seran eliminados!",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Eliminar!",  
-                    cancelButtonText: "Cancelar",         
-                    closeOnConfirm: true 
-                }, function(isConfirm){   
-          if (isConfirm) {
-            var nFrom = $(this).attr('data-from');
-            var nAlign = $(this).attr('data-align');
-            var nIcons = $(this).attr('data-icon');
-            var nType = 'success';
-            var nAnimIn = $(this).attr('data-animation-in');
-            var nAnimOut = $(this).attr('data-animation-out')
-                        // swal("Done!","It was succesfully deleted!","success");
-                        // notify(nFrom, nAlign, nIcons, nType, nAnimIn, nAnimOut);
-                        eliminar();
-          }
-                });
-            });
-      function eliminar(id){
-         var route = route_eliminar + "{{$id}}";
-         var token = $('input:hidden[name=_token]').val();
-         procesando();
-                
+        var id = "{{$id}}";
+        swal({   
+            title: "Para eliminar la clase grupal necesita colocar la clave de supervisión",   
+            text: "Confirmar eliminación!",   
+            type: "input",  
+            showCancelButton: true,   
+            confirmButtonColor: "#DD6B55",   
+            confirmButtonText: "Aceptar",  
+            cancelButtonText: "Cancelar",         
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "Coloque la clave de supervisión"
+        }, function(inputValue){
+
+            if (inputValue === false) return false;
+
+            if (inputValue === "") {
+                swal.showInputError("Ups! La clave de supervisión es requerida");
+                return false
+            }else{
+
+                var nFrom = $(this).attr('data-from');
+                var nAlign = $(this).attr('data-align');
+                var nIcons = $(this).attr('data-icon');
+                var nType = 'success';
+                var nAnimIn = $(this).attr('data-animation-in');
+                var nAnimOut = $(this).attr('data-animation-out')
+                var route = route_eliminar;
+                var datos = "&id="+id+"&password_supervision="+inputValue
+                procesando();
                 $.ajax({
                     url: route,
-                        headers: {'X-CSRF-TOKEN': token},
-                        type: 'DELETE',
+                    headers: {'X-CSRF-TOKEN': token},
+                    type: 'POST',
+                    data: datos,
                     dataType: 'json',
                     success:function(respuesta){
 
-                        window.location = route_principal;
+                        window.location = route_principal; 
 
                     },
                     error:function(msj){
-                                // $("#msj-danger").fadeIn(); 
-                                // var text="";
-                                // console.log(msj);
-                                // var merror=msj.responseJSON;
-                                // text += " <i class='glyphicon glyphicon-remove'></i> Por favor verifique los datos introducidos<br>";
-                                // $("#msj-error").html(text);
-                                // setTimeout(function(){
-                                //          $("#msj-danger").fadeOut();
-                                //         }, 3000);
-                                swal('Solicitud no procesada',msj.responseJSON.error_mensaje,'error');
-                                }
+                        finprocesado();
+                        if(msj.responseJSON.status == "ERROR-PASSWORD"){
+                            swal.showInputError("Ups! La clave de supervisión es incorrecta");
+                        }else{
+                            swal('Solicitud no procesada','Ups! Ha ocurrido un error, intente nuevamente','error');
+                        }
+                    }
                 });
-      }
+            }
+        });
+    });
 
     $(".progreso").click(function(){
                

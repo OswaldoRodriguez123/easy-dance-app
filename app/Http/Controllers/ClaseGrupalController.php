@@ -3033,13 +3033,23 @@ class ClaseGrupalController extends BaseController {
      * @return Response
      */
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
 
         // $exist = InscripcionClaseGrupal::where('clase_grupal_id', $id)->first();
-
+        
         // if(!$exist)
         // {
+
+            $academia = Academia::find(Auth::user()->academia_id);
+
+            if($academia->password_supervision){
+                if(!Hash::check($request->password_supervision, $academia->password_supervision)) {
+                    return response()->json(['error_mensaje'=> 'Ups! La contraseña no coincide', 'status' => 'ERROR-PASSWORD'],422);
+                }
+            }
+            
+            $id = $request->id;
             $horario_clase_grupal = HorarioClaseGrupal::where('clase_grupal_id', $id)->delete();
             $clasegrupal = ClaseGrupal::find($id);
         
