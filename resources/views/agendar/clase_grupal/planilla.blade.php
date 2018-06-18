@@ -2090,6 +2090,8 @@
     route_trasladar="{{url('/')}}/agendar/clases-grupales/trasladar";
     route_detalle="{{url('/')}}/agendar/clases-grupales/multihorario/detalle";
     route_cancelar="{{url('/')}}/agendar/clases-grupales/cancelar";
+
+    var token = $('input:hidden[name=_token]').val();
     
     $(document).ready(function(){
 
@@ -2643,7 +2645,6 @@
     });
       function trasladar(){
         var route = route_trasladar;
-        var token = $('input:hidden[name=_token]').val();
         var datos = $( "#form_trasladar" ).serialize();
 
         procesando();
@@ -2742,7 +2743,6 @@
           if (isConfirm) {
           procesando();
           var route = route_cancelar;
-          var token = '{{ csrf_token() }}';
           var datos = $( "#cancelar_una_clase" ).serialize(); 
           $.ajax({
             url: route,
@@ -2811,7 +2811,6 @@
           if (isConfirm) {
           procesando();
          var route = route_cancelar;
-         var token = '{{ csrf_token() }}';
          var datos = $( "#cancelar_varias_clases" ).serialize(); 
                 $.ajax({
                     url: route,
@@ -2880,7 +2879,6 @@
           if (isConfirm) {
           procesando();
          var route = route_cancelar;
-         var token = '{{ csrf_token() }}';
          var datos = $( "#cancelar_varias_clases" ).serialize(); 
                 $.ajax({
                     url: route,
