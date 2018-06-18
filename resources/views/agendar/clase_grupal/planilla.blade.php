@@ -1794,13 +1794,10 @@
                              <td class="f-14 m-l-15" ><span id="clasegrupal-imagen"><span></span></span> <span class="pull-right c-blanco"><i class="zmdi zmdi-edit f-22"></i></span> </td>
                             </tr>
                             @if($usuario_tipo == 1 OR $usuario_tipo == 5 || $usuario_tipo == 6)
-
-                            	<tr class="detalle" data-toggle="modal" href="#modalFecha-ClaseGrupal">
-
+                                <tr class="disabled">
+                            	<!-- <tr class="detalle" data-toggle="modal" href="#modalFecha-ClaseGrupal"> -->
                             @else
-
                             	<tr class="disabled">
-
                             @endif
                              <td width="50%"> 
                               <span  class="m-l-10 m-r-5 f-16" ><i id="estatus-fecha_inicio" class="zmdi  {{ empty($clasegrupal->fecha_inicio) ? 'c-amarillo zmdi-dot-circle' : 'c-verde zmdi-check' }} zmdi-hc-fw"></i></span>                              
