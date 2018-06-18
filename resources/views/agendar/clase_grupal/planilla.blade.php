@@ -2084,7 +2084,7 @@
 @section('js') 
    <script type="text/javascript">
     route_update="{{url('/')}}/agendar/clases-grupales/update";
-    route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminar/";
+    route_eliminar="{{url('/')}}/agendar/clases-grupales/eliminar";
     route_principal="{{url('/')}}/agendar/clases-grupales";
     route_progreso="{{url('/')}}/agendar/clases-grupales/progreso/";
     route_trasladar="{{url('/')}}/agendar/clases-grupales/trasladar";
