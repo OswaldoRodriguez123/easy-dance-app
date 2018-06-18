@@ -1056,7 +1056,7 @@ class UsuarioController extends BaseController {
                             ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
                         ->count();
 
-                        if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
+                        if($clase->cantidad_hombres <= $cantidad_hombres && $clase->cantidad_mujeres <= $cantidad_mujeres){
                             $nombre_principal = 'AGOTADA';
                         }else{
                             $nombre_principal = $clase->nombre;
@@ -1154,7 +1154,7 @@ class UsuarioController extends BaseController {
                         ->where('inscripcion_clase_grupal.clase_grupal_id',$clase->id)
                     ->count();
 
-                    if($clase->cantidad_hombres >= $cantidad_hombres && $clase->cantidad_mujeres >= $cantidad_mujeres){
+                    if($clase->cantidad_hombres <= $cantidad_hombres && $clase->cantidad_mujeres <= $cantidad_mujeres){
                         $nombre_principal = 'AGOTADA';
                     }else{
                         $nombre_principal = $clase->nombre;
