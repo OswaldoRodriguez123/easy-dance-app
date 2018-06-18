@@ -48,7 +48,7 @@ use App\Tipologia;
 use App\Certificado;
 use App\ConfigComision;
 use App\ConfigPagosInstructor;
-use PulkitJalan\GeoIP\GeoIP;
+use Illuminate\Support\Facades\Hash;
 
 
 class ClaseGrupalController extends BaseController {
