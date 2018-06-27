@@ -4110,8 +4110,10 @@ class ClaseGrupalController extends BaseController {
         $fecha_start=explode('-',$clase->fecha_inicio);
         $fecha_end=explode('-',$clase->fecha_final);
 
-        $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-        $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+        $dt = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
+        $df = Carbon::createFromFormat('Y-m-d', $clase->fecha_final);
+        $hora_actual = Carbon::now()->format('H:i:s');
+        $dia_actual = Carbon::now()->toDateString();
 
         $hora_inicio=$clase->hora_inicio;
         $hora_final=$clase->hora_final;
@@ -4153,26 +4155,26 @@ class ClaseGrupalController extends BaseController {
         }
 
         $i = 0;
-        $dadas = 0;
         $restantes = 0;
+        $realizadas = 0;
 
-        $hora_final_carbon = Carbon::createFromFormat('H:i:s', $hora_final);
-
-        if($dt >= Carbon::now()){
-
-            if($hora_final_carbon > Carbon::now()->format('H:i:s')){
+        $fecha_inicio = $dt->toDateString();
+        if($fecha_inicio > $dia_actual){
+            $activas[]=array("id" => $i, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
+            $restantes++;
+        }else if($fecha_inicio == $dia_actual){
+            if($hora_final > $hora_actual){
                 $activas[]=array("id" => $i, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
-                $dadas++;
+                $restantes++;
             }else{
                 $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
-                $restantes++;
+                $realizadas++;
             }
-            $i++;
         }else{
             $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
-            $i++;
-            $restantes++;
+            $realizadas++;
         }
+        $i++;
 
         while($dt->timestamp<$df->timestamp){
 
@@ -4228,21 +4230,23 @@ class ClaseGrupalController extends BaseController {
 
             }
 
-            if($dt >= Carbon::now()){
-                
-                if($hora_final_carbon > Carbon::now()->format('H:i:s')){
+            $fecha_inicio = $dt->toDateString();
+            if($fecha_inicio > $dia_actual){
+                $activas[]=array("id" => $i, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
+                $restantes++;
+            }else if($fecha_inicio == $dia_actual){
+                if($hora_final > $hora_actual){
                     $activas[]=array("id" => $i, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
-                    $dadas++;
+                    $restantes++;
                 }else{
                     $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
-                    $restantes++;
+                    $realizadas++;
                 }
-                $i++;
             }else{
                 $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
-                $i++;
-                $restantes++;
+                $realizadas++;
             }
+            $i++;
             
         }
  
@@ -4251,8 +4255,8 @@ class ClaseGrupalController extends BaseController {
             $fecha_start=explode('-',$clase->fecha_inicio);
             $fecha_end=explode('-',$clase->fecha_final);
 
-            $dt = Carbon::create($fecha_start[0], $fecha_start[1], $fecha_start[2], 0);
-            $df = Carbon::create($fecha_end[0], $fecha_end[1], $fecha_end[2], 0);
+            $dt = Carbon::createFromFormat('Y-m-d', $clase->fecha_inicio);
+            $df = Carbon::createFromFormat('Y-m-d', $clase->fecha_final);
 
             $hora_inicio=$clase->hora_inicio;
             $hora_final=$clase->hora_final;
@@ -4293,24 +4297,23 @@ class ClaseGrupalController extends BaseController {
 
             }
 
-            $hora_final_carbon = Carbon::createFromFormat('H:i:s', $hora_final);
-
-            if($dt >= Carbon::now()){
-
-                if($hora_final_carbon > Carbon::now()->format('H:i:s')){
+            $fecha_inicio = $dt->toDateString();
+            if($fecha_inicio > $dia_actual){
+                $activas[]=array("id" => $i, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
+                $restantes++;
+            }else if($fecha_inicio == $dia_actual){
+                if($hora_final > $hora_actual){
                     $activas[]=array("id" => $i, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
-                    $dadas++;
+                    $restantes++;
                 }else{
                     $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
-                    $restantes++;
+                    $realizadas++;
                 }
-                $i++;
             }else{
                 $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
-                $i++;
-                $restantes++;
+                $realizadas++;
             }
-
+            $i++;
             
             while($dt->timestamp<$df->timestamp){
                 $fecha="";
@@ -4365,26 +4368,28 @@ class ClaseGrupalController extends BaseController {
 
                 }
 
-                if($dt >= Carbon::now()){
-
-                    if($hora_final_carbon > Carbon::now()->format('H:i:s')){
+                $fecha_inicio = $dt->toDateString();
+                if($fecha_inicio > $dia_actual){
+                    $activas[]=array("id" => $i, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
+                    $restantes++;
+                }else if($fecha_inicio == $dia_actual){
+                    if($hora_final > $hora_actual){
                         $activas[]=array("id" => $i, "fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
-                        $dadas++;
+                        $restantes++;
                     }else{
                         $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
-                        $restantes++;
+                        $realizadas++;
                     }
-                    $i++;
                 }else{
                     $finalizadas[]=array("id" => $i,"fecha_inicio"=>$dt->toDateString(), "hora_inicio"=>$hora_inicio, 'hora_final'=>$hora_final, 'especialidad' => $clase->especialidad, 'instructor' => $clase->instructor_nombre . ' ' . $clase->instructor_apellido,'tipo' => $tipo, 'bloqueo_id' => $bloqueo_id, 'dia' => $dia);
-                    $i++;
-                    $restantes++;
+                    $realizadas++;
                 }
+                $i++;
             }
 
         }
 
-        return view('agendar.clase_grupal.agenda')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'nombre' => $nombre, 'id' => $id, 'dadas' => $dadas, 'restantes' => $restantes]);
+        return view('agendar.clase_grupal.agenda')->with(['activas' => $activas, 'finalizadas' => $finalizadas, 'nombre' => $nombre, 'id' => $id, 'restantes' => $restantes, 'realizadas' => $realizadas]);
     }
 
     public function reservaciones_vencidas($id){
